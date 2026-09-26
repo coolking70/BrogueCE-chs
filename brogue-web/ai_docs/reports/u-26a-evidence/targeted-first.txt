@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+(node:64630) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/p1_30_i18n_gate.test.ts (16 tests | 1 failed) 3574ms
+     × 每个静态字面量键都存在（缺失即红） 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 每个静态字面量键都存在（缺失即红）
+AssertionError: 缺失翻译键 3 个（缺键会静默渲染英文defaultValue）：
+  inventory.category.gems  ←  components/InventoryOverlay.vue:68
+  item.lumenstone_depth  ←  engine/Items/Item.ts:188
+  item.lumenstone  ←  engine/Items/ItemLoader.ts:1536: expected [ …(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "  inventory.category.gems  ←  components/InventoryOverlay.vue:68",
++   "  item.lumenstone_depth  ←  engine/Items/Item.ts:188",
++   "  item.lumenstone  ←  engine/Items/ItemLoader.ts:1536",
++ ]
+
+ ❯ src/test/p1_30_i18n_gate.test.ts:68:14
+     66|         });
+     67|         expect(missing, `缺失翻译键 ${missing.length} 个（缺键会静默渲染英文defaultVal…
+     68|             .toEqual([]);
+       |              ^
+     69|     });
+     70|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 28 passed (29)
+   Start at  00:53:16
+   Duration  4.43s (transform 679ms, setup 0ms, import 1.98s, tests 6.17s, environment 1ms)
+

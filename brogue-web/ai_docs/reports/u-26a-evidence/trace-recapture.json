@@ -1,0 +1,9 @@
+{
+  "file": "ai_docs/reports/u-r3-trace.json.gz",
+  "before": "e234ad430c436e97c04e4a03a9fce7ec001f153dc0b5005006aec6a5053f4e97",
+  "after": "baf94f41244ad888bc12428cddecceebd18b4ceba4d6c9745c9a123f34e46ad2",
+  "method": "UR3_CAPTURE=1 npx vitest run src/test/u_r3_trace.test.ts --maxWorkers=1",
+  "captures": 1,
+  "candidateEquality": true,
+  "attribution": "trace-attribution.json; all changes isolated to CE deepestLevel door correction"
+}

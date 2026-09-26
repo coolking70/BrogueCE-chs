@@ -697,6 +697,9 @@ export class Game {
             }
         }
 
+        // CE Items.c:697–698：深层保底食物之后仅生成 GEM，不抽普通类别/种类。
+        if (depth > AMULET_LEVEL) return ItemLoader.spawnGem(depth, pos.x, pos.y);
+
         // ---- CE Items.c:700-716：计量阈值强制生成 + 按层硬保底 ----
         // CE 语义：全表按序找**第一条**命中阈值或硬保底的条目，命中即整件
         // 生成该种类（跳过 pickItemCategory）。
@@ -858,7 +861,7 @@ export class Game {
             const maskSet = new Set(category.split('|').map(s => s.trim()).filter(s => s.length > 0));
             // CE_ITEM_GENERATION_PROBABILITIES 即 CE 13 槽走表序
             // （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；
-            // web 省略权重 0 的 GEM——B-4b 已登记行为等价）。掩码不含 GOLD，无需特例。
+            // U26a 补齐权重 0 的 GEM 槽，普通类别抽取不变）。掩码不含 GOLD，无需特例。
             const slots = ItemLoader.CE_ITEM_GENERATION_PROBABILITIES.filter(s => maskSet.has(ItemCategory[s.category]));
             let sum = 0;
             for (const s of slots) sum += s.weight;
@@ -3438,8 +3441,8 @@ export class Game {
     public dropItem(item: Item) {
         if (this.player.inventory.items.includes(item)) {
             // CE dropItem peels one food/potion/scroll, but drops an entire
-            // throwing-weapon stack. The peeled copy needs its own entity ID.
-            const peel = item.quantity > 1 && item.category !== ItemCategory.WEAPON;
+            // throwing-weapon or GEM stack. The peeled copy needs its own entity ID.
+            const peel = item.quantity > 1 && item.category !== ItemCategory.WEAPON && item.category !== ItemCategory.GEM;
             let dropped = item;
             if (peel) {
                 const copy = new Item(item.name, item.char, item.color, item.category);
@@ -7676,7 +7679,7 @@ export class Game {
             if (!pack.length) return;
             const chosen = pack[rng.randRange(0, pack.length - 1)]!;
             let drop = chosen;
-            if (chosen.quantity > 1 && chosen.category !== ItemCategory.WEAPON) {
+            if (chosen.quantity > 1 && chosen.category !== ItemCategory.WEAPON && chosen.category !== ItemCategory.GEM) {
                 const peeled = new Item(chosen.name, chosen.char, chosen.color, chosen.category);
                 drop = Object.assign(peeled, chosen, { id: peeled.id, quantity: 1, loc: { x, y } });
             }

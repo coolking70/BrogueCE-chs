@@ -184,6 +184,10 @@ export class Item implements Entity {
     get displayName(): string {
         // Here we hook into the static registry if the item is a consumables
         switch (this.category) {
+            case ItemCategory.GEM:
+                return i18next.t('item.lumenstone_depth', {
+                    depth: this.originDepth ?? 0, defaultValue: 'Lumenstone from depth {{depth}}'
+                });
             case ItemCategory.POTION: {
                 const consumableId = (this as any).consumableId;
                 if (!consumableId) return this.name;

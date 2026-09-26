@@ -692,45 +692,42 @@ export function populateLevel(ports: GenerationPorts,
             ports.spawnHordeAt(hData, centerPos, depth, false, floorTiles);
         }
 
-        // ── B-4b：CE Items.c:565-608 populateItems 的数量与调度半边 ──────────
-        // 每层物品数 = 3 + 无上界几何分布（60% 反复 +1）+ 深度加成。
-        // （旧实现 randRange(3,6) 是均匀分布、有上界，分布形状与 CE 不同。）
-        let numItems = 3;
-        while (rng.randPercent(60)) numItems++;
-        if (ports.depth <= 2) {
-            numItems += 2; // CE: "4 extra items to kickstart your career as a rogue"
-        } else if (ports.depth <= 4) {
-            numItems++;
-        }
-        // CE Items.c:582：numberOfItems += gameConst->extraItemsPerLevel。
-        // Brogue 变体该值为 0（GlobalsBrogue.c:1032，逐字核对）。
-        // CE Items.c:570-572：depthLevel > amuletLevel 时走 lumenstone 分支
-        //（numberOfItems = lumenstoneDistribution[...], numberOfGoldPiles = 0）。
-        // web 无流明石系统且 DEEPEST_LEVEL == AMULET_LEVEL == 26，分支结构性
-        // 不可达——照抄留形：激活流明石时需补 lumenstoneDistribution 表
-        //（GlobalsBrogue.c:105：{3,3,3,2,2,2,2,2,1,1,1,1,1,1}）并重核 CE。
-
-        // CE Items.c:590-596：金币堆数 = min(5, depth*depthAccelerator/4)，
-        // 然后 60% 起每轮递减 15 的奖励循环（60→45→30→15→0），上限 10。
-        // depthAccelerator = 1（GlobalsBrogue.c:1019）。
-        let numGoldPiles = Math.min(5, Math.floor(ports.depth * 1 / 4));
-        for (let goldBonusProbability = 60;
-             rng.randPercent(goldBonusProbability) && numGoldPiles <= 10;
-             goldBonusProbability -= 15) {
-            numGoldPiles++;
-        }
-        // CE Items.c:597-608：产量调度——past goldAdjustmentStartDepth（=6，
-        // GlobalsBrogue.c:1033）后按上一深度为止的 goldGenerated 与
-        // POW_GOLD[d] ± 320d/420d 比较，堆数 ±2；d = depth*accelerator - 1。
-        if (ports.depth >= 6) {
-            const d = ports.depth * 1 - 1;
-            if (ports.goldGenerated < ItemLoader.aggregateGoldLowerBound(d)) {
-                numGoldPiles += 2;
-            } else if (ports.goldGenerated > ItemLoader.aggregateGoldUpperBound(d)) {
-                numGoldPiles -= 2;
+        // CE Items.c:572–610：护符层以后只分配定额宝石，无普通金币或计量增长。
+        const deep = ports.depth > AMULET_LEVEL;
+        let numItems: number;
+        let numGoldPiles = 0;
+        if (deep) {
+            numItems = ItemLoader.CE_LUMENSTONE_DISTRIBUTION[ports.depth - AMULET_LEVEL - 1] ?? 0;
+        } else {
+            numItems = 3;
+            while (rng.randPercent(60)) numItems++;
+            if (ports.depth <= 2) {
+                numItems += 2; // CE: "4 extra items to kickstart your career as a rogue"
+            } else if (ports.depth <= 4) {
+                numItems++;
             }
+            // CE Items.c:590-596：金币堆数 = min(5, depth*depthAccelerator/4)，
+            // 然后 60% 起每轮递减 15 的奖励循环（60→45→30→15→0），上限 10。
+            // depthAccelerator = 1（GlobalsBrogue.c:1019）。
+            numGoldPiles = Math.min(5, Math.floor(ports.depth * 1 / 4));
+            for (let goldBonusProbability = 60;
+                 rng.randPercent(goldBonusProbability) && numGoldPiles <= 10;
+                 goldBonusProbability -= 15) {
+                numGoldPiles++;
+            }
+            // CE Items.c:597-608：产量调度——past goldAdjustmentStartDepth（=6，
+            // GlobalsBrogue.c:1033）后按上一深度为止的 goldGenerated 与
+            // POW_GOLD[d] ± 320d/420d 比较，堆数 ±2；d = depth*accelerator - 1。
+            if (ports.depth >= 6) {
+                const d = ports.depth * 1 - 1;
+                if (ports.goldGenerated < ItemLoader.aggregateGoldLowerBound(d)) {
+                    numGoldPiles += 2;
+                } else if (ports.goldGenerated > ItemLoader.aggregateGoldUpperBound(d)) {
+                    numGoldPiles -= 2;
+                }
+            }
+            if (numGoldPiles < 0) numGoldPiles = 0;
         }
-        if (numGoldPiles < 0) numGoldPiles = 0;
 
         // 热力图已在本方法开头（楼梯之后）构建（B-4b：零 RNG，提前构建
         // 以使失败保护改墙先于一切内容物落位）——此处直接使用。
@@ -742,7 +739,7 @@ export function populateLevel(ports: GenerationPorts,
             randomDepthOffset = rng.randRange(-1, 1) + rng.randRange(-1, 1);
         }
         // CE Items.c:577-579：每层入口给计量表加 incrementFrequency。
-        ItemLoader.incrementMeteredItems(ports.meteredItems);
+        if (!deep) ItemLoader.incrementMeteredItems(ports.meteredItems);
 
         // CE Items.c:663-767：主物品循环。生成决策（spawnPopulateItem）在先、
         // 选点在后——普通物品走热力图（heat 加权，密门后房间被偏好），
@@ -751,7 +748,10 @@ export function populateLevel(ports: GenerationPorts,
         for (let i = 0; i < numItems; i++) {
             const item = ports.spawnPopulateItem(ports.depth, randomDepthOffset);
             if (!item) continue;
+            if (deep) item.originDepth = ports.depth;
             const isFood = item.category === ItemCategory.FOOD;
+            // CE Items.c:693–696：额外食物不扣宝石配额。
+            if (deep && isFood) numItems++;
             const isStrengthPotion = item.category === ItemCategory.POTION
                 && (item as any).consumableId === 'potion_of_strength';
             let loc: Pos | null;

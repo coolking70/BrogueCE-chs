@@ -65,6 +65,7 @@ const categoryLabel = (category: string) => {
         case '-- RINGS --': return t('inventory.category.rings');
         case '-- CHARMS --': return t('inventory.category.charms');
         case '-- KEYS --': return t('inventory.category.keys');
+        case '-- GEMS --': return t('inventory.category.gems');
         case '-- AMULETS --': return t('inventory.category.amulets');
         case '-- FOOD --': return t('inventory.category.food');
         case '-- GOLD --': return t('inventory.category.gold');
@@ -86,6 +87,7 @@ const groupedItems = computed(() => {
         '-- RINGS --': [],
         '-- CHARMS --': [],
         '-- KEYS --': [],
+        '-- GEMS --': [],
         '-- AMULETS --': [],
         '-- FOOD --': [],
         '-- GOLD --': [],
@@ -109,6 +111,7 @@ const groupedItems = computed(() => {
             case ItemCategory.RING: groups['-- RINGS --']!.push(entry); break;
             case ItemCategory.CHARM: groups['-- CHARMS --']!.push(entry); break;
             case ItemCategory.KEY: groups['-- KEYS --']!.push(entry); break;
+            case ItemCategory.GEM: groups['-- GEMS --']!.push(entry); break;
             case ItemCategory.AMULET: groups['-- AMULETS --']!.push(entry); break;
             case ItemCategory.FOOD: groups['-- FOOD --']!.push(entry); break;
             case ItemCategory.GOLD: groups['-- GOLD --']!.push(entry); break;

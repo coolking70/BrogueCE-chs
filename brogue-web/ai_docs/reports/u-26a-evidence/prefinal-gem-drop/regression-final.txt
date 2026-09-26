@@ -1,0 +1,19 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=4 --reporter=default --reporter=json --reporter=./scripts/u26a-failure-reporter.mjs --outputFile=ai_docs/reports/u-26a-evidence/regression-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_5_arcana_instance.test.ts (18 tests) 332248ms
+     ✓ versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack  410ms
+   ✓ W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values  331829ms

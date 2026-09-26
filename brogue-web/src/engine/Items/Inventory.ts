@@ -9,16 +9,19 @@ export class Inventory {
     public capacity: number = 26; // Brogue standard a-z inventory
     public items: Item[] = [];
 
-    /** CE numberOfItemsInPack: ammunition occupies one place per stack. */
+    /** CE numberOfItemsInPack: ammunition and same-depth gems occupy one place per stack. */
     public packCount(): number {
         return this.items.reduce((count, item) => count +
-            (item.category === ItemCategory.WEAPON ? 1 : item.quantity), 0);
+            ((item.category === ItemCategory.WEAPON || item.category === ItemCategory.GEM) ? 1 : item.quantity), 0);
     }
 
     public hasSpace(item?: Item): boolean {
         if (!item) return this.packCount() < this.capacity;
         if (item.category === ItemCategory.GOLD) return true;
-        // CE itemWillStackWithPack only compares the nonzero quiver number.
+        // CE Items.c:808–814：同来源层宝石可以在满包时继续叠放。
+        if (item.category === ItemCategory.GEM && this.items.some(other =>
+            other.category === ItemCategory.GEM && other.originDepth === item.originDepth)) return true;
+        // CE itemWillStackWithPack otherwise compares the nonzero quiver number.
         // addItemToPack performs the stricter category/kind match afterward.
         if ((item.quiverNumber ?? 0) > 0
             && this.items.some(other => other.quiverNumber === item.quiverNumber)) return true;
@@ -33,6 +36,7 @@ export class Inventory {
 
     private stacksWith(a: Item, b: Item): boolean {
         if (a.category !== b.category || this.kind(a) !== this.kind(b)) return false;
+        if (a.category === ItemCategory.GEM) return a.originDepth === b.originDepth;
         if (a.category === ItemCategory.FOOD || a.category === ItemCategory.POTION
             || a.category === ItemCategory.SCROLL) return true;
         return a.category === ItemCategory.WEAPON && (b.quiverNumber ?? 0) > 0

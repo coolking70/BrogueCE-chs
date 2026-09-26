@@ -1,0 +1,68 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+stdout | src/test/u_26a_deep_levels.test.ts > U26a CE deep-level contracts > GEM birth is identified, single, depth-tagged and consumes neither RNG stream
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_26a_deep_levels.test.ts (12 tests | 4 failed) 24823ms
+     × GEM birth is identified, single, depth-tagged and consumes neither RNG stream 184ms
+     × seed 777: D26–40, all gems, upstairs/cache/save and terminal victory 7388ms
+     × seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory 6137ms
+     × seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory 8214ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a CE deep-level contracts > GEM birth is identified, single, depth-tagged and consumes neither RNG stream
+TypeError: ItemLoader.intrinsicMagicPolarity is not a function
+ ❯ src/test/u_26a_deep_levels.test.ts:59:27
+     57|             originDepth: 37, identified: true, canBeIdentified: false,…
+     58|         expect(gem.displayName).toContain('37');
+     59|         expect(ItemLoader.intrinsicMagicPolarity(gem)).toBe(0);
+       |                           ^
+     60|         expect(rng.getState()).toEqual(before);
+     61|         expect(ItemLoader.CE_ITEM_GENERATION_PROBABILITIES.find(p => p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 777: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed777 D29 gem path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:150:82
+    148|                 expect(g.grid.getCell(item.x, item.y)!.machineNumber).…
+    149|                 expect(cellTerrainFlags(g.grid, item.x, item.y) & (T_P…
+    150|                 expect(distances[item.x]![item.y], `seed${seed} D${d} …
+       |                                                                                  ^
+    151|                 g.player.loc = { ...item.loc };
+    152|                 g.handlePlayerAction('pickup');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed31337 D28 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:140:80
+    138|             const up = terminal(g, T.STAIRS_UP), down = terminal(g, d …
+    139|             const distances = generationDistances(g, up, T_PATHING_BLO…
+    140|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    141|             const loot = [...gems(g)];
+    142|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed424242 D32 gem path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:150:82
+    148|                 expect(g.grid.getCell(item.x, item.y)!.machineNumber).…
+    149|                 expect(cellTerrainFlags(g.grid, item.x, item.y) & (T_P…
+    150|                 expect(distances[item.x]![item.y], `seed${seed} D${d} …
+       |                                                                                  ^
+    151|                 g.player.loc = { ...item.loc };
+    152|                 g.handlePlayerAction('pickup');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  4 failed | 27 passed (31)
+   Start at  00:56:31
+   Duration  25.51s (transform 648ms, setup 0ms, import 1.64s, tests 28.73s, environment 0ms)
+

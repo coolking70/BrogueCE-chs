@@ -48,8 +48,8 @@ export const DUNGEON_PROFILE_CATALOG = {
 } as const;
 export type DungeonProfileId = keyof typeof DUNGEON_PROFILE_CATALOG;
 
-/** CE gameConst->amuletLevel = 26（web 口径即 LoopMap.DEEPEST_LEVEL：护符层）。 */
-const AMULET_LEVEL = DEEPEST_LEVEL;
+/** CE GlobalsBrogue.c:43 amuletLevel；房型曲线在 D26 饱和。 */
+const AMULET_LEVEL = 26;
 
 /** CE carveDungeon Architect.c:2473 `attachRooms(grid, &theDP, 35, 35)`。 */
 const CE_ROOM_ATTACH_ATTEMPTS = 35;

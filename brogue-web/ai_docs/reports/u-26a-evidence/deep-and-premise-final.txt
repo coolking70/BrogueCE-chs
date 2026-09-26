@@ -1,0 +1,63 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+stdout | src/test/u_26a_deep_levels.test.ts > U26a CE deep-level contracts > GEM birth is identified, single, depth-tagged and consumes neither RNG stream
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布
+[c_0] E1 落位函数 DOOR=125 FLOOR=62（66.8%）
+
+ ✓ src/test/c_0_add_loops.test.ts (14 tests | 13 skipped) 16614ms
+     ✓ E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布  16613ms
+ ❯ src/test/u_26a_deep_levels.test.ts (12 tests | 2 failed) 32021ms
+     ✓ matches the CE 26/40 constants and all fourteen lumenstone quotas 1ms
+     ✓ D26 and D39 retain doors; D40 consumes the door roll but places floor 1ms
+     ✓ GEM birth is identified, single, depth-tagged and consumes neither RNG stream 173ms
+     ✓ food has priority, then gems bypass metered guarantees and ordinary category draws 154ms
+     ✓ same-depth stacks take one slot and merge at capacity; other depths remain distinct 0ms
+     ✓ deep hordes and mining light use actual depth, with CE color/profile saturation only 144ms
+     × seed 777: D26–40, all gems, upstairs/cache/save and terminal victory 9178ms
+     × seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory 8697ms
+     ✓ seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory  10959ms
+     ✓ D40 portal rejects an empty pack, then settles 0 gem stacks and description  875ms
+     ✓ D40 portal rejects an empty pack, then settles 1 gem stacks and description  887ms
+     ✓ D40 portal rejects an empty pack, then settles 2 gem stacks and description  949ms
+stdout | src/test/u_26a_deep_baseline.test.ts > U26a independent D27–40 generation baseline > four full-run seeds retain deep terrain, population, gem quantity, origins and positions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_26a_deep_baseline.test.ts (1 test) 37188ms
+     ✓ four full-run seeds retain deep terrain, population, gem quantity, origins and positions  37188ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 777: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed777 D35 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:143:80
+    141|             const distances = generationDistances({ ...g, monsters: []…
+    142|                 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT,…
+    143|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    144|             const loot = [...gems(g)];
+    145|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed31337 D34 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:143:80
+    141|             const distances = generationDistances({ ...g, monsters: []…
+    142|                 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT,…
+    143|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    144|             const loot = [...gems(g)];
+    145|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 12 passed | 13 skipped (27)
+   Start at  01:03:11
+   Duration  54.87s (transform 787ms, setup 0ms, import 1.57s, tests 85.82s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/ai_docs/reports/u-26a-evidence/deep-and-premise-final.json

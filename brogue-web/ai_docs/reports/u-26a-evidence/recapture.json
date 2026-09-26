@@ -1,0 +1,134 @@
+{
+  "shallow": {
+    "file": "src/test/fixtures/generation_baseline.json",
+    "before": "a12bfd60144e7df74d1c9e3ed3df045b51f480f0310e6ce8f32f486b21400a0a",
+    "after": "f8393ee0c7e5ada3817b9e368c9ad8bb96fea12ca61408bc9508e6e979143933",
+    "writes": 2,
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 26,
+        "field": "fp",
+        "before": "7a1119fd:5061",
+        "after": "b66e9fc3:5126"
+      },
+      {
+        "seed": 424242,
+        "depth": 26,
+        "field": "n",
+        "before": 21,
+        "after": 14
+      },
+      {
+        "seed": 424242,
+        "depth": 26,
+        "field": "species",
+        "before": "Bog monster,Dar blademaster,Fury,Golem,Imp,agile Fury,infested Bog monster,infested Fury,juggernaut Bog monster,juggernaut Golem,reflective Imp,vampiric Fury",
+        "after": "Dar battlemage,Fury,Golem,Kraken,Revenant,Tentacle horror,agile Dar blademaster,grappling Dar blademaster,infested Dar priestess,reflective Fury,vampiric Dragon"
+      },
+      {
+        "seed": 424242,
+        "depth": 26,
+        "field": "items",
+        "before": 12,
+        "after": 14
+      },
+      {
+        "seed": 777,
+        "depth": 26,
+        "field": "fp",
+        "before": "f8acb249:5135",
+        "after": "0bc0c9f5:5088"
+      },
+      {
+        "seed": 777,
+        "depth": 26,
+        "field": "n",
+        "before": 35,
+        "after": 19
+      },
+      {
+        "seed": 777,
+        "depth": 26,
+        "field": "species",
+        "before": "Bloat,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Revenant,Sentinel,Tentacle horror,agile Fury,explosive Dragon,explosive Fury,grappling Bloat,grappling Sentinel,infested Fury,juggernaut Sentinel,reflective Fury,toxic Fury,vampiric Bloat,vampiric Revenant",
+        "after": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Imp,Revenant,Tentacle horror,juggernaut Fury,vampiric Fury"
+      },
+      {
+        "seed": 777,
+        "depth": 26,
+        "field": "items",
+        "before": 10,
+        "after": 11
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "fp",
+        "before": "79aeeb0c:5093",
+        "after": "b6e229a7:5094"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "n",
+        "before": 13,
+        "after": 18
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "species",
+        "before": "Bloat,Dragon,Fury,Golem,Revenant,Sentinel,agile Dragon,explosive Bloat",
+        "after": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Golem,Imp,Phylactery,agile Imp,infested Fury,juggernaut Imp,reflective Fury"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "items",
+        "before": 11,
+        "after": 12
+      },
+      {
+        "seed": 31337,
+        "depth": 26,
+        "field": "fp",
+        "before": "e1a9fffe:4978",
+        "after": "effafc0f:4989"
+      },
+      {
+        "seed": 31337,
+        "depth": 26,
+        "field": "n",
+        "before": 8,
+        "after": 10
+      },
+      {
+        "seed": 31337,
+        "depth": 26,
+        "field": "species",
+        "before": "Bloat,Golem,Phylactery,Revenant,explosive Golem",
+        "after": "Dar priestess,Golem,Phylactery,Tentacle horror,agile Dragon,explosive Dar battlemage,infested Dar blademaster,infested Revenant,vampiric Dar blademaster"
+      },
+      {
+        "seed": 31337,
+        "depth": 26,
+        "field": "items",
+        "before": 12,
+        "after": 9
+      }
+    ],
+    "schemaNormalization": {
+      "candidateSha": "9a676035c51515a1f138ef5da82cc135834c07eb4915709cde01709dfe5480b8",
+      "reason": "Removed redundant depth properties accidentally added by writer; preserved the legacy four-field row schema, no generation was rerun."
+    },
+    "captures": 1
+  },
+  "deep": {
+    "file": "src/test/fixtures/deep_generation_baseline.json",
+    "before": null,
+    "after": "2134a90cd9dce7237846f2a9fe4fec0362d0dbdb48bb16d28f568bbc4d923d16",
+    "layers": 56,
+    "writes": 1
+  }
+}

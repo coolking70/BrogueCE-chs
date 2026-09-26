@@ -1,0 +1,183 @@
+[
+  {
+    "variant": "doors26",
+    "title": "D26 and D39",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "D26 and D39 retain doors; D40 consumes the door roll but places floor",
+        "errors": [
+          "AssertionError: expected 2 to be 4 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:47:49\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "profile40",
+    "title": "matches the CE",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "matches the CE 26/40 constants and all fourteen lumenstone quotas",
+        "errors": [
+          "AssertionError: expected [ 64, 66, 100 ] to deeply equal [ 100, 100, 100 ]\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:38:57\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "quota",
+    "title": "matches the CE",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "matches the CE 26/40 constants and all fourteen lumenstone quotas",
+        "errors": [
+          "AssertionError: expected [ 2, 3, 3, 2, 2, 2, 2, 2, 1, 1, …(4) ] to deeply equal [ 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, …(4) ]\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:35:55\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "origin",
+    "title": "GEM birth",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "GEM birth is identified, single, depth-tagged and consumes neither RNG stream",
+        "errors": [
+          "AssertionError: expected Item{ spawnTurnNumber: +0, …(40) } to match object { category: 12, …(6) }\n(34 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:83:21\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "gem-rng",
+    "title": "GEM birth",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "GEM birth is identified, single, depth-tagged and consumes neither RNG stream",
+        "errors": [
+          "AssertionError: expected { version: 2, …(5) } to deeply equal { version: 2, …(5) }\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:87:32\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "ordinary",
+    "title": "food has priority",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "food has priority, then gems bypass metered guarantees and ordinary category draws",
+        "errors": [
+          "AssertionError: expected 2 to be 12 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:99:53\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "merge-depths",
+    "title": "same-depth stacks",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "same-depth stacks take one slot and merge at capacity; other depths remain distinct",
+        "errors": [
+          "AssertionError: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:116:45\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "gem-slots",
+    "title": "same-depth stacks",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "same-depth stacks take one slot and merge at capacity; other depths remain distinct",
+        "errors": [
+          "AssertionError: expected 27 to be 26 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:113:34\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "drop-single",
+    "title": "a real drop command",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "a real drop command moves the entire GEM stack, survives save/load and can be picked up",
+        "errors": [
+          "AssertionError: expected [ Item{ spawnTurnNumber: +0, …(40) } ] to not include Item{ spawnTurnNumber: +0, …(40) }\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1319:15)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:129:46\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "water-single",
+    "title": "a real wait in deep water",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "a real wait in deep water washes away the entire GEM stack (CE dropItem)",
+        "errors": [
+          "AssertionError: expected [ Item{ spawnTurnNumber: +0, …(40) } ] to not include Item{ spawnTurnNumber: +0, …(40) }\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1319:15)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:151:46\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "portal",
+    "title": "D40 portal rejects",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "D40 portal rejects an empty pack, then settles 0 gem stacks and description",
+        "errors": [
+          "AssertionError: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:258:40\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      },
+      {
+        "test": "D40 portal rejects an empty pack, then settles 1 gem stacks and description",
+        "errors": [
+          "AssertionError: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:258:40\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      },
+      {
+        "test": "D40 portal rejects an empty pack, then settles 2 gem stacks and description",
+        "errors": [
+          "AssertionError: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:258:40\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "food-quota",
+    "title": "seed 777:",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "seed 777: D26–40, all gems, upstairs/cache/save and terminal victory",
+        "errors": [
+          "AssertionError: expected [ …(2) ] to have a length of 3 but got 2\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:209:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "metered",
+    "title": "seed 777:",
+    "exit": 1,
+    "failed": [
+      {
+        "test": "seed 777: D26–40, all gems, upstairs/cache/save and terminal victory",
+        "errors": [
+          "AssertionError: expected [ { frequency: 270, …(1) }, …(29) ] to deeply equal [ { frequency: 240, …(1) }, …(29) ]\n    at /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/src/test/u_26a_deep_levels.test.ts:211:36\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  }
+]

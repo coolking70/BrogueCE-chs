@@ -22,10 +22,8 @@
  *     DOOR/OPEN_DOOR→2、其余→0），扫描后只对**新产生的门位**落位——
  *     attachRooms 已落的门（CE 门位语义：代价 1、不算"两侧地板"、本身不是
  *     开门候选）与既有地板一律保持原样，等价于 CE 对 grid==1 原样落 FLOOR。
- *   - CE 门位落位的深度条件是 depthLevel < deepestLevel（40，Architect.c:2903，
- *     C 的 && 短路：最深层不掷骰）；web 最深层是护符层 26（populateLevel：
- *     depth<26 才放下楼梯），条件写作 randPercent(60) && depth < 26，求值
- *     顺序与 CE 相同（先掷骰）。
+ *   - 门位落位按 CE Architect.c:2903：先掷 rand_percent(60)，再判断
+ *     depthLevel < deepestLevel（40）；护符层 26 仍可生成门。
  *   - analyzeMap 的运行期重算：CE 由地形晋升改变可通行性时置 staleLoopMap
  *    （Time.c:1256 promoteTile / Architect.c:3243 机器挖掘），每玩家回合
  *     检查并重算（Time.c:2554-2556）。web 本轮文件边界内没有地形晋升的
@@ -42,8 +40,8 @@ import type { Pos } from '../../types';
 export const MINIMUM_PATHING_DISTANCE = 20;
 /** CE Architect.c:2903 `rand_percent(60)`。 */
 export const LOOP_DOOR_PERCENT = 60;
-/** web 最深层（护符层，populateLevel 的 depth<26 口径）；对应 CE deepestLevel。 */
-export const DEEPEST_LEVEL = 26;
+/** CE GlobalsBrogue.c:44 deepestLevel；与护符层 26 分开。 */
+export const DEEPEST_LEVEL = 40;
 /** CE Rogue.h:2783（本文件自有字面值，不动 Pathfinding.ts 的同名常量）。 */
 const CE_PDS_OBSTRUCTION = -2;
 /** 扫描用短整 grid 的两个非零值（CE digDungeon 的 grid 语义）。 */

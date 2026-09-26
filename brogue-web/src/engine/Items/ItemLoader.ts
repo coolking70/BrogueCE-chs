@@ -244,7 +244,7 @@ export class ItemLoader {
      * WEAPON:10, ARMOR:8, FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。
      * ★ 惰性构造：ItemLoader↔Item 循环依赖（见下方 _hasIntrinsicPolarity 的
      *   注释）——静态字段初始化器在模块求值期拿到 undefined 的 ItemCategory。
-     *   GEM 无 web 类别而省略（CE 走表时其权重 0，行为等价）。
+     *   GEM 显式生成，普通类别抽签的频率仍为 0。
      */
     private static _ceItemGenProbs: readonly { category: ItemCategory; weight: number }[] | null = null;
     public static get CE_ITEM_GENERATION_PROBABILITIES(): readonly { category: ItemCategory; weight: number }[] {
@@ -261,6 +261,7 @@ export class ItemLoader {
                 { category: ItemCategory.RING, weight: 3 },
                 { category: ItemCategory.CHARM, weight: 2 },
                 { category: ItemCategory.AMULET, weight: 0 },
+                { category: ItemCategory.GEM, weight: 0 },
                 { category: ItemCategory.KEY, weight: 0 },
             ];
         }
@@ -1525,6 +1526,19 @@ export class ItemLoader {
         gold.quantity = quantity;
         gold.identified = true;
         return gold;
+    }
+
+    /** CE GlobalsBrogue.c:105，D27–40，共 25 颗。 */
+    public static readonly CE_LUMENSTONE_DISTRIBUTION = [3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1] as const;
+
+    /** CE Items.c:384–388 / 721：GEM kind 0、已鉴定，生成自身不耗 RNG。 */
+    public static spawnGem(depth: number, x: number, y: number): Item {
+        const gem = new Item(i18next.t('item.lumenstone', { defaultValue: 'Lumenstone' }), '●', 0xfff200, ItemCategory.GEM);
+        gem.loc = { x, y };
+        gem.identityId = 'lumenstone';
+        gem.originDepth = depth;
+        gem.identified = true;
+        return gem;
     }
 
     public static spawnAmulet(id: string, x: number, y: number): Item | null {

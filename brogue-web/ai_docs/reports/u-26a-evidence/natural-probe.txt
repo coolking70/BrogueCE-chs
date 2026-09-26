@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+stdout | src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 777: D26–40, all gems, upstairs/cache/save and terminal victory
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_26a_deep_levels.test.ts (12 tests | 1 failed | 11 skipped) 8695ms
+     × seed 777: D26–40, all gems, upstairs/cache/save and terminal victory 8694ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 777: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed777 D35 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:144:80
+    142|                 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT,…
+    143|             if (distances[down.x]![down.y] === 30000) writeFileSync(`/…
+    144|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    145|             const loot = [...gems(g)];
+    146|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  01:06:14
+   Duration  9.39s (transform 380ms, setup 0ms, import 614ms, tests 8.69s, environment 0ms)
+

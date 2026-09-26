@@ -1,0 +1,3307 @@
+{
+  "seeds": [
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Items/Item.ts",
+    "src/engine/Items/Inventory.ts",
+    "src/engine/Map/LoopMap.ts",
+    "src/engine/Generator/Architect.ts",
+    "src/components/InventoryOverlay.vue",
+    "src/locales/zh_CN.json"
+  ],
+  "symbols": "/amuletLevel|AMULET_LEVEL|deepestLevel|DEEPEST_LEVEL|lumenstone|GEM|superVictory|itemValue|endgameScore|highScore|populateItems|populateLevel|spawnPopulateItem|originDepth|packCount|readFileSync|readFile/",
+  "reverseImportClosure": [
+    "src/App.vue",
+    "src/components/AgentControls.vue",
+    "src/components/DetailPanel.vue",
+    "src/components/GameCanvas.vue",
+    "src/components/GameEndOverlay.vue",
+    "src/components/InventoryOverlay.vue",
+    "src/components/MainMenu.vue",
+    "src/components/ReferenceOverlay.vue",
+    "src/components/ReplayControls.vue",
+    "src/components/Sidebar.vue",
+    "src/data/monsterBolts.test.ts",
+    "src/data/monsterDamage.test.ts",
+    "src/data/weapons.test.ts",
+    "src/engine/Combat/BlinkTargeting.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/engine/Combat/BoltReflection.ts",
+    "src/engine/Combat/BoltTargeting.ts",
+    "src/engine/Combat/BoltTrajectory.ts",
+    "src/engine/Combat/Cloning.ts",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Combat/Conjuration.ts",
+    "src/engine/Combat/MonsterAbsorption.ts",
+    "src/engine/Combat/MonsterBlink.ts",
+    "src/engine/Combat/Negation.ts",
+    "src/engine/Combat/Polymorph.ts",
+    "src/engine/Core/Endgame.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Core/LevelSnapshot.ts",
+    "src/engine/Core/LevelState.ts",
+    "src/engine/Core/SaveStorage.ts",
+    "src/engine/Core/TimeCoordinator.ts",
+    "src/engine/Core/WholeRunSnapshot.ts",
+    "src/engine/Core/snapshotQuantity.test.ts",
+    "src/engine/Core/startingKit.test.ts",
+    "src/engine/Environment/Gas.ts",
+    "src/engine/Generator/Architect.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Generator/GenerationPlacement.ts",
+    "src/engine/Generator/MachineView.ts",
+    "src/engine/Generator/Stairs.ts",
+    "src/engine/Items/ArcanaEnchantment.ts",
+    "src/engine/Items/ArcanaRecharge.ts",
+    "src/engine/Items/Commutation.ts",
+    "src/engine/Items/Inventory.ts",
+    "src/engine/Items/Item.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Items/ItemSpawnHeatMap.ts",
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/engine/Items/MachineItemGeneration.ts",
+    "src/engine/Items/RingBonuses.ts",
+    "src/engine/Items/itemFlavors.test.ts",
+    "src/engine/Map/AutoGenerator.ts",
+    "src/engine/Map/DungeonFeature.ts",
+    "src/engine/Map/LoopMap.ts",
+    "src/engine/Map/Promotion.ts",
+    "src/engine/Map/SafetyMap.ts",
+    "src/engine/Map/Scent.ts",
+    "src/engine/Map/TerrainRules.ts",
+    "src/engine/Map/WaypointMap.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/engine/Movement/Entrancement.ts",
+    "src/engine/Movement/LevelTravel.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/UI/DetailGenerator.test.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/engine/UI/Discoveries.test.ts",
+    "src/engine/UI/Discoveries.ts",
+    "src/engine/UI/ItemKnowledge.ts",
+    "src/engine/UI/MonsterSidebar.ts",
+    "src/engine/UI/MonsterVisibility.ts",
+    "src/entities/Monster.ts",
+    "src/entities/Player.ts",
+    "src/i18n.ts",
+    "src/locales/zh_CN.json",
+    "src/main.ts",
+    "src/test/ai_1_scent_tracking.test.ts",
+    "src/test/armor_display_effect.test.ts",
+    "src/test/armor_model_effect.test.ts",
+    "src/test/armor_runic_effect.test.ts",
+    "src/test/b1_retire_invented.test.ts",
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_1_weapon_specials.test.ts",
+    "src/test/b_1a_identification.test.ts",
+    "src/test/b_1b_identification_persistence.test.ts",
+    "src/test/b_1c_detect_magic.test.ts",
+    "src/test/b_2_throwing.test.ts",
+    "src/test/b_4a_item_generation.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/c_0_add_loops.test.ts",
+    "src/test/c_1_room_profile.test.ts",
+    "src/test/c_2_lakes_determinism.test.ts",
+    "src/test/c_2_lakes_e2e.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/f_1_fire_as_terrain.test.ts",
+    "src/test/f_2a_fire_mechanics.test.ts",
+    "src/test/f_2b_creature_burning.test.ts",
+    "src/test/f_2c_explosion.test.ts",
+    "src/test/fixtures/u19a-machine-scenes.ts",
+    "src/test/fixtures/u19b-machine-scenes.ts",
+    "src/test/fixtures/u19c-machine-actions.ts",
+    "src/test/fixtures/u19d-machine-actions.ts",
+    "src/test/fixtures/u19e-machine-actions.ts",
+    "src/test/fixtures/u19f-auto-actions.ts",
+    "src/test/fixtures/u19f-machine-actions.ts",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/g_3_gas_effects.test.ts",
+    "src/test/generation_baseline.test.ts",
+    "src/test/harness.ts",
+    "src/test/horde_selection.test.ts",
+    "src/test/horde_terrain_spawn.test.ts",
+    "src/test/hunger_curve_sim.test.ts",
+    "src/test/hunger_regen.test.ts",
+    "src/test/i_1_interaction.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/monster_damage_balance.test.ts",
+    "src/test/monster_stats_effect.test.ts",
+    "src/test/p1_20_item_placement.test.ts",
+    "src/test/p1_24_death_sink.test.ts",
+    "src/test/p1_26_invariants.test.ts",
+    "src/test/p1_27_remove_drowning.test.ts",
+    "src/test/p1_28_flag_channel.test.ts",
+    "src/test/p1_29_adversarial_gate.test.ts",
+    "src/test/p1_29_lake_connectivity.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/p1_31_35_placement_snapshot.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts",
+    "src/test/p1_34_loopmap_reset.test.ts",
+    "src/test/p1_37_machine_flag_i18n.test.ts",
+    "src/test/p1_42_secret_door_search.test.ts",
+    "src/test/p2_0_seeded_rng.test.ts",
+    "src/test/p2_1_tick_architecture.test.ts",
+    "src/test/p2_2_real_speed.test.ts",
+    "src/test/p2_3_objective_time.test.ts",
+    "src/test/p2_4_animation_cadence.test.ts",
+    "src/test/p2_6_display_settings.test.ts",
+    "src/test/p4_10_waypoint.test.ts",
+    "src/test/p4_1b_monster_casting.test.ts",
+    "src/test/p4_2_monster_summoning.test.ts",
+    "src/test/p4_3_special_monster_flags.test.ts",
+    "src/test/p4_4_split_kamikaze.test.ts",
+    "src/test/p4_5_melee_specials.test.ts",
+    "src/test/p4_6_attack_geometry.test.ts",
+    "src/test/p4_7_player_weapon_geometry.test.ts",
+    "src/test/p4_8_scent_map.test.ts",
+    "src/test/p4_9_safety_map.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/scroll_effects.test.ts",
+    "src/test/smoke.test.ts",
+    "src/test/t_1_tail.test.ts",
+    "src/test/u20_inventory.test.ts",
+    "src/test/u21c_flare_sidebar.test.ts",
+    "src/test/u21c_terrain_appearance.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u25_machine_observation.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_02a_rng_snapshot.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_04c_machine_cells.test.ts",
+    "src/test/u_05_machine_items.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_07_monster_blink.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_09_learning_consumers.test.ts",
+    "src/test/u_10_absorption_snapshot.test.ts",
+    "src/test/u_11_corpse_learning.test.ts",
+    "src/test/u_12a_cast_eligibility.test.ts",
+    "src/test/u_12b_ally_mode.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_14b_status_gaps.test.ts",
+    "src/test/u_15a_shattering.test.ts",
+    "src/test/u_15b2_ring_birth.test.ts",
+    "src/test/u_15b_rings.test.ts",
+    "src/test/u_15c_charms.test.ts",
+    "src/test/u_15d2_armor_runic.test.ts",
+    "src/test/u_15d3_runic_generation.test.ts",
+    "src/test/u_15d_weapon_runic.test.ts",
+    "src/test/u_15e_potions.test.ts",
+    "src/test/u_15f_food.test.ts",
+    "src/test/u_16_lifecycle.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/u_17f_carriers.test.ts",
+    "src/test/u_18_water_cage.test.ts",
+    "src/test/u_18a_2_generation_terrain.test.ts",
+    "src/test/u_18a_3_generation.test.ts",
+    "src/test/u_18a_terrain_contracts.test.ts",
+    "src/test/u_19a_machine_view.test.ts",
+    "src/test/u_19b_pending_occupancy.test.ts",
+    "src/test/u_19c_immediate_entities.test.ts",
+    "src/test/u_19d_machine_families.test.ts",
+    "src/test/u_19e_machine_families.test.ts",
+    "src/test/u_19f_autogen.test.ts",
+    "src/test/u_19f_fire.test.ts",
+    "src/test/u_19f_machines.test.ts",
+    "src/test/u_23_memory_mapping.test.ts",
+    "src/test/u_26a_deep_baseline.test.ts",
+    "src/test/u_26a_deep_levels.test.ts",
+    "src/test/u_26b_endgame.test.ts",
+    "src/test/u_27_recording.test.ts",
+    "src/test/u_r1_codec.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/ui_1_rendering.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_1c_machine_structure.test.ts",
+    "src/test/v_2a_vestibule_return.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_6_keys.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/v_2b_9e_2_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/w_12_blink_beckoning.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_18_entrancement.test.ts",
+    "src/test/w_19_polymorph.test.ts",
+    "src/test/w_20_cloning.test.ts",
+    "src/test/w_21_empowerment.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_26_arcana_closure.test.ts",
+    "src/test/w_2_arcana_submission.test.ts",
+    "src/test/w_3_bolt_trajectory.test.ts",
+    "src/test/w_4_bolt_reflection.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/w_8_staff_damage.test.ts",
+    "src/test/w_9_directed_status.test.ts"
+  ],
+  "sourceHits": [
+    {
+      "file": "src/components/GameEndOverlay.vue",
+      "line": 16,
+      "text": "const highScores = ref<HighScoreEntry[]>([]);"
+    },
+    {
+      "file": "src/components/GameEndOverlay.vue",
+      "line": 30,
+      "text": "highScores.value = readHighScores();"
+    },
+    {
+      "file": "src/components/GameEndOverlay.vue",
+      "line": 81,
+      "text": "<li v-for=\"entry in highScores.filter(row => row.score > 0)\" :key=\"`${entry.recordedAt}-${entry.description}`\">"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 68,
+      "text": "case '-- GEMS --': return t('inventory.category.gems');"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 90,
+      "text": "'-- GEMS --': [],"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 114,
+      "text": "case ItemCategory.GEM: groups['-- GEMS --']!.push(entry); break;"
+    },
+    {
+      "file": "src/data/hordes.test.ts",
+      "line": 6,
+      "text": "* 符号常量：AMULET_LEVEL=26、DEEPEST_LEVEL=40（GlobalsBrogue.c L43-44），"
+    },
+    {
+      "file": "src/data/hordes.test.ts",
+      "line": 212,
+      "text": "it('#56 TENTACLE_HORROR：L802 maxLevel=DEEPEST_LEVEL-1=39，22/39/100', () => {"
+    },
+    {
+      "file": "src/data/hordes.test.ts",
+      "line": 248,
+      "text": "it('#111 TENTACLE_HORROR 地牢俘虏：L867 maxLevel=AMULET_LEVEL=26', () => {"
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 10,
+      "text": "const ce = (file: string) => readFileSync(new URL(`../../../../BrogueCE-master/src/${file}`, import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 8,
+      "text": "/** CE Items.c:itemValue. Other inventory categories have no sale value. */"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 9,
+      "text": "export function itemValue(item: ScoredItem): number {"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 11,
+      "text": "if (item.category === ItemCategory.GEM) return 5000 * item.quantity;"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 16,
+      "text": "export function endgameScore(gold: number, items: ScoredItem[], won: boolean, superVictory: boolean, easy: boolean): number {"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 20,
+      "text": "const value = itemValue(item);"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 21,
+      "text": "score += Math.max(0, superVictory && item.category === ItemCategory.AMULET ? value * 2 : value);"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 24,
+      "text": "score += 500 * lumenstoneCount(items);"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 29,
+      "text": "/** CE numberOfMatchingPackItems(GEM, ...) counts pack entries, not quantity"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 30,
+      "text": "* (Items.c; RogueMain.c:1170). Victory's itemValue does multiply quantity. */"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 31,
+      "text": "export function lumenstoneCount(items: ScoredItem[]): number {"
+    },
+    {
+      "file": "src/engine/Core/Endgame.ts",
+      "line": 32,
+      "text": "return items.filter(item => item.category === ItemCategory.GEM).length;"
+    },
+    {
+      "file": "src/engine/Core/EntitySnapshot.ts",
+      "line": 16,
+      "text": "'originDepth', 'identityId', 'consumableId', 'description', 'spawnTurnNumber',"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2,
+      "text": "import { createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 51,
+      "text": "import { endgameScore, lumenstoneCount } from './Endgame';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 89,
+      "text": "import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 156,
+      "text": "/** GlobalsBrogue.c:43 AMULET_LEVEL = 26 */"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 157,
+      "text": "const AMULET_LEVEL = 26;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 222,
+      "text": "end?: { won: boolean; superVictory: boolean; score: number };"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 273,
+      "text": "const superVictoryState = new WeakMap<Game, boolean>();"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 335,
+      "text": "* 尚未生成）。键 = 目标层深度；generateDepth 的新层分支在 populateLevel"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 438,
+      "text": "public get gameOverSuperVictory(): boolean { return superVictoryState.get(this) ?? false; }"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 439,
+      "text": "public set gameOverSuperVictory(value: boolean) { superVictoryState.set(this, value); }"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 661,
+      "text": "* B-4a：populateItems 逐件生成决策（CE Items.c:667-756 的 web 移植）。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 665,
+      "text": "* 食物例外路径）由 populateLevel 的主循环按 CE Items.c:726-739 的顺序执行。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 671,
+      "text": "private spawnPopulateItem(depth: number, randomDepthOffset: number): Item | null {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 700,
+      "text": "// CE Items.c:697–698：深层保底食物之后仅生成 GEM，不抽普通类别/种类。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 701,
+      "text": "if (depth > AMULET_LEVEL) return ItemLoader.spawnGem(depth, pos.x, pos.y);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 863,
+      "text": "// （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 864,
+      "text": "// U26a 补齐权重 0 的 GEM 槽，普通类别抽取不变）。掩码不含 GOLD，无需特例。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 904,
+      "text": "//   2. **用基表频率、不带计量覆盖**——CE 的计量频率只在 populateItems"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 906,
+      "text": "//      在 digDungeon 期先于 populateItems，见到的是基表。因此 enchanting"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1085,
+      "text": "populateLevel: this.populateLevel.bind(this),"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1094,
+      "text": "spawnPopulateItem: this.spawnPopulateItem.bind(this),"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1252,
+      "text": "private populateLevel(depth: number, isGoingUp: boolean = false, isFirstLevel: boolean = false, machineResults: MachineResult[] = []) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1253,
+      "text": "return populateLevel(this.makeGenerationPorts(), depth, isGoingUp, isFirstLevel, machineResults);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1415,
+      "text": "* 的更深层抽 horde；越过 amuletLevel 则钳回 max(depthLevel, amuletLevel)。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1420,
+      "text": "if (depth > AMULET_LEVEL) depth = Math.max(depthLevel, AMULET_LEVEL);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2589,
+      "text": "...(this.isGameOver ? { end: { won: this.gameOverWon, superVictory: this.gameOverSuperVictory, score: this.gameOverScore } } : {})"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2709,
+      "text": "&& typeof event.end.superVictory === 'boolean'"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2798,
+      "text": "|| this.gameOverSuperVictory !== event.end.superVictory || this.gameOverScore !== event.end.score))) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2984,
+      "text": "if (terminal && this.depth === CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2991,
+      "text": "if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN) && this.depth < CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3444,
+      "text": "// throwing-weapon or GEM stack. The peeled copy needs its own entity ID."
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3445,
+      "text": "const peel = item.quantity > 1 && item.category !== ItemCategory.WEAPON && item.category !== ItemCategory.GEM;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7299,
+      "text": "if (this.depth < CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7385,
+      "text": "} else if (targetDepth <= CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7516,
+      "text": "* ① ITEM_IS_KEY（web = category KEY）；② originDepth == 当前深度"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7528,
+      "text": "if (theItem.originDepth !== undefined && theItem.originDepth !== this.depth) return false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7682,
+      "text": "if (chosen.quantity > 1 && chosen.category !== ItemCategory.WEAPON && chosen.category !== ItemCategory.GEM) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7711,
+      "text": "if (item.category !== ItemCategory.POTION && this.depth < CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10374,
+      "text": "public triggerGameOver(won: boolean, reason?: string, superVictory: boolean = false) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10378,
+      "text": "this.gameOverSuperVictory = won && superVictory;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10381,
+      "text": "? i18next.t(superVictory ? 'endgame.mastered' : 'endgame.escaped', {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10382,
+      "text": "defaultValue: superVictory ? 'Mastered the Dungeons of Doom!' : 'Escaped the Dungeons of Doom!'"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10399,
+      "text": "this.gameOverScore = endgameScore(this.stats.gold, items, won, this.gameOverSuperVictory, this.mode === 'easy');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10400,
+      "text": "const gems = lumenstoneCount(items);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10403,
+      "text": "verb: superVictory ? i18next.t('endgame.mastered_verb', { defaultValue: 'Mastered' })"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10407,
+      "text": ": gems === 1 ? '{{verb}} the Dungeons of Doom with a lumenstone!'"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10408,
+      "text": ": '{{verb}} the Dungeons of Doom with {{count}} lumenstones!'"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 28,
+      "text": "import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 32,
+      "text": "const AMULET_LEVEL = 26;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 75,
+      "text": "item.originDepth = depth;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 96,
+      "text": "originDepth: item.originDepth, maxChargesKnown: item.maxChargesKnown}));"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 105,
+      "text": "flags: state.flags, originDepth: state.originDepth, maxChargesKnown: state.maxChargesKnown});"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 266,
+      "text": "ports.populateLevel("
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 350,
+      "text": "if (ports.depth <= CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 353,
+      "text": "Architect.installStair(ports.grid, down, ports.depth === CE_DEEPEST_LEVEL ? TerrainType.DUNGEON_PORTAL : TerrainType.STAIRS_DOWN);"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 365,
+      "text": "export function populateLevel(ports: GenerationPorts,"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 403,
+      "text": "const stairsDownPos = ports.depth <= CE_DEEPEST_LEVEL ? ports.levelSeeds[depth - 1]!.downStairsLoc : null;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 417,
+      "text": "// CE 在 populateItems 内构建（楼梯之后、物品之前）；web 的"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 418,
+      "text": "// populateLevel 把两段合并在同一方法里，此处即「populateItems 开头」。"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 458,
+      "text": "// B-4b：钥匙由锁具驱动（CE populateItems 零钥匙——Items.c:673 起的"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 511,
+      "text": "item.originDepth = depth;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 552,
+      "text": "key.originDepth = depth;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 641,
+      "text": "// 数量 = min(20, 6 + 3*max(0, depth - AMULET_LEVEL))（D26 前基数恒为 6），"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 643,
+      "text": "let numHordes = Math.min(20, 6 + 3 * Math.max(0, depth - AMULET_LEVEL));"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 696,
+      "text": "const deep = ports.depth > AMULET_LEVEL;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 700,
+      "text": "numItems = ItemLoader.CE_LUMENSTONE_DISTRIBUTION[ports.depth - AMULET_LEVEL - 1] ?? 0;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 744,
+      "text": "// CE Items.c:663-767：主物品循环。生成决策（spawnPopulateItem）在先、"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 749,
+      "text": "const item = ports.spawnPopulateItem(ports.depth, randomDepthOffset);"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 751,
+      "text": "if (deep) item.originDepth = ports.depth;"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 762,
+      "text": "// CE populateItems 时玩家尚未进层）。CE 的 while 无次数上限；"
+    },
+    {
+      "file": "src/engine/Core/LevelSeeds.ts",
+      "line": 5,
+      "text": "/** CE GlobalsBrogue.c: deepestLevel=40, including terminal levels[40]."
+    },
+    {
+      "file": "src/engine/Core/LevelSeeds.ts",
+      "line": 7,
+      "text": "export const CE_DEEPEST_LEVEL = 40;"
+    },
+    {
+      "file": "src/engine/Core/LevelSeeds.ts",
+      "line": 20,
+      "text": "for (let i = 0; i <= CE_DEEPEST_LEVEL; i++) {"
+    },
+    {
+      "file": "src/engine/Core/LevelSeeds.ts",
+      "line": 40,
+      "text": "if (!Array.isArray(value) || value.length !== CE_DEEPEST_LEVEL + 1) return false;"
+    },
+    {
+      "file": "src/engine/Core/WholeRunSnapshot.ts",
+      "line": 14,
+      "text": "import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';"
+    },
+    {
+      "file": "src/engine/Core/WholeRunSnapshot.ts",
+      "line": 255,
+      "text": "if (!level || !Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL"
+    },
+    {
+      "file": "src/engine/Core/WholeRunSnapshot.ts",
+      "line": 277,
+      "text": "if (s.pendingFallenItemsByDepth.some(q => !q || !Number.isInteger(q.depth) || q.depth < 1 || q.depth > CE_DEEPEST_LEVEL"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 16,
+      "text": "import { addLoops, addLoopsToWorkGrid, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 51,
+      "text": "/** CE GlobalsBrogue.c:43 amuletLevel；房型曲线在 D26 饱和。 */"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 52,
+      "text": "const AMULET_LEVEL = 26;"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 114,
+      "text": "* `clamp(100 * (depthLevel - 1) / (amuletLevel - 1), 0, 100)`，C 整数除法。"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 117,
+      "text": "const raw = Math.floor((100 * (depth - 1)) / (AMULET_LEVEL - 1));"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 226,
+      "text": "// Game.populateLevel 里消费它们的两个循环是死代码，已连带删除（详见"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 430,
+      "text": "// 画布中心 (DCOLS/2, DROWS/2)（Game.ts:424 与 populateLevel 的"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 461,
+      "text": "// CE：rand_percent(60) && depthLevel < deepestLevel ? DOOR : FLOOR"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 463,
+      "text": "const asDoor = rng.randPercent(LOOP_DOOR_PERCENT) && depth < DEEPEST_LEVEL;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 216,
+      "text": "/** Committed machine transaction, consumed by Game.populateLevel. */"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 232,
+      "text": "*  消费点 Game.populateLevel（物品实化处落到 item 上）。"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 274,
+      "text": "* buildMachines 扁平化后交给 Game.populateLevel（钥匙/物品/怪物逐台消费）。"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 589,
+      "text": "/** CE GlobalsBrogue.c:1030 `.deepestLevelForMachines = AMULET_LEVEL`。 */"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 590,
+      "text": "const DEEPEST_LEVEL_FOR_MACHINES = 26;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 797,
+      "text": "while (this.depth <= DEEPEST_LEVEL_FOR_MACHINES"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1884,
+      "text": "// 让它们退出 Game.populateLevel 的 `terrain === FLOOR` 牌堆——那是"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1887,
+      "text": "// 每回合白白消耗 RNG。现在 populateLevel 直接按 machineNumber 排除"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1890,
+      "text": "// 内容牌堆回避的另一半在 Game.populateLevel（棋盘同源：按"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2509,
+      "text": "* U19b：HAS_ITEM 由调用方提供地面请求占用（物品仍在 populateLevel 实化）；"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 13,
+      "text": "public packCount(): number {"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 15,
+      "text": "((item.category === ItemCategory.WEAPON || item.category === ItemCategory.GEM) ? 1 : item.quantity), 0);"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 19,
+      "text": "if (!item) return this.packCount() < this.capacity;"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 22,
+      "text": "if (item.category === ItemCategory.GEM && this.items.some(other =>"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 23,
+      "text": "other.category === ItemCategory.GEM && other.originDepth === item.originDepth)) return true;"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 30,
+      "text": "return this.packCount() < this.capacity;"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 39,
+      "text": "if (a.category === ItemCategory.GEM) return a.originDepth === b.originDepth;"
+    },
+    {
+      "file": "src/engine/Items/Inventory.ts",
+      "line": 67,
+      "text": "if (!stack.originDepth || stack.originDepth !== item.originDepth) stack.originDepth = 0;"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 24,
+      "text": "GEM"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 154,
+      "text": "* 开锁后消不消耗钥匙），originDepth 补齐（CE Items.c:4038 的"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 155,
+      "text": "* `originDepth == rogue.depthLevel` 判据：跨层带下去的钥匙不认锁）。"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 160,
+      "text": "* V-2b-6：≙ CE item->originDepth（Rogue.h:1422）——钥匙生成时的层号。"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 164,
+      "text": "public originDepth?: number;"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 187,
+      "text": "case ItemCategory.GEM:"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 188,
+      "text": "return i18next.t('item.lumenstone_depth', {"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 189,
+      "text": "depth: this.originDepth ?? 0, defaultValue: 'Lumenstone from depth {{depth}}'"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 39,
+      "text": "* 才可能被抽中（CE populateItems 开头 memcpy 备份、结尾还原的语义，Items.c:569-580）。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 126,
+      "text": "//   - populateItems 计量机制四段          Items.c:569-580（备份/还原）/ 577-579（每层加频）"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 237,
+      "text": "*  FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 239,
+      "text": "* AMULET/GEM/KEY 权重 0，同样不可达——槽位保留仅为对齐 CE 走表顺序。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 244,
+      "text": "* WEAPON:10, ARMOR:8, FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 247,
+      "text": "*   GEM 显式生成，普通类别抽签的频率仍为 0。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 264,
+      "text": "{ category: ItemCategory.GEM, weight: 0 },"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1534,
+      "text": "/** CE Items.c:384–388 / 721：GEM kind 0、已鉴定，生成自身不耗 RNG。 */"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1536,
+      "text": "const gem = new Item(i18next.t('item.lumenstone', { defaultValue: 'Lumenstone' }), '●', 0xfff200, ItemCategory.GEM);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1538,
+      "text": "gem.identityId = 'lumenstone';"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1539,
+      "text": "gem.originDepth = depth;"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 5,
+      "text": "* 与 `Items.c:610-633`（populateItems 内的归零 pass）、`Architect.c:171-190`"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 21,
+      "text": "*   - IS_IN_MACHINE 由调用方注入（Game.populateLevel 的 machineCells，"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 133,
+      "text": "* 起始 heat 由调用方给（populateItems 用 5）；途经 DUNGEON 层 DOOR +10、"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 249,
+      "text": "* 物品落位热力图（CE populateItems 的落位半边）。"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 393,
+      "text": "* （populateItems 只用它给食物/力量药水落位，Items.c:729-734）："
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 15,
+      "text": "*   minimumBrimstoneLevel = 17, deepestLevel = DEEPEST_LEVEL = 40。"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 57,
+      "text": "export const CE_DEEPEST_LEVEL = 40;"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 146,
+      "text": "if (depth === CE_DEEPEST_LEVEL) {"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 298,
+      "text": "/** CE AMULET_LEVEL（GlobalsBrogue.c:43，Brogue 变体 gameConst->amuletLevel = 26）。 */"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 299,
+      "text": "export const CE_AMULET_LEVEL = 26;"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 303,
+      "text": "* percent = min(100, max(0, depth*100/amuletLevel))；"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 307,
+      "text": "export function minersLightColorAtDepth(depth: number, amuletLevel: number = CE_AMULET_LEVEL): CeLightColor {"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 308,
+      "text": "const percent = Math.min(100, Math.max(0, (depth * 100) / amuletLevel | 0));"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 26,
+      "text": "*     depthLevel < deepestLevel（40）；护符层 26 仍可生成门。"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 43,
+      "text": "/** CE GlobalsBrogue.c:44 deepestLevel；与护符层 26 分开。 */"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 44,
+      "text": "export const DEEPEST_LEVEL = 40;"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 189,
+      "text": "const asDoor = rng.randPercent(LOOP_DOOR_PERCENT) && depth < DEEPEST_LEVEL;"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 82,
+      "text": "/** variants/GlobalsBrogue.c:43 `#define AMULET_LEVEL 26`（gameConst->amuletLevel）。 */"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 83,
+      "text": "export const CE_AMULET_LEVEL = 26;"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 88,
+      "text": "* clamp((depth-1)*67/(amuletLevel-1), 0, 67)，C 整数除法。"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 92,
+      "text": "const raw = Math.floor(((depth - 1) * SECRET_DOOR_CHANCE_MAX) / (CE_AMULET_LEVEL - 1));"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 119,
+      "text": "* （populateLevel 之前）场上没有怪物，web Cell 亦无怪物位——模型差异，"
+    },
+    {
+      "file": "src/engine/UI/Appearance.ts",
+      "line": 28,
+      "text": "import { CE_AMULET_LEVEL } from '../Map/LightCatalog';"
+    },
+    {
+      "file": "src/engine/UI/Appearance.ts",
+      "line": 207,
+      "text": "const weight = Math.max(0, Math.min(100, Math.trunc(depth * 100 / CE_AMULET_LEVEL)));"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 327,
+      "text": "* Game.populateLevel 的怪物消费点）；掉落结算在 playerTurnEnded 的"
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 2,
+      "text": "\"item.lumenstone\": \"流明宝石\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 3,
+      "text": "\"item.lumenstone_depth\": \"来自第 {{depth}} 层的流明宝石\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 404,
+      "text": "\"%s the Dungeons of Doom with %i lumenstones!\": \"%s 携带 %i 颗 lumenstone 逃离了厄运地牢！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 405,
+      "text": "\"%s the Dungeons of Doom with a lumenstone!\": \"%s 携带一颗 lumenstone 逃离了厄运地牢！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 450,
+      "text": "\"%slumenstone%s%s from depth %i\": \"来自第 %i 层的%s lumenstone%s%s\","
+    },
+    {
+      "file": "src/test/b1_retire_invented.test.ts",
+      "line": 104,
+      "text": "populateLevel(depth: number, goingUp: boolean, first: boolean, machines: MachineResult[]): void;"
+    },
+    {
+      "file": "src/test/b1_retire_invented.test.ts",
+      "line": 113,
+      "text": "const handoff = vi.spyOn(Game.prototype as unknown as GameInternals, 'populateLevel');"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "line": 18,
+      "text": "populateLevel(depth: number, up: boolean, first: boolean, machines: MachineResult[]): void;"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "line": 59,
+      "text": "const handoff=vi.spyOn(Game.prototype as unknown as GameInternals,'populateLevel');"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "line": 278,
+      "text": "(game as unknown as GameInternals).populateLevel(12,false,false,[machine!]);"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 30,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 575,
+      "text": "const proto = Game.prototype as any, original = proto.populateLevel;"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 576,
+      "text": "proto.populateLevel = function(...args: any[]) { const r = original.apply(this, args); machines = args[3]; return r; };"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 578,
+      "text": "try { game = createHeadlessGame(seed); } finally { proto.populateLevel = original; }"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 579,
+      "text": "const g: any = game, populate = g.populateLevel.bind(g);"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 580,
+      "text": "g.populateLevel = (...args: any[]) => { const r = populate(...args); machines = args[3]; return r; };"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 773,
+      "text": "const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');"
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "line": 84,
+      "text": "// CE populateItems 结尾把 potion/scroll 表 memcpy 还原——web 的等价不变量："
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "line": 112,
+      "text": "// D1 已加过一次 increment：60+30 / 0+34 / 40+17（CE initializeRogue→populateItems 次序）。"
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "line": 172,
+      "text": "// 蓝图路径对两者贡献归零，剩余全部来自 populateItems 计量路径（CE 同构）。"
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "line": 224,
+      "text": "/** 挂钩 spawnPopulateItem 统计每层人口物品数与实例（不改变行为）。 */"
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "line": 227,
+      "text": "const orig = game.spawnPopulateItem.bind(game);"
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "line": 234,
+      "text": "game.spawnPopulateItem = function (d: number, off: number) {"
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "line": 471,
+      "text": "// 注：CE 里「不落走廊弧」是调用方（populateItems）的 do-while 职责，"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 99,
+      "text": "const proto = Game.prototype as unknown as { spawnPopulateItem(depth: number, offset: number): Item | null };"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 100,
+      "text": "const populate = proto.spawnPopulateItem, gold = ItemLoader.spawnGold, amulet = ItemLoader.spawnAmulet;"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 104,
+      "text": "const gameSource = fs.readFileSync(\"src/engine/Core/Game.ts\", \"utf8\");"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 114,
+      "text": "proto.spawnPopulateItem = function(depth, offset) {"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 138,
+      "text": "proto.spawnPopulateItem = populate; ItemLoader.spawnGold = gold; ItemLoader.spawnAmulet = amulet;"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 175,
+      "text": "* Game.populateLevel 旧式机器循环的宝藏分支：50% 走"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 502,
+      "text": "// BP_NO_INTERIOR_FLAG清号后的中心以及CE8空域锚点允许普通populateItems"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 517,
+      "text": "// push，Game.populateLevel 里消费它们的两个循环每台机器投放钥匙+宝藏/"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 710,
+      "text": "// not CE deepestLevel=40. Exercise D40 on these same natural door sites."
+    },
+    {
+      "file": "src/test/c_1_room_profile.test.ts",
+      "line": 102,
+      "text": "// deepestLevel=40 > amuletLevel=26 的负频率）。"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 14,
+      "text": "*   deepestLevel=40、depthAccelerator=1（GlobalsBrogue.c:1019-1022、43-44）。"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 26,
+      "text": "import { liquidType, fillLakes, cleanUpLakeBoundaries, buildABridge, CE_DEEPEST_LEVEL } from '../engine/Map/LakeSystem';"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 145,
+      "text": "const rows = drawEnsemble(CE_DEEPEST_LEVEL, 904);"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 147,
+      "text": "`deepestLevel(${CE_DEEPEST_LEVEL}) 应强制 rand=1（深水）；出现别的液体 = 最深层特例缺失`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 178,
+      "text": "for (let depth = 1; depth <= CE_DEEPEST_LEVEL; depth++) {"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 41,
+      "text": "CE_AMULET_LEVEL,"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 128,
+      "text": "expect(CE_AMULET_LEVEL, 'amuletLevel 应为 26（GlobalsBrogue.c:43）').toBe(26);"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 761,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 824,
+      "text": "const gridSrc = readFileSync("
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 852,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 24,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1151,
+      "text": "stripComments(readFileSync(f, 'utf8')).split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1199,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 226,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 883,
+      "text": "let text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 911,
+      "text": "const text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 917,
+      "text": "const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 21,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 27,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 33,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 49,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 55,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 61,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 77,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 83,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 89,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 105,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 111,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 127,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 133,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 149,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 155,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 171,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 177,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 193,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 199,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 215,
+      "text": "\"originDepth\": 35,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 231,
+      "text": "\"originDepth\": 36,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 247,
+      "text": "\"originDepth\": 37,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 263,
+      "text": "\"originDepth\": 38,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 279,
+      "text": "\"originDepth\": 39,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 295,
+      "text": "\"originDepth\": 40,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 311,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 317,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 323,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 339,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 345,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 351,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 367,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 373,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 379,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 395,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 401,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 417,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 423,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 439,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 445,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 461,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 467,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 483,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 489,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 505,
+      "text": "\"originDepth\": 35,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 521,
+      "text": "\"originDepth\": 36,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 537,
+      "text": "\"originDepth\": 37,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 553,
+      "text": "\"originDepth\": 38,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 569,
+      "text": "\"originDepth\": 39,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 585,
+      "text": "\"originDepth\": 40,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 601,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 607,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 613,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 629,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 635,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 641,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 657,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 663,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 669,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 685,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 691,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 707,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 713,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 729,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 735,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 751,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 757,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 773,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 779,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 795,
+      "text": "\"originDepth\": 35,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 811,
+      "text": "\"originDepth\": 36,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 827,
+      "text": "\"originDepth\": 37,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 843,
+      "text": "\"originDepth\": 38,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 859,
+      "text": "\"originDepth\": 39,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 875,
+      "text": "\"originDepth\": 40,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 891,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 897,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 903,
+      "text": "\"originDepth\": 27,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 919,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 925,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 931,
+      "text": "\"originDepth\": 28,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 947,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 953,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 959,
+      "text": "\"originDepth\": 29,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 975,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 981,
+      "text": "\"originDepth\": 30,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 997,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1003,
+      "text": "\"originDepth\": 31,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1019,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1025,
+      "text": "\"originDepth\": 32,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1041,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1047,
+      "text": "\"originDepth\": 33,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1063,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1069,
+      "text": "\"originDepth\": 34,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1085,
+      "text": "\"originDepth\": 35,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1101,
+      "text": "\"originDepth\": 36,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1117,
+      "text": "\"originDepth\": 37,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1133,
+      "text": "\"originDepth\": 38,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1149,
+      "text": "\"originDepth\": 39,"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 1165,
+      "text": "\"originDepth\": 40,"
+    },
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "line": 2,
+      "text": "\"note\": \"U26a: CE deepestLevel=40 door placement; only D26 changes. D1–25 unchanged; GEM population has zero D1–26 drift. D27–40 use a separate baseline. See u-26a.report.md.\","
+    },
+    {
+      "file": "src/test/fixtures/u19a-machine-scenes.ts",
+      "line": 70,
+      "text": "if(scene.ce!==15)g.populateLevel(g.depth,false,false,[scene.result]);"
+    },
+    {
+      "file": "src/test/fixtures/u19a-machine-scenes.ts",
+      "line": 80,
+      "text": "materialization:scene.ce===15?'terrain only; existing AMULET/* materialization unsupported':'Game.populateLevel'};"
+    },
+    {
+      "file": "src/test/fixtures/u19b-machine-scenes.ts",
+      "line": 13,
+      "text": "const machines=flatten(scene.result);g.populateLevel(g.depth,false,false,machines);"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 4,
+      "text": "* 缺陷：populateLevel 的落点池 floorTiles 只收集 TerrainType.FLOOR，而"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 35,
+      "text": "'spawnHordeAt' | 'hordeFitsTerrain' | 'populateLevel'> & {"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 41,
+      "text": "populateLevel(depth: number, isGoingUp?: boolean, isFirstLevel?: boolean): void;"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 275,
+      "text": "// D26 是护符层，本就不放置下行梯（populateLevel: depth < 26 才放）"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 305,
+      "text": "it('盐渍深水图上重复 populateLevel：EEL horde 会被真实铺怪路径刷出且领袖在深水格', () => {"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 314,
+      "text": "privates(game).populateLevel(8, false, false);"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 321,
+      "text": "expect(eelOnWater, '重复铺怪后应有 EEL 经由 populateLevel 落在深水格（修复前恒为 0）').toBeGreaterThan(0);"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 512,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 557,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 94,
+      "text": "const populate = runtime.populateLevel.bind(game);"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 95,
+      "text": "runtime.populateLevel = (...args: any[]) => {"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 188,
+      "text": "// CE Architect.c:3719：仅 deepestLevel=40 改为 portal；D26 仍有下梯。"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 112,
+      "text": "// 捕获的错误实现：populateLevel 直接 this.player.loc = 楼梯坐标"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 177,
+      "text": "// 下潜：新层路径（populateLevel 末尾落位， monsters 已布设——HAS_MONSTER"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 18,
+      "text": "*     （Architect.c:3543/3597/3712/3738）在 web 的等价物——populateLevel 的"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 526,
+      "text": "// 只要\"非机器可走格\"彼此连通，populateLevel 放什么都能走到。"
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "line": 7,
+      "text": "*  让它们退出 populateLevel 的 `terrain === FLOOR` 内容牌堆——玩家看见宝库"
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "line": 112,
+      "text": "// 祭坛格上也会放高价值物品（Game.populateLevel 的 altar 段）"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 36,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 240,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 19,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 268,
+      "text": "if (readFileSync(p, 'utf8').includes('Math.random(')) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 45,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 58,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 228,
+      "text": "const timeTs = readFileSync(join(srcRoot, 'engine/Systems/Time.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 242,
+      "text": "if (/scheduleEvent|eventQueue|advanceToNextEvent|clearEventsForActor|ScheduledEvent/.test(readFileSync(p, 'utf8'))) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 252,
+      "text": "const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 51,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 64,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 49,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 61,
+      "text": "readFileSync(new URL('./fixtures/p2_3_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 70,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 279,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 20,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 305,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 315,
+      "text": "const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 19,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 505,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 556,
+      "text": "const appearanceSrc = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 5,
+      "text": "import { readdirSync, readFileSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 23,
+      "text": "expect(files.filter(f => MARKER.test(readFileSync(f, 'utf8')))).toEqual([]);"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 27,
+      "text": "try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; }"
+    },
+    {
+      "file": "src/test/u20_inventory.test.ts",
+      "line": 19,
+      "text": "expect(pack.packCount()).toBe(5);"
+    },
+    {
+      "file": "src/test/u20_inventory.test.ts",
+      "line": 21,
+      "text": "expect(pack.packCount()).toBe(26);"
+    },
+    {
+      "file": "src/test/u20_inventory.test.ts",
+      "line": 76,
+      "text": "expect(pack.packCount()).toBe(27);"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 67,
+      "text": "const raw = readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 97,
+      "text": "const template = parseSfc(readFileSync(file, 'utf8')).descriptor.template?.content;"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 32,
+      "text": "const source = ts.createSourceFile(path, fs.readFileSync(path, 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 93,
+      "text": "Object.assign(item,{quiverNumber:771,vorpalEnemy:'ogre',originDepth:4,keyLoc:[{loc:{x:7,y:8},machine:17,disposableHere:false}],"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 109,
+      "text": "key.id=900000;key.originDepth=g.depth;key.keyLoc=[{loc:{x:5,y:5},machine:17,disposableHere:false}];"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 158,
+      "text": "key.originDepth=g.depth;key.keyLoc=[{loc:{x:5,y:5},machine:17,disposableHere:disposable}];"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 164,
+      "text": "saved.player.inventory[0]!.originDepth=g.depth+1;g.loadSnapshot(saved);act();expect(g.grid.getCell(5,5)!.layers).toContain(T.LOCKED_DOOR);"
+    },
+    {
+      "file": "src/test/u_02b_level_rng.test.ts",
+      "line": 9,
+      "text": "const ce = JSON.parse(fs.readFileSync('ai_docs/reports/u-02b-evidence/ce-reference.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 39,
+      "text": "const source = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 43,
+      "text": "const contract = JSON.parse(fs.readFileSync('scripts/u03-state-contract.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 48,
+      "text": "const source = ts.createSourceFile('Grid.ts', fs.readFileSync('src/engine/Map/Grid.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 68,
+      "text": "const item = ItemLoader.spawnKey('iron_key',-1,-1)!; item.originDepth = game.depth;"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 73,
+      "text": "grid.getCell(2,2)!.machineNumber = result.machineNumber; item.originDepth++;"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 96,
+      "text": "const proto = Game.prototype as any, populate = proto.populateLevel;"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 97,
+      "text": "vi.spyOn(proto,'populateLevel').mockImplementation(function(this:any,...args:any[]) {"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 64,
+      "text": "const history=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/historical-null-requests.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 81,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 178,
+      "text": "const staff=g.items.find((i:Item)=>i.identityId==='staff_of_blinking'&&i.originDepth===12);"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 200,
+      "text": "const item=owners().find(i=>i.identityId==='staff_of_blinking'&&i.originDepth===12)!;expect(item).toBeDefined();"
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "line": 34,
+      "text": "for(const line of fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8').split('\\n')){"
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "line": 129,
+      "text": "// Use the production populateLevel consumer with a deterministic machine result."
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "line": 164,
+      "text": "expect(g.player.inventory.items.find((i:any)=>i.id===id).originDepth).toBe(12);"
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "line": 49,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-06-evidence/ce-staff-damage.json', 'utf8'))"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 45,
+      "text": "const source=fs.readFileSync('../BrogueCE-master/src/brogue/Rogue.h','utf8');"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 80,
+      "text": "const oracle=JSON.parse(fs.readFileSync('ai_docs/reports/u-09-evidence/ce-target-cases.json','utf8')) as {"
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "line": 15,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-13-evidence/ce-combat.json', 'utf8')) as {"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14a-evidence/ce-weakness.json','utf8')) as Array<Record<string,number>>;"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 184,
+      "text": "const ce=readFileSync('../BrogueCE-master/src/brogue/Items.c','utf8');expect(ce).toContain('//void causeFear(');"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14b-evidence/ce-donning.json', 'utf8')) as Array<Record<string, number>>;"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 19,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-15b2-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 41,
+      "text": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable ringTable[NUMBER_RING_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/u_15d3_runic_generation.test.ts",
+      "line": 13,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-15d3-evidence/ce-golden.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 32,
+      "text": "function key(g:Game,disposable=true){const i=new Item('key','⚷',0xffffff,ItemCategory.KEY);i.originDepth=g.depth;i.keyLoc=[{loc:{x:6,y:5},machine:9,disposableHere:disposable}];g.player.inventory.addItem(i);return i;}"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 55,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 93,
+      "text": "const i=key(g);i.originDepth=2;g.handlePlayerAction('move',{x:1,y:0},'system');expect(g.grid.getCell(6,5)!.terrain).toBe(T.LOCKED_DOOR);expect(g.player.inventory.items).toContain(i);"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 94,
+      "text": "i.originDepth=g.depth;g.handlePlayerAction('move',{x:1,y:0},'system');expect(g.grid.getCell(6,5)!.layers[L.DUNGEON]).toBe(T.OPEN_IRON_DOOR_INERT);expect(g.player.inventory.items).not.toContain(i);expect((g as any).activeFlares.length).toBeGreaterThan(0);"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 54,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 67,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 78,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);const g=scene();"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 86,
+      "text": "const key=item(g,11,10,C.WEAPON);key.flags=['ITEM_IS_KEY'];key.keyLoc=[{loc:{x:11,y:10},machine:0,disposableHere:false}];key.originDepth=g.depth;"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 87,
+      "text": "const remaining=item(g,15,10),other=item(g,18,10);for(const i of [remaining,other]){i.keyLoc=[{loc:{...i.loc},machine:0,disposableHere:false}];i.originDepth=g.depth;}const m=rat(g,15,10);m.applyStatus('paralyzed',100);"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 95,
+      "text": "const g=scene();mark(g,10,10,T.ALTAR_CAGE_OPEN);mark(g,13,10,T.PRESSURE_PLATE);const loan=item(g,10,10);loan.keyLoc=[{loc:{x:10,y:10},machine:0,disposableHere:false}];loan.originDepth=g.depth;"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 100,
+      "text": "const g=scene();mark(g,11,10,T.ALTAR_CAGE_CLOSED);const k=item(g,10,10);g.items=[];k.keyLoc=[{loc:{x:0,y:0},machine:8,disposableHere:true}];k.originDepth=g.depth;g.player.inventory.addItem(k);"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 58,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 125,
+      "text": "const key=item(g,0,0);g.items=[];key.keyLoc=[{loc:{x:11,y:10},machine:0,disposableHere:true}];key.originDepth=g.depth;g.player.inventory.addItem(key);"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 154,
+      "text": "(g as any).populateLevel(16,false,false,[result!]);"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 166,
+      "text": "const key=item(g,12,10);key.keyLoc=[{loc:{x:12,y:10},machine:0,disposableHere:owner==='monster'}];key.originDepth=g.depth;"
+    },
+    {
+      "file": "src/test/u_18_water_cage.test.ts",
+      "line": 103,
+      "text": "key.originDepth = keyRoute.g.depth;"
+    },
+    {
+      "file": "src/test/u_18a_2_generation_terrain.test.ts",
+      "line": 51,
+      "text": "const item=vi.spyOn(g,'spawnPopulateItem').mockReturnValue(null);"
+    },
+    {
+      "file": "src/test/u_18a_2_generation_terrain.test.ts",
+      "line": 55,
+      "text": "g.populateLevel(26,false,false,[]);"
+    },
+    {
+      "file": "src/test/u_18a_2_generation_terrain.test.ts",
+      "line": 73,
+      "text": "const item=vi.spyOn(g,'spawnPopulateItem').mockReturnValue(null),horde=vi.spyOn(g,'spawnHordeAt').mockReturnValue(0);"
+    },
+    {
+      "file": "src/test/u_18a_2_generation_terrain.test.ts",
+      "line": 78,
+      "text": "g.populateLevel(2,false,false,[{needsKey:true,generatedKey:false,door:{x:25,y:10},machineNumber:7,itemSpawns:[],monsterSpawns:[],cells:[]}]);"
+    },
+    {
+      "file": "src/test/u_18a_3_generation.test.ts",
+      "line": 135,
+      "text": "const populate=vi.spyOn(g,'populateLevel');g.generateDepth(false,false);"
+    },
+    {
+      "file": "src/test/u_18a_3_generation.test.ts",
+      "line": 142,
+      "text": "const populate=vi.spyOn(g,'populateLevel');"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 3,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 31,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(`../BrogueCE-master/src/brogue/${file}`)).digest('hex')).toBe(golden.source[key]);"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 99,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(carriers.file)).digest('hex')).toBe(carriers.sha256);"
+    },
+    {
+      "file": "src/test/u_19b_pending_occupancy.test.ts",
+      "line": 156,
+      "text": "it('CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once',()=>{"
+    },
+    {
+      "file": "src/test/u_19b_pending_occupancy.test.ts",
+      "line": 160,
+      "text": "g.populateLevel(g.depth,false,false,[scene.result]);"
+    },
+    {
+      "file": "src/test/u_19c_immediate_entities.test.ts",
+      "line": 79,
+      "text": "expect(result).toBeNull();expect(g.monsters).toEqual([keepMonster]);expect(g.dormantMonsters).toEqual([]);expect(g.items).toEqual([keepItem]);expect(owned(g).filter((i:any)=>i.originDepth===10)).toEqual([keepItem]);expect(rng.getState()).not.toEqual(before);expect(old).not.toBeNull();"
+    },
+    {
+      "file": "src/test/u_19c_immediate_entities.test.ts",
+      "line": 128,
+      "text": "it('does not regenerate committed products in populateLevel; U25 sees their actual identities',()=>{"
+    },
+    {
+      "file": "src/test/u_19c_immediate_entities.test.ts",
+      "line": 132,
+      "text": "g.grid.setTerrain(5,5,T.STAIRS_UP);g.grid.setTerrain(30,20,T.STAIRS_DOWN);g.levelSeeds[9].upStairsLoc={x:5,y:5};g.levelSeeds[9].downStairsLoc={x:30,y:20};g.populateLevel(10,false,false,[r]);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';import crypto from 'node:crypto';"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 19,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(golden.file)).digest('hex')).toBe(golden.sha256);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 41,
+      "text": "const g:any=createHeadlessGame(19,'test');const populate=g.populateLevel.bind(g);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 42,
+      "text": "g.populateLevel=(...args:any[])=>{const result=populate(...args);current=args[3].flatMap((m:any)=>m.observation?[m.observation]:[]);return result;};"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 72,
+      "text": "setMachineObservationHook(()=>{});const g:any=createHeadlessGame(19,'test'),scene=machineScene(g,ce,2,0,true)!;expect(scene).not.toBeNull();g.populateLevel(g.depth,false,false,[scene.result]);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 80,
+      "text": "g.populateLevel(g.depth,false,false,[s.result]);expect(g.items.filter((i:any)=>i===item)).toHaveLength(1);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 101,
+      "text": "g.populateLevel(g.depth,false,false,[scene.result]);const pos=scene.result.itemSpawns[0]!.pos;"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 109,
+      "text": "g.populateLevel(g.depth,false,false,[scene.result]);const gate=scene.result.featureSpawns.find((f:any)=>f.featureIndex<2)!;seen.add(gate.terrain!);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 20,
+      "text": "for(const [file,sha] of [[golden.file,golden.sha256],[golden.headerFile,golden.headerSHA256]])expect(crypto.createHash('sha256').update(readFileSync(file!)).digest('hex')).toBe(sha);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 52,
+      "text": "const g:any=createHeadlessGame(19,'test'),populate=g.populateLevel.bind(g);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 53,
+      "text": "g.populateLevel=(...args:any[])=>{const r=populate(...args);traces=args[3].flatMap((m:any)=>m.observation?[m.observation]:[]);return r;};"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 92,
+      "text": "g.populateLevel(g.depth,false,false,[s!.result]);expect(g.items.filter((i:any)=>i===original)).toHaveLength(1);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 96,
+      "text": "g.populateLevel(g.depth,false,false,[s!.result]);expect(g.items.filter((i:any)=>i.x===spawn.pos.x&&i.y===spawn.pos.y)).toHaveLength(1);"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 18,
+      "text": "for(const [file,hash] of Object.entries(golden.sources))expect(crypto.createHash('sha256').update(readFileSync(file)).digest('hex')).toBe(hash);"
+    },
+    {
+      "file": "src/test/u_19f_fire.test.ts",
+      "line": 27,
+      "text": "const g:any=createHeadlessGame(4),populate=g.populateLevel.bind(g);"
+    },
+    {
+      "file": "src/test/u_19f_fire.test.ts",
+      "line": 28,
+      "text": "g.populateLevel=(...args:any[])=>{const r=populate(...args);traces=args[3].flatMap((m:any)=>m.observation?[m.observation]:[]);return r;};"
+    },
+    {
+      "file": "src/test/u_19f_machines.test.ts",
+      "line": 12,
+      "text": "const g:any=createHeadlessGame(19,'test'),populate=g.populateLevel.bind(g);"
+    },
+    {
+      "file": "src/test/u_19f_machines.test.ts",
+      "line": 13,
+      "text": "g.populateLevel=(...args:any[])=>{const r=populate(...args);traces=args[3].flatMap((m:any)=>m.observation?[m.observation]:[]);return r;};"
+    },
+    {
+      "file": "src/test/u_26a_deep_baseline.test.ts",
+      "line": 17,
+      "text": "gems: g.items.filter((i: any) => i.category === ItemCategory.GEM)"
+    },
+    {
+      "file": "src/test/u_26a_deep_baseline.test.ts",
+      "line": 18,
+      "text": ".map((i: any) => ({ x: i.x, y: i.y, originDepth: i.originDepth, quantity: i.quantity })) });"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 8,
+      "text": "import { endgameScore, lumenstoneCount } from '../engine/Core/Endgame';"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 12,
+      "text": "import { DEEPEST_LEVEL, applyLoopDoorSites } from '../engine/Map/LoopMap';"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 21,
+      "text": "const gems = (g: Game) => g.items.filter(i => i.category === ItemCategory.GEM);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 29,
+      "text": "it('matches the CE 26/40 constants and all fourteen lumenstone quotas', () => {"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 30,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 31,
+      "text": "expect(ce).toMatch(/#define AMULET_LEVEL\\s+26/);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 32,
+      "text": "expect(ce).toMatch(/#define DEEPEST_LEVEL\\s+40/);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 33,
+      "text": "const literal = ce.match(/lumenstoneDistribution_Brogue[^=]+=\\s*\\{([^}]+)\\}/)![1]!;"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 37,
+      "text": "expect(DEEPEST_LEVEL).toBe(40);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 79,
+      "text": "it('GEM birth is identified, single, depth-tagged and consumes neither RNG stream', () => {"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 83,
+      "text": "expect(gem).toMatchObject({ category: ItemCategory.GEM, identityId: 'lumenstone', quantity: 1,"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 84,
+      "text": "originDepth: 37, identified: true, canBeIdentified: false, loc: { x: 5, y: 6 } });"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 88,
+      "text": "expect(ItemLoader.CE_ITEM_GENERATION_PROBABILITIES.find(p => p.category === ItemCategory.GEM)?.weight).toBe(0);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 94,
+      "text": "const food = g.spawnPopulateItem(40, 0);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 99,
+      "text": "expect(g.spawnPopulateItem(27, 0).category).toBe(ItemCategory.GEM);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 100,
+      "text": "expect(g.spawnPopulateItem(40, 0).originDepth).toBe(40);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 113,
+      "text": "expect(pack.packCount()).toBe(26);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 116,
+      "text": "expect(lumenstoneCount(pack.items)).toBe(2);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 117,
+      "text": "expect(endgameScore(0, pack.items, false, false, false)).toBe(1000);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 118,
+      "text": "expect(endgameScore(0, pack.items, true, false, false)).toBe(15000);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 121,
+      "text": "it('a real drop command moves the entire GEM stack, survives save/load and can be picked up', () => {"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 136,
+      "text": "expect(g.player.inventory.items[0]).toMatchObject({ id: gem.id, quantity: 3, originDepth: 27 });"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 137,
+      "text": "expect(g.player.inventory.packCount()).toBe(1);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 140,
+      "text": "it('a real wait in deep water washes away the entire GEM stack (CE dropItem)', () => {"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 154,
+      "text": "expect(gem).toMatchObject({ quantity: 3, originDepth: 27 });"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 210,
+      "text": "expect(g.items.every((i: Item) => i.category === ItemCategory.GEM || i.category === ItemCategory.FOOD)).toBe(true);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 214,
+      "text": "expect(item.originDepth).toBe(d);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 223,
+      "text": "expect(g.player.inventory.items.filter((i: Item) => i.category === ItemCategory.GEM).reduce((n: number, i: Item) => n + i.quantity, 0)).toBe(total);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 232,
+      "text": "expect(lumenstoneCount(g.player.inventory.items)).toBe(2);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 236,
+      "text": "expect(lumenstoneCount(g.player.inventory.items)).toBe(14);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 244,
+      "text": "expect(readHighScores()[0]!.description).toBe('Mastered the Dungeons of Doom with 14 lumenstones!');"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 259,
+      "text": "expect(g.exportRecording().events.at(-1).end).toMatchObject({ won: true, superVictory: true });"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 262,
+      "text": ": count === 1 ? 'Mastered the Dungeons of Doom with a lumenstone!' : 'Mastered the Dungeons of Doom with 2 lumenstones!');"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 4,
+      "text": "import { endgameScore, itemValue } from '../engine/Core/Endgame';"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 9,
+      "text": "{ category: ItemCategory.GEM, quantity: 2 },"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 17,
+      "text": "it('uses CE gold, death gem redemption, amulet and lumenstone values for three endings', () => {"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 18,
+      "text": "expect(itemValue(pack[0]!)).toBe(35000);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 19,
+      "text": "expect(itemValue(pack[1]!)).toBe(10000);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 20,
+      "text": "expect(itemValue(pack[2]!)).toBe(0);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 22,
+      "text": "// 同层宝石叠放为一件（Items.c:988-992）；胜利 itemValue 才乘 quantity（Items.c:8867）"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 23,
+      "text": "expect(endgameScore(1234, pack, false, false, false)).toBe(1734);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 24,
+      "text": "expect(endgameScore(1234, [{ category: ItemCategory.GEM, quantity: 1 }, { category: ItemCategory.GEM, quantity: 1 }], false, false, false)).toBe(2234);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 25,
+      "text": "expect(endgameScore(1234, pack, true, false, false)).toBe(46234);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 26,
+      "text": "expect(endgameScore(1234, pack, true, true, false)).toBe(81234);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 27,
+      "text": "expect(endgameScore(1234, pack, true, true, true)).toBe(8123);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 31,
+      "text": "for (const [index, won, superVictory, expected] of ["
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 43,
+      "text": "game.triggerGameOver(won, undefined, superVictory);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 44,
+      "text": "expect(game.gameOverSuperVictory).toBe(superVictory);"
+    },
+    {
+      "file": "src/test/u_26b_endgame.test.ts",
+      "line": 53,
+      "text": "recording.events[0]!.end = { won: true, superVictory: false, score: 35000 };"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 92,
+      "text": "else expect(traces).toEqual(JSON.parse(readFileSync(fixture, 'utf8')));"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 53,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 88,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 198,
+      "text": "const src = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 384,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 439,
+      "text": "const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 11,
+      "text": "*      readFileSync 静态守卫模式。"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 261,
+      "text": "const overlaySrc = readFileSync("
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 41,
+      "text": "const CE_CATEGORIES = new Set(['SCROLL', 'POTION', 'WEAPON', 'ARMOR', 'RING', 'KEY', 'FOOD', 'WAND', 'STAFF', 'CHARM', 'AMULET', 'GOLD', 'GEM']);"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 106,
+      "text": "const json = readFileSync(new URL('../data/blueprints.json', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 121,
+      "text": "const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 206,
+      "text": "// 下限挡「计量路径被误伤」（populateItems 的 enchanting 计量是 CE 原生，"
+    },
+    {
+      "file": "src/test/v_1c_machine_structure.test.ts",
+      "line": 420,
+      "text": "// ③ 不留孤儿：results 为空 ⇒ populateLevel 拿不到任何 itemSpawns /"
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "line": 94,
+      "text": "expect(bp.depthRange).toEqual([8, 26]);            // {8, AMULET_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "line": 155,
+      "text": "expect(c.depthRange).toEqual([10, 26]);            // {10, AMULET_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "line": 189,
+      "text": "expect(s.depthRange).toEqual([1, 26]);             // {1, AMULET_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_3_wired.test.ts",
+      "line": 734,
+      "text": "expect(r67.depthRange).toEqual([1, 40]); // {1, DEEPEST_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 16,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 415,
+      "text": "expect(bp.depthRange).toEqual([13, 26]);           // {13, AMULET_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 452,
+      "text": "expect(bp.depthRange).toEqual([10, 26]);           // {10, AMULET_LEVEL}"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 584,
+      "text": "const code = stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 605,
+      "text": "const code = rel.endsWith('.json') ? readFileSync(f, 'utf8') : stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 614,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 663,
+      "text": "const zh = readFileSync(fileURLToPath(new URL('../locales/zh_CN.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 664,
+      "text": "const legacy = readFileSync(fileURLToPath(new URL('../locales/zh_CN.legacy.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 754,
+      "text": "it('E4 直投守卫：Game.populateLevel 的 D26 护符直投仍存在（未退位）', () => {"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 755,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_5_dormant.test.ts",
+      "line": 311,
+      "text": "expect(ts.depthRange).toEqual([1, 40]); // CE {1, DEEPEST_LEVEL}，字面 40"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 165,
+      "text": "if (opts.depth !== undefined) key.originDepth = opts.depth;"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 186,
+      "text": "it('C2 否定面②：跨层带下去的钥匙不认同坐标的锁（originDepth 判据；删掉 depth 检查必红）', () => {"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 201,
+      "text": "scroll.originDepth = game.depth;"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 244,
+      "text": "it('D1 携带钥匙的怪死亡 → 物品落怪原地、keyLoc/originDepth 保留；活怪不掉', () => {"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 267,
+      "text": "expect(dropped.originDepth).toBe(key.originDepth);"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 438,
+      "text": "// originDepth 判据：匹配钥匙必然是本层的（matcher 内含该判据）。"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 23,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 688,
+      "text": "const ratData = (JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../data/monsters.json'), 'utf8')) as Array<{ id: string }>)"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 695,
+      "text": "// 真实调用点（Game.populateLevel）在 finalizeBlueprintMonster **之前**"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 5,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 77,
+      "text": "const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 28,
+      "text": "populateLevel(depth: number, up: boolean, first: boolean, machines: MachineResult[]): void;"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 52,
+      "text": "// Real CE features, real applyBlueprint, real populateLevel; only site selection is fixed."
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 77,
+      "text": "inside(g).populateLevel(g.depth, false, true, [built!]);"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 101,
+      "text": "const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 104,
+      "text": "const head = ce[line!]!.match(/\\{(\\d+),\\s*AMULET_LEVEL\\},\\s*\\{(\\d+),\\s*(\\d+)\\},\\s*(\\d+),\\s*(\\d+),\\s*0,\\s*\\(([^)]+)\\)/)!;"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 52,
+      "text": "const ce=readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c',import.meta.url),'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 223,
+      "text": "(g as unknown as {populateLevel(d:number,up:boolean,first:boolean,m:MachineResult[]):void}).populateLevel(12,false,true,[b]);"
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 123,
+      "text": "populateLevel(depth: number, goingUp: boolean, first: boolean, machines: MachineResult[]): void;"
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 158,
+      "text": "const populate=gp.populateLevel;"
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 159,
+      "text": "vi.spyOn(gp,'populateLevel').mockImplementation(function(this: GameInternals,...args) {"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 59,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/brogue/PowerTables.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 45,
+      "text": "const values=fs.readFileSync('ai_docs/reports/w-16-evidence/ce-blade-count.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 42,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-17-evidence/ce-domination.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 135,
+      "text": "key.keyLoc=[{loc:{x:11,y:5},machine:7,disposableHere:true}];key.originDepth=1;m.carriedItem=key;const free=vi.spyOn(g,'freeCaptive');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 137,
+      "text": "expect(g.player.inventory.items).not.toContain(key);expect(key.keyLoc).toEqual([{loc:{x:11,y:5},machine:7,disposableHere:true}]);expect(key.originDepth).toBe(1);"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 243,
+      "text": "expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);"
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "line": 45,
+      "text": "for(const row of fs.readFileSync('ai_docs/reports/w-18-evidence/ce-entrancement.txt','utf8').trim().split('\\n')){"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 42,
+      "text": "const rows=JSON.parse(fs.readFileSync('ai_docs/reports/w-19-evidence/ce-catalog.json','utf8'));"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 55,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-19-evidence/ce-polymorph.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "line": 146,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-20-evidence/ce-clone.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 41,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\\n').filter(l=>l.startsWith('empower '));"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 69,
+      "text": "const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\\n').find(l=>l.startsWith(`heal ${duration} `))!;"
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "line": 52,
+      "text": "const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\\n').filter(s => s.startsWith(`status ${+player} `));"
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "line": 45,
+      "text": "const ce = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 43,
+      "text": "const body = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable staffTable[NUMBER_STAFF_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/w_5_arcana_instance.test.ts",
+      "line": 173,
+      "text": "// U26b added ItemCategory.GEM for scoring only; CE lumenstones appear on D27-40, outside"
+    },
+    {
+      "file": "src/test/w_5_arcana_instance.test.ts",
+      "line": 175,
+      "text": "expect([...categories].sort()).toEqual(Object.values(ItemCategory).filter(x => typeof x === 'number' && x !== ItemCategory.GEM).sort());"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 264,
+      "text": "const src = readFileSync(fileURLToPath(new URL('../components/InventoryOverlay.vue', import.meta.url)), 'utf8');"
+    }
+  ],
+  "mandatory": [
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_04c_machine_cells.test.ts",
+    "src/test/u_18a_3_generation.test.ts",
+    "src/test/u_26a_deep_baseline.test.ts",
+    "src/test/u_26a_deep_levels.test.ts",
+    "src/test/u_26b_endgame.test.ts",
+    "src/test/u_27_recording.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_1c_machine_structure.test.ts",
+    "src/test/v_2a_vestibule_return.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_6_keys.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9a_carriers.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/v_2b_9e_2_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "src/test/w_5_arcana_instance.test.ts"
+  ]
+}

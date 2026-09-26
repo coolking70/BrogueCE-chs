@@ -1,0 +1,53 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+ ❯ src/test/u_26a_deep_levels.test.ts (12 tests | 3 failed) 29849ms
+     × seed 777: D26–40, all gems, upstairs/cache/save and terminal victory 8942ms
+     × seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory 8054ms
+     × seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory 9995ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 777: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed777 D35 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:143:80
+    141|             const distances = generationDistances({ ...g, monsters: []…
+    142|                 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT,…
+    143|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    144|             const loot = [...gems(g)];
+    145|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory
+AssertionError: seed31337 D34 stair path: expected 30000 to be less than 30000
+ ❯ src/test/u_26a_deep_levels.test.ts:143:80
+    141|             const distances = generationDistances({ ...g, monsters: []…
+    142|                 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT,…
+    143|             expect(distances[down.x]![down.y], `seed${seed} D${d} stai…
+       |                                                                                ^
+    144|             const loot = [...gems(g)];
+    145|             expect(loot).toHaveLength(distribution[d - 27]!);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_26a_deep_levels.test.ts > U26a natural maps and real player commands > seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory
+Error: Recording requires a fresh new game; saved games cannot continue a recording
+ ❯ Game.exportRecording src/engine/Core/Game.ts:2642:47
+    2640|
+    2641|     public exportRecording(): GameRecording {
+    2642|         if (!this.recordingFromNewGame) throw new Error('Recording req…
+       |                                               ^
+    2643|         return {
+    2644|             version: 2,
+ ❯ src/test/u_26a_deep_levels.test.ts:181:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 9 passed (12)
+   Start at  00:58:03
+   Duration  30.52s (transform 374ms, setup 0ms, import 602ms, tests 29.85s, environment 0ms)
+

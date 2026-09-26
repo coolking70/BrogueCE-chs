@@ -696,17 +696,23 @@ describe('C-0 地牢环路（addLoops）+ IN_LOOP', () => {
         let doors = 0;
         let floors = 0;
         let doorsAtDeepest = 0;
+        let deepestSites = 0;
         stageSweep(HEAVY_SEEDS, (arch, grid, _seed, depth) => {
             const placed = applyLoopDoorSites(grid, arch.loopDoorSites, depth);
             for (const p of placed) {
                 if (grid.getCell(p.x, p.y)!.terrain === TerrainType.DOOR) {
                     doors++;
-                    if (depth === MAX_DEPTH) doorsAtDeepest++;
                 } else {
                     floors++;
                 }
             }
+            // U26a premise correction: MAX_DEPTH=26 is this sample's limit,
+            // not CE deepestLevel=40. Exercise D40 on these same natural door sites.
+            const terminalSites = applyLoopDoorSites(grid, arch.loopDoorSites, 40);
+            deepestSites += terminalSites.length;
+            doorsAtDeepest += terminalSites.filter(p => grid.getCell(p.x, p.y)!.terrain === TerrainType.DOOR).length;
         });
+        expect(deepestSites).toBeGreaterThan(0);
         const rate = doors / (doors + floors);
         expect(
             rate,
@@ -716,7 +722,7 @@ describe('C-0 地牢环路（addLoops）+ IN_LOOP', () => {
         expect(rate).toBeLessThan(0.9);
         expect(
             doorsAtDeepest,
-            '最深层（护符层）出现了 DOOR——CE Architect.c:2903 的 depth<最深层 条件失效'
+            '最深层 D40 出现了 DOOR——CE Architect.c:2903 的 depth<最深层 条件失效'
         ).toBe(0);
         console.log(`[c_0] E1 落位函数 DOOR=${doors} FLOOR=${floors}（${(rate * 100).toFixed(1)}%）`);
     });

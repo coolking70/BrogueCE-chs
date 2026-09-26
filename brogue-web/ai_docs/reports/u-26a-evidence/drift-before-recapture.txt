@@ -1,0 +1,57 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a3f1/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 22692ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 22691ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 16 处（若非有意改动，请查清成因）: expected [ …(16) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed424242 D26 fp: 基线=7a1119fd:5061 现在=b66e9fc3:5126",
++   "seed424242 D26 n: 基线=21 现在=14",
++   "seed424242 D26 species: 基线=Bog monster,Dar blademaster,Fury,Golem,Imp,agile Fury,infested Bog monster,infested Fury,juggernaut Bog monster,juggernaut Golem,reflective Imp,vampiric Fury 现在=Dar battlemage,Fury,Golem,Kraken,Revenant,Tentacle horror,agile Dar blademaster,grappling Dar blademaster,infested Dar priestess,reflective Fury,vampiric Dragon",
++   "seed424242 D26 items: 基线=12 现在=14",
++   "seed777 D26 fp: 基线=f8acb249:5135 现在=0bc0c9f5:5088",
++   "seed777 D26 n: 基线=35 现在=19",
++   "seed777 D26 species: 基线=Bloat,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Revenant,Sentinel,Tentacle horror,agile Fury,explosive Dragon,explosive Fury,grappling Bloat,grappling Sentinel,infested Fury,juggernaut Sentinel,reflective Fury,toxic Fury,vampiric Bloat,vampiric Revenant 现在=Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Imp,Revenant,Tentacle horror,juggernaut Fury,vampiric Fury",
++   "seed777 D26 items: 基线=10 现在=11",
++   "seed20260913 D26 fp: 基线=79aeeb0c:5093 现在=b6e229a7:5094",
++   "seed20260913 D26 n: 基线=13 现在=18",
++   "seed20260913 D26 species: 基线=Bloat,Dragon,Fury,Golem,Revenant,Sentinel,agile Dragon,explosive Bloat 现在=Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Golem,Imp,Phylactery,agile Imp,infested Fury,juggernaut Imp,reflective Fury",
++   "seed20260913 D26 items: 基线=11 现在=12",
++   "seed31337 D26 fp: 基线=e1a9fffe:4978 现在=effafc0f:4989",
++   "seed31337 D26 n: 基线=8 现在=10",
++   "seed31337 D26 species: 基线=Bloat,Golem,Phylactery,Revenant,explosive Golem 现在=Dar priestess,Golem,Phylactery,Tentacle horror,agile Dragon,explosive Dar battlemage,infested Dar blademaster,infested Revenant,vampiric Dar blademaster",
++   "seed31337 D26 items: 基线=12 现在=9",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  00:58:05
+   Duration  23.47s (transform 405ms, setup 0ms, import 702ms, tests 22.69s, environment 0ms)
+

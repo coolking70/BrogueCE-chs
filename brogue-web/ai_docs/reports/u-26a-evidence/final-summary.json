@@ -1,0 +1,68 @@
+{
+  "gates": [
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-26T17:27:55.033Z",
+      "end": "2026-09-26T17:28:00.563Z",
+      "exit": 0
+    },
+    {
+      "name": "regression",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=4",
+        "--reporter=default",
+        "--reporter=json",
+        "--reporter=./scripts/u26a-failure-reporter.mjs",
+        "--outputFile=ai_docs/reports/u-26a-evidence/regression-final.json"
+      ],
+      "start": "2026-09-26T17:28:00.564Z",
+      "end": "2026-09-26T18:02:24.937Z",
+      "exit": 0
+    },
+    {
+      "name": "drift",
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1"
+      ],
+      "start": "2026-09-26T18:02:24.937Z",
+      "end": "2026-09-26T18:02:48.016Z",
+      "exit": 0
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-26T18:02:48.017Z",
+      "end": "2026-09-26T18:02:48.092Z",
+      "exit": 0
+    }
+  ],
+  "files": 200,
+  "passed": 3783,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "frozenInputs": 806,
+  "changedInputs": [],
+  "missing": [],
+  "missingNamed": [],
+  "unexpectedBaselines": [],
+  "crlf": [],
+  "head": "76858a11fb1d739e7f24cc93039765db6f41e978",
+  "staged": ""
+}

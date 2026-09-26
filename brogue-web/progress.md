@@ -1445,3 +1445,14 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 - U05/B-4a旧前提原HEAD2绿／补映射后2红，已留反事实与前提修正提案交验收方；原197测试仅此2文件改动。最终787输入已冻结，23:36 CST启动完整build/npm test(4workers)/drift；build绿，全量仍运行，终验结果待收口。
 
 - 2026-09-27 00:18 CST：U15d3最终冻结复跑全部通过：build、197文件完整npm test（3765 passed／0 failed／8既有skip／5既有todo，2475.45秒）、独立drift 1/1、diff-check。R∪S189及全部点名守卫零遗漏，787冻结输入前后变化0。地图仅note一次登记，UR2/UR4/P2未动；最终报告 ai_docs/reports/u-15d3.report.md 已收口。旧前提修正提案仍交验收方裁决；无其余待办，未暂存、未提交。
+
+## 2026-09-27 U26a
+
+- 用户任务：执行 ai_docs/tasks/u-26a.prompt.md，完成报告，不提交。入场工作树干净；复制同 lockfile 本地依赖，先跑 D1–26 drift 并记录基线哈希。核实 CE 深层生成、宝石与底层超胜利，分变量归因后建立独立 D27–40 基线。
+
+- U26a：CE 深层定额/食物补位/GEM 出生、来源层堆叠和显示完成；修正造门 deepest=40、房型 amulet=26。旧104层只有4个D26/16基线字段改变；GEM独立阶段浅层零漂移。新增56层独立基线，UR3按door单变量归因后原入口重录；UR2/4不变。旧C-0 E1已HEAD绿/最终红后仅修前提，交验收方裁决。
+- 新专项14/14、点名反查154/154、11故障变体均检出；浏览器真实D26→40/宝石/保存恢复/195000超胜利通过，5张完整截图已打开核验，errors=0。01:14 CST冻结806输入启动完整build/npm test(4workers)/drift；build绿，全量运行中。
+
+- U26a 终审补漏：CE Items.c:8472 / Time.c:577 要求主动 drop 与水流 drop 都移动 GEM 整堆；补两处例外与两个真实命令用例。01:14 轮已中断并归档 prefinal-gem-drop，不计作终验通过。修复后专项/背包 21/21、13 故障变体全检出、浏览器整堆丢弃/拾取及自然 D40 结局通过；160 层生成观测及压缩文件 SHA-256 与补漏前完全相同，未重捕获基线。重新启动完整冻结终验。
+
+- U26a 最终完成：2026-09-27 01:27:55–02:02:48 CST 固定输入完整复跑，build / 全量 npm test / drift / diff-check 全部退出 0。全量 200 文件、3783 passed、0 failed、8 既有 skipped、5 既有 todo；R∪S 194/194 覆盖。806 个冻结输入 SHA-256 零变化，基线仅登记的浅层与 UR3 改动，CRLF 0。报告 ai_docs/reports/u-26a.report.md 已完成；开发服务器关闭，未暂存、未提交。无实现 TODO；C-0 旧前提修正提案留验收方裁决。
