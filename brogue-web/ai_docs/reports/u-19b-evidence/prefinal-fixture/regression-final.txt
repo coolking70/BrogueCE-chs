@@ -1,0 +1,170 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=6 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-19b-evidence/regression-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e110/brogue/brogue-web
+
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=477，含新环门层=126/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67418 违例=65601
+[c_0] diagonal：门位=1000 违例=406
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=633 漏同步=803（52 层合计）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控
+[c_0] B2 IN_LOOP 合计=19756/118547（16.7%），单层峰值=35.1%
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）
+[c_0] A6 生产=171 正确对照散布=[171, 173]（52 层合计，K=6）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）
+[c_0] C1 新开门=188，真环边=188，桥=0
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙
+[c_0] C2 work-grid 割点率：生产=6.5% 树状对照=9.0%（52 层平均）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）
+[c_0] C3 末态割点=1856/37048（平均 5.0%），单层 p95=11.9%，峰值（观测）=16.5%
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布
+[c_0] E1 落位函数 DOOR=120 FLOOR=95（55.8%）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）
+[c_0] B3 IN_LOOP-=10 影响格=59395/297830（19.9%），受影响层=126/130
+
+ ✓ src/test/c_0_add_loops.test.ts (14 tests) 412588ms
+     ✓ A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟  17733ms
+     ✓ A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）  18578ms
+     ✓ A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多  7662ms
+     ✓ B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）  48621ms
+     ✓ B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控  59242ms
+     ✓ A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）  11273ms
+     ✓ C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）  10016ms
+     ✓ C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙  26737ms
+     ✓ C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）  49820ms
+     ✓ D1 决定性：同种子两次生成 → 指纹/loopMap/门位/work grid 逐一一致  53633ms
+     ✓ E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布  34285ms
+     ✓ B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）  62573ms
+     ✓ B4 analyzeLoopMap 纯函数口径：Game.loopMap 与对末态网格直接重算一致（缓存层同口径）  12386ms
+ ✓ src/test/b_4a_item_generation.test.ts (24 tests) 490054ms
+     ✓ enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）  8229ms
+     ✓ 计量状态随开局重置：新局的 initialFrequency 与 CE 一致（enchant 60 / life 0 / strength 40）  427ms
+     ✓ 附魔卷轴整局总数落在测量带内（V-1a 后实测 13-16/局；带宽余量 [8, 20]）  96576ms
+     ✓ 每个 seed 在 D6 前必出现第一只 life（n=0 时 4*0+3 < d+offset 最迟 D6 恒真）  10568ms
+     ✓ 整局食物产出落在测量带内（测量 9-13/局；带宽余量 [5, 18]）——食物保底在起作用  36352ms
+     ✓ war_axe / incendiary_dart / javelin 在整局生成中出现（10 seed 合计 ≥8 件）  115128ms
+     ✓ halberd 整局生成 0 出现（D2 退池维持）  34325ms
+     ✓ dart 在整局随机生成中几乎不出现（基表频率 0；仅机器等概率路径偶得，10 局 ≤12 把）  118917ms
+     ✓ potion_of_poison（CE caustic gas）整局生成中出现——B-4a 回池的直接产物  63582ms
+     ✓ 同 seed 两次 D1-D5 的物品多重集一致（无未播种/乱序泄漏）  5684ms
+ ✓ src/test/w_5_arcana_instance.test.ts (18 tests) 501229ms
+     ✓ versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack  594ms
+   ✓ W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values  500621ms
+stdout | src/test/invented_content_pool.test.ts > D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现 > 8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_8_connectivity.test.ts > C-8 生成期 DF 放置否决：web 移动图口径 > T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=35 D1..D26 substantive RNG 抽取总数: 1689713
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 1656597
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 1581139
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 1936924
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 1541994
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 1937940
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 2150336
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 1881322
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 1622927
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 2101128
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 1781621
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 1871187
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 1797927
+[bp-center] seed=2 D1..D26 substantive RNG 抽取总数: 1810383
+[bp-center] seed=3 D1..D26 substantive RNG 抽取总数: 1825501
+[bp-center] seed=4 D1..D26 substantive RNG 抽取总数: 2107074
+[bp-center] seed=5 D1..D26 substantive RNG 抽取总数: 1706011
+[bp-center] seed=6 D1..D26 substantive RNG 抽取总数: 2142843
+[bp-center] seed=7 D1..D26 substantive RNG 抽取总数: 1971814
+[bp-center] seed=8 D1..D26 substantive RNG 抽取总数: 1845422
+[bp-center] seed=9 D1..D26 substantive RNG 抽取总数: 1575401
+[bp-center] seed=10 D1..D26 substantive RNG 抽取总数: 1626112
+[bp-center] seed=11 D1..D26 substantive RNG 抽取总数: 1656445
+[bp-center] seed=12 D1..D26 substantive RNG 抽取总数: 1773356
+[bp-center] seed=13 D1..D26 substantive RNG 抽取总数: 1981814
+[bp-center] seed=14 D1..D26 substantive RNG 抽取总数: 1886618
+[bp-center] seed=15 D1..D26 substantive RNG 抽取总数: 2068936
+[bp-center] seed=16 D1..D26 substantive RNG 抽取总数: 1729545
+[bp-center] seed=17 D1..D26 substantive RNG 抽取总数: 1813924
+[bp-center] seed=18 D1..D26 substantive RNG 抽取总数: 2128950
+[bp-center] seed=19 D1..D26 substantive RNG 抽取总数: 1848915
+[bp-center] seed=20 D1..D26 substantive RNG 抽取总数: 1695422
+[bp-center] seed=21 D1..D26 substantive RNG 抽取总数: 1866063
+[bp-center] seed=22 D1..D26 substantive RNG 抽取总数: 1881206
+[bp-center] seed=23 D1..D26 substantive RNG 抽取总数: 1828686
+[bp-center] seed=24 D1..D26 substantive RNG 抽取总数: 1563078
+[bp-center] seed=25 D1..D26 substantive RNG 抽取总数: 1930930
+[bp-center] seed=26 D1..D26 substantive RNG 抽取总数: 1987276
+[bp-center] seed=27 D1..D26 substantive RNG 抽取总数: 1987487
+[bp-center] seed=28 D1..D26 substantive RNG 抽取总数: 1986471
+[bp-center] seed=29 D1..D26 substantive RNG 抽取总数: 1926065
+[bp-center] seed=30 D1..D26 substantive RNG 抽取总数: 1644166
+[bp-center] seed=31 D1..D26 substantive RNG 抽取总数: 1867597
+[bp-center] seed=32 D1..D26 substantive RNG 抽取总数: 1694147
+[bp-center] 扫描 44 seeds × 26 层 = 1144 层，共 3638 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 5 件宝藏：wand_of_negation×1, potion_of_life×1, charm_of_protection×1, scroll_of_enchantment×2；宝藏违例 0 条
+
+ ✓ src/test/blueprint_center.test.ts (7 tests) 514026ms
+     ✓ b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）  514020ms
+stdout | src/test/armor_model_effect.test.ts > 护甲模型改造前后配对对照（5 档 × 20 seed × 400 回合） > 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[armor_model_effect] 无护甲
+[armor_model_effect]   legacy(防御值=0): attacks=120 hits=86 rate=71.7% dmg=204 (dmg/atk=1.70) died=1/20 turns=7989 maxDepth=2
+[armor_model_effect]   wired (防御值=0): attacks=120 hits=85 rate=70.8% dmg=202 (dmg/atk=1.68) died=1/20 turns=7990 maxDepth=2
+[armor_model_effect] 皮甲+0（显示3）
+[armor_model_effect]   legacy(防御值=3): attacks=337 hits=244 rate=72.4% dmg=244 (dmg/atk=0.72) died=1/20 turns=7988 maxDepth=2
+[armor_model_effect]   wired (防御值=30): attacks=394 hits=207 rate=52.5% dmg=496 (dmg/atk=1.26) died=2/20 turns=7315 maxDepth=2
+[armor_model_effect] 皮甲+3（显示6）
+[armor_model_effect]   legacy(防御值=4): attacks=337 hits=244 rate=72.4% dmg=244 (dmg/atk=0.72) died=1/20 turns=7988 maxDepth=2
+[armor_model_effect]   wired (防御值=60): attacks=366 hits=121 rate=33.1% dmg=276 (dmg/atk=0.75) died=2/20 turns=7333 maxDepth=2
+[armor_model_effect] 板甲+0（显示11）
+[armor_model_effect]   legacy(防御值=11): attacks=152 hits=94 rate=61.8% dmg=94 (dmg/atk=0.62) died=0/20 turns=8000 maxDepth=2
+[armor_model_effect]   wired (防御值=110): attacks=157 hits=25 rate=15.9% dmg=66 (dmg/atk=0.42) died=1/20 turns=7820 maxDepth=3
+[armor_model_effect] 板甲+3（显示14）
+[armor_model_effect]   legacy(防御值=13): attacks=151 hits=92 rate=60.9% dmg=92 (dmg/atk=0.61) died=0/20 turns=8000 maxDepth=2
+[armor_model_effect]   wired (防御值=140): attacks=162 hits=19 rate=11.7% dmg=48 (dmg/atk=0.30) died=0/20 turns=8000 maxDepth=3
+
+stdout | src/test/armor_model_effect.test.ts > 定向验证：真实怪物(acc=100)攻击穿甲玩家，防御值进入命中掷骰 > 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）
+[armor_model_effect] 定向: monkey(acc=100) 60 挥击 → 无护甲 wired=60/60 板甲+3 legacy=50/60 板甲+3 wired=9/60
+
+(node:26769) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/armor_model_effect.test.ts (2 tests) 575487ms
+     ✓ 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数  573167ms
+     ✓ 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）  2318ms
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p1_29_lake_connectivity.test.ts > P1-29 湖泊连通性 > 核心不变量：15 种子 × D1-D26 湖泊阶段完成态全连通（湖泊闸门合同）
+[p1_29] 湖泊阶段扫描：390 层，闸门 placed=365 skipped=6，深水格=1512 浅水格=23603
+

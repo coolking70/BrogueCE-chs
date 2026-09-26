@@ -1,0 +1,3186 @@
+{
+  "file": "../BrogueCE-master/src/variants/GlobalsBrogue.c",
+  "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+  "machines": [
+    {
+      "ce": 3,
+      "id": "reward_treasure_room",
+      "frequency": 20,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 3,
+            "index": 1,
+            "line": 201,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         0,          0,              {5,7},      2,          (POTION),   -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 3,
+            "index": 2,
+            "line": 202,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         0,          0,              {4,6},      2,          (SCROLL),   -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        4
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 4,
+      "id": "reward_pedestal_permanent",
+      "frequency": 30,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 4,
+            "index": 2,
+            "line": 210,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_REQUIRE_GOOD_RUNIC",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (WEAPON),   -1,         0,              2,              0,          ITEM_IDENTIFIED,(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 4,
+            "index": 3,
+            "line": 211,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_REQUIRE_GOOD_RUNIC",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (ARMOR),    -1,         0,              2,              0,          ITEM_IDENTIFIED,(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            5
+          ],
+          "literal": {
+            "ce": 4,
+            "index": 4,
+            "line": 212,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {2,2},      2,          (STAFF),    -1,         0,              2,              0,          (ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN),   (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        5
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 5,
+      "id": "reward_pedestal_consumable",
+      "frequency": 30,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 5,
+            "index": 2,
+            "line": 218,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (SCROLL),   SCROLL_ENCHANTING, 0,       2,              0,          (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4
+          ],
+          "literal": {
+            "ce": 5,
+            "index": 3,
+            "line": 219,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (POTION),   POTION_LIFE,0,              2,              0,          (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        4
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 10,
+      "id": "reward_kennel",
+      "frequency": 12,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 10,
+            "index": 0,
+            "line": 249,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         MONSTER_CAGE_CLOSED,DUNGEON,{3,5},      3,          0,          -1,         0,              2,              (HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 10,
+            "index": 1,
+            "line": 250,
+            "flags": [
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_ITEM",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_SKELETON_KEY",
+              "MF_KEY_DISPOSABLE"
+            ],
+            "literal": "{0,         0,          0,              {1,2},      1,          KEY,        KEY_CAGE,   0,              1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_SKELETON_KEY | MF_KEY_DISPOSABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 1,
+      "id": "reward_mixed_library",
+      "frequency": 30,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 1,
+            "index": 2,
+            "line": 187,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,1},      1,          WAND,       -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 1,
+            "index": 3,
+            "line": 188,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {3,3},      3,          (WEAPON|ARMOR|WAND),-1, 0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            5
+          ],
+          "literal": {
+            "ce": 1,
+            "index": 4,
+            "line": 189,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {2,3},      2,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        1
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 2,
+      "id": "reward_single_category_library",
+      "frequency": 15,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 2,
+            "index": 2,
+            "line": 195,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_ALTERNATIVE",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {3,4},      3,          (RING),     -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4
+          ],
+          "literal": {
+            "ce": 2,
+            "index": 3,
+            "line": 196,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_ALTERNATIVE",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {4,5},      4,          (STAFF),    -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        1
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 15,
+      "id": "reward_statuary",
+      "frequency": 0,
+      "flags": [
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 15,
+            "index": 0,
+            "line": 291,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{DF_LUMINESCENT_FUNGUS, AMULET_SWITCH, DUNGEON, {1,1}, 1,       AMULET,     -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            3
+          ],
+          "literal": {
+            "ce": 15,
+            "index": 2,
+            "line": 293,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_MONSTERS_DORMANT",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         MK_WARDEN_OF_YENDOR,1,          0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_IMPREGNABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 16,
+      "id": "vestibule_locked",
+      "frequency": 100,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 16,
+            "index": 0,
+            "line": 300,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_ITEM",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_KEY_DISPOSABLE",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         LOCKED_DOOR, DUNGEON,       {1,1},      1,          KEY,        KEY_DOOR,   0,              1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS), (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE | MF_IMPREGNABLE)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 17,
+      "id": "vestibule_secret_door",
+      "frequency": 1,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 19,
+      "id": "vestibule_flammable_barricade",
+      "frequency": 10,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 19,
+            "index": 1,
+            "line": 312,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          WEAPON,     INCENDIARY_DART, 0,         1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 20,
+      "id": "vestibule_statue_doorway",
+      "frequency": 6,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 20,
+            "index": 1,
+            "line": 317,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          SCROLL,     SCROLL_SHATTERING, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 23,
+      "id": "vestibule_pit_trap_field",
+      "frequency": 8,
+      "flags": [
+        "BP_VESTIBULE",
+        "BP_OPEN_INTERIOR",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 18,
+      "id": "vestibule_secret_lever",
+      "frequency": 8,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 22,
+      "id": "vestibule_throwing_tutorial",
+      "frequency": 8,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 24,
+      "id": "vestibule_beckoning_obstacle",
+      "frequency": 8,
+      "flags": [
+        "BP_VESTIBULE",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 24,
+            "index": 2,
+            "line": 336,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_IN_VIEW_OF_ORIGIN",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_MIRRORED_TOTEM,3,            0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 25,
+      "id": "vestibule_guardian_obstacle",
+      "frequency": 8,
+      "flags": [
+        "BP_VESTIBULE",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 25,
+            "index": 0,
+            "line": 340,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         DOOR,       DUNGEON,        {1,1},      1,          0,          0,          MK_GUARDIAN,    2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 25,
+            "index": 1,
+            "line": 341,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         DOOR,       DUNGEON,        {1,1},      1,          0,          0,          MK_WINGED_GUARDIAN,2,           0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 40,
+      "id": "key_poison_gas",
+      "frequency": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 40,
+            "index": 0,
+            "line": 438,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 40,
+            "index": 3,
+            "line": 441,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          SCROLL,     SCROLL_TELEPORT, 0,         2,              0,          0,          (MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 40,
+            "index": 4,
+            "line": 442,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_DESCENT, 0,          2,              0,          0,          (MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 35,
+      "id": "key_pit_trap",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2
+          ],
+          "literal": {
+            "ce": 35,
+            "index": 0,
+            "line": 401,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 27,
+      "id": "key_secret_room",
+      "frequency": 1,
+      "flags": [
+        "BP_ROOM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 27,
+            "index": 0,
+            "line": 358,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          ITEM_PLAYER_AVOIDS, (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 26,
+      "id": "key_nested_library",
+      "frequency": 35,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE"
+      ],
+      "producers": [
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 26,
+            "index": 3,
+            "line": 352,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,2},      1,          (WEAPON|ARMOR|WAND),-1, 0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 26,
+            "index": 4,
+            "line": 353,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,2},      1,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            6
+          ],
+          "literal": {
+            "ce": 26,
+            "index": 5,
+            "line": 354,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,1},      1,          0,          -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS | ITEM_MAX_CHARGES_KNOWN),    (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        2
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 28,
+      "id": "key_throwing_tutorial_cage",
+      "frequency": 8,
+      "flags": [],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 28,
+            "index": 0,
+            "line": 362,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_IMPREGNABLE",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 21,
+      "id": "vestibule_statue_monster",
+      "frequency": 6,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 21,
+            "index": 0,
+            "line": 320,
+            "flags": [
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_AT_ORIGIN",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         STATUE_DORMANT_DOORWAY,DUNGEON,     {1, 1}, 1,      0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_PERMIT_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 29,
+      "id": "key_rat_trap_dormant",
+      "frequency": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2
+          ],
+          "literal": {
+            "ce": 29,
+            "index": 0,
+            "line": 366,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 29,
+            "index": 2,
+            "line": 368,
+            "flags": [
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_NOT_ON_LEVEL_PERIMETER"
+            ],
+            "literal": "{0,         RAT_TRAP_WALL_DORMANT,DUNGEON,{10,20},  5,          0,          -1,         MK_RAT,         1,              0,          0,          (MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 41,
+      "id": "key_explosive_trap",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_LIQUIDS",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 41,
+            "index": 2,
+            "line": 449,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 43,
+      "id": "key_statuary",
+      "frequency": 10,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 43,
+            "index": 0,
+            "line": 462,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 43,
+            "index": 1,
+            "line": 463,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         STATUE_DORMANT,DUNGEON,     {3,5},      3,          0,          -1,         0,              2,              HORDE_MACHINE_STATUE,0, (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 50,
+      "id": "key_worm_trap",
+      "frequency": 7,
+      "flags": [
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 50,
+            "index": 0,
+            "line": 507,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 50,
+            "index": 1,
+            "line": 508,
+            "flags": [
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_NOT_ON_LEVEL_PERIMETER"
+            ],
+            "literal": "{0,         WALL_MONSTER_DORMANT,DUNGEON,{5,8},     5,          0,          -1,         MK_UNDERWORM,   1,              0,          0,          (MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 56,
+      "id": "key_turret_trap",
+      "frequency": 10,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 56,
+            "index": 0,
+            "line": 547,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 56,
+            "index": 1,
+            "line": 548,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         TURRET_DORMANT,DUNGEON,     {4,6},      4,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 69,
+      "id": "area_trick_statue",
+      "frequency": 0,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            1,
+            2
+          ],
+          "literal": {
+            "ce": 69,
+            "index": 0,
+            "line": 610,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_AT_ORIGIN",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         STATUE_DORMANT,DUNGEON,     {1, 1},     1,          0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            2
+          ],
+          "literal": {
+            "ce": 69,
+            "index": 1,
+            "line": 611,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_ALTERNATIVE",
+              "MF_NOT_ON_LEVEL_PERIMETER"
+            ],
+            "literal": "{0,         STATUE_DORMANT,DUNGEON,     {1, 1},     1,          0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_ALTERNATIVE | MF_NOT_ON_LEVEL_PERIMETER)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 70,
+      "id": "area_worm",
+      "frequency": 0,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 70,
+            "index": 0,
+            "line": 615,
+            "flags": [
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_NOT_ON_LEVEL_PERIMETER"
+            ],
+            "literal": "{0,         WALL_MONSTER_DORMANT,DUNGEON,{1, 3},    1,          0,          -1,         MK_UNDERWORM,   1,              0,          0,          (MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 9,
+      "id": "reward_chained_allies",
+      "frequency": 12,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 9,
+            "index": 0,
+            "line": 241,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         VOMIT,      SURFACE,        {2,2},      2,          0,          -1,         0,              2,              (HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [
+        5
+      ],
+      "clearMembership": false
+    },
+    {
+      "ce": 11,
+      "id": "reward_vampire_lair",
+      "frequency": 5,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 11,
+            "index": 0,
+            "line": 256,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{DF_AMBIENT_BLOOD,0,    0,              {1,2},      1,          0,          -1,         0,              2,              (HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 11,
+            "index": 1,
+            "line": 257,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{DF_AMBIENT_BLOOD,MONSTER_CAGE_CLOSED,DUNGEON,{2,4},2,          0,          -1,         0,              2,              (HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            3
+          ],
+          "literal": {
+            "ce": 11,
+            "index": 2,
+            "line": 258,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_SKELETON_KEY",
+              "MF_MONSTER_TAKE_ITEM",
+              "MF_MONSTERS_DORMANT",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_KEY_DISPOSABLE"
+            ],
+            "literal": "{DF_TRIGGER_AREA,COFFIN_CLOSED,0,       {1,1},      1,          KEY,        KEY_CAGE,   MK_VAMPIRE,     1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_SKELETON_KEY | MF_MONSTER_TAKE_ITEM | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_KEY_DISPOSABLE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 12,
+      "id": "reward_legendary_ally",
+      "frequency": 15,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 12,
+            "index": 0,
+            "line": 262,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NOT_IN_HALLWAY",
+              "MF_NEAR_ORIGIN",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_KEY_DISPOSABLE"
+            ],
+            "literal": "{DF_LUMINESCENT_FUNGUS, ALTAR_KEYHOLE, DUNGEON, {1,1}, 1,       KEY,        KEY_PORTAL, 0,              2,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_NEAR_ORIGIN | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 12,
+            "index": 1,
+            "line": 263,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{DF_LUMINESCENT_FUNGUS, PORTAL, DUNGEON,{1,1},      1,          0,          -1,         0,              2,              HORDE_MACHINE_LEGENDARY_ALLY,0, (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 30,
+      "id": "key_fun_with_fire",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 30,
+            "index": 0,
+            "line": 371,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{DF_SURROUND_WOODEN_BARRICADE,ALTAR_INERT,DUNGEON,{1,1},1,      0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 30,
+            "index": 5,
+            "line": 376,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {2,2},      1,          POTION,     POTION_LICHEN, 0,           3,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 33,
+      "id": "key_thief_area",
+      "frequency": 10,
+      "flags": [
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 33,
+            "index": 0,
+            "line": 392,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_BUILD_AT_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTER_TAKE_ITEM",
+              "MF_MONSTER_FLEEING"
+            ],
+            "literal": "{DF_LUMINESCENT_FUNGUS, ALTAR_INERT,DUNGEON,{1,1},  1,          0,          -1,         0,              2,              HORDE_MACHINE_THIEF,0,          (MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 42,
+      "id": "key_burning_grass",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 42,
+            "index": 0,
+            "line": 454,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{DF_SMALL_DEAD_GRASS,ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},1,   0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 45,
+      "id": "key_guardian_gauntlet",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 45,
+            "index": 0,
+            "line": 472,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 45,
+            "index": 2,
+            "line": 474,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {3,6},      3,          0,          -1,         MK_GUARDIAN,    2,              0,          0,          (MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 45,
+            "index": 3,
+            "line": 475,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,2},      1,          0,          -1,         MK_WINGED_GUARDIAN,2,           0,          0,          (MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 46,
+      "id": "key_guardian_corridor",
+      "frequency": 5,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 46,
+            "index": 0,
+            "line": 480,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_GUARDIAN,    3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 46,
+            "index": 1,
+            "line": 481,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_WINGED_GUARDIAN,3,           0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 47,
+      "id": "key_sacrifice_altar",
+      "frequency": 12,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "producers": [
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 47,
+            "index": 3,
+            "line": 492,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NOT_IN_HALLWAY",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         SACRIFICE_CAGE_DORMANT,DUNGEON,{1,1},   1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 47,
+            "index": 5,
+            "line": 494,
+            "flags": [
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         0,              2,              (HORDE_SACRIFICE_TARGET), 0, (MF_BUILD_ANYWHERE_ON_LEVEL | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 49,
+      "id": "key_beckoning_obstacle",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 49,
+            "index": 0,
+            "line": 501,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN | MF_IN_VIEW_OF_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 49,
+            "index": 1,
+            "line": 502,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_MIRRORED_TOTEM,3,            0,          0,          (MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 53,
+      "id": "key_zombie_crypt",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 5,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            6,
+            7
+          ],
+          "literal": {
+            "ce": 53,
+            "index": 5,
+            "line": 528,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 7,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 53,
+            "index": 7,
+            "line": 530,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_MONSTERS_DORMANT"
+            ],
+            "literal": "{0,         COFFIN_CLOSED, DUNGEON,     {6,8},      1,          0,          0,          MK_ZOMBIE,      2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 55,
+      "id": "key_worm_tunnels",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_MAXIMIZE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 55,
+            "index": 0,
+            "line": 539,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "literal": {
+            "ce": 55,
+            "index": 1,
+            "line": 540,
+            "flags": [],
+            "literal": "{0,         0,          0,              {3,6},      3,          0,          -1,         MK_UNDERWORM,   1,              0,          0,          0},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 57,
+      "id": "key_boss_secret_room",
+      "frequency": 18,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_LIQUIDS"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 57,
+            "index": 2,
+            "line": 553,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_MONSTER_TAKE_ITEM",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTER_SLEEPING"
+            ],
+            "literal": "{DF_BONES,  0,          0,              {1,1},      1,          0,          -1,         0,              1,              HORDE_MACHINE_BOSS, 0,  (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_MONSTER_TAKE_ITEM | MF_GENERATE_HORDE | MF_MONSTER_SLEEPING)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 59,
+      "id": "ce_59_shrine",
+      "frequency": 0,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 59,
+            "index": 2,
+            "line": 565,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         BONES,      SURFACE,        {1, 1},     1,          (POTION|SCROLL|WEAPON|ARMOR|RING),-1,0, 2,              0,          0,          (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 71,
+      "id": "ce_71_sentinels",
+      "frequency": 0,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1
+          ],
+          "literal": {
+            "ce": 71,
+            "index": 0,
+            "line": 619,
+            "flags": [
+              "MF_NOT_IN_HALLWAY",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         STATUE_INERT,DUNGEON,       {3, 3},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING | MF_IN_VIEW_OF_ORIGIN)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 31,
+      "id": "ce_31_environment",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_LIQUIDS",
+        "BP_PURGE_PATHING_BLOCKERS",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 31,
+            "index": 1,
+            "line": 380,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              5,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            3
+          ],
+          "literal": {
+            "ce": 31,
+            "index": 2,
+            "line": 381,
+            "flags": [
+              "MF_GENERATE_HORDE"
+            ],
+            "literal": "{DF_SPREADABLE_WATER_POOL,0,0,          {2, 4},     1,          0,          -1,         0,              5,              HORDE_MACHINE_WATER_MONSTER,0,MF_GENERATE_HORDE},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 34,
+      "id": "ce_34_environment",
+      "frequency": 13,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_TREAT_AS_BLOCKING"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2
+          ],
+          "literal": {
+            "ce": 34,
+            "index": 1,
+            "line": 397,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},  1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 36,
+      "id": "ce_36_environment",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 36,
+            "index": 0,
+            "line": 406,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            6
+          ],
+          "literal": {
+            "ce": 36,
+            "index": 5,
+            "line": 411,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_LEVITATION, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 37,
+      "id": "ce_37_environment",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 37,
+            "index": 0,
+            "line": 415,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         MK_SPIDER,      3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_IN_VIEW_OF_ORIGIN)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 38,
+      "id": "ce_38_environment",
+      "frequency": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 38,
+            "index": 0,
+            "line": 422,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            5,
+            6
+          ],
+          "literal": {
+            "ce": 38,
+            "index": 4,
+            "line": 426,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_LEVITATION, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            6
+          ],
+          "literal": {
+            "ce": 38,
+            "index": 5,
+            "line": 427,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_FIRE_IMMUNITY, 0,    1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 39,
+      "id": "ce_39_environment",
+      "frequency": 3,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR",
+        "BP_TREAT_AS_BLOCKING"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 39,
+            "index": 0,
+            "line": 431,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_BUILD_AT_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4
+          ],
+          "literal": {
+            "ce": 39,
+            "index": 3,
+            "line": 434,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_LEVITATION, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 39,
+            "index": 4,
+            "line": 435,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY",
+              "MF_ALTERNATIVE"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_FIRE_IMMUNITY, 0,    1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 44,
+      "id": "ce_44_environment",
+      "frequency": 8,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_INTERIOR",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 44,
+            "index": 1,
+            "line": 467,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_MONSTER_TAKE_ITEM"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_GUARDIAN,    2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTER_TAKE_ITEM)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 65,
+      "id": "ce_65_environment",
+      "frequency": 0,
+      "flags": [
+        "BP_REQUIRE_BLOCKING",
+        "BP_OPEN_INTERIOR",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 3,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 65,
+            "index": 3,
+            "line": 594,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         TURRET_DORMANT,DUNGEON,     {1, 2},     1,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 66,
+      "id": "ce_66_environment",
+      "frequency": 0,
+      "flags": [
+        "BP_REQUIRE_BLOCKING",
+        "BP_OPEN_INTERIOR",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 66,
+            "index": 2,
+            "line": 599,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_IN_VIEW_OF_ORIGIN"
+            ],
+            "literal": "{0,         TURRET_DORMANT,DUNGEON,     {1, 2},     1,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    },
+    {
+      "ce": 32,
+      "id": "key_fire_trap_room",
+      "frequency": 6,
+      "flags": [
+        "BP_ROOM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_LIQUIDS",
+        "BP_PURGE_PATHING_BLOCKERS",
+        "BP_ADOPT_ITEM"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "literal": {
+            "ce": 32,
+            "index": 0,
+            "line": 385,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            4
+          ],
+          "literal": {
+            "ce": 32,
+            "index": 3,
+            "line": 388,
+            "flags": [
+              "MF_GENERATE_HORDE"
+            ],
+            "literal": "{DF_DEEP_WATER_POOL,0,  0,              {4, 4},     1,          0,          -1,         0,              4,              HORDE_MACHINE_WATER_MONSTER,0,MF_GENERATE_HORDE},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 51,
+      "id": "key_mud_pit",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_PURGE_LIQUIDS"
+      ],
+      "producers": [
+        {
+          "feature": 1,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2
+          ],
+          "literal": {
+            "ce": 51,
+            "index": 1,
+            "line": 512,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{DF_SWAMP,  ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 51,
+            "index": 2,
+            "line": 513,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT"
+            ],
+            "literal": "{DF_MUD_DORMANT,0,      0,              {3,4},      3,          0,          -1,         0,              1,              HORDE_MACHINE_MUD,0,    (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 52,
+      "id": "key_electric_crystals",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_PURGE_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4
+          ],
+          "literal": {
+            "ce": 52,
+            "index": 3,
+            "line": 519,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_IMPREGNABLE",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 52,
+            "index": 4,
+            "line": 520,
+            "flags": [
+              "MF_BUILD_IN_WALLS",
+              "MF_MONSTERS_DORMANT",
+              "MF_IMPREGNABLE"
+            ],
+            "literal": "{0,         TURRET_LEVER, DUNGEON,      {7,9},      4,          0,          -1,         MK_SPARK_TURRET,3,              0,          0,          (MF_BUILD_IN_WALLS | MF_MONSTERS_DORMANT | MF_IMPREGNABLE)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 54,
+      "id": "key_haunted_house",
+      "frequency": 10,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 54,
+            "index": 0,
+            "line": 533,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": true,
+          "dormant": true,
+          "laterFeatures": [
+            3
+          ],
+          "literal": {
+            "ce": 54,
+            "index": 2,
+            "line": 535,
+            "flags": [
+              "MF_MONSTERS_DORMANT"
+            ],
+            "literal": "{0,         DARK_FLOOR_DORMANT,DUNGEON, {4,5},      4,          0,          -1,         MK_PHANTOM,     1,              0,          0,          (MF_MONSTERS_DORMANT)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 13,
+      "id": "reward_goblin_warren",
+      "frequency": 15,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_MAXIMIZE_INTERIOR",
+        "BP_REDESIGN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "literal": {
+            "ce": 13,
+            "index": 3,
+            "line": 269,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_MONSTER_SLEEPING",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (SCROLL),   SCROLL_ENCHANTING, MK_GOBLIN_CHIEFTAN, 2,   0,          (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 4,
+          "ground": true,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            5,
+            6,
+            7,
+            8
+          ],
+          "literal": {
+            "ce": 13,
+            "index": 4,
+            "line": 270,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_MONSTER_SLEEPING",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         PEDESTAL,   DUNGEON,        {1,1},      1,          (POTION),   POTION_LIFE, MK_GOBLIN_CHIEFTAN, 2,         0,          (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_MONSTER_SLEEPING | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            6,
+            7,
+            8
+          ],
+          "literal": {
+            "ce": 13,
+            "index": 5,
+            "line": 271,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_NOT_IN_HALLWAY",
+              "MF_MONSTER_SLEEPING"
+            ],
+            "literal": "{0,         0,          0,              {5, 8},     5,          0,          -1,         0,              2,              HORDE_MACHINE_GOBLIN_WARREN,    0,  (MF_GENERATE_HORDE | MF_NOT_IN_HALLWAY | MF_MONSTER_SLEEPING)},"
+          }
+        },
+        {
+          "feature": 6,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            7,
+            8
+          ],
+          "literal": {
+            "ce": 13,
+            "index": 6,
+            "line": 272,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         0,          0,              {2,3},      2,          (WEAPON|ARMOR), -1,     0,              1,              0,          0,          (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 14,
+      "id": "reward_sentinel_sanctuary",
+      "frequency": 15,
+      "flags": [
+        "BP_ROOM",
+        "BP_REWARD",
+        "BP_MAXIMIZE_INTERIOR",
+        "BP_REDESIGN_INTERIOR"
+      ],
+      "producers": [
+        {
+          "feature": 2,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 2,
+            "line": 279,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         PEDESTAL, DUNGEON, {1,1},   1,          (SCROLL),   SCROLL_ENCHANTING,0,    2,              0,              (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 3,
+            "line": 280,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY",
+              "MF_FAR_FROM_ORIGIN"
+            ],
+            "literal": "{0,         PEDESTAL, DUNGEON, {1,1},   1,          (POTION),   POTION_LIFE,0,          2,              0,              (ITEM_KIND_AUTO_ID),    (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+          }
+        },
+        {
+          "feature": 5,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            6,
+            7,
+            8,
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 5,
+            "line": 282,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         STATUE_INERT,DUNGEON,       {3, 5},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+          }
+        },
+        {
+          "feature": 6,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            7,
+            8,
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 6,
+            "line": 283,
+            "flags": [
+              "MF_BUILD_IN_WALLS"
+            ],
+            "literal": "{0,         STATUE_INERT,DUNGEON,       {10, 15},   8,          0,          -1,         MK_SENTINEL,    2,              0,          0,          MF_BUILD_IN_WALLS},"
+          }
+        },
+        {
+          "feature": 7,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            8,
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 7,
+            "line": 284,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         0,          0,              {4, 6},     4,          0,          -1,         MK_GUARDIAN,    1,              0,          0,          MF_TREAT_AS_BLOCKING},"
+          }
+        },
+        {
+          "feature": 8,
+          "ground": false,
+          "monster": true,
+          "dormant": false,
+          "laterFeatures": [
+            9
+          ],
+          "literal": {
+            "ce": 14,
+            "index": 8,
+            "line": 285,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING"
+            ],
+            "literal": "{0,         0,          0,              {0, 2},     0,          0,          -1,         MK_WINGED_GUARDIAN, 1,          0,          0,          MF_TREAT_AS_BLOCKING},"
+          }
+        },
+        {
+          "feature": 9,
+          "ground": true,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 14,
+            "index": 9,
+            "line": 286,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ],
+            "literal": "{0,         0,          0,              {2,3},      2,          (SCROLL | POTION), -1,  0,              1,              0,          0,          (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": false
+    },
+    {
+      "ce": 8,
+      "id": "reward_outsourced_item",
+      "frequency": 20,
+      "flags": [
+        "BP_REWARD",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "producers": [
+        {
+          "feature": 0,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            1,
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 8,
+            "index": 0,
+            "line": 235,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_REQUIRE_GOOD_RUNIC",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          (WEAPON),   -1,         0,              0,              0,          (ITEM_IDENTIFIED | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_NO_THROWING_WEAPONS | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+          }
+        },
+        {
+          "feature": 1,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            2,
+            3
+          ],
+          "literal": {
+            "ce": 8,
+            "index": 1,
+            "line": 236,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_REQUIRE_GOOD_RUNIC",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ],
+            "literal": "{0,         0,          0,              {1,1},      1,          (ARMOR),    -1,         0,              0,              0,          (ITEM_IDENTIFIED | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+          }
+        },
+        {
+          "feature": 2,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [
+            3
+          ],
+          "literal": {
+            "ce": 8,
+            "index": 2,
+            "line": 237,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ],
+            "literal": "{0,         0,          0,              {2,2},      2,          (STAFF),    -1,         0,              0,              0,          (ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+          }
+        },
+        {
+          "feature": 3,
+          "ground": false,
+          "monster": false,
+          "dormant": false,
+          "laterFeatures": [],
+          "literal": {
+            "ce": 8,
+            "index": 3,
+            "line": 238,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ],
+            "literal": "{0,         0,          0,              {1,2},      1,          (CHARM),    -1,         0,              0,              0,          (ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)}}},"
+          }
+        }
+      ],
+      "vestibuleFeatures": [],
+      "clearMembership": true
+    }
+  ]
+}

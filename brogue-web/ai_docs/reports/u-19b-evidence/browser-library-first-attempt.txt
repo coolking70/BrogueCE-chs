@@ -1,0 +1,34 @@
+CE 3 search true pickup true
+CE 4 search true pickup true
+CE 5 search true pickup true
+CE 10 search true pickup true
+CE 1 search true pickup true
+CE 2 search true pickup true
+CE 15 search true pickup true
+CE 16 search true pickup true
+CE 17 search true pickup null
+CE 19 search true pickup true
+CE 20 search true pickup true
+CE 23 search true pickup null
+CE 18 search true pickup null
+CE 22 search true pickup null
+CE 24 search true pickup null
+CE 25 search true pickup null
+CE 40 search true pickup null
+CE 35 search true pickup null
+CE 27 search true pickup null
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: CE26 item pickup did not resolve
+    at file:///Users/coolking70/.codex/worktrees/e110/brogue/brogue-web/scripts/u19b-browser.mjs:22:4 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

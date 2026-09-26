@@ -506,7 +506,7 @@ export class Architect {
             if (!built) return false;
             this.machineResults.push(...flattenAutogen(built));
             return true;
-        });
+        }, (x, y) => bpEngine.hasPendingOccupant(x, y));
 
         // C-3：finishDoors（CE digDungeon 第 13 步，Architect.c:2971）——
         // 孤儿门移除 + 密门升级。机器内部的门由 Cell.machineNumber 豁免

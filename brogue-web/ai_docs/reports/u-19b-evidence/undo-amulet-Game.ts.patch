@@ -1,0 +1,21 @@
+--- Game.ts
++++ Game.ts
+@@ -955,6 +955,7 @@
+             if (category === 'WAND') return ItemLoader.spawnWand(id, x, y);
+             if (category === 'RING') return ItemLoader.spawnMachineRing(id, x, y);
+             if (category === 'CHARM') return ItemLoader.spawnMachineCharm(id, x, y);
++            if (category === 'AMULET') return ItemLoader.spawnAmulet(id, x, y);
+             return null;
+         }
+ 
+@@ -1040,6 +1041,10 @@
+                 const pick = ItemLoader.chooseKind(charms.map(c => c.frequency ?? 0));
+                 return ItemLoader.spawnMachineCharm(charms[pick]!.id, x, y);
+             }
++            case 'AMULET':
++                // CE Items.c:379: sole kind 0, identified, no kind/quality roll.
++                // CE15 uses AMULET/-1 through the same deferred machine path.
++                return ItemLoader.spawnAmulet('amulet_of_yendor', x, y);
+             case 'KEY':
+                 // B-4b：钥匙由锁具驱动（数量 == 锁数，见 machineResults 循环），
+                 // 类别级 KEY feature 不再发无绑定钥匙。显式指定 id 的 KEY 物品

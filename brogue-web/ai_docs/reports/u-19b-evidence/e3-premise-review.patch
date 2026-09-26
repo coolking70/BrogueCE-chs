@@ -1,0 +1,35 @@
+diff --git a/brogue-web/src/test/v_2b_4_altars.test.ts b/brogue-web/src/test/v_2b_4_altars.test.ts
+index 8bb4046..2dcb3ea 100644
+--- a/brogue-web/src/test/v_2b_4_altars.test.ts
++++ b/brogue-web/src/test/v_2b_4_altars.test.ts
+@@ -739,7 +739,7 @@ describe('V-2b-4 E：15 号护符双轨——实测数据与结论', () => {
+         expect([...hist.keys()].filter(k => k > 1), '出现多枚护符 = 双轨叠加（本轮要排除的故障）').toEqual([]);
+     });
+ 
+-    it('E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符', () => {
++    it('E3 U19b：AMULET 请求可实化；frequency=0 与自然唯一性仍由 E1/E2 守卫', () => {
+         const game = createHeadlessGame(777);
+         const priv = game as unknown as {
+             spawnBlueprintItem: (c: string, id: string | undefined, x: number, y: number, d: number) => unknown;
+@@ -747,12 +747,16 @@ describe('V-2b-4 E：15 号护符双轨——实测数据与结论', () => {
+         const spawn = priv.spawnBlueprintItem.bind(game);
+         const x = game.player.loc.x;
+         const y = game.player.loc.y;
+-        // AMULET 是 CE 的合法物品类别（v_1a 的 CE_CATEGORIES 集合含它），
+-        // 但 web 的 spawnBlueprintItem 目前没有 AMULET 分支。
+-        // ★ 留痕：给 AMULET 接上生成分支的那一轮，应把本断言翻转为"返回非空"，
+-        //   并在同轮把 Game.populateLevel 的 D26 直投退位（见报告 §4 的缺口①）。
++        // U19b: old null assertion passed on exact HEAD and failed solely when
++        // the CE Items.c:379 AMULET branch was restored. The missing-branch
++        // premise is obsolete; keep E1/E2/E4 intact because CE15 remains freq=0
++        // and natural D26 still needs its existing fallback. Full CE15 pickup /
++        // statue activation is independently exercised in u_19b_pending_occupancy.
+         expect(spawn('AMULET', undefined, x, y, 26),
+-            'AMULET 类别尚无生成分支——这正是"直投不能退位"的第二重原因').toBeNull();
++            'CE 合法护符请求必须按目标坐标生成已鉴定的唯一种类').toMatchObject({
++                category: ItemCategory.AMULET, identityId: 'amulet_of_yendor',
++                identified: true, loc: { x, y },
++            });
+         // 越界守卫：CE 别的类别**不能**被连坐（删分支式的"修法"在此翻红）。
+         expect(spawn('POTION', undefined, x, y, 26), 'POTION 分支必须仍在').not.toBeNull();
+     });

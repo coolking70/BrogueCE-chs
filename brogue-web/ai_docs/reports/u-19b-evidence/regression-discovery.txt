@@ -1,0 +1,47 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=6 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-19b-evidence/regression-discovery.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e110/brogue/brogue-web
+
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=477，含新环门层=126/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67418 违例=65601
+[c_0] diagonal：门位=1000 违例=406
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=633 漏同步=803（52 层合计）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控
+[c_0] B2 IN_LOOP 合计=19756/118547（16.7%），单层峰值=35.1%
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）
+[c_0] A6 生产=171 正确对照散布=[171, 173]（52 层合计，K=6）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）
+[c_0] C1 新开门=188，真环边=188，桥=0
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙
+[c_0] C2 work-grid 割点率：生产=6.5% 树状对照=9.0%（52 层平均）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）
+[c_0] C3 末态割点=1856/37048（平均 5.0%），单层 p95=11.9%，峰值（观测）=16.5%
+

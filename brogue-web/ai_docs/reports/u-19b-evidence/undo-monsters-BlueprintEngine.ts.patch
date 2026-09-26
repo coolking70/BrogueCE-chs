@@ -1,0 +1,11 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -769,7 +769,7 @@
+      * Dormant monsters and carried/outsourced source items do not occupy floor.
+      */
+     public hasPendingOccupant(x: number, y: number): boolean {
+-        return this.pendingItems.has(cellKey(x, y));
++        return this.pendingItems.has(cellKey(x, y)) || this.pendingMonsters.has(cellKey(x, y));
+     }
+ 
+     /**

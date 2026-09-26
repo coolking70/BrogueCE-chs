@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e110/brogue/brogue-web
+
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 E：15 号护符双轨——实测数据与结论 > E3 U19b：AMULET 请求可实化；frequency=0 与自然唯一性仍由 E1/E2 守卫
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/v_2b_4_altars.test.ts (36 tests | 1 failed | 35 skipped) 571ms
+     × E3 U19b：AMULET 请求可实化；frequency=0 与自然唯一性仍由 E1/E2 守卫 570ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/v_2b_4_altars.test.ts > V-2b-4 E：15 号护符双轨——实测数据与结论 > E3 U19b：AMULET 请求可实化；frequency=0 与自然唯一性仍由 E1/E2 守卫
+AssertionError: CE 合法护符请求必须按目标坐标生成已鉴定的唯一种类: expected null to match object { category: 11, …(3) }
+
+- Expected:
+{
+  "category": 11,
+  "identified": true,
+  "identityId": "amulet_of_yendor",
+  "loc": {
+    "x": 38,
+    "y": 26,
+  },
+}
+
++ Received:
+null
+
+ ❯ src/test/v_2b_4_altars.test.ts:756:43
+    754|         // statue activation is independently exercised in u_19b_pendi…
+    755|         expect(spawn('AMULET', undefined, x, y, 26),
+    756|             'CE 合法护符请求必须按目标坐标生成已鉴定的唯一种类').toMatchObject({
+       |                                           ^
+    757|                 category: ItemCategory.AMULET, identityId: 'amulet_of_…
+    758|                 identified: true, loc: { x, y },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 skipped (36)
+   Start at  11:55:03
+   Duration  1.77s (transform 636ms, setup 0ms, import 1.07s, tests 571ms, environment 0ms)
+

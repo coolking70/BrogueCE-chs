@@ -1,0 +1,90 @@
+{
+  variant: 's0',
+  exit: 1,
+  passed: 8,
+  failed: 10,
+  failures: [
+    'matches 64 compiled CE room/vestibule/candidate truth-table rows (five entity flags, two positions)',
+    'U19b CE-specific pending occupancy consumers vestibule aborts, rather than skipping, a real pending ground item at {"x":10,"y":10}',
+    'U19b CE-specific pending occupancy consumers vestibule aborts, rather than skipping, a real pending ground item at {"x":11,"y":10}',
+    'U19b CE-specific pending occupancy consumers room flood checks pending HAS_ITEM even outside its descending choke shell',
+    'U19b CE-specific pending occupancy consumers Architect second autogenerator pass sees live pending item after BP_NO_INTERIOR_FLAG',
+    'U19b CE-specific pending occupancy consumers Architect second autogenerator pass sees live pending monster after BP_NO_INTERIOR_FLAG',
+    'U19b CE-specific pending occupancy consumers parent item precedes child selection, preventing a same-cell double product',
+    'U19b CE-specific pending occupancy consumers a committed child item is visible to later parent features; failed parent restores all child reservations',
+    'U19b CE-specific pending occupancy consumers outsourced item reserves only its adopted destination, survives child commit, and blocks a later vestibule',
+    'U19b AMULET request materialization CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once'
+  ]
+}
+{
+  variant: 'no-vestibule',
+  exit: 1,
+  passed: 12,
+  failed: 6,
+  failures: [
+    'matches 64 compiled CE room/vestibule/candidate truth-table rows (five entity flags, two positions)',
+    'U19b CE-specific pending occupancy consumers vestibule aborts, rather than skipping, a real pending ground item at {"x":10,"y":10}',
+    'U19b CE-specific pending occupancy consumers vestibule aborts, rather than skipping, a real pending ground item at {"x":11,"y":10}',
+    'U19b CE-specific pending occupancy consumers parent item precedes child selection, preventing a same-cell double product',
+    'U19b CE-specific pending occupancy consumers a committed child item is visible to later parent features; failed parent restores all child reservations',
+    'U19b CE-specific pending occupancy consumers outsourced item reserves only its adopted destination, survives child commit, and blocks a later vestibule'
+  ]
+}
+{
+  variant: 'no-room',
+  exit: 1,
+  passed: 17,
+  failed: 1,
+  failures: [
+    'U19b CE-specific pending occupancy consumers room flood checks pending HAS_ITEM even outside its descending choke shell'
+  ]
+}
+{
+  variant: 'no-item-autogen',
+  exit: 1,
+  passed: 17,
+  failed: 1,
+  failures: [
+    'U19b CE-specific pending occupancy consumers Architect second autogenerator pass sees live pending item after BP_NO_INTERIOR_FLAG'
+  ]
+}
+{
+  variant: 'no-monster-autogen',
+  exit: 1,
+  passed: 17,
+  failed: 1,
+  failures: [
+    'U19b CE-specific pending occupancy consumers Architect second autogenerator pass sees live pending monster after BP_NO_INTERIOR_FLAG'
+  ]
+}
+{
+  variant: 'no-monster-area',
+  exit: 1,
+  passed: 15,
+  failed: 3,
+  failures: [
+    'U19b CE-specific pending occupancy consumers vestibule does not invent a HAS_MONSTER/HAS_DORMANT/carried-item ban: active',
+    'U19b CE-specific pending occupancy consumers area sees real active false requests after membership is cleared',
+    'U19b CE-specific pending occupancy consumers area sees real active true requests after membership is cleared'
+  ]
+}
+{
+  variant: 'no-rollback',
+  exit: 1,
+  passed: 15,
+  failed: 3,
+  failures: [
+    'U19b CE-specific pending occupancy consumers parent item precedes child selection, preventing a same-cell double product',
+    'U19b CE-specific pending occupancy consumers a committed child item is visible to later parent features; failed parent restores all child reservations',
+    'U19b CE-specific pending occupancy consumers failed child retries leak neither item nor active monster reservations'
+  ]
+}
+{
+  variant: 'no-amulet',
+  exit: 1,
+  passed: 17,
+  failed: 1,
+  failures: [
+    'U19b AMULET request materialization CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once'
+  ]
+}

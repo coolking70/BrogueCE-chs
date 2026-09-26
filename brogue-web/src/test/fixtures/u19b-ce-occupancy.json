@@ -1,0 +1,466 @@
+{
+  "file": "../BrogueCE-master/src/brogue/Architect.c",
+  "sha256": "102add30e7bdf3964e173efa1c84befd8b46fa04c8a2d0d73e651c2e78da6912",
+  "functions": {
+    "cellIsFeatureCandidate": "2d7b27a19075bb2b3adfe9766308f407ea7b801c5e8867e9871245958d080100",
+    "fillInteriorForVestibuleMachine": "6df4d8b9d160c11d2cd8f7a078f6e7b5c44f418da5bce584948d5dcc8bcaf80e",
+    "addTileToMachineInteriorAndIterate": "45a43b23abc61ad717047faac623a31d14be028f060b6a40aaf6f283e1dc4bfd"
+  },
+  "entityBits": [
+    "HAS_ITEM",
+    "HAS_MONSTER",
+    "HAS_PLAYER",
+    "HAS_STAIRS",
+    "HAS_DORMANT_MONSTER"
+  ],
+  "rows": [
+    {
+      "mask": 0,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 0,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 1,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 1,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 2,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 2,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 3,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 3,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 4,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 4,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 5,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 5,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 6,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 6,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 7,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 7,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 8,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 8,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 9,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 9,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 10,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 10,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 11,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 11,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 12,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 12,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 13,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 13,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 14,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 14,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 15,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 15,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 16,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 16,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 17,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 17,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 18,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 18,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 19,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 19,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 20,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 20,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 21,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 21,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 22,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 22,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 23,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 23,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 24,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 24,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 25,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 25,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 26,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 26,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 27,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 27,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 28,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 28,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 29,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 29,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 30,
+      "x": 10,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 30,
+      "x": 11,
+      "candidate": true,
+      "vestibule": true,
+      "room": true
+    },
+    {
+      "mask": 31,
+      "x": 10,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    },
+    {
+      "mask": 31,
+      "x": 11,
+      "candidate": true,
+      "vestibule": false,
+      "room": false
+    }
+  ]
+}

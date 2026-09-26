@@ -1,0 +1,22 @@
+--- AutoGenerator.ts
++++ AutoGenerator.ts
+@@ -644,7 +644,8 @@
+     depth: number,
+     buildAreaMachines: boolean,
+     catalog: readonly AutoGeneratorEntry[] = AUTO_GENERATOR_CATALOG,
+-    buildMachine?: (machine: number) => boolean
++    buildMachine?: (machine: number) => boolean,
++    isOccupied?: (x: number, y: number) => boolean
+ ): AutoGeneratorRunStats {
+     const stats: AutoGeneratorRunStats = {
+         buildAreaMachines,
+@@ -699,7 +700,8 @@
+             const loc = randomMatchingLocation(
+                 grid,
+                 gen.requiredDungeonFoundationType,
+-                gen.requiredLiquidFoundationType
++                gen.requiredLiquidFoundationType,
++                { isOccupied }
+             );
+             if (loc) {
+                 let builtThisInstance = false;

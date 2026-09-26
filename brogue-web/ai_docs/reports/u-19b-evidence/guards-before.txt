@@ -1,0 +1,333 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e110/brogue/brogue-web
+
+stdout | src/test/u_19b_pending_occupancy.test.ts > U19b AMULET request materialization > CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts (14 tests | 7 failed) 3631ms
+     × vestibule aborts, rather than skipping, a real pending ground item at {"x":10,"y":10} 16ms
+     × vestibule aborts, rather than skipping, a real pending ground item at {"x":11,"y":10} 4ms
+     × room flood checks pending HAS_ITEM even outside its descending choke shell 17ms
+     × parent item precedes child selection, preventing a same-cell double product 4ms
+     × a committed child item is visible to later parent features; failed parent restores all child reservations 7ms
+     × outsourced item reserves only its adopted destination, survives child commit, and blocks a later vestibule 13ms
+     × CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once 643ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > vestibule aborts, rather than skipping, a real pending ground item at {"x":10,"y":10}
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > vestibule aborts, rather than skipping, a real pending ground item at {"x":11,"y":10}
+AssertionError: expected [ { x: 10, y: 10 }, { x: 11, y: 10 } ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  {
+    "x": 10,
+    "y": 10,
+  },
+  {
+    "x": 11,
+    "y": 10,
+  },
+]
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts:33:76
+     31|   const result=apply(blueprint({flags:['BP_NO_INTERIOR_FLAG'],features…
+     32|   expect(result.itemSpawns).toHaveLength(1);expect(grid.getCell(at.x,a…
+     33|   expect(engine.fillVestibuleInterior(blueprint({roomSize:[2,2]}),orig…
+       |                                                                            ^
+     34|   expect(result.itemSpawns[0]!.pos).toEqual(at); // No relocation/dele…
+     35|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > room flood checks pending HAS_ITEM even outside its descending choke shell
+AssertionError: expected { kind: 'room', cells: [ …(2) ], …(2) } to deeply equal { kind: 'retry' }
+
+- Expected
++ Received
+
+  {
+-   "kind": "retry",
++   "cells": [
++     {
++       "x": 10,
++       "y": 10,
++     },
++     {
++       "x": 9,
++       "y": 10,
++     },
++   ],
++   "center": {
++     "x": 9,
++     "y": 10,
++   },
++   "door": {
++     "x": 10,
++     "y": 10,
++   },
++   "kind": "room",
+  }
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts:46:53
+     44|   vi.spyOn(engine,'gateSealsOnlyInterior').mockReturnValue(true);
+     45|   // The item is a neighbor, not a qualifying interior cell: CE checks…
+     46|   expect(engine.findGateRoom(blueprint(),analysis)).toEqual({kind:'ret…
+       |                                                     ^
+     47|   expect(engine.pendingItems.has(key(neighbor))).toBe(true);
+     48|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > parent item precedes child selection, preventing a same-cell double product
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts:67:52
+     65|   const products=result?flatten(result).flatMap(m=>m.itemSpawns):[];
+     66|   const positions=products.map(p=>key(p.pos));
+     67|   expect(positions.length-new Set(positions).size).toBe(0);
+       |                                                    ^
+     68|   expect(result).toBeNull();expect([...engine.pendingItems]).toEqual([…
+     69|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > a committed child item is visible to later parent features; failed parent restores all child reservations
+AssertionError: expected { blueprintId: 'pending-probe', …(12) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "blueprintId": "pending-probe",
+  "category": "thematic",
+  "cells": [
+    {
+      "x": 10,
+      "y": 10,
+    },
+  ],
+  "center": {
+    "x": 10,
+    "y": 10,
+  },
+  "door": null,
+  "featureSpawns": [
+    {
+      "featureDF": undefined,
+      "featureIndex": 0,
+      "pos": {
+        "x": 10,
+        "y": 10,
+      },
+      "terrain": undefined,
+    },
+    {
+      "featureDF": undefined,
+      "featureIndex": 1,
+      "pos": {
+        "x": 10,
+        "y": 10,
+      },
+      "terrain": undefined,
+    },
+  ],
+  "generatedItems": [],
+  "generatedKey": false,
+  "itemSpawns": [],
+  "machineNumber": 1,
+  "monsterSpawns": [],
+  "needsKey": false,
+  "subMachines": [
+    {
+      "blueprintId": "child",
+      "category": "vestibule",
+      "cells": [
+        {
+          "x": 10,
+          "y": 10,
+        },
+      ],
+      "center": {
+        "x": 10,
+        "y": 10,
+      },
+      "door": {
+        "x": 10,
+        "y": 10,
+      },
+      "featureSpawns": [
+        {
+          "featureDF": undefined,
+          "featureIndex": 0,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "terrain": undefined,
+        },
+      ],
+      "generatedItems": [
+        {
+          "category": "POTION",
+          "id": "healing",
+          "instanceId": "2:0",
+          "isAltar": false,
+          "itemQualifiers": undefined,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "priorItemIds": [],
+        },
+      ],
+      "generatedKey": false,
+      "itemSpawns": [
+        {
+          "category": "POTION",
+          "id": "healing",
+          "instanceId": "2:0",
+          "isAltar": false,
+          "itemQualifiers": undefined,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "priorItemIds": [],
+        },
+      ],
+      "machineNumber": 2,
+      "monsterSpawns": [],
+      "needsKey": false,
+      "subMachines": [],
+    },
+    {
+      "blueprintId": "child",
+      "category": "vestibule",
+      "cells": [
+        {
+          "x": 10,
+          "y": 10,
+        },
+      ],
+      "center": {
+        "x": 10,
+        "y": 10,
+      },
+      "door": {
+        "x": 10,
+        "y": 10,
+      },
+      "featureSpawns": [
+        {
+          "featureDF": undefined,
+          "featureIndex": 0,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "terrain": undefined,
+        },
+      ],
+      "generatedItems": [
+        {
+          "category": "POTION",
+          "id": "healing",
+          "instanceId": "3:0",
+          "isAltar": false,
+          "itemQualifiers": undefined,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "priorItemIds": [],
+        },
+      ],
+      "generatedKey": false,
+      "itemSpawns": [
+        {
+          "category": "POTION",
+          "id": "healing",
+          "instanceId": "3:0",
+          "isAltar": false,
+          "itemQualifiers": undefined,
+          "pos": {
+            "x": 10,
+            "y": 10,
+          },
+          "priorItemIds": [],
+        },
+      ],
+      "machineNumber": 3,
+      "monsterSpawns": [],
+      "needsKey": false,
+      "subMachines": [],
+    },
+  ],
+}
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts:75:18
+     73|   const committed=key({x:2,y:2});engine.pendingItems.add(committed);en…
+     74|   const result=engine.buildAMachine(999,[],null,origin);
+     75|   expect(result).toBeNull();expect([...engine.pendingItems]).toEqual([…
+       |                  ^
+     76|  });
+     77|  it('outsourced item reserves only its adopted destination, survives c…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b CE-specific pending occupancy consumers > outsourced item reserves only its adopted destination, survives child commit, and blocks a later vestibule
+AssertionError: expected [ { x: 11, y: 10 } ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  {
+    "x": 11,
+    "y": 10,
+  },
+]
+
+ ❯ src/test/u_19b_pending_occupancy.test.ts:88:62
+     86|   expect([...engine.pendingItems]).toEqual([key(neighbor)]);
+     87|   expect(engine.fillVestibuleInterior(blueprint(),origin)).toEqual([or…
+     88|   expect(engine.fillVestibuleInterior(blueprint(),neighbor)).toBeNull(…
+       |                                                              ^
+     89|  });
+     90|  it('failed child retries leak neither item nor active monster reserva…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/test/u_19b_pending_occupancy.test.ts > U19b AMULET request materialization > CE15 complete blueprint reaches populateLevel, then actual pickup transfers its amulet exactly once
+Error: Cannot generate machine item: AMULET/*
+ ❯ materialize src/engine/Core/Game.ts:1542:34
+    1540|                 // CE generateItem never returns null. Invalid web req…
+    1541|                 // silently publish a machine with a missing reward/re…
+    1542|                 if (!item) throw new Error(`Cannot generate machine it…
+       |                                  ^
+    1543|                 instances.set(identity, item);
+    1544|             }
+ ❯ Game.populateLevel src/engine/Core/Game.ts:1628:30
+ ❯ src/test/u_19b_pending_occupancy.test.ts:113:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 7 passed (14)
+   Start at  11:10:09
+   Duration  5.63s (transform 1.08s, setup 0ms, import 1.79s, tests 3.63s, environment 0ms)
+

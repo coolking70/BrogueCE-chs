@@ -763,6 +763,15 @@ export class BlueprintEngine {
         this.blueprints = blueprints ?? (blueprintData as BlueprintDef[]);
     }
 
+    /** CE randomMatchingLocation HAS_ITEM | HAS_MONSTER during construction.
+     * Shared with the second autogenerator pass; queries the live transaction,
+     * including children and rollback. Stairs/player are placed after machines.
+     * Dormant monsters and carried/outsourced source items do not occupy floor.
+     */
+    public hasPendingOccupant(x: number, y: number): boolean {
+        return this.pendingItems.has(cellKey(x, y)) || this.pendingMonsters.has(cellKey(x, y));
+    }
+
     /**
      * Main entry point: build all machines for the current level.
      * Returns an array of MachineResult for Game.ts to populate with items/monsters.
@@ -1046,7 +1055,8 @@ export class BlueprintEngine {
         if (candidates.length === 0) return { kind: 'noCandidates' }; // CE 1108-1122：无合格门位，放弃该蓝图
 
         const gate = candidates[rng.randRange(0, candidates.length - 1)]!;
-        const cells = mapMachineInterior(this.grid, analysis, gate);
+        const cells = mapMachineInterior(this.grid, analysis, gate,
+            (x, y) => this.pendingItems.has(cellKey(x, y)));
         if (!cells) return { kind: 'retry' };
         if (!this.gateSealsOnlyInterior(gate, cells)) return { kind: 'retry' }; // 会误封别处 → 弃用该门位
 
@@ -1947,12 +1957,10 @@ export class BlueprintEngine {
      * 4 向——CE dijkstraScan(..., false)），目标尺寸 rand_range(roomSize)，
      * 按"距离 = k"的外壳序（sCols/sRows 洗牌）收集内部格。
      *
-     * 与 CE 的两处既存差异（本轮只改区域路径）：
-     *   - CE :706-710 的 HAS_ITEM 中止：前厅仍未读生成期物品占用；本轮
-     *     pendingItems 仅接区域，前厅消费登记待补，不再称“无从触发”；
-     *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
-     *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
-     *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
+     * U19b：CE :712 的 HAS_ITEM 读取已提交及当前父/子机器的地面请求；
+     * 吞入物品即整次失败，不能跳过该格另选。这里不检查 HAS_MONSTER、
+     * HAS_PLAYER 或 HAS_STAIRS；它们不是 CE 前厅的否决条件。
+     * 代价使用 U18a 的 genericPathCost（CE populateGenericCostMap）。
      * V-2b-9b → V-2b-9e 留痕反转：共用 blocking 判据已接到区域路径，
      * 34/39 的 TREAT 以及 autoGen 强制 58 现在有实际消费者；“零活载体”
      * 登记已过期。前厅仍无携带该旗标的目录项，65/66 保持原 freq=0。
@@ -1991,7 +1999,7 @@ export class BlueprintEngine {
                     if (cells.length >= goal) break;
                     if (dist[x]![y] === k) {
                         cells.push({ x, y });
-                        // CE :706-710 的 HAS_ITEM 尚未接前厅（见头注的有效缺口登记）。
+                        if (this.pendingItems.has(cellKey(x, y))) return null;
                     }
                 }
             }
@@ -2378,6 +2386,9 @@ export class BlueprintEngine {
             return false;
         }
 
+        // U19b CE audit: no HAS_ITEM/HAS_MONSTER/HAS_PLAYER/HAS_STAIRS gate
+        // exists here. Personal space and BUILD_AT_ORIGIN deliberately permit
+        // terrain/item/monster overlays; entity occupancy belongs to site selection.
         // （CE :526-529 occupied——web 的 used/struck 由调用方先行排除，口径
         // 一致：usedCells = center/door 预留 + personalSpace + 已落格。）
         // CE :531-535. BUILD_AT_ORIGIN already returned above, as in CE.
@@ -2477,8 +2488,9 @@ export class BlueprintEngine {
  *   chokeMap[邻] <= chokeMap[当前]——只往"被堵住后同样封死"的方向长，
  *   因此内部恰好是门后那块死角，绝不会漫进通往关卡其余部分的通路
  * （通路格的 chokeMap 是整片外侧区域的大小或 30000，恒大于门的死角值）。
- * CE 的中止条件里 HAS_ITEM 一支在 web 不成立（机器阶段物品尚未落地，
- * 只有 MachineResult 指令），"触及其他机器即放弃"一支对应 machineNumber
+ * U19b：HAS_ITEM 由调用方提供地面请求占用（物品仍在 populateLevel 实化）；
+ * 邻格检查先于 chokeMap/已访问检查，不能仅检查最终 interior。
+ * "触及其他机器即放弃"一支对应 machineNumber
  * ——web 已建机器的门格在新鲜分析里不是 IS_GATE_SITE（已从 passMap 剔除），
  * 故 CE 的"非门位机器格"豁免不会出现，统一为"触及任何机器格即放弃"。
  * CE 递归实现，这里用显式栈：扩展集是"沿非递增 chokeMap 路径可达格"，
@@ -2488,7 +2500,8 @@ export class BlueprintEngine {
 export function mapMachineInterior(
     grid: Grid,
     analysis: ChokeAnalysis,
-    gate: Pos
+    gate: Pos,
+    hasItem: (x: number, y: number) => boolean = () => false
 ): Pos[] | null {
     const key = (x: number, y: number): number => y * DCOLS + x;
     const interior = new Set<number>([key(gate.x, gate.y)]);
@@ -2499,6 +2512,7 @@ export function mapMachineInterior(
             const nx = cur.x + dx!;
             const ny = cur.y + dy!;
             if (nx < 0 || nx >= DCOLS || ny < 0 || ny >= DROWS) continue;
+            if (hasItem(nx, ny)) return null; // CE Architect.c:410, before the choke bound.
             if ((grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) return null; // CE 410-414
             const nk = key(nx, ny);
             if (interior.has(nk)) continue;

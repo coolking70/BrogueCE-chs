@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e110/brogue/brogue-web
+
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 E：15 号护符双轨——实测数据与结论 > E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/v_2b_4_altars.test.ts (36 tests | 1 failed | 35 skipped) 1058ms
+     × E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符 1056ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/v_2b_4_altars.test.ts > V-2b-4 E：15 号护符双轨——实测数据与结论 > E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符
+AssertionError: AMULET 类别尚无生成分支——这正是"直投不能退位"的第二重原因: expected Item{ spawnTurnNumber: +0, …(40) } to be null
+
+- Expected:
+null
+
++ Received:
+Item {
+  "arcanaInstanceVersion": undefined,
+  "armor": undefined,
+  "canBeIdentified": false,
+  "category": 11,
+  "char": ",",
+  "charges": undefined,
+  "clumping": undefined,
+  "color": 16766720,
+  "consumableId": undefined,
+  "cooldownRemaining": undefined,
+  "cooldownTurns": undefined,
+  "damage": undefined,
+  "description": undefined,
+  "enchantment": 0,
+  "flags": undefined,
+  "id": 32,
+  "identified": true,
+  "identityId": "amulet_of_yendor",
+  "inventoryLetter": undefined,
+  "isCursed": false,
+  "isProtected": false,
+  "keyLoc": [],
+  "loc": {
+    "x": 38,
+    "y": 26,
+  },
+  "magicDetected": false,
+  "maxCharges": undefined,
+  "maxChargesKnown": false,
+  "name": "Amulet of Yendor",
+  "originDepth": undefined,
+  "quantity": 1,
+  "quiverNumber": undefined,
+  "rechargeCounter": undefined,
+  "rechargeTurns": undefined,
+  "runicKnown": false,
+  "runicType": undefined,
+  "spawnTurnNumber": 0,
+  "staffRechargeRemaining": undefined,
+  "strengthRequired": undefined,
+  "timesEnchanted": 0,
+  "timesUsed": undefined,
+  "vorpalEnemy": undefined,
+  "weight": 1,
+}
+
+ ❯ src/test/v_2b_4_altars.test.ts:755:51
+    753|         //   并在同轮把 Game.populateLevel 的 D26 直投退位（见报告 §4 的缺口①）。
+    754|         expect(spawn('AMULET', undefined, x, y, 26),
+    755|             'AMULET 类别尚无生成分支——这正是"直投不能退位"的第二重原因').toBeNull();
+       |                                                   ^
+    756|         // 越界守卫：CE 别的类别**不能**被连坐（删分支式的"修法"在此翻红）。
+    757|         expect(spawn('POTION', undefined, x, y, 26), 'POTION 分支必须仍在').…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 skipped (36)
+   Start at  11:54:01
+   Duration  2.68s (transform 852ms, setup 0ms, import 1.45s, tests 1.06s, environment 0ms)
+
