@@ -46,11 +46,11 @@ import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
+import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, invokeCharm } from '../Items/ItemUseCoordinator';
 import { endgameScore, lumenstoneCount } from './Endgame';
 import { saveHighScore } from './HighScores';
 import { ItemLoader } from '../Items/ItemLoader';
-import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
-import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
+import { charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { ringBonus } from '../Items/RingBonuses';
 import { rng, Random, RNGType } from '../Random';
@@ -61,7 +61,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MutationData } from '../../entities/Monster';
 import { MonsterMode, MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
+import { ensureEntityIdAbove, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -4134,7 +4134,7 @@ export class Game {
         if (this.gateMalevolentUse(item, confirmed)) return;
 
         // Remove from inventory
-        if (this.player.inventory.consumeOne(item)) {
+        if (consumeForUse(this.player, item)) {
             const trueId = (item as any).consumableId;
             const data = ItemLoader.potions.find(p => p.id === trueId);
 
@@ -4295,8 +4295,7 @@ export class Game {
 
             this.needsRender = true;
             // CE Items.c:7633 apply()：POTION 分支后统一 playerTurnEnded()——完整回合
-            timeSystem.currentTick += this.player.movementSpeed;
-            this.playerTurnEnded();
+            finishItemUse(this.player, () => this.playerTurnEnded());
         }
     }
 
@@ -4342,7 +4341,7 @@ export class Game {
         // B-1c：CE Items.c:7757-7767——同款恶意品确认（读卷轴分支）。
         if (this.gateMalevolentUse(item, confirmed)) return;
 
-        if (this.player.inventory.consumeOne(item)) {
+        if (consumeForUse(this.player, item)) {
             const trueId = (item as any).consumableId;
             const data = ItemLoader.scrolls.find(s => s.id === trueId);
 
@@ -4484,8 +4483,7 @@ export class Game {
 
             this.needsRender = true;
             // CE Items.c:7633 apply()：SCROLL 分支后统一 playerTurnEnded()——完整回合
-            timeSystem.currentTick += this.player.movementSpeed;
-            this.playerTurnEnded();
+            finishItemUse(this.player, () => this.playerTurnEnded());
         }
     }
 
@@ -4509,45 +4507,11 @@ export class Game {
                 return;
             }
 
-            if (!isCharmKind(identityId)) return;
-            const duration = charmEffectDuration(identityId, item.enchantment);
-            if (identityId === 'charm_of_health') {
-                const healed = this.player.heal(charmHealing(item.enchantment), false);
-                logger.log(i18next.t('arcana.charm_health', { item: item.name, heal: healed, defaultValue: `You invoke ${item.name} and recover ${healed} HP.` }), '#66ff88');
-            } else if (identityId === 'charm_of_invisibility') {
-                this.applyTimedStatus(this.player, 'invisible', duration);
-                this.player.setStatusDuration('invisible', duration);
-                this.player.maxStatus.invisible = duration;
-                logger.log(i18next.t('arcana.charm_invisibility', { item: item.name, defaultValue: `You invoke ${item.name} and vanish from sight.` }), '#99ccff');
-            } else if (identityId === 'charm_of_speed') {
-                this.player.setStatusDuration('slowed', 0);
-                this.player.setStatusDuration('haste', 0);
-                this.applyTimedStatus(this.player, 'hasted', duration);
-                this.player.setStatusDuration('hasted', duration);
-                this.player.maxStatus.hasted = duration;
-                logger.log(i18next.t('arcana.charm_speed', { item: item.name, defaultValue: `You invoke ${item.name} and feel unnaturally swift.` }), '#99ddff');
-            } else if (identityId === 'charm_of_protection') {
-                this.player.applyShield(charmProtection(item.enchantment));
-                logger.log(i18next.t('arcana.charm_protection', { item: item.name, defaultValue: `A shimmering shield coalesces around you.` }), '#ffffaa');
-            } else if (identityId === 'charm_of_telepathy') {
-                this.applyTimedStatus(this.player, 'telepathy', duration);
-                this.player.setStatusDuration('telepathy', duration);
-                this.player.maxStatus.telepathy = duration;
-            } else if (identityId === 'charm_of_fire_immunity') {
-                this.applyTimedStatus(this.player, 'immune_fire', duration);
-                this.player.setStatusDuration('immune_fire', duration);
-                this.player.maxStatus.immune_fire = duration;
-                this.extinguishCreatureFire(this.player);
-                logger.log(i18next.t('arcana.charm_fire_immunity', { defaultValue: 'You no longer fear fire.' }), '#ffbb66');
-            }
-            item.cooldownTurns = charmRechargeDelay(identityId, item.enchantment);
-            item.cooldownRemaining = item.cooldownTurns;
-            if (identityId && !ItemLoader.identifiedItems.has(identityId)) {
-                ItemLoader.identify(identityId);
-                logger.log(i18next.t('item.identify', { name: item.name, defaultValue: `You identify ${item.name}.` }), '#00ffff');
-            }
-            timeSystem.currentTick += this.player.movementSpeed;
-            this.playerTurnEnded();
+            invokeCharm(this.player, item, identityId, {
+                applyTimedStatus: (status, duration) => { this.applyTimedStatus(this.player, status, duration); },
+                extinguish: () => this.extinguishCreatureFire(this.player),
+                endTurn: () => this.playerTurnEnded(),
+            });
             return;
         }
 
@@ -4633,25 +4597,15 @@ export class Game {
         }
         this.cancelArcanaSelection(); // Consume the pending transaction exactly once.
         if (!bolt) return null;
-        const charges = item.charges ?? 0;
-        if (charges <= 0 && item.identified === true) return null;
-        let result: BoltResult | null = null;
-        if (charges > 0) {
-            result = this.zapBoltFromPlayer(bolt, item, cursor);
-            if (result.outcome?.autoID && !ItemLoader.identifiedItems.has(id)) {
-                ItemLoader.identifyItemKind(item);
-                logger.log(i18next.t('item.identify', { name: item.displayName, defaultValue: 'You identify {{name}}.' }), '#00ffff');
-            }
-            item.charges = charges - 1;
-            if (item.category === ItemCategory.WAND) item.timesUsed = (item.timesUsed ?? 0) + 1;
-        } else {
-            item.maxChargesKnown = true;
-            logger.log(i18next.t('arcana.no_charges', { name: item.displayName, defaultValue: '{{name}} has no charges.' }), '#ff8888');
-        }
+        if ((item.charges ?? 0) <= 0 && item.identified === true) return null;
+        const result = commitArcanaTarget(item, cursor, {
+            zap: (targetItem, targetCursor) => this.zapBoltFromPlayer(bolt, targetItem, targetCursor),
+            logIdentify: targetItem => logger.log(i18next.t('item.identify', { name: targetItem.displayName, defaultValue: 'You identify {{name}}.' }), '#00ffff'),
+            logEmpty: targetItem => logger.log(i18next.t('arcana.no_charges', { name: targetItem.displayName, defaultValue: '{{name}} has no charges.' }), '#ff8888'),
+        }) as BoltResult | null;
         this.needsRender = true;
         // CE Time.c:2604-2605 uses movementSpeed at turn end (after effects).
-        timeSystem.currentTick += this.player.movementSpeed;
-        this.playerTurnEnded();
+        finishItemUse(this.player, () => this.playerTurnEnded());
         return result;
     }
 
@@ -4699,15 +4653,7 @@ export class Game {
     }
 
     private boltWorld(caster: Creature | null, hideDetails = false): BoltWorld {
-        return {
-            caster, hideDetails,
-            creatureAt: pos => {
-                if (this.player.hp > 0
-                    && this.player.loc.x === pos.x && this.player.loc.y === pos.y) return this.player;
-                return this.monsters.find(m => m.hp > 0 && !m.isDormant
-                    && m.loc.x === pos.x && m.loc.y === pos.y);
-            },
-        };
+        return boltWorldFor(caster, this.player, this.monsters, hideDetails);
     }
 
     /** Bolt identities select DFs; the common transaction handles all contact,
@@ -5701,12 +5647,7 @@ export class Game {
      * 随本方法移除。
      */
     private beginIdentifySelection(): boolean {
-        for (const invItem of this.player.inventory.items) {
-            ItemLoader.updateIdentifiableItem(invItem);
-        }
-        if (!this.player.inventory.items.some((invItem) => invItem.canBeIdentified)) {
-            return false;
-        }
+        if (!hasIdentifyTarget(this.player)) return false;
         this.pendingIdentify = true;
         this.isInventoryOpen = true;
         this.needsRender = true;
@@ -5722,9 +5663,7 @@ export class Game {
      */
     public chooseIdentifyTarget(item: Item): boolean {
         if (!this.pendingIdentify) return false;
-        if (!this.player.inventory.items.includes(item)) return false;
-        ItemLoader.updateIdentifiableItem(item);
-        if (!item.canBeIdentified) return false;
+        if (!canIdentifyChosenItem(this.player, item)) return false;
         this.pendingIdentify = false;
         this.isInventoryOpen = false;
         ItemLoader.identifyInstance(item);
@@ -5768,37 +5707,24 @@ export class Game {
 
     /** CE scroll of enchanting accepts any carried ring (Items.c:7839-7860). */
     public canEnchantTarget(item: Item): boolean {
-        return this.player.inventory.items.includes(item) && (canEnchantArcana(item)
-            || item.category === ItemCategory.RING
-            || item === (this.player.equippedWeapon ?? this.player.equippedArmor));
+        return canEnchantChosenItem(this.player, item);
     }
 
     public chooseEnchantTarget(item: Item): boolean {
         if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
             || this.player.hp <= 0 || !this.canEnchantTarget(item)) return false;
-        if (item.category === ItemCategory.RING) {
-            item.timesEnchanted++;
-            item.enchantment++;
-            item.isCursed = false;
-            if (this.player.rings().includes(item) && item.identityId === 'ring_of_clairvoyance') {
-                this.updateVision();
-            }
-            logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
-                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff');
-        } else if (canEnchantArcana(item)) {
-            enchantArcana(item);
-            logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
-                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff');
-        } else {
-            this.enchantEquippedItem();
-            logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff');
-        }
+        enchantChosenItem(this.player, item, {
+            updateVision: () => this.updateVision(),
+            enchantEquippedGear: () => { this.enchantEquippedItem(); },
+            logArcana: target => logger.log(i18next.t('item.arcana_enchanted', { name: target.displayName,
+                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff'),
+            logGear: () => logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff'),
+        });
         this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_ENCHANTMENT_LIGHT);
         this.pendingEnchantment = false;
         this.isInventoryOpen = false;
         this.needsRender = true;
-        timeSystem.currentTick += this.player.movementSpeed;
-        this.playerTurnEnded();
+        finishItemUse(this.player, () => this.playerTurnEnded());
         return true;
     }
 
@@ -6303,22 +6229,7 @@ export class Game {
         // CE throwCommand 尾段（Items.c:7152-7162）：先备好"飞行的那一件"，
         // 再更新背包。堆叠 >1：数量 -1，克隆件（quantity=1）起飞；
         // 最后一件：整件移出背包（已装备则先卸下）。
-        let thrown: Item;
-        if (item.quantity > 1) {
-            item.quantity--;
-            thrown = Object.assign(
-                new Item(item.name, item.char, item.color, item.category), item);
-            // Object.assign 会把源件 id 一并覆盖过来——堆叠件与飞行件必须
-            // 是两个可区分实体（落地拾回、按 id 查找都依赖这一点）
-            thrown.id = allocateEntityId();
-            thrown.quantity = 1;
-            thrown.loc = { ...origin };
-        } else {
-            this.player.inventory.removeItem(item);
-            if (isEquippedWeapon) this.player.unequip(item);
-            thrown = item;
-            thrown.loc = { ...origin };
-        }
+        const thrown = prepareThrownItem(this.player, item, origin, isEquippedWeapon);
 
         // —— 弹道（CE throwItem，Items.c:6882-6947）——
         // BOLT_NONE 取线（web 复用 boltPath 的 Bresenham 近似，怪物弹道同款）；
