@@ -1,0 +1,18 @@
+{
+  "command": [
+    "npm.cmd",
+    "test",
+    "--",
+    "--maxWorkers=4",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2d-evidence/full-final.json"
+  ],
+  "started": "2026-09-26T21:23:59.965Z",
+  "seconds": 3086.476,
+  "exitCode": 1,
+  "inputs": 363,
+  "changedInputs": [
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/test/x2d_scroll_equipment.test.ts"
+  ]
+}

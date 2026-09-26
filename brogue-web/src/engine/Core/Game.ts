@@ -47,7 +47,7 @@ import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
-import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, invokeCharm } from '../Items/ItemUseCoordinator';
+import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, enchantingAutoIdentifiesTarget, invokeCharm } from '../Items/ItemUseCoordinator';
 import { endgameScore, lumenstoneCount } from './Endgame';
 import { saveHighScore } from './HighScores';
 import { ItemLoader } from '../Items/ItemLoader';
@@ -356,6 +356,7 @@ export class Game {
      */
     public pendingIdentify: boolean = false;
     public pendingEnchantment: boolean = false;
+    private pendingEnchantmentScrollWasKnown: boolean = false;
     // W-2: transient choice, never persisted; selection cannot spend a turn.
     public pendingArcana: { item: Item; cursor: Pos } | null = null;
 
@@ -561,6 +562,7 @@ export class Game {
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
         this.pendingEnchantment = false;
+        this.pendingEnchantmentScrollWasKnown = false;
         this.pendingArcana = null;
         // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
         this.pendingUseConfirm = null;
@@ -3834,6 +3836,7 @@ export class Game {
 
             if (data) {
                 const readName = item.displayName;
+                const scrollKindWasKnown = ItemLoader.identifiedItems.has(trueId);
                 logger.log(i18next.t('scroll.read', { name: readName, defaultValue: `You read the ${readName}.` }), '#cccccc');
 
                 // Execute effect
@@ -3901,15 +3904,16 @@ export class Game {
                         logger.log(i18next.t('scroll.reveal_enchantment', { defaultValue: 'This is a scroll of enchanting.' }), '#00ffff');
                         if (this.player.inventory.items.some(target => this.canEnchantTarget(target))) {
                             this.pendingEnchantment = true;
+                            this.pendingEnchantmentScrollWasKnown = scrollKindWasKnown;
                             this.isInventoryOpen = true;
                             this.needsRender = true;
                             return; // Complete the read's time AFTER applying the chosen effect.
                         }
-                        logger.log(i18next.t('scroll.enchant_fail', { defaultValue: 'Nothing happens.' }), '#aaaaaa');
+                        logger.log(i18next.t('scroll.enchant_fail', { defaultValue: 'You have nothing that can be enchanted.' }), '#aaaaaa');
                         break;
                     case 'remove_curse':
                         if (!this.removeCurseFromInventory()) {
-                            logger.log(i18next.t('scroll.remove_curse_empty', { defaultValue: 'No cursed items to cleanse.' }), '#aaaaaa');
+                            logger.log(i18next.t('scroll.remove_curse_empty', { defaultValue: 'Your pack glows with a cleansing light, but nothing happens.' }), '#aaaaaa');
                         }
                         break;
                     case 'recharge_item':
@@ -5187,15 +5191,20 @@ export class Game {
     }
 
     private removeCurseFromInventory(): boolean {
-        const cursed = this.player.inventory.items.find((invItem) => invItem.isCursed);
-        if (!cursed) return false;
-        cursed.isCursed = false;
-        if (cursed.enchantment < 0) cursed.enchantment = 0;
-        logger.log(i18next.t('item.uncursed', { name: cursed.name, defaultValue: `${cursed.name} is no longer cursed.` }), '#88ffcc');
-        return true;
+        // CE Items.c:7740-7745, 7806-7814: uncurse every pack item, flag only.
+        let hadEffect = false;
+        for (const item of this.player.inventory.items) {
+            if (!item.isCursed) continue;
+            item.isCursed = false;
+            hadEffect = true;
+        }
+        if (hadEffect) logger.log(i18next.t('scroll.remove_curse', {
+            defaultValue: 'Your pack glows with a cleansing light, and a malevolent energy disperses.'
+        }), '#88ffcc');
+        return hadEffect;
     }
 
-    /** CE scroll of enchanting accepts any carried ring (Items.c:7839-7860). */
+    /** CE Items.c:7819-7836 accepts every eligible item in the pack. */
     public canEnchantTarget(item: Item): boolean {
         return canEnchantChosenItem(this.player, item);
     }
@@ -5203,42 +5212,43 @@ export class Game {
     public chooseEnchantTarget(item: Item): boolean {
         if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
             || this.player.hp <= 0 || !this.canEnchantTarget(item)) return false;
-        enchantChosenItem(this.player, item, {
-            updateVision: () => this.updateVision(),
-            enchantEquippedGear: () => { this.enchantEquippedItem(); },
-            logArcana: target => logger.log(i18next.t('item.arcana_enchanted', { name: target.displayName,
-                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff'),
-            logGear: () => logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff'),
-        });
+        this.enchantEquippedItem(item);
         this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_ENCHANTMENT_LIGHT);
+        if (!this.pendingEnchantmentScrollWasKnown && enchantingAutoIdentifiesTarget(item)) {
+            // CE readScroll's original scrollKind is a value copy, while theItem
+            // now points at the target. autoIdentify (6722-6768) can reveal it.
+            if (item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR) {
+                if (item.runicType && !item.runicKnown) {
+                    const oldName = item.displayName;
+                    item.runicKnown = true;
+                    logger.log(i18next.t('item.runic_revealed', { oldName, name: item.displayName,
+                        interpolation: { escapeValue: false }, defaultValue: '(Your {{oldName}} must be {{name}}.)' }), '#00ffff');
+                }
+            } else if (item.identityId && !ItemLoader.identifiedItems.has(item.identityId)) {
+                ItemLoader.identifyItemKind(item);
+                logger.log(i18next.t('item.was_a', { name: item.displayName,
+                    interpolation: { escapeValue: false }, defaultValue: 'It was a {{name}}!' }), '#00ffff');
+            }
+        }
         this.pendingEnchantment = false;
+        this.pendingEnchantmentScrollWasKnown = false;
         this.isInventoryOpen = false;
         this.needsRender = true;
         finishItemUse(this.player, () => this.playerTurnEnded());
         return true;
     }
 
-    private enchantEquippedItem(): boolean {
-        const target = this.player.equippedWeapon ?? this.player.equippedArmor;
+    // Retain the old private entry for existing direct callers; selection always
+    // supplies its live pack object. Both entries share the CE mutation path.
+    private enchantEquippedItem(target: Item | null = this.player.equippedWeapon ?? this.player.equippedArmor): boolean {
         if (!target) return false;
-        target.enchantment += 1;
-        if (target.enchantment >= 0) {
-            target.isCursed = false;
-        }
-        if (target.runicType) {
-            target.runicKnown = true;
-        } else if ((target.category === ItemCategory.WEAPON || target.category === ItemCategory.ARMOR) && rng.randPercent(20)) {
-            if (target.category === ItemCategory.WEAPON) {
-                const runics = ItemLoader.GENERATED_WEAPON_RUNICS;
-                target.runicType = runics[rng.randRange(0, runics.length - 1)];
-            } else {
-                const runics = ItemLoader.GENERATED_ARMOR_RUNICS;
-                target.runicType = runics[rng.randRange(0, runics.length - 1)];
-            }
-            target.runicKnown = true;
-            const runicName = i18next.t('runic.name.' + target.runicType, { defaultValue: '未知符文' });
-            logger.log(i18next.t('item.runic_awakened', { name: target.name, runic: runicName, defaultValue: `${target.name} awakens a ${runicName} rune!` }), '#88ccff');
-        }
+        enchantChosenItem(this.player, target, {
+            updateVision: () => this.updateVision(),
+            logEnchanted: item => logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
+                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff'),
+            logUncursed: item => logger.log(i18next.t('scroll.protect_uncurse', { name: item.displayName,
+                interpolation: { escapeValue: false }, defaultValue: 'A malevolent force leaves your {{name}}.' }), '#88ffcc'),
+        });
         return true;
     }
 
@@ -5262,8 +5272,7 @@ export class Game {
     /**
      * Items.c:7906-7938 SCROLL_PROTECT_ARMOR / SCROLL_PROTECT_WEAPON：
      * 对应装备打上 ITEM_PROTECTED（web 字段 isProtected），并对该件 uncurse
-     * （Items.c:7740 uncurse 只清诅咒标志、不动负附魔，故不复用整包解咒的
-     * removeCurseFromInventory——那会把 enchantment 负值清零，语义不同）。
+     * （Items.c:7740 uncurse 只清该件诅咒标志、不动负附魔）。
      * 无对应装备时 "but it quickly disperses."，卷轴照常消耗。
      */
     private protectEquippedGear(gear: Item | null, kind: 'weapon' | 'armor'): void {
@@ -8283,6 +8292,8 @@ export class Game {
             monsterSpawnFuse: this.monsterSpawnFuse, absoluteTurnNumber: this.absoluteTurnNumber,
             currentTick: timeSystem.currentTick, nextEntityId: getNextEntityId(), nextMachineNumber: getNextMachineNumber(),
             playerFalling: this.playerFalling, pendingIdentify: this.pendingIdentify,
+            // Omit settled transaction metadata: ordinary world/trace payloads stay unchanged.
+            enchantmentScrollWasKnown: this.pendingEnchantment ? this.pendingEnchantmentScrollWasKnown : undefined,
             justSearched: this.justSearched, justRested: this.justRested, searchingCharge: this.searchingCharge,
             secretScanDepth: this.secretScanDepth, levelHasSecrets: this.levelHasSecrets,
             poisonedDuringTurn: this.poisonedDuringTurn,
@@ -8434,6 +8445,7 @@ export class Game {
         setRewardRoomsGenerated(snapshot.rewardRoomsGenerated);
 
         this.pendingIdentify = run.pendingIdentify; this.pendingEnchantment = snapshot.pendingEnchantment;
+        this.pendingEnchantmentScrollWasKnown = run.enchantmentScrollWasKnown ?? false;
         this.isInventoryOpen = this.pendingIdentify || this.pendingEnchantment;
         this.referenceScreen = null; this.pendingArcana = null; this.pendingUseConfirm = null;
         this.isThrowing = false; this.throwItemTarget = null; this.isExamining = false; this.inspectTarget = null;

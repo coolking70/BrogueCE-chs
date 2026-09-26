@@ -239,15 +239,11 @@ describe('D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文
             expect(armorCounts.get(r) ?? 0, `附魔路径授予了自创护甲符文 ${r}`).toBe(0);
         }
 
-        // 反真空：20% 命中率 × 16000 次 ≈ 3200 次授予，且每个 CE 符文都真实出现过
-        expect(weaponGrants).toBeGreaterThan(1000);
-        expect(armorGrants).toBeGreaterThan(1000);
-        for (const r of ItemLoader.GENERATED_WEAPON_RUNICS) {
-            expect(weaponCounts.get(r) ?? 0, `CE 武器符文 ${r} 在附魔路径出现过多（池不完整？）`).toBeGreaterThanOrEqual(20);
-        }
-        for (const r of ItemLoader.GENERATED_ARMOR_RUNICS) {
-            expect(armorCounts.get(r) ?? 0, `CE 护甲符文 ${r} 在附魔路径出现过多（池不完整？）`).toBeGreaterThanOrEqual(20);
-        }
+        // X2d 验收修订：CE Items.c:7839–7899 附魔分支没有授符文逻辑（原 20% 授符文为 web 自创，已删）。
+        // 旧"反真空 >1000 次授予"随功能到期；附魔路径授予任何符文均为 0（严格强于"只授 CE 符文"）。
+        // CE 符文池完整性由下方"D2 随机流大量采样"的出生路径断言负责。
+        expect(weaponGrants, '附魔不得授予任何符文').toBe(0);
+        expect(armorGrants, '附魔不得授予任何符文').toBe(0);
     });
 });
 

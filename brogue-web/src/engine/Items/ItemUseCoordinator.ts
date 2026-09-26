@@ -11,6 +11,7 @@ import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay,
 import { logger } from '../Systems/Logger';
 import i18next from 'i18next';
 import type { StatusId } from '../../entities/Creature';
+import { rng } from '../Random';
 
 /** The inventory transaction is shared by quaffing, reading and throwing. */
 export function consumeForUse(player: Player, item: Item): boolean {
@@ -31,28 +32,54 @@ export function canIdentifyChosenItem(player: Player, item: Item): boolean {
 export function canEnchantChosenItem(player: Player, item: Item): boolean {
     return player.inventory.items.includes(item) && (canEnchantArcana(item)
         || item.category === ItemCategory.RING
-        || item === (player.equippedWeapon ?? player.equippedArmor));
+        || item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR);
 }
 
 export function enchantChosenItem(player: Player, item: Item, ports: {
     updateVision: () => void;
-    enchantEquippedGear: () => void;
-    logArcana: (item: Item) => void;
-    logGear: () => void;
+    logEnchanted: (item: Item) => void;
+    logUncursed: (item: Item) => void;
 }): void {
+    // CE Items.c:7839-7899: the selected pack object, never a preferred slot.
+    const wasCursed = item.isCursed;
+    item.timesEnchanted++;
     if (item.category === ItemCategory.RING) {
-        item.timesEnchanted++;
         item.enchantment++;
-        item.isCursed = false;
         if (player.rings().includes(item) && item.identityId === 'ring_of_clairvoyance') ports.updateVision();
-        ports.logArcana(item);
     } else if (canEnchantArcana(item)) {
         enchantArcana(item);
-        ports.logArcana(item);
     } else {
-        ports.enchantEquippedGear();
-        ports.logGear();
+        item.strengthRequired = Math.max(0, (item.strengthRequired ?? 0) - 1);
+        item.enchantment++;
+        if (item.category === ItemCategory.WEAPON && item.quiverNumber) {
+            item.quiverNumber = rng.randRange(1, 60000);
+        }
+        // CE equipItem(force), 7881 -> unequipItem:8665, clears current DONNING
+        // without restarting it or changing maxStatus. Other gear is unaffected.
+        if (item === player.equippedArmor) player.setStatusDuration('donning', 0);
     }
+    // This mutation creates no rune and changes no knowledge. The readScroll
+    // autoIdentify tail is handled after the flare by Game (Items.c:8019-8026).
+    item.isCursed = false;
+    ports.logEnchanted(item);
+    if (wasCursed) ports.logUncursed(item);
+}
+
+/** In this CE tree readScroll reassigns theItem to the chosen target, then
+ * compares its kind with SCROLL_ENCHANTING (0) and SCROLL_IDENTIFY (1) in
+ * the autoIdentify tail. Preserve that observable behavior, including rune
+ * revelation, only for the CE kinds with index >= 2 (Rogue.h:810-965).
+ * Explicit IDs avoid depending on web table order or admitting retired kinds.
+ */
+export function enchantingAutoIdentifiesTarget(item: Item): boolean {
+    const kinds: Partial<Record<ItemCategory, readonly string[]>> = {
+        [ItemCategory.WEAPON]: ['broadsword', 'whip', 'rapier', 'flail', 'mace', 'war_hammer', 'spear', 'war_pike', 'axe', 'war_axe', 'dart', 'incendiary_dart', 'javelin'],
+        [ItemCategory.ARMOR]: ['chain_mail', 'banded_mail', 'splint_mail', 'plate_mail'],
+        [ItemCategory.RING]: ['ring_of_regeneration', 'ring_of_transference', 'ring_of_light', 'ring_of_awareness', 'ring_of_wisdom', 'ring_of_reaping'],
+        [ItemCategory.STAFF]: ['staff_of_poison', 'staff_of_tunneling', 'staff_of_blinking', 'staff_of_entrancement', 'staff_of_obstruction', 'staff_of_discord', 'staff_of_conjuration', 'staff_of_healing', 'staff_of_haste', 'staff_of_protection'],
+        [ItemCategory.WAND]: ['wand_of_polymorphism', 'wand_of_negation', 'wand_of_domination', 'wand_of_beckoning', 'wand_of_plenty', 'wand_of_invisibility', 'wand_of_empowerment'],
+    };
+    return kinds[item.category]?.includes(item.identityId ?? '') ?? false;
 }
 
 /** Invoke a ready charm. A false result leaves cooldown, identity and time untouched. */

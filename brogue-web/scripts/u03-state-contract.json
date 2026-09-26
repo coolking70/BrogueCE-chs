@@ -267,6 +267,10 @@
     "kind": "persist",
     "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
   },
+  "pendingEnchantmentScrollWasKnown": {
+    "kind": "run",
+    "contract": "X2d：待附魔选物时保存到 run.enchantmentScrollWasKnown，缺失/非布尔值拒绝载入；选物完成与新局重置 false，非待选快照省略此元数据。记录读卷轴前的种类知识，复现本树 CE readScroll 收尾对目标执行 autoIdentify 的条件。"
+  },
   "pendingFallenItemsByDepth": {
     "kind": "persist",
     "contract": "U17b: 坠层物品队列进入全局实体图；入层落位，spawnTurnNumber 保护离层补跑，开新局清空。"

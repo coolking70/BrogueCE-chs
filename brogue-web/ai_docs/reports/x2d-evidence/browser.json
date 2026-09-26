@@ -1,0 +1,1777 @@
+{
+  "fixture": "synthetic pack reconstructed identically after loadReplay; no gameplay overrides",
+  "states": [
+    {
+      "label": "initial",
+      "pending": false,
+      "open": false,
+      "turns": 0,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -3",
+          "category": 0,
+          "E": -3,
+          "strength": 12,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 0,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 39719,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 30,
+          "name": "题为「火雷玄妙天书」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": []
+    },
+    {
+      "label": "cancel-before-read",
+      "pending": false,
+      "open": false,
+      "turns": 0,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -3",
+          "category": 0,
+          "E": -3,
+          "strength": 12,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 0,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 39719,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 30,
+          "name": "题为「火雷玄妙天书」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": []
+    },
+    {
+      "label": "pending",
+      "pending": true,
+      "open": true,
+      "turns": 0,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -3",
+          "category": 0,
+          "E": -3,
+          "strength": 12,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 0,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 39719,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 30,
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。"
+      ]
+    },
+    {
+      "label": "cancel-and-ineligible",
+      "pending": true,
+      "open": true,
+      "turns": 0,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -3",
+          "category": 0,
+          "E": -3,
+          "strength": 12,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 0,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 39719,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 30,
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。"
+      ]
+    },
+    {
+      "label": "spare-enchanted",
+      "pending": false,
+      "open": false,
+      "turns": 1,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -2",
+          "category": 0,
+          "E": -2,
+          "strength": 11,
+          "times": 1,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 0,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 39719,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 30,
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的长剑 -2在黑暗中短暂闪耀。",
+        "一股邪恶意念从你的长剑 -2上消散了。"
+      ]
+    },
+    {
+      "label": "stack-enchanted",
+      "pending": false,
+      "open": false,
+      "turns": 2,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -2",
+          "category": 0,
+          "E": -2,
+          "strength": 11,
+          "times": 1,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 1,
+          "strength": 9,
+          "times": 1,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 43992,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": true,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "题为「灵符火雷虚空混沌」的卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 2,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的长剑 -2在黑暗中短暂闪耀。",
+        "一股邪恶意念从你的长剑 -2上消散了。",
+        "你朗读了附魔卷轴。",
+        "这是一张附魔卷轴。",
+        "你的飞镖在黑暗中短暂闪耀。"
+      ]
+    },
+    {
+      "label": "remove-curse-effect",
+      "pending": false,
+      "open": false,
+      "turns": 3,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -2",
+          "category": 0,
+          "E": -2,
+          "strength": 11,
+          "times": 1,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 1,
+          "strength": 9,
+          "times": 1,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 43992,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 31,
+          "name": "解咒卷轴",
+          "category": 3,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的长剑 -2在黑暗中短暂闪耀。",
+        "一股邪恶意念从你的长剑 -2上消散了。",
+        "你朗读了附魔卷轴。",
+        "这是一张附魔卷轴。",
+        "你的飞镖在黑暗中短暂闪耀。",
+        "你朗读了题为「灵符火雷虚空混沌」的卷轴。",
+        "你的背包闪耀着净化之光，一股邪恶的力量消散了。",
+        "原来是解咒卷轴！"
+      ]
+    },
+    {
+      "label": "remove-curse-empty",
+      "pending": false,
+      "open": false,
+      "turns": 4,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -2",
+          "category": 0,
+          "E": -2,
+          "strength": 11,
+          "times": 1,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 1,
+          "strength": 9,
+          "times": 1,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 43992,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的长剑 -2在黑暗中短暂闪耀。",
+        "一股邪恶意念从你的长剑 -2上消散了。",
+        "你朗读了附魔卷轴。",
+        "这是一张附魔卷轴。",
+        "你的飞镖在黑暗中短暂闪耀。",
+        "你朗读了题为「灵符火雷虚空混沌」的卷轴。",
+        "你的背包闪耀着净化之光，一股邪恶的力量消散了。",
+        "原来是解咒卷轴！",
+        "你朗读了解咒卷轴。",
+        "你的背包闪耀着净化之光，但什么也没有发生。"
+      ]
+    },
+    {
+      "label": "replayed",
+      "pending": false,
+      "open": false,
+      "turns": 4,
+      "inventory": [
+        {
+          "id": 22,
+          "name": "匕首",
+          "category": 0,
+          "E": 0,
+          "strength": 12,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 23,
+          "name": "长剑 -2",
+          "category": 0,
+          "E": -2,
+          "strength": 11,
+          "times": 1,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 24,
+          "name": "皮甲",
+          "category": 1,
+          "E": -2,
+          "strength": 10,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "runic": "reflection",
+          "known": false
+        },
+        {
+          "id": 25,
+          "name": "飞镖",
+          "category": 0,
+          "E": 1,
+          "strength": 9,
+          "times": 1,
+          "cursed": false,
+          "quantity": 15,
+          "quiver": 43992,
+          "known": false
+        },
+        {
+          "id": 26,
+          "name": "变石戒指",
+          "category": 8,
+          "E": -3,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 27,
+          "name": "紫杉木法杖",
+          "category": 7,
+          "E": 2,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 28,
+          "name": "黄铜魔杖",
+          "category": 6,
+          "E": 0,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        },
+        {
+          "id": 29,
+          "name": "生命符咒",
+          "category": 9,
+          "E": 1,
+          "times": 0,
+          "cursed": false,
+          "quantity": 1,
+          "known": false
+        }
+      ],
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      },
+      "logs": [
+        "你朗读了题为「火雷玄妙天书」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的长剑 -2在黑暗中短暂闪耀。",
+        "一股邪恶意念从你的长剑 -2上消散了。",
+        "你朗读了附魔卷轴。",
+        "这是一张附魔卷轴。",
+        "你的飞镖在黑暗中短暂闪耀。",
+        "你朗读了题为「灵符火雷虚空混沌」的卷轴。",
+        "你的背包闪耀着净化之光，一股邪恶的力量消散了。",
+        "原来是解咒卷轴！",
+        "你朗读了解咒卷轴。",
+        "你的背包闪耀着净化之光，但什么也没有发生。",
+        "回放结束。"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "index": 0,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "toggle_inventory",
+      "data": null,
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 1,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "escape",
+      "data": null,
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 2,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "toggle_inventory",
+      "data": null,
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 3,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "read|i|",
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 4,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "escape",
+      "data": null,
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 5,
+      "tick": 0,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "enchant|j|",
+      "decisions": [],
+      "turn": 0,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 6,
+      "tick": 100,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "enchant|b|",
+      "decisions": [],
+      "turn": 1,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 7,
+      "tick": 100,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "toggle_inventory",
+      "data": null,
+      "decisions": [],
+      "turn": 1,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 8,
+      "tick": 100,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "read|i|",
+      "decisions": [],
+      "turn": 1,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1857859591,
+            "b": 2207246870,
+            "c": 265175375,
+            "d": 4270774049
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2622,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 9,
+      "tick": 200,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "enchant|d|",
+      "decisions": [],
+      "turn": 2,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 10,
+      "tick": 200,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "toggle_inventory",
+      "data": null,
+      "decisions": [],
+      "turn": 2,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 11,
+      "tick": 300,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "read|j|",
+      "decisions": [],
+      "turn": 3,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 12,
+      "tick": 300,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "escape",
+      "data": null,
+      "decisions": [],
+      "turn": 3,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 13,
+      "tick": 300,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "toggle_inventory",
+      "data": null,
+      "decisions": [],
+      "turn": 3,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 14,
+      "tick": 400,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "item:command",
+      "data": "read|j|",
+      "decisions": [],
+      "turn": 4,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    },
+    {
+      "index": 15,
+      "tick": 400,
+      "depth": 1,
+      "player": {
+        "x": 4,
+        "y": 3
+      },
+      "action": "escape",
+      "data": null,
+      "decisions": [],
+      "turn": 4,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 17954186,
+            "b": 240982128,
+            "c": 3106867160,
+            "d": 3149014593
+          },
+          {
+            "a": 2688365957,
+            "b": 3836322330,
+            "c": 3779978262,
+            "d": 1504127940
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2623,
+        "cosmeticNumbersGenerated": 157
+      }
+    }
+  ],
+  "replay": {
+    "cursor": 16,
+    "error": null
+  },
+  "errors": []
+}

@@ -487,9 +487,12 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         let restore = captureLog();
         (game as unknown as { removeCurseFromInventory(): boolean }).removeCurseFromInventory();
         restore();
-        const uncursedMsg = messages.find(m => m.includes('不再受诅咒'));
-        expect(uncursedMsg, `应渲染中文"不再受诅咒"，实际日志：${messages.join(' | ')}`).toBeDefined();
+        // X2d 验收修订：CE Items.c:7806–7814 解咒卷轴为整包净化，旧单物品"不再受诅咒"文案随旧行为到期；
+        // 守卫目的（存活文案不以裸英文渲染）对新整包消息保留。uncurse 只清旗标，负附魔保留（:7740–7745）
+        const uncursedMsg = messages.find(m => m.includes('邪恶的力量消散了'));
+        expect(uncursedMsg, `应渲染中文整包净化消息，实际日志：${messages.join(' | ')}`).toBeDefined();
         expect(uncursedMsg).not.toMatch(/[A-Za-z]/);
+        expect([cursed.isCursed, cursed.enchantment]).toEqual([false, -1]);
 
         // 慢充自然回复 → "恢复了一点充能"
         // W-6 / CE Time.c:2049：WAND 停自然回电，旧 WAND 载体到期。
@@ -546,15 +549,15 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         expect(plainMsg, '普通近战不得带"猛烈突刺"').not.toContain('猛烈突刺');
     });
 
-    it('AD5c: 附魔觉醒符文的文案走 i18n（runic 插值为内部 id，既有缺口照旧登记）', () => {
+    it('AD5c: 附魔不授符文——即使强制掷骰命中也无"觉醒"消息与新符文（X2d 验收修订）', () => {
+        // 原用例守护已删除的 web 自创"附魔 20% 觉醒符文"文案；CE Items.c:7839–7899 附魔分支无此功能。
+        // 现反向钉死：强制 randPercent=true 下附魔不产生 runicType、不输出"觉醒"消息。
         const game = createHeadlessGame(20260916);
         const sword = ItemLoader.spawnWeapon('sword', 0, 0)!;
         delete (sword as { runicType?: string }).runicType;
         sword.runicKnown = false;
         game.player.inventory.items.push(sword);
         game.player.equippedWeapon = sword;
-
-        // 强制 20% 觉醒掷骰命中（其余抽取走真实种子流）
         const rngAny = rng as unknown as { randPercent: (p: number) => boolean };
         const origRandPercent = rngAny.randPercent.bind(rng);
         rngAny.randPercent = () => true;
@@ -565,9 +568,8 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
             rngAny.randPercent = origRandPercent;
             restore();
         }
-        const awakenMsg = messages.find(m => m.includes('觉醒了'));
-        expect(awakenMsg, `附魔觉醒应渲染"觉醒了一枚…符文"，实际日志：${messages.join(' | ')}`).toBeDefined();
-        expect(awakenMsg, '觉醒文案应包含符文 id（既有缺口：符文 id 暂无中文映射）').toMatch(/符文/);
+        expect(messages.find(m => m.includes('觉醒了')), `不应出现觉醒消息：${messages.join(' | ')}`).toBeUndefined();
+        expect((sword as { runicType?: string }).runicType).toBeUndefined();
     });
 
     it('扫描器门：全仓 logger.log 裸字符串零英文；中文硬编码钉死在既有清单', () => {

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "npm.cmd",
+    "test",
+    "--",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/p1_37_machine_flag_i18n.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2d-evidence/before.json"
+  ],
+  "started": "2026-09-26T20:57:30.290Z",
+  "seconds": 175.967,
+  "exitCode": 0,
+  "files": 3,
+  "passed": 46,
+  "failed": 0,
+  "pending": 0,
+  "failures": []
+}

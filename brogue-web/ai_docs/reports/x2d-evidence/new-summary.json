@@ -1,0 +1,21 @@
+{
+  "command": [
+    "npm.cmd",
+    "test",
+    "--",
+    "src/test/x2d_scroll_equipment.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2d-evidence/new.json"
+  ],
+  "started": "2026-09-26T21:40:25.291Z",
+  "seconds": 17.834,
+  "exitCode": 0,
+  "inputs": 363,
+  "changedInputs": [],
+  "files": 1,
+  "passed": 34,
+  "failed": 0,
+  "pending": 0,
+  "failures": []
+}

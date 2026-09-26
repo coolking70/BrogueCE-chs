@@ -252,6 +252,8 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
         expect(percent).not.toHaveBeenCalled();
         expect(JSON.stringify(gear)).toBe(gearBefore);
         game.player.equippedWeapon = null;
+        // X2d 验收修订：CE Items.c:7819–7839 包内任意武器均为合法目标；拒绝对象改为已离开背包的实例
+        game.player.inventory.items.splice(game.player.inventory.items.indexOf(gear), 1);
         expect(game.canEnchantTarget(gear)).toBe(false);
         // U15b: CE Items.c:7839-7860 explicitly admits rings for enchanting.
         for (const category of [ItemCategory.CHARM]) {

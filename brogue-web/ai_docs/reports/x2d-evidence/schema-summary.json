@@ -1,0 +1,34 @@
+{
+  "command": [
+    "npm.cmd",
+    "test",
+    "--",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_27_recording.test.ts",
+    "src/test/u_r1_codec.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2d-evidence/schema.json"
+  ],
+  "started": "2026-09-26T21:22:45.097Z",
+  "seconds": 37.514,
+  "exitCode": 1,
+  "inputs": 361,
+  "changedInputs": [],
+  "files": 8,
+  "passed": 106,
+  "failed": 1,
+  "pending": 0,
+  "failures": [
+    {
+      "file": "w_7_arcana_enchantment.test.ts",
+      "name": "W-7 equipment boundary and UI source coverage (S, no Vue import edge) arcana alternative never invokes equipment 20% rune path; spare gear/charms remain outside scope",
+      "message": "AssertionError: expected true to be false // Object.is equality\n    at E:/bench/work/x2d2/brogue-web/src/test/w_7_arcana_enchantment.test.ts:255:45\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/w_7_arcana_enchantment.test.ts src/test/invented_content_pool.test.ts src/test/p1_37_machine_flag_i18n.test.ts --maxWorkers=2 --reporter=json --outputFile=ai_docs/reports/x2d-evidence/before.json
+
+JSON report written to E:/bench/work/x2d2/brogue-web/ai_docs/reports/x2d-evidence/before.json

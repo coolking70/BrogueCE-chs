@@ -1,0 +1,41 @@
+{
+  "command": [
+    "npm.cmd",
+    "test",
+    "--",
+    "--maxWorkers=6",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2d-evidence/full-final2.json"
+  ],
+  "started": "2026-09-26T21:41:54.321Z",
+  "seconds": 2239.129,
+  "exitCode": 1,
+  "inputs": 363,
+  "changedInputs": [],
+  "files": 204,
+  "passed": 3843,
+  "failed": 4,
+  "pending": 8,
+  "failures": [
+    {
+      "file": "invented_content_pool.test.ts",
+      "name": "D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现 8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次",
+      "message": "AssertionError: expected 0 to be greater than 1000\n    at E:/bench/work/x2d2/brogue-web/src/test/invented_content_pool.test.ts:243:30\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    },
+    {
+      "file": "p1_37_machine_flag_i18n.test.ts",
+      "name": "P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文 AD5a: 充能/诅咒/解咒文案无英文字母（六条登记项 + 两条漏网项的渲染面）",
+      "message": "AssertionError: 应渲染中文\"不再受诅咒\"，实际日志：你的背包闪耀着净化之光，一股邪恶的力量消散了。: expected undefined to be defined\n    at E:/bench/work/x2d2/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts:491:74\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    },
+    {
+      "file": "p1_37_machine_flag_i18n.test.ts",
+      "name": "P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文 AD5c: 附魔觉醒符文的文案走 i18n（runic 插值为内部 id，既有缺口照旧登记）",
+      "message": "AssertionError: 附魔觉醒应渲染\"觉醒了一枚…符文\"，实际日志：你的长剑在黑暗中短暂闪耀。: expected undefined to be defined\n    at E:/bench/work/x2d2/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts:569:77\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    },
+    {
+      "file": "w_7_arcana_enchantment.test.ts",
+      "name": "W-7 equipment boundary and UI source coverage (S, no Vue import edge) arcana alternative never invokes equipment 20% rune path; spare gear/charms remain outside scope",
+      "message": "AssertionError: expected true to be false // Object.is equality\n    at E:/bench/work/x2d2/brogue-web/src/test/w_7_arcana_enchantment.test.ts:255:45\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x2d2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    }
+  ]
+}
