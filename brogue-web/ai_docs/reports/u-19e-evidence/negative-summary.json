@@ -1,0 +1,172 @@
+[
+  {
+    "variant": "restore-selection",
+    "test": "exact integer selection tickets CE27",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e independent CE selection contract exact integer selection tickets CE27/47 retain their original weights",
+        "messages": [
+          "AssertionError: expected [ 1, 1 ] to deeply equal [ 1, 13 ]\n    at Random.<anonymous> (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:43:74)\n    at Random.randRange (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at BlueprintEngine.buildAMachine (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/engine/Generator/BlueprintEngine.ts:891:32)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:44:50\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "restore-final",
+    "test": "CE47 immediate",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception",
+        "messages": [
+          "AssertionError: expected null not to be null\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:89:88\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "discard-recipe",
+    "test": "immediate and recipe-only",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception",
+        "messages": [
+          "AssertionError: expected [] to have a length of 1 but got +0\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:96:121\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)"
+        ]
+      },
+      {
+        "test": "CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception",
+        "messages": [
+          "AssertionError: expected [] to have a length of 1 but got +0\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:96:121\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-commutation",
+    "test": "natural CE6 ",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE6 seed424242/D14",
+        "messages": [
+          "Error: commutation failed\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:74:61)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-resurrection",
+    "test": "natural CE7 ",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE7 seed31337/D17",
+        "messages": [
+          "AssertionError: expected { id: 446, loc: { x: 20, y: 7 }, …(7) } to match object { purgatory: false, ally: true }\n(9 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:66:90\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-sacrifice-entry",
+    "test": "natural CE47",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE47 seed1/D11",
+        "messages": [
+          "Error: marked target did not enter altar {\"x\":16,\"y\":25}\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:112:44)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-sacrifice-mark",
+    "test": "natural CE47",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE47 seed1/D11",
+        "messages": [
+          "Error: incomplete sacrifice machine\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:95:44)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-sacrifice-cage",
+    "test": "natural CE47",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE47 seed1/D11",
+        "messages": [
+          "Error: CE47: no route {\"x\":15,\"y\":25} -> {\"x\":22,\"y\":24}\n    at walk (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:29:67)\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:113:3)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-cage-close",
+    "test": "natural CE1 |natural CE2 |natural CE26 ",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE1 seed31337/D1",
+        "messages": [
+          "AssertionError: expected [] to have a length of 7 but got +0\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:78:90\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      },
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE2 seed424242/D3",
+        "messages": [
+          "AssertionError: expected [] to have a length of 5 but got +0\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:78:90\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      },
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE26 seed424242/D26",
+        "messages": [
+          "AssertionError: expected [] to have a length of 4 but got +0\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:78:90\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "no-cage-return",
+    "test": "natural CE1 |natural CE2 |natural CE26 ",
+    "exit": 1,
+    "behaviorFailure": true,
+    "failures": [
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE1 seed31337/D1",
+        "messages": [
+          "Error: no second loan\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:88:103)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      },
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE2 seed424242/D3",
+        "messages": [
+          "Error: no second loan\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:88:103)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      },
+      {
+        "test": "U19e natural machines: entrance → player commands → original payoff natural CE26 seed424242/D26",
+        "messages": [
+          "Error: no second loan\n    at runAltarActions (/Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/fixtures/u19e-machine-actions.ts:88:103)\n    at /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  }
+]

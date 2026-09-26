@@ -1,0 +1,36 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -711,8 +711,7 @@
+     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
+     // U19d: CE18 is eligible again: search → hidden lever → wired gate is executable.
+     // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
+-    // Web cannot yet bump-activate the impassable TURRET_LEVER; the adopted
+-    // key is also rejected on its blocked cage tile. Keep CE frequency/flags.
++    // TURRET_LEVER gameplay remains deferred to U19f. Keep CE frequency/flags.
+     if (bp.ceBlueprintId === 52) return false;
+     // V-2b-9c, seed777/D19: #55 seals its adopted key at (25,4) behind
+     // GRANITE/WORM_TUNNEL_MARKER_DORMANT. The lever/active-tunnel DF chain
+@@ -721,23 +720,6 @@
+     if (bp.id === 'key_worm_tunnels') return false;
+     if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
+     return true;
+-}
+-
+-/** CE28 places the adopted item inside its retractable cage (Architect.c:1531).
+- * Only this verified throwing puzzle is reopened here; CE47/52 remain deferred.
+- * Check the finished circuit, not merely a terrain name: later hole DF must not
+- * have overwritten the reward or the plate, and no other layer may block it.
+- */
+-export function isThrowingTutorialReward(grid: Grid, blueprintId: string, machineNumber: number, spawn: MachineItemSpawn): boolean {
+-    if (blueprintId !== 'key_throwing_tutorial_cage' || !spawn.viaAdoption) return false;
+-    const cell = grid.getCell(spawn.pos.x, spawn.pos.y);
+-    if (!cell || cell.machineNumber !== machineNumber || cell.layers[DungeonLayer.DUNGEON] !== TerrainType.ALTAR_CAGE_RETRACTABLE) return false;
+-    if (cell.layers.some((t, layer) => layer !== DungeonLayer.DUNGEON && isPathingBlocker(t))) return false;
+-    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
+-        const plate = grid.getCell(x, y)!;
+-        if (plate.machineNumber === machineNumber && plate.layers[DungeonLayer.LIQUID] === TerrainType.PRESSURE_PLATE) return true;
+-    }
+-    return false;
+ }
+ 
+ export class BlueprintEngine {

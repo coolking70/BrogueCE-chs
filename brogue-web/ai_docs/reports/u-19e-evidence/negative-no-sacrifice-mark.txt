@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE47 seed1/D11
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 1 failed | 16 skipped) 4729ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     ↓ natural CE1 seed31337/D1
+     ↓ natural CE2 seed424242/D3
+     ↓ natural CE6 seed424242/D14
+     ↓ natural CE7 seed31337/D17
+     ↓ natural CE26 seed424242/D26
+     × natural CE47 seed1/D11 4728ms
+   ↓ CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+   ↓ CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE47 seed1/D11
+Error: incomplete sacrifice machine
+ ❯ runAltarActions src/test/fixtures/u19e-machine-actions.ts:95:44
+     93|   const product=trace.products.find(p=>p.kind==='item'&&p.owner==='flo…
+     94|   const reward=g.items.find((i:any)=>i.id===product?.instanceId);
+     95|   if(!altar||!cage||!target||!reward)throw Error('incomplete sacrifice…
+       |                                            ^
+     96|   markedId=target.id;rewardId=reward.id;
+     97|   const trigger=ofType(T.MACHINE_TRIGGER_FLOOR)[0];if(!trigger)throw E…
+ ❯ src/test/u_19e_machine_families.test.ts:56:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  17:57:34
+   Duration  6.24s (transform 794ms, setup 0ms, import 1.35s, tests 4.73s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-no-sacrifice-mark.json

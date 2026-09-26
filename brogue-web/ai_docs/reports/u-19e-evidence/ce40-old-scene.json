@@ -1,0 +1,566 @@
+{
+  "trace": {
+    "seed": "12",
+    "depth": 10,
+    "blueprintId": "key_poison_gas",
+    "ceBlueprintId": 40,
+    "machineNumber": 3,
+    "status": "committed",
+    "features": [
+      {
+        "index": 0,
+        "request": {
+          "terrain": "ALTAR_SWITCH",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        "iterations": 1,
+        "placements": [
+          {
+            "x": 21,
+            "y": 25
+          }
+        ],
+        "status": "placed"
+      },
+      {
+        "index": 1,
+        "request": {
+          "terrain": "MACHINE_POISON_GAS_VENT_HIDDEN",
+          "instanceCount": [
+            1,
+            2
+          ],
+          "minimum": 1,
+          "flags": []
+        },
+        "iterations": 1,
+        "placements": [
+          {
+            "x": 25,
+            "y": 25
+          },
+          {
+            "x": 19,
+            "y": 23
+          }
+        ],
+        "status": "placed"
+      },
+      {
+        "index": 2,
+        "request": {
+          "terrain": "TRAP_DOOR_HIDDEN",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_ALTERNATIVE"
+          ]
+        },
+        "iterations": 0,
+        "placements": [],
+        "status": "skipped"
+      },
+      {
+        "index": 3,
+        "request": {
+          "itemCategory": "SCROLL",
+          "itemId": "scroll_of_teleportation",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        "iterations": 0,
+        "placements": [],
+        "status": "skipped"
+      },
+      {
+        "index": 4,
+        "request": {
+          "itemCategory": "POTION",
+          "itemId": "potion_of_descent",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        "iterations": 1,
+        "placements": [
+          {
+            "x": 16,
+            "y": 25
+          }
+        ],
+        "status": "placed"
+      },
+      {
+        "index": 5,
+        "request": {
+          "terrain": "WALL_LEVER_HIDDEN_DORMANT",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        "iterations": 1,
+        "placements": [
+          {
+            "x": 16,
+            "y": 22
+          }
+        ],
+        "status": "placed"
+      },
+      {
+        "index": 6,
+        "request": {
+          "terrain": "PORTCULLIS_DORMANT",
+          "instanceCount": [
+            1,
+            1
+          ],
+          "minimum": 1,
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING"
+          ]
+        },
+        "iterations": 1,
+        "placements": [
+          {
+            "x": 22,
+            "y": 22
+          }
+        ],
+        "status": "placed"
+      }
+    ],
+    "products": [
+      {
+        "kind": "terrain",
+        "featureIndex": 0,
+        "name": "ALTAR_SWITCH",
+        "pos": {
+          "x": 21,
+          "y": 25
+        }
+      },
+      {
+        "kind": "terrain",
+        "featureIndex": 1,
+        "name": "MACHINE_POISON_GAS_VENT_HIDDEN",
+        "pos": {
+          "x": 25,
+          "y": 25
+        }
+      },
+      {
+        "kind": "terrain",
+        "featureIndex": 1,
+        "name": "MACHINE_POISON_GAS_VENT_HIDDEN",
+        "pos": {
+          "x": 19,
+          "y": 23
+        }
+      },
+      {
+        "kind": "terrain",
+        "featureIndex": 5,
+        "name": "WALL_LEVER_HIDDEN_DORMANT",
+        "pos": {
+          "x": 16,
+          "y": 22
+        }
+      },
+      {
+        "kind": "terrain",
+        "featureIndex": 6,
+        "name": "PORTCULLIS_DORMANT",
+        "pos": {
+          "x": 22,
+          "y": 22
+        }
+      },
+      {
+        "kind": "item",
+        "featureIndex": 0,
+        "sourceMachineNumber": 2,
+        "sourceFeatureIndex": 0,
+        "instanceId": 256,
+        "name": "Iron Key",
+        "pos": {
+          "x": 21,
+          "y": 25
+        },
+        "owner": "floor"
+      },
+      {
+        "kind": "item",
+        "featureIndex": 4,
+        "sourceMachineNumber": 3,
+        "sourceFeatureIndex": 4,
+        "instanceId": 257,
+        "name": "Potion of Descent",
+        "pos": {
+          "x": 16,
+          "y": 25
+        },
+        "owner": "floor"
+      }
+    ]
+  },
+  "steps": [
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": 1
+      },
+      "pos": {
+        "x": 22,
+        "y": 23
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": 1
+      },
+      "pos": {
+        "x": 22,
+        "y": 24
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": 1
+      },
+      "pos": {
+        "x": 22,
+        "y": 25
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 21,
+        "y": 25
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "pickup",
+      "pos": {
+        "x": 21,
+        "y": 25
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": -1
+      },
+      "pos": {
+        "x": 21,
+        "y": 24
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": -1
+      },
+      "pos": {
+        "x": 21,
+        "y": 23
+      },
+      "hp": 10000,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 20,
+        "y": 23
+      },
+      "hp": 9367,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 19,
+        "y": 23
+      },
+      "hp": 8734,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 18,
+        "y": 23
+      },
+      "hp": 8101,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 17,
+        "y": 23
+      },
+      "hp": 7468,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": -1,
+        "y": 0
+      },
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 6835,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "search",
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 6202,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "search",
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 5569,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "search",
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 4936,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "search",
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 4304,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "search",
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 3671,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 0,
+        "y": -1
+      },
+      "pos": {
+        "x": 16,
+        "y": 23
+      },
+      "hp": 3038,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 1,
+        "y": 0
+      },
+      "pos": {
+        "x": 17,
+        "y": 23
+      },
+      "hp": 2405,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 1,
+        "y": 0
+      },
+      "pos": {
+        "x": 18,
+        "y": 23
+      },
+      "hp": 1772,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 1,
+        "y": 0
+      },
+      "pos": {
+        "x": 19,
+        "y": 23
+      },
+      "hp": 1139,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 1,
+        "y": 0
+      },
+      "pos": {
+        "x": 20,
+        "y": 23
+      },
+      "hp": 506,
+      "status": {},
+      "dead": false,
+      "depth": 10
+    },
+    {
+      "action": "move",
+      "data": {
+        "x": 1,
+        "y": 0
+      },
+      "pos": {
+        "x": 21,
+        "y": 23
+      },
+      "hp": -160,
+      "status": {},
+      "dead": true,
+      "depth": 10
+    }
+  ],
+  "result": {
+    "error": "Error: player died"
+  }
+}

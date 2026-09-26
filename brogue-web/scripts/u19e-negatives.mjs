@@ -1,0 +1,9 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const out='ai_docs/reports/u-19e-evidence',only=process.argv[2],rows=only?JSON.parse(fs.readFileSync(`${out}/negative-summary.json`)).filter(r=>r.variant!==only):[];
+for(const [variant,test] of [['restore-selection','exact integer selection tickets CE27'],['restore-final','CE47 immediate'],['discard-recipe','immediate and recipe-only'],['no-commutation','natural CE6 '],['no-resurrection','natural CE7 '],['no-sacrifice-entry','natural CE47'],['no-sacrifice-mark','natural CE47'],['no-sacrifice-cage','natural CE47'],['no-cage-close','natural CE1 |natural CE2 |natural CE26 '],['no-cage-return','natural CE1 |natural CE2 |natural CE26 ']]){
+ if(only&&variant!==only)continue;
+ const fd=fs.openSync(`${out}/negative-${variant}.txt`,'w');const r=spawnSync(process.execPath,['node_modules/vitest/vitest.mjs','run','--config','scripts/u19e-counterfactual.config.ts','src/test/u_19e_machine_families.test.ts','-t',test,'--reporter=default','--reporter=json',`--outputFile=${out}/negative-${variant}.json`],{env:{...process.env,U19E_VARIANT:variant},stdio:['ignore',fd,fd]});fs.closeSync(fd);
+ const result=JSON.parse(fs.readFileSync(`${out}/negative-${variant}.json`)),failures=result.testResults.flatMap(f=>f.assertionResults.filter(a=>a.status==='failed').map(a=>({test:a.fullName,messages:a.failureMessages})));
+ const caught=r.status!==0&&failures.length>0&&failures.every(f=>f.messages.some(m=>/AssertionError|Error: (commutation failed|marked target did not enter altar|incomplete sacrifice machine|CE\d+: no route|library return unreachable|no second loan)/.test(m)));
+ rows.push({variant,test,exit:r.status,behaviorFailure:caught,failures});fs.writeFileSync(`${out}/negative-summary.json`,JSON.stringify(rows,null,2)+'\n');console.log(variant,caught);if(!caught)throw Error(`Not caught by behavior: ${variant}`);
+}

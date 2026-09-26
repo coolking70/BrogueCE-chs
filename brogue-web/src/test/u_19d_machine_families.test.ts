@@ -2,7 +2,7 @@ import {afterEach,describe,expect,it,vi} from 'vitest';
 import {readFileSync} from 'node:fs';import crypto from 'node:crypto';
 import blueprints from '../data/blueprints.json';import golden from './fixtures/u19d-ce-catalog.json';
 import cases from './fixtures/u19d-natural-cases.json';
-import {BlueprintEngine,blueprintQualifies,isThrowingTutorialReward,type BlueprintDef} from '../engine/Generator/BlueprintEngine';
+import {BlueprintEngine,blueprintQualifies,type BlueprintDef} from '../engine/Generator/BlueprintEngine';
 import {rng} from '../engine/Random';
 import {AUTO_GENERATOR_CATALOG} from '../engine/Map/AutoGenerator';
 import {TerrainType as T,DungeonLayer as L} from '../engine/Map/Grid';
@@ -74,24 +74,24 @@ it.each([36,38])('CE%i complete ALTERNATIVE lever branch: search, pull, wait for
  expect(r.rewardId).toBeDefined();expect(r.after.inventory).toContain(r.rewardId);expect(r.after.player).toEqual(r.entry);
 });
 
-it('CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits',()=>{
+it('CE28 no observer: preserve the CE caged item identity through population and storage',()=>{
  const g:any=createHeadlessGame(19,'test'),s=machineScene(g,28,1,0,true)!;expect(s).not.toBeNull();const spawn=s.result.itemSpawns[0]!,item=spawn.entity;
- expect(item).toBeDefined();expect(isThrowingTutorialReward(g.grid,s.result.blueprintId,s.result.machineNumber,spawn)).toBe(true);
+ expect(item).toBeDefined();expect(g.grid.getCell(spawn.pos.x,spawn.pos.y)!.layers[L.DUNGEON]).toBe(T.ALTAR_CAGE_RETRACTABLE);
  g.populateLevel(g.depth,false,false,[s.result]);expect(g.items.filter((i:any)=>i===item)).toHaveLength(1);
  g.currentLevelDepth=g.depth;for(const l of g.levelSeeds)l.visited=false;g.levelSeeds[g.depth-1].visited=true;
  const saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);expect(g.items.filter((i:any)=>i.id===item!.id)).toHaveLength(1);
- const cage=g.grid.getCell(spawn.pos.x,spawn.pos.y)!;cage.machineNumber++;expect(isThrowingTutorialReward(g.grid,s.result.blueprintId,s.result.machineNumber,spawn)).toBe(false);cage.machineNumber--;
- g.grid.setTerrainLayer(cage.x,cage.y,L.LIQUID,T.TRAP_DOOR);expect(isThrowingTutorialReward(g.grid,s.result.blueprintId,s.result.machineNumber,spawn)).toBe(false);g.grid.setTerrainLayer(cage.x,cage.y,L.LIQUID,T.NOTHING);
- const plate=s.result.featureSpawns.find((f:any)=>f.terrain==='MACHINE_PRESSURE_PLATE')!.pos;g.grid.setTerrainLayer(plate.x,plate.y,L.LIQUID,T.NOTHING);expect(isThrowingTutorialReward(g.grid,s.result.blueprintId,s.result.machineNumber,spawn)).toBe(false);
+
 });
 
-it('CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred',()=>{
- for(const ce of [28,47,52]){
-  const g:any=createHeadlessGame(19,'test');for(let x=1;x<g.grid.width-1;x++)for(let y=1;y<g.grid.height-1;y++)g.grid.setTerrain(x,y,T.FLOOR);g.monsters=[];g.items=[];
-  const bp=bps.find(b=>b.ceBlueprintId===ce)!,engine=new BlueprintEngine(g.grid,ce===28?3:10,[bp]);
-  const r=engine.buildAMachine(ce,[],{category:'KEY',id:'iron_key',instanceId:'u19d-key',pos:{x:35,y:14},viaAdoption:true}, {x:35,y:14});
-  if(ce===28)expect(r).not.toBeNull();else expect(r).toBeNull();
- }
+it('CE28 explicit builder can adopt a key; CE52 remains outside the weighted pool',()=>{
+ const g:any=createHeadlessGame(19,'test');for(let x=1;x<g.grid.width-1;x++)for(let y=1;y<g.grid.height-1;y++)g.grid.setTerrain(x,y,T.FLOOR);g.monsters=[];g.items=[];
+ const bp=bps.find(b=>b.ceBlueprintId===28)!,engine=new BlueprintEngine(g.grid,3,[bp]);
+ const r=engine.buildAMachine(28,[],{category:'KEY',id:'iron_key',instanceId:'u19d-key',pos:{x:35,y:14},viaAdoption:true}, {x:35,y:14});
+ expect(r).not.toBeNull();
+ expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===52)!,10,['BP_ADOPT_ITEM'])).toBe(false);
+ // U19e verifies CE47 using its complete natural machine, not an open-map
+ // room-site failure that stayed null even after its adoption gate was removed.
+
 });
 
 it('CE28 deferred population retains the caged reward instead of silently dropping it',()=>{

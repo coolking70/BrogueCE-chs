@@ -1,0 +1,25 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -1943,19 +1943,9 @@
+             }
+         }
+ 
+-        // V-2b-9b 补完：领养 feature 的候选格在落位当刻可能可走，但同一
+-        // 蓝图的后续环境 feature 会再改写该格。Game 的 P1-43 消费闸会丢弃
+-        // 最终落在 pathing blocker 上的物品；若它是外包钥匙，父机器却已把
+-        // generatedKey 置真，结果就是“有锁、零钥匙”的永久死局。静态的
+-        // canReceiveAdoptedItem 只能检查 feature 声明的初始 terrain，抓不到
+-        // 这种后写覆盖。因此在蓝图全部 feature 落完后复核最终网格；失败沿用
+-        // buildAMachine 的既有整机回滚/重摇语义，而不是让消费端静默吞钥匙。
+-        for (const spawn of itemSpawns) {
+-            if (!spawn.viaAdoption) continue;
+-            const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+-            if ((!cell || isPathingBlocker(cell.terrain))
+-                && !isThrowingTutorialReward(this.grid, bp.id, machineNum, spawn)) return fail('adopted item destination blocked');
+-        }
++        // CE keeps adopted items on their final feature square, including
++        // cages and later terrain overlays. Ownership/rollback is checked below;
++        // walkability must not discard an otherwise valid machine transaction.
+ 
+         // Do not publish a transaction with an unowned creation or duplicate
+         // destination. This also rejects malformed synthetic TAKE_ITEM features

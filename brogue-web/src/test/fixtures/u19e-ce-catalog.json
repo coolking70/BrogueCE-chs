@@ -1,0 +1,1405 @@
+{
+  "file": "../BrogueCE-master/src/variants/GlobalsBrogue.c",
+  "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+  "headerFile": "../BrogueCE-master/src/brogue/Rogue.h",
+  "headerSHA256": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+  "machines": [
+    {
+      "ce": 1,
+      "name": "Mixed item library -- can check one item out at a time",
+      "line": 183,
+      "depthRange": [
+        1,
+        12
+      ],
+      "roomSize": [
+        30,
+        50
+      ],
+      "frequency": 30,
+      "featureCount": 6,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE",
+        "BP_REWARD"
+      ],
+      "features": [
+        {
+          "line": 185,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 186,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_VESTIBULE"
+          ]
+        },
+        {
+          "line": 187,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,1},      1,          WAND,       -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 188,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {3,3},      3,          (WEAPON|ARMOR|WAND),-1, 0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NO_THROWING_WEAPONS",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 189,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {2,3},      2,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NO_THROWING_WEAPONS",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 190,
+          "literal": "{0,         STATUE_INERT,DUNGEON,       {2,3},      0,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ],
+      "machineType": "MT_REWARD_MULTI_LIBRARY"
+    },
+    {
+      "ce": 2,
+      "name": "Single item category library -- can check one item out at a time",
+      "line": 191,
+      "depthRange": [
+        1,
+        12
+      ],
+      "roomSize": [
+        30,
+        50
+      ],
+      "frequency": 15,
+      "featureCount": 5,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE",
+        "BP_REWARD"
+      ],
+      "features": [
+        {
+          "line": 193,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 194,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_VESTIBULE"
+          ]
+        },
+        {
+          "line": 195,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {3,4},      3,          (RING),     -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_ALTERNATIVE",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 196,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {4,5},      4,          (STAFF),    -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_TREAT_AS_BLOCKING | MF_ALTERNATIVE | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_ALTERNATIVE",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 197,
+          "literal": "{0,         STATUE_INERT,DUNGEON,       {2,3},      0,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ],
+      "machineType": "MT_REWARD_MONO_LIBRARY"
+    },
+    {
+      "ce": 6,
+      "name": "Commutation altars",
+      "line": 221,
+      "depthRange": [
+        13,
+        26
+      ],
+      "roomSize": [
+        10,
+        30
+      ],
+      "frequency": 50,
+      "featureCount": 4,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE",
+        "BP_REWARD"
+      ],
+      "features": [
+        {
+          "line": 223,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 224,
+          "literal": "{0,         STATUE_INERT,DUNGEON,       {1,3},      0,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 225,
+          "literal": "{DF_MAGIC_PIPING,COMMUTATION_ALTAR,DUNGEON,{2,2},   2,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 226,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_VESTIBULE"
+          ]
+        }
+      ],
+      "machineType": "MT_REWARD_COMMUTATION_ALTARS"
+    },
+    {
+      "ce": 7,
+      "name": "Resurrection altar",
+      "line": 227,
+      "depthRange": [
+        13,
+        26
+      ],
+      "roomSize": [
+        10,
+        30
+      ],
+      "frequency": 30,
+      "featureCount": 4,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_IMPREGNABLE",
+        "BP_REWARD"
+      ],
+      "features": [
+        {
+          "line": 229,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 230,
+          "literal": "{0,         STATUE_INERT,DUNGEON,       {1,3},      0,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 231,
+          "literal": "{DF_MACHINE_FLOOR_TRIGGER_REPEATING, RESURRECTION_ALTAR,DUNGEON, {1,1}, 1, 0, -1,       0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_FAR_FROM_ORIGIN"
+          ]
+        },
+        {
+          "line": 232,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_VESTIBULE"
+          ]
+        }
+      ],
+      "machineType": "MT_REWARD_RESURRECTION_ALTAR"
+    },
+    {
+      "ce": 26,
+      "name": "Nested item library -- can check one item out at a time, and one is a disposable key to another reward room",
+      "line": 347,
+      "depthRange": [
+        1,
+        26
+      ],
+      "roomSize": [
+        30,
+        50
+      ],
+      "frequency": 35,
+      "featureCount": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_ADOPT_ITEM",
+        "BP_IMPREGNABLE"
+      ],
+      "features": [
+        {
+          "line": 349,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 350,
+          "literal": "{0,         WALL,       DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE | MF_EVERYWHERE)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE",
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 351,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_VESTIBULE"
+          ]
+        },
+        {
+          "line": 352,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,2},      1,          (WEAPON|ARMOR|WAND),-1, 0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NO_THROWING_WEAPONS",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 353,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,2},      1,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NO_THROWING_WEAPONS",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 354,
+          "literal": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,1},      1,          0,          -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS | ITEM_MAX_CHARGES_KNOWN),    (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 355,
+          "literal": "{0,         STATUE_INERT,DUNGEON,       {1,3},      0,          0,          -1,         0,              2,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_BUILD_IN_WALLS | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ],
+      "machineType": "MT_KEY_REWARD_LIBRARY"
+    },
+    {
+      "ce": 28,
+      "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key",
+      "line": 360,
+      "depthRange": [
+        1,
+        4
+      ],
+      "roomSize": [
+        70,
+        80
+      ],
+      "frequency": 8,
+      "featureCount": 2,
+      "flags": [
+        "BP_ADOPT_ITEM"
+      ],
+      "features": [
+        {
+          "line": 362,
+          "literal": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_IMPREGNABLE",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 363,
+          "literal": "{DF_MEDIUM_HOLE, MACHINE_PRESSURE_PLATE, LIQUID, {1,1}, 1,      0,          0,          0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        }
+      ],
+      "machineType": "MT_KEY_THROWING_TUTORIAL_AREA"
+    },
+    {
+      "ce": 47,
+      "name": "Sacrifice altar -- lure the chosen monster from elsewhere on the level onto the altar to release the key.",
+      "line": 487,
+      "depthRange": [
+        4,
+        26
+      ],
+      "roomSize": [
+        20,
+        60
+      ],
+      "frequency": 12,
+      "featureCount": 6,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "features": [
+        {
+          "line": 489,
+          "literal": "{DF_BONES,  0,          0,              {3,4},      2,          0,          -1,         0,              1,              0,          0,          0},",
+          "flags": []
+        },
+        {
+          "line": 490,
+          "literal": "{0,         0,          0,              {1,1},      0,          0,          -1,         0,              2,              0,          0,          (MF_BUILD_IN_WALLS | MF_EVERYWHERE)},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 491,
+          "literal": "{DF_TRIGGER_AREA,SACRIFICE_ALTAR_DORMANT,DUNGEON,{1,1},1,       0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_FAR_FROM_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 492,
+          "literal": "{0,         SACRIFICE_CAGE_DORMANT,DUNGEON,{1,1},   1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_NOT_IN_HALLWAY",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 493,
+          "literal": "{0,         DEMONIC_STATUE,DUNGEON,     {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_FAR_FROM_ORIGIN",
+            "MF_NOT_IN_HALLWAY",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 494,
+          "literal": "{0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         0,              2,              (HORDE_SACRIFICE_TARGET), 0, (MF_BUILD_ANYWHERE_ON_LEVEL | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)}}},",
+          "flags": [
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_GENERATE_HORDE",
+            "MF_MONSTERS_DORMANT",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_IMPREGNABLE",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        }
+      ],
+      "machineType": "MT_KEY_SACRIFICE_ROOM"
+    },
+    {
+      "ce": 52,
+      "name": "Electric crystals -- key caged on an altar, darkened crystal globes around the room, lightning the globes to release the key.",
+      "line": 514,
+      "depthRange": [
+        6,
+        26
+      ],
+      "roomSize": [
+        40,
+        60
+      ],
+      "frequency": 10,
+      "featureCount": 5,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR",
+        "BP_PURGE_INTERIOR"
+      ],
+      "features": [
+        {
+          "line": 516,
+          "literal": "{0,         CARPET,     DUNGEON,        {0,0},      0,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 517,
+          "literal": "{0,         ELECTRIC_CRYSTAL_OFF,DUNGEON,{3,4},     3,          0,          -1,         0,              3,              0,          0,          (MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_NOT_IN_HALLWAY",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 518,
+          "literal": "{0,         SACRED_GLYPH,  DUNGEON,     {1, 1},     1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN"
+          ]
+        },
+        {
+          "line": 519,
+          "literal": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_IMPREGNABLE",
+            "MF_NOT_IN_HALLWAY",
+            "MF_FAR_FROM_ORIGIN"
+          ]
+        },
+        {
+          "line": 520,
+          "literal": "{0,         TURRET_LEVER, DUNGEON,      {7,9},      4,          0,          -1,         MK_SPARK_TURRET,3,              0,          0,          (MF_BUILD_IN_WALLS | MF_MONSTERS_DORMANT | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_MONSTERS_DORMANT",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ],
+      "machineType": "MT_KEY_ELECTRIC_CRYSTALS_ROOM"
+    },
+    {
+      "ce": 55,
+      "name": "Worm tunnels -- hidden lever causes tunnels to open up revealing worm areas and a key",
+      "line": 537,
+      "depthRange": [
+        8,
+        26
+      ],
+      "roomSize": [
+        80,
+        175
+      ],
+      "frequency": 10,
+      "featureCount": 6,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_MAXIMIZE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "features": [
+        {
+          "line": 539,
+          "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 540,
+          "literal": "{0,         0,          0,              {3,6},      3,          0,          -1,         MK_UNDERWORM,   1,              0,          0,          0},",
+          "flags": []
+        },
+        {
+          "line": 541,
+          "literal": "{0,         GRANITE,    DUNGEON,        {150,150},  1,          0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_REPEAT_UNTIL_NO_PROGRESS"
+          ]
+        },
+        {
+          "line": 542,
+          "literal": "{DF_WORM_TUNNEL_MARKER_DORMANT,GRANITE,DUNGEON,{0,0},0,         0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE | MF_PERMIT_BLOCKING)},",
+          "flags": [
+            "MF_EVERYWHERE",
+            "MF_PERMIT_BLOCKING"
+          ]
+        },
+        {
+          "line": 543,
+          "literal": "{DF_TUNNELIZE,WORM_TUNNEL_OUTER_WALL,DUNGEON,{1,1}, 1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING"
+          ]
+        },
+        {
+          "line": 544,
+          "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ],
+      "machineType": "MT_KEY_WORM_TUNNEL_ROOM"
+    }
+  ],
+  "autogen": [
+    {
+      "index": 0,
+      "line": 114,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 1,
+      "maxDepth": 40,
+      "frequency": 60,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 4
+    },
+    {
+      "index": 1,
+      "line": 115,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "WALL",
+        "NOTHING"
+      ],
+      "minDepth": 14,
+      "maxDepth": 40,
+      "frequency": 15,
+      "minNumberIntercept": -325,
+      "minNumberSlope": 25,
+      "maxNumber": 5
+    },
+    {
+      "index": 2,
+      "line": 116,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 7,
+      "maxDepth": 40,
+      "frequency": 15,
+      "minNumberIntercept": -300,
+      "minNumberSlope": 70,
+      "maxNumber": 14
+    },
+    {
+      "index": 3,
+      "line": 117,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 0,
+      "maxDepth": 10,
+      "frequency": 0,
+      "minNumberIntercept": 1000,
+      "minNumberSlope": -80,
+      "maxNumber": 10
+    },
+    {
+      "index": 4,
+      "line": 118,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 4,
+      "maxDepth": 9,
+      "frequency": 0,
+      "minNumberIntercept": -200,
+      "minNumberSlope": 80,
+      "maxNumber": 10
+    },
+    {
+      "index": 5,
+      "line": 119,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 9,
+      "maxDepth": 14,
+      "frequency": 0,
+      "minNumberIntercept": 1200,
+      "minNumberSlope": -80,
+      "maxNumber": 10
+    },
+    {
+      "index": 6,
+      "line": 120,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 12,
+      "maxDepth": 39,
+      "frequency": 30,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 4
+    },
+    {
+      "index": 7,
+      "line": 121,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 0,
+      "maxDepth": 39,
+      "frequency": 30,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 4
+    },
+    {
+      "index": 8,
+      "line": 122,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 0,
+      "maxDepth": 8,
+      "frequency": 15,
+      "minNumberIntercept": 1000,
+      "minNumberSlope": -333,
+      "maxNumber": 10
+    },
+    {
+      "index": 9,
+      "line": 123,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 13,
+      "maxDepth": 40,
+      "frequency": 30,
+      "minNumberIntercept": -600,
+      "minNumberSlope": 50,
+      "maxNumber": 12
+    },
+    {
+      "index": 10,
+      "line": 124,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "DEEP_WATER"
+      ],
+      "minDepth": 10,
+      "maxDepth": 40,
+      "frequency": 50,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 11,
+      "line": 125,
+      "terrain": "STATUE_INERT",
+      "machine": "0",
+      "foundation": [
+        "WALL",
+        "NOTHING"
+      ],
+      "minDepth": 6,
+      "maxDepth": 39,
+      "frequency": 5,
+      "minNumberIntercept": -100,
+      "minNumberSlope": 35,
+      "maxNumber": 3
+    },
+    {
+      "index": 12,
+      "line": 126,
+      "terrain": "STATUE_INERT",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 10,
+      "maxDepth": 39,
+      "frequency": 50,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 13,
+      "line": 127,
+      "terrain": "TORCH_WALL",
+      "machine": "0",
+      "foundation": [
+        "WALL",
+        "NOTHING"
+      ],
+      "minDepth": 6,
+      "maxDepth": 39,
+      "frequency": 5,
+      "minNumberIntercept": -200,
+      "minNumberSlope": 70,
+      "maxNumber": 12
+    },
+    {
+      "index": 14,
+      "line": 130,
+      "terrain": "GAS_TRAP_POISON",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 2,
+      "maxDepth": 4,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 15,
+      "line": 131,
+      "terrain": "NET_TRAP",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 2,
+      "maxDepth": 5,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 16,
+      "line": 132,
+      "terrain": "0",
+      "machine": "MT_PARALYSIS_TRAP_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 2,
+      "maxDepth": 6,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 17,
+      "line": 133,
+      "terrain": "ALARM_TRAP",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 4,
+      "maxDepth": 7,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 18,
+      "line": 134,
+      "terrain": "GAS_TRAP_CONFUSION",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 2,
+      "maxDepth": 10,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 19,
+      "line": 135,
+      "terrain": "FLAMETHROWER",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 4,
+      "maxDepth": 12,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 20,
+      "line": 136,
+      "terrain": "FLOOD_TRAP",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 10,
+      "maxDepth": 14,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 21,
+      "line": 139,
+      "terrain": "GAS_TRAP_POISON_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 5,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 22,
+      "line": 140,
+      "terrain": "NET_TRAP_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 6,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 23,
+      "line": 141,
+      "terrain": "0",
+      "machine": "MT_PARALYSIS_TRAP_HIDDEN_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 7,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 24,
+      "line": 142,
+      "terrain": "ALARM_TRAP_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 8,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 25,
+      "line": 143,
+      "terrain": "TRAP_DOOR_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 9,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 26,
+      "line": 144,
+      "terrain": "GAS_TRAP_CONFUSION_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 11,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 27,
+      "line": 145,
+      "terrain": "FLAMETHROWER_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 13,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 28,
+      "line": 146,
+      "terrain": "FLOOD_TRAP_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 15,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 29,
+      "line": 147,
+      "terrain": "0",
+      "machine": "MT_SWAMP_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 1,
+      "maxDepth": 39,
+      "frequency": 30,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 30,
+      "line": 148,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 0,
+      "maxDepth": 5,
+      "frequency": 15,
+      "minNumberIntercept": 500,
+      "minNumberSlope": -150,
+      "maxNumber": 10
+    },
+    {
+      "index": 31,
+      "line": 149,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 1,
+      "maxDepth": 15,
+      "frequency": 15,
+      "minNumberIntercept": 500,
+      "minNumberSlope": -50,
+      "maxNumber": 10
+    },
+    {
+      "index": 32,
+      "line": 150,
+      "terrain": "STEAM_VENT",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 16,
+      "maxDepth": 39,
+      "frequency": 30,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 33,
+      "line": 151,
+      "terrain": "CRYSTAL_WALL",
+      "machine": "0",
+      "foundation": [
+        "WALL",
+        "NOTHING"
+      ],
+      "minDepth": 40,
+      "maxDepth": 40,
+      "frequency": 100,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 600
+    },
+    {
+      "index": 34,
+      "line": 154,
+      "terrain": "DEWAR_CAUSTIC_GAS",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 8,
+      "maxDepth": 39,
+      "frequency": 2,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 35,
+      "line": 155,
+      "terrain": "DEWAR_CONFUSION_GAS",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 8,
+      "maxDepth": 39,
+      "frequency": 2,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 36,
+      "line": 156,
+      "terrain": "DEWAR_PARALYSIS_GAS",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 8,
+      "maxDepth": 39,
+      "frequency": 2,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 37,
+      "line": 157,
+      "terrain": "DEWAR_METHANE_GAS",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 8,
+      "maxDepth": 39,
+      "frequency": 2,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 38,
+      "line": 160,
+      "terrain": "0",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 40,
+      "maxDepth": 40,
+      "frequency": 100,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 200
+    },
+    {
+      "index": 39,
+      "line": 161,
+      "terrain": "0",
+      "machine": "MT_BLOODFLOWER_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 1,
+      "maxDepth": 30,
+      "frequency": 25,
+      "minNumberIntercept": 140,
+      "minNumberSlope": -10,
+      "maxNumber": 3
+    },
+    {
+      "index": 40,
+      "line": 162,
+      "terrain": "0",
+      "machine": "MT_SHRINE_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 5,
+      "maxDepth": 26,
+      "frequency": 7,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 41,
+      "line": 163,
+      "terrain": "0",
+      "machine": "MT_IDYLL_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 1,
+      "maxDepth": 5,
+      "frequency": 15,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 42,
+      "line": 164,
+      "terrain": "0",
+      "machine": "MT_REMNANT_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 10,
+      "maxDepth": 40,
+      "frequency": 15,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 43,
+      "line": 165,
+      "terrain": "0",
+      "machine": "MT_DISMAL_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 7,
+      "maxDepth": 40,
+      "frequency": 12,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 5
+    },
+    {
+      "index": 44,
+      "line": 166,
+      "terrain": "0",
+      "machine": "MT_BRIDGE_TURRET_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 5,
+      "maxDepth": 39,
+      "frequency": 6,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 45,
+      "line": 167,
+      "terrain": "0",
+      "machine": "MT_LAKE_PATH_TURRET_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 5,
+      "maxDepth": 39,
+      "frequency": 6,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 46,
+      "line": 168,
+      "terrain": "0",
+      "machine": "MT_TRICK_STATUE_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 6,
+      "maxDepth": 39,
+      "frequency": 15,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 47,
+      "line": 169,
+      "terrain": "0",
+      "machine": "MT_SENTINEL_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 12,
+      "maxDepth": 39,
+      "frequency": 10,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 48,
+      "line": 170,
+      "terrain": "0",
+      "machine": "MT_WORM_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 12,
+      "maxDepth": 39,
+      "frequency": 12,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    }
+  ]
+}

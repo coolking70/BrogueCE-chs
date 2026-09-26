@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE47 seed1/D11
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 1 failed | 16 skipped) 6382ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     ↓ natural CE1 seed31337/D1
+     ↓ natural CE2 seed424242/D3
+     ↓ natural CE6 seed424242/D14
+     ↓ natural CE7 seed31337/D17
+     ↓ natural CE26 seed424242/D26
+     × natural CE47 seed1/D11 6381ms
+   ↓ CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+   ↓ CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE47 seed1/D11
+Error: marked target did not enter altar {"x":16,"y":25}
+ ❯ runAltarActions src/test/fixtures/u19e-machine-actions.ts:112:44
+    110|    walk(beyond);act('wait');
+    111|   }
+    112|   state('sacrificed');if(target.hp>0)throw Error(`marked target did no…
+       |                                            ^
+    113|   walk(reward.loc);act('pickup');state('reward');walk(entry);
+    114|  }else throw Error(`unknown family ${ce}`);
+ ❯ src/test/u_19e_machine_families.test.ts:56:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  17:57:26
+   Duration  7.98s (transform 788ms, setup 0ms, import 1.44s, tests 6.38s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-no-sacrifice-entry.json

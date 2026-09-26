@@ -1,0 +1,57 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE7 seed31337/D17
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 1 failed | 16 skipped) 7600ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     ↓ natural CE1 seed31337/D1
+     ↓ natural CE2 seed424242/D3
+     ↓ natural CE6 seed424242/D14
+     × natural CE7 seed31337/D17 7599ms
+     ↓ natural CE26 seed424242/D26
+     ↓ natural CE47 seed1/D11
+   ↓ CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+   ↓ CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE7 seed31337/D17
+AssertionError: expected { id: 446, loc: { x: 20, y: 7 }, …(7) } to match object { purgatory: false, ally: true }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "ally": true,
+-   "purgatory": false,
++   "purgatory": true,
+  }
+
+ ❯ src/test/u_19e_machine_families.test.ts:66:90
+     64|   }else if(row.ce===7){
+     65|    expect(phase('death-cleaned').residents.find((m:any)=>m.id===r.ally…
+     66|    const ally=phase('resurrected').residents.find((m:any)=>m.id===r.al…
+       |                                                                                          ^
+     67|    expect(has('resurrected',T.RESURRECTION_ALTAR_INERT)).toBe(true);ex…
+     68|    g.handlePlayerAction('wait');expect(g.monsters.filter((m:any)=>m.id…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  17:57:17
+   Duration  9.16s (transform 807ms, setup 0ms, import 1.39s, tests 7.60s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-no-resurrection.json

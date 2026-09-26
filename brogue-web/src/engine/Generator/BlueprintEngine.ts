@@ -711,8 +711,7 @@ export function blueprintQualifies(
     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
     // U19d: CE18 is eligible again: search → hidden lever → wired gate is executable.
     // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
-    // Web cannot yet bump-activate the impassable TURRET_LEVER; the adopted
-    // key is also rejected on its blocked cage tile. Keep CE frequency/flags.
+    // TURRET_LEVER gameplay remains deferred to U19f. Keep CE frequency/flags.
     if (bp.ceBlueprintId === 52) return false;
     // V-2b-9c, seed777/D19: #55 seals its adopted key at (25,4) behind
     // GRANITE/WORM_TUNNEL_MARKER_DORMANT. The lever/active-tunnel DF chain
@@ -721,23 +720,6 @@ export function blueprintQualifies(
     if (bp.id === 'key_worm_tunnels') return false;
     if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
     return true;
-}
-
-/** CE28 places the adopted item inside its retractable cage (Architect.c:1531).
- * Only this verified throwing puzzle is reopened here; CE47/52 remain deferred.
- * Check the finished circuit, not merely a terrain name: later hole DF must not
- * have overwritten the reward or the plate, and no other layer may block it.
- */
-export function isThrowingTutorialReward(grid: Grid, blueprintId: string, machineNumber: number, spawn: MachineItemSpawn): boolean {
-    if (blueprintId !== 'key_throwing_tutorial_cage' || !spawn.viaAdoption) return false;
-    const cell = grid.getCell(spawn.pos.x, spawn.pos.y);
-    if (!cell || cell.machineNumber !== machineNumber || cell.layers[DungeonLayer.DUNGEON] !== TerrainType.ALTAR_CAGE_RETRACTABLE) return false;
-    if (cell.layers.some((t, layer) => layer !== DungeonLayer.DUNGEON && isPathingBlocker(t))) return false;
-    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
-        const plate = grid.getCell(x, y)!;
-        if (plate.machineNumber === machineNumber && plate.layers[DungeonLayer.LIQUID] === TerrainType.PRESSURE_PLATE) return true;
-    }
-    return false;
 }
 
 export class BlueprintEngine {
@@ -886,46 +868,18 @@ export class BlueprintEngine {
             if (failsafe <= 0) return null; // CE :1004-1026：10 次尝试用尽
 
             // chooseBP（CE :1028-1061）：资格过滤 + 频率加权抽签，每次尝试重掷。
-            // V-2b-6：携带 adoptiveItem 时，候选蓝图必须真的有 MF_ADOPT_ITEM
-            // feature 能消费它——CE 数据里全部 BP_ADOPT_ITEM 蓝图都带领养
-            // feature（不变量），web 数据里 key_rat_trap 是唯一没有的（自创
-            // 形态）；此前它被抽中领养时物品被静默丢弃（父机器的钥匙凭空
-            // 消失 → 锁无钥匙死局，seed424242/D3 实测）。按 CE 数据不变量
-            // 过滤，key_rat_trap 自此不可作为领养机器生成（D2 口径：自创
-            // 内容退池留形）。
-            // V-2b-7：再补一条同类数据不变量——领养 feature 的落点必须
-            // **能真正接住物品**。CE 的领养物品在 feature 落格上用
-            // `placeItemAt(theItem, {featX, featY})` 无条件放下
-            //（Architect.c:1531 → Items.c:422-434 `theItem->loc = dest;
-            // addItemToChain(theItem, floorItems)`，不查通行性）；web 的
-            // populateLevel 有个 P1-43 兜底闸（Game.ts："蓝图特征落点可能选中
-            // 护城河的岩浆格"）——`isPathingBlocker(terrain)` 的落点会被**丢弃**。
-            // 两者相遇时：父机器交出的物品在 web 被闸掉、在 CE 只是躺在那里，
-            // 于是父机器的锁永远拿不到钥匙。
-            //
-            // 实证：47 号 key_sacrifice_altar 的领养 feature 是
-            // SACRIFICE_CAGE_DORMANT（GlobalsBrogue.c:319 `{0, SACRIFICE_
-            // CAGE_DORMANT, DUNGEON, {1,1}, 1, 0, -1, 0, 2, 0, 0, (MF_ADOPT_ITEM
-            // | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)}`），它带 T_OBSTRUCTS_
-            // PASSABILITY。CE 里铁笼会**升起**（献祭机制 TM_PROMOTES_ON_
-            // SACRIFICE_ENTRY），钥匙随后可取；web 没有该机制（§2.2 明示本轮
-            // 不实现，登记在 TerrainCatalog 的条目注里），铁笼恒锁 → 放进去
-            // 的钥匙永久不可达。实测：seed3/D7 的 Kennel cage_key、
-            // seed777/D23 的 vestibule_locked 门钥匙都被 #47 吃掉
-            //（v_2b_6_keys 的 F1/F2 翻红）。
-            // 按 D2 口径退池留形：**数据照带旗标**，只是它不再被抽为领养机器；
-            // 献祭机制落地的那一轮摘掉这条过滤即可（届时 F 组应复跑）。
-            const canReceiveAdoptedItem = (bp: BlueprintDef, f: FeatureDef): boolean => {
-                if (!f.flags.includes('MF_ADOPT_ITEM')) return false;
-                if (!f.terrain) return true; // 纯 DF / 无地形 feature：落点即格，无堵格体
-                const t = TERRAIN_MAP[f.terrain];
-                if (t === undefined) return false; // 未知地形名——宁可不让它领养
-                return !isPathingBlocker(t) || (bp.ceBlueprintId === 28 && t === TerrainType.ALTAR_CAGE_RETRACTABLE);
-            };
+            // CE Architect.c:1495-1533 adopts once, then placeItemAt keeps the
+            // item at the feature location even inside a closed cage. A pathing
+            // blocker is a machine state, not an item-adoption disqualification.
+            // Retain the data invariant: an adopting machine must have an actual
+            // adoption feature, and a named terrain must be implemented.
+            const canReceiveAdoptedItem = (f: FeatureDef): boolean =>
+                f.flags.includes('MF_ADOPT_ITEM')
+                && (!f.terrain || TERRAIN_MAP[f.terrain] !== undefined);
             const chooseBP = requestedBp <= 0;
             const eligible = this.blueprints.filter(bp =>
                 (chooseBP ? blueprintQualifies(bp, this.depth, requiredFlags) : bp.ceBlueprintId === requestedBp)
-                && (adoptiveItem === null || bp.features.some(f => canReceiveAdoptedItem(bp, f)))
+                && (adoptiveItem === null || bp.features.some(f => canReceiveAdoptedItem(f)))
             );
             let totalFreq = 0;
             for (const bp of eligible) totalFreq += bp.frequency;
@@ -1971,19 +1925,9 @@ export class BlueprintEngine {
             }
         }
 
-        // V-2b-9b 补完：领养 feature 的候选格在落位当刻可能可走，但同一
-        // 蓝图的后续环境 feature 会再改写该格。Game 的 P1-43 消费闸会丢弃
-        // 最终落在 pathing blocker 上的物品；若它是外包钥匙，父机器却已把
-        // generatedKey 置真，结果就是“有锁、零钥匙”的永久死局。静态的
-        // canReceiveAdoptedItem 只能检查 feature 声明的初始 terrain，抓不到
-        // 这种后写覆盖。因此在蓝图全部 feature 落完后复核最终网格；失败沿用
-        // buildAMachine 的既有整机回滚/重摇语义，而不是让消费端静默吞钥匙。
-        for (const spawn of itemSpawns) {
-            if (!spawn.viaAdoption) continue;
-            const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
-            if ((!cell || isPathingBlocker(cell.terrain))
-                && !isThrowingTutorialReward(this.grid, bp.id, machineNum, spawn)) return fail('adopted item destination blocked');
-        }
+        // CE keeps adopted items on their final feature square, including
+        // cages and later terrain overlays. Ownership/rollback is checked below;
+        // walkability must not discard an otherwise valid machine transaction.
 
         // Do not publish a transaction with an unowned creation or duplicate
         // destination. This also rejects malformed synthetic TAKE_ITEM features

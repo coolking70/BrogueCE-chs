@@ -1,0 +1,6238 @@
+{
+  "seed": "1",
+  "depth": 11,
+  "machines": [
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "machineNumber": 1,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "VOMIT",
+            "hordeFlags": [
+              "HORDE_MACHINE_CAPTIVE",
+              "HORDE_LEADER_CAPTIVE"
+            ],
+            "instanceCount": [
+              2,
+              2
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_GENERATE_HORDE",
+              "MF_TREAT_AS_BLOCKING"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 3,
+              "y": 25
+            },
+            {
+              "x": 6,
+              "y": 22
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "MANACLE_T",
+            "featureDF": "DF_AMBIENT_BLOOD",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 8,
+              "y": 24
+            },
+            {
+              "x": 3,
+              "y": 21
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "terrain": "MANACLE_L",
+            "featureDF": "DF_AMBIENT_BLOOD",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 1,
+              "y": 21
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "featureDF": "DF_BONES",
+            "instanceCount": [
+              2,
+              3
+            ],
+            "minimum": 1,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 3,
+              "y": 22
+            },
+            {
+              "x": 5,
+              "y": 25
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "featureDF": "DF_VOMIT",
+            "instanceCount": [
+              2,
+              3
+            ],
+            "minimum": 1,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 1,
+              "y": 23
+            },
+            {
+              "x": 2,
+              "y": 22
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_BUILD_VESTIBULE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 6,
+              "y": 20
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "monster",
+          "featureIndex": 0,
+          "instanceId": 219,
+          "name": "Dar blademaster",
+          "pos": {
+            "x": 3,
+            "y": 25
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "monster",
+          "featureIndex": 0,
+          "instanceId": 220,
+          "name": "Ogre",
+          "pos": {
+            "x": 6,
+            "y": 22
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "VOMIT",
+          "pos": {
+            "x": 3,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "VOMIT",
+          "pos": {
+            "x": 6,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MANACLE_T",
+          "pos": {
+            "x": 8,
+            "y": 24
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 8,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MANACLE_T",
+          "pos": {
+            "x": 3,
+            "y": 21
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 3,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 2,
+          "name": "MANACLE_L",
+          "pos": {
+            "x": 1,
+            "y": 21
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 1,
+            "y": 21
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 3,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 3,
+            "y": 22
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 3,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 5,
+            "y": 25
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 4,
+          "name": "DF_VOMIT",
+          "pos": {
+            "x": 1,
+            "y": 23
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 4,
+          "name": "DF_VOMIT",
+          "pos": {
+            "x": 2,
+            "y": 22
+          }
+        }
+      ]
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "machineNumber": 2,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "LOCKED_DOOR",
+            "itemCategory": "KEY",
+            "itemId": "iron_key",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_ITEM",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_KEY_DISPOSABLE",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 6,
+              "y": 20
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "LOCKED_DOOR",
+          "pos": {
+            "x": 6,
+            "y": 20
+          }
+        }
+      ]
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "machineNumber": 3,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "FLOOR_FLOODABLE",
+            "instanceCount": [
+              0,
+              0
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 61,
+              "y": 22
+            },
+            {
+              "x": 58,
+              "y": 25
+            },
+            {
+              "x": 66,
+              "y": 24
+            },
+            {
+              "x": 67,
+              "y": 26
+            },
+            {
+              "x": 59,
+              "y": 25
+            },
+            {
+              "x": 63,
+              "y": 26
+            },
+            {
+              "x": 62,
+              "y": 25
+            },
+            {
+              "x": 64,
+              "y": 26
+            },
+            {
+              "x": 64,
+              "y": 25
+            },
+            {
+              "x": 67,
+              "y": 25
+            },
+            {
+              "x": 63,
+              "y": 24
+            },
+            {
+              "x": 67,
+              "y": 24
+            },
+            {
+              "x": 60,
+              "y": 25
+            },
+            {
+              "x": 62,
+              "y": 22
+            },
+            {
+              "x": 60,
+              "y": 24
+            },
+            {
+              "x": 63,
+              "y": 21
+            },
+            {
+              "x": 65,
+              "y": 26
+            },
+            {
+              "x": 63,
+              "y": 20
+            },
+            {
+              "x": 58,
+              "y": 26
+            },
+            {
+              "x": 56,
+              "y": 24
+            },
+            {
+              "x": 54,
+              "y": 26
+            },
+            {
+              "x": 55,
+              "y": 25
+            },
+            {
+              "x": 65,
+              "y": 21
+            },
+            {
+              "x": 62,
+              "y": 26
+            },
+            {
+              "x": 54,
+              "y": 25
+            },
+            {
+              "x": 61,
+              "y": 24
+            },
+            {
+              "x": 66,
+              "y": 25
+            },
+            {
+              "x": 63,
+              "y": 25
+            },
+            {
+              "x": 65,
+              "y": 24
+            },
+            {
+              "x": 60,
+              "y": 26
+            },
+            {
+              "x": 54,
+              "y": 24
+            },
+            {
+              "x": 57,
+              "y": 24
+            },
+            {
+              "x": 65,
+              "y": 25
+            },
+            {
+              "x": 63,
+              "y": 23
+            },
+            {
+              "x": 65,
+              "y": 22
+            },
+            {
+              "x": 64,
+              "y": 21
+            },
+            {
+              "x": 66,
+              "y": 26
+            },
+            {
+              "x": 59,
+              "y": 26
+            },
+            {
+              "x": 66,
+              "y": 22
+            },
+            {
+              "x": 63,
+              "y": 22
+            },
+            {
+              "x": 56,
+              "y": 26
+            },
+            {
+              "x": 64,
+              "y": 20
+            },
+            {
+              "x": 64,
+              "y": 24
+            },
+            {
+              "x": 59,
+              "y": 24
+            },
+            {
+              "x": 62,
+              "y": 21
+            },
+            {
+              "x": 55,
+              "y": 24
+            },
+            {
+              "x": 64,
+              "y": 22
+            },
+            {
+              "x": 58,
+              "y": 24
+            },
+            {
+              "x": 61,
+              "y": 26
+            },
+            {
+              "x": 56,
+              "y": 25
+            },
+            {
+              "x": 55,
+              "y": 26
+            },
+            {
+              "x": 61,
+              "y": 25
+            },
+            {
+              "x": 57,
+              "y": 26
+            },
+            {
+              "x": 62,
+              "y": 24
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "ALTAR_SWITCH_RETRACTING",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 58,
+              "y": 25
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "featureDF": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+            "instanceCount": [
+              3,
+              3
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 65,
+              "y": 21
+            },
+            {
+              "x": 67,
+              "y": 26
+            },
+            {
+              "x": 62,
+              "y": 21
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 61,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 58,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 66,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 67,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 59,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 62,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 67,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 67,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 60,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 62,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 60,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 65,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 58,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 56,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 54,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 55,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 65,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 62,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 54,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 61,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 66,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 65,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 60,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 54,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 57,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 65,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 65,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 66,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 59,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 66,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 63,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 56,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 59,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 62,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 55,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 64,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 58,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 61,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 56,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 55,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 61,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 57,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "FLOOR_FLOODABLE",
+          "pos": {
+            "x": 62,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "ALTAR_SWITCH_RETRACTING",
+          "pos": {
+            "x": 58,
+            "y": 25
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+          "pos": {
+            "x": 65,
+            "y": 21
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+          "pos": {
+            "x": 67,
+            "y": 26
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+          "pos": {
+            "x": 62,
+            "y": 21
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 1,
+          "sourceMachineNumber": 2,
+          "sourceFeatureIndex": 0,
+          "instanceId": 221,
+          "name": "Iron Key",
+          "pos": {
+            "x": 58,
+            "y": 25
+          },
+          "owner": "floor"
+        }
+      ]
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "machineNumber": 4,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "CARPET",
+            "instanceCount": [
+              0,
+              0
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 32,
+              "y": 2
+            },
+            {
+              "x": 31,
+              "y": 3
+            },
+            {
+              "x": 33,
+              "y": 3
+            },
+            {
+              "x": 32,
+              "y": 4
+            },
+            {
+              "x": 29,
+              "y": 4
+            },
+            {
+              "x": 35,
+              "y": 2
+            },
+            {
+              "x": 35,
+              "y": 3
+            },
+            {
+              "x": 29,
+              "y": 3
+            },
+            {
+              "x": 34,
+              "y": 3
+            },
+            {
+              "x": 33,
+              "y": 1
+            },
+            {
+              "x": 31,
+              "y": 4
+            },
+            {
+              "x": 34,
+              "y": 2
+            },
+            {
+              "x": 30,
+              "y": 2
+            },
+            {
+              "x": 29,
+              "y": 1
+            },
+            {
+              "x": 28,
+              "y": 3
+            },
+            {
+              "x": 30,
+              "y": 1
+            },
+            {
+              "x": 30,
+              "y": 4
+            },
+            {
+              "x": 31,
+              "y": 1
+            },
+            {
+              "x": 31,
+              "y": 2
+            },
+            {
+              "x": 28,
+              "y": 2
+            },
+            {
+              "x": 34,
+              "y": 1
+            },
+            {
+              "x": 33,
+              "y": 4
+            },
+            {
+              "x": 29,
+              "y": 2
+            },
+            {
+              "x": 32,
+              "y": 1
+            },
+            {
+              "x": 30,
+              "y": 3
+            },
+            {
+              "x": 33,
+              "y": 2
+            },
+            {
+              "x": 34,
+              "y": 4
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "itemCategory": "POTION",
+            "instanceCount": [
+              5,
+              7
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ]
+          },
+          "iterations": 0,
+          "placements": [],
+          "status": "skipped"
+        },
+        {
+          "index": 2,
+          "request": {
+            "itemCategory": "SCROLL",
+            "instanceCount": [
+              4,
+              6
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_ALTERNATIVE",
+              "MF_TREAT_AS_BLOCKING"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 32,
+              "y": 2
+            },
+            {
+              "x": 32,
+              "y": 4
+            },
+            {
+              "x": 29,
+              "y": 4
+            },
+            {
+              "x": 35,
+              "y": 2
+            },
+            {
+              "x": 30,
+              "y": 2
+            },
+            {
+              "x": 28,
+              "y": 2
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "terrain": "FUNGUS_FOREST",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 0,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 34,
+              "y": 4
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_BUILD_VESTIBULE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 32,
+              "y": 5
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "terrain": "STATUE_INERT",
+            "instanceCount": [
+              2,
+              3
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_BUILD_IN_WALLS",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 29,
+              "y": 0
+            },
+            {
+              "x": 32,
+              "y": 0
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 32,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 31,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 33,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 32,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 29,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 35,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 35,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 29,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 34,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 33,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 31,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 34,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 30,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 29,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 28,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 30,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 30,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 31,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 31,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 28,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 34,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 33,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 29,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 32,
+            "y": 1
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 30,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 33,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 34,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "FUNGUS_FOREST",
+          "pos": {
+            "x": 34,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "STATUE_INERT",
+          "pos": {
+            "x": 29,
+            "y": 0
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "STATUE_INERT",
+          "pos": {
+            "x": 32,
+            "y": 0
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 222,
+          "name": "Scroll of Recharging",
+          "pos": {
+            "x": 32,
+            "y": 2
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 223,
+          "name": "Scroll of Identify",
+          "pos": {
+            "x": 32,
+            "y": 4
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 226,
+          "name": "Scroll of Summon Monsters",
+          "pos": {
+            "x": 29,
+            "y": 4
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 227,
+          "name": "Scroll of Discord",
+          "pos": {
+            "x": 35,
+            "y": 2
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 229,
+          "name": "Scroll of Magic Mapping",
+          "pos": {
+            "x": 30,
+            "y": 2
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 4,
+          "sourceFeatureIndex": 2,
+          "instanceId": 230,
+          "name": "Scroll of Teleportation",
+          "pos": {
+            "x": 28,
+            "y": 2
+          },
+          "owner": "floor"
+        }
+      ],
+      "interiorIterations": 3,
+      "interiorAddedCells": 8
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "machineNumber": 5,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "LOCKED_DOOR",
+            "itemCategory": "KEY",
+            "itemId": "iron_key",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_ITEM",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_KEY_DISPOSABLE",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 32,
+              "y": 5
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "LOCKED_DOOR",
+          "pos": {
+            "x": 32,
+            "y": 5
+          }
+        }
+      ]
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "machineNumber": 6,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "CARPET",
+            "instanceCount": [
+              0,
+              0
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 20,
+              "y": 10
+            },
+            {
+              "x": 20,
+              "y": 9
+            },
+            {
+              "x": 23,
+              "y": 7
+            },
+            {
+              "x": 18,
+              "y": 5
+            },
+            {
+              "x": 20,
+              "y": 6
+            },
+            {
+              "x": 19,
+              "y": 9
+            },
+            {
+              "x": 23,
+              "y": 9
+            },
+            {
+              "x": 22,
+              "y": 9
+            },
+            {
+              "x": 18,
+              "y": 4
+            },
+            {
+              "x": 17,
+              "y": 5
+            },
+            {
+              "x": 20,
+              "y": 11
+            },
+            {
+              "x": 21,
+              "y": 8
+            },
+            {
+              "x": 20,
+              "y": 3
+            },
+            {
+              "x": 17,
+              "y": 7
+            },
+            {
+              "x": 19,
+              "y": 4
+            },
+            {
+              "x": 21,
+              "y": 5
+            },
+            {
+              "x": 19,
+              "y": 7
+            },
+            {
+              "x": 19,
+              "y": 5
+            },
+            {
+              "x": 24,
+              "y": 6
+            },
+            {
+              "x": 21,
+              "y": 9
+            },
+            {
+              "x": 20,
+              "y": 8
+            },
+            {
+              "x": 19,
+              "y": 6
+            },
+            {
+              "x": 19,
+              "y": 8
+            },
+            {
+              "x": 17,
+              "y": 6
+            },
+            {
+              "x": 18,
+              "y": 9
+            },
+            {
+              "x": 22,
+              "y": 5
+            },
+            {
+              "x": 22,
+              "y": 4
+            },
+            {
+              "x": 20,
+              "y": 5
+            },
+            {
+              "x": 21,
+              "y": 3
+            },
+            {
+              "x": 22,
+              "y": 7
+            },
+            {
+              "x": 23,
+              "y": 6
+            },
+            {
+              "x": 19,
+              "y": 10
+            },
+            {
+              "x": 20,
+              "y": 4
+            },
+            {
+              "x": 19,
+              "y": 11
+            },
+            {
+              "x": 18,
+              "y": 7
+            },
+            {
+              "x": 17,
+              "y": 9
+            },
+            {
+              "x": 21,
+              "y": 7
+            },
+            {
+              "x": 21,
+              "y": 10
+            },
+            {
+              "x": 22,
+              "y": 6
+            },
+            {
+              "x": 18,
+              "y": 6
+            },
+            {
+              "x": 24,
+              "y": 7
+            },
+            {
+              "x": 24,
+              "y": 8
+            },
+            {
+              "x": 21,
+              "y": 11
+            },
+            {
+              "x": 22,
+              "y": 10
+            },
+            {
+              "x": 18,
+              "y": 10
+            },
+            {
+              "x": 21,
+              "y": 6
+            },
+            {
+              "x": 17,
+              "y": 8
+            },
+            {
+              "x": 23,
+              "y": 5
+            },
+            {
+              "x": 21,
+              "y": 4
+            },
+            {
+              "x": 22,
+              "y": 8
+            },
+            {
+              "x": 23,
+              "y": 8
+            },
+            {
+              "x": 19,
+              "y": 3
+            },
+            {
+              "x": 18,
+              "y": 8
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "WALL",
+            "instanceCount": [
+              0,
+              0
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_BUILD_IN_WALLS",
+              "MF_IMPREGNABLE",
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 21,
+              "y": 12
+            },
+            {
+              "x": 24,
+              "y": 5
+            },
+            {
+              "x": 19,
+              "y": 12
+            },
+            {
+              "x": 25,
+              "y": 8
+            },
+            {
+              "x": 23,
+              "y": 10
+            },
+            {
+              "x": 22,
+              "y": 3
+            },
+            {
+              "x": 20,
+              "y": 2
+            },
+            {
+              "x": 23,
+              "y": 4
+            },
+            {
+              "x": 17,
+              "y": 4
+            },
+            {
+              "x": 16,
+              "y": 6
+            },
+            {
+              "x": 18,
+              "y": 3
+            },
+            {
+              "x": 25,
+              "y": 7
+            },
+            {
+              "x": 16,
+              "y": 8
+            },
+            {
+              "x": 21,
+              "y": 2
+            },
+            {
+              "x": 24,
+              "y": 9
+            },
+            {
+              "x": 16,
+              "y": 5
+            },
+            {
+              "x": 18,
+              "y": 11
+            },
+            {
+              "x": 20,
+              "y": 12
+            },
+            {
+              "x": 16,
+              "y": 9
+            },
+            {
+              "x": 25,
+              "y": 6
+            },
+            {
+              "x": 19,
+              "y": 2
+            },
+            {
+              "x": 22,
+              "y": 11
+            },
+            {
+              "x": 17,
+              "y": 10
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_BUILD_VESTIBULE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 16,
+              "y": 7
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "itemCategory": "WEAPON|ARMOR|WAND",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 20,
+              "y": 10
+            },
+            {
+              "x": 23,
+              "y": 7
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "itemCategory": "STAFF|RING|CHARM",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 5
+            },
+            {
+              "x": 20,
+              "y": 6
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 23,
+              "y": 9
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 6,
+          "request": {
+            "terrain": "STATUE_INERT",
+            "instanceCount": [
+              1,
+              3
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_BUILD_IN_WALLS",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 17,
+              "y": 10
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 23,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 23,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 17,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 11
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 17,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 24,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 17,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 23,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 20,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 11
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 17,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 24,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 24,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 11
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 17,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 23,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 21,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 22,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 23,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 19,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 18,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 21,
+            "y": 12
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 24,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 19,
+            "y": 12
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 25,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 23,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 22,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 20,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 23,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 17,
+            "y": 4
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 16,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 18,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 25,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 16,
+            "y": 8
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 21,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 24,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 16,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 18,
+            "y": 11
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 20,
+            "y": 12
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 16,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 25,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 19,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 22,
+            "y": 11
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "WALL",
+          "pos": {
+            "x": 17,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 20,
+            "y": 10
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 23,
+            "y": 7
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 18,
+            "y": 5
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 20,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 23,
+            "y": 9
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 6,
+          "name": "STATUE_INERT",
+          "pos": {
+            "x": 17,
+            "y": 10
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 6,
+          "sourceFeatureIndex": 3,
+          "instanceId": 236,
+          "name": "Wand of Beckoning",
+          "pos": {
+            "x": 20,
+            "y": 10
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 6,
+          "sourceFeatureIndex": 3,
+          "instanceId": 237,
+          "name": "Plate Mail",
+          "pos": {
+            "x": 23,
+            "y": 7
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 4,
+          "sourceMachineNumber": 6,
+          "sourceFeatureIndex": 4,
+          "instanceId": 238,
+          "name": "Staff of Protection",
+          "pos": {
+            "x": 18,
+            "y": 5
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 4,
+          "sourceMachineNumber": 6,
+          "sourceFeatureIndex": 4,
+          "instanceId": 239,
+          "name": "Staff of Fire",
+          "pos": {
+            "x": 20,
+            "y": 6
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 5,
+          "sourceMachineNumber": 5,
+          "sourceFeatureIndex": 0,
+          "instanceId": 231,
+          "name": "Iron Key",
+          "pos": {
+            "x": 23,
+            "y": 9
+          },
+          "owner": "floor"
+        }
+      ],
+      "interiorIterations": 2,
+      "interiorAddedCells": 6
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "machineNumber": 7,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "LOCKED_DOOR",
+            "itemCategory": "KEY",
+            "itemId": "iron_key",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_GENERATE_ITEM",
+              "MF_OUTSOURCE_ITEM_TO_MACHINE",
+              "MF_KEY_DISPOSABLE",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 16,
+              "y": 7
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "LOCKED_DOOR",
+          "pos": {
+            "x": 16,
+            "y": 7
+          }
+        }
+      ]
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "machineNumber": 8,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "featureDF": "DF_BONES",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 2,
+            "flags": []
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 15,
+              "y": 23
+            },
+            {
+              "x": 19,
+              "y": 25
+            },
+            {
+              "x": 22,
+              "y": 25
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_BUILD_IN_WALLS",
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 25,
+              "y": 22
+            },
+            {
+              "x": 15,
+              "y": 27
+            },
+            {
+              "x": 25,
+              "y": 28
+            },
+            {
+              "x": 14,
+              "y": 24
+            },
+            {
+              "x": 19,
+              "y": 28
+            },
+            {
+              "x": 22,
+              "y": 22
+            },
+            {
+              "x": 15,
+              "y": 22
+            },
+            {
+              "x": 22,
+              "y": 28
+            },
+            {
+              "x": 26,
+              "y": 26
+            },
+            {
+              "x": 17,
+              "y": 22
+            },
+            {
+              "x": 17,
+              "y": 28
+            },
+            {
+              "x": 19,
+              "y": 22
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "terrain": "SACRIFICE_ALTAR_DORMANT",
+            "featureDF": "DF_TRIGGER_AREA",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 16,
+              "y": 25
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "terrain": "SACRIFICE_CAGE_DORMANT",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NOT_IN_HALLWAY",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 22,
+              "y": 24
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "terrain": "DEMONIC_STATUE",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 18,
+              "y": 26
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "terrain": "STATUE_INSTACRACK",
+            "hordeFlags": [
+              "HORDE_SACRIFICE_TARGET"
+            ],
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_GENERATE_HORDE",
+              "MF_MONSTERS_DORMANT",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 74,
+              "y": 13
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "monster",
+          "featureIndex": 5,
+          "instanceId": 233,
+          "name": "Ogre",
+          "pos": {
+            "x": 74,
+            "y": 13
+          },
+          "owner": "dormant"
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 15,
+            "y": 23
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 19,
+            "y": 25
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 22,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 2,
+          "name": "SACRIFICE_ALTAR_DORMANT",
+          "pos": {
+            "x": 16,
+            "y": 25
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_TRIGGER_AREA",
+          "pos": {
+            "x": 16,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "SACRIFICE_CAGE_DORMANT",
+          "pos": {
+            "x": 22,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "DEMONIC_STATUE",
+          "pos": {
+            "x": 18,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "STATUE_INSTACRACK",
+          "pos": {
+            "x": 74,
+            "y": 13
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 7,
+          "sourceFeatureIndex": 0,
+          "instanceId": 232,
+          "name": "Iron Key",
+          "pos": {
+            "x": 22,
+            "y": 24
+          },
+          "owner": "floor"
+        }
+      ],
+      "interiorIterations": 2,
+      "interiorAddedCells": 1
+    },
+    {
+      "seed": "1",
+      "depth": 11,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "machineNumber": 9,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 68,
+              "y": 3
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 60,
+              "y": 6
+            },
+            {
+              "x": 58,
+              "y": 2
+            },
+            {
+              "x": 63,
+              "y": 8
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+          "pos": {
+            "x": 68,
+            "y": 3
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 60,
+            "y": 6
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 58,
+            "y": 2
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 63,
+            "y": 8
+          }
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "monster",
+      "featureIndex": 0,
+      "instanceId": 219,
+      "name": "Dar blademaster",
+      "pos": {
+        "x": 3,
+        "y": 25
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "monster",
+      "featureIndex": 0,
+      "instanceId": 220,
+      "name": "Ogre",
+      "pos": {
+        "x": 6,
+        "y": 22
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "VOMIT",
+      "pos": {
+        "x": 3,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "VOMIT",
+      "pos": {
+        "x": 6,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MANACLE_T",
+      "pos": {
+        "x": 8,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 8,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MANACLE_T",
+      "pos": {
+        "x": 3,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 3,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "terrain",
+      "featureIndex": 2,
+      "name": "MANACLE_L",
+      "pos": {
+        "x": 1,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 1,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 3,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 3,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 3,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 5,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 4,
+      "name": "DF_VOMIT",
+      "pos": {
+        "x": 1,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_chained_allies",
+      "ceBlueprintId": 9,
+      "kind": "featureDF",
+      "featureIndex": 4,
+      "name": "DF_VOMIT",
+      "pos": {
+        "x": 2,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "LOCKED_DOOR",
+      "pos": {
+        "x": 6,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 61,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 58,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 66,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 67,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 59,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 62,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 67,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 67,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 60,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 62,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 60,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 65,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 58,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 56,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 54,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 55,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 65,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 62,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 54,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 61,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 66,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 65,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 60,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 54,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 57,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 65,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 65,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 66,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 59,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 66,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 63,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 56,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 59,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 62,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 55,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 64,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 58,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 61,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 56,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 55,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 61,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 57,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "FLOOR_FLOODABLE",
+      "pos": {
+        "x": 62,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "ALTAR_SWITCH_RETRACTING",
+      "pos": {
+        "x": 58,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+      "pos": {
+        "x": 65,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+      "pos": {
+        "x": 67,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT",
+      "pos": {
+        "x": 62,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_34_environment",
+      "ceBlueprintId": 34,
+      "kind": "item",
+      "featureIndex": 1,
+      "sourceMachineNumber": 2,
+      "sourceFeatureIndex": 0,
+      "instanceId": 221,
+      "name": "Iron Key",
+      "pos": {
+        "x": 58,
+        "y": 25
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 32,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 31,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 33,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 32,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 29,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 35,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 35,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 29,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 34,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 33,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 31,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 34,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 30,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 29,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 28,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 30,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 30,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 31,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 31,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 28,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 34,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 33,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 29,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 32,
+        "y": 1
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 30,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 33,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 34,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "FUNGUS_FOREST",
+      "pos": {
+        "x": 34,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "STATUE_INERT",
+      "pos": {
+        "x": 29,
+        "y": 0
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "STATUE_INERT",
+      "pos": {
+        "x": 32,
+        "y": 0
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 222,
+      "name": "Scroll of Recharging",
+      "pos": {
+        "x": 32,
+        "y": 2
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 223,
+      "name": "Scroll of Identify",
+      "pos": {
+        "x": 32,
+        "y": 4
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 226,
+      "name": "Scroll of Summon Monsters",
+      "pos": {
+        "x": 29,
+        "y": 4
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 227,
+      "name": "Scroll of Discord",
+      "pos": {
+        "x": 35,
+        "y": 2
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 229,
+      "name": "Scroll of Magic Mapping",
+      "pos": {
+        "x": 30,
+        "y": 2
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 4,
+      "sourceFeatureIndex": 2,
+      "instanceId": 230,
+      "name": "Scroll of Teleportation",
+      "pos": {
+        "x": 28,
+        "y": 2
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 5,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "LOCKED_DOOR",
+      "pos": {
+        "x": 32,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 23,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 23,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 17,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 17,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 24,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 17,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 23,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 20,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 17,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 24,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 24,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 17,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 23,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 21,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 22,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 23,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 19,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 18,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 21,
+        "y": 12
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 24,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 19,
+        "y": 12
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 25,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 23,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 22,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 20,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 23,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 17,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 16,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 18,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 25,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 16,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 21,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 24,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 16,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 18,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 20,
+        "y": 12
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 16,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 25,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 19,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 22,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "WALL",
+      "pos": {
+        "x": 17,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 20,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 23,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 18,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 20,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 23,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "terrain",
+      "featureIndex": 6,
+      "name": "STATUE_INERT",
+      "pos": {
+        "x": 17,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 6,
+      "sourceFeatureIndex": 3,
+      "instanceId": 236,
+      "name": "Wand of Beckoning",
+      "pos": {
+        "x": 20,
+        "y": 10
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 6,
+      "sourceFeatureIndex": 3,
+      "instanceId": 237,
+      "name": "Plate Mail",
+      "pos": {
+        "x": 23,
+        "y": 7
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "item",
+      "featureIndex": 4,
+      "sourceMachineNumber": 6,
+      "sourceFeatureIndex": 4,
+      "instanceId": 238,
+      "name": "Staff of Protection",
+      "pos": {
+        "x": 18,
+        "y": 5
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "item",
+      "featureIndex": 4,
+      "sourceMachineNumber": 6,
+      "sourceFeatureIndex": 4,
+      "instanceId": 239,
+      "name": "Staff of Fire",
+      "pos": {
+        "x": 20,
+        "y": 6
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 6,
+      "blueprintId": "key_nested_library",
+      "ceBlueprintId": 26,
+      "kind": "item",
+      "featureIndex": 5,
+      "sourceMachineNumber": 5,
+      "sourceFeatureIndex": 0,
+      "instanceId": 231,
+      "name": "Iron Key",
+      "pos": {
+        "x": 23,
+        "y": 9
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 7,
+      "blueprintId": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "LOCKED_DOOR",
+      "pos": {
+        "x": 16,
+        "y": 7
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "monster",
+      "featureIndex": 5,
+      "instanceId": 233,
+      "name": "Ogre",
+      "pos": {
+        "x": 74,
+        "y": 13
+      },
+      "owner": "dormant"
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 15,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 19,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 22,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "terrain",
+      "featureIndex": 2,
+      "name": "SACRIFICE_ALTAR_DORMANT",
+      "pos": {
+        "x": 16,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_TRIGGER_AREA",
+      "pos": {
+        "x": 16,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "SACRIFICE_CAGE_DORMANT",
+      "pos": {
+        "x": 22,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "DEMONIC_STATUE",
+      "pos": {
+        "x": 18,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "STATUE_INSTACRACK",
+      "pos": {
+        "x": 74,
+        "y": 13
+      }
+    },
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 7,
+      "sourceFeatureIndex": 0,
+      "instanceId": 232,
+      "name": "Iron Key",
+      "pos": {
+        "x": 22,
+        "y": 24
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+      "pos": {
+        "x": 68,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 60,
+        "y": 6
+      }
+    },
+    {
+      "machineNumber": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 58,
+        "y": 2
+      }
+    },
+    {
+      "machineNumber": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 63,
+        "y": 8
+      }
+    }
+  ],
+  "matches": [
+    {
+      "machineNumber": 8,
+      "blueprintId": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 7,
+      "sourceFeatureIndex": 0,
+      "instanceId": 232,
+      "name": "Iron Key",
+      "pos": {
+        "x": 22,
+        "y": 24
+      },
+      "owner": "floor"
+    }
+  ]
+}

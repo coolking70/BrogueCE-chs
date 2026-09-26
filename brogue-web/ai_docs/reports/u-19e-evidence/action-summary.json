@@ -1,0 +1,759 @@
+[
+  {
+    "ce": 1,
+    "seed": 31337,
+    "depth": 1,
+    "machine": 1,
+    "entry": {
+      "x": 20,
+      "y": 22
+    },
+    "commands": 38,
+    "rewardId": 8,
+    "allyId": null,
+    "markedId": null,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "label": "entered",
+        "commands": 1,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "borrowed",
+        "commands": 8,
+        "player": {
+          "x": 18,
+          "y": 26
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      },
+      {
+        "label": "closed",
+        "commands": 14,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      },
+      {
+        "label": "reopened",
+        "commands": 20,
+        "player": {
+          "x": 18,
+          "y": 26
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          7
+        ]
+      },
+      {
+        "label": "replaced",
+        "commands": 27,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "second-loan",
+        "commands": 38,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          8
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 38,
+        "player": {
+          "x": 20,
+          "y": 22
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "ce": 2,
+    "seed": 424242,
+    "depth": 3,
+    "machine": 1,
+    "entry": {
+      "x": 74,
+      "y": 16
+    },
+    "commands": 46,
+    "rewardId": 35,
+    "allyId": null,
+    "markedId": null,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          33
+        ]
+      },
+      {
+        "label": "entered",
+        "commands": 1,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "borrowed",
+        "commands": 9,
+        "player": {
+          "x": 76,
+          "y": 21
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          34
+        ]
+      },
+      {
+        "label": "closed",
+        "commands": 16,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          34
+        ]
+      },
+      {
+        "label": "reopened",
+        "commands": 23,
+        "player": {
+          "x": 76,
+          "y": 21
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          34
+        ]
+      },
+      {
+        "label": "replaced",
+        "commands": 31,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "second-loan",
+        "commands": 46,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          35
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 46,
+        "player": {
+          "x": 74,
+          "y": 16
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          35
+        ]
+      }
+    ]
+  },
+  {
+    "ce": 6,
+    "seed": 424242,
+    "depth": 14,
+    "machine": 1,
+    "entry": {
+      "x": 6,
+      "y": 8
+    },
+    "commands": 25,
+    "rewardId": null,
+    "allyId": null,
+    "markedId": null,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 6,
+          "y": 8
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          334,
+          376,
+          377
+        ]
+      },
+      {
+        "label": "entered",
+        "commands": 1,
+        "player": {
+          "x": 6,
+          "y": 8
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          376,
+          377
+        ]
+      },
+      {
+        "label": "first-drop",
+        "commands": 9,
+        "player": {
+          "x": 2,
+          "y": 9
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          377
+        ]
+      },
+      {
+        "label": "swapped",
+        "commands": 13,
+        "player": {
+          "x": 3,
+          "y": 7
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "recovered",
+        "commands": 25,
+        "player": {
+          "x": 6,
+          "y": 8
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          376,
+          377
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 25,
+        "player": {
+          "x": 6,
+          "y": 8
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          376,
+          377
+        ]
+      }
+    ]
+  },
+  {
+    "ce": 7,
+    "seed": 31337,
+    "depth": 17,
+    "machine": 1,
+    "entry": {
+      "x": 20,
+      "y": 7
+    },
+    "commands": 15,
+    "rewardId": null,
+    "allyId": 446,
+    "markedId": null,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 20,
+          "y": 7
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          408
+        ]
+      },
+      {
+        "label": "entered",
+        "commands": 1,
+        "player": {
+          "x": 20,
+          "y": 7
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "death-cleaned",
+        "commands": 2,
+        "player": {
+          "x": 20,
+          "y": 7
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "resurrected",
+        "commands": 9,
+        "player": {
+          "x": 20,
+          "y": 1
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 15,
+        "player": {
+          "x": 20,
+          "y": 7
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  {
+    "ce": 26,
+    "seed": 424242,
+    "depth": 26,
+    "machine": 3,
+    "entry": {
+      "x": 35,
+      "y": 17
+    },
+    "commands": 50,
+    "rewardId": 689,
+    "allyId": null,
+    "markedId": null,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          683
+        ]
+      },
+      {
+        "label": "entered",
+        "commands": 1,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "borrowed",
+        "commands": 9,
+        "player": {
+          "x": 35,
+          "y": 24
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          688
+        ]
+      },
+      {
+        "label": "closed",
+        "commands": 16,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          688
+        ]
+      },
+      {
+        "label": "reopened",
+        "commands": 23,
+        "player": {
+          "x": 35,
+          "y": 24
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          688
+        ]
+      },
+      {
+        "label": "replaced",
+        "commands": 31,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "second-loan",
+        "commands": 50,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          689
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 50,
+        "player": {
+          "x": 35,
+          "y": 17
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          689
+        ]
+      }
+    ]
+  },
+  {
+    "ce": 47,
+    "seed": 1,
+    "depth": 11,
+    "machine": 8,
+    "entry": {
+      "x": 26,
+      "y": 24
+    },
+    "commands": 173,
+    "rewardId": 232,
+    "allyId": null,
+    "markedId": 233,
+    "phases": [
+      {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 26,
+          "y": 24
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "activated",
+        "commands": 13,
+        "player": {
+          "x": 15,
+          "y": 24
+        },
+        "hp": 10000,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "awakened",
+        "commands": 86,
+        "player": {
+          "x": 72,
+          "y": 12
+        },
+        "hp": 5098,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "lured",
+        "commands": 157,
+        "player": {
+          "x": 16,
+          "y": 25
+        },
+        "hp": 6770,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "sacrificed",
+        "commands": 159,
+        "player": {
+          "x": 15,
+          "y": 25
+        },
+        "hp": 6836,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "label": "reward",
+        "commands": 169,
+        "player": {
+          "x": 22,
+          "y": 24
+        },
+        "hp": 7134,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          232
+        ]
+      },
+      {
+        "label": "final",
+        "commands": 173,
+        "player": {
+          "x": 26,
+          "y": 24
+        },
+        "hp": 7267,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          232
+        ]
+      }
+    ]
+  }
+]

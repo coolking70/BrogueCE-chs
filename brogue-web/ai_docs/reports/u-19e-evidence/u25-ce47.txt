@@ -1,0 +1,257 @@
+seed 1 / D11: 9 machines, 213 products
+instance #232: 1 match(es); machine #8 CE47 feature #3 source #7/#0
+machine #1 CE9 reward_chained_allies committed
+  feature #0 placed 2 placements / 1 iterations; request={"terrain":"VOMIT","hordeFlags":["HORDE_MACHINE_CAPTIVE","HORDE_LEADER_CAPTIVE"],"instanceCount":[2,2],"minimum":2,"flags":["MF_GENERATE_HORDE","MF_TREAT_AS_BLOCKING"]}
+  feature #1 placed 2 placements / 1 iterations; request={"terrain":"MANACLE_T","featureDF":"DF_AMBIENT_BLOOD","instanceCount":[1,2],"minimum":1,"flags":[]}
+  feature #2 placed 1 placements / 1 iterations; request={"terrain":"MANACLE_L","featureDF":"DF_AMBIENT_BLOOD","instanceCount":[1,2],"minimum":1,"flags":[]}
+  feature #3 placed 2 placements / 1 iterations; request={"featureDF":"DF_BONES","instanceCount":[2,3],"minimum":1,"flags":[]}
+  feature #4 placed 2 placements / 1 iterations; request={"featureDF":"DF_VOMIT","instanceCount":[2,3],"minimum":1,"flags":[]}
+  feature #5 placed 1 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_BUILD_VESTIBULE"]}
+  monster #219 Dar blademaster @3,25 from feature #0 owner=floor
+  monster #220 Ogre @6,22 from feature #0 owner=floor
+  terrain #- VOMIT @3,25 from feature #0
+  terrain #- VOMIT @6,22 from feature #0
+  terrain #- MANACLE_T @8,24 from feature #1
+  featureDF #- DF_AMBIENT_BLOOD @8,24 from feature #1
+  terrain #- MANACLE_T @3,21 from feature #1
+  featureDF #- DF_AMBIENT_BLOOD @3,21 from feature #1
+  terrain #- MANACLE_L @1,21 from feature #2
+  featureDF #- DF_AMBIENT_BLOOD @1,21 from feature #2
+  featureDF #- DF_BONES @3,22 from feature #3
+  featureDF #- DF_BONES @5,25 from feature #3
+  featureDF #- DF_VOMIT @1,23 from feature #4
+  featureDF #- DF_VOMIT @2,22 from feature #4
+machine #2 CE16 vestibule_locked committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"LOCKED_DOOR","itemCategory":"KEY","itemId":"iron_key","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_GENERATE_ITEM","MF_OUTSOURCE_ITEM_TO_MACHINE","MF_KEY_DISPOSABLE","MF_IMPREGNABLE"]}
+  terrain #- LOCKED_DOOR @6,20 from feature #0
+machine #3 CE34 ce_34_environment committed
+  feature #0 placed 54 placements / 1 iterations; request={"terrain":"FLOOR_FLOODABLE","instanceCount":[0,0],"minimum":0,"flags":["MF_EVERYWHERE"]}
+  feature #1 placed 1 placements / 1 iterations; request={"terrain":"ALTAR_SWITCH_RETRACTING","instanceCount":[1,1],"minimum":1,"flags":["MF_ADOPT_ITEM","MF_NEAR_ORIGIN","MF_TREAT_AS_BLOCKING","MF_NOT_IN_HALLWAY"]}
+  feature #2 placed 3 placements / 1 iterations; request={"featureDF":"DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT","instanceCount":[3,3],"minimum":2,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  terrain #- FLOOR_FLOODABLE @61,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @58,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @66,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @67,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @59,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @62,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @67,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @67,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @60,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @62,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @60,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,21 from feature #0
+  terrain #- FLOOR_FLOODABLE @65,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,20 from feature #0
+  terrain #- FLOOR_FLOODABLE @58,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @56,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @54,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @55,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @65,21 from feature #0
+  terrain #- FLOOR_FLOODABLE @62,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @54,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @61,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @66,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @65,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @60,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @54,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @57,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @65,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,23 from feature #0
+  terrain #- FLOOR_FLOODABLE @65,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,21 from feature #0
+  terrain #- FLOOR_FLOODABLE @66,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @59,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @66,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @63,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @56,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,20 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @59,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @62,21 from feature #0
+  terrain #- FLOOR_FLOODABLE @55,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @64,22 from feature #0
+  terrain #- FLOOR_FLOODABLE @58,24 from feature #0
+  terrain #- FLOOR_FLOODABLE @61,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @56,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @55,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @61,25 from feature #0
+  terrain #- FLOOR_FLOODABLE @57,26 from feature #0
+  terrain #- FLOOR_FLOODABLE @62,24 from feature #0
+  terrain #- ALTAR_SWITCH_RETRACTING @58,25 from feature #1
+  featureDF #- DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT @65,21 from feature #2
+  featureDF #- DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT @67,26 from feature #2
+  featureDF #- DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT @62,21 from feature #2
+  item #221 Iron Key @58,25 from feature #1 (source machine #2 feature #0) owner=floor
+machine #4 CE3 reward_treasure_room committed; interior expansion 3 iterations, +8 cells
+  feature #0 placed 27 placements / 1 iterations; request={"terrain":"CARPET","instanceCount":[0,0],"minimum":0,"flags":["MF_EVERYWHERE"]}
+  feature #1 skipped 0 placements / 0 iterations; request={"itemCategory":"POTION","instanceCount":[5,7],"minimum":2,"flags":["MF_GENERATE_ITEM","MF_ALTERNATIVE","MF_TREAT_AS_BLOCKING"]}
+  feature #2 placed 6 placements / 1 iterations; request={"itemCategory":"SCROLL","instanceCount":[4,6],"minimum":2,"flags":["MF_GENERATE_ITEM","MF_ALTERNATIVE","MF_TREAT_AS_BLOCKING"]}
+  feature #3 placed 1 placements / 1 iterations; request={"terrain":"FUNGUS_FOREST","instanceCount":[3,4],"minimum":0,"flags":[]}
+  feature #4 placed 1 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_BUILD_VESTIBULE"]}
+  feature #5 placed 2 placements / 1 iterations; request={"terrain":"STATUE_INERT","instanceCount":[2,3],"minimum":0,"flags":["MF_TREAT_AS_BLOCKING","MF_BUILD_IN_WALLS","MF_IMPREGNABLE"]}
+  terrain #- CARPET @32,2 from feature #0
+  terrain #- CARPET @31,3 from feature #0
+  terrain #- CARPET @33,3 from feature #0
+  terrain #- CARPET @32,4 from feature #0
+  terrain #- CARPET @29,4 from feature #0
+  terrain #- CARPET @35,2 from feature #0
+  terrain #- CARPET @35,3 from feature #0
+  terrain #- CARPET @29,3 from feature #0
+  terrain #- CARPET @34,3 from feature #0
+  terrain #- CARPET @33,1 from feature #0
+  terrain #- CARPET @31,4 from feature #0
+  terrain #- CARPET @34,2 from feature #0
+  terrain #- CARPET @30,2 from feature #0
+  terrain #- CARPET @29,1 from feature #0
+  terrain #- CARPET @28,3 from feature #0
+  terrain #- CARPET @30,1 from feature #0
+  terrain #- CARPET @30,4 from feature #0
+  terrain #- CARPET @31,1 from feature #0
+  terrain #- CARPET @31,2 from feature #0
+  terrain #- CARPET @28,2 from feature #0
+  terrain #- CARPET @34,1 from feature #0
+  terrain #- CARPET @33,4 from feature #0
+  terrain #- CARPET @29,2 from feature #0
+  terrain #- CARPET @32,1 from feature #0
+  terrain #- CARPET @30,3 from feature #0
+  terrain #- CARPET @33,2 from feature #0
+  terrain #- CARPET @34,4 from feature #0
+  terrain #- FUNGUS_FOREST @34,4 from feature #3
+  terrain #- STATUE_INERT @29,0 from feature #5
+  terrain #- STATUE_INERT @32,0 from feature #5
+  item #222 Scroll of Recharging @32,2 from feature #2 owner=floor
+  item #223 Scroll of Identify @32,4 from feature #2 owner=floor
+  item #226 Scroll of Summon Monsters @29,4 from feature #2 owner=floor
+  item #227 Scroll of Discord @35,2 from feature #2 owner=floor
+  item #229 Scroll of Magic Mapping @30,2 from feature #2 owner=floor
+  item #230 Scroll of Teleportation @28,2 from feature #2 owner=floor
+machine #5 CE16 vestibule_locked committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"LOCKED_DOOR","itemCategory":"KEY","itemId":"iron_key","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_GENERATE_ITEM","MF_OUTSOURCE_ITEM_TO_MACHINE","MF_KEY_DISPOSABLE","MF_IMPREGNABLE"]}
+  terrain #- LOCKED_DOOR @32,5 from feature #0
+machine #6 CE26 key_nested_library committed; interior expansion 2 iterations, +6 cells
+  feature #0 placed 53 placements / 1 iterations; request={"terrain":"CARPET","instanceCount":[0,0],"minimum":0,"flags":["MF_EVERYWHERE"]}
+  feature #1 placed 23 placements / 1 iterations; request={"terrain":"WALL","instanceCount":[0,0],"minimum":0,"flags":["MF_TREAT_AS_BLOCKING","MF_BUILD_IN_WALLS","MF_IMPREGNABLE","MF_EVERYWHERE"]}
+  feature #2 placed 1 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_BUILD_VESTIBULE"]}
+  feature #3 placed 2 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"WEAPON|ARMOR|WAND","instanceCount":[1,2],"minimum":1,"flags":["MF_GENERATE_ITEM","MF_NO_THROWING_WEAPONS","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #4 placed 2 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"STAFF|RING|CHARM","instanceCount":[1,2],"minimum":1,"flags":["MF_GENERATE_ITEM","MF_NO_THROWING_WEAPONS","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #5 placed 1 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","instanceCount":[1,1],"minimum":1,"flags":["MF_ADOPT_ITEM","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #6 placed 1 placements / 1 iterations; request={"terrain":"STATUE_INERT","instanceCount":[1,3],"minimum":0,"flags":["MF_TREAT_AS_BLOCKING","MF_BUILD_IN_WALLS","MF_IMPREGNABLE"]}
+  terrain #- CARPET @20,10 from feature #0
+  terrain #- CARPET @20,9 from feature #0
+  terrain #- CARPET @23,7 from feature #0
+  terrain #- CARPET @18,5 from feature #0
+  terrain #- CARPET @20,6 from feature #0
+  terrain #- CARPET @19,9 from feature #0
+  terrain #- CARPET @23,9 from feature #0
+  terrain #- CARPET @22,9 from feature #0
+  terrain #- CARPET @18,4 from feature #0
+  terrain #- CARPET @17,5 from feature #0
+  terrain #- CARPET @20,11 from feature #0
+  terrain #- CARPET @21,8 from feature #0
+  terrain #- CARPET @20,3 from feature #0
+  terrain #- CARPET @17,7 from feature #0
+  terrain #- CARPET @19,4 from feature #0
+  terrain #- CARPET @21,5 from feature #0
+  terrain #- CARPET @19,7 from feature #0
+  terrain #- CARPET @19,5 from feature #0
+  terrain #- CARPET @24,6 from feature #0
+  terrain #- CARPET @21,9 from feature #0
+  terrain #- CARPET @20,8 from feature #0
+  terrain #- CARPET @19,6 from feature #0
+  terrain #- CARPET @19,8 from feature #0
+  terrain #- CARPET @17,6 from feature #0
+  terrain #- CARPET @18,9 from feature #0
+  terrain #- CARPET @22,5 from feature #0
+  terrain #- CARPET @22,4 from feature #0
+  terrain #- CARPET @20,5 from feature #0
+  terrain #- CARPET @21,3 from feature #0
+  terrain #- CARPET @22,7 from feature #0
+  terrain #- CARPET @23,6 from feature #0
+  terrain #- CARPET @19,10 from feature #0
+  terrain #- CARPET @20,4 from feature #0
+  terrain #- CARPET @19,11 from feature #0
+  terrain #- CARPET @18,7 from feature #0
+  terrain #- CARPET @17,9 from feature #0
+  terrain #- CARPET @21,7 from feature #0
+  terrain #- CARPET @21,10 from feature #0
+  terrain #- CARPET @22,6 from feature #0
+  terrain #- CARPET @18,6 from feature #0
+  terrain #- CARPET @24,7 from feature #0
+  terrain #- CARPET @24,8 from feature #0
+  terrain #- CARPET @21,11 from feature #0
+  terrain #- CARPET @22,10 from feature #0
+  terrain #- CARPET @18,10 from feature #0
+  terrain #- CARPET @21,6 from feature #0
+  terrain #- CARPET @17,8 from feature #0
+  terrain #- CARPET @23,5 from feature #0
+  terrain #- CARPET @21,4 from feature #0
+  terrain #- CARPET @22,8 from feature #0
+  terrain #- CARPET @23,8 from feature #0
+  terrain #- CARPET @19,3 from feature #0
+  terrain #- CARPET @18,8 from feature #0
+  terrain #- WALL @21,12 from feature #1
+  terrain #- WALL @24,5 from feature #1
+  terrain #- WALL @19,12 from feature #1
+  terrain #- WALL @25,8 from feature #1
+  terrain #- WALL @23,10 from feature #1
+  terrain #- WALL @22,3 from feature #1
+  terrain #- WALL @20,2 from feature #1
+  terrain #- WALL @23,4 from feature #1
+  terrain #- WALL @17,4 from feature #1
+  terrain #- WALL @16,6 from feature #1
+  terrain #- WALL @18,3 from feature #1
+  terrain #- WALL @25,7 from feature #1
+  terrain #- WALL @16,8 from feature #1
+  terrain #- WALL @21,2 from feature #1
+  terrain #- WALL @24,9 from feature #1
+  terrain #- WALL @16,5 from feature #1
+  terrain #- WALL @18,11 from feature #1
+  terrain #- WALL @20,12 from feature #1
+  terrain #- WALL @16,9 from feature #1
+  terrain #- WALL @25,6 from feature #1
+  terrain #- WALL @19,2 from feature #1
+  terrain #- WALL @22,11 from feature #1
+  terrain #- WALL @17,10 from feature #1
+  terrain #- ALTAR_CAGE_OPEN @20,10 from feature #3
+  terrain #- ALTAR_CAGE_OPEN @23,7 from feature #3
+  terrain #- ALTAR_CAGE_OPEN @18,5 from feature #4
+  terrain #- ALTAR_CAGE_OPEN @20,6 from feature #4
+  terrain #- ALTAR_CAGE_OPEN @23,9 from feature #5
+  terrain #- STATUE_INERT @17,10 from feature #6
+  item #236 Wand of Beckoning @20,10 from feature #3 owner=floor
+  item #237 Plate Mail @23,7 from feature #3 owner=floor
+  item #238 Staff of Protection @18,5 from feature #4 owner=floor
+  item #239 Staff of Fire @20,6 from feature #4 owner=floor
+  item #231 Iron Key @23,9 from feature #5 (source machine #5 feature #0) owner=floor
+machine #7 CE16 vestibule_locked committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"LOCKED_DOOR","itemCategory":"KEY","itemId":"iron_key","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_GENERATE_ITEM","MF_OUTSOURCE_ITEM_TO_MACHINE","MF_KEY_DISPOSABLE","MF_IMPREGNABLE"]}
+  terrain #- LOCKED_DOOR @16,7 from feature #0
+machine #8 CE47 key_sacrifice_altar committed; interior expansion 2 iterations, +1 cells
+  feature #0 placed 3 placements / 1 iterations; request={"featureDF":"DF_BONES","instanceCount":[3,4],"minimum":2,"flags":[]}
+  feature #1 placed 12 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":0,"flags":["MF_BUILD_IN_WALLS","MF_EVERYWHERE"]}
+  feature #2 placed 1 placements / 1 iterations; request={"terrain":"SACRIFICE_ALTAR_DORMANT","featureDF":"DF_TRIGGER_AREA","instanceCount":[1,1],"minimum":1,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #3 placed 1 placements / 1 iterations; request={"terrain":"SACRIFICE_CAGE_DORMANT","instanceCount":[1,1],"minimum":1,"flags":["MF_ADOPT_ITEM","MF_NOT_IN_HALLWAY","MF_IMPREGNABLE"]}
+  feature #4 placed 1 placements / 1 iterations; request={"terrain":"DEMONIC_STATUE","instanceCount":[1,1],"minimum":1,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY","MF_IMPREGNABLE"]}
+  feature #5 placed 1 placements / 1 iterations; request={"terrain":"STATUE_INSTACRACK","hordeFlags":["HORDE_SACRIFICE_TARGET"],"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_ANYWHERE_ON_LEVEL","MF_GENERATE_HORDE","MF_MONSTERS_DORMANT","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE","MF_NOT_IN_HALLWAY"]}
+  monster #233 Ogre @74,13 from feature #5 owner=dormant
+  featureDF #- DF_BONES @15,23 from feature #0
+  featureDF #- DF_BONES @19,25 from feature #0
+  featureDF #- DF_BONES @22,25 from feature #0
+  terrain #- SACRIFICE_ALTAR_DORMANT @16,25 from feature #2
+  featureDF #- DF_TRIGGER_AREA @16,25 from feature #2
+  terrain #- SACRIFICE_CAGE_DORMANT @22,24 from feature #3
+  terrain #- DEMONIC_STATUE @18,26 from feature #4
+  terrain #- STATUE_INSTACRACK @74,13 from feature #5
+  item #232 Iron Key @22,24 from feature #3 (source machine #7 feature #0) owner=floor
+machine #9 CE68 trap_paralysis_hidden committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"GAS_TRAP_PARALYSIS_HIDDEN","instanceCount":[1,2],"minimum":1,"flags":["MF_NEAR_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 3 placements / 1 iterations; request={"terrain":"MACHINE_PARALYSIS_VENT_HIDDEN","instanceCount":[3,4],"minimum":2,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  terrain #- GAS_TRAP_PARALYSIS_HIDDEN @68,3 from feature #0
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @60,6 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @58,2 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @63,8 from feature #1

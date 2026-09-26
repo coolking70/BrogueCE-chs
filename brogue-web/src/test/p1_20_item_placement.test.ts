@@ -12,20 +12,27 @@
  * key_web_room / key_boss）无一例外都带 `_random_good_` 物品 feature，
  * 正是报告里 24 件高价值物品的落点。
  *
- * 本测试跑多 seed × D1..D26 的真实生成链路，断言**所有地面物品**（不止 machine
- * center/door 相关的）落格都可通行，覆盖 LOCKED_DOOR / WALL / SECRET_DOOR /
- * WATER_DEEP / LAVA / GRANITE 六类不可通行地形。
+ * 本测试跑多 seed × D1..D26 的真实生成链路，普通物品落点必须可通行。
+ * U19e 按 CE Architect.c:1531 区分闭笼领养物品：只有完整玩家操作实际
+ * 取到同一实例并返回入口，才证明其暂时阻路不是不可领取。非机器物品、
+ * 缺失领养来源、损坏电路与不可完成的机器仍以零违规门槛拒绝。
  *
  * 可通行判据与 Game.canMoveTo(Game.ts:4776) 同源（WALL/GRANITE/SECRET_DOOR/
  * LOCKED_DOOR/WATER_DEEP 不可通行）；LAVA 单独判：canMoveTo 认为可走入，但
  * Game.ts:4662-4672 的 lava 清理逻辑会烧毁落在 LAVA 格上的物品——物品若一生成
  * 就落在 LAVA 上，等同于永久拿不到，故一并计入违例。
  */
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect } from 'vitest';
 import { TerrainType } from '../engine/Map/Grid';
 import type { Game } from '../engine/Core/Game';
 import { rng } from '../engine/Random';
 import { createHeadlessGame } from './harness';
+import type { MachineResult } from '../engine/Generator/BlueprintEngine';
+import { setMachineObservationHook } from '../engine/Generator/MachineObservation';
+import { runAltarActions } from './fixtures/u19e-machine-actions';
+import { runMachineActions } from './fixtures/u19d-machine-actions';
+
+afterEach(() => setMachineObservationHook(null));
 
 interface MinimalProcess {
     env?: Record<string, string | undefined>;
@@ -72,14 +79,25 @@ const SCAN_SEEDS: number[] = [
 ];
 
 describe('地面物品落格可通行性（全局扫描，P1-20）', () => {
-    it(`${SCAN_SEEDS.length} seeds × D1..D26：所有地面物品落格必须可通行`, () => {
+    it(`${SCAN_SEEDS.length} seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出`, () => {
         const violations: string[] = [];
         const histogram = new Map<number, number>();
         let totalItems = 0;
         let levelCount = 0;
+        const deferred: Array<{ snapshot: ReturnType<Game['toSnapshot']>; machine: MachineResult; itemId: number; violation: string }> = [];
+        setMachineObservationHook(() => {});
 
         for (const seed of SCAN_SEEDS) {
             const game = createHeadlessGame(seed);
+            let machines: MachineResult[] = [];
+            const runtime = game as any;
+            const populate = runtime.populateLevel.bind(game);
+            runtime.populateLevel = (...args: any[]) => {
+                const result = populate(...args);
+                machines = args[3];
+                return result;
+            };
+            game.startNewGame({ seed, mode: 'normal' });
             for (let depth = 1; depth <= 26; depth++) {
                 if (depth > 1) descendOne(game, depth);
                 levelCount++;
@@ -92,15 +110,41 @@ describe('地面物品落格可通行性（全局扫描，P1-20）', () => {
                     const passable = walkable(game, x, y);
                     const inLava = terrain === TerrainType.LAVA;
                     if (!passable || inLava) {
+                        const violation = `seed=${seed} D${depth} ${itemId(item)} @ (${x},${y}) ` +
+                            `terrain=${terrainNames[terrain] ?? `#${terrain}`} 可通行=${passable}`;
+                        // U19e: CE Architect.c:1531 explicitly places rewards in
+                        // closed cages. Permit only an actual adopted instance
+                        // whose complete generated machine can yield that same
+                        // item through player commands below. No terrain whitelist.
+                        const machine = machines.find(m => m.itemSpawns.some(s => s.viaAdoption && s.entity === item));
+                        if (machine?.observation) {
+                            deferred.push({ snapshot: JSON.parse(JSON.stringify(game.toSnapshot())), machine, itemId: item.id, violation });
+                            continue;
+                        }
                         histogram.set(terrain, (histogram.get(terrain) ?? 0) + 1);
-                        violations.push(
-                            `seed=${seed} D${depth} ${itemId(item)} @ (${x},${y}) ` +
-                            `terrain=${terrainNames[terrain] ?? `#${terrain}`} 可通行=${passable}`
-                        );
+                        violations.push(violation);
                     }
                 }
             }
             console.log(`[item-placement] seed=${seed} D1..D26 substantive RNG 抽取总数: ${rng.randomNumbersGenerated}`);
+        }
+
+        // Replay after scanning, so command RNG and setup never alter later
+        // generated floors. Missing circuits/targets/items remain violations.
+        for (const row of deferred) {
+            try {
+                const replay = createHeadlessGame(19, 'test');
+                expect(replay.loadSnapshot(row.snapshot)).toBe(true);
+                const trace = row.machine.observation!;
+                const result = trace.ceBlueprintId === 28
+                    ? runMachineActions(replay, trace)
+                    : runAltarActions(replay, trace, row.machine.door ?? row.machine.center);
+                expect(result.rewardId).toBe(row.itemId);
+                expect(replay.player.inventory.items.filter(i => i.id === row.itemId)).toHaveLength(1);
+                expect(result.after.player).toEqual(result.entry);
+            } catch (error) {
+                violations.push(`${row.violation}; complete machine replay failed: ${String(error)}`);
+            }
         }
 
         const histText = [...histogram.entries()]

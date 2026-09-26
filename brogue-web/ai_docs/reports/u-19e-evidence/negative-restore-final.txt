@@ -1,0 +1,46 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 1 failed | 16 skipped) 543ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     ↓ natural CE1 seed31337/D1
+     ↓ natural CE2 seed424242/D3
+     ↓ natural CE6 seed424242/D14
+     ↓ natural CE7 seed31337/D17
+     ↓ natural CE26 seed424242/D26
+     ↓ natural CE47 seed1/D11
+   ↓ CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+   × CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception 541ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+AssertionError: expected null not to be null
+ ❯ src/test/u_19e_machine_families.test.ts:89:88
+     87|
+     88| it.each([28,47])('CE%i immediate and recipe-only population retain a b…
+     89|  const g:any=createHeadlessGame(19,'test'),s=machineScene(g,ce,1,0,tru…
+       |                                                                                        ^
+     90|  const spawn=s!.result.itemSpawns[0]!,original=spawn.entity;expect(ori…
+     91|  expect(g.canMoveTo(spawn.pos.x,spawn.pos.y)).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  17:57:04
+   Duration  2.16s (transform 863ms, setup 0ms, import 1.44s, tests 543ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-restore-final.json

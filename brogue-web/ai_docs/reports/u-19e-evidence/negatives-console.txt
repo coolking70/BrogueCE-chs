@@ -1,0 +1,21 @@
+restore-selection true
+restore-final true
+discard-recipe true
+no-commutation true
+no-resurrection true
+no-sacrifice-entry true
+no-sacrifice-mark true
+no-sacrifice-cage true
+no-cage-close true
+no-cage-return false
+file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/scripts/u19e-negatives.mjs:7
+ rows.push({variant,test,exit:r.status,behaviorFailure:caught,failures});fs.writeFileSync(`${out}/negative-summary.json`,JSON.stringify(rows,null,2)+'\n');console.log(variant,caught);if(!caught)throw Error(`Not caught by behavior: ${variant}`);
+                                                                                                                                                                                                        ^
+
+Error: Not caught by behavior: no-cage-return
+    at file:///Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/scripts/u19e-negatives.mjs:7:201
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v25.2.1

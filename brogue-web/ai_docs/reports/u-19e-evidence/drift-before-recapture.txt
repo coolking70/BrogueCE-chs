@@ -1,0 +1,79 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 46051ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 46050ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 38 处（若非有意改动，请查清成因）: expected [ …(38) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed424242 D14 fp: 基线=1ed46009:4930 现在=82f6c1b6:4932",
++   "seed424242 D14 n: 基线=10 现在=32",
++   "seed424242 D14 species: 基线=Dar blademaster,Goblin conjurer,Spider,Troll,Wraith,agile Goblin mystic,grappling Monkey,infested Troll 现在=Centaur,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre shaman,Ogre totem,Phantom,Winged guardian,Zombie,grappling Dar blademaster,reflective Ogre,vampiric Ogre",
++   "seed424242 D14 items: 基线=6 现在=10",
++   "seed424242 D16 items: 基线=10 现在=8",
++   "seed424242 D18 items: 基线=16 现在=14",
++   "seed424242 D24 fp: 基线=4f3aa35f:4916 现在=0d3b718d:4907",
++   "seed424242 D24 n: 基线=7 现在=20",
++   "seed424242 D24 species: 基线=Explosive bloat,Imp,Kraken,Phylactery 现在=Bog monster,Fury,Imp,Kraken,Stone guardian,agile Fury,vampiric Revenant",
++   "seed424242 D24 items: 基线=15 现在=16",
++   "seed424242 D25 fp: 基线=6517e1dc:4992 现在=71e60baf:4993",
++   "seed424242 D25 n: 基线=13 现在=20",
++   "seed424242 D25 species: 基线=Dar battlemage,Dragon,Imp,Sentinel,explosive Imp,infested Imp,infested Revenant,juggernaut Pit bloat,toxic Imp 现在=Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Dragon,Golem,Phylactery,Revenant,Sentinel,Tentacle horror,infested Bog monster,infested Dar blademaster",
++   "seed424242 D26 fp: 基线=7fc48898:4897 现在=38247ebf:5045",
++   "seed424242 D26 n: 基线=14 现在=12",
++   "seed424242 D26 species: 基线=Bloat,Bog monster,Phylactery,Revenant,explosive Bog monster,infested Bog monster,vampiric Tentacle horror 现在=Dar blademaster,Dragon,Fury,Phylactery,Tentacle horror,agile Fury,juggernaut Golem,vampiric Fury",
++   "seed424242 D26 items: 基线=11 现在=16",
++   "seed777 D15 fp: 基线=1f2d9efa:5066 现在=69135b51:4866",
++   "seed777 D15 species: 基线=Bog monster,Centaur,Imp,Kraken,Ogre,Ogre shaman,Salamander,Wraith 现在=Acidic jelly,Bog monster,Dar blademaster,Imp,Ogre,Zombie,toxic Imp",
++   "seed777 D15 items: 基线=14 现在=6",
++   "seed777 D16 fp: 基线=d1495ad3:4811 现在=313f2f0a:4812",
++   "seed777 D19 fp: 基线=55a666d7:4814 现在=709df8b1:4808",
++   "seed777 D19 items: 基线=5 现在=7",
++   "seed777 D20 fp: 基线=21cda8f0:4816 现在=949df2c0:4822",
++   "seed777 D21 fp: 基线=3797bb4e:4881 现在=3cc9e3bb:4882",
++   "seed31337 D7 fp: 基线=4701bbf4:5206 现在=bad303b9:5085",
++   "seed31337 D7 n: 基线=10 现在=14",
++   "seed31337 D7 species: 基线=Acid mound,Bloat,Bog monster,Centipede,Dar blademaster,Goblin conjurer,Goblin mystic,Ogre 现在=Goblin,Goblin totem,Monkey,Ogre,Pink jelly",
++   "seed31337 D7 items: 基线=19 现在=15",
++   "seed31337 D8 fp: 基线=bf162955:4762 现在=8871e7b5:4762",
++   "seed31337 D8 n: 基线=14 现在=15",
++   "seed31337 D8 species: 基线=Bloat,Goblin,Goblin mystic,Goblin totem,Jackal,Pink jelly,Toad,Vampire bat 现在=Bloat,Centipede,Goblin,Goblin mystic,Goblin totem,Jackal,Toad,Vampire bat",
++   "seed31337 D8 items: 基线=7 现在=11",
++   "seed31337 D13 items: 基线=7 现在=9",
++   "seed31337 D15 items: 基线=10 现在=8",
++   "seed31337 D16 fp: 基线=3105cbaf:4819 现在=ac7e05cc:4820",
++   "seed31337 D16 items: 基线=6 现在=8",
++   "seed31337 D21 fp: 基线=b49a75af:4802 现在=e7528fed:4797",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:58:58
+   Duration  47.63s (transform 839ms, setup 0ms, import 1.42s, tests 46.05s, environment 0ms)
+

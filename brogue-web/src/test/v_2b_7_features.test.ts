@@ -891,10 +891,9 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         expect(bp.features.find(f => f.hordeFlags?.includes('HORDE_SACRIFICE_TARGET'))).toBeDefined();
     });
 
-    it('G2 引擎面：47/52 号因领养落点不可达而退池，且它确实不再生成', () => {
-        // 领养落点不可达的判据 = 该蓝图的所有 MF_ADOPT_ITEM feature 的 terrain
-        // 都是 pathing blocker（CE 用 placeItemAt 无条件放，web 的 P1-43 闸会
-        // 丢弃 → 父机器的钥匙消失）。这条判据一旦被放宽，本断言立刻红。
+    it('G2 U19e: CE47 closed-cage adoption is eligible; CE52 remains deferred', () => {
+        // Retain the raw terrain classification: it is a closed-cage state,
+        // not proof that the eventual reward is unreachable (CE placeItemAt).
         const ineligible = BPS.filter(bp =>
             bp.flags.includes(BP_ADOPT_ITEM) &&
             bp.features.some(f => f.flags.includes('MF_ADOPT_ITEM')) &&
@@ -903,10 +902,10 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         ).map(bp => bp.id);
         expect(ineligible, '领养落点不可达的蓝图集合（9c 新增 52 号闭笼）').toEqual(['key_sacrifice_altar', 'key_electric_crystals']);
 
-        // 端到端：14 seed × D1-26 全扫，47 号一次都不出现（顶层要求
-        // BP_REWARD、前厅要求 BP_VESTIBULE，它两样都没有 ⇒ 只能走领养；
-        // 领养被 G2 的过滤排除 ⇒ 结构性不可生成）。
-        let appear = 0;
+        // U19e: same 14 seeds × D1-26; CE47 must appear via adoption and CE52
+        // must remain absent. The blocked terrain names above are unchanged;
+        // their passability no longer decides whether a machine can adopt.
+        let appear = 0, electric = 0;
         for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8]) {
             const record: LevelMachines[] = [];
             const restore = installRecorder(record);
@@ -916,11 +915,13 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
                     if (d > 1) { game.depth = d; game.generateDepth(false, false); }
                     const entry = record[record.length - 1];
                     for (const mr of entry?.results ?? []) {
-                        if (['key_sacrifice_altar', 'key_electric_crystals'].includes(mr.blueprintId)) appear++;
+                        if (mr.blueprintId === 'key_sacrifice_altar') appear++;
+                        if (mr.blueprintId === 'key_electric_crystals') electric++;
                     }
                 }
             } finally { restore(); }
         }
-        expect(appear, '47 号在当前引擎里结构性不可生成（退池留形）——它出现说明领养过滤被删/被放宽了').toBe(0);
+        expect(appear, 'CE47 now adopts into its closed cage; U19e verifies the complete sacrifice chain').toBeGreaterThan(0);
+        expect(electric, 'CE52 retains its explicit U19f deferral').toBe(0);
     });
 });

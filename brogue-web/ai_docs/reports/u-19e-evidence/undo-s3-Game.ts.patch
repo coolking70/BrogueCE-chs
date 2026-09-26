@@ -1,0 +1,72 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1,4 +1,4 @@
+-import { isThrowingTutorialReward, type MachineEntityRuntime } from '../Generator/BlueprintEngine';
++import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
+ import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
+ import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
+ import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
+@@ -19,7 +19,6 @@
+  */
+ import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
+ import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
+-import { isPathingBlocker } from '../Map/TerrainCatalog';
+ // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+ import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
+ import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
+@@ -1045,7 +1044,7 @@
+                 }
+                 item.originDepth = depth;
+                 // CE placeItemAt accepts the feature location unconditionally.
+-                // Eligibility and adopted-item reachability remain BlueprintEngine's contract.
++                // A cage may obstruct movement while retaining its eventual reward.
+                 this.items = this.items.filter(i => i !== item);
+                 if (place) this.items.push(item);
+                 return item;
+@@ -1549,8 +1548,8 @@
+         //    且 Commutation Altars（:232-237）本就无物品）。祭坛房的物品同样
+         //    只走 itemSpawns。B-4a 实测的「附魔 60/局、life 18/局压不下来」
+         //    主要由这两个循环贡献，此处是本轮唯一的拆除杠杆。
+-        // P1-43/P1-20 的落格可通行性判据（isPathingBlocker）对 itemSpawns
+-        // 路径仍生效（见下方消费点），判据不因本删除而松动。
++        // Ordinary random floor loot uses its safe-location filter above;
++        // machine recipes use the explicit CE feature location below.
+ 
+         // V-2b-1：删除 web 自创的「Trap Vaults 投放循环」——消费
+         // architect.trapVaults（声明后从未 push 的死数组），每台机器发一把
+@@ -1678,30 +1677,13 @@
+                 if (spawn.category === 'KEY' && !spawn.viaAdoption) {
+                     if (trace) trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
+                         pos: { ...spawn.pos }, outcome: 'unadopted key skipped' });
+-                    continue;
+-                }
+-                // P1-43：蓝图特征落点可能选中护城河的岩浆格（key_lava_moat 一类），
+-                // 物品于是掉进岩浆——实测 seed777/D7 scroll_of_enchantment
+-                // @ (26,12) terrain=LAVA。CE 的物品落位一律回避
+-                // `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，岩浆的
+-                // T_LAVA_INSTA_DEATH 正在后者里（`Rogue.h:1948`）。
+-                // 这里是消费点兜底（一处覆盖全部蓝图物品）；**根治应在
+-                // BlueprintEngine 的特征选址**——见路线图 P1-43，
+-                // 那样机器不会因此静默少一件宝物。
+-                const spawnCell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+-                // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
+-                // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
+-                // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
+-                // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
+-                // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
+-                // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
+-                // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
+-                if ((!spawnCell || isPathingBlocker(spawnCell.terrain))
+-                    && !isThrowingTutorialReward(this.grid, mr.blueprintId, mr.machineNumber, spawn)) {
+-                    if (trace) trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
+-                        pos: { ...spawn.pos }, outcome: 'destination blocked' });
+                     continue;
+                 }
++                // CE Architect.c:1531 / Items.c:422-434 places a machine item
++                // directly on its feature square, including a closed cage.
++                // Match the immediate runtime path; never silently lose an
++                // adopted key because the current terrain blocks movement.
++                if (!this.grid.getCell(spawn.pos.x, spawn.pos.y)) continue;
+                 const item = materialize(spawn, spawn.pos);
+                 if (item) {
+                     this.items.push(item);

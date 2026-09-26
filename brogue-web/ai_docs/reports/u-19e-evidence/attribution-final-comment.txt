@@ -1,0 +1,31 @@
+s3 captured
+undo-s3 captured
+[
+  {
+    from: 's0',
+    to: 's1',
+    layers: 45,
+    fields: {
+      fp: 13,
+      n: 6,
+      species: 7,
+      items: 12,
+      terrain: 38,
+      monsters: 45,
+      dormant: 17,
+      entities: 25,
+      itemsState: 45,
+      rng: 45,
+      machines: 22,
+      committed: 22,
+      views: 2,
+      viewCount: 2,
+      player: 2
+    }
+  },
+  { from: 's1', to: 's2', layers: 0, fields: {} },
+  { from: 's2', to: 's3', layers: 0, fields: {} },
+  { from: 's0', to: 'undo-s1', layers: 0, fields: {} },
+  { from: 's1', to: 'undo-s2', layers: 0, fields: {} },
+  { from: 's2', to: 'undo-s3', layers: 0, fields: {} }
+]

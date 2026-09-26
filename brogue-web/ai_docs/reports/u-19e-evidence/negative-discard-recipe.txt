@@ -1,0 +1,54 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 2 failed | 15 skipped) 845ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     ↓ natural CE1 seed31337/D1
+     ↓ natural CE2 seed424242/D3
+     ↓ natural CE6 seed424242/D14
+     ↓ natural CE7 seed31337/D17
+     ↓ natural CE26 seed424242/D26
+     ↓ natural CE47 seed1/D11
+   × CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception 421ms
+   × CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception 423ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+ FAIL  src/test/u_19e_machine_families.test.ts > CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/test/u_19e_machine_families.test.ts:96:121
+     94|  // if the recipe is renamed. No bespoke CE28/47 circuit whitelist is …
+     95|  delete spawn.entity;g.items=[];s!.result.blueprintId='test_explicit_m…
+     96|  g.populateLevel(g.depth,false,false,[s!.result]);expect(g.items.filte…
+       |                                                                                                                         ^
+     97|  expect(g.grid.getCell(spawn.pos.x,spawn.pos.y)!.layers[L.DUNGEON]).to…
+     98| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 skipped (17)
+   Start at  17:57:07
+   Duration  2.54s (transform 915ms, setup 0ms, import 1.51s, tests 845ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-discard-recipe.json

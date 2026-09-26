@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE1 seed31337/D1
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 3 failed | 14 skipped) 14080ms
+     ↓ literal frequency/depth/room/feature flags and all autoGen entries retain local CE values
+     ↓ CE1 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE2 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE6 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE7 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE26 qualifies only within CE depth and its reward/adoption pool
+     ↓ CE47 qualifies only within CE depth and its reward/adoption pool
+     ↓ exact integer selection tickets CE6/7 retain their original weights
+     ↓ exact integer selection tickets CE27/47 retain their original weights
+     × natural CE1 seed31337/D1 1529ms
+     × natural CE2 seed424242/D3 1516ms
+     ↓ natural CE6 seed424242/D14
+     ↓ natural CE7 seed31337/D17
+     × natural CE26 seed424242/D26 11035ms
+     ↓ natural CE47 seed1/D11
+   ↓ CE28 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+   ↓ CE47 immediate and recipe-only population retain a blocked adopted item without observer or blueprint-name exception
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE1 seed31337/D1
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE2 seed424242/D3
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE26 seed424242/D26
+Error: no second loan
+ ❯ runAltarActions src/test/fixtures/u19e-machine-actions.ts:88:103
+     86|   if(!adjacent)throw Error('library return unreachable');walk(adjacent…
+     87|   act('drop',{itemId:loan.id});walk(entry);state('replaced');
+     88|   const second=loans.find((i:any)=>i.id!==loan.id&&route(g,g.player.lo…
+       |                                                                                                       ^
+     89|   rewardId=second.id;walk(second.loc);act('pickup');walk(entry);state(…
+     90|  }else if(ce===47){
+ ❯ src/test/u_19e_machine_families.test.ts:56:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 14 skipped (17)
+   Start at  18:02:43
+   Duration  15.44s (transform 722ms, setup 0ms, import 1.21s, tests 14.08s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/bf1a/brogue/brogue-web/ai_docs/reports/u-19e-evidence/negative-no-cage-return.json
