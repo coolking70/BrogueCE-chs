@@ -52,13 +52,13 @@ describe('U17c CE independent catalog and scope',()=>{
  });
  it('CE-generated appearances preserve all old rows and represent the new glyphs',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
-  expect(Object.keys(rows)).toHaveLength(169);
+  expect(Object.keys(rows)).toHaveLength(190);
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
  });
- it('three machine DF data starts restored, hidden-trap autoGen correct; U19d restores the secret lever while the worm machine stays retired',()=>{
+ it('three machine DF data starts restored, hidden-trap autoGen correct; U19d restores the secret lever and U19f restores the worm machine',()=>{
   for(const [ce,f,df] of [[7,2,'DF_MACHINE_FLOOR_TRIGGER_REPEATING'],[22,0,'DF_MEDIUM_HOLE'],[28,1,'DF_MEDIUM_HOLE']] as const){expect((blueprints as BlueprintDef[]).find(b=>b.ceBlueprintId===ce)!.features[f]!.featureDF).toBe(df);}
   const a=AUTO_GENERATOR_CATALOG.find(a=>a.index===25)!;expect(a).toMatchObject({terrain:T.TRAP_DOOR_HIDDEN,ceTerrain:'TRAP_DOOR_HIDDEN',layer:L.DUNGEON,carrier:'wired',minDepth:9,maxDepth:39});
-  for(const id of ['vestibule_secret_lever','key_worm_tunnels']){const b=blueprints.find(b=>b.id===id)! as BlueprintDef;expect(blueprintQualifies(b,15,b.flags.filter(f=>['BP_ADOPT_ITEM','BP_VESTIBULE'].includes(f)))).toBe(id==='vestibule_secret_lever');}
+  for(const id of ['vestibule_secret_lever','key_worm_tunnels']){const b=blueprints.find(b=>b.id===id)! as BlueprintDef;expect(blueprintQualifies(b,15,b.flags.filter(f=>['BP_ADOPT_ITEM','BP_VESTIBULE'].includes(f)))).toBe(true);}
  });
 });
 

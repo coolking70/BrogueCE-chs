@@ -1,0 +1,24 @@
+{
+  "head": "e6247714a04358be3cde9bd3329c82e091730cc4",
+  "files": [
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts"
+  ],
+  "titles": [
+    "归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）",
+    "留痕（已反转，C-4b）：setTerrainLayer 调用点只出现在清单许可的文件",
+    "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined",
+    "flags 抄错的可观测后果：T_IS_DEEP_WATER 只在深水；楼梯挡物品；蛛网缠绕",
+    "terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}",
+    "Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）",
+    "留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件",
+    "15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）",
+    "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复",
+    "appearance golden extension keeps every previous row byte-equivalent in value",
+    "3 号：地毯铺满（center/door 保留）、雕像进墙、菌林 3-4、药水 XOR 卷轴、前厅子机器建成"
+  ],
+  "exit": 0
+}

@@ -259,7 +259,7 @@ describe('U17a actual Game consumers',()=>{
     });
     it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers',()=>{
         expect([...DF_MISSING_TILES, 155, 187, 87, 88, 148, 191, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19, 85, 140, 141, 143, 145]).toHaveLength(30);
-        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![84,142,146,192].includes(Number(k)))).toHaveLength(140);
+        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(140);
         expect(DF.DF_ITEM_FIRE).toBe(110);
         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
     });

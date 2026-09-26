@@ -35,7 +35,7 @@
  * checkLoopiness；web 对应物 LoopMap.blocksPathing）——密门在分析口径下视作
  * 通路。因此按 CE 概率如实生成密门，不因 canMoveTo 的字面排除而少生成。
  */
-import { Grid, TerrainType, DCOLS, DROWS } from './Grid';
+import { Grid, TerrainType, DungeonLayer, DCOLS, DROWS } from './Grid';
 import { rng } from '../Random';
 
 // ---------------------------------------------------------------------------
@@ -256,7 +256,11 @@ export function finishWalls(grid: Grid, includingDiagonals: boolean): WallFinish
             if (cell.terrain === TerrainType.GRANITE) {
                 for (let d = 0; d < dirCount; d++) {
                     if (exposes(i + NB_DIRS[d]![0]!, j + NB_DIRS[d]![1]!)) {
-                        grid.setTerrain(i, j, TerrainType.WALL, '#', 0x555566);
+                        // CE Architect.c:2496 changes DUNGEON only. Clearing the
+                        // liquid layer here erases exposed worm tunnel markers,
+                        // leaving the active tunnel with no opening to grow from.
+                        grid.setTerrainLayer(i, j, DungeonLayer.DUNGEON, TerrainType.WALL);
+                        cell.char = '#'; cell.color = 0x555566;
                         stats.graniteWalled++;
                         break; // CE 2497-2499：命中即转 WALL 并停止扫邻居
                     }
@@ -267,7 +271,8 @@ export function finishWalls(grid: Grid, includingDiagonals: boolean): WallFinish
                     if (exposes(i + NB_DIRS[d]![0]!, j + NB_DIRS[d]![1]!)) exposed = true;
                 }
                 if (!exposed) {
-                    grid.setTerrain(i, j, TerrainType.GRANITE, ' ', 0x333333);
+                    grid.setTerrainLayer(i, j, DungeonLayer.DUNGEON, TerrainType.GRANITE);
+                    cell.char = ' '; cell.color = 0x333333;
                     stats.wallsReverted++;
                 }
             }

@@ -97,7 +97,18 @@ function consumeOrdinaryCenterItem(game: Pick<Game, 'grid'>, item: Item, product
 }
 function installPopulationRecorder(products: Set<Item>): () => void {
     const proto = Game.prototype as unknown as { spawnPopulateItem(depth: number, offset: number): Item | null };
-    const populate = proto.spawnPopulateItem, gold = ItemLoader.spawnGold;
+    const populate = proto.spawnPopulateItem, gold = ItemLoader.spawnGold, amulet = ItemLoader.spawnAmulet;
+    // U19f: the existing D26 amulet bypass uses a separately filtered floor deck.
+    // Record its actual instance once; cleared membership and passability are
+    // still required at consumption, and duplicate/invented items remain red.
+    const gameSource = fs.readFileSync("src/engine/Core/Game.ts", "utf8");
+    expect(gameSource).toContain("const amuletPos = amuletTiles[amuletPosIdx]!");
+    expect(gameSource).toContain("ItemLoader.spawnAmulet('amulet_of_yendor', amuletPos.x, amuletPos.y)");
+    ItemLoader.spawnAmulet = function(id, x, y) {
+        const item = amulet.call(this, id, x, y);
+        if (item) products.add(item);
+        return item;
+    };
     const pick = ItemSpawnHeatMap.prototype.getItemSpawnLoc, cool = ItemSpawnHeatMap.prototype.coolHeatMapAt;
     let pendingItem: Item | null = null, goldLocation: Pos | null = null;
     proto.spawnPopulateItem = function(depth, offset) {
@@ -124,7 +135,7 @@ function installPopulationRecorder(products: Set<Item>): () => void {
         return item;
     };
     return () => {
-        proto.spawnPopulateItem = populate; ItemLoader.spawnGold = gold;
+        proto.spawnPopulateItem = populate; ItemLoader.spawnGold = gold; ItemLoader.spawnAmulet = amulet;
         ItemSpawnHeatMap.prototype.getItemSpawnLoc = pick; ItemSpawnHeatMap.prototype.coolHeatMapAt = cool;
     };
 }

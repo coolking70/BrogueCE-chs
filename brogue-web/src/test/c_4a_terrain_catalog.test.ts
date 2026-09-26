@@ -171,11 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
         // U08 appends two carriers; all old keys/fields stay pinned above.
-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA', 'RAT_TRAP_WALL_CRACKING', 'STATUE_CRACKING', 'COFFIN_OPEN', 'WORM_TUNNEL_MARKER_ACTIVE', 'PORTAL_LIGHT'].includes(n)).length).toBe(135);
+        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA', 'RAT_TRAP_WALL_CRACKING', 'STATUE_CRACKING', 'COFFIN_OPEN', 'WORM_TUNNEL_MARKER_ACTIVE', 'PORTAL_LIGHT', 'FUNGUS_FOREST', 'TRAMPLED_FUNGUS_FOREST', 'SUNLIGHT_POOL', 'DARKNESS_PATCH', 'DEEP_WATER_ALGAE_WELL', 'DEEP_WATER_ALGAE_1', 'DEEP_WATER_ALGAE_2', 'NET_TRAP', 'NET_TRAP_HIDDEN', 'NETTING', 'ALARM_TRAP', 'ALARM_TRAP_HIDDEN', 'GAS_TRAP_CONFUSION', 'GAS_TRAP_CONFUSION_HIDDEN', 'FLOOD_TRAP_HIDDEN', 'STEAM_VENT', 'DEWAR_CAUSTIC_GAS', 'DEWAR_CONFUSION_GAS', 'DEWAR_PARALYSIS_GAS', 'DEWAR_METHANE_GAS', 'BROKEN_GLASS'].includes(n)).length).toBe(135);
         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
         // U17a burnItem successor; historical 135-row projection remains fixed.
         expect(names).toContain('ITEM_FIRE');
-        expect(names.length).toBe(169);
+        expect(names.length).toBe(190);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -519,7 +519,7 @@ describe('C-4a C：派生判据语义（混用别名化 / 抄错的可观测后�
         const allNames = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         for (const name of allNames) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
-            if (t !== C.WATER_DEEP && t !== C.FLOOD_WATER_DEEP) {
+            if (![C.WATER_DEEP, C.FLOOD_WATER_DEEP, C.DEEP_WATER_ALGAE_1, C.DEEP_WATER_ALGAE_2].includes(t)) {
                 expect(isDeepWater(t), `${TerrainType[t]} 不应带 T_IS_DEEP_WATER`).toBe(false);
             }
         }
@@ -574,6 +574,9 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
     // AMULET_SWITCH 更是零旗标）**留在等价论域内**——不跳过，由本组逐位
     // 继续把关（它们若被误加 PASSABILITY 会在此翻红）。
     const POST_LEGACY_TILES = new Set<TerrainType>([
+        C.DEEP_WATER_ALGAE_1, C.DEEP_WATER_ALGAE_2,
+        C.DEWAR_CAUSTIC_GAS, C.DEWAR_CONFUSION_GAS, C.DEWAR_PARALYSIS_GAS, C.DEWAR_METHANE_GAS, // U19f CE literal flags and live consumers
+
         C.RAT_TRAP_WALL_CRACKING, C.STATUE_CRACKING, // U17f: new CE blocking carriers; independent oracle + interaction guards.
         C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL,
         C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.WOODEN_BARRICADE,
@@ -812,6 +815,8 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
     // 是一次自造的假绿。留痕测试若能被改写形态绕过，就不是门禁而是装饰。
     // 现在正则同时捕获点号读取与解构读取两种形态。
     const PROMOTE_FIELD_READERS = new Set([
+        'engine/Core/Game.ts', // U19f searchForSecrets consumes TM_IS_SECRET for every CE hidden terrain
+
         'engine/Map/DungeonFeature.ts',   // C-4b：mechFlags（cellIsPassableOrDoor 的密门/锁门豁免）
         'engine/Map/Promotion.ts',        // C-4c：promoteTile/两趟驱动读 promoteType/promoteChance/fireType/mechFlags（本文件 C 组同样钉其取值）
         'engine/Environment/Gas.ts',      // G-1：updateVolumetricMedia 读 GAS 层 tile 的 mechFlags
@@ -919,6 +924,7 @@ describe('C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影
         const numericOnly = new Map<string, number>();
         let totalBlocked = 0;
         let totalNumeric = 0;
+        let maskedStalk = 0; // U19f cost-probe.json: high-priority STEAM_VENT hides a blocking SURFACE stalk.
         const other: string[] = [];
 
         for (const seed of SWEEP_SEEDS) {
@@ -941,6 +947,10 @@ describe('C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影
                         } else if (oldCost === PDS_FORBIDDEN && newCost === PDS_OBSTRUCTION) {
                             totalNumeric++;
                             numericOnly.set(nameT(t), (numericOnly.get(nameT(t)) ?? 0) + 1);
+                        } else if (oldCost === PDS_FORBIDDEN && newCost === 1 && t === C.STEAM_VENT
+                            && cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK) {
+                            expect(isPathingBlocker(C.BLOODFLOWER_STALK)).toBe(true);
+                            maskedStalk++;
                         } else {
                             other.push(`seed=${seed} D${d} (${x},${y}) ${nameT(t)}: ${oldCost} → ${newCost}`);
                         }
@@ -950,7 +960,7 @@ describe('C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影
         }
 
         // 弱不变量：分歧必须真实存在（若为 0，说明测量口径写错或表抄错）。
-        expect(totalBlocked + totalNumeric, '新旧 cost 分歧总数应 > 0').toBeGreaterThan(0);
+        expect(totalBlocked + totalNumeric + maskedStalk, '新旧 cost 分歧总数应 > 0').toBeGreaterThan(0);
         expect(other, `未分类分歧（测量口径漏洞）：\n${other.slice(0, 20).join('\n')}`).toEqual([]);
 
         const fmt = (m: Map<string, number>) =>

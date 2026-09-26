@@ -75,7 +75,7 @@ describe('U17e CE catalog and carrier scope',()=>{
   for(const id of [85,140,141,143,145])expect(()=>catalogFeature(id)).not.toThrow();
  });
  it('164 CE appearances include exact glyph/color/background and localized terrain descriptions',()=>{
-  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(169);const g=scene();
+  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);const g=scene();
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});expect((g as any).getTerrainName(t)).toMatch(/[\u3400-\u9fff]/);}
  });
 });

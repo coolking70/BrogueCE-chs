@@ -1,0 +1,111 @@
+[
+  {
+    "seed": 1,
+    "policy": "roam-extended",
+    "turnsRun": 209,
+    "died": true,
+    "deathCause": "Eel",
+    "finalNutrition": 1942,
+    "finalHp": 0,
+    "finalState": "normal",
+    "startNutrition": 2150,
+    "transitions": [],
+    "curve": [
+      {
+        "turn": 0,
+        "nutrition": 2150,
+        "hp": 30,
+        "state": "normal"
+      }
+    ]
+  },
+  {
+    "seed": 7,
+    "policy": "roam-extended",
+    "turnsRun": 2177,
+    "died": true,
+    "deathCause": "starvation",
+    "finalNutrition": 0,
+    "finalHp": 0,
+    "finalState": "starving",
+    "startNutrition": 2150,
+    "transitions": [
+      {
+        "turn": 1801,
+        "objectiveTurn": 1800,
+        "state": "hungry"
+      },
+      {
+        "turn": 2001,
+        "objectiveTurn": 2000,
+        "state": "weak"
+      },
+      {
+        "turn": 2101,
+        "objectiveTurn": 2100,
+        "state": "faint"
+      },
+      {
+        "turn": 2150,
+        "objectiveTurn": 2149,
+        "state": "starving"
+      }
+    ],
+    "curve": [
+      {
+        "turn": 0,
+        "nutrition": 2150,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 250,
+        "nutrition": 1901,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 500,
+        "nutrition": 1651,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 750,
+        "nutrition": 1401,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 1000,
+        "nutrition": 1151,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 1250,
+        "nutrition": 901,
+        "hp": 29,
+        "state": "normal"
+      },
+      {
+        "turn": 1500,
+        "nutrition": 651,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 1750,
+        "nutrition": 401,
+        "hp": 30,
+        "state": "normal"
+      },
+      {
+        "turn": 2000,
+        "nutrition": 151,
+        "hp": 30,
+        "state": "hungry"
+      }
+    ]
+  }
+]

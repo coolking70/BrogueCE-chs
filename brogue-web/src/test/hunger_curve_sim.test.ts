@@ -9,7 +9,7 @@
  * - wait 策略 × 3 seed：原地等待，隔离出纯饥饿曲线（怪物仍会主动攻击，如实记录）。
  * - roam 策略 × 3 seed：本文件复刻 harness 默认策略（攻击相邻敌人 / 随机移动），
  *   观察真实玩法节奏下的饥饿进度（harness 的 defaultTurnPolicy 未导出，故本地复刻）。
- * - seed 1 wait 延长到 2300 回合：验证 nutrition 归零后的完整饿死流程。
+ * - seed 7 roam 延长到 2300 回合：验证 nutrition 归零后的完整饿死流程。
  *
  * 断言只保证模拟本身可跑完；曲线数据经 console 输出供报告引用。
  */
@@ -152,9 +152,9 @@ describe('2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略）', () =
         }
     }, 300000);
 
-    it('seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程', () => {
-        const r = simulate(1, roamPolicy, 'roam-extended', 2300, true);
-        console.log(`\n=== seed 1 roam, 2300 turns ===\n${formatResult(r)}\n`);
+    it('seed 7 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程', () => {
+        const r = simulate(7, roamPolicy, 'roam-extended', 2300, true);
+        console.log(`\n=== seed 7 roam, 2300 turns ===\n${formatResult(r)}\n`);
         // wait 策略会在前期被怪物击杀（实测 49-205 回合），故延长运行用 roam：
         // CE Time.c:949-970: at nutrition 1 with no food, checkNutrition immediately sets 0.
         // Thus starvation starts at T2149, one turn before a plain decrement-to-zero model.

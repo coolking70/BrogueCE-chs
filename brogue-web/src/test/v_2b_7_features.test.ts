@@ -891,7 +891,7 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         expect(bp.features.find(f => f.hordeFlags?.includes('HORDE_SACRIFICE_TARGET'))).toBeDefined();
     });
 
-    it('G2 U19e: CE47 closed-cage adoption is eligible; CE52 remains deferred', () => {
+    it('G2 U19f: both CE47 and CE52 closed-cage adoption machines occur naturally', () => {
         // Retain the raw terrain classification: it is a closed-cage state,
         // not proof that the eventual reward is unreachable (CE placeItemAt).
         const ineligible = BPS.filter(bp =>
@@ -902,11 +902,11 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         ).map(bp => bp.id);
         expect(ineligible, '领养落点不可达的蓝图集合（9c 新增 52 号闭笼）').toEqual(['key_sacrifice_altar', 'key_electric_crystals']);
 
-        // U19e: same 14 seeds × D1-26; CE47 must appear via adoption and CE52
-        // must remain absent. The blocked terrain names above are unchanged;
+        // U19f: preserve the old 14 seeds and add seed17 for natural CE52.
+        // Both machines must occur; the blocked terrain names are unchanged;
         // their passability no longer decides whether a machine can adopt.
         let appear = 0, electric = 0;
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8]) {
+        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8, 17]) {
             const record: LevelMachines[] = [];
             const restore = installRecorder(record);
             try {
@@ -922,6 +922,6 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
             } finally { restore(); }
         }
         expect(appear, 'CE47 now adopts into its closed cage; U19e verifies the complete sacrifice chain').toBeGreaterThan(0);
-        expect(electric, 'CE52 retains its explicit U19f deferral').toBe(0);
+        expect(electric, 'CE52 restored with its complete U19f action proof').toBeGreaterThan(0);
     });
 });

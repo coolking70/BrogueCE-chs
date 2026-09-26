@@ -40,7 +40,7 @@ import {
     adjustDungeonFirstRoomProfileForDepth,
     dungeonDescentPercent,
 } from '../engine/Generator/Architect';
-import { TerrainType, DCOLS, DROWS, type Grid } from '../engine/Map/Grid';
+import { TerrainType, DungeonLayer, DCOLS, DROWS, type Grid } from '../engine/Map/Grid';
 import type { DungeonProfile } from '../types';
 import type { Game } from '../engine/Core/Game';
 
@@ -82,7 +82,11 @@ function countTerrain(grid: Grid, terrain: TerrainType): number {
     let n = 0;
     for (let x = 0; x < grid.width; x++) {
         for (let y = 0; y < grid.height; y++) {
-            if (grid.getCell(x, y)?.terrain === terrain) n++;
+            // U19f: count room foundations before liquid light/decorative overlays.
+            const cell = grid.getCell(x, y);
+            const actual = terrain === TerrainType.FLOOR || terrain === TerrainType.DOOR
+                ? cell?.layers[DungeonLayer.DUNGEON] : cell?.terrain;
+            if (actual === terrain) n++;
         }
     }
     return n;

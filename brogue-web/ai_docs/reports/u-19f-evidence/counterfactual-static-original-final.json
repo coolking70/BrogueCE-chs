@@ -1,0 +1,28 @@
+{
+  "head": "e6247714a04358be3cde9bd3329c82e091730cc4",
+  "files": [
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/u_17f_carriers.test.ts",
+    "src/test/v_2b_9c_effects.test.ts"
+  ],
+  "titles": [
+    "E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+    "E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+    "F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空",
+    "AD-7 表长 49、数值列逐条相等、死条目 index 0、基座列抽查",
+    "AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟",
+    "哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条",
+    "留痕 T1：光照类条目未接——C-7 光照目录落地后反转（index 13/30/31/38）",
+    "留痕 T2：陷阱族（显/隐）未接——按 CE tile 目录落地陷阱后反转（index 14-15/17-22/24-28/32）",
+    "留痕 T4（T-1 反转 index 1/33）：装饰/植物/dewar 族未接——随各自 tile 落地轮反转",
+    "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+    "非零恰 44 个（U17f 追加传送门光），且都指向有载体的目录条目",
+    "留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）",
+    "retains the empty missing-tile guard and preserves old IDs; five appended appearances come from CE",
+    "four blueprint rows match every supported CE column; #52 is excluded in engine only",
+    "55 retains CE data but cannot consume an adopted key behind unimplemented tunnels"
+  ],
+  "exit": 0
+}

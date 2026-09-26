@@ -1,0 +1,11 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/c_7_lighting.test.ts(143,11): error TS2740: Type '{ 164: LightKind; 165: LightKind; 166: LightKind; 167: LightKind; 168: LightKind; 157: LightKind; 158: LightKind; ... 161 more ...; 132: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 169, 170, 171, 172, and 17 more.
+src/test/u_19f_fire.test.ts(33,64): error TS18048: 'start' is possibly 'undefined'.
+src/test/u_19f_fire.test.ts(33,86): error TS18048: 'start' is possibly 'undefined'.
+src/test/u_19f_fire.test.ts(35,42): error TS18048: 'start' is possibly 'undefined'.
+src/test/u_19f_fire.test.ts(35,61): error TS18048: 'start' is possibly 'undefined'.
+src/test/u_19f_fire.test.ts(36,33): error TS18048: 'start' is possibly 'undefined'.
+src/test/u_19f_fire.test.ts(36,52): error TS18048: 'start' is possibly 'undefined'.

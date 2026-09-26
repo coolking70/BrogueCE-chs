@@ -1,0 +1,2134 @@
+{
+  "rows": [
+    {
+      "seed": 1,
+      "depth": 23,
+      "ce": 7,
+      "machine": 1,
+      "entry": {
+        "x": 16,
+        "y": 5
+      },
+      "keySource": {
+        "id": 548,
+        "loc": {
+          "x": 68,
+          "y": 9
+        },
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 16,
+              "y": 5
+            },
+            "machine": 0,
+            "disposableHere": true
+          },
+          {
+            "loc": {
+              "x": 68,
+              "y": 9
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ]
+      },
+      "before": {
+        "label": "entry",
+        "commands": 0,
+        "player": {
+          "x": 16,
+          "y": 6
+        },
+        "hp": 10000,
+        "depth": 23,
+        "inventory": [
+          2,
+          3,
+          4,
+          5,
+          548
+        ],
+        "items": [
+          {
+            "id": 551,
+            "loc": {
+              "x": 49,
+              "y": 7
+            },
+            "enchantment": 0,
+            "category": 10
+          },
+          {
+            "id": 552,
+            "loc": {
+              "x": 73,
+              "y": 10
+            },
+            "enchantment": 0,
+            "category": 0
+          },
+          {
+            "id": 553,
+            "loc": {
+              "x": 69,
+              "y": 11
+            },
+            "enchantment": 2,
+            "category": 9
+          },
+          {
+            "id": 554,
+            "loc": {
+              "x": 72,
+              "y": 13
+            },
+            "enchantment": 2,
+            "category": 7
+          },
+          {
+            "id": 563,
+            "loc": {
+              "x": 64,
+              "y": 25
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 564,
+            "loc": {
+              "x": 6,
+              "y": 4
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 565,
+            "loc": {
+              "x": 54,
+              "y": 4
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 566,
+            "loc": {
+              "x": 74,
+              "y": 24
+            },
+            "enchantment": 0,
+            "category": 3
+          },
+          {
+            "id": 567,
+            "loc": {
+              "x": 67,
+              "y": 6
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 568,
+            "loc": {
+              "x": 73,
+              "y": 23
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 569,
+            "loc": {
+              "x": 34,
+              "y": 19
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 570,
+            "loc": {
+              "x": 33,
+              "y": 19
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 571,
+            "loc": {
+              "x": 68,
+              "y": 21
+            },
+            "enchantment": 0,
+            "category": 5
+          }
+        ],
+        "tiles": [
+          {
+            "x": 15,
+            "y": 1,
+            "layers": [
+              48,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 1,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 3,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 4,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 1,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 3,
+            "layers": [
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 4,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 1,
+            "layers": [
+              65,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 3,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 4,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          }
+        ],
+        "residents": [
+          {
+            "id": 572,
+            "loc": {
+              "x": 16,
+              "y": 6
+            },
+            "hp": 0,
+            "maxHp": 15,
+            "ally": true,
+            "dormant": false,
+            "marked": false,
+            "machine": 0,
+            "purgatory": false
+          }
+        ]
+      },
+      "after": {
+        "label": "final",
+        "commands": 13,
+        "player": {
+          "x": 16,
+          "y": 6
+        },
+        "hp": 10000,
+        "depth": 23,
+        "inventory": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "items": [
+          {
+            "id": 551,
+            "loc": {
+              "x": 49,
+              "y": 7
+            },
+            "enchantment": 0,
+            "category": 10
+          },
+          {
+            "id": 552,
+            "loc": {
+              "x": 73,
+              "y": 10
+            },
+            "enchantment": 0,
+            "category": 0
+          },
+          {
+            "id": 553,
+            "loc": {
+              "x": 69,
+              "y": 11
+            },
+            "enchantment": 2,
+            "category": 9
+          },
+          {
+            "id": 554,
+            "loc": {
+              "x": 72,
+              "y": 13
+            },
+            "enchantment": 2,
+            "category": 7
+          },
+          {
+            "id": 563,
+            "loc": {
+              "x": 64,
+              "y": 25
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 564,
+            "loc": {
+              "x": 6,
+              "y": 4
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 565,
+            "loc": {
+              "x": 54,
+              "y": 4
+            },
+            "enchantment": 0,
+            "category": 2
+          },
+          {
+            "id": 566,
+            "loc": {
+              "x": 74,
+              "y": 24
+            },
+            "enchantment": 0,
+            "category": 3
+          },
+          {
+            "id": 567,
+            "loc": {
+              "x": 67,
+              "y": 6
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 568,
+            "loc": {
+              "x": 73,
+              "y": 23
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 569,
+            "loc": {
+              "x": 34,
+              "y": 19
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 570,
+            "loc": {
+              "x": 33,
+              "y": 19
+            },
+            "enchantment": 0,
+            "category": 5
+          },
+          {
+            "id": 571,
+            "loc": {
+              "x": 68,
+              "y": 21
+            },
+            "enchantment": 0,
+            "category": 5
+          }
+        ],
+        "tiles": [
+          {
+            "x": 15,
+            "y": 1,
+            "layers": [
+              48,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 1,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 3,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 16,
+            "y": 4,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 1,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 3,
+            "layers": [
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 17,
+            "y": 4,
+            "layers": [
+              47,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 1,
+            "layers": [
+              160,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 2,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 3,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          },
+          {
+            "x": 18,
+            "y": 4,
+            "layers": [
+              47,
+              148,
+              0,
+              0
+            ]
+          }
+        ],
+        "residents": [
+          {
+            "id": 572,
+            "loc": {
+              "x": 16,
+              "y": 4
+            },
+            "hp": 15,
+            "maxHp": 15,
+            "ally": true,
+            "dormant": false,
+            "marked": false,
+            "machine": 0,
+            "purgatory": false
+          }
+        ]
+      },
+      "commands": [
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "wait"
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          }
+        },
+        {
+          "action": "wait"
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": 1
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": 1
+          }
+        }
+      ],
+      "phases": [
+        {
+          "label": "entry",
+          "commands": 0,
+          "player": {
+            "x": 16,
+            "y": 6
+          },
+          "hp": 10000,
+          "depth": 23,
+          "inventory": [
+            2,
+            3,
+            4,
+            5,
+            548
+          ],
+          "items": [
+            {
+              "id": 551,
+              "loc": {
+                "x": 49,
+                "y": 7
+              },
+              "enchantment": 0,
+              "category": 10
+            },
+            {
+              "id": 552,
+              "loc": {
+                "x": 73,
+                "y": 10
+              },
+              "enchantment": 0,
+              "category": 0
+            },
+            {
+              "id": 553,
+              "loc": {
+                "x": 69,
+                "y": 11
+              },
+              "enchantment": 2,
+              "category": 9
+            },
+            {
+              "id": 554,
+              "loc": {
+                "x": 72,
+                "y": 13
+              },
+              "enchantment": 2,
+              "category": 7
+            },
+            {
+              "id": 563,
+              "loc": {
+                "x": 64,
+                "y": 25
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 564,
+              "loc": {
+                "x": 6,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 565,
+              "loc": {
+                "x": 54,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 566,
+              "loc": {
+                "x": 74,
+                "y": 24
+              },
+              "enchantment": 0,
+              "category": 3
+            },
+            {
+              "id": 567,
+              "loc": {
+                "x": 67,
+                "y": 6
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 568,
+              "loc": {
+                "x": 73,
+                "y": 23
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 569,
+              "loc": {
+                "x": 34,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 570,
+              "loc": {
+                "x": 33,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 571,
+              "loc": {
+                "x": 68,
+                "y": 21
+              },
+              "enchantment": 0,
+              "category": 5
+            }
+          ],
+          "tiles": [
+            {
+              "x": 15,
+              "y": 1,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 3,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 3,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 1,
+              "layers": [
+                65,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 3,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 4,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            }
+          ],
+          "residents": [
+            {
+              "id": 572,
+              "loc": {
+                "x": 16,
+                "y": 6
+              },
+              "hp": 0,
+              "maxHp": 15,
+              "ally": true,
+              "dormant": false,
+              "marked": false,
+              "machine": 0,
+              "purgatory": false
+            }
+          ]
+        },
+        {
+          "label": "entered",
+          "commands": 1,
+          "player": {
+            "x": 16,
+            "y": 6
+          },
+          "hp": 10000,
+          "depth": 23,
+          "inventory": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "items": [
+            {
+              "id": 551,
+              "loc": {
+                "x": 49,
+                "y": 7
+              },
+              "enchantment": 0,
+              "category": 10
+            },
+            {
+              "id": 552,
+              "loc": {
+                "x": 73,
+                "y": 10
+              },
+              "enchantment": 0,
+              "category": 0
+            },
+            {
+              "id": 553,
+              "loc": {
+                "x": 69,
+                "y": 11
+              },
+              "enchantment": 2,
+              "category": 9
+            },
+            {
+              "id": 554,
+              "loc": {
+                "x": 72,
+                "y": 13
+              },
+              "enchantment": 2,
+              "category": 7
+            },
+            {
+              "id": 563,
+              "loc": {
+                "x": 64,
+                "y": 25
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 564,
+              "loc": {
+                "x": 6,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 565,
+              "loc": {
+                "x": 54,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 566,
+              "loc": {
+                "x": 74,
+                "y": 24
+              },
+              "enchantment": 0,
+              "category": 3
+            },
+            {
+              "id": 567,
+              "loc": {
+                "x": 67,
+                "y": 6
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 568,
+              "loc": {
+                "x": 73,
+                "y": 23
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 569,
+              "loc": {
+                "x": 34,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 570,
+              "loc": {
+                "x": 33,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 571,
+              "loc": {
+                "x": 68,
+                "y": 21
+              },
+              "enchantment": 0,
+              "category": 5
+            }
+          ],
+          "tiles": [
+            {
+              "x": 15,
+              "y": 1,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 3,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 3,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 1,
+              "layers": [
+                65,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 3,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 4,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            }
+          ],
+          "residents": [
+            {
+              "id": 572,
+              "loc": {
+                "x": 16,
+                "y": 6
+              },
+              "hp": 0,
+              "maxHp": 15,
+              "ally": true,
+              "dormant": false,
+              "marked": false,
+              "machine": 0,
+              "purgatory": true
+            }
+          ]
+        },
+        {
+          "label": "death-cleaned",
+          "commands": 2,
+          "player": {
+            "x": 16,
+            "y": 6
+          },
+          "hp": 10000,
+          "depth": 23,
+          "inventory": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "items": [
+            {
+              "id": 551,
+              "loc": {
+                "x": 49,
+                "y": 7
+              },
+              "enchantment": 0,
+              "category": 10
+            },
+            {
+              "id": 552,
+              "loc": {
+                "x": 73,
+                "y": 10
+              },
+              "enchantment": 0,
+              "category": 0
+            },
+            {
+              "id": 553,
+              "loc": {
+                "x": 69,
+                "y": 11
+              },
+              "enchantment": 2,
+              "category": 9
+            },
+            {
+              "id": 554,
+              "loc": {
+                "x": 72,
+                "y": 13
+              },
+              "enchantment": 2,
+              "category": 7
+            },
+            {
+              "id": 563,
+              "loc": {
+                "x": 64,
+                "y": 25
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 564,
+              "loc": {
+                "x": 6,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 565,
+              "loc": {
+                "x": 54,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 566,
+              "loc": {
+                "x": 74,
+                "y": 24
+              },
+              "enchantment": 0,
+              "category": 3
+            },
+            {
+              "id": 567,
+              "loc": {
+                "x": 67,
+                "y": 6
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 568,
+              "loc": {
+                "x": 73,
+                "y": 23
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 569,
+              "loc": {
+                "x": 34,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 570,
+              "loc": {
+                "x": 33,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 571,
+              "loc": {
+                "x": 68,
+                "y": 21
+              },
+              "enchantment": 0,
+              "category": 5
+            }
+          ],
+          "tiles": [
+            {
+              "x": 15,
+              "y": 1,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 3,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 3,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 1,
+              "layers": [
+                65,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 3,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 4,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            }
+          ],
+          "residents": [
+            {
+              "id": 572,
+              "loc": {
+                "x": 16,
+                "y": 6
+              },
+              "hp": 0,
+              "maxHp": 15,
+              "ally": true,
+              "dormant": false,
+              "marked": false,
+              "machine": 0,
+              "purgatory": true
+            }
+          ]
+        },
+        {
+          "label": "resurrected",
+          "commands": 8,
+          "player": {
+            "x": 16,
+            "y": 1
+          },
+          "hp": 10000,
+          "depth": 23,
+          "inventory": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "items": [
+            {
+              "id": 551,
+              "loc": {
+                "x": 49,
+                "y": 7
+              },
+              "enchantment": 0,
+              "category": 10
+            },
+            {
+              "id": 552,
+              "loc": {
+                "x": 73,
+                "y": 10
+              },
+              "enchantment": 0,
+              "category": 0
+            },
+            {
+              "id": 553,
+              "loc": {
+                "x": 69,
+                "y": 11
+              },
+              "enchantment": 2,
+              "category": 9
+            },
+            {
+              "id": 554,
+              "loc": {
+                "x": 72,
+                "y": 13
+              },
+              "enchantment": 2,
+              "category": 7
+            },
+            {
+              "id": 563,
+              "loc": {
+                "x": 64,
+                "y": 25
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 564,
+              "loc": {
+                "x": 6,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 565,
+              "loc": {
+                "x": 54,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 566,
+              "loc": {
+                "x": 74,
+                "y": 24
+              },
+              "enchantment": 0,
+              "category": 3
+            },
+            {
+              "id": 567,
+              "loc": {
+                "x": 67,
+                "y": 6
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 568,
+              "loc": {
+                "x": 73,
+                "y": 23
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 569,
+              "loc": {
+                "x": 34,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 570,
+              "loc": {
+                "x": 33,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 571,
+              "loc": {
+                "x": 68,
+                "y": 21
+              },
+              "enchantment": 0,
+              "category": 5
+            }
+          ],
+          "tiles": [
+            {
+              "x": 15,
+              "y": 1,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 3,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 3,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 1,
+              "layers": [
+                160,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 3,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 4,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            }
+          ],
+          "residents": [
+            {
+              "id": 572,
+              "loc": {
+                "x": 18,
+                "y": 1
+              },
+              "hp": 15,
+              "maxHp": 15,
+              "ally": true,
+              "dormant": false,
+              "marked": false,
+              "machine": 0,
+              "purgatory": false
+            }
+          ]
+        },
+        {
+          "label": "final",
+          "commands": 13,
+          "player": {
+            "x": 16,
+            "y": 6
+          },
+          "hp": 10000,
+          "depth": 23,
+          "inventory": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "items": [
+            {
+              "id": 551,
+              "loc": {
+                "x": 49,
+                "y": 7
+              },
+              "enchantment": 0,
+              "category": 10
+            },
+            {
+              "id": 552,
+              "loc": {
+                "x": 73,
+                "y": 10
+              },
+              "enchantment": 0,
+              "category": 0
+            },
+            {
+              "id": 553,
+              "loc": {
+                "x": 69,
+                "y": 11
+              },
+              "enchantment": 2,
+              "category": 9
+            },
+            {
+              "id": 554,
+              "loc": {
+                "x": 72,
+                "y": 13
+              },
+              "enchantment": 2,
+              "category": 7
+            },
+            {
+              "id": 563,
+              "loc": {
+                "x": 64,
+                "y": 25
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 564,
+              "loc": {
+                "x": 6,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 565,
+              "loc": {
+                "x": 54,
+                "y": 4
+              },
+              "enchantment": 0,
+              "category": 2
+            },
+            {
+              "id": 566,
+              "loc": {
+                "x": 74,
+                "y": 24
+              },
+              "enchantment": 0,
+              "category": 3
+            },
+            {
+              "id": 567,
+              "loc": {
+                "x": 67,
+                "y": 6
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 568,
+              "loc": {
+                "x": 73,
+                "y": 23
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 569,
+              "loc": {
+                "x": 34,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 570,
+              "loc": {
+                "x": 33,
+                "y": 19
+              },
+              "enchantment": 0,
+              "category": 5
+            },
+            {
+              "id": 571,
+              "loc": {
+                "x": 68,
+                "y": 21
+              },
+              "enchantment": 0,
+              "category": 5
+            }
+          ],
+          "tiles": [
+            {
+              "x": 15,
+              "y": 1,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 3,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 16,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 1,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 3,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 17,
+              "y": 4,
+              "layers": [
+                47,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 1,
+              "layers": [
+                160,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 2,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 3,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            },
+            {
+              "x": 18,
+              "y": 4,
+              "layers": [
+                47,
+                148,
+                0,
+                0
+              ]
+            }
+          ],
+          "residents": [
+            {
+              "id": 572,
+              "loc": {
+                "x": 16,
+                "y": 4
+              },
+              "hp": 15,
+              "maxHp": 15,
+              "ally": true,
+              "dormant": false,
+              "marked": false,
+              "machine": 0,
+              "purgatory": false
+            }
+          ]
+        }
+      ],
+      "pairIds": [],
+      "allyId": 572
+    }
+  ],
+  "errors": [
+    {
+      "seed": 424242,
+      "depth": 18,
+      "ce": 7,
+      "machine": 1,
+      "error": "Error: missing entrance"
+    },
+    {
+      "seed": 424242,
+      "depth": 23,
+      "ce": 7,
+      "machine": 1,
+      "error": "Error: missing entrance"
+    },
+    {
+      "seed": 777,
+      "depth": 14,
+      "ce": 7,
+      "machine": 1,
+      "error": "Error: full resurrection required"
+    }
+  ]
+}

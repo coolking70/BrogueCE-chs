@@ -1,0 +1,73 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+stdout | src/test/p1_31_35_placement_snapshot.test.ts > P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味） > T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/p1_31_35_placement_snapshot.test.ts (10 tests | 1 failed | 9 skipped) 1351ms
+     × T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空） 1351ms
+(node:50021) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/test/p1_20_item_placement.test.ts > 地面物品落格可通行性（全局扫描，P1-20） > 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[item-placement] seed=424242 D1..D26 substantive RNG 抽取总数: 2536672
+[item-placement] seed=777 D1..D26 substantive RNG 抽取总数: 2328103
+[item-placement] seed=20260913 D1..D26 substantive RNG 抽取总数: 2052548
+[item-placement] seed=1 D1..D26 substantive RNG 抽取总数: 2282781
+[item-placement] 扫描 4 seeds × 104 层，共 981 件地面物品，违例 4 条；地形分布：（无）
+[item-placement] 违例: seed=424242 D5 charm_of_health @ (67,13) terrain=#93 可通行=false; complete machine replay failed: Error: marked target did not enter altar {"x":29,"y":12}
+[item-placement] 违例: seed=424242 D8 dagger @ (54,16) terrain=#93 可通行=false; complete machine replay failed: Error: player died
+[item-placement] 违例: seed=777 D14 category#10 @ (47,17) terrain=#93 可通行=false; complete machine replay failed: Error: CE47: no route {"x":50,"y":17} -> {"x":47,"y":17}
+[item-placement] 违例: seed=777 D21 category#10 @ (20,19) terrain=#93 可通行=false; complete machine replay failed: Error: marked statue unreachable
+
+ ❯ src/test/p1_20_item_placement.test.ts (1 test | 1 failed) 31887ms
+     × 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出 31887ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p1_20_item_placement.test.ts > 地面物品落格可通行性（全局扫描，P1-20） > 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出
+AssertionError: expected [ …(4) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed=424242 D5 charm_of_health @ (67,13) terrain=#93 可通行=false; complete machine replay failed: Error: marked target did not enter altar {\"x\":29,\"y\":12}",
++   "seed=424242 D8 dagger @ (54,16) terrain=#93 可通行=false; complete machine replay failed: Error: player died",
++   "seed=777 D14 category#10 @ (47,17) terrain=#93 可通行=false; complete machine replay failed: Error: CE47: no route {\"x\":50,\"y\":17} -> {\"x\":47,\"y\":17}",
++   "seed=777 D21 category#10 @ (20,19) terrain=#93 可通行=false; complete machine replay failed: Error: marked statue unreachable",
++ ]
+
+ ❯ src/test/p1_20_item_placement.test.ts:162:28
+    160|         // 非空转护栏：扫描必须真的覆盖到足够多的地面物品，否则断言无意义
+    161|         expect(totalItems).toBeGreaterThan(500);
+    162|         expect(violations).toEqual([]);
+       |                            ^
+    163|     }, 180_000);
+    164| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/p1_31_35_placement_snapshot.test.ts > P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味） > T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空）
+AssertionError: expected '[{"x":70,"y":14},{"x":24,"y":4},{"x":…' to be '[{"x":70,"y":14},{"x":24,"y":4},{"x":…' // Object.is equality
+
+Expected: "[{"x":70,"y":14},{"x":24,"y":4},{"x":28,"y":4},{"x":67,"y":16},{"x":42,"y":5},{"x":14,"y":24},{"x":60,"y":12},{"x":74,"y":4},{"x":43,"y":26},{"x":49,"y":4},{"x":54,"y":8},{"x":5,"y":6},{"x":27,"y":10},{"x":56,"y":22},{"x":48,"y":7},{"x":31,"y":15},{"x":39,"y":15},{"x":24,"y":22},{"x":10,"y":20},{"x":28,"y":26},{"x":73,"y":19},{"x":20,"y":11},{"x":25,"y":14},{"x":64,"y":8},{"x":26,"y":17},{"x":66,"y":23},{"x":16,"y":6},{"x":46,"y":25},{"x":55,"y":16},{"x":35,"y":17},{"x":58,"y":24},{"x":28,"y":13},{"x":3,"y":22},{"x":20,"y":14},{"x":16,"y":13},{"x":6,"y":16},{"x":3,"y":2},{"x":11,"y":26},{"x":67,"y":19}]"
+Received: "[{"x":70,"y":14},{"x":24,"y":4},{"x":28,"y":4},{"x":67,"y":16},{"x":42,"y":5},{"x":14,"y":24},{"x":60,"y":12},{"x":74,"y":4},{"x":43,"y":26},{"x":49,"y":4},{"x":54,"y":8},{"x":5,"y":6},{"x":27,"y":10},{"x":56,"y":22},{"x":48,"y":7},{"x":31,"y":15},{"x":39,"y":15},{"x":24,"y":22},{"x":10,"y":20},{"x":28,"y":26},{"x":73,"y":19},{"x":20,"y":11},{"x":25,"y":14},{"x":64,"y":8},{"x":26,"y":17},{"x":66,"y":23},{"x":16,"y":6},{"x":46,"y":25},{"x":55,"y":16},{"x":35,"y":17},{"x":58,"y":24},{"x":28,"y":13},{"x":3,"y":22},{"x":20,"y":14},{"x":16,"y":13},{"x":6,"y":16},{"x":3,"y":2},{"x":8,"y":21},{"x":11,"y":26},{"x":67,"y":19}]"
+
+ ❯ src/test/p1_31_35_placement_snapshot.test.ts:307:57
+    305|         rng.setState(waypointInput);
+    306|         b.rebuildWaypoints(); // 同一网格、实体、RNG 输入的重建结果必须相等
+    307|         expect(JSON.stringify(b.waypoints.coordinates)).toBe(afterLoad…
+       |                                                         ^
+    308|     });
+    309|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 9 skipped (11)
+   Start at  20:04:08
+   Duration  32.71s (transform 821ms, setup 0ms, import 1.45s, tests 33.24s, environment 0ms)
+

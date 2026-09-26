@@ -336,6 +336,27 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.MACHINE_GLYPH_INACTIVE]: LightKind.GLYPH_LIGHT_BRIGHT,
         [TerrainType.STENCH_SMOKE_GAS]: 0,
         [TerrainType.ELECTRIC_CRYSTAL_ON]: LightKind.CRYSTAL_WALL_LIGHT,
+        [TerrainType.FUNGUS_FOREST]: LightKind.FUNGUS_FOREST_LIGHT, // U19f CE Globals.c:475
+        [TerrainType.TRAMPLED_FUNGUS_FOREST]: LightKind.FUNGUS_LIGHT, // U19f CE Globals.c:476
+        [TerrainType.SUNLIGHT_POOL]: LightKind.SUN_LIGHT, // U19f CE Globals.c:423
+        [TerrainType.DARKNESS_PATCH]: LightKind.DARKNESS_PATCH_LIGHT, // U19f CE Globals.c:424
+        [TerrainType.DEEP_WATER_ALGAE_WELL]: LightKind.NO_LIGHT, // U19f CE Globals.c:520
+        [TerrainType.DEEP_WATER_ALGAE_1]: LightKind.LUMINESCENT_ALGAE_BLUE_LIGHT, // U19f CE Globals.c:521
+        [TerrainType.DEEP_WATER_ALGAE_2]: LightKind.LUMINESCENT_ALGAE_GREEN_LIGHT, // U19f CE Globals.c:522
+        [TerrainType.NET_TRAP]: LightKind.NO_LIGHT, // U19f CE Globals.c:392
+        [TerrainType.NET_TRAP_HIDDEN]: LightKind.NO_LIGHT, // U19f CE Globals.c:391
+        [TerrainType.NETTING]: LightKind.NO_LIGHT, // U19f CE Globals.c:471
+        [TerrainType.ALARM_TRAP]: LightKind.NO_LIGHT, // U19f CE Globals.c:394
+        [TerrainType.ALARM_TRAP_HIDDEN]: LightKind.NO_LIGHT, // U19f CE Globals.c:393
+        [TerrainType.GAS_TRAP_CONFUSION]: LightKind.NO_LIGHT, // U19f CE Globals.c:386
+        [TerrainType.GAS_TRAP_CONFUSION_HIDDEN]: LightKind.NO_LIGHT, // U19f CE Globals.c:385
+        [TerrainType.FLOOD_TRAP_HIDDEN]: LightKind.NO_LIGHT, // U19f CE Globals.c:389
+        [TerrainType.STEAM_VENT]: LightKind.NO_LIGHT, // U19f CE Globals.c:401
+        [TerrainType.DEWAR_CAUSTIC_GAS]: LightKind.NO_LIGHT, // U19f CE Globals.c:406
+        [TerrainType.DEWAR_CONFUSION_GAS]: LightKind.NO_LIGHT, // U19f CE Globals.c:407
+        [TerrainType.DEWAR_PARALYSIS_GAS]: LightKind.NO_LIGHT, // U19f CE Globals.c:408
+        [TerrainType.DEWAR_METHANE_GAS]: LightKind.NO_LIGHT, // U19f CE Globals.c:409
+        [TerrainType.BROKEN_GLASS]: LightKind.NO_LIGHT, // U19f CE Globals.c:467
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -346,12 +367,19 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 44 个（U17f 追加传送门光），且都指向有载体的目录条目', () => {
+    it('非零恰 50 个（U19f 菌林、光池与藻光），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
             .sort((a, b) => a - b);
         expect(nonzero).toEqual([
+            TerrainType.FUNGUS_FOREST,
+            TerrainType.TRAMPLED_FUNGUS_FOREST,
+            TerrainType.SUNLIGHT_POOL,
+            TerrainType.DARKNESS_PATCH,
+            TerrainType.DEEP_WATER_ALGAE_1,
+            TerrainType.DEEP_WATER_ALGAE_2,
+
             TerrainType.PORTAL_LIGHT,
             TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA,
             TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT,
@@ -790,6 +818,9 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
 
 describe('C-7 载体边界留痕', () => {
     const CARRIER_KINDS = new Set([
+        'SUN_LIGHT', 'DARKNESS_PATCH_LIGHT', 'FUNGUS_FOREST_LIGHT',
+        'LUMINESCENT_ALGAE_BLUE_LIGHT', 'LUMINESCENT_ALGAE_GREEN_LIGHT', // U19f actual tiles and consumers
+
         'PORTAL_ACTIVATE_LIGHT', // U17f: PORTAL_LIGHT has a real terrain glow consumer.
         'SACRIFICE_MARK_LIGHT', // U17e real HORDE_SACRIFICE_TARGET leader and lighting consumer
 

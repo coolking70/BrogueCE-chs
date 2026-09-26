@@ -309,14 +309,11 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     WEB: TerrainType.WEB,
     BLOOD: TerrainType.BLOOD,
     MUD: TerrainType.MUD,
-    // V-2b-2b：机器蓝图 3/4/5/19/20/23 号的地形载体。FUNGUS_FOREST 按任务书
-    // §1 别名到 FOLIAGE（两者 flags/mechFlags 逐位一致，缺的只有 promote
-    // 目标 DF_TRAMPLED_FUNGUS_FOREST 的专属载体与 FUNGUS_FOREST_LIGHT——
-    // 任务书明示"可缺省"）。
+    // U19f restores the distinct CE fungal terrain, regrowth and glow.
     CARPET: TerrainType.CARPET,
     STATUE_INERT: TerrainType.STATUE_INERT,
     PEDESTAL: TerrainType.PEDESTAL,
-    FUNGUS_FOREST: TerrainType.FOLIAGE,
+    FUNGUS_FOREST: TerrainType.FUNGUS_FOREST,
     STATUE_INERT_DOORWAY: TerrainType.STATUE_INERT_DOORWAY,
     WOODEN_BARRICADE: TerrainType.WOODEN_BARRICADE,
     TRAP_DOOR_HIDDEN: TerrainType.TRAP_DOOR_HIDDEN,
@@ -670,8 +667,7 @@ const EFFECTIVE_BP_FLAGS_CACHE = new WeakMap<BlueprintDef, Set<string>>();
 /**
  * B1 / D2: permanently retire audited web inventions from random selection,
  * preserving their frequency, flags, features and null CE provenance in data.
- * Unlike the mechanism-pending exclusions below (CE 18/52/55), implementing
- * more mechanics does not restore these entries; only an overturned identity
+ * Implementing more mechanics does not restore these entries; only an overturned identity
  * audit does. Keep the explicit set equal to the catalog's null CE identities.
  */
 export const RETIRED_INVENTED_BLUEPRINT_IDS: ReadonlySet<string> = new Set([
@@ -709,15 +705,7 @@ export function blueprintQualifies(
     }
     if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
-    // U19d: CE18 is eligible again: search → hidden lever → wired gate is executable.
-    // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
-    // TURRET_LEVER gameplay remains deferred to U19f. Keep CE frequency/flags.
-    if (bp.ceBlueprintId === 52) return false;
-    // V-2b-9c, seed777/D19: #55 seals its adopted key at (25,4) behind
-    // GRANITE/WORM_TUNNEL_MARKER_DORMANT. The lever/active-tunnel DF chain
-    // still has missing tiles, so those tunnels cannot open in web.
-    // Retain CE GlobalsBrogue.c:537-544 data and exclude only from selection.
-    if (bp.id === 'key_worm_tunnels') return false;
+    // U19f: CE52/55 closures are executable; only audited web inventions retire.
     if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
     return true;
 }

@@ -33,7 +33,7 @@ describe('U19e independent CE selection contract',()=>{
   const bp=bps.find(b=>b.ceBlueprintId===ce)!,flag=[26,47].includes(ce)?'BP_ADOPT_ITEM':'BP_REWARD';
   for(let d=0;d<=40;d++)expect(blueprintQualifies(bp,d,[flag])).toBe(d>=bp.depthRange[0]&&d<=bp.depthRange[1]);
   expect(blueprintQualifies(bp,Math.max(13,bp.depthRange[0]),[flag==='BP_REWARD'?'BP_ADOPT_ITEM':'BP_REWARD'])).toBe(false);
-  for(const excluded of [52,55])expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===excluded)!,10,['BP_ADOPT_ITEM'])).toBe(false);
+  for(const restored of [52,55])expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===restored)!,10,['BP_ADOPT_ITEM'])).toBe(true);
  });
  it.each([[6,7,'BP_REWARD',13],[27,47,'BP_ADOPT_ITEM',10]] as const)('exact integer selection tickets CE%i/%i retain their original weights',(a,b,flag,depth)=>{
   const g=createHeadlessGame(19,'test'),rows=[a,b].map(ce=>bps.find(b=>b.ceBlueprintId===ce)!);

@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > e) 编号origin仅接声明feature；已清号center允许真实人口物品，额外直投仍为零
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=35 D1..D26 substantive RNG 抽取总数: 2033806
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 2536672
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 2052548
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 2282781
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 2328103
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 1962328
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 2266263
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 2290832
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 2247957
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 1934866
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 1786656
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 2108087
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 2180183
+[bp-center] seed=2 D1..D26 substantive RNG 抽取总数: 2521974
+[bp-center] seed=3 D1..D26 substantive RNG 抽取总数: 2321156
+[bp-center] seed=4 D1..D26 substantive RNG 抽取总数: 2097312
+[bp-center] seed=5 D1..D26 substantive RNG 抽取总数: 2407985
+[bp-center] seed=6 D1..D26 substantive RNG 抽取总数: 2385291
+[bp-center] seed=7 D1..D26 substantive RNG 抽取总数: 2179460
+[bp-center] seed=8 D1..D26 substantive RNG 抽取总数: 1994655
+[bp-center] seed=9 D1..D26 substantive RNG 抽取总数: 2021175
+[bp-center] seed=10 D1..D26 substantive RNG 抽取总数: 2292699
+[bp-center] seed=11 D1..D26 substantive RNG 抽取总数: 2226899
+[bp-center] seed=12 D1..D26 substantive RNG 抽取总数: 2295860
+[bp-center] seed=13 D1..D26 substantive RNG 抽取总数: 2277042
+[bp-center] seed=14 D1..D26 substantive RNG 抽取总数: 2300126
+[bp-center] seed=15 D1..D26 substantive RNG 抽取总数: 2476688
+[bp-center] seed=16 D1..D26 substantive RNG 抽取总数: 2351744
+[bp-center] seed=17 D1..D26 substantive RNG 抽取总数: 2365685
+[bp-center] seed=18 D1..D26 substantive RNG 抽取总数: 2134817
+[bp-center] seed=19 D1..D26 substantive RNG 抽取总数: 1978373
+[bp-center] seed=20 D1..D26 substantive RNG 抽取总数: 1969644
+[bp-center] seed=21 D1..D26 substantive RNG 抽取总数: 2446126
+[bp-center] seed=22 D1..D26 substantive RNG 抽取总数: 2014287
+[bp-center] seed=23 D1..D26 substantive RNG 抽取总数: 2263688
+[bp-center] seed=24 D1..D26 substantive RNG 抽取总数: 1840576
+[bp-center] seed=25 D1..D26 substantive RNG 抽取总数: 2065955
+[bp-center] seed=26 D1..D26 substantive RNG 抽取总数: 2171534
+[bp-center] seed=27 D1..D26 substantive RNG 抽取总数: 1990664
+[bp-center] seed=28 D1..D26 substantive RNG 抽取总数: 2283206
+[bp-center] seed=29 D1..D26 substantive RNG 抽取总数: 2273966
+[bp-center] seed=30 D1..D26 substantive RNG 抽取总数: 1992878
+[bp-center] seed=31 D1..D26 substantive RNG 抽取总数: 2133678
+[bp-center] seed=32 D1..D26 substantive RNG 抽取总数: 1622643
+[bp-center] 扫描 44 seeds × 26 层 = 1144 层，共 3692 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 4 件宝藏：scroll_of_enchantment×1, potion_of_life×1, charm_of_protection×1, wand_of_teleportation×1；宝藏违例 0 条
+[bp-center] center 物品违例: seed=25 D26 trap_paralysis_hidden amulet_of_yendor @ (11,12)
+
+ ❯ src/test/blueprint_center.test.ts (7 tests | 1 failed | 6 skipped) 274182ms
+     × e) 编号origin仅接声明feature；已清号center允许真实人口物品，额外直投仍为零 274181ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > e) 编号origin仅接声明feature；已清号center允许真实人口物品，额外直投仍为零
+AssertionError: 发现 1 件物品落在机器 center 上——没有对应的区域 BUILD_AT_ORIGIN feature/清号格人口产物，或物品重复直投。: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed=25 D26 trap_paralysis_hidden amulet_of_yendor @ (11,12)",
++ ]
+
+ ❯ src/test/blueprint_center.test.ts:522:14
+    520|         expect(itemsAtCenter, `发现 ${itemsAtCenter.length} 件物品落在机器 cent…
+    521|             '——没有对应的区域 BUILD_AT_ORIGIN feature/清号格人口产物，或物品重复直投。')
+    522|             .toEqual([]);
+       |              ^
+    523|     }, 900_000);
+    524|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  20:04:51
+   Duration  275.01s (transform 428ms, setup 0ms, import 736ms, tests 274.18s, environment 0ms)
+

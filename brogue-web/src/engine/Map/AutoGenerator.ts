@@ -27,21 +27,9 @@
  *   按 D1（一律按 CE），web 原样保留该条目为 `carrier: 'dead-index0'`、
  *   循环从 1 起。**激活轮注意：若未来上游修了，本表下标 0 要单独翻转。**
  *
- * 载体盘点（C-6 本轮裁决，逐条理由见各 entry 的 note；盘点规则见
- * SESSION_HANDOFF「这一轮做了会不会是空壳？」）：
- *   - 接（carrier 'wired'）：下标 3（DF_GRASS）、8（DF_FOLIAGE）——两者的
- *     DF tile（GRASS/FOLIAGE）web 已有，DF 目录条目 C-6 补齐，传播/优先级/
- *     连通性语义由 DungeonFeature.ts 的 C-4b 移植承载。
- *     T-1 增补：下标 1（DF_CRYSTAL_WALL，DF 条目本轮补齐）、
- *     33（直接铺 CRYSTAL_WALL 地形）——tile 均为 B-3 迁入的 CRYSTAL_WALL。
- *   - 不接：'no-tile'（CE tile web 无对应物，含全部陷阱 tile——web 的通用
- *     TRAP 是自创语义、不同源，不得冒充）；'no-machine'（历史登记；
- *     V-2b-9e-2 已接完本表 13 条 MT_*）；'c7-light'
- *    （DF_SUNLIGHT/DF_DARKNESS/TORCH_WALL 依赖光照目录，C-7 明确不做）；
- *     'dead-index0'（上游死条目，见上）。
- *   - 未接条目在循环里**先于任何 RNG 消耗**跳过：自动生成器是无条件掷骰的
- *     系统，先选点再发现"没有载体"就是 C-4c 硫矿式的空转链（每层白掷几百
- *     个随机数、什么也不产生）。
+ * U19f: all 48 runnable CE rows have complete terrain/DF/machine consumers.
+ * Index 0 stays inactive because CE starts AG at 1. Historical carrier tags
+ * remain in the type for explicit test counterfactuals; no live row is deferred.
  */
 import type { Pos } from '../../types';
 import { rng } from '../Random';
@@ -157,11 +145,11 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 116, index: 2, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_LUMINESCENT_FUNGUS', ceDfId: 3, machine: 0, ceMachine: '0',
+        df: DF.DF_LUMINESCENT_FUNGUS, ceDf: 'DF_LUMINESCENT_FUNGUS', ceDfId: 3, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 7, maxDepth: 40, frequency: 15, minNumberIntercept: -300, minNumberSlope: 70, maxNumber: 14,
-        carrier: 'no-tile',
-        note: 'DF 落 LUMINESCENT_FUNGUS tile（Globals.c:608）——web 无该地形（发光菌类还牵光照，C-7 范围）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 116; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 117, index: 3, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -173,27 +161,27 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 118, index: 4, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_DEAD_GRASS', ceDfId: 5, machine: 0, ceMachine: '0',
+        df: DF.DF_DEAD_GRASS, ceDf: 'DF_DEAD_GRASS', ceDfId: 5, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 4, maxDepth: 9, frequency: 0, minNumberIntercept: -200, minNumberSlope: 80, maxNumber: 10,
-        carrier: 'no-tile',
-        note: 'DF 落 DEAD_GRASS tile（Globals.c:610，还有 subsequentDF DF_DEAD_FOLIAGE）——web 无该地形。',
+        carrier: 'wired',
+        note: 'U19f: CE row 118; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 119, index: 5, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_DEAD_GRASS', ceDfId: 5, machine: 0, ceMachine: '0',
+        df: DF.DF_DEAD_GRASS, ceDf: 'DF_DEAD_GRASS', ceDfId: 5, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 9, maxDepth: 14, frequency: 0, minNumberIntercept: 1200, minNumberSlope: -80, maxNumber: 10,
-        carrier: 'no-tile',
-        note: '同上（DEAD_GRASS 第二深度段）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 119; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 120, index: 6, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_BONES', ceDfId: 6, machine: 0, ceMachine: '0',
+        df: DF.DF_BONES, ceDf: 'DF_BONES', ceDfId: 6, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 12, maxDepth: 39, frequency: 30, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 4,
-        carrier: 'no-tile',
-        note: 'DF 落 BONES tile（Globals.c:611）——web 无该地形（纯 SURFACE 装饰）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 120; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 121, index: 7, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -213,43 +201,43 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 123, index: 9, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_FUNGUS_FOREST', ceDfId: 9, machine: 0, ceMachine: '0',
+        df: DF.DF_FUNGUS_FOREST, ceDf: 'DF_FUNGUS_FOREST', ceDfId: 9, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 13, maxDepth: 40, frequency: 30, minNumberIntercept: -600, minNumberSlope: 50, maxNumber: 12,
-        carrier: 'no-tile',
-        note: 'DF 落 FUNGUS_FOREST tile（Globals.c:614）——web 无该地形。',
+        carrier: 'wired',
+        note: 'U19f: CE row 123; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 124, index: 10, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_BUILD_ALGAE_WELL', ceDfId: 77, machine: 0, ceMachine: '0',
+        df: DF.DF_BUILD_ALGAE_WELL, ceDf: 'DF_BUILD_ALGAE_WELL', ceDfId: 77, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: TerrainType.WATER_DEEP,
         minDepth: 10, maxDepth: 40, frequency: 50, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: '藻井链（DEEP_WATER_ALGAE_WELL/ALGAE_1/ALGAE_2，Globals.c:712-714，带发光）——web 无全部三种 tile；光照部分属 C-7。',
+        carrier: 'wired',
+        note: 'U19f: CE row 124; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 125, index: 11, terrain: null, ceTerrain: 'STATUE_INERT', layer: DUNGEON,
+        ceLine: 125, index: 11, terrain: TerrainType.STATUE_INERT, ceTerrain: 'STATUE_INERT', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: TerrainType.WALL, requiredLiquidFoundationType: NOTHING,
         minDepth: 6, maxDepth: 39, frequency: 5, minNumberIntercept: -100, minNumberSlope: 35, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '直接铺 STATUE_INERT 地形（墙基座）——web 无该地形。',
+        carrier: 'wired',
+        note: 'U19f: CE row 125; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 126, index: 12, terrain: null, ceTerrain: 'STATUE_INERT', layer: DUNGEON,
+        ceLine: 126, index: 12, terrain: TerrainType.STATUE_INERT, ceTerrain: 'STATUE_INERT', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 10, maxDepth: 39, frequency: 50, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '同上（地板基座段）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 126; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 127, index: 13, terrain: null, ceTerrain: 'TORCH_WALL', layer: DUNGEON,
+        ceLine: 127, index: 13, terrain: TerrainType.TORCH_WALL, ceTerrain: 'TORCH_WALL', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: TerrainType.WALL, requiredLiquidFoundationType: NOTHING,
         minDepth: 6, maxDepth: 39, frequency: 5, minNumberIntercept: -200, minNumberSlope: 70, maxNumber: 12,
-        carrier: 'c7-light',
-        note: '直接铺 TORCH_WALL 地形——火把的光照是它的全部玩法语义，C-7 光照目录不做。',
+        carrier: 'wired',
+        note: 'U19f: CE row 127; generation and player interaction verified through its complete terrain/DF chain.',
     },
     // ---- Pre-revealed traps（GlobalsBrogue.c:129-136）----
     {
@@ -261,12 +249,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
-        ceLine: 131, index: 15, terrain: null, ceTerrain: 'NET_TRAP', layer: DUNGEON,
+        ceLine: 131, index: 15, terrain: TerrainType.NET_TRAP, ceTerrain: 'NET_TRAP', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 2, maxDepth: 5, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: '同上（NET_TRAP tile 无）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 131; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 132, index: 16, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -277,20 +265,20 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'V-2b-9e-2：CE 67 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
-        ceLine: 133, index: 17, terrain: null, ceTerrain: 'ALARM_TRAP', layer: DUNGEON,
+        ceLine: 133, index: 17, terrain: TerrainType.ALARM_TRAP, ceTerrain: 'ALARM_TRAP', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 4, maxDepth: 7, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: 'ALARM_TRAP tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 133; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 134, index: 18, terrain: null, ceTerrain: 'GAS_TRAP_CONFUSION', layer: DUNGEON,
+        ceLine: 134, index: 18, terrain: TerrainType.GAS_TRAP_CONFUSION, ceTerrain: 'GAS_TRAP_CONFUSION', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 2, maxDepth: 10, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: 'GAS_TRAP_CONFUSION tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 134; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 135, index: 19, terrain: TerrainType.FLAMETHROWER, ceTerrain: 'FLAMETHROWER', layer: DUNGEON,
@@ -301,12 +289,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
-        ceLine: 136, index: 20, terrain: null, ceTerrain: 'FLOOD_TRAP', layer: DUNGEON,
+        ceLine: 136, index: 20, terrain: TerrainType.FLOOD_TRAP, ceTerrain: 'FLOOD_TRAP', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 10, maxDepth: 14, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: 'FLOOD_TRAP tile 无（灌水链 FLOOD_WATER_* 也无）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 136; generation and player interaction verified through its complete terrain/DF chain.',
     },
     // ---- Hidden traps（GlobalsBrogue.c:138-151）----
     {
@@ -318,12 +306,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
-        ceLine: 140, index: 22, terrain: null, ceTerrain: 'NET_TRAP_HIDDEN', layer: DUNGEON,
+        ceLine: 140, index: 22, terrain: TerrainType.NET_TRAP_HIDDEN, ceTerrain: 'NET_TRAP_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 6, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '同上。',
+        carrier: 'wired',
+        note: 'U19f: CE row 140; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 141, index: 23, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -334,12 +322,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'V-2b-9e-2：CE 68 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
-        ceLine: 142, index: 24, terrain: null, ceTerrain: 'ALARM_TRAP_HIDDEN', layer: DUNGEON,
+        ceLine: 142, index: 24, terrain: TerrainType.ALARM_TRAP_HIDDEN, ceTerrain: 'ALARM_TRAP_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 8, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: '隐藏态 tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 142; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 143, index: 25, terrain: TerrainType.TRAP_DOOR_HIDDEN, ceTerrain: 'TRAP_DOOR_HIDDEN', layer: DUNGEON,
@@ -350,12 +338,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'U17c: CE hidden trapdoor; search → DF_SHOW_TRAPDOOR and existing fall consumers.',
     },
     {
-        ceLine: 144, index: 26, terrain: null, ceTerrain: 'GAS_TRAP_CONFUSION_HIDDEN', layer: DUNGEON,
+        ceLine: 144, index: 26, terrain: TerrainType.GAS_TRAP_CONFUSION_HIDDEN, ceTerrain: 'GAS_TRAP_CONFUSION_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 11, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '隐藏态 tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 144; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 145, index: 27, terrain: TerrainType.FLAMETHROWER_HIDDEN, ceTerrain: 'FLAMETHROWER_HIDDEN', layer: DUNGEON,
@@ -366,12 +354,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
-        ceLine: 146, index: 28, terrain: null, ceTerrain: 'FLOOD_TRAP_HIDDEN', layer: DUNGEON,
+        ceLine: 146, index: 28, terrain: TerrainType.FLOOD_TRAP_HIDDEN, ceTerrain: 'FLOOD_TRAP_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 15, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '隐藏态 tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 146; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 147, index: 29, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -383,27 +371,27 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 148, index: 30, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_SUNLIGHT', ceDfId: 11, machine: 0, ceMachine: '0',
+        df: DF.DF_SUNLIGHT, ceDf: 'DF_SUNLIGHT', ceDfId: 11, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 0, maxDepth: 5, frequency: 15, minNumberIntercept: 500, minNumberSlope: -150, maxNumber: 10,
-        carrier: 'c7-light',
-        note: 'DF 落 SUNLIGHT_POOL（Globals.c:618 {SUNLIGHT_POOL, LIQUID, 65, 6}）——光斑液体，tile 无且光照属 C-7。',
+        carrier: 'wired',
+        note: 'U19f: CE row 148; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 149, index: 31, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_DARKNESS', ceDfId: 12, machine: 0, ceMachine: '0',
+        df: DF.DF_DARKNESS, ceDf: 'DF_DARKNESS', ceDfId: 12, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 1, maxDepth: 15, frequency: 15, minNumberIntercept: 500, minNumberSlope: -50, maxNumber: 10,
-        carrier: 'c7-light',
-        note: 'DF 落 DARKNESS_PATCH（Globals.c:619）——同上，C-7。',
+        carrier: 'wired',
+        note: 'U19f: CE row 149; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 150, index: 32, terrain: null, ceTerrain: 'STEAM_VENT', layer: DUNGEON,
+        ceLine: 150, index: 32, terrain: TerrainType.STEAM_VENT, ceTerrain: 'STEAM_VENT', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 16, maxDepth: 39, frequency: 30, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: 'STEAM_VENT tile 无（蒸汽孔洞周期喷汽；G 链气体机制已收口，但 tile 不在）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 150; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 151, index: 33, terrain: TerrainType.CRYSTAL_WALL, ceTerrain: 'CRYSTAL_WALL', layer: DUNGEON,
@@ -416,45 +404,45 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     // ---- Dewars（GlobalsBrogue.c:153-157）----
     // 四条同构：铺 DEWAR_*_GAS 地形 + 同点 spawn DF_CARPET_AREA（地毯）。
     {
-        ceLine: 154, index: 34, terrain: null, ceTerrain: 'DEWAR_CAUSTIC_GAS', layer: DUNGEON,
-        df: null, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
+        ceLine: 154, index: 34, terrain: TerrainType.DEWAR_CAUSTIC_GAS, ceTerrain: 'DEWAR_CAUSTIC_GAS', layer: DUNGEON,
+        df: DF.DF_CARPET_AREA, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 8, maxDepth: 39, frequency: 2, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: 'DEWAR_CAUSTIC_GAS tile 无（玻璃容器，promoteType DF_DEWAR_CAUSTIC 爆毒气）。气体机制 G 链已有，容器 tile 与 CARPET 地毯 tile 无。',
+        carrier: 'wired',
+        note: 'U19f: CE row 154; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 155, index: 35, terrain: null, ceTerrain: 'DEWAR_CONFUSION_GAS', layer: DUNGEON,
-        df: null, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
+        ceLine: 155, index: 35, terrain: TerrainType.DEWAR_CONFUSION_GAS, ceTerrain: 'DEWAR_CONFUSION_GAS', layer: DUNGEON,
+        df: DF.DF_CARPET_AREA, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 8, maxDepth: 39, frequency: 2, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: '同上（混乱气 dewar）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 155; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 156, index: 36, terrain: null, ceTerrain: 'DEWAR_PARALYSIS_GAS', layer: DUNGEON,
-        df: null, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
+        ceLine: 156, index: 36, terrain: TerrainType.DEWAR_PARALYSIS_GAS, ceTerrain: 'DEWAR_PARALYSIS_GAS', layer: DUNGEON,
+        df: DF.DF_CARPET_AREA, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 8, maxDepth: 39, frequency: 2, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: '同上（麻痹气 dewar）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 156; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
-        ceLine: 157, index: 37, terrain: null, ceTerrain: 'DEWAR_METHANE_GAS', layer: DUNGEON,
-        df: null, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
+        ceLine: 157, index: 37, terrain: TerrainType.DEWAR_METHANE_GAS, ceTerrain: 'DEWAR_METHANE_GAS', layer: DUNGEON,
+        df: DF.DF_CARPET_AREA, ceDf: 'DF_CARPET_AREA', ceDfId: 76, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 8, maxDepth: 39, frequency: 2, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: '同上（甲烷 dewar）。',
+        carrier: 'wired',
+        note: 'U19f: CE row 157; generation and player interaction verified through its complete terrain/DF chain.',
     },
     // ---- Flavor machines（GlobalsBrogue.c:159-170）----
     {
         ceLine: 160, index: 38, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_LUMINESCENT_FUNGUS', ceDfId: 3, machine: 0, ceMachine: '0',
+        df: DF.DF_LUMINESCENT_FUNGUS, ceDf: 'DF_LUMINESCENT_FUNGUS', ceDfId: 3, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 40, maxDepth: 40, frequency: 100, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 200,
-        carrier: 'no-tile',
-        note: '最深层菌类灯海（maxNumber 200）——tile 无，且光照属 C-7。',
+        carrier: 'wired',
+        note: 'U19f: CE row 160; generation and player interaction verified through its complete terrain/DF chain.',
     },
     {
         ceLine: 161, index: 39, terrain: null, ceTerrain: '0', layer: DUNGEON,

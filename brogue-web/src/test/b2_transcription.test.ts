@@ -156,10 +156,10 @@ describe('B2 literal transcription and registered deferrals', () => {
         expect(bp(10).frequency).toBe(12);
         expect(bp(71).features[0]!.monsterId).toBe('sentinel');
     });
-    it('CE55 MAXIMIZE is present while its preexisting engine quarantine remains effective', () => {
+    it('CE55 MAXIMIZE is present and U19f restores its closed tunnel consumer', () => {
         expect(bp(55).flags).toContain('BP_MAXIMIZE_INTERIOR');
         expect(bp(55).frequency).toBe(10);
-        for(let depth=8;depth<=26;depth++) expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(false);
+        for(let depth=8;depth<=26;depth++) expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(true);
     });
     it.each([[6,2,DF.DF_MAGIC_PIPING]])(
         'CE %i/F%i starts U17e DF %i; full-room drops consume the generated pipes', (ce,f,df) => {

@@ -4916,6 +4916,9 @@ export class Game {
         const colors: Record<string, { r: number; g: number; b: number }> = {
             yellow: { r: 100, g: 100, b: 0 }, // CE GlobalsBase.c:86; DF_ARMOR_IMMOLATION
             gray: { r: 50, g: 50, b: 50 }, darkGray: { r: 30, g: 30, b: 30 }, darkBlue: { r: 0, g: 0, b: 50 },
+            // CE Globals.c:254/257/258 and GlobalsBase.c:100: dewar flashes.
+            poisonGasColor: { r: 75, g: 25, b: 85 }, confusionGasColor: { r: 60, g: 60, b: 60 },
+            pink: { r: 100, g: 60, b: 66 }, methaneColor: { r: 45, g: 60, b: 15 },
         };
         const color = colors[name];
         if (!color) throw new Error(`Unmapped CE flash color: ${name}`);
@@ -9728,6 +9731,13 @@ export class Game {
             case "paralytic gas sprays upward from hidden vents in the floor!": return i18next.t('df.message_14', { defaultValue: "paralytic gas sprays upward from hidden vents in the floor!" });
             case "the altar retracts into the ground with a grinding sound.": return i18next.t('df.message_15', { defaultValue: "the altar retracts into the ground with a grinding sound." });
             case "the archway flashes, and you catch a glimpse of another world!": return i18next.t('df.message_16', { defaultValue: "the archway flashes, and you catch a glimpse of another world!" });
+            case "the dewar shatters and pressurized caustic gas explodes outward!": return i18next.t('df.df_dewar_caustic', { defaultValue: "the dewar shatters and pressurized caustic gas explodes outward!" });
+            case "the dewar shatters and pressurized confusion gas explodes outward!": return i18next.t('df.df_dewar_confusion', { defaultValue: "the dewar shatters and pressurized confusion gas explodes outward!" });
+            case "the dewar shatters and pressurized paralytic gas explodes outward!": return i18next.t('df.df_dewar_paralysis', { defaultValue: "the dewar shatters and pressurized paralytic gas explodes outward!" });
+            case "the dewar shatters and pressurized methane gas explodes outward!": return i18next.t('df.df_dewar_methane', { defaultValue: "the dewar shatters and pressurized methane gas explodes outward!" });
+            case "a sparkling cloud of confusion gas sprays upward from the floor!": return i18next.t('df.df_confusion_gas_trap_cloud', { defaultValue: "a sparkling cloud of confusion gas sprays upward from the floor!" });
+            case "a net falls from the ceiling!": return i18next.t('df.df_net', { defaultValue: "a net falls from the ceiling!" });
+            case "a piercing shriek echoes through the nearby rooms!": return i18next.t('df.df_aggravate_trap', { defaultValue: "a piercing shriek echoes through the nearby rooms!" });
             case "the area is flooded as water rises through imperceptible holes in the ground.": return i18next.t('df.message_17', { defaultValue: "the area is flooded as water rises through imperceptible holes in the ground." });
             case "the cage lifts off of the altar.": return i18next.t('df.message_18', { defaultValue: "the cage lifts off of the altar." });
             case "the cages lift off of the altars as you approach.": return i18next.t('df.cages_open', { defaultValue: 'the cages lift off of the altars as you approach.' });
@@ -10275,7 +10285,7 @@ export class Game {
             this.levelHasSecrets = false;
             for (let x = 0; x < this.grid.width && !this.levelHasSecrets; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN || t === TerrainType.MACHINE_METHANE_VENT_HIDDEN || t === TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN || t === TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN || t === TerrainType.GAS_TRAP_POISON_HIDDEN || t === TerrainType.FLAMETHROWER_HIDDEN)) { // F-1 跨层判定
+                    if (this.grid.getCell(x, y)?.layers.some(t => (TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0)) { // F-1 跨层判定
                         this.levelHasSecrets = true;
                         break;
                     }
@@ -10296,7 +10306,7 @@ export class Game {
         for (let i = px - radius; i <= px + radius; i++) {
             for (let j = py - radius; j <= py + radius; j++) {
                 const cell = this.grid.getCell(i, j);
-                if (cell && cell.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN || t === TerrainType.MACHINE_METHANE_VENT_HIDDEN || t === TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN || t === TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN || t === TerrainType.GAS_TRAP_POISON_HIDDEN || t === TerrainType.FLAMETHROWER_HIDDEN)) { // F-1 跨层判定
+                if (cell && cell.layers.some(t => (TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0)) { // F-1 跨层判定
                     secretCells.push({ x: i, y: j, cell });
                 }
             }
@@ -10639,6 +10649,27 @@ export class Game {
 
     private getTerrainName(terrain: TerrainType): string {
         switch (terrain) {
+            case TerrainType.FUNGUS_FOREST: return i18next.t('terrain.fungus_forest', { defaultValue: "a luminescent fungal forest" });
+            case TerrainType.TRAMPLED_FUNGUS_FOREST: return i18next.t('terrain.trampled_fungus_forest', { defaultValue: "trampled fungal foliage" });
+            case TerrainType.SUNLIGHT_POOL: return i18next.t('terrain.sunlight_pool', { defaultValue: "a patch of sunlight" });
+            case TerrainType.DARKNESS_PATCH: return i18next.t('terrain.darkness_patch', { defaultValue: "a patch of shadows" });
+            case TerrainType.DEEP_WATER_ALGAE_WELL: return i18next.t('terrain.deep_water_algae_well', { defaultValue: "the ground" });
+            case TerrainType.DEEP_WATER_ALGAE_1: return i18next.t('terrain.deep_water_algae_1', { defaultValue: "luminescent waters" });
+            case TerrainType.DEEP_WATER_ALGAE_2: return i18next.t('terrain.deep_water_algae_2', { defaultValue: "luminescent waters" });
+            case TerrainType.NET_TRAP: return i18next.t('terrain.net_trap', { defaultValue: "a net trap" });
+            case TerrainType.NET_TRAP_HIDDEN: return i18next.t('terrain.net_trap_hidden', { defaultValue: "the ground" });
+            case TerrainType.NETTING: return i18next.t('terrain.netting', { defaultValue: "a net" });
+            case TerrainType.ALARM_TRAP: return i18next.t('terrain.alarm_trap', { defaultValue: "an alarm trap" });
+            case TerrainType.ALARM_TRAP_HIDDEN: return i18next.t('terrain.alarm_trap_hidden', { defaultValue: "the ground" });
+            case TerrainType.GAS_TRAP_CONFUSION: return i18next.t('terrain.gas_trap_confusion', { defaultValue: "a confusion trap" });
+            case TerrainType.GAS_TRAP_CONFUSION_HIDDEN: return i18next.t('terrain.gas_trap_confusion_hidden', { defaultValue: "the ground" });
+            case TerrainType.FLOOD_TRAP_HIDDEN: return i18next.t('terrain.flood_trap_hidden', { defaultValue: "the ground" });
+            case TerrainType.STEAM_VENT: return i18next.t('terrain.steam_vent', { defaultValue: "a steam vent" });
+            case TerrainType.DEWAR_CAUSTIC_GAS: return i18next.t('terrain.dewar_caustic_gas', { defaultValue: "a glass dewar of caustic gas" });
+            case TerrainType.DEWAR_CONFUSION_GAS: return i18next.t('terrain.dewar_confusion_gas', { defaultValue: "a glass dewar of confusion gas" });
+            case TerrainType.DEWAR_PARALYSIS_GAS: return i18next.t('terrain.dewar_paralysis_gas', { defaultValue: "a glass dewar of paralytic gas" });
+            case TerrainType.DEWAR_METHANE_GAS: return i18next.t('terrain.dewar_methane_gas', { defaultValue: "a glass dewar of methane gas" });
+            case TerrainType.BROKEN_GLASS: return i18next.t('terrain.broken_glass', { defaultValue: "shattered glass" });
             case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: '铁笼祭坛' });
             case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: '置换祭坛' });
             case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: '烧焦的置换祭坛' });

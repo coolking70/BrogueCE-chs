@@ -35,6 +35,10 @@ import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
+import { setMachineObservationHook } from '../engine/Generator/MachineObservation';
+import type { MachineResult } from '../engine/Generator/BlueprintEngine';
+import { runMachineActions } from './fixtures/u19d-machine-actions';
+import { runAltarActions } from './fixtures/u19e-machine-actions';
 import { cellTerrainFlags } from '../engine/Map/DungeonFeature';
 import { T_OBSTRUCTS_ITEMS, T_PATHING_BLOCKER, T_IS_DF_TRAP } from '../engine/Map/TerrainCatalog';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
@@ -564,22 +568,35 @@ describe('A13: 物品生成哨兵（S-1 改造：结构合法性 + 同种子双�
 
     const SENTINEL_SEEDS = [42, 2026];
 
-    function walkChain(seed: number, visit: (game: Game, depth: number) => void): void {
-        const game = createHeadlessGame(seed);
-        visit(game, 1);
+    function walkChain(seed: number, visit: (game: Game, depth: number, machines: MachineResult[]) => void): void {
+        let machines: MachineResult[] = [];
+        const proto = Game.prototype as any, original = proto.populateLevel;
+        proto.populateLevel = function(...args: any[]) { const r = original.apply(this, args); machines = args[3]; return r; };
+        let game: Game;
+        try { game = createHeadlessGame(seed); } finally { proto.populateLevel = original; }
+        const g: any = game, populate = g.populateLevel.bind(g);
+        g.populateLevel = (...args: any[]) => { const r = populate(...args); machines = args[3]; return r; };
+        visit(game, 1, machines);
         for (let d = 2; d <= 26; d++) {
             (game as unknown as { depth: number }).depth = d;
             (game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void }).generateDepth(false, false);
-            visit(game, d);
+            visit(game, d, machines);
         }
     }
 
     it('L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）', () => {
+        const deferred: Array<{snapshot: ReturnType<Game['toSnapshot']>; machine: MachineResult; id: number}> = [];
+        setMachineObservationHook(() => {});
         for (const seed of SENTINEL_SEEDS) {
-            walkChain(seed, (game, depth) => {
+            walkChain(seed, (game, depth, machines) => {
                 for (const it of game.items) {
                     const flags = cellTerrainFlags(game.grid, it.loc.x, it.loc.y);
                     const hardBad = flags & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER) & ~T_IS_DF_TRAP;
+                    const machine = hardBad && machines.find(m => m.itemSpawns.some(s => s.viaAdoption && s.entity === it));
+                    if (machine && machine.observation) {
+                        deferred.push({snapshot: JSON.parse(JSON.stringify(game.toSnapshot())), machine, id: it.id});
+                        continue;
+                    }
                     expect(hardBad, `seed${seed}/D${depth} ${it.name} @ (${it.loc.x},${it.loc.y}) ` +
                         `落在物品非法格（旗标位 ${hardBad}）——落位判据被绕开/删除。` +
                         `修复指引（p1_43 同族）：Game.ts 的 altar/vault/floorTiles 落格池` +
@@ -589,6 +606,15 @@ describe('A13: 物品生成哨兵（S-1 改造：结构合法性 + 同种子双�
                         .toBe(0);
                 }
             });
+        }
+        setMachineObservationHook(null);
+        // Same identity and complete player command proof as the U19e placement guard.
+        for (const row of deferred) {
+            const g = createHeadlessGame(19, "test"); expect(g.loadSnapshot(row.snapshot)).toBe(true);
+            const trace = row.machine.observation!;
+            const r = trace.ceBlueprintId === 28 ? runMachineActions(g, trace) : runAltarActions(g, trace, row.machine.door ?? row.machine.center);
+            expect(r.rewardId).toBe(row.id); expect(r.after.inventory.filter((id: number) => id === row.id)).toHaveLength(1);
+            expect(r.after.player).toEqual(r.entry);
         }
         // 已知违例口：trap vault 宝物落 vault.center = T_IS_DF_TRAP 格。
         // 当前恰 2 处（见 describe 头注）；修复轮到来时把常量改 0 并删本口。

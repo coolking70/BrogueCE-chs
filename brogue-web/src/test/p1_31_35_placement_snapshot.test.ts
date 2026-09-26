@@ -281,13 +281,14 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         expect(staleLoopCells(b)).toEqual([]);
     });
 
-    it('T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空）', () => {
+    it('T9 跨局读档：保留 CE 预热前 waypoint，原构建网格与 RNG 重建一致且非空', () => {
         const a = createHeadlessGame(42, 'normal');
         // U02b: rebuilding consumes the live stream. Pin the explicit rebuild
         // to the same input RNG as the original construction, not the later save point.
         let waypointInput = rng.getState();
+        let waypointGrid: Array<{x:number;y:number;layers:TerrainType[]}> = [];
         const rebuild = a.rebuildWaypoints.bind(a);
-        a.rebuildWaypoints = () => { waypointInput = rng.getState(); rebuild(); };
+        a.rebuildWaypoints = () => { waypointInput = rng.getState(); waypointGrid = Array.from({length:a.grid.width},(_,x)=>Array.from({length:a.grid.height},(_,y)=>({x,y,layers:[...a.grid.getCell(x,y)!.layers]}))).flat(); rebuild(); };
         a.startNewGame({ seed: 42 });
         const snap = a.toSnapshot();
         const b = createHeadlessGame(777, 'normal');
@@ -302,6 +303,11 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         const afterLoad = JSON.stringify(b.waypoints.coordinates);
         // 先检查读档覆盖 sentinel，避免显式重建掩盖失败或先在幂等锚报错。
         expect(afterLoad, '读档后仍保留越界 sentinel waypoint').not.toBe(staleCoords);
+        expect(afterLoad).toBe(JSON.stringify(a.waypoints.coordinates));
+        // CE RogueMain.c:707/796 builds waypoints before 50 environment updates.
+        // Seed42 trampling changes scent blockers during warmup (waypoint-probe.json).
+        // Reuse the actual construction grid as well as its original RNG input.
+        for (const c of waypointGrid) for (let l=0;l<4;l++) b.grid.setTerrainLayer(c.x,c.y,l,c.layers[l]!);
         rng.setState(waypointInput);
         b.rebuildWaypoints(); // 同一网格、实体、RNG 输入的重建结果必须相等
         expect(JSON.stringify(b.waypoints.coordinates)).toBe(afterLoad);

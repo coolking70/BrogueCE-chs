@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+ ❯ src/test/u_19f_machines.test.ts (3 tests | 1 failed) 21971ms
+   × U19f wall finishing preserves liquid tunnel starters and all non-dungeon layers 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19f_machines.test.ts > U19f wall finishing preserves liquid tunnel starters and all non-dungeon layers
+TypeError: Cannot set properties of null (setting 'volume')
+ ❯ src/test/u_19f_machines.test.ts:45:39
+     43|  grid.setTerrainLayer(21,10,L.LIQUID,T.WORM_TUNNEL_MARKER_DORMANT);
+     44|  grid.setTerrainLayer(21,10,L.SURFACE,T.BONES);grid.setTerrainLayer(21…
+     45|  const cell=grid.getCell(21,10)!;cell.volume=50;cell.machineNumber=7;
+       |                                       ^
+     46|  finishWalls(grid,true);
+     47|  expect(cell.layers).toEqual([T.WALL,T.WORM_TUNNEL_MARKER_DORMANT,T.ME…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 30 passed (31)
+   Start at  19:38:59
+   Duration  23.29s (transform 1.07s, setup 0ms, import 2.30s, tests 33.74s, environment 0ms)
+

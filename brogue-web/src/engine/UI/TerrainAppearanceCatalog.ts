@@ -176,4 +176,26 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: { char: "", color: "#000000", bgColor: null }, // CE WORM_TUNNEL_MARKER_ACTIVE
     [TerrainType.PORTAL_LIGHT]: { char: "", color: "#000000", bgColor: null }, // CE PORTAL_LIGHT
 
+    // U19f: CE appearance carriers.
+    [TerrainType.FUNGUS_FOREST]: {"char": "♈", "color": "#4c6699", "bgColor": null}, // CE :475
+    [TerrainType.TRAMPLED_FUNGUS_FOREST]: {"char": "\"", "color": "#4c6699", "bgColor": null}, // CE :476
+    [TerrainType.SUNLIGHT_POOL]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :423
+    [TerrainType.DARKNESS_PATCH]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :424
+    [TerrainType.DEEP_WATER_ALGAE_WELL]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :520
+    [TerrainType.DEEP_WATER_ALGAE_1]: {"char": "~", "color": "#0c1433", "bgColor": 792140, "backDynamic": "deepWaterBackColor"}, // CE :521
+    [TerrainType.DEEP_WATER_ALGAE_2]: {"char": "~", "color": "#0c1433", "bgColor": 792140, "backDynamic": "deepWaterBackColor"}, // CE :522
+    [TerrainType.NET_TRAP]: {"char": "◇", "color": "#ccaa26", "bgColor": null}, // CE :392
+    [TerrainType.NET_TRAP_HIDDEN]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :391
+    [TerrainType.NETTING]: {"char": ":", "color": "#996600", "bgColor": null}, // CE :471
+    [TerrainType.ALARM_TRAP]: {"char": "◇", "color": "#7f7f7f", "bgColor": null}, // CE :394
+    [TerrainType.ALARM_TRAP_HIDDEN]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :393
+    [TerrainType.GAS_TRAP_CONFUSION]: {"char": "◇", "color": "#999999", "bgColor": null}, // CE :386
+    [TerrainType.GAS_TRAP_CONFUSION_HIDDEN]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :385
+    [TerrainType.FLOOD_TRAP_HIDDEN]: {"char": "·", "color": "#4c4c4c", "bgColor": 328982, "backDynamic": "floorBackColor"}, // CE :389
+    [TerrainType.STEAM_VENT]: {"char": "=", "color": "#7f7f7f", "bgColor": null}, // CE :401
+    [TerrainType.DEWAR_CAUSTIC_GAS]: {"char": "&", "color": "#bf3fd8", "bgColor": 5000268}, // CE :406
+    [TerrainType.DEWAR_CONFUSION_GAS]: {"char": "&", "color": "#999999", "bgColor": 5000268}, // CE :407
+    [TerrainType.DEWAR_PARALYSIS_GAS]: {"char": "&", "color": "#ff99a8", "bgColor": 5000268}, // CE :408
+    [TerrainType.DEWAR_METHANE_GAS]: {"char": "&", "color": "#729926", "bgColor": 5000268}, // CE :409
+    [TerrainType.BROKEN_GLASS]: {"char": "·", "color": "#ffffff", "bgColor": null}, // CE :467
 };

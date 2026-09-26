@@ -203,23 +203,13 @@ describe('V-2b-4 A：七条祭坛族地形的 CE 逐字段钉死', () => {
         expect(TERRAIN_HOME_LAYER[C.TORCH_WALL]).toBe(L.DUNGEON);
     });
 
-    it('A8 越界守卫：FUNGUS_FOREST 仍走别名（不新增枚举成员），别名语义缺口登记在案', () => {
-        // V-2b-2b 落的别名：CE FUNGUS_FOREST（Globals.c:475）→ web FOLIAGE。
-        // 本轮复核的结论是"够用但非逐位等价"：flags/mechFlags 一致
-        // （T_OBSTRUCTS_VISION|T_IS_FLAMMABLE + STAND_IN_TILE|VANISHES|PROMOTES_ON_STEP），
-        // 差在 promoteType（CE DF_TRAMPLED_FUNGUS_FOREST vs web
-        // DF_TRAMPLED_FOLIAGE）与 glowLight（CE FUNGUS_FOREST_LIGHT vs web 0）。
-        // 本轮授权清单不含 LightCatalog，且 promote 链的**行为**归专门轮，
-        // 故维持别名、缺口登记（报告 §2）。本断言防"顺手新增一个同义枚举成员"。
-        expect((TerrainType as unknown as Record<string, unknown>)['FUNGUS_FOREST'],
-            'FUNGUS_FOREST 不得有独立枚举成员（别名口径）').toBeUndefined();
-        // 蓝图的 terrain 字符串仍写作 FUNGUS_FOREST，经 TERRAIN_MAP 落到 FOLIAGE；
-        // 若有人把它改成 FOLIAGE（"看起来等价"的改法），下面这条会红。
-        expect(byId('reward_statuary').features[1]!.terrain, '蓝图数据保留 CE 名字，由别名搬运').toBe('FUNGUS_FOREST');
-        const web = TERRAIN_FLAGS[C.FOLIAGE]!;
-        expect(web.flags, '别名两侧的 flags 一致（这是别名成立的理由）')
-            .toBe(TERRAIN_FLAGS[C.FOLIAGE]!.flags);
-        expect(web.promoteType, '别名承载的是 FOLIAGE 的晋升目标（缺口，非等价）').toBe('DF_TRAMPLED_FOLIAGE');
+    it('A8 U19f: FUNGUS_FOREST uses its distinct CE promotion and light carrier', () => {
+        expect(C.FUNGUS_FOREST).toBe(169); // Append only; old terrain IDs stay fixed.
+        expect(byId('reward_statuary').features[1]!.terrain).toBe('FUNGUS_FOREST');
+        const web = TERRAIN_FLAGS[C.FUNGUS_FOREST]!;
+        expect(web.flags).toBe(TERRAIN_FLAGS[C.FOLIAGE]!.flags);
+        expect(web.promoteType).toBe('DF_TRAMPLED_FUNGUS_FOREST');
+        expect(web.glowLight).toBe(LightKind.FUNGUS_FOREST_LIGHT);
     });
 });
 

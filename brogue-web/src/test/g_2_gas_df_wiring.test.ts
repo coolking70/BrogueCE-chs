@@ -437,13 +437,13 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_SMOLDER]!.tile).toBe(C.STENCH_SMOKE_GAS);
         expect(() => catalogFeature(DF.DF_STENCH_SMOLDER)).not.toThrow();
         // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
-        // DF_ROT_GAS_*（32/41）、DF_DEWAR_*（71-74）、DF_STENCH_*（217/218）、
+        // U19f 已闭包 DF_DEWAR_*（71-74）；仍未迁入 DF_ROT_GAS_*（32/41）、DF_STENCH_*（217）、
         // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。
         // 旧注将 159 误称为 DF_PARALYSIS_GAS_CLOUD_POTION；按 Rogue.h 枚举数序，
         // 159 实为 DF_SHALLOW_WATER，本轮水扩散闭包合法使用该 id。
         // V-2b-9a：159=DF_SHALLOW_WATER 是水扩散闭包成员；218=DF_STENCH_SMOLDER
         // 由 MUD_FLOOR.fireType 引入。二者已获授权，边界守卫只移除这两项。
-        for (const id of [32, 41, 70, 71, 72, 73, 74, 134, 217]) {
+        for (const id of [32, 41, 70, 134, 217]) {
             expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
         }
     });

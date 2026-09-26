@@ -227,6 +227,28 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
 
     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
         expect(TERRAIN_HOME_LAYER).toEqual({
+            [C.FUNGUS_FOREST]: L.SURFACE, // U19f CE carrier
+            [C.TRAMPLED_FUNGUS_FOREST]: L.SURFACE, // U19f CE carrier
+            [C.SUNLIGHT_POOL]: L.LIQUID, // U19f CE carrier
+            [C.DARKNESS_PATCH]: L.LIQUID, // U19f CE carrier
+            [C.DEEP_WATER_ALGAE_WELL]: L.DUNGEON, // U19f CE carrier
+            [C.DEEP_WATER_ALGAE_1]: L.LIQUID, // U19f CE carrier
+            [C.DEEP_WATER_ALGAE_2]: L.LIQUID, // U19f CE carrier
+            [C.NET_TRAP]: L.DUNGEON, // U19f CE carrier
+            [C.NET_TRAP_HIDDEN]: L.DUNGEON, // U19f CE carrier
+            [C.NETTING]: L.SURFACE, // U19f CE carrier
+            [C.ALARM_TRAP]: L.DUNGEON, // U19f CE carrier
+            [C.ALARM_TRAP_HIDDEN]: L.DUNGEON, // U19f CE carrier
+            [C.GAS_TRAP_CONFUSION]: L.DUNGEON, // U19f CE carrier
+            [C.GAS_TRAP_CONFUSION_HIDDEN]: L.DUNGEON, // U19f CE carrier
+            [C.FLOOD_TRAP_HIDDEN]: L.DUNGEON, // U19f CE carrier
+            [C.STEAM_VENT]: L.DUNGEON, // U19f CE carrier
+            [C.DEWAR_CAUSTIC_GAS]: L.DUNGEON, // U19f CE carrier
+            [C.DEWAR_CONFUSION_GAS]: L.DUNGEON, // U19f CE carrier
+            [C.DEWAR_PARALYSIS_GAS]: L.DUNGEON, // U19f CE carrier
+            [C.DEWAR_METHANE_GAS]: L.DUNGEON, // U19f CE carrier
+            [C.BROKEN_GLASS]: L.SURFACE, // U19f CE carrier
+
             // U17d: CE Globals.c:343/378/384/388/396-400.
             [C.MACHINE_METHANE_VENT_DORMANT]: L.DUNGEON,
             [C.MACHINE_METHANE_VENT]: L.DUNGEON,
@@ -409,6 +431,28 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
+            [C.FUNGUS_FOREST]: 45, // CE Globals.c:475
+            [C.TRAMPLED_FUNGUS_FOREST]: 60, // CE Globals.c:476
+            [C.SUNLIGHT_POOL]: 90, // CE Globals.c:423
+            [C.DARKNESS_PATCH]: 90, // CE Globals.c:424
+            [C.DEEP_WATER_ALGAE_WELL]: 95, // CE Globals.c:520
+            [C.DEEP_WATER_ALGAE_1]: 40, // CE Globals.c:521
+            [C.DEEP_WATER_ALGAE_2]: 39, // CE Globals.c:522
+            [C.NET_TRAP]: 30, // CE Globals.c:392
+            [C.NET_TRAP_HIDDEN]: 95, // CE Globals.c:391
+            [C.NETTING]: 19, // CE Globals.c:471
+            [C.ALARM_TRAP]: 30, // CE Globals.c:394
+            [C.ALARM_TRAP_HIDDEN]: 95, // CE Globals.c:393
+            [C.GAS_TRAP_CONFUSION]: 30, // CE Globals.c:386
+            [C.GAS_TRAP_CONFUSION_HIDDEN]: 95, // CE Globals.c:385
+            [C.FLOOD_TRAP_HIDDEN]: 95, // CE Globals.c:389
+            [C.STEAM_VENT]: 15, // CE Globals.c:401
+            [C.DEWAR_CAUSTIC_GAS]: 10, // CE Globals.c:406
+            [C.DEWAR_CONFUSION_GAS]: 10, // CE Globals.c:407
+            [C.DEWAR_PARALYSIS_GAS]: 10, // CE Globals.c:408
+            [C.DEWAR_METHANE_GAS]: 10, // CE Globals.c:409
+            [C.BROKEN_GLASS]: 70, // CE Globals.c:467
+
             [C.MACHINE_METHANE_VENT_DORMANT]: 30,
             [C.MACHINE_METHANE_VENT]: 30,
             [C.PILOT_LIGHT]: 0,
@@ -697,7 +741,9 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
             'engine/Generator/Architect.ts', // V-2b-9d: CE redesignInterior layer writeback (:837-853)
             'engine/Map/DungeonFeature.ts', // C-4b：fillSpawnMap / DFF_CLEAR_* 跨层清理
             'engine/Map/Promotion.ts',      // C-4c：promoteTile 的 TM_VANISHES_UPON_PROMOTION 清层（CE Time.c:1258-1261 按层写）
-            'engine/Map/AutoGenerator.ts',  // C-6：runAutogenerators 的 terrain 分支
+            'engine/Map/AutoGenerator.ts',
+            'engine/Map/WallDoorFinish.ts', // U19f CE Architect.c:2496/2517: preserve non-DUNGEON layers
+  // C-6：runAutogenerators 的 terrain 分支
                                             //（CE Architect.c:1829-1838 `layers[layer] = terrain`；
                                             // 当前为留形分支——真实目录无 wired terrain 条目）
             'engine/Generator/BlueprintEngine.ts', // V-2b-2b：机器蓝图层写入——

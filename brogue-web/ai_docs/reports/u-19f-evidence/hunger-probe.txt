@@ -1,0 +1,11 @@
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+seed=1 policy=roam-extended turns=209 died=true cause=Eel
+  nutrition 2150 -> 1942, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+seed=7 policy=roam-extended turns=2177 died=true cause=starvation
+  nutrition 2150 -> 0, hp=0, state=starving
+  transitions: hungry@1801, weak@2001, faint@2101, starving@2150
+  curve: T0:n2150/hp30/normal  T250:n1901/hp30/normal  T500:n1651/hp30/normal  T750:n1401/hp30/normal  T1000:n1151/hp30/normal  T1250:n901/hp29/normal  T1500:n651/hp30/normal  T1750:n401/hp30/normal  T2000:n151/hp30/hungry
+(node:50034) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)

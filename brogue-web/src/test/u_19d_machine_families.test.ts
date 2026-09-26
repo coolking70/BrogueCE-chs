@@ -26,7 +26,7 @@ describe('U19d CE selection contract',()=>{
   const b=bps.find(b=>b.ceBlueprintId===18)!;for(const depth of [3,4,15,26,27])expect(blueprintQualifies(b,depth,['BP_VESTIBULE'])).toBe(depth>=4&&depth<=26);
   expect(blueprintQualifies(b,15,['BP_REWARD'])).toBe(false);
   for(const ce of [67,68,69])expect(bps.find(b=>b.ceBlueprintId===ce)!.frequency).toBe(0);
-  for(const ce of [52,55])expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===ce)!,10,['BP_ADOPT_ITEM'])).toBe(false);
+  for(const ce of [52,55])expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===ce)!,10,['BP_ADOPT_ITEM'])).toBe(true);
  });
  it('paralysis/statue/hidden-trap autoGen rate columns equal CE, including minima and caps',()=>{
   for(const row of golden.autogen){const a=AUTO_GENERATOR_CATALOG.find(a=>a.index===row.index)!;
@@ -83,12 +83,12 @@ it('CE28 no observer: preserve the CE caged item identity through population and
 
 });
 
-it('CE28 explicit builder can adopt a key; CE52 remains outside the weighted pool',()=>{
+it('CE28 explicit builder can adopt a key; U19f restores CE52 to the weighted pool',()=>{
  const g:any=createHeadlessGame(19,'test');for(let x=1;x<g.grid.width-1;x++)for(let y=1;y<g.grid.height-1;y++)g.grid.setTerrain(x,y,T.FLOOR);g.monsters=[];g.items=[];
  const bp=bps.find(b=>b.ceBlueprintId===28)!,engine=new BlueprintEngine(g.grid,3,[bp]);
  const r=engine.buildAMachine(28,[],{category:'KEY',id:'iron_key',instanceId:'u19d-key',pos:{x:35,y:14},viaAdoption:true}, {x:35,y:14});
  expect(r).not.toBeNull();
- expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===52)!,10,['BP_ADOPT_ITEM'])).toBe(false);
+ expect(blueprintQualifies(bps.find(b=>b.ceBlueprintId===52)!,10,['BP_ADOPT_ITEM'])).toBe(true);
  // U19e verifies CE47 using its complete natural machine, not an open-map
  // room-site failure that stayed null even after its adoption gate was removed.
 

@@ -1,0 +1,62 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+stdout | src/test/u_19f_fire.test.ts > U19f autoGen fungal regrowth burns through the normal player fire bolt
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19f_fire.test.ts (3 tests | 3 failed) 6724ms
+   × U19f autoGen fungal regrowth burns through the normal player fire bolt 2164ms
+   × U19f autoGen methane dewar releases combustible gas; player fire produces an explosion 463ms
+   × U19f existing bridge autoGen remains natural: crossing the span, then burning it into chasm 4096ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19f_fire.test.ts > U19f autoGen fungal regrowth burns through the normal player fire bolt
+AssertionError: expected 31 to be undefined // Object.is equality
+
+- Expected:
+undefined
+
++ Received:
+31
+
+ ❯ src/test/u_19f_fire.test.ts:17:83
+     15| it('U19f autoGen fungal regrowth burns through the normal player fire …
+     16|  const r=runAutoActions(9),g=r.game;expect(g.grid.getCell(r.target.x,r…
+     17|  fire(g,r.target);expect(g.grid.getCell(r.target.x,r.target.y).layers[…
+       |                                                                                   ^
+     18| });
+     19| it('U19f autoGen methane dewar releases combustible gas; player fire p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_19f_fire.test.ts > U19f autoGen methane dewar releases combustible gas; player fire produces an explosion
+AssertionError: expected 38 not to be 38 // Object.is equality
+ ❯ src/test/u_19f_fire.test.ts:22:30
+     20|  const r=runAutoActions(37),g=r.game,c=g.grid.getCell(r.target.x,r.tar…
+     21|  expect(c.layers[L.GAS]).toBe(T.METHANE_GAS);fire(g,r.target);
+     22|  expect(c.layers[L.GAS]).not.toBe(T.METHANE_GAS);
+       |                              ^
+     23|  expect(g.grid.cells.flat().some((c:any)=>c.layers.includes(T.GAS_EXPL…
+     24| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_19f_fire.test.ts > U19f existing bridge autoGen remains natural: crossing the span, then burning it into chasm
+AssertionError: expected 0 to be greater than 1
+ ❯ src/test/u_19f_fire.test.ts:31:125
+     29|  for(let d=2;d<=8;d++){g.depth=d;g.generateDepth(false,false);}
+     30|  const trace=traces.find(t=>t.ceBlueprintId===65&&t.machineNumber===3)…
+     31|  const bridges=g.grid.cells.flat().filter((c:any)=>c.machineNumber===3…
+       |                                                                                                                             ^
+     32|  const dirs=[[-1,0],[1,0],[0,-1],[0,1]],ends=bridges.flatMap((c:any)=>…
+     33|  const start=ends[0],end=ends.find((p:any)=>route(g,start,p)?.some(p=>…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 failed | 3 passed (6)
+   Start at  19:44:28
+   Duration  27.12s (transform 1.78s, setup 0ms, import 3.47s, tests 31.95s, environment 1ms)
+

@@ -55,7 +55,7 @@ describe('U17f independent CE catalogs, appearances and data starts',()=>{
  it('retains the empty missing-tile guard and preserves old IDs; five appended appearances come from CE',()=>{
   expect(DF_MISSING_TILES).toEqual([]);expect(Object.values(D).filter(d=>d.tile===null)).toEqual([]);
   expect(T.SACRIFICE_LAVA).toBe(163);expect(T.RAT_TRAP_WALL_CRACKING).toBe(164);
-  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(169);
+  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);
   for(const name of Object.keys(golden.tiles))expect(terrainAppearance(T[name as keyof typeof T],true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});
   for(const depth of [1,13,26,40]){expect(terrainAppearance(T.STATUE_CRACKING,true,depth)).toEqual(terrainAppearance(T.STATUE_INERT_DOORWAY,true,depth));expect(terrainAppearance(T.RAT_TRAP_WALL_CRACKING,true,depth)).toEqual(terrainAppearance(T.RAT_TRAP_WALL_DORMANT,true,depth));}
   expect(rows.PORTAL_LIGHT.char).toBe('');expect(rows.WORM_TUNNEL_MARKER_ACTIVE.char).toBe('');

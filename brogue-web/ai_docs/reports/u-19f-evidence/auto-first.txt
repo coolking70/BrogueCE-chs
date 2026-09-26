@@ -1,0 +1,256 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+stdout | src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > 21 appended tiles and 24 DF rows retain every CE behavioral field 3ms
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > all 49 autoGen rows match CE columns and all 48 executable rows are connected 2ms
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > every CE blueprint qualifies under its own flags/depth, only D2 inventions retire 1ms
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer 272ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 4 has its CE consumer 233ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 5 has its CE consumer 318ms
+   → autoGen 5 did not generate its CE carrier
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 6 has its CE consumer 320ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 9 has its CE consumer 426ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 10 has its CE consumer 337ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 11 has its CE consumer 304ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 12 has its CE consumer 272ms
+   → no interaction square
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 13 has its CE consumer 244ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 15 has its CE consumer 211ms
+   → no interaction square
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 17 has its CE consumer 211ms
+   → no interaction square
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 18 has its CE consumer 213ms
+   → no interaction square
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 20 has its CE consumer 216ms
+   → no interaction square
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 22 has its CE consumer 289ms
+   → expected [ 177, +0, +0, +0 ] to not include 177
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 24 has its CE consumer 279ms
+   → expected [ 180, +0, +0, +0 ] to not include 180
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 26 has its CE consumer 285ms
+   → expected [ 182, +0, +0, +0 ] to not include 182
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 28 has its CE consumer 267ms
+   → expected [ 183, +0, +0, +0 ] to not include 183
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 30 has its CE consumer 218ms
+   → autoGen 30 did not generate its CE carrier
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 31 has its CE consumer 219ms
+   → autoGen 31 did not generate its CE carrier
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 32 has its CE consumer 305ms
+   → expected undefined to be defined
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 34 has its CE consumer 323ms
+   → Unmapped CE flash color: poisonGasColor
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 35 has its CE consumer 301ms
+   → Unmapped CE flash color: confusionGasColor
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 36 has its CE consumer 304ms
+   → Unmapped CE flash color: pink
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 37 has its CE consumer 306ms
+   → Unmapped CE flash color: methaneColor
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 38 has its CE consumer 436ms
+   → expected undefined to be defined
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 25 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 4 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 6 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 9 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 10 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 11 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 13 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 32 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 38 has its CE consumer
+AssertionError: expected undefined to be defined
+ ❯ src/test/u_19f_autogen.test.ts:63:88
+     61|   else expect(last.player).toEqual(r.target);
+     62|   if([2,9,13,30,38].includes(index))expect(first.light).toBeGreaterTha…
+     63|   const saved=JSON.parse(JSON.stringify(r.game.toSnapshot()));expect(s…
+       |                                                                                        ^
+     64|  });
+     65| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 5 has its CE consumer
+Error: autoGen 5 did not generate its CE carrier
+ ❯ runAutoActions src/test/fixtures/u19f-auto-actions.ts:35:19
+     33|   target=cells().find((c:any)=>c.layers.includes(tile)&&c.x>1&&c.y>1&&…
+     34|  }
+     35|  if(!target)throw Error(`autoGen ${index} did not generate its CE carr…
+       |                   ^
+     36|  const neighbors=[[-1,0],[1,0],[0,-1],[0,1]].map(([x,y])=>({x:target.x…
+     37|  const entry=neighbors.find(p=>g.grid.getCell(p.x,p.y).isPassable);if(…
+ ❯ src/test/u_19f_autogen.test.ts:48:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 12 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 15 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 17 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 18 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 20 has its CE consumer
+Error: no interaction square
+ ❯ runAutoActions src/test/fixtures/u19f-auto-actions.ts:37:84
+     35|  if(!target)throw Error(`autoGen ${index} did not generate its CE carr…
+     36|  const neighbors=[[-1,0],[1,0],[0,-1],[0,1]].map(([x,y])=>({x:target.x…
+     37|  const entry=neighbors.find(p=>g.grid.getCell(p.x,p.y).isPassable);if(…
+       |                                                                                    ^
+     38|  g.player.loc={...entry};
+     39|  let witness:Monster|undefined;
+ ❯ src/test/u_19f_autogen.test.ts:48:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 22 has its CE consumer
+AssertionError: expected [ 177, +0, +0, +0 ] to not include 177
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 24 has its CE consumer
+AssertionError: expected [ 180, +0, +0, +0 ] to not include 180
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 26 has its CE consumer
+AssertionError: expected [ 182, +0, +0, +0 ] to not include 182
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 28 has its CE consumer
+AssertionError: expected [ 183, +0, +0, +0 ] to not include 183
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 30 has its CE consumer
+Error: autoGen 30 did not generate its CE carrier
+ ❯ runAutoActions src/test/fixtures/u19f-auto-actions.ts:35:19
+     33|   target=cells().find((c:any)=>c.layers.includes(tile)&&c.x>1&&c.y>1&&…
+     34|  }
+     35|  if(!target)throw Error(`autoGen ${index} did not generate its CE carr…
+       |                   ^
+     36|  const neighbors=[[-1,0],[1,0],[0,-1],[0,1]].map(([x,y])=>({x:target.x…
+     37|  const entry=neighbors.find(p=>g.grid.getCell(p.x,p.y).isPassable);if(…
+ ❯ src/test/u_19f_autogen.test.ts:48:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 31 has its CE consumer
+Error: autoGen 31 did not generate its CE carrier
+ ❯ runAutoActions src/test/fixtures/u19f-auto-actions.ts:35:19
+     33|   target=cells().find((c:any)=>c.layers.includes(tile)&&c.x>1&&c.y>1&&…
+     34|  }
+     35|  if(!target)throw Error(`autoGen ${index} did not generate its CE carr…
+       |                   ^
+     36|  const neighbors=[[-1,0],[1,0],[0,-1],[0,1]].map(([x,y])=>({x:target.x…
+     37|  const entry=neighbors.find(p=>g.grid.getCell(p.x,p.y).isPassable);if(…
+ ❯ src/test/u_19f_autogen.test.ts:48:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 34 has its CE consumer
+Error: Unmapped CE flash color: poisonGasColor
+ ❯ Game.colorFlash src/engine/Core/Game.ts:4921:27
+    4919|         };
+    4920|         const color = colors[name];
+    4921|         if (!color) throw new Error(`Unmapped CE flash color: ${name}`…
+       |                           ^
+    4922|         const cells = new Map<number, number>();
+    4923|         const fieldOfView = discovered ? null : this.fov.computeFOVMas…
+ ❯ Object.flash src/engine/Core/Game.ts:9671:49
+ ❯ executeDungeonFeature src/engine/Map/DungeonFeature.ts:1054:70
+ ❯ spawnDungeonFeature src/engine/Map/DungeonFeature.ts:890:24
+ ❯ promoteTile src/engine/Map/Promotion.ts:469:24
+ ❯ promoteOnPlayerBump src/engine/Map/Promotion.ts:534:5
+ ❯ Game.performPlayerAction src/engine/Core/Game.ts:3773:24
+ ❯ Game.applyCommand src/engine/Core/Game.ts:3297:18
+ ❯ Game.executeCommand src/engine/Core/Game.ts:3263:47
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:3522:39
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 35 has its CE consumer
+Error: Unmapped CE flash color: confusionGasColor
+ ❯ Game.colorFlash src/engine/Core/Game.ts:4921:27
+    4919|         };
+    4920|         const color = colors[name];
+    4921|         if (!color) throw new Error(`Unmapped CE flash color: ${name}`…
+       |                           ^
+    4922|         const cells = new Map<number, number>();
+    4923|         const fieldOfView = discovered ? null : this.fov.computeFOVMas…
+ ❯ Object.flash src/engine/Core/Game.ts:9671:49
+ ❯ executeDungeonFeature src/engine/Map/DungeonFeature.ts:1054:70
+ ❯ spawnDungeonFeature src/engine/Map/DungeonFeature.ts:890:24
+ ❯ promoteTile src/engine/Map/Promotion.ts:469:24
+ ❯ promoteOnPlayerBump src/engine/Map/Promotion.ts:534:5
+ ❯ Game.performPlayerAction src/engine/Core/Game.ts:3773:24
+ ❯ Game.applyCommand src/engine/Core/Game.ts:3297:18
+ ❯ Game.executeCommand src/engine/Core/Game.ts:3263:47
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:3522:39
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 36 has its CE consumer
+Error: Unmapped CE flash color: pink
+ ❯ Game.colorFlash src/engine/Core/Game.ts:4921:27
+    4919|         };
+    4920|         const color = colors[name];
+    4921|         if (!color) throw new Error(`Unmapped CE flash color: ${name}`…
+       |                           ^
+    4922|         const cells = new Map<number, number>();
+    4923|         const fieldOfView = discovered ? null : this.fov.computeFOVMas…
+ ❯ Object.flash src/engine/Core/Game.ts:9671:49
+ ❯ executeDungeonFeature src/engine/Map/DungeonFeature.ts:1054:70
+ ❯ spawnDungeonFeature src/engine/Map/DungeonFeature.ts:890:24
+ ❯ promoteTile src/engine/Map/Promotion.ts:469:24
+ ❯ promoteOnPlayerBump src/engine/Map/Promotion.ts:534:5
+ ❯ Game.performPlayerAction src/engine/Core/Game.ts:3773:24
+ ❯ Game.applyCommand src/engine/Core/Game.ts:3297:18
+ ❯ Game.executeCommand src/engine/Core/Game.ts:3263:47
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:3522:39
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 37 has its CE consumer
+Error: Unmapped CE flash color: methaneColor
+ ❯ Game.colorFlash src/engine/Core/Game.ts:4921:27
+    4919|         };
+    4920|         const color = colors[name];
+    4921|         if (!color) throw new Error(`Unmapped CE flash color: ${name}`…
+       |                           ^
+    4922|         const cells = new Map<number, number>();
+    4923|         const fieldOfView = discovered ? null : this.fov.computeFOVMas…
+ ❯ Object.flash src/engine/Core/Game.ts:9671:49
+ ❯ executeDungeonFeature src/engine/Map/DungeonFeature.ts:1054:70
+ ❯ spawnDungeonFeature src/engine/Map/DungeonFeature.ts:890:24
+ ❯ promoteTile src/engine/Map/Promotion.ts:469:24
+ ❯ promoteOnPlayerBump src/engine/Map/Promotion.ts:534:5
+ ❯ Game.performPlayerAction src/engine/Core/Game.ts:3773:24
+ ❯ Game.applyCommand src/engine/Core/Game.ts:3297:18
+ ❯ Game.executeCommand src/engine/Core/Game.ts:3263:47
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:3522:39
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/25]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  25 failed | 3 passed (28)
+   Start at  19:23:51
+   Duration  8.13s (transform 554ms, setup 0ms, import 895ms, tests 7.12s, environment 0ms)
+

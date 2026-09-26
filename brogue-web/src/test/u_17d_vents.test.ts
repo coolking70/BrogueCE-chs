@@ -64,7 +64,7 @@ describe('U17d CE independent catalog, three chains and data starts',()=>{
   expect(T.MACHINE_TRIGGER_FLOOR_REPEATING).toBe(148);expect(T.MACHINE_METHANE_VENT_DORMANT).toBe(149);expect(T.FLAMETHROWER).toBe(156);
  });
  it('157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor',()=>{
-  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(169);
+  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
   for(const t of [T.MACHINE_METHANE_VENT_HIDDEN,T.MACHINE_POISON_GAS_VENT_HIDDEN,T.MACHINE_PARALYSIS_VENT_HIDDEN,T.GAS_TRAP_POISON_HIDDEN,T.FLAMETHROWER_HIDDEN])expect(terrainAppearance(t,true)).toEqual(terrainAppearance(T.FLOOR,true));
  });

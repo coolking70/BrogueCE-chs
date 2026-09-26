@@ -1,0 +1,161 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+stdout | src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > 21 appended tiles and 24 DF rows retain every CE behavioral field 4ms
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > all 49 autoGen rows match CE columns and all 48 executable rows are connected 2ms
+ ✓ src/test/u_19f_autogen.test.ts > U19f complete CE directory contracts > every CE blueprint qualifies under its own flags/depth, only D2 inventions retire 1ms
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer 338ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 4 has its CE consumer 249ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 5 has its CE consumer 242ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 6 has its CE consumer 246ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 9 has its CE consumer 1150ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 10 has its CE consumer 258ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 11 has its CE consumer 248ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 12 has its CE consumer 240ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 13 has its CE consumer 249ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 15 has its CE consumer 374ms
+   → expected 4 to be +0 // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 17 has its CE consumer 349ms
+   → expected 2 to be 'TRACKING_SCENT' // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 18 has its CE consumer 356ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 20 has its CE consumer 231ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 22 has its CE consumer 257ms
+   → expected [ 177, +0, +0, +0 ] to not include 177
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 24 has its CE consumer 251ms
+   → expected [ 180, +0, +0, +0 ] to not include 180
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 26 has its CE consumer 239ms
+   → expected [ 182, +0, +0, +0 ] to not include 182
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 28 has its CE consumer 334ms
+   → expected [ 183, +0, +0, +0 ] to not include 183
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 30 has its CE consumer 314ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 31 has its CE consumer 305ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 32 has its CE consumer 308ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 34 has its CE consumer 258ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 35 has its CE consumer 247ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 36 has its CE consumer 242ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 37 has its CE consumer 233ms
+   → expected false to be true // Object.is equality
+ × src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 38 has its CE consumer 263ms
+   → expected false to be true // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 25 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 2 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 4 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 5 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 6 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 9 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 10 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 11 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 12 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 13 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 18 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 20 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 30 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 31 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 32 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 34 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 35 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 36 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 37 has its CE consumer
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 38 has its CE consumer
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19f_autogen.test.ts:63:98
+     61|   else expect(last.player).toEqual(r.target);
+     62|   if([2,9,13,30,38].includes(index))expect(first.light).toBeGreaterTha…
+     63|   const saved=JSON.parse(JSON.stringify(r.game.toSnapshot()));expect(r…
+       |                                                                                                  ^
+     64|   expect(r.game.grid.getCell(r.target.x,r.target.y).layers).toEqual(la…
+     65|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 15 has its CE consumer
+AssertionError: expected 4 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 4
+
+ ❯ src/test/u_19f_autogen.test.ts:52:208
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 17 has its CE consumer
+AssertionError: expected 2 to be 'TRACKING_SCENT' // Object.is equality
+
+- Expected:
+"TRACKING_SCENT"
+
++ Received:
+2
+
+ ❯ src/test/u_19f_autogen.test.ts:53:96
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 22 has its CE consumer
+AssertionError: expected [ 177, +0, +0, +0 ] to not include 177
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 24 has its CE consumer
+AssertionError: expected [ 180, +0, +0, +0 ] to not include 180
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 26 has its CE consumer
+AssertionError: expected [ 182, +0, +0, +0 ] to not include 182
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/25]⎯
+
+ FAIL  src/test/u_19f_autogen.test.ts > U19f per-row generation → real player action > autoGen row 28 has its CE consumer
+AssertionError: expected [ 183, +0, +0, +0 ] to not include 183
+ ❯ src/test/u_19f_autogen.test.ts:51:70
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/25]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  25 failed | 3 passed (28)
+   Start at  19:24:41
+   Duration  8.85s (transform 547ms, setup 0ms, import 951ms, tests 7.79s, environment 0ms)
+

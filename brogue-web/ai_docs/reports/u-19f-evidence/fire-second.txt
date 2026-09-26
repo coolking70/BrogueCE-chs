@@ -1,0 +1,21 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d4/brogue/brogue-web
+
+ ❯ src/test/u_19f_fire.test.ts (3 tests | 1 failed) 6444ms
+   × U19f existing bridge autoGen remains natural: crossing the stone span and resisting player fire 3745ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19f_fire.test.ts > U19f existing bridge autoGen remains natural: crossing the stone span and resisting player fire
+AssertionError: expected undefined to be defined
+ ❯ src/test/u_19f_fire.test.ts:33:141
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  19:46:01
+   Duration  7.96s (transform 864ms, setup 0ms, import 1.37s, tests 6.44s, environment 0ms)
+

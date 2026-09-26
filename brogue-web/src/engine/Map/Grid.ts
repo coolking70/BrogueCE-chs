@@ -129,11 +129,7 @@ export enum TerrainType {
     CRYSTAL_WALL,
     SACRED_GLYPH,
     // V-2b-2b：机器蓝图 3/4/5/19/20/23 号（CE GlobalsBrogue.c:198-220/309-331）
-    // 的六个地形载体。FUNGUS_FOREST（CE Globals.c:475）不加新枚举——web
-    // FOLIAGE 的 flags/mechFlags 与 CE FUNGUS_FOREST 完全一致
-    // （T_OBSTRUCTS_VISION|T_IS_FLAMMABLE + STAND_IN_TILE|VANISHES|
-    // PROMOTES_ON_STEP），蓝图数据以 TERRAIN_MAP 别名 FOLIAGE 承载。
-    // 只追加在尾部（既有枚举值不变）。
+    // 的六个地形载体。U19f 在枚举尾部补回独立 FUNGUS_FOREST；既有 ID 不变。
     CARPET,             // CE Globals.c:325 可燃地毯（宝库铺装，DUNGEON 层）
     STATUE_INERT,       // CE Globals.c:351 惰性雕像（墙族，BUILD_IN_WALLS 落墙）
     PEDESTAL,           // CE Globals.c:369 石基座（基座大奖的落点）
@@ -155,9 +151,7 @@ export enum TerrainType {
     PILOT_LIGHT_DORMANT,        // Globals.c:342 休眠点火嘴（墙装火把）
     // V-2b-4：祭坛族轮——CE 七条蓝图（1/2/6/7/15/26/28 号）的七个地形载体。
     // 只追加在尾部（terrainFingerprint 按数值哈希，既有枚举值不变）。
-    // FUNGUS_FOREST（CE Globals.c:475）不加新成员——V-2b-2b 已按
-    // TERRAIN_MAP 别名到 FOLIAGE（flags/mechFlags 逐位一致），本轮复核结论
-    // 见报告 §2。
+    // FUNGUS_FOREST 的历史别名于 U19f 替换为独立 CE 载体。
     ALTAR_CAGE_OPEN,            // Globals.c:364 开底铁笼祭坛（1/2/26 号，取物后笼落）
     ALTAR_CAGE_RETRACTABLE,     // Globals.c:368 可收铁笼（28 号，踏板触发收回）
     COMMUTATION_ALTAR,          // Globals.c:532 置换祭坛（6 号）
@@ -265,6 +259,8 @@ export enum TerrainType {
     ALTAR_CAGE_CLOSED, COMMUTATION_ALTAR_INERT, PIPE_GLOWING, RESURRECTION_ALTAR_INERT, SACRIFICE_ALTAR, PIPE_INERT, SACRIFICE_LAVA,
     // U17f: append-only final DF carriers; FLOOR_FLOODABLE already exists.
     RAT_TRAP_WALL_CRACKING, STATUE_CRACKING, COFFIN_OPEN, WORM_TUNNEL_MARKER_ACTIVE, PORTAL_LIGHT,
+    // U19f: CE autoGen closure carriers; append-only saved terrain identities.
+    FUNGUS_FOREST, TRAMPLED_FUNGUS_FOREST, SUNLIGHT_POOL, DARKNESS_PATCH, DEEP_WATER_ALGAE_WELL, DEEP_WATER_ALGAE_1, DEEP_WATER_ALGAE_2, NET_TRAP, NET_TRAP_HIDDEN, NETTING, ALARM_TRAP, ALARM_TRAP_HIDDEN, GAS_TRAP_CONFUSION, GAS_TRAP_CONFUSION_HIDDEN, FLOOD_TRAP_HIDDEN, STEAM_VENT, DEWAR_CAUSTIC_GAS, DEWAR_CONFUSION_GAS, DEWAR_PARALYSIS_GAS, DEWAR_METHANE_GAS, BROKEN_GLASS,
 
 }
 
@@ -544,6 +540,28 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: 100,
     [TerrainType.PORTAL_LIGHT]: 1,
 
+    // U19f: CE autoGen carriers.
+    [TerrainType.FUNGUS_FOREST]: 45,
+    [TerrainType.TRAMPLED_FUNGUS_FOREST]: 60,
+    [TerrainType.SUNLIGHT_POOL]: 90,
+    [TerrainType.DARKNESS_PATCH]: 90,
+    [TerrainType.DEEP_WATER_ALGAE_WELL]: 95,
+    [TerrainType.DEEP_WATER_ALGAE_1]: 40,
+    [TerrainType.DEEP_WATER_ALGAE_2]: 39,
+    [TerrainType.NET_TRAP]: 30,
+    [TerrainType.NET_TRAP_HIDDEN]: 95,
+    [TerrainType.NETTING]: 19,
+    [TerrainType.ALARM_TRAP]: 30,
+    [TerrainType.ALARM_TRAP_HIDDEN]: 95,
+    [TerrainType.GAS_TRAP_CONFUSION]: 30,
+    [TerrainType.GAS_TRAP_CONFUSION_HIDDEN]: 95,
+    [TerrainType.FLOOD_TRAP_HIDDEN]: 95,
+    [TerrainType.STEAM_VENT]: 15,
+    [TerrainType.DEWAR_CAUSTIC_GAS]: 10,
+    [TerrainType.DEWAR_CONFUSION_GAS]: 10,
+    [TerrainType.DEWAR_PARALYSIS_GAS]: 10,
+    [TerrainType.DEWAR_METHANE_GAS]: 10,
+    [TerrainType.BROKEN_GLASS]: 70,
 };
 
 /**
@@ -825,6 +843,28 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: DungeonLayer.LIQUID,
     [TerrainType.PORTAL_LIGHT]: DungeonLayer.SURFACE,
 
+    // U19f: CE autoGen carriers.
+    [TerrainType.FUNGUS_FOREST]: DungeonLayer.SURFACE,
+    [TerrainType.TRAMPLED_FUNGUS_FOREST]: DungeonLayer.SURFACE,
+    [TerrainType.SUNLIGHT_POOL]: DungeonLayer.LIQUID,
+    [TerrainType.DARKNESS_PATCH]: DungeonLayer.LIQUID,
+    [TerrainType.DEEP_WATER_ALGAE_WELL]: DungeonLayer.DUNGEON,
+    [TerrainType.DEEP_WATER_ALGAE_1]: DungeonLayer.LIQUID,
+    [TerrainType.DEEP_WATER_ALGAE_2]: DungeonLayer.LIQUID,
+    [TerrainType.NET_TRAP]: DungeonLayer.DUNGEON,
+    [TerrainType.NET_TRAP_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.NETTING]: DungeonLayer.SURFACE,
+    [TerrainType.ALARM_TRAP]: DungeonLayer.DUNGEON,
+    [TerrainType.ALARM_TRAP_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_CONFUSION]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_CONFUSION_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.FLOOD_TRAP_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.STEAM_VENT]: DungeonLayer.DUNGEON,
+    [TerrainType.DEWAR_CAUSTIC_GAS]: DungeonLayer.DUNGEON,
+    [TerrainType.DEWAR_CONFUSION_GAS]: DungeonLayer.DUNGEON,
+    [TerrainType.DEWAR_PARALYSIS_GAS]: DungeonLayer.DUNGEON,
+    [TerrainType.DEWAR_METHANE_GAS]: DungeonLayer.DUNGEON,
+    [TerrainType.BROKEN_GLASS]: DungeonLayer.SURFACE,
 };
 
 /**

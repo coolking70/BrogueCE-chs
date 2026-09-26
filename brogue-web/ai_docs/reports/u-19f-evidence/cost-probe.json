@@ -1,0 +1,36 @@
+{
+  "seed": 31337,
+  "depth": 17,
+  "x": 11,
+  "y": 1,
+  "layers": [
+    "STEAM_VENT",
+    "NOTHING",
+    "NOTHING",
+    "BLOODFLOWER_STALK"
+  ],
+  "top": "STEAM_VENT",
+  "isPassable": false,
+  "pathing": [
+    {
+      "name": "STEAM_VENT",
+      "pathing": false,
+      "flags": 4
+    },
+    {
+      "name": "NOTHING",
+      "pathing": false,
+      "flags": 0
+    },
+    {
+      "name": "NOTHING",
+      "pathing": false,
+      "flags": 0
+    },
+    {
+      "name": "BLOODFLOWER_STALK",
+      "pathing": true,
+      "flags": 1029
+    }
+  ]
+}

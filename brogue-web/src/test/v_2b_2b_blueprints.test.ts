@@ -642,7 +642,7 @@ describe('V-2b-2b T7b：生产蓝图 applyBlueprint 行使（3/4/5 号，含前�
             expect(grid.getCell(p.x, p.y)!.terrain).toBe(TerrainType.STATUE_INERT);
             expect(interior.some(q => q.x === p.x && q.y === p.y), '雕像不得落在 interior 内').toBe(false);
         }
-        expect(terrainCount(grid, interior, TerrainType.FOLIAGE), 'FUNGUS_FOREST 别名 → FOLIAGE {3,4}').toBeGreaterThanOrEqual(3);
+        expect(terrainCount(grid, interior, TerrainType.FUNGUS_FOREST), 'U19f CE FUNGUS_FOREST {3,4}').toBeGreaterThanOrEqual(3);
         expect(terrainCount(grid, interior, TerrainType.FOLIAGE)).toBeLessThanOrEqual(4);
         const potions = result!.itemSpawns.filter(s => s.category === 'POTION');
         const scrolls = result!.itemSpawns.filter(s => s.category === 'SCROLL');

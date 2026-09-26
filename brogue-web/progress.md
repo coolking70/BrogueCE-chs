@@ -1402,3 +1402,17 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 
 - 18:17 CST：发现轮191文件仅CE40/43两个已定位旧样例失败；对应最终夹具定向通过。已冻结输入启动最终门禁，build通过，完整默认测试含新增U19e专项正在复跑；期间不修改冻结代码、测试或基线。
 - 2026-09-26 18:45 CST：最终冻结复跑全部通过：build、192文件默认回归（3709 passed / 0 failed / 8既有skipped / 5既有todo）、独立drift 1/1、diff-check。R∪S186及全部点名守卫零遗漏；732冻结输入前后变化0，清单SHA均268e7e20…；基线仍是唯一捕获的a98e4857…。报告已补齐终验与旧前提提案，未暂存、未提交。
+
+## 2026-09-26 U19f：电晶、虫道与剩余 autoGen
+
+- 用户任务：执行 ai_docs/tasks/u-19f.prompt.md，完成报告，不提交。入场工作树干净；先保存源码与基线哈希、运行 drift，逐项核本地 CE，独立归因后仅重捕获一次。
+
+
+### U19f 完成（2026-09-26）
+- CE52/CE55 完整自然机器动作闭包；25 条剩余 autoGen 恢复，49 行独立 CE 比对。
+- 修复跨层秘密搜索、储罐闪光色、finishWalls 保留非 DUNGEON 标记。
+- 31 个逐杠杆生成阶段及额外墙层对照；33 个撤销反事实均红。
+- 唯一基线重捕获：a98e4857… → 884425ec…；P2 三基线不变。
+- 最终冻结：763 输入零变化；195 文件 / 3743 passed / 0 failed / 8 原有 skipped / 5 原有 todo；build、drift(1/1)、diff-check 全通过。
+- 27 场浏览器动作重放通过，控制台/页面错误 0。标准 canvas 黑图未作通过依据，使用已检查的 headed 全页截图。
+- 旧守卫的 HEAD 反事实和前提提案、全部证据见 ai_docs/reports/u-19f.report.md。未暂存、未提交。

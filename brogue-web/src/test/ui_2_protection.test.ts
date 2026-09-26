@@ -125,6 +125,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         const sword = equipPlainSword(game, 0);
 
         const mound = spawnDegrader(game, 5, 5); // 玩家 (4,5) 正右方
+        Object.assign(mound, { defense: 0, isCaged: true }); // U19f: CE captive必中；生成消耗不决定此机制用例的命中。
         priv(game).resolvePlayerMeleeAttackOn(mound);
 
         expect(mound.hp).toBeLessThan(mound.maxHp); // 命中确实发生（排除"没打中"假绿）

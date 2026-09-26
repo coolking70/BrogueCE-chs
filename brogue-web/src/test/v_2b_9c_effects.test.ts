@@ -96,7 +96,7 @@ function reachable(g: Game, start: Pos, end: Pos, avoidHazards = false): boolean
 }
 
 describe('V-2b-9c CE data and complete promotion closure', () => {
-    it('four blueprint rows match every supported CE column; #52 is excluded in engine only', () => {
+    it('four blueprint rows match every supported CE column; U19f restores #52 selection', () => {
         // Fails for wrong category/frequency, omitted turret supply, altered CE feature flags/counts.
         const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\n');
         for (const [id, line, count] of [[32,383,5],[51,509,3],[52,514,5],[54,531,4]]) {
@@ -116,17 +116,17 @@ describe('V-2b-9c CE data and complete promotion closure', () => {
                     .toEqual([opt(row[1]),opt(row[2]),opt(row[3]),[Number(row[4]),Number(row[5])],Number(row[6]),
                         opt(row[7])?.replace('MK_','').toLowerCase(),Number(row[8]),opt(row[9]) ? [row[9]] : undefined,flags === '0' ? [] : flags.split(/\s*\|\s*/)]);
             }
-            expect(blueprintQualifies(b, b.depthRange[0], ['BP_ADOPT_ITEM'])).toBe(id !== 52);
+            expect(blueprintQualifies(b, b.depthRange[0], ['BP_ADOPT_ITEM'])).toBe(true);
         }
     });
 
-    it('55 retains CE data but cannot consume an adopted key behind unimplemented tunnels', () => {
+    it('55 retains CE data and U19f restores its complete tunnel consumer', () => {
         // Fails if a generation-stream change exposes the old permanent key enclosure again.
         const tunnels = (data as BlueprintDef[]).find(b => b.id === 'key_worm_tunnels')!;
         expect(tunnels.frequency).toBe(10);
         expect(tunnels.flags).toContain('BP_ADOPT_ITEM');
         expect(tunnels.features.map(f => f.terrain)).toEqual(['ALTAR', undefined, 'GRANITE', 'GRANITE', 'WORM_TUNNEL_OUTER_WALL', 'WALL_LEVER_HIDDEN']);
-        expect(blueprintQualifies(tunnels, 19, ['BP_ADOPT_ITEM'])).toBe(false);
+        expect(blueprintQualifies(tunnels, 19, ['BP_ADOPT_ITEM'])).toBe(true);
     });
 
     it('seven tiles retain all CE flag, priority, home-layer, chance and light columns', () => {

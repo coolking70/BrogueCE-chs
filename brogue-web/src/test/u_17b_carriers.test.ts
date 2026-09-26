@@ -54,7 +54,7 @@ describe('U17b CE data / closed first family',()=>{
  it('appearance golden extension keeps every previous row byte-equivalent in value',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
   for(const name of Object.keys(golden.tiles))expect(rows[name].ceLine).toBe(golden.tiles[name as keyof typeof golden.tiles].line);
-  expect(Object.keys(rows)).toHaveLength(169);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
+  expect(Object.keys(rows)).toHaveLength(190);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
  });
 });
 
