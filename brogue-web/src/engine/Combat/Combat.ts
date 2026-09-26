@@ -18,7 +18,7 @@ import { monsterIsInClass } from './MonsterClass';
 import {
     netEnchant,
     hitProbability,
-    damageFraction,
+    enchantedDamage,
     playerDefense,
     clumpedRoll,
     runicWeaponChance
@@ -212,9 +212,8 @@ export class CombatSystem {
         if (weaponEnchant !== undefined) {
             // CE Items.c recalculateEquipmentBonuses: scale/truncate endpoints
             // BEFORE randClump, preserving clumpFactor and every interior value.
-            const fraction = damageFraction(weaponEnchant);
-            min = Math.max(1, Math.trunc(min * fraction));
-            max = Math.max(1, Math.trunc(max * fraction));
+            min = Math.max(1, enchantedDamage(min, weaponEnchant));
+            max = Math.max(1, enchantedDamage(max, weaponEnchant));
         }
         const isWeaponAttack = opts?.isWeaponAttack !== false;
         const immune = defender instanceof Monster && (defender.isInvulnerable()
@@ -412,7 +411,12 @@ export class CombatSystem {
 
         // CE attackHit (Combat.c:149-158): short circuit, no accuracy roll.
         const autoHit = defender.hasStatus('paralyzed') || defender.hasStatus('stuck') || defender.isCaged;
-        const hit = autoHit || rng.randPercent(hitProbability(100, monsterDefenseAdjusted(defender.defense, defender.weaknessAmount), enchant));
+        // A slaying rune (Combat.c:130-135) sets probability to 100 but still
+        // consumes attackHit's rand_percent roll; only the conditions above skip it.
+        const slayingHit = item.runicType === 'slaying' && monsterIsInClass(defender.typeId, item.vorpalEnemy);
+        const probability = slayingHit || (defender.seized && thrower.seizing)
+            ? 100 : hitProbability(100, monsterDefenseAdjusted(defender.defense, defender.weaknessAmount), enchant);
+        const hit = autoHit || rng.randPercent(probability);
         if (!hit) {
             return { hit: false, damage: 0, killed: false };
         }
@@ -422,9 +426,9 @@ export class CombatSystem {
         let damage = 0;
         if (!immune) {
             const parts = CombatSystem.parseDamageString(item.damage || '1d3');
-            damage = clumpedRoll(parts.min, parts.max, parts.clumping,
+            damage = clumpedRoll(parts.min, parts.max, item.clumping ?? parts.clumping,
                 (lo, hi) => rng.randRange(lo, hi));
-            damage = Math.round(damage * damageFraction(enchant));
+            damage = enchantedDamage(damage, enchant);
         }
 
         const hpDamage = defender.absorbShieldDamage(damage);

@@ -48,6 +48,12 @@ export function damageFraction(netEnch: number): number {
     return COMBAT_ENCHANT_FRACTION[Math.max(0, Math.min(280, Math.trunc(netEnch * 4) + 80))]! / FP_FACTOR;
 }
 
+/** CE's integer damage * damageFraction(enchant) / FP_FACTOR. The same
+ * truncation is used for melee range endpoints and a thrown weapon's roll. */
+export function enchantedDamage(value: number, netEnch: number): number {
+    return Math.trunc(value * damageFraction(netEnch));
+}
+
 /** CE Combat.c:87-110; truncate accuracy before hitProbability. */
 export function monsterDamageAdjustmentAmount(weaknessAmount: number): number {
     return damageFraction(-1.5 * weaknessAmount);
