@@ -127,7 +127,11 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
   }state('lured');
   for(let n=0;n<160&&target.hp>0;n++){
    const dx=Math.sign(altar.x-target.x),dy=Math.sign(altar.y-target.y);
-   const beyond=[{x:altar.x+dx,y:altar.y+dy},...around.map(d=>({x:altar.x+d.x,y:altar.y+d.y}))].find(p=>safe(g,p,true)&&!same(p,target.loc)&&route(g,g.player.loc,p,true));
+   // Prefer a bait square that makes the target's next step approach the
+   // altar. Fixed north-first fallback can repeatedly enter stagger range
+   // after a legitimate change in the monster's pursuit path (X2b).
+   const approach=(p:Pos)=>Math.max(Math.abs(target.x+Math.sign(p.x-target.x)-altar.x),Math.abs(target.y+Math.sign(p.y-target.y)-altar.y));
+   const beyond=[{x:altar.x+dx,y:altar.y+dy},...around.map(d=>({x:altar.x+d.x,y:altar.y+d.y}))].sort((a,b)=>approach(a)-approach(b)).find(p=>safe(g,p,true)&&!same(p,target.loc)&&route(g,g.player.loc,p,true));
    if(!beyond)throw Error('no safe lure position');walk(beyond);act('wait');
   }
   state('sacrificed');if(target.hp>0)throw Error(`marked target did not enter altar ${JSON.stringify(target.loc)}`);

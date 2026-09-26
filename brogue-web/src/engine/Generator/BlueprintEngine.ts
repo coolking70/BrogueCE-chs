@@ -1625,7 +1625,6 @@ export class BlueprintEngine {
                                     const cell = this.grid.getCell(pos.x, pos.y);
                                     if (cell) {
                                         cell.trapType = feature.trapType as any;
-                                        cell.isPassable = true;
                                     }
                                 }
 
@@ -2224,10 +2223,9 @@ export class BlueprintEngine {
                 const c = this.grid.getCell(x, y)!;
                 const s = snap.cells[i++]!;
                 c.layers = [...s.layers];
+                c.refreshTerrainProperties();
                 c.char = s.char;
                 c.color = s.color;
-                c.isPassable = s.isPassable;
-                c.isOpaque = s.isOpaque;
                 c.machineNumber = s.machineNumber;
                 c.trapType = s.trapType;
             }

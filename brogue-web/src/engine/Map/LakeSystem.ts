@@ -333,7 +333,6 @@ export function cleanUpLakeBoundaries(grid: Grid): void {
                 subject.terrain = targetCell.terrain;
                 subject.char = targetCell.char;
                 subject.color = targetCell.color;
-                subject.isPassable = targetCell.isPassable;
                 madeChange = true;
             }
         }

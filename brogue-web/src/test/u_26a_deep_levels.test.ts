@@ -216,6 +216,11 @@ describe('U26a natural maps and real player commands', () => {
                 expect(cellTerrainFlags(g.grid, item.x, item.y) & (T_PATHING_BLOCKER | T_OBSTRUCTS_ITEMS)).toBe(0);
                 expect(distances[item.x]![item.y], `seed${seed} D${d} gem path`).toBeLessThan(30000);
                 g.player.loc = { ...item.loc };
+                // X2b: different valid pursuit paths can paralyze the player
+                // between gems. Recover through real turns before requesting
+                // pickup; never erase the status or pretend that input acted.
+                for (let n = 0; n < 20 && g.player.hasStatus('paralyzed'); n++) g.handlePlayerAction('wait');
+                expect(g.player.hasStatus('paralyzed')).toBe(false);
                 g.handlePlayerAction('pickup');
                 expect(g.items).not.toContain(item);
                 total++;

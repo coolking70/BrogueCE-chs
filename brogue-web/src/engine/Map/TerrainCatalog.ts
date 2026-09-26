@@ -21,7 +21,7 @@
  *   概率，语义见 Globals.c:317 注释）。
  * - chanceToIgnite 按 CE 原始单位存档（百分数 0-100）。
  */
-import { TerrainType } from './Grid';
+import { TerrainType } from './TerrainType';
 import { LightKind } from './LightCatalog';
 
 /** CE `Rogue.h:97` `#define Fl(N) ((unsigned long) 1 << (N))`。 */

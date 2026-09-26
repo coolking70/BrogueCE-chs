@@ -1,0 +1,188 @@
+[
+  {
+    "depth": 1,
+    "keys": []
+  },
+  {
+    "depth": 2,
+    "keys": []
+  },
+  {
+    "depth": 3,
+    "keys": [
+      {
+        "item": {
+          "spawnTurnNumber": 0,
+          "id": 31,
+          "char": "k",
+          "color": 12566463,
+          "name": "Iron Key",
+          "loc": {
+            "x": 76,
+            "y": 3
+          },
+          "category": 10,
+          "weight": 1,
+          "isCursed": false,
+          "isProtected": false,
+          "enchantment": 0,
+          "timesEnchanted": 0,
+          "runicKnown": false,
+          "identified": true,
+          "canBeIdentified": false,
+          "maxChargesKnown": false,
+          "magicDetected": false,
+          "quantity": 1,
+          "keyLoc": [
+            {
+              "loc": {
+                "x": 68,
+                "y": 22
+              },
+              "machine": 0,
+              "disposableHere": true
+            }
+          ],
+          "originDepth": 3
+        },
+        "cell": {
+          "x": 76,
+          "y": 3,
+          "layers": [
+            63,
+            0,
+            0,
+            0
+          ],
+          "char": "#",
+          "color": 7237230,
+          "volume": 0,
+          "isExplored": false,
+          "isVisible": false,
+          "isClairvoyantVisible": false,
+          "hasMemory": false,
+          "rememberedTerrain": 0,
+          "rememberedAppearance": null,
+          "rememberedLayers": [],
+          "rememberedItem": null,
+          "rememberedItemCategory": null,
+          "isMagicMapped": false,
+          "rememberedTerrainFlags": 0,
+          "rememberedTMFlags": 0,
+          "knownTrapFree": false,
+          "rememberedFlags": null,
+          "light": 0,
+          "isPassable": true,
+          "isOpaque": false,
+          "exposedToFire": 0,
+          "trapType": null,
+          "isDiscovered": false,
+          "autoSearched": false,
+          "machineNumber": 5,
+          "isPowered": false,
+          "hasDormantMonster": false
+        },
+        "terrainNames": [
+          "ALTAR_CAGE_RETRACTABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "physical": false
+      },
+      {
+        "item": {
+          "spawnTurnNumber": 0,
+          "id": 30,
+          "char": "k",
+          "color": 12566463,
+          "name": "Iron Key",
+          "loc": {
+            "x": 70,
+            "y": 20
+          },
+          "category": 10,
+          "weight": 1,
+          "flags": [
+            "ITEM_IS_KEY",
+            "ITEM_MAX_CHARGES_KNOWN",
+            "ITEM_PLAYER_AVOIDS"
+          ],
+          "isCursed": false,
+          "isProtected": false,
+          "enchantment": 0,
+          "timesEnchanted": 0,
+          "runicKnown": false,
+          "identified": true,
+          "canBeIdentified": false,
+          "maxChargesKnown": true,
+          "magicDetected": false,
+          "quantity": 1,
+          "keyLoc": [
+            {
+              "loc": {
+                "x": 76,
+                "y": 12
+              },
+              "machine": 0,
+              "disposableHere": true
+            },
+            {
+              "loc": {
+                "x": 70,
+                "y": 20
+              },
+              "machine": 0,
+              "disposableHere": false
+            }
+          ],
+          "originDepth": 3
+        },
+        "cell": {
+          "x": 70,
+          "y": 20,
+          "layers": [
+            62,
+            0,
+            0,
+            0
+          ],
+          "char": "|",
+          "color": 13421823,
+          "volume": 0,
+          "isExplored": false,
+          "isVisible": false,
+          "isClairvoyantVisible": false,
+          "hasMemory": false,
+          "rememberedTerrain": 0,
+          "rememberedAppearance": null,
+          "rememberedLayers": [],
+          "rememberedItem": null,
+          "rememberedItemCategory": null,
+          "isMagicMapped": false,
+          "rememberedTerrainFlags": 0,
+          "rememberedTMFlags": 0,
+          "knownTrapFree": false,
+          "rememberedFlags": null,
+          "light": 0,
+          "isPassable": true,
+          "isOpaque": false,
+          "exposedToFire": 0,
+          "trapType": null,
+          "isDiscovered": false,
+          "autoSearched": false,
+          "machineNumber": 3,
+          "isPowered": false,
+          "hasDormantMonster": false
+        },
+        "terrainNames": [
+          "ALTAR_CAGE_OPEN",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "physical": true
+      }
+    ]
+  }
+]

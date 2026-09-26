@@ -553,7 +553,6 @@ export class Architect {
             const cell = this.grid.getCell(tile.x, tile.y);
             if (cell) {
                 cell.trapType = trapTypes[i % trapTypes.length]!;
-                cell.isPassable = true; // Traps are walkable
             }
         }
 
@@ -585,8 +584,6 @@ export class Architect {
             const plateIdx = trapCount; // Use next floor tile after traps
             const tile = floorTiles[plateIdx]!;
             this.grid.setTerrain(tile.x, tile.y, TerrainType.PRESSURE_PLATE, '_', 0x446644);
-            const cell = this.grid.getCell(tile.x, tile.y);
-            if (cell) cell.isPassable = true;
         }
     }
 

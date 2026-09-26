@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web
+
+stdout | src/test/x2b_terrain_derivation.test.ts > X2b full-layer terrain derivation > natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x2b_terrain_derivation.test.ts (14 tests | 1 failed) 57288ms
+     ✓ fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags 40ms
+     ✓ natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking  985ms
+     ✓ natural Architect/Blueprint/Lake generation through D40 and runtime turns retain the invariant  50533ms
+     ✓ lake filling/cleanup and blueprint rollback recompute both directions 106ms
+     ✓ snapshot restoration derives from layers, even if saved caches are stale 2ms
+     ✓ DF effect callbacks see already refreshed flags; DF clear and promotion preserve other-layer blockers 72ms
+     × discovery, opening doors, foliage promotion, combustion and fire aging keep flags current 113ms
+     ✓ gas insertion/competition/evacuation and clearing retain both positive and negative blockers 130ms
+     ✓ FOV and LOS block foliage but see through crystal; movement does the reverse  1018ms
+     ✓ search uses full-layer blocking for the probability discount and opacity before RNG  956ms
+     ✓ flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms  1196ms
+     ✓ auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes  1072ms
+     ✓ generic/safety/scent keep distinct costs despite identical physical passability 1ms
+     ✓ stagger checks source/destination passability, can enter water and crosses opaque foliage  1063ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2b_terrain_derivation.test.ts > X2b full-layer terrain derivation > discovery, opening doors, foliage promotion, combustion and fire aging keep flags current
+TypeError: Cannot read properties of undefined (reading 'caughtFireCells')
+ ❯ runPromotionUpdate src/engine/Map/Promotion.ts:600:15
+    598|     const promotions = new Uint8Array(W * grid.height);
+    599|     const caughtFire = new Set<number>(
+    600|         (opts.caughtFireCells ?? []).map((p) => idx(p.x, p.y))
+       |               ^
+    601|     );
+    602|     let rngDraws = 0;
+ ❯ src/test/x2b_terrain_derivation.test.ts:121:49
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  02:48:22
+   Duration  59.25s (transform 979ms, setup 0ms, import 1.78s, tests 57.29s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/ai_docs/reports/x2b-evidence/x2b-first.json

@@ -1,0 +1,79 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web
+
+stdout | src/test/u_26a_deep_levels.test.ts > U26a CE deep-level contracts > real movement can swim across a deep-water connection between dry rooms
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2b_terrain_derivation.test.ts > X2b full-layer terrain derivation > natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2b_terrain_derivation.test.ts (19 tests) 31934ms
+     ✓ natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking  526ms
+     ✓ natural Architect/Blueprint/Lake generation through D40 and runtime turns retain the invariant  26442ms
+     ✓ test-room restore and shattering refresh whole-layer replacement and border crystal  507ms
+     ✓ generation arc counts use pathing blockers and door exceptions, without consuming RNG  490ms
+     ✓ FOV and LOS block foliage but see through crystal; movement does the reverse  483ms
+     ✓ search uses full-layer blocking for the probability discount and opacity before RNG  472ms
+     ✓ flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms  498ms
+     ✓ auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes  522ms
+     ✓ force respects both optical and physical blockers, unlike ordinary stagger  511ms
+     ✓ random player teleport never admits physically passable hazards; split uses monster avoidance  520ms
+     ✓ stagger checks source/destination passability, can enter water and crosses opaque foliage  537ms
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE18 seed27/D13: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p1_20_item_placement.test.ts > 地面物品落格可通行性（全局扫描，P1-20） > 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[item-placement] seed=424242 D1..D26 substantive RNG 抽取总数: 2561613
+[item-placement] seed=777 D1..D26 substantive RNG 抽取总数: 2442111
+[item-placement] seed=20260913 D1..D26 substantive RNG 抽取总数: 2019310
+[item-placement] seed=1 D1..D26 substantive RNG 抽取总数: 2210378
+[item-placement] 扫描 4 seeds × 104 层，共 995 件地面物品，违例 0 条；地形分布：（无）
+
+ ✓ src/test/p1_20_item_placement.test.ts (1 test) 40197ms
+     ✓ 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出  40196ms
+stdout | src/test/u_19e_machine_families.test.ts > U19e independent CE selection contract > exact integer selection tickets CE6/7 retain their original weights
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_26a_deep_levels.test.ts (16 tests) 48228ms
+     ✓ real movement can swim across a deep-water connection between dry rooms  326ms
+     ✓ deep hordes and mining light use actual depth, with CE color/profile saturation only  420ms
+     ✓ seed 777: D26–40, all gems, upstairs/cache/save and terminal victory  14436ms
+     ✓ seed 31337: D26–40, all gems, upstairs/cache/save and terminal victory  13675ms
+     ✓ seed 424242: D26–40, all gems, upstairs/cache/save and terminal victory  14751ms
+     ✓ D40 portal rejects an empty pack, then settles 0 gem stacks and description  1161ms
+     ✓ D40 portal rejects an empty pack, then settles 1 gem stacks and description  1132ms
+     ✓ D40 portal rejects an empty pack, then settles 2 gem stacks and description  1028ms
+ ✓ src/test/u_19e_machine_families.test.ts (17 tests) 21938ms
+     ✓ exact integer selection tickets CE6/7 retain their original weights  488ms
+     ✓ exact integer selection tickets CE27/47 retain their original weights  467ms
+     ✓ natural CE1 seed31337/D2  1121ms
+     ✓ natural CE2 seed424242/D3  1300ms
+     ✓ natural CE6 seed777/D21  6620ms
+     ✓ natural CE7 seed1/D23  6929ms
+     ✓ natural CE26 seed424242/D5  1748ms
+     ✓ natural CE47 seed424242/D5  2769ms
+ ✓ src/test/u_19d_machine_families.test.ts (24 tests) 37793ms
+     ✓ natural CE18 seed27/D13: natural action chain  4770ms
+     ✓ natural CE22 seed47/D1: natural action chain  982ms
+     ✓ natural CE23 seed3/D1: natural action chain  724ms
+     ✓ natural CE28 seed1/D1: natural action chain  844ms
+     ✓ natural CE36 seed2/D2: natural action chain  1246ms
+     ✓ natural CE40 seed31337/D19: natural action chain  5652ms
+     ✓ natural CE67 seed424242/D3: natural action chain  1205ms
+     ✓ natural CE68 seed424242/D7: natural action chain  2135ms
+     ✓ natural CE69 seed424242/D8: natural action chain  2092ms
+     ✓ natural CE21 seed3/D25: natural action chain  6868ms
+     ✓ natural CE35 seed2/D20: natural action chain  5373ms
+     ✓ natural CE29 seed424242/D5: natural action chain  1551ms
+     ✓ natural CE43 seed31337/D11: natural action chain  2277ms
+   ✓ CE36 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  333ms
+   ✓ CE38 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  383ms
+   ✓ CE18 both complete barrier alternatives open after search and bump  429ms
+
+ Test Files  5 passed (5)
+      Tests  77 passed (77)
+   Start at  03:28:50
+   Duration  71.18s (transform 1.14s, setup 0ms, import 3.55s, tests 180.09s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/ai_docs/reports/x2b-evidence/regression-premises.json

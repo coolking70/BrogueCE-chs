@@ -1456,3 +1456,21 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 - U26a 终审补漏：CE Items.c:8472 / Time.c:577 要求主动 drop 与水流 drop 都移动 GEM 整堆；补两处例外与两个真实命令用例。01:14 轮已中断并归档 prefinal-gem-drop，不计作终验通过。修复后专项/背包 21/21、13 故障变体全检出、浏览器整堆丢弃/拾取及自然 D40 结局通过；160 层生成观测及压缩文件 SHA-256 与补漏前完全相同，未重捕获基线。重新启动完整冻结终验。
 
 - U26a 最终完成：2026-09-27 01:27:55–02:02:48 CST 固定输入完整复跑，build / 全量 npm test / drift / diff-check 全部退出 0。全量 200 文件、3783 passed、0 failed、8 既有 skipped、5 既有 todo；R∪S 194/194 覆盖。806 个冻结输入 SHA-256 零变化，基线仅登记的浅层与 UR3 改动，CRLF 0。报告 ai_docs/reports/u-26a.report.md 已完成；开发服务器关闭，未暂存、未提交。无实现 TODO；C-0 旧前提修正提案留验收方裁决。
+
+## 2026-09-27 X2b
+
+- 执行 ai_docs/tasks/x2b.prompt.md。先保存浅层/深层/trace 哈希与入场漂移，再分变量修改；任务要求全量测试完整执行，最终不提交。
+- 派生缓存集中到 Cell.refreshTerrainProperties，四层 OR TERRAIN_FLAGS；TerrainType 无依赖模块解除 Grid/目录环。保持 Cell own fields 和存档结构；清除各处布尔覆盖，闭合地形替换、层写、恢复、气体与结晶写口。
+- 自然 4 seed × D1–40：入场 20,293 格缓存差异，派生修复后为 0；424242/D1 的 106 格复现，包含 4 TORCH_WALL / 99 FOLIAGE。ArcCount 另按 CE 路径阻挡/门例外修正，分阶段生成与 UR2/3/4 已归档。
+- FOV/光照保持布尔热读；搜索概率用全层通行旗标；怪物选路复用 monsterAvoids，物理提交另设闸；自动旅行按记忆和危险/免疫过滤；普通击退与力量飞移分判据。气味、安全图等 cost 不合并。
+- 新专项与故障注入验证进行中；浏览器自然样本与真实撞墙/踩踏/开门通过，4 张有头截图已检查。标准技能客户端 canvas 为黑图，文本状态有效，不作视觉通过证据。
+- 入场 shallow/deep 均绿。旧 C-4a 两个启发式前提已录下 HEAD 通过、派生修复后失败的反事实，只翻转前提并保持全部样本，交验收方裁决。当前首轮全量预检尚在跑，正式冻结全量门禁待基线一次重采后执行。
+
+- X2b 完整预检已结束：200 文件、3775 passed、8 failed、8 skipped、5 todo；红灯全部定位（旧 C4a 两前提、层 API 许可、CE28 笼中钥匙、D32 麻痹时即时拾取、CE47 北侧诱导循环、UR3、深层基线）。层 API 改代码适配旧守卫，其余前提/操作脚本均有原实现/单变量反事实，原结果断言和样本不变。专项 77/77 通过，交验收方裁决的前提变更完整登记于报告。
+- 03:30 CST 浅层/深层各一次重采完成，UR3 按原入口一次重录，UR2/4 未动。最终先复跑 13 组故障注入，再冻结全部输入运行 build、完整 npm test、浅层 drift、独立深层 drift、diff-check；期间不修改源码/测试/脚本/基线。
+
+- X2b 终审补漏：PlayerTravel 增加 TM_IS_SECRET 地面危险例外（物理阻挡先拒绝秘密墙），防止自动旅行读取未揭露陷阱。03:30 冻结轮已中止并归档 prefinal-hidden-trap，不算终验完成。新增正反例通过、删除该分支的变体已检出；浏览器最终四张图重看，隐藏/揭露陷阱的 setAutoPath 真实入口检查通过，errors=0。最后 knowledge 阶段重新核对生成/trace；基线不再重采。
+
+- X2b 最后源码守卫收口：03:39 冻结轮发现 PlayerTravel 新增的直接 mechFlags 读取不在 C4a 白名单，改为复用已有 terrainMechFlags 查询入口，许可清单不改。该轮已中止并归档 prefinal-mech-reader；先跑源码/层 API/写口/旅行专项，再做 accessor 等价观测并重新冻结。
+
+- X2b 最终完成：2026-09-27 03:51:37–04:41:16 CST 冻结复跑，build / 完整 npm test / 浅层 drift / 独立深层 drift / diff-check 全部退出 0。201 文件、3803 passed、0 failed、8 既有 skipped、5 既有 todo；R∪S 193/193、全源码树测试 201/201、63 个源码读取守卫及点名清单零遗漏；新增 20/20、最终 14 个故障变体全部检出。830 个冻结输入哈希零变化，基线无意外改动，CRLF 0。报告 ai_docs/reports/x2b.report.md 已收口；开发服务器和隔离浏览器已关闭，未暂存、未提交。§5 四类旧前提/操作脚本迁移交验收方裁决。

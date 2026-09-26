@@ -1,0 +1,22 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web
+
+stdout | src/test/x2b_terrain_derivation.test.ts > X2b full-layer terrain derivation > natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2b_terrain_derivation.test.ts (14 tests) 55079ms
+     ✓ natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking  959ms
+     ✓ natural Architect/Blueprint/Lake generation through D40 and runtime turns retain the invariant  49187ms
+     ✓ FOV and LOS block foliage but see through crystal; movement does the reverse  939ms
+     ✓ search uses full-layer blocking for the probability discount and opacity before RNG  757ms
+     ✓ flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms  1114ms
+     ✓ auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes  798ms
+     ✓ stagger checks source/destination passability, can enter water and crosses opaque foliage  849ms
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests | 28 skipped) 9ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed | 28 skipped (44)
+   Start at  02:53:06
+   Duration  57.82s (transform 1.06s, setup 0ms, import 2.38s, tests 55.09s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/ai_docs/reports/x2b-evidence/x2b-fixed.json

@@ -22,6 +22,7 @@ import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Game, HORDE_POPULATE_FORBIDDEN_FLAGS, type HordeEntry } from '../engine/Core/Game';
 import { TerrainType, DungeonLayer, DCOLS, DROWS } from '../engine/Map/Grid';
+import { TERRAIN_FLAGS, T_OBSTRUCTS_PASSABILITY } from '../engine/Map/TerrainCatalog';
 import { ItemCategory } from '../engine/Items/Item';
 import hordesJson from '../data/hordes.json';
 
@@ -285,7 +286,19 @@ describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 /
                         expect(cell!.isPassable, `seed=${seed} D${d} 护符不应落在墙里`).toBe(true);
                         amuletSeen++;
                     } else if (item.category === ItemCategory.KEY) {
-                        expect(cell!.isPassable, `seed=${seed} D${d} 钥匙不应落在墙里`).toBe(true);
+                        // X2b: CE28 deliberately adopts its key onto an initially
+                        // blocking retractable cage (GlobalsBrogue.c:360-363).
+                        // The old cache mislabeled that cage as passable. Keep
+                        // the floor-key guard, and constrain this single recipe.
+                        if (cell!.layers[DungeonLayer.DUNGEON] === TerrainType.ALTAR_CAGE_RETRACTABLE) {
+                            expect(cell!.isPassable).toBe(false);
+                            expect(cell!.machineNumber).toBeGreaterThan(0);
+                            expect(game.grid.isImpregnable(item.loc.x, item.loc.y)).toBe(true);
+                            expect(item.keyLoc?.length).toBeGreaterThan(0);
+                            expect(cell!.layers.slice(1).some(t => TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_PASSABILITY)).toBe(false);
+                        } else {
+                            expect(cell!.isPassable, `seed=${seed} D${d} 钥匙不应落在墙里`).toBe(true);
+                        }
                     } else if (cell && !cell.isPassable) {
                         onImpassable.push(`seed=${seed} D${d} ${item.name}`);
                     }

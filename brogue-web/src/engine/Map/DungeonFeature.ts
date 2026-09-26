@@ -101,7 +101,6 @@ import { DF, type DungeonFeatureEntry } from './DungeonFeatureCatalog';
 import { qualifyingNear } from '../Generator/GenerationPlacement';
 import { promoteLayersWithMechFlag } from './Promotion';
 import { TM_PROMOTES_ON_CREATURE } from './TerrainCatalog';
-import { T_OBSTRUCTS_VISION } from './TerrainCatalog';
 
 /** CE owns a world, not a return-value event queue. Ports are scoped to a grid;
  * recursion (including promotion during fill) sees the same live transaction. */
@@ -176,9 +175,7 @@ function refreshFeatureCell(grid: Grid, pos: Pos, tile: TerrainType, effects: Du
 export function refreshDungeonCellTerrain(grid: Grid, x: number, y: number): void {
     const cell = grid.getCell(x, y);
     if (!cell) return;
-    const flags = cellTerrainFlags(grid, x, y);
-    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
-    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
+    cell.refreshTerrainProperties();
 }
 
 /** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */

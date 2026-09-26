@@ -180,6 +180,7 @@ export class EnvironmentManager {
         // GasType 的气体成员与 GAS 层 TerrainType 同值同义（枚举双身份），
         // TS 视两枚举为不相交类型，经 number 中转定位。
         cell.layers[DungeonLayer.GAS] = type as unknown as TerrainType;
+        cell.refreshTerrainProperties();
         this.syncMirrorAt(x, y);
         return true;
     }
@@ -190,6 +191,7 @@ export class EnvironmentManager {
         if (!cell) return;
         cell.volume = 0;
         cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
+        cell.refreshTerrainProperties();
         this.syncMirrorAt(x, y);
     }
 
@@ -416,10 +418,12 @@ export class EnvironmentManager {
                             nv = Math.min(3, nv);
                         }
                         cell.layers[DungeonLayer.GAS] = gasType;
+                        cell.refreshTerrainProperties();
                     } else if (cell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING && nv < 1) {
                         // CE :1432-1436：体积归零即收层（不可见残气 volume
                         // 可暂存于 NOTHING 层，CE 同——见文件头 GasCell 注）。
                         cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
+                        cell.refreshTerrainProperties();
                     }
                     // CE :1437-1444：消散二档（读"当前"GAS 层 tile 的旗标——
                     // 换型/收层之后的值，CE 同序）。旧体积为 0 不掷。
@@ -451,13 +455,15 @@ export class EnvironmentManager {
                             if (obstructsGas(newX, newY)) continue;
                             newGasVolume[idx(newX, newY)] = newGasVolume[idx(newX, newY)]! + Math.floor(cell.volume / numSpaces);
                             if (Math.floor(cell.volume / numSpaces) > 0) {
-                                grid.getCell(newX, newY)!.layers[DungeonLayer.GAS] =
-                                    cell.layers[DungeonLayer.GAS]!;
+                                const destination = grid.getCell(newX, newY)!;
+                                destination.layers[DungeonLayer.GAS] = cell.layers[DungeonLayer.GAS]!;
+                                destination.refreshTerrainProperties();
                             }
                         }
                     }
                     newGasVolume[idx(i, j)] = 0;
                     cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
+                    cell.refreshTerrainProperties();
                 }
             }
         }

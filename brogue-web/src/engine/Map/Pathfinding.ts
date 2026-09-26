@@ -3,7 +3,8 @@
  * Implements Dijkstra Maps for grid navigation based on Brogue's Dijkstra.c
  */
 
-import { Grid, TerrainType } from './Grid';
+import { Grid } from './Grid';
+import { genericPathCost } from './TerrainRules';
 
 export const PDS_OBSTRUCTION = 30000;
 export const PDS_FORBIDDEN = 29999;
@@ -76,15 +77,13 @@ export class DijkstraMap {
 
                 if (x === 0 || y === 0 || x === this.width - 1 || y === this.height - 1) {
                     link.cost = PDS_OBSTRUCTION;
-                } else if (!cell || !cell.isPassable) {
-                    // Simplistic heuristic: if not passable, it's either an obstruction (wall) or forbidden (chasm).
-                    if (cell && (cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE)) {
-                        link.cost = PDS_OBSTRUCTION;
-                    } else {
-                        link.cost = PDS_FORBIDDEN;
-                    }
+                } else if (!cell) {
+                    link.cost = PDS_OBSTRUCTION;
                 } else {
-                    link.cost = 1;
+                    // CE populateGenericCostMap, with this legacy API's positive
+                    // sentinels. Player travel, scent and safety own other costs.
+                    const cost = genericPathCost(cell);
+                    link.cost = cost === -2 ? PDS_OBSTRUCTION : cost === -1 ? PDS_FORBIDDEN : cost;
                 }
             }
         }

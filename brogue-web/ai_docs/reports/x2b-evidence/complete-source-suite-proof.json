@@ -1,0 +1,8 @@
+{
+  "scope": "all src/**/*.test.ts; npm excludes only generation_baseline.test.ts, which runs in its separate drift gate",
+  "required": 201,
+  "executed": 201,
+  "missing": [],
+  "unexpected": [],
+  "note": "Extends the final runner inventory from src/test to the complete src tree, including existing engine/data tests. No frozen input changed."
+}

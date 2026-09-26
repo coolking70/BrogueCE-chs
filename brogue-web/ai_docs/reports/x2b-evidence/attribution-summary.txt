@@ -1,0 +1,105 @@
+[
+  { from: 's0', to: 'derived', shallow: 318, deep: 362, mismatches: 0 },
+  {
+    from: 'derived',
+    to: 'generation',
+    shallow: 440,
+    deep: 473,
+    mismatches: 0
+  },
+  {
+    from: 'generation',
+    to: 'search',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  {
+    from: 'search',
+    to: 'movement',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  {
+    from: 'movement',
+    to: 'displacement',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  {
+    from: 'displacement',
+    to: 'travel',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  { from: 'travel', to: 'final', shallow: 0, deep: 0, mismatches: 0 },
+  {
+    from: 'final',
+    to: 'placement',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  {
+    from: 'placement',
+    to: 'review',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  { from: 'review', to: 'guard', shallow: 0, deep: 0, mismatches: 0 },
+  {
+    from: 'guard',
+    to: 'knowledge',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  {
+    from: 'knowledge',
+    to: 'accessor',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  }
+] [
+  {
+    trace: 2,
+    headMatchesGolden: true,
+    stages: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    trace: 3,
+    headMatchesGolden: true,
+    stages: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ]
+  },
+  {
+    trace: 4,
+    headMatchesGolden: true,
+    stages: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ]
+  }
+]

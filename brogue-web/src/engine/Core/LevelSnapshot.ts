@@ -36,6 +36,7 @@ export function restoreGrid(width: number, height: number, cells: readonly CellS
         const cell = grid.getCell(saved.x, saved.y);
         if (!cell) throw new Error('Invalid cell position');
         Object.assign(cell, copyFields(saved as Cell, CELL_FIELDS));
+        cell.refreshTerrainProperties();
     }
     return grid;
 }

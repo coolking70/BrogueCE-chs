@@ -21,7 +21,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
 import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
-import { randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
+import { randomMatchingLocation, passableArcCount as terrainPassableArcCount } from '../Items/ItemSpawnHeatMap';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -67,6 +67,7 @@ import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
+import { playerTravelTerrainAllowed } from '../Movement/PlayerTravel';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
@@ -126,7 +127,7 @@ import { rollStaffDamage } from '../Combat/StaffDamage';
 import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';
 
 import { blinkTargetPreview } from '../Combat/BlinkTargeting';
-import { MONSTER_BLINK } from '../Combat/MonsterBlink';
+import { MONSTER_BLINK, monsterBlinkAvoids } from '../Combat/MonsterBlink';
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterHidden } from '../UI/MonsterVisibility';
 
@@ -1535,25 +1536,11 @@ export class Game {
         return pool[rng.randRange(0, pool.length - 1)]!;
     }
 
-    /**
-     * CE Architect.c:171 passableArcCount：绕格一周统计 8 邻域"可通行↔不可通行"
-     * 的弧段切换数（0=开阔地，1=贴墙，2=走廊，3+=路口）。web 的 cell.isPassable
-     * 对应 CE cellIsPassableOrDoor（门在两侧均计为可通行）。
+    /** CE Architect.c:171: pathing blockers plus secret/key/level doors.
+     * Physical passability alone would count chasms and exclude locked doors.
      */
     private passableArcCount(x: number, y: number): number {
-        // CE GlobalsBase.c:39 cDirs（保持环游顺序）
-        const C_DIRS: ReadonlyArray<readonly [number, number]> = [
-            [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1],
-        ];
-        const passable = (cx: number, cy: number): boolean =>
-            this.grid.getCell(cx, cy)?.isPassable === true;
-        let arcs = 0;
-        for (let dir = 0; dir < 8; dir++) {
-            const [nx, ny] = C_DIRS[dir]!;
-            const [ox, oy] = C_DIRS[(dir + 7) % 8]!;
-            if (passable(x + nx, y + ny) !== passable(x + ox, y + oy)) arcs++;
-        }
-        return arcs / 2;
+        return terrainPassableArcCount(this.grid, x, y);
     }
 
     /**
@@ -1655,7 +1642,8 @@ export class Game {
      * 落格搜索同一口径（该处历史实现即如此，未抽出复用是为了不触碰既有
      * spawnHordeAt 的行为面，见报告"边界"一节）。
      */
-    private findNearbySpawnSpot(center: Pos): Pos | null {
+    private findNearbySpawnSpot(center: Pos, monster: Monster): Pos | null {
+        const forbidden = speciesForbiddenFlags(monster.snapshotForm());
         for (let r = 1; r <= 5; r++) {
             for (let dx = -r; dx <= r; dx++) {
                 for (let dy = -r; dy <= r; dy++) {
@@ -1663,7 +1651,8 @@ export class Game {
                     const nx = center.x + dx;
                     const ny = center.y + dy;
                     const cell = this.grid.getCell(nx, ny);
-                    if (!cell || !cell.isPassable) continue;
+                    if (!cell || (cellTerrainFlags(this.grid, nx, ny) & forbidden)) continue;
+                    if (cell.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL)) continue;
                     if (this.getMonsterAt(nx, ny)) continue;
                     if (this.player.loc.x === nx && this.player.loc.y === ny) continue;
                     return { x: nx, y: ny };
@@ -2313,8 +2302,6 @@ export class Game {
                 cell.terrain = TerrainType.BLOOD;
                 cell.char = '%';
                 cell.color = 0xaa2222;
-                cell.isPassable = true;
-                cell.isOpaque = false;
                 this.needsRender = true;
             }
         }
@@ -5508,6 +5495,7 @@ export class Game {
                 if (!(TERRAIN_FLAGS[dungeonTile].flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) continue;
 
                 cell.layers[DungeonLayer.DUNGEON] = TerrainType.FORCEFIELD; // CE :4916
+                cell.refreshTerrainProperties();
                 // CE :4917: RUBBLE on SURFACE, start=0; also wakes dormant monsters.
                 spawnDungeonFeature(this.grid, i, j, catalogFeature(DF.DF_SHATTERING_SPELL), false);
 
@@ -5523,11 +5511,8 @@ export class Game {
                 }
                 if (i === 0 || i === DCOLS - 1 || j === 0 || j === DROWS - 1) {
                     cell.layers[DungeonLayer.DUNGEON] = TerrainType.CRYSTAL_WALL; // CE :4928-4929（DF 之后覆写）
+                    cell.refreshTerrainProperties();
                 }
-                // Retained layers still obstruct even when the display layer does not.
-                const flags = cellTerrainFlags(this.grid, i, j);
-                cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
-                cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
             }
         }
         this.updateVision(); // CE :4935 updateVision(false)——当场重算
@@ -6268,10 +6253,14 @@ export class Game {
                     const nx = target.loc.x + ndx;
                     const ny = target.loc.y + ndy;
                     const cell = this.grid.getCell(nx, ny);
-                    if (!cell || !cell.isPassable || this.getMonsterAt(nx, ny)) break;
+                    if (!cell || !cell.isPassable || cell.isOpaque || this.getMonsterAt(nx, ny)) break;
                     target.loc.x = nx;
                     target.loc.y = ny;
                     traveled++;
+                }
+                if (traveled > 0) {
+                    this.applyEnvironmentalEffects(target);
+                    this.updateVision();
                 }
                 // CE forceWeaponHit: a collision before full travel damages
                 // both the launched creature and the creature it strikes.
@@ -7026,14 +7015,11 @@ export class Game {
                 defender.hasBehavior('MONST_INANIMATE') || defender.isCaged)) {
             return;
         }
+        if (cellTerrainFlags(this.grid, defender.x, defender.y) & T_OBSTRUCTS_PASSABILITY) return;
         const clamp1 = (v: number) => Math.max(-1, Math.min(1, v));
         const newX = clamp1(defender.loc.x - attacker.loc.x) + defender.loc.x;
         const newY = clamp1(defender.loc.y - attacker.loc.y) + defender.loc.y;
-        if (!this.canMoveTo(newX, newY)) return;
-        if (this.getMonsterAt(newX, newY)) return;
-        if (this.player.loc.x === newX && this.player.loc.y === newY) return;
-        defender.loc.x = newX;
-        defender.loc.y = newY;
+        this.placeCreature(defender, { x: newX, y: newY });
     }
 
     /** CE Monsters.c:568-628. A supplied location belongs to splitMonster;
@@ -7055,8 +7041,7 @@ export class Game {
 
     /** CE Combat.c:222-327: select a contiguous-group edge, halve HP, clone,
      * then strip learned flags/bolts and the now-unsupported permanent flight.
-     * P4-4's existing placement approximation remains: passable, no deep water
-     * or lava; it is not the complete CE monsterAvoids movement policy. */
+     * CE Combat.c:262 uses monsterAvoids, independent of physical passability. */
     private trySplitMonster(defender: Monster, attacker: Creature): void {
         if (!defender.hasAbility('MA_CLONE_SELF_ON_DEFEND')) return;
         if (defender.hp <= 0) return;
@@ -7101,8 +7086,7 @@ export class Game {
                     const nk = key(nx, ny);
                     if (inGroup.has(nk) || eligibleSet.has(nk)) continue;
                     const cell = this.grid.getCell(nx, ny);
-                    if (!cell || !cell.isPassable) continue;
-                    if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.WATER_DEEP)) continue; // F-1 跨层判定
+                    if (!cell || monsterBlinkAvoids(this, defender, { x: nx, y: ny })) continue;
                     if (this.player.loc.x === nx && this.player.loc.y === ny) continue;
                     if (this.getMonsterAt(nx, ny)) continue;
                     eligibleSet.add(nk);
@@ -9341,7 +9325,7 @@ export class Game {
                 // CE Grid.c:347-356 的路径无关兜底（getQualifyingLocNear）——
                 // web 同款切比雪夫环 = findNearbySpawnSpot（P4-2，回避
                 // 怪/玩家/不可走）。
-                if (!relocated) relocated = this.findNearbySpawnSpot(monst.loc);
+                if (!relocated) relocated = this.findNearbySpawnSpot(monst.loc, monst);
                 if (relocated) {
                     monst.loc = relocated;
                     const toCell = this.grid.getCell(relocated.x, relocated.y);
@@ -9458,7 +9442,7 @@ export class Game {
             const isPlayerOnLoot = (curr.x === this.player.loc.x && curr.y === this.player.loc.y);
 
             if (cell && (!cell.isExplored || (hasLoot && !isPlayerOnLoot))
-                && (cell.isVisible ? cell.isPassable : cell.rememberedFlags?.passable ?? !cell.isExplored)) {
+                && this.knownTravelTerrainAllowed(cell)) {
                 target = curr;
                 break;
             }
@@ -9469,8 +9453,7 @@ export class Game {
                 const ny = curr.y + d[1];
                 const nextCell = this.grid.getCell(nx, ny);
                 if (nextCell && this.grid.isValidPos(nx, ny) &&
-                    !(nextCell.isVisible ? nextCell.layers : nextCell.rememberedLayers).includes(TerrainType.WATER_DEEP) &&
-                    (nextCell.isVisible ? nextCell.isPassable : nextCell.rememberedFlags?.passable ?? !nextCell.isExplored)) {
+                    this.knownTravelTerrainAllowed(nextCell)) {
                     const key = `${nx},${ny}`;
                     if (!visited.has(key)) {
                         visited.add(key);
@@ -9570,15 +9553,13 @@ export class Game {
         this.monsters = this.monsters.filter((m) => !this.isInsideTestRoom(room, m.loc.x, m.loc.y));
 
         for (const terrain of room.baselineTerrains) {
-            // C-4a-0：按层直填还原（基线 cells 至多一层非空，与原 setTerrain
-            // 逐位等价）；char/color/通行位照旧由基线值覆盖。
+            // Restore layers and appearance; derive obstruction instead of trusting saved caches.
             const cell = this.grid.getCell(terrain.x, terrain.y);
             if (!cell) continue;
             cell.layers = [...terrain.layers];
+            cell.refreshTerrainProperties();
             cell.char = terrain.char;
             cell.color = terrain.color;
-            cell.isPassable = terrain.isPassable;
-            cell.isOpaque = terrain.isOpaque;
             // F-2a：isBurning 是派生读数（基线无火 ⇒ 复位后恒 false），
             // 原直写三行（isBurning/burnDuration/burnTerrain）随倒计时模型退役。
             // G-1：气体的事实来源在 layers[GAS]+volume（gasGrid 只是镜像），
@@ -9716,7 +9697,7 @@ export class Game {
             if (!canDirectlySee[x]?.[y]) continue; // CE playerCanDirectlySee 先于掷骰
             let percent = searchStrength
                 - Math.max(Math.abs(x - px), Math.abs(y - py)) * 10;
-            if (blocksPassability(cell.terrain)) {
+            if (!cell.isPassable) {
                 percent = (percent * 2) / 3;
             }
             percent = Math.min(percent, 100);
@@ -10013,24 +9994,10 @@ export class Game {
         logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
     }
 
-    /** Teleport player to a random walkable floor tile. */
+    /** CE scroll/final-depth fall teleport: use the existing terrain-aware
+     * destination policy and displacement commit, never a passable-only pool. */
     private teleportPlayerRandom() {
-        const candidates: { x: number, y: number }[] = [];
-        for (let x = 1; x < this.grid.width - 1; x++) {
-            for (let y = 1; y < this.grid.height - 1; y++) {
-                const cell = this.grid.getCell(x, y);
-                if (cell?.isPassable && !this.getMonsterAt(x, y) &&
-                    !(this.player.loc.x === x && this.player.loc.y === y)) {
-                    candidates.push({ x, y });
-                }
-            }
-        }
-        if (candidates.length > 0) {
-            const dest = candidates[rng.randRange(0, candidates.length - 1)]!;
-            this.player.loc.x = dest.x;
-            this.player.loc.y = dest.y;
-            this.needsRender = true;
-        }
+        this.teleportCreature(this.player);
     }
 
     private getTerrainName(terrain: TerrainType): string {
@@ -10271,15 +10238,14 @@ export class Game {
         }
     }
 
+    private knownTravelTerrainAllowed(cell: Cell): boolean {
+        return playerTravelTerrainAllowed(cell, this.grid.getCell(this.player.x, this.player.y)!, this.player);
+    }
+
     public setAutoPath(x: number, y: number) {
         const knownPassable = (px: number, py: number): boolean => {
             const cell = this.grid.getCell(px, py);
-            if (!cell) return false;
-            if (cell.isVisible) return this.canMoveTo(px, py);
-            if (cell.hasMemory || cell.isMagicMapped) {
-                return !cell.rememberedLayers.some(t => blocksPassability(t) || isDeepWater(t));
-            }
-            return true; // An unknown frontier has no known obstruction.
+            return !!cell && this.knownTravelTerrainAllowed(cell);
         };
         const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, knownPassable);
         if (path && path.length > 0) {
@@ -10384,7 +10350,7 @@ export class Game {
         }
 
         // Ensure path is still valid space
-        if (!this.canMoveTo(next.x, next.y)) {
+        if (!this.grid.getCell(next.x, next.y)?.isPassable) {
             this.autoPath = [];
             logger.log(i18next.t('move.path_blocked', { defaultValue: 'Path blocked.' }), '#ffaa88');
             this.needsRender = true;

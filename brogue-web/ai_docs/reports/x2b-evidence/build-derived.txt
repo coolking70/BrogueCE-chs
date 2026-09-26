@@ -1,0 +1,7 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/engine/Core/Game.ts(5499,23): error TS6133: 'flags' is declared but its value is never read.
+src/engine/Generator/Architect.ts(587,19): error TS6133: 'cell' is declared but its value is never read.
+src/engine/Map/DungeonFeature.ts(104,1): error TS6133: 'T_OBSTRUCTS_VISION' is declared but its value is never read.

@@ -859,39 +859,30 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
         expect(offenders, `promote/fire 类字段出现了白名单之外的生产读者：\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('留痕：setTerrain 启发式现状 = P1-38 分歧表（接 CE 判据的轮次须先更新测量报告再翻转本断言）', () => {
-        // 现状（旧硬编码启发式，本轮不迁移因为答案会变）：
-        //   isPassable = !(WALL|GRANITE|CHASM|SECRET_DOOR)
-        //   isOpaque   =  WALL|GRANITE|DOOR|SECRET_DOOR
-        // 与 CE 查表判据的两处分歧（P1-38 病灶）：LOCKED_DOOR 的 isPassable
-        // 现状 true（CE blocksPassability=true）；CHASM 现状 false（CE false
-        // ——但 isPathingBlocker=true）；isOpaque 对 LOCKED_DOOR 现状 false
-        // （CE blocksVision=true）、对 FOLIAGE 现状 false（CE true）。
+    // X2b premise migration: old HEAD + old assertions pass; unified terrain
+    // flags + old assertions fail (x2b-evidence/premise-{and-deep-before,derived}.json).
+    // Preserve full catalog coverage; the legacy whitelist is no longer the contract.
+    it('X2b：setTerrain 通行/视线由全部地形旗标派生', () => {
         const g = new Grid(40, 40);
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             g.setTerrain(20, 20, t);
             const cell = g.getCell(20, 20)!;
-            const wantPassable = !(t === C.WALL || t === C.GRANITE || t === C.CHASM || t === C.SECRET_DOOR);
-            const wantOpaque = t === C.WALL || t === C.GRANITE || t === C.DOOR || t === C.SECRET_DOOR;
-            expect(cell.isPassable, `${TerrainType[t]}.isPassable（现状启发式）`).toBe(wantPassable);
-            expect(cell.isOpaque, `${TerrainType[t]}.isOpaque（现状启发式）`).toBe(wantOpaque);
+            const wantPassable = !(TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_PASSABILITY);
+            const wantOpaque = !!(TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_VISION);
+            expect(cell.isPassable, `${TerrainType[t]}.isPassable（全层旗标）`).toBe(wantPassable);
+            expect(cell.isOpaque, `${TerrainType[t]}.isOpaque（全层旗标）`).toBe(wantOpaque);
         }
         // 病灶行单独点名（翻转变更时不可能漏看）：
         g.setTerrain(10, 10, C.LOCKED_DOOR);
-        expect(g.getCell(10, 10)!.isPassable, 'LOCKED_DOOR 现状可通行（CE 为不可）').toBe(true);
+        expect(g.getCell(10, 10)!.isPassable, 'LOCKED_DOOR blocks physical passage').toBe(false);
         g.setTerrain(11, 10, C.CHASM);
-        expect(g.getCell(11, 10)!.isPassable, 'CHASM 现状不可通行（CE 可走、坠层）').toBe(false);
+        expect(g.getCell(11, 10)!.isPassable, 'CHASM permits physical passage; path costs still forbid it').toBe(true);
     });
 
-    it('留痕：Pathfinding.calculateMap cost 现状——深水/锁门/岩浆/陷阱 cost=1（C-4b 接 isPathingBlocker 后翻转为 PDS_OBSTRUCTION）', () => {
-        // 现状口径：isPassable=false 的格按地形分流（WALL/GRANITE →
-        // PDS_OBSTRUCTION，其余 → PDS_FORBIDDEN）；isPassable=true → cost=1。
-        // 若改用 isPathingBlocker：blocker 全系 → PDS_OBSTRUCTION，
-        // WATER_DEEP/LOCKED_DOOR/LAVA/TRAP/PRESSURE_PLATE/INERT_BRIMSTONE
-        // 的 cost 将从 1 变 30000（距离图真变），CHASM/SECRET_DOOR 从
-        // 29999 变 30000（仅数值）。影响规模见下方干跑测量用例。
+    it('X2b：calculateMap 保留 generic cost，区别于物理通行、气味和安全图', () => {
+        // CE Movement.c:2017-2037; this legacy API retains positive sentinels.
         const buildCostOf = (t: TerrainType): number => {
             const g = new Grid(12, 12);
             g.setTerrain(6, 6, C.FLOOR); // 目标格必须可走，Dijkstra 才会启动
@@ -903,10 +894,12 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
         expect(buildCostOf(C.WALL)).toBe(PDS_OBSTRUCTION);
         expect(buildCostOf(C.GRANITE)).toBe(PDS_OBSTRUCTION);
         expect(buildCostOf(C.CHASM)).toBe(PDS_FORBIDDEN);
-        expect(buildCostOf(C.SECRET_DOOR)).toBe(PDS_FORBIDDEN);
-        for (const t of [C.WATER_DEEP, C.LOCKED_DOOR, C.LAVA, C.TRAP, C.PRESSURE_PLATE, C.INERT_BRIMSTONE, C.FLOOR]) {
-            expect(buildCostOf(t), `${TerrainType[t]} 现状 cost`).toBe(1);
+        expect(buildCostOf(C.SECRET_DOOR)).toBe(1);
+        expect(buildCostOf(C.LOCKED_DOOR)).toBe(PDS_OBSTRUCTION);
+        for (const t of [C.WATER_DEEP, C.LAVA, C.TRAP, C.PRESSURE_PLATE, C.INERT_BRIMSTONE]) {
+            expect(buildCostOf(t), `${TerrainType[t]} generic cost`).toBe(PDS_FORBIDDEN);
         }
+        expect(buildCostOf(C.FLOOR)).toBe(1);
     });
 });
 

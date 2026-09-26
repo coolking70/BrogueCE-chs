@@ -1009,8 +1009,7 @@ export function tunnelize(grid: Grid, x: number, y: number, hooks: {
     // Existing FOV/legacy path consumers use these derived booleans. Evaluate
     // all retained layers, including transparent impassable crystal at edges.
     const flags = cellTerrainFlags(grid, x, y);
-    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
-    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
+    cell.refreshTerrainProperties();
     hooks.afterOpen?.({ x, y });
     if (!(flags & T_OBSTRUCTS_DIAGONAL_MOVEMENT)) {
         // CE nbDirs order; only diagonal neighbors can form a kink.

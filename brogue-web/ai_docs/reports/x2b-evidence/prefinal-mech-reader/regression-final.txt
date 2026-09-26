@@ -1,0 +1,144 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2b-evidence/regression-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web
+
+stdout | src/test/horde_terrain_spawn.test.ts > 地形感知落点 — randomMatchingLocation 语义（CE Architect.c:3822） > 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_26a_deep_baseline.test.ts > U26a independent D27–40 generation baseline > four full-run seeds retain deep terrain, population, gem quantity, origins and positions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_26a_deep_baseline.test.ts (1 test) 153962ms
+     ✓ four full-run seeds retain deep terrain, population, gem quantity, origins and positions  153960ms
+stdout | src/test/horde_terrain_spawn.test.ts > 地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 / 物品） > 多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙
+[horde_terrain_spawn] 既有行为记录（machine/vault 质心落墙，与本次修复无关）：
+  seed=424242 D5 Charm of Health
+  seed=424242 D8 Dagger
+
+stdout | src/test/u_r3_trace.test.ts > UR3 complete generation and revisit trace > matches HEAD for four drift seeds through D26 and cached/save return
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r3_trace.test.ts (1 test) 146793ms
+     ✓ matches HEAD for four drift seeds through D26 and cached/save return  146791ms
+stdout | src/test/x2b_terrain_derivation.test.ts > X2b full-layer terrain derivation > natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/horde_terrain_spawn.test.ts > 修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计（对照修复前 = 0 次） > 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数
+[horde_terrain_spawn] 8 seed × D1-D26（208 层）统计：
+  水生物种总出现次数：338；其中精确落在 spawnsIn 目标地形（horde 循环产物，修复前恒为 0）：275
+  非目标地形出现（笼子/蓝图/成员溢出等既有路径）：63
+  分物种：BOG_MONSTER×189(正确落格141) EEL×98(正确落格98) KRAKEN×21(正确落格21) SALAMANDER×16(正确落格8) NAGA×14(正确落格7)
+  有水生 horde 的层数：103/208 (49.5%)
+  有 WATER_DEEP 格的层数：95/208 (45.7%)
+  完全没有深水格的层数：113/208 (54.3%)
+  有 MUD 格的层数：150/208；有 LAVA 格的层数：51/208
+  非目标地形样本：seed=424242 D14 Salamander@29,2 terrain=2 | seed=424242 D14 Naga@30,3 terrain=2 | seed=424242 D14 Naga@30,2 terrain=2 | seed=424242 D21 explosive Bog monster@19,4 terrain=23 | seed=424242 D21 toxic Bog monster@20,3 terrain=23 | seed=424242 D21 toxic Bog monster@18,4 terrain=23 | seed=424242 D22 Bog monster@2,8 terrain=99 | seed=424242 D22 juggernaut Bog monster@1,7 terrain=169 | seed=424242 D22 reflective Bog monster@2,7 terrain=169 | seed=424242 D22 Bog monster@3,7 terrain=169 | seed=424242 D22 Bog monster@3,8 terrain=169 | seed=20260914 D22 Bog monster@66,18 terrain=23
+  分深度：
+D 1: 水生层 0/8
+D 2: 水生层 3/8
+D 3: 水生层 4/8
+D 4: 水生层 4/8
+D 5: 水生层 3/8
+D 6: 水生层 0/8
+D 7: 水生层 5/8
+D 8: 水生层 4/8
+D 9: 水生层 4/8
+D10: 水生层 3/8
+D11: 水生层 4/8
+D12: 水生层 3/8
+D13: 水生层 7/8
+D14: 水生层 8/8
+D15: 水生层 6/8
+D16: 水生层 6/8
+D17: 水生层 6/8
+D18: 水生层 4/8
+D19: 水生层 3/8
+D20: 水生层 2/8
+D21: 水生层 3/8
+D22: 水生层 7/8
+D23: 水生层 2/8
+D24: 水生层 4/8
+D25: 水生层 5/8
+D26: 水生层 3/8
+
+ ✓ src/test/horde_terrain_spawn.test.ts (10 tests) 363796ms
+     ✓ 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上  1811ms
+     ✓ findTerrainSpawnLocation 只返回目标地形格，且排除玩家近旁与已占用格  1344ms
+     ✓ 无深水格时返回 null（调用方据此在 failsafe 50 内重抽 horde）  1221ms
+     ✓ D8 候选池含两条 EEL horde 且加权抽取可命中（修复的前提条件）  2256ms
+     ✓ passableArcCount 弧段计数（CE Architect.c:171）：计数有界且与邻域可通行性一致  1292ms
+     ✓ hordeFitsTerrain CE PB：普通群拒绝深水；DEEP_WATER 只认 WATER_DEEP  1292ms
+     ✓ 仅作为无 spawnsIn horde 领袖出现的物种，经 horde 循环落格必在 FLOOR 上  72219ms
+     ✓ 多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙  95734ms
+     ✓ 盐渍深水图上重复 populateLevel：EEL horde 会被真实铺怪路径刷出且领袖在深水格  2087ms
+     ✓ 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数  184535ms
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：12227 格
+    按地形：WATER_DEEP=2947，CHASM=2696，LAVA=1690，TRAP=1639，ACTIVE_BRIMSTONE=404，GAS_TRAP_PARALYSIS_HIDDEN=398，TRAP_DOOR_HIDDEN=377，PRESSURE_PLATE=329，GAS_TRAP_POISON_HIDDEN=260，NET_TRAP_HIDDEN=260，ALARM_TRAP_HIDDEN=224，GAS_TRAP_CONFUSION_HIDDEN=217，FLAMETHROWER_HIDDEN=178，FLOOD_TRAP_HIDDEN=150，INERT_BRIMSTONE=136，CHASM_WITH_HIDDEN_BRIDGE=93，BRIMSTONE_FIRE=50，FLAMETHROWER=38，TRAP_DOOR=28，GAS_TRAP_CONFUSION=24，GAS_TRAP_PARALYSIS=19，LAVA_RETRACTABLE=18，ALARM_TRAP=16，NET_TRAP=12，FLOOD_TRAP=10，PLAIN_FIRE=8，GAS_TRAP_POISON=6
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：10715 格
+    按地形：TORCH_WALL=4113，CRYSTAL_WALL=1948，SECRET_DOOR=1704，STATUE_INERT=1426，MUD_WALL=686，BLOODFLOWER_STALK=452，STATUE_DORMANT=88，WALL_MONSTER_DORMANT=73，LOCKED_DOOR=60，TURRET_DORMANT=33，MONSTER_CAGE_CLOSED=25，RAT_TRAP_WALL_DORMANT=10，TURRET_LEVER=10，HAUNTED_TORCH_DORMANT=10，DEWAR_METHANE_GAS=7，WALL_LEVER_HIDDEN=7，ELECTRIC_CRYSTAL_OFF=7，SACRIFICE_CAGE_DORMANT=6，DEMONIC_STATUE=6，STATUE_INSTACRACK=6，ALTAR_CAGE_RETRACTABLE=6，STATUE_INERT_DOORWAY=5，WORM_TUNNEL_OUTER_WALL=4，DEWAR_CONFUSION_GAS=4，DEWAR_CAUSTIC_GAS=4，PORTCULLIS_CLOSED=4，WALL_LEVER_HIDDEN_DORMANT=3，WOODEN_BARRICADE=3，DEWAR_PARALYSIS_GAS=2，STATUE_DORMANT_DOORWAY=2，PILOT_LIGHT_DORMANT=1
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts (30 tests | 1 failed) 370836ms
+     ✓ T_PATHING_BLOCKER 恰为七旗标并集：漏一员（popcount=6）或混入外员（≥8）都翻红 2ms
+     ✓ 其余复合旗标逐个对位（Rogue.h:1947-1954） 0ms
+     ✓ 全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined 43ms
+     ✓ webOnly 标记恰为 4 条：BOG / SIGN / RESET_PLATE / CHARRED_FLOOR，其余全 false 1ms
+     ✓ webOnly 地形的兜底旗标（写错即红）：BOG 可燃，SIGN/RESET_PLATE/CHARRED_FLOOR 零旗标 0ms
+     ✓ F-1 新增条目：PLAIN_FIRE（CE Globals.c:492）逐字段钉死 0ms
+     ✓ F-2a 新增条目：EMBERS（CE Globals.c:469）与 ASH（:461）逐字段钉死 0ms
+     ✓ G-1 新增条目：POISON_GAS（Globals.c:502）/ CONFUSION_GAS（:503）/ STEAM（:508）逐字段钉死 0ms
+     ✓ G-2 新增条目：GAS_FIRE（Globals.c:495）/ METHANE_GAS（:507）逐字段钉死 0ms
+     ✓ G-3 新增条目：PARALYSIS_GAS（CE Globals.c:506）逐字段钉死 0ms
+     ✓ B-3 新增条目：FORCEFIELD（Globals.c:477）/ FORCEFIELD_MELT（:478）逐字段钉死 0ms
+     ✓ B-3 新增条目：CRYSTAL_WALL（Globals.c:338）与 SACRED_GLYPH（:479）逐字段钉死 12ms
+     ✓ V-2b-2b 新增条目：机器蓝图地形载体六条逐字段钉死（CE Globals.c 原列） 1ms
+     ✓ F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集 0ms
+     ✓ blocksPassability ≠ isPathingBlocker：CHASM/TRAP/LAVA/WATER_DEEP/INERT_BRIMSTONE 只被后者挡 0ms
+     ✓ blocksVision ≠ blocksPassability：FOLIAGE/DOOR 挡视线不挡路 0ms
+     ✓ flags 抄错的可观测后果：T_IS_DEEP_WATER 只在深水；楼梯挡物品；蛛网缠绕 3ms
+     ✓ mechFlags 抄录抽查：深水灭火/可潜、锁门要钥匙、密门 IS_SECRET 0ms
+     ✓ terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP} 2ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  2124ms
+     ✓ B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）  1574ms
+     ✓ V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）  2547ms
+     ✓ V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）  1407ms
+     ✓ V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）  1614ms
+     ✓ V-2b-6：钥匙轮载体的通行判定 = CE 查表口径（两条挡通行、四条可走）  2599ms
+     ✓ V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）  1310ms
+     × 留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件 46ms
+     ✓ X2b：setTerrain 通行/视线由全部地形旗标派生 5ms
+     ✓ X2b：calculateMap 保留 generic cost，区别于物理通行、气味和安全图 2ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  357535ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2b_terrain_derivation.test.ts (20 tests) 96611ms
+     ✓ production has one boolean derivation owner and an exhaustive direct-layer writer inventory  502ms
+     ✓ natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking  1433ms
+     ✓ natural Architect/Blueprint/Lake generation through D40 and runtime turns retain the invariant  79491ms
+     ✓ test-room restore and shattering refresh whole-layer replacement and border crystal  1567ms
+     ✓ generation arc counts use pathing blockers and door exceptions, without consuming RNG  1535ms
+     ✓ FOV and LOS block foliage but see through crystal; movement does the reverse  1288ms
+     ✓ search uses full-layer blocking for the probability discount and opacity before RNG  1259ms
+     ✓ flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms  1409ms
+     ✓ auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes  1357ms
+     ✓ auto travel does not reveal secret floor hazards, but still blocks secret walls  1304ms
+     ✓ force respects both optical and physical blockers, unlike ordinary stagger  1504ms
+     ✓ random player teleport never admits physically passable hazards; split uses monster avoidance  1667ms
+     ✓ stagger checks source/destination passability, can enter water and crosses opaque foliage  1524ms
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+

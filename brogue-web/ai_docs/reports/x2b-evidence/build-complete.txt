@@ -1,0 +1,6 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/x2b_terrain_derivation.test.ts(122,73): error TS2345: Argument of type '{}' is not assignable to parameter of type 'PromotionDriverOptions'.
+  Property 'keyOnTileAt' is missing in type '{}' but required in type 'PromotionDriverOptions'.

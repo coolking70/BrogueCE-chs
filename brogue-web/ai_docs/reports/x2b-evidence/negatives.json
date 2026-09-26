@@ -1,0 +1,184 @@
+[
+  {
+    "variant": "effective-only",
+    "title": "fresh cells",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags",
+        "messages": [
+          "AssertionError: 1,1: FLOOR/NOTHING/FORCEFIELD/NOTHING: expected [ true, false ] to deeply equal [ false, false ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:82:62\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "skip-gas",
+    "title": "fresh cells",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags",
+        "messages": [
+          "AssertionError: 1,1: FLOOR/NOTHING/FORCEFIELD/NOTHING: expected [ true, false ] to deeply equal [ false, false ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:82:62\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "layer-write",
+    "title": "fresh cells",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags",
+        "messages": [
+          "AssertionError: 1,1: NOTHING/FORCEFIELD/NOTHING/NOTHING: expected [ true, false ] to deeply equal [ false, false ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:82:62\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "home-write",
+    "title": "fresh cells",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags",
+        "messages": [
+          "AssertionError: 1,1: GRANITE/NOTHING/NOTHING/NOTHING: expected [ true, false ] to deeply equal [ false, true ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:76:39\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "snapshot",
+    "title": "snapshot restoration",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation snapshot restoration derives from layers, even if saved caches are stale",
+        "messages": [
+          "AssertionError: 0,0: FLOOR/NOTHING/NOTHING/NOTHING: expected [ false, true ] to deeply equal [ true, false ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at assertGrid (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:29:66)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:126:50\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "room-restore",
+    "title": "test-room restore",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b full-layer terrain derivation test-room restore and shattering refresh whole-layer replacement and border crystal",
+        "messages": [
+          "AssertionError: 12,10: TORCH_WALL/NOTHING/NOTHING/NOTHING: expected [ true, false ] to deeply equal [ false, true ]\n    at assertCell (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:26:10)\n    at assertGrid (/Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:29:66)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:155:30\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "search",
+    "title": "search uses",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility search uses full-layer blocking for the probability discount and opacity before RNG",
+        "messages": [
+          "AssertionError: expected \"randPercent\" to be called with arguments: [ 26.666666666666668 ]\n\nReceived:\n\n  1st randPercent call:\n\n  [\n-   26.666666666666668,\n+   40,\n  ]\n\n\nNumber of calls: 1\n\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1487:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:199:46\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "force",
+    "title": "force respects",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility force respects both optical and physical blockers, unlike ordinary stagger",
+        "messages": [
+          "AssertionError: expected 19 to be 11 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:245:94\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "stagger",
+    "title": "stagger checks",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility stagger checks source/destination passability, can enter water and crosses opaque foliage",
+        "messages": [
+          "AssertionError: expected { x: 11, y: 10 } to deeply equal { x: 12, y: 10 }\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:262:93\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "generation-arcs",
+    "title": "generation arc counts",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility generation arc counts use pathing blockers and door exceptions, without consuming RNG",
+        "messages": [
+          "AssertionError: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:180:71\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "flight",
+    "title": "flight walks",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms",
+        "messages": [
+          "AssertionError: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:205:102\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "travel",
+    "title": "auto travel uses",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes",
+        "messages": [
+          "AssertionError: expected true to be false // Object.is equality\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:215:64\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "hidden-travel",
+    "title": "auto travel does not",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility auto travel does not reveal secret floor hazards, but still blocks secret walls",
+        "messages": [
+          "AssertionError: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:229:103\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "split",
+    "title": "random player teleport",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2b consumers retain their CE terrain responsibility random player teleport never admits physically passable hazards; split uses monster avoidance",
+        "messages": [
+          "AssertionError: expected [ Monster{ id: 22, …(78) }, …(1) ] to have a length of 1 but got 2\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/src/test/x2b_terrain_derivation.test.ts:258:28\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/298e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  }
+]

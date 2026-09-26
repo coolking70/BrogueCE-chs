@@ -1,6 +1,6 @@
 /** U18a: caller-specific terrain contracts. These queries neither move creatures
  * nor mutate terrain, knowledge, occupancy or RNG. See u-18a.report.md.
- * Cell.isPassable/isOpaque remain legacy projections for unmigrated callers.
+ * Cell.isPassable/isOpaque cache physical obstruction and optical opacity only.
  */
 import type { Cell } from './Grid';
 import { terrainFlagsOfCell, terrainMechFlagsOfCell, discoveredTerrainFlagsOfCell } from './DungeonFeature';
@@ -15,7 +15,7 @@ export function terrainBlocksMovement(cell: Cell): boolean {
     return !!(terrainFlagsOfCell(cell) & T_OBSTRUCTS_PASSABILITY);
 }
 
-/** Optical opacity, not a movement/flight permission. Not yet wired to lighting. */
+/** Optical opacity, not a movement/flight permission. FOV reads the equivalent cache. */
 export function terrainBlocksVision(cell: Cell): boolean {
     return !!(terrainFlagsOfCell(cell) & T_OBSTRUCTS_VISION);
 }

@@ -10,6 +10,7 @@ import { Player, TURNS_FOR_FULL_REGEN } from './Player';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
+import { terrainPassableOrSecretDoor } from '../engine/Map/TerrainRules';
 import { getSafetyMapForMonster, safetyNextStep } from '../engine/Map/SafetyMap';
 import type { WaypointSystem } from '../engine/Map/WaypointMap';
 import { CombatSystem } from '../engine/Combat/Combat';
@@ -21,13 +22,13 @@ import type { StatusId } from './Creature';
 import monsterCatalogData from '../data/monsters.json';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
-import { breakEntanglingTerrain } from '../engine/Map/Promotion';
+import { breakEntanglingTerrain, discoverTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
 import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafety, blinkFromHarmfulTerrain,
-    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue, monsterAvoidsCorridor } from '../engine/Combat/MonsterBlink';
+    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue, monsterAvoidsCorridor, monsterBlinkAvoids } from '../engine/Combat/MonsterBlink';
 import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic, passiveCorpseStep } from '../engine/Combat/MonsterAbsorption';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { burnedTerrainFlagsOfCell, cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
@@ -1570,7 +1571,7 @@ export class Monster extends Creature {
                     this.givenUpOnScent = false;
                     if (rng.randPercent(30)) {
                         const steps = BLADE_DIRECTIONS.map(([dx, dy]) => ({ x: this.x + dx, y: this.y + dy }))
-                            .filter(p => game.grid.getCell(p.x, p.y)?.isPassable && !game.getMonsterAt(p.x, p.y)
+                            .filter(p => this.canEnterMovementTerrain(game, p.x, p.y) && !game.getMonsterAt(p.x, p.y)
                                 && !(game.player.x === p.x && game.player.y === p.y));
                         if (steps.length) {
                             const step = steps[rng.randRange(0, steps.length - 1)]!;
@@ -1579,14 +1580,14 @@ export class Monster extends Creature {
                     }
                 } else {
                     const dir = this.givenUpOnScent ? null : game.scent.stepDirection(game.grid, this.x, this.y, {
-                        canEnter: (x, y) => !!game.grid.getCell(x, y)?.isPassable && !game.getMonsterAt(x, y)
+                        canEnter: (x, y) => this.canEnterMovementTerrain(game, x, y) && !game.getMonsterAt(x, y)
                             && !(game.player.x === x && game.player.y === y),
                     });
                     if (dir) this.tryMoveTo(this.x + dir[0], this.y + dir[1], game);
                     else {
                         this.givenUpOnScent = true;
                         const path = Pathfind.findPath(game.grid, this.x, this.y, game.player.x, game.player.y,
-                            (x, y) => !!game.grid.getCell(x, y)?.isPassable && !game.getMonsterAt(x, y));
+                            (x, y) => this.canEnterMovementTerrain(game, x, y) && !game.getMonsterAt(x, y));
                         if (path?.length) this.tryMoveTo(path[0]!.x, path[0]!.y, game);
                     }
                 }
@@ -1634,7 +1635,7 @@ export class Monster extends Creature {
                 const nx = this.loc.x + dir[0]!;
                 const ny = this.loc.y + dir[1]!;
                 const c = game.grid.getCell(nx, ny);
-                if (c && c.isPassable && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {
+                if (c && this.canEnterMovementTerrain(game, nx, ny) && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {
                     this.tryMoveTo(nx, ny, game);
                 }
                 return;
@@ -1645,8 +1646,6 @@ export class Monster extends Creature {
             this.state = MonsterState.FLEEING;
             game.spawnFloatingText('?', this.loc.x, this.loc.y, 0xaaaa00);
         }
-
-        const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
 
         if (this.state === MonsterState.FLEEING) {
             if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
@@ -1665,7 +1664,7 @@ export class Monster extends Creature {
                 const safetyCanEnter = (x: number, y: number): boolean => {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
-                    if (isFlying ? c.isOpaque : !c.isPassable) return false;
+                    if (!this.canEnterMovementTerrain(game, x, y)) return false;
                     return !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
                 };
                 const map = getSafetyMapForMonster(game, this);
@@ -1930,7 +1929,7 @@ export class Monster extends Creature {
                             const nx = this.loc.x + dx;
                             const ny = this.loc.y + dy;
                             const c = game.grid.getCell(nx, ny);
-                            if (c && (isFlying ? !c.isOpaque : c.isPassable) && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {
+                            if (c && this.canEnterMovementTerrain(game, nx, ny) && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {
                                 const dist = Math.max(Math.abs(nx - game.player.loc.x), Math.abs(ny - game.player.loc.y));
                                 if (dist > bestScore) {
                                     bestScore = dist;
@@ -1963,8 +1962,7 @@ export class Monster extends Creature {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
                     if (!this.canEnterWaterTerrain(game, x, y)) return false;
-                    if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
-                    return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
+                    return this.canEnterMovementTerrain(game, x, y) && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
                 };
 
                 if (!canSeePlayer && !(this.hasBehavior('MONST_ALWAYS_HUNTING') && this.givenUpOnScent)) {
@@ -2003,8 +2001,7 @@ export class Monster extends Creature {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
                     if (!this.canEnterWaterTerrain(game, x, y)) return false;
-                    if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y);
-                    return c.isPassable && !game.getMonsterAt(x, y);
+                    return this.canEnterMovementTerrain(game, x, y) && !game.getMonsterAt(x, y);
                 });
 
                 if (path && path.length > 0) {
@@ -2064,7 +2061,7 @@ export class Monster extends Creature {
             const ny = this.loc.y + dy!;
             const c = game.grid.getCell(nx, ny);
             if (!c) continue;
-            const canEnter = this.canEnterWaterTerrain(game, nx, ny) && c.isPassable;
+            const canEnter = this.canEnterMovementTerrain(game, nx, ny);
             if (canEnter && !game.getMonsterAt(nx, ny) &&
                 !(game.player.loc.x === nx && game.player.loc.y === ny)) {
                 valid.push([dx!, dy!]);
@@ -2072,6 +2069,14 @@ export class Monster extends Creature {
         }
         if (valid.length === 0) return null;
         return valid[rng.randRange(0, valid.length - 1)]!;
+    }
+
+    /** CE monsterAvoids chooses terrain for walking; vision opacity is never
+     * flight permission. The actual move still validates physical obstruction.
+     */
+    private canEnterMovementTerrain(game: Game, x: number, y: number): boolean {
+        return this.canEnterWaterTerrain(game, x, y)
+            && !monsterBlinkAvoids(game, this, { x, y });
     }
 
     /** CE Monsters.c:1488-1493, 3768-3770: water avoidance and aquatic bounds. */
@@ -2129,6 +2134,9 @@ export class Monster extends Creature {
             if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, stepDx, stepDy)) return;
         }
 
+        const destination = game.grid.getCell(nx, ny)!;
+        if (!terrainPassableOrSecretDoor(destination)) return;
+        if (destination.isVisible && !destination.isPassable) discoverTerrain(game.grid, nx, ny);
         this.loc.x = nx;
         this.loc.y = ny;
         if (!(cellTerrainFlags(game.grid, nx, ny) & T_ENTANGLES)) this.setStatusDuration('stuck', 0);

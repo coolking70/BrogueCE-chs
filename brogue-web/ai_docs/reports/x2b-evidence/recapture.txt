@@ -1,0 +1,37 @@
+[
+  {
+    file: 'src/test/fixtures/generation_baseline.json',
+    before: 'f8393ee0c7e5ada3817b9e368c9ad8bb96fea12ca61408bc9508e6e979143933',
+    after: '8fbfc182a1c1e6e53a0cb5a5ac49cebfd343c0cf1aa65acb7b0ce5a7cf3afc8d',
+    writes: 1,
+    changes: 44
+  },
+  {
+    file: 'src/test/fixtures/deep_generation_baseline.json',
+    before: '2134a90cd9dce7237846f2a9fe4fec0362d0dbdb48bb16d28f568bbc4d923d16',
+    after: '4349308067bc804e90cd99149f6362b0f1a00bab25d44f858ea3500b2cb0780b',
+    writes: 1,
+    changes: 62
+  },
+  {
+    file: 'ai_docs/reports/u-r2-trace.json',
+    before: '4d6b62462fc8962732dd39a58f1c1a714909c7e8e3d9b98200b7f4804ec17bb9',
+    after: '4d6b62462fc8962732dd39a58f1c1a714909c7e8e3d9b98200b7f4804ec17bb9',
+    writes: 0,
+    changes: undefined
+  },
+  {
+    file: 'ai_docs/reports/u-r3-trace.json.gz',
+    before: 'baf94f41244ad888bc12428cddecceebd18b4ceba4d6c9745c9a123f34e46ad2',
+    after: '3a9b0bc4de1bf4f1495c87cf7c41409ec589d4df702ae120b24dc0cfdb995382',
+    writes: 1,
+    changes: undefined
+  },
+  {
+    file: 'ai_docs/reports/u-r4-trace.json.gz',
+    before: '27d71a88ac3ae879cab8e83c26c10df6ea40b43a2efa932e54a4e2a482b3ece3',
+    after: '27d71a88ac3ae879cab8e83c26c10df6ea40b43a2efa932e54a4e2a482b3ece3',
+    writes: 0,
+    changes: undefined
+  }
+]
