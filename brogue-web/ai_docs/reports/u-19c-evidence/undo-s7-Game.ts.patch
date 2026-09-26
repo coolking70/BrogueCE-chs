@@ -1,0 +1,10 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1248,7 +1248,6 @@
+                     }
+                 }
+                 if (!stairsPlaced) throw new Error(`Failed to place stairs at depth ${this.depth} after 50 attempts`);
+-                this.bindDormantAwakener();
+                 this.environment = new EnvironmentManager(this.grid);
+                 this.fov = new FOVSys(this.grid);
+                 this.lightMap = new LightMap(this.grid);

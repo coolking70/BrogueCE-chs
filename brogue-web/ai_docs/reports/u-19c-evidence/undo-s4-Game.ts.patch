@@ -1,0 +1,36 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1013,6 +1013,7 @@
+         const created: Monster[] = [];
+         const items = new Map<string | MachineItemSpawn, Item>();
+         const remove = (mon: Monster): void => {
++            this.demoteMonsterFromLeadership(mon);
+             this.monsters = this.monsters.filter(m => m !== mon);
+             this.dormantMonsters = this.dormantMonsters.filter(m => m !== mon);
+             this.visibleMonsters.delete(mon);
+@@ -1060,6 +1061,7 @@
+                 const start = created.length;
+                 const previous = new Map(items);
+                 const floor = new Set(this.items);
++                const carriers = new Map([...this.monsters, ...this.dormantMonsters].map(m => [m, m.carriedItem]));
+                 const borrowed = [...items.values()].map(item => ({item, loc: {...item.loc},
+                     keyLoc: item.keyLoc?.map(k => ({...k, loc: {...k.loc}})), flags: item.flags ? [...item.flags] : undefined,
+                     originDepth: item.originDepth, maxChargesKnown: item.maxChargesKnown}));
+@@ -1069,14 +1071,17 @@
+                     for (const mon of [...this.monsters, ...this.dormantMonsters]) {
+                         if (mon.carriedItem && (discarded.has(mon.carriedItem) || borrowed.some(b => b.item === mon.carriedItem))) mon.carriedItem = null;
+                     }
++                    for (const item of floor) if (itemsHas(item) && !this.items.includes(item)) this.items.push(item);
+                     for (const state of borrowed) Object.assign(state.item, {loc: state.loc, keyLoc: state.keyLoc,
+                         flags: state.flags, originDepth: state.originDepth, maxChargesKnown: state.maxChargesKnown});
+                     items.clear(); for (const [id, item] of previous) items.set(id, item);
+                     for (const mon of created.splice(start)) remove(mon);
++                    for (const [mon, item] of carriers) if (mon.hp > 0 && (this.monsters.includes(mon) || this.dormantMonsters.includes(mon))) mon.carriedItem = item;
+                     for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) this.grid.getCell(x, y)!.hasDormantMonster = false;
+                     for (const mon of this.dormantMonsters) this.grid.getCell(mon.x, mon.y)!.hasDormantMonster = true;
+                 };
+             },
++            hasItem: (x, y) => this.items.some(i => i.x === x && i.y === y),
+             hasMonster: (x, y) => this.monsters.some(m => m.hp > 0 && m.x === x && m.y === y),
+             spawn: (spawn, machineNumber) => {
+                 const made: Monster[] = [];

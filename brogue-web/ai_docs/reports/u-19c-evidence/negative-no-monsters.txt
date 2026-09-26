@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > real items, the leader AND every minion exist and occupy cells before the next feature
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 505ms
+     × real items, the leader AND every minion exist and occupy cells before the next feature 504ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > real items, the leader AND every minion exist and occupy cells before the next feature
+AssertionError: expected [] to have a length of 3 but got +0
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ BlueprintEngine.engine.findFeaturePosition src/test/u_19c_immediate_entities.test.ts:44:102
+
+ ❯ BlueprintEngine.applyBlueprintContents src/engine/Generator/BlueprintEngine.ts:1604:38
+ ❯ BlueprintEngine.applyBlueprint src/engine/Generator/BlueprintEngine.ts:1248:33
+ ❯ apply src/test/u_19c_immediate_entities.test.ts:19:63
+ ❯ src/test/u_19c_immediate_entities.test.ts:45:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:29:53
+   Duration  2.18s (transform 815ms, setup 0ms, import 1.50s, tests 505ms, environment 0ms)
+

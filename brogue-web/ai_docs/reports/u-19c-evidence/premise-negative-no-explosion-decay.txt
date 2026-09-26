@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/f_2c_explosion.test.ts > F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 + VANISHES） > 对抗④b：当回合刚落地的爆炸格被 CAUGHT_FIRE_THIS_TURN 豁免（跳过衰老掷骰，Time.c:1625）——下一个晋升趟才消失。实测寿命 = 落地块 + 1。漏掉豁免的实现当场把爆炸格收走（爆炸圈闪现一帧，翻红）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/f_2c_explosion.test.ts (14 tests | 2 failed | 12 skipped) 788ms
+     × 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。 9ms
+     × 对抗④b：当回合刚落地的爆炸格被 CAUGHT_FIRE_THIS_TURN 豁免（跳过衰老掷骰，Time.c:1625）——下一个晋升趟才消失。实测寿命 = 落地块 + 1。漏掉豁免的实现当场把爆炸格收走（爆炸圈闪现一帧，翻红）。 777ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/f_2c_explosion.test.ts > F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 + VANISHES） > 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。
+AssertionError: 10000 = 100%/回合：本趟必晋升: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/test/f_2c_explosion.test.ts:189:62
+    187|         const r = runPromotionUpdate(grid, { keyOnTileAt: () => false …
+    188|
+    189|         expect(r.promotions.length, '10000 = 100%/回合：本趟必晋升').toBe(1);
+       |                                                              ^
+    190|         expect(r.promotions[0]!.vanished, 'VANISHES_UPON_PROMOTION：晋升即…
+    191|         expect(r.promotions[0]!.df, 'promoteType 0：晋升不落任何新 DF（不是衰老成 EM…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/f_2c_explosion.test.ts > F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 + VANISHES） > 对抗④b：当回合刚落地的爆炸格被 CAUGHT_FIRE_THIS_TURN 豁免（跳过衰老掷骰，Time.c:1625）——下一个晋升趟才消失。实测寿命 = 落地块 + 1。漏掉豁免的实现当场把爆炸格收走（爆炸圈闪现一帧，翻红）。
+AssertionError: 下一趟（登记已被记账趟清掉）：探针格必晋升消失: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/f_2c_explosion.test.ts:213:40
+    211|         const r2 = runPromotionUpdate(grid, { keyOnTileAt: () => false…
+    212|         expect(r2.promotions.some(p => p.x === 4 && p.y === 4),
+    213|             '下一趟（登记已被记账趟清掉）：探针格必晋升消失').toBe(true);
+       |                                        ^
+    214|         expect(grid.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.NOTHING);
+    215|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 12 skipped (14)
+   Start at  15:29:59
+   Duration  2.46s (transform 824ms, setup 0ms, import 1.50s, tests 788ms, environment 0ms)
+

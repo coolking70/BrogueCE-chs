@@ -1,0 +1,29 @@
+--- src/engine/Generator/Architect.ts
++++ src/engine/Generator/Architect.ts
+@@ -20,7 +20,7 @@
+ import type { DungeonProfile, Pos } from '../../types';
+ import * as RoomBuilder from './RoomBuilder';
+ import { BlueprintEngine, resetMachineCounter } from './BlueprintEngine';
+-import type { MachineResult } from './BlueprintEngine';
++import type { MachineResult, MachineEntityRuntime } from './BlueprintEngine';
+ 
+ /** 每个湖的放置尝试次数。CE Architect.c:2659 `for (k=0; k<20; k++)`。 */
+ const LAKE_PLACEMENT_ATTEMPTS = 20;
+@@ -270,7 +270,7 @@
+     public autogenNonMachine: AutoGeneratorRunStats | null = null;
+     public autogenMachine: AutoGeneratorRunStats | null = null;
+ 
+-    constructor(grid: Grid = new Grid(DCOLS, DROWS)) {
++    constructor(grid: Grid = new Grid(DCOLS, DROWS), private machineEntities?: MachineEntityRuntime) {
+         this.grid = grid;
+     }
+ 
+@@ -481,7 +481,7 @@
+ 
+         // 5. Build machines via data-driven BlueprintEngine
+         resetMachineCounter();
+-        const bpEngine = new BlueprintEngine(this.grid, depth);
++        const bpEngine = new BlueprintEngine(this.grid, depth, undefined, this.machineEntities);
+         this.machineResults = bpEngine.buildMachines();
+ 
+         // Backward-compat: populate legacy arrays from machine results

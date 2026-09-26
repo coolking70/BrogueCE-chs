@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+ ❯ src/test/u_05a_item_ownership.test.ts (51 tests | 1 failed) 3214ms
+     × handoff replaces the horde leader’s existing item without a second floor/inventory owner 779ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > handoff replaces the horde leader’s existing item without a second floor/inventory owner
+AssertionError: expected [ …(38) ] to not include Item{ spawnTurnNumber: +0, …(40) }
+ ❯ src/test/u_05a_item_ownership.test.ts:176:153
+    174|         expect(leader.carriedItem).not.toBe(displaced);
+    175|         expect(leader.carriedItem.keyLoc).toEqual(key().keyLoc);
+    176|         expect([...g.items,...g.player.inventory.items,...g.monsters.m…
+       |                                                                                                                                                         ^
+    177|     });
+    178|     it('duplicate deferred identity is rejected before either copy is …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 88 passed (89)
+   Start at  13:29:55
+   Duration  41.38s (transform 1.23s, setup 0ms, import 2.59s, tests 48.57s, environment 1ms)
+

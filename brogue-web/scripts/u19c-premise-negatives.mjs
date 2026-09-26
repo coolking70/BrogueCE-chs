@@ -1,0 +1,5 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const out='ai_docs/reports/u-19c-evidence',rows=[];
+for(const [variant,file,test] of [['bad-layer','c_4b_dungeon_feature','F3 留痕'],['bad-gas','c_4b_dungeon_feature','F3 留痕'],['no-explosion-decay','f_2c_explosion','对抗④：'],['no-legacy-handoff','u_05a_item_ownership','handoff replaces']]){
+ const fd=fs.openSync(`${out}/premise-negative-${variant}.txt`,'w');const r=spawnSync(process.execPath,['node_modules/vitest/vitest.mjs','run','--config','scripts/u19c-counterfactual.config.ts',`src/test/${file}.test.ts`,'-t',test],{env:{...process.env,U19C_VARIANT:variant},stdio:['ignore',fd,fd]});fs.closeSync(fd);const assertionFailure=r.status!==0&&/AssertionError/.test(fs.readFileSync(`${out}/premise-negative-${variant}.txt`,'utf8'));rows.push({variant,file,test,exit:r.status,assertionFailure});if(!assertionFailure)throw Error(variant);console.log(variant,'red');
+}fs.writeFileSync(`${out}/premise-negatives.json`,JSON.stringify(rows,null,2)+'\n');

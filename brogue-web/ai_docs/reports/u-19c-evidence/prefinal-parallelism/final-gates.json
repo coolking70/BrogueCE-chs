@@ -1,0 +1,30 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "start": "2026-09-26T06:12:19.967Z",
+    "end": "2026-09-26T06:12:36.692Z",
+    "exit": 0
+  },
+  {
+    "name": "regression",
+    "command": [
+      "/opt/homebrew/Cellar/node/25.2.1/bin/node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--exclude",
+      "**/generation_baseline.test.ts",
+      "--maxWorkers=8",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=ai_docs/reports/u-19c-evidence/regression-final.json"
+    ],
+    "start": "2026-09-26T06:12:36.694Z",
+    "end": "2026-09-26T06:31:21.972Z",
+    "exit": 130
+  }
+]

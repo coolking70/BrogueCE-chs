@@ -1,0 +1,15 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -1246,10 +1246,10 @@
+         const abort = this.entities?.checkpoint();
+         try {
+             const result = this.applyBlueprintContents(bp, room, ctx);
+-            if (!result && backup) { this.restoreLevel(backup); abort!(); }
++            if (!result && backup) { this.restoreLevel(backup); /* U19c counterfactual: omit entity deletion only. */ }
+             return result;
+         } catch (error) {
+-            if (backup) { this.restoreLevel(backup); abort!(); }
++            if (backup) { this.restoreLevel(backup); /* U19c counterfactual: omit entity deletion only. */ }
+             throw error;
+         }
+     }

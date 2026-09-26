@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > commits a single item to its real carrier before population; death/pickup/save retain identity
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 366ms
+     × commits a single item to its real carrier before population; death/pickup/save retain identity 365ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > commits a single item to its real carrier before population; death/pickup/save retain identity
+AssertionError: expected undefined to be Item{ spawnTurnNumber: +0, …(40) } // Object.is equality
+
+- Expected:
+Item {
+  "arcanaInstanceVersion": undefined,
+  "armor": undefined,
+  "canBeIdentified": false,
+  "category": 10,
+  "char": "k",
+  "charges": undefined,
+  "clumping": undefined,
+  "color": 12566463,
+  "consumableId": undefined,
+  "cooldownRemaining": undefined,
+  "cooldownTurns": undefined,
+  "damage": undefined,
+  "description": undefined,
+  "enchantment": 0,
+  "flags": undefined,
+  "id": 22,
+  "identified": true,
+  "identityId": undefined,
+  "inventoryLetter": undefined,
+  "isCursed": false,
+  "isProtected": false,
+  "keyLoc": [
+    {
+      "disposableHere": false,
+      "loc": {
+        "x": 10,
+        "y": 10,
+      },
+      "machine": 0,
+    },
+  ],
+  "loc": {
+    "x": 10,
+    "y": 10,
+  },
+  "magicDetected": false,
+  "maxCharges": undefined,
+  "maxChargesKnown": false,
+  "name": "Iron Key",
+  "originDepth": 10,
+  "quantity": 1,
+  "quiverNumber": undefined,
+  "rechargeCounter": undefined,
+  "rechargeTurns": undefined,
+  "runicKnown": false,
+  "runicType": undefined,
+  "spawnTurnNumber": 0,
+  "staffRechargeRemaining": undefined,
+  "strengthRequired": undefined,
+  "timesEnchanted": 0,
+  "timesUsed": undefined,
+  "vorpalEnemy": undefined,
+  "weight": 1,
+}
+
++ Received:
+undefined
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:124:69
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:30:03
+   Duration  1.86s (transform 816ms, setup 0ms, import 1.32s, tests 366ms, environment 0ms)
+

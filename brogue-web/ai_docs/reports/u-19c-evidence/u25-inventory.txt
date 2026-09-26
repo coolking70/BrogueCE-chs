@@ -1,0 +1,35 @@
+seed 424242 / D9: 3 machines, 24 products
+machine #1 CE68 trap_paralysis_hidden committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"GAS_TRAP_PARALYSIS_HIDDEN","instanceCount":[1,2],"minimum":1,"flags":["MF_NEAR_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 3 placements / 1 iterations; request={"terrain":"MACHINE_PARALYSIS_VENT_HIDDEN","instanceCount":[3,4],"minimum":2,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  terrain #- GAS_TRAP_PARALYSIS_HIDDEN @23,20 from feature #0
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @21,23 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @27,23 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @29,20 from feature #1
+machine #2 CE68 trap_paralysis_hidden committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"GAS_TRAP_PARALYSIS_HIDDEN","instanceCount":[1,2],"minimum":1,"flags":["MF_NEAR_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 3 placements / 1 iterations; request={"terrain":"MACHINE_PARALYSIS_VENT_HIDDEN","instanceCount":[3,4],"minimum":2,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  terrain #- GAS_TRAP_PARALYSIS_HIDDEN @51,19 from feature #0
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @49,16 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @54,19 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @50,22 from feature #1
+machine #3 CE64 ce_64_dismal committed
+  feature #0 placed 8 placements / 1 iterations; request={"featureDF":"DF_AMBIENT_BLOOD","instanceCount":[5,10],"minimum":3,"flags":["MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 4 placements / 1 iterations; request={"featureDF":"DF_ASH","instanceCount":[4,8],"minimum":2,"flags":["MF_NOT_IN_HALLWAY"]}
+  feature #2 placed 4 placements / 1 iterations; request={"featureDF":"DF_BONES","instanceCount":[3,5],"minimum":2,"flags":["MF_NOT_IN_HALLWAY"]}
+  featureDF #- DF_AMBIENT_BLOOD @49,8 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @53,8 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @44,4 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @55,9 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @52,8 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @57,10 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @57,8 from feature #0
+  featureDF #- DF_AMBIENT_BLOOD @47,4 from feature #0
+  featureDF #- DF_ASH @47,3 from feature #1
+  featureDF #- DF_ASH @46,5 from feature #1
+  featureDF #- DF_ASH @54,10 from feature #1
+  featureDF #- DF_ASH @48,11 from feature #1
+  featureDF #- DF_BONES @56,11 from feature #2
+  featureDF #- DF_BONES @55,8 from feature #2
+  featureDF #- DF_BONES @42,5 from feature #2
+  featureDF #- DF_BONES @56,12 from feature #2

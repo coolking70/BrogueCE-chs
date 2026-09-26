@@ -1,0 +1,148 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > a failed later machine preserves earlier active AND dormant carriers and their exact item instances
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 311ms
+     × a failed later machine preserves earlier active AND dormant carriers and their exact item instances 310ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > a failed later machine preserves earlier active AND dormant carriers and their exact item instances
+AssertionError: expected [ null, null ] to deeply equal [ …(2) ]
+
+- Expected
++ Received
+
+  [
+-   Item {
+-     "arcanaInstanceVersion": undefined,
+-     "armor": undefined,
+-     "canBeIdentified": false,
+-     "category": 10,
+-     "char": "k",
+-     "charges": undefined,
+-     "clumping": undefined,
+-     "color": 12566463,
+-     "consumableId": undefined,
+-     "cooldownRemaining": undefined,
+-     "cooldownTurns": undefined,
+-     "damage": undefined,
+-     "description": undefined,
+-     "enchantment": 0,
+-     "flags": undefined,
+-     "id": 22,
+-     "identified": true,
+-     "identityId": undefined,
+-     "inventoryLetter": undefined,
+-     "isCursed": false,
+-     "isProtected": false,
+-     "keyLoc": [
+-       {
+-         "disposableHere": false,
+-         "loc": {
+-           "x": 10,
+-           "y": 10,
+-         },
+-         "machine": 0,
+-       },
+-     ],
+-     "loc": {
+-       "x": 10,
+-       "y": 10,
+-     },
+-     "magicDetected": false,
+-     "maxCharges": undefined,
+-     "maxChargesKnown": false,
+-     "name": "Iron Key",
+-     "originDepth": 10,
+-     "quantity": 1,
+-     "quiverNumber": undefined,
+-     "rechargeCounter": undefined,
+-     "rechargeTurns": undefined,
+-     "runicKnown": false,
+-     "runicType": undefined,
+-     "spawnTurnNumber": 0,
+-     "staffRechargeRemaining": undefined,
+-     "strengthRequired": undefined,
+-     "timesEnchanted": 0,
+-     "timesUsed": undefined,
+-     "vorpalEnemy": undefined,
+-     "weight": 1,
+-   },
+-   Item {
+-     "arcanaInstanceVersion": undefined,
+-     "armor": undefined,
+-     "canBeIdentified": false,
+-     "category": 10,
+-     "char": "k",
+-     "charges": undefined,
+-     "clumping": undefined,
+-     "color": 12566463,
+-     "consumableId": undefined,
+-     "cooldownRemaining": undefined,
+-     "cooldownTurns": undefined,
+-     "damage": undefined,
+-     "description": undefined,
+-     "enchantment": 0,
+-     "flags": undefined,
+-     "id": 24,
+-     "identified": true,
+-     "identityId": undefined,
+-     "inventoryLetter": undefined,
+-     "isCursed": false,
+-     "isProtected": false,
+-     "keyLoc": [
+-       {
+-         "disposableHere": false,
+-         "loc": {
+-           "x": 13,
+-           "y": 10,
+-         },
+-         "machine": 0,
+-       },
+-     ],
+-     "loc": {
+-       "x": 13,
+-       "y": 10,
+-     },
+-     "magicDetected": false,
+-     "maxCharges": undefined,
+-     "maxChargesKnown": false,
+-     "name": "Iron Key",
+-     "originDepth": 10,
+-     "quantity": 1,
+-     "quiverNumber": undefined,
+-     "rechargeCounter": undefined,
+-     "rechargeTurns": undefined,
+-     "runicKnown": false,
+-     "runicType": undefined,
+-     "spawnTurnNumber": 0,
+-     "staffRechargeRemaining": undefined,
+-     "strengthRequired": undefined,
+-     "timesEnchanted": 0,
+-     "timesUsed": undefined,
+-     "vorpalEnemy": undefined,
+-     "weight": 1,
+-   },
++   null,
++   null,
+  ]
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:87:42
+     85|   const carriers=[...g.monsters,...g.dormantMonsters],items=carriers.m…
+     86|   expect(apply(bp([feature({itemCategory:'KEY',itemId:'iron_key',flags…
+     87|   expect(carriers.map(m=>m.carriedItem)).toEqual(items);for(const item…
+       |                                          ^
+     88|  });
+     89|  it('a successful child is deleted with its failing parent, including …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:30:05
+   Duration  1.71s (transform 776ms, setup 0ms, import 1.23s, tests 311ms, environment 0ms)
+

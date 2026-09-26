@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (14 tests | 1 failed) 7385ms
+     × commits a single item to its real carrier before population; death/pickup/save retain identity 804ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > commits a single item to its real carrier before population; death/pickup/save retain identity
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:102:86
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  13:38:01
+   Duration  9.60s (transform 982ms, setup 0ms, import 2.02s, tests 7.38s, environment 0ms)
+

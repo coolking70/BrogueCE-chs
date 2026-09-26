@@ -1,0 +1,152 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -47,6 +47,7 @@
+ import { catalogFeature } from '../Map/DungeonFeature';
+ import { rng } from '../Random';
+ import type { Pos } from '../../types';
++import type { Monster } from '../../entities/Monster';
+ import blueprintData from '../../data/blueprints.json';
+ import { Architect, type DungeonProfileId } from './Architect';
+ import { getMachineObservationHook, getMachineObservationSeed, recordMachineRollback, type MachineFeatureTrace, type MachineTrace } from './MachineObservation';
+@@ -151,7 +152,17 @@
+  * 单只（CE `feature->monsterID` 分支，Architect.c:1601）与成群
+  * （CE MF_GENERATE_HORDE 分支，:1591-1599）两形并列，数据上互斥。
+  */
++/** Optional entity adapter: standalone Architect callers can still inspect a
++ * terrain/recipe preview. Game always supplies this adapter during construction. */
++export interface MachineEntityRuntime {
++    checkpoint(): () => void;
++    hasMonster(x: number, y: number): boolean;
++    spawn(spawn: MachineMonsterSpawn, machineNumber: number): Monster[];
++}
++
+ export interface MachineMonsterSpawn {
++    /** Present (including []) once attempted; population must never spawn again. */
++    entities?: Monster[];
+     sourceFeatureIndex?: number;
+     /** CE `feature->monsterID` 分支（Architect.c:1601）的单只生成。 */
+     monsterId?: string;
+@@ -757,7 +768,7 @@
+      */
+     private loopMapCache: boolean[][] | null = null;
+ 
+-    constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[]) {
++    constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[], private entities?: MachineEntityRuntime) {
+         this.grid = grid;
+         this.depth = depth;
+         this.blueprints = blueprints ?? (blueprintData as BlueprintDef[]);
+@@ -768,8 +779,12 @@
+      * including children and rollback. Stairs/player are placed after machines.
+      * Dormant monsters and carried/outsourced source items do not occupy floor.
+      */
++    private hasMonster(x: number, y: number): boolean {
++        return this.entities ? this.entities.hasMonster(x, y) : this.pendingMonsters.has(cellKey(x, y));
++    }
++
+     public hasPendingOccupant(x: number, y: number): boolean {
+-        return this.pendingItems.has(cellKey(x, y)) || this.pendingMonsters.has(cellKey(x, y));
++        return this.pendingItems.has(cellKey(x, y)) || this.hasMonster(x, y);
+     }
+ 
+     /**
+@@ -932,7 +947,7 @@
+                     areaOrigin = chooseLocation
+                         ? randomMatchingLocation(this.grid, TerrainType.FLOOR, TerrainType.NOTHING, {
+                             isOccupied: (x, y) => this.pendingItems.has(cellKey(x, y))
+-                                || this.pendingMonsters.has(cellKey(x, y)),
++                                || this.hasMonster(x, y),
+                             // CE :1156 不检查 boolean 返回值，保留最后一次坐标。
+                             acceptLastAttempt: true,
+                         })!
+@@ -1213,6 +1228,23 @@
+      * 新增 ctx.adoptiveItem：递归领养时父机器交来的物品指令（CE adoptiveItem）。
+      */
+     private applyBlueprint(
++        bp: BlueprintDef,
++        room: { cells: Pos[]; center: Pos; door: Pos | null },
++        ctx: { adoptiveItem?: MachineItemSpawn | null } = {}
++    ): MachineResult | null {
++        const backup = this.entities ? this.backupLevel() : null;
++        const abort = this.entities?.checkpoint();
++        try {
++            const result = this.applyBlueprintContents(bp, room, ctx);
++            if (!result && backup) { this.restoreLevel(backup); abort!(); }
++            return result;
++        } catch (error) {
++            if (backup) { this.restoreLevel(backup); abort!(); }
++            throw error;
++        }
++    }
++
++    private applyBlueprintContents(
+         bp: BlueprintDef,
+         room: { cells: Pos[]; center: Pos; door: Pos | null },
+         ctx: { adoptiveItem?: MachineResult['itemSpawns'][number] | null } = {}
+@@ -1460,6 +1492,20 @@
+         // It spans the whole machine, and is committed only after all features succeed.
+         let torch: MachineItemSpawn | null = null;
+         let torchBearer: MachineMonsterSpawn | null = null;
++        let machineLeader: Monster | null = null;
++        const realize = (spawn: MachineMonsterSpawn): boolean => {
++            if (!this.entities) return true;
++            const made = spawn.entities = this.entities.spawn(spawn, machineNum);
++            for (const mon of made) {
++                // CE keeps horde-assigned leaders/followers; otherwise the
++                // first successful feature monster leads the machine tribe.
++                if (!machineLeader) machineLeader = mon;
++                if (!mon.leader && !made.some(m => m.leader === mon) && mon !== machineLeader) mon.leader = machineLeader;
++                if (observation) observation.products.push({kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,
++                    instanceId: mon.id, name: mon.name, pos: {...mon.loc}, owner: mon.isDormant ? 'dormant' : 'floor'});
++            }
++            return made.length > 0;
++        };
+ 
+         for (const [feat, feature] of bp.features.entries()) {
+             const featureTrace: MachineFeatureTrace | undefined = observation ? {
+@@ -1774,7 +1820,7 @@
+                         // 21/43/56/69 号四条蓝图用 HORDE_MACHINE_STATUE /
+                         // HORDE_MACHINE_TURRET 让 horde 只从机器族里抽。
+                         if (fFlags.has('MF_GENERATE_HORDE')) {
+-                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
++                            if (!this.entities && !fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
+                             monsterSpawns.push({
+                                 hordeFlags: feature.hordeFlags ?? [],
+                                 pos: { x: pos.x, y: pos.y },
+@@ -1786,7 +1832,8 @@
+                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
+                             });
+                             if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
+-                            if (carryItem) {
++                            const hasBearer = realize(monsterSpawns[monsterSpawns.length - 1]!);
++                            if (carryItem && hasBearer) {
+                                 torch = carryItem;
+                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
+                             }
+@@ -1799,7 +1846,7 @@
+                         // 皆有（行为零变化），但 24/25 号的图腾/守卫 feature 按 CE
+                         // 数据不带该旗标，旧条件会漏生成。照 CE 改为只看 monsterId。
+                         if (feature.monsterId) {
+-                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
++                            if (!this.entities && !fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
+                             monsterSpawns.push({
+                                 monsterId: feature.monsterId,
+                                 pos: { x: pos.x, y: pos.y },
+@@ -1814,7 +1861,8 @@
+                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
+                             });
+                             if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
+-                            if (carryItem) {
++                            const hasBearer = realize(monsterSpawns[monsterSpawns.length - 1]!);
++                            if (carryItem && hasBearer) {
+                                 torch = carryItem;
+                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
+                             }
+@@ -2052,7 +2100,7 @@
+                 if (dist[x]![y] !== k) continue;
+                 cells.push({ x, y });
+                 const key = cellKey(x, y);
+-                if (this.pendingItems.has(key) || this.pendingMonsters.has(key)
++                if (this.pendingItems.has(key) || this.hasMonster(x, y)
+                     || this.grid.getCell(x, y)!.machineNumber !== 0) {
+                     tryAgain = true; // HAS_ITEM | HAS_MONSTER | IS_IN_MACHINE
+                     break shells;

@@ -1,0 +1,77 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -1420,6 +1420,20 @@
+         // 4. Process features
+         const itemSpawns: MachineItemSpawn[] = [];
+         const generatedItems: MachineItemSpawn[] = [];
++        const fail = (reason: string): null => {
++            if (this.entities) {
++                const abortChild = (child: MachineResult): void => {
++                    child.subMachines.forEach(abortChild);
++                    recordMachineRollback(child.observation, `ancestor rolled back: ${reason}`);
++                };
++                subMachines.forEach(abortChild);
++                if (observation) for (const spawn of generatedItems) if (spawn.entity) {
++                    observation.products.push({kind: 'item', featureIndex: spawn.sourceFeatureIndex ?? null,
++                        instanceId: spawn.entity.id, name: spawn.entity.name, pos: {...spawn.entity.loc}, outcome: 'rolled back'});
++                }
++            }
++            return recordMachineRollback(observation, reason);
++        };
+         const priorItemIds: string[] = [];
+         const collectCreated = (m: MachineResult): MachineItemSpawn[] => [
+             ...(m.generatedItems ?? []), ...(m.subMachines ?? []).flatMap(collectCreated),
+@@ -1504,7 +1518,7 @@
+             for (const mon of made) {
+                 // CE keeps horde-assigned leaders/followers; otherwise the
+                 // first successful feature monster leads the machine tribe.
+-                if (!machineLeader) machineLeader = mon;
++                if (!machineLeader || machineLeader.hp <= 0) machineLeader = mon;
+                 if (!mon.leader && !made.some(m => m.leader === mon) && mon !== machineLeader) mon.leader = machineLeader;
+                 if (observation) observation.products.push({kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,
+                     instanceId: mon.id, name: mon.name, pos: {...mon.loc}, owner: mon.isDormant ? 'dormant' : 'floor'});
+@@ -1809,7 +1823,7 @@
+                                 }
+                                 if (success) break;
+                             }
+-                            if (!success) return recordMachineRollback(observation, `feature #${feat}: child machine failed`);
++                            if (!success) return fail(`feature #${feat}: child machine failed`);
+                             theItem = null; // CE :1585: outsourced item cannot also be carried here.
+                         }
+                         const carryItem = fFlags.has('MF_MONSTER_TAKE_ITEM') ? theItem : null;
+@@ -1900,7 +1914,7 @@
+             // findFeaturePosition 找不到可落格（房间太小/格子被占光）与
+             // V-2b-2a 的阻断否决（CE :1444-1452）。REPEAT 豁免（CE :1675）。
+             if (placed < minInstances && !repeatUntilNoProgress) {
+-                return recordMachineRollback(observation, `feature #${feat}: ${placed} < minimum ${minInstances}`);
++                return fail(`feature #${feat}: ${placed} < minimum ${minInstances}`);
+             }
+ 
+         }
+@@ -1952,7 +1966,7 @@
+         for (const spawn of itemSpawns) {
+             if (!spawn.viaAdoption) continue;
+             const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+-            if (!cell || isPathingBlocker(cell.terrain)) return recordMachineRollback(observation, 'adopted item destination blocked');
++            if (!cell || isPathingBlocker(cell.terrain)) return fail('adopted item destination blocked');
+         }
+ 
+         // Do not publish a transaction with an unowned creation or duplicate
+@@ -1969,7 +1983,7 @@
+         if ([...ownerCounts.values()].some(count => count !== 1)
+             || [...generatedItems, ...children.flatMap(m => m.generatedItems ?? [])]
+                 .some(item => ownerCounts.get(item.instanceId!) !== 1)
+-            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return recordMachineRollback(observation, 'item ownership invariant');
++            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return fail('item ownership invariant');
+ 
+         // V-2b-9c: #32 can overlay the pre-feature center with deep water.
+         // Keep the existing web room-center contract in final terrain, without
+@@ -1982,7 +1996,7 @@
+             candidates.sort((a, b) =>
+                 Math.abs(a.x - room.center.x) + Math.abs(a.y - room.center.y)
+                 - Math.abs(b.x - room.center.x) - Math.abs(b.y - room.center.y));
+-            if (!candidates.length) return recordMachineRollback(observation, 'no passable room center');
++            if (!candidates.length) return fail('no passable room center');
+             finalCenter = candidates[0]!;
+         }
+ 

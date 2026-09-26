@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/c_4b_dungeon_feature.test.ts (31 tests | 1 failed | 30 skipped) 2521ms
+     × F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空 2519ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+AssertionError: seed=424242 D9 (52,8) 至多三层（仅 CE 核实组合）: expected 4 to be less than or equal to 3
+ ❯ Game.g.catchUpEnvironment src/test/c_4b_dungeon_feature.test.ts:1311:103
+    1309|                             if (cell.layers[l] !== C.NOTHING) nonEmpty…
+    1310|                         }
+    1311|                         expect(nonEmpty.length, `seed=${seed} D${depth…
+       |                                                                                                       ^
+    1312|                         const verified9e = verified9eLayers.some(
+    1313|                             (layers) => layers.every((terrain, layer) …
+ ❯ Game.generateDepth src/engine/Core/Game.ts:1314:107
+ ❯ src/test/c_4b_dungeon_feature.test.ts:1542:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 skipped (31)
+   Start at  15:29:55
+   Duration  4.47s (transform 857ms, setup 0ms, import 1.78s, tests 2.52s, environment 0ms)
+

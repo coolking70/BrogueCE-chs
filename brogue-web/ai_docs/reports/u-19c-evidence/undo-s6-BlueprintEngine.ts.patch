@@ -1,0 +1,14 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -1922,7 +1922,10 @@
+             }
+ 
+         }
+-        if (torchBearer && torch) torchBearer.carriedItem = torch;
++        if (torchBearer && torch) {
++            if (this.entities && (!torchBearer.entities?.[0] || torchBearer.entities[0].hp <= 0)) return fail('item bearer removed during construction');
++            torchBearer.carriedItem = torch;
++        }
+ 
+         // 5. 机器旗标（P1-37）：本方法第 1 步已把 room.cells 全部写入
+         // cell.machineNumber（web 的 IS_IN_MACHINE 等价物，CE Rogue.h:1113，

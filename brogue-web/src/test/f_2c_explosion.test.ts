@@ -22,7 +22,7 @@
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import type { Game } from '../engine/Core/Game';
-import { TerrainType, DungeonLayer as L } from '../engine/Map/Grid';
+import { Grid, DCOLS, DROWS, TerrainType, DungeonLayer as L } from '../engine/Map/Grid';
 import { runPromotionUpdate } from '../engine/Map/Promotion';
 import { Monster, type MonsterData } from '../entities/Monster';
 import { GasType } from '../engine/Environment/Gas';
@@ -178,7 +178,10 @@ describe('F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 +
         'promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但' +
         '地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags ' +
         'VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。', () => {
-        const grid = createHeadlessGame(205).grid;
+        // This assertion counts ALL promotions, so isolate its one explosion.
+        // Natural machine RNG may produce unrelated aging terrain elsewhere.
+        const grid = new Grid(DCOLS, DROWS);
+        grid.setTerrain(4, 4, C.FLOOR);
         grid.setTerrainLayer(4, 4, L.SURFACE, C.GAS_EXPLOSION);
 
         const r = runPromotionUpdate(grid, { keyOnTileAt: () => false });

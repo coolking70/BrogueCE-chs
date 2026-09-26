@@ -1,0 +1,20 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1238,6 +1238,8 @@
+                     this.items = [];
+                     this.grid = new Grid(DCOLS, DROWS);
+                     this.player.loc = {x: 0, y: 0}; // CE removes the player during digDungeon.
++                    this.pendingCaughtFireCells = [];
++                    this.bindDormantAwakener(); // Later machine DFs see already-created entities.
+                     architect = new Architect(this.grid, this.createMachineRuntime(this.depth));
+                     this.grid = architect.generateLevel(this.depth);
+                     if (this.placeStairs(architect.machineResults)) {
+@@ -2302,7 +2304,7 @@
+     }
+ 
+     /** CE spawnMinions: species catalog flags, then up to 20 special-tile retries.
+-     * Preserve deferred machine materialization; no runtime immunity or monsterAvoids. */
++     * Uses current entity occupancy, without runtime immunity or monsterAvoids. */
+     private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | null | undefined, summoned: boolean, machine = false): Pos | null {
+         const target = spawnsIn ? Game.SPAWNS_IN_TERRAIN[spawnsIn] : undefined;
+         if (spawnsIn && target === undefined) return null;

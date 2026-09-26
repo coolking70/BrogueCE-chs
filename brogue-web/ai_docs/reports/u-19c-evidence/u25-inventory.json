@@ -1,0 +1,774 @@
+{
+  "seed": "424242",
+  "depth": 9,
+  "machines": [
+    {
+      "seed": "424242",
+      "depth": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "machineNumber": 1,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 23,
+              "y": 20
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 21,
+              "y": 23
+            },
+            {
+              "x": 27,
+              "y": 23
+            },
+            {
+              "x": 29,
+              "y": 20
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+          "pos": {
+            "x": 23,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 21,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 27,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 29,
+            "y": 20
+          }
+        }
+      ]
+    },
+    {
+      "seed": "424242",
+      "depth": 9,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "machineNumber": 2,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 51,
+              "y": 19
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 49,
+              "y": 16
+            },
+            {
+              "x": 54,
+              "y": 19
+            },
+            {
+              "x": 50,
+              "y": 22
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+          "pos": {
+            "x": 51,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 49,
+            "y": 16
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 54,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 50,
+            "y": 22
+          }
+        }
+      ]
+    },
+    {
+      "seed": "424242",
+      "depth": 9,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "machineNumber": 3,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "featureDF": "DF_AMBIENT_BLOOD",
+            "instanceCount": [
+              5,
+              10
+            ],
+            "minimum": 3,
+            "flags": [
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 49,
+              "y": 8
+            },
+            {
+              "x": 53,
+              "y": 8
+            },
+            {
+              "x": 44,
+              "y": 4
+            },
+            {
+              "x": 55,
+              "y": 9
+            },
+            {
+              "x": 52,
+              "y": 8
+            },
+            {
+              "x": 57,
+              "y": 10
+            },
+            {
+              "x": 57,
+              "y": 8
+            },
+            {
+              "x": 47,
+              "y": 4
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "featureDF": "DF_ASH",
+            "instanceCount": [
+              4,
+              8
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 47,
+              "y": 3
+            },
+            {
+              "x": 46,
+              "y": 5
+            },
+            {
+              "x": 54,
+              "y": 10
+            },
+            {
+              "x": 48,
+              "y": 11
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "featureDF": "DF_BONES",
+            "instanceCount": [
+              3,
+              5
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 56,
+              "y": 11
+            },
+            {
+              "x": 55,
+              "y": 8
+            },
+            {
+              "x": 42,
+              "y": 5
+            },
+            {
+              "x": 56,
+              "y": 12
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 49,
+            "y": 8
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 53,
+            "y": 8
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 44,
+            "y": 4
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 55,
+            "y": 9
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 52,
+            "y": 8
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 57,
+            "y": 10
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 57,
+            "y": 8
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_AMBIENT_BLOOD",
+          "pos": {
+            "x": 47,
+            "y": 4
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_ASH",
+          "pos": {
+            "x": 47,
+            "y": 3
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_ASH",
+          "pos": {
+            "x": 46,
+            "y": 5
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_ASH",
+          "pos": {
+            "x": 54,
+            "y": 10
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_ASH",
+          "pos": {
+            "x": 48,
+            "y": 11
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 56,
+            "y": 11
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 55,
+            "y": 8
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 42,
+            "y": 5
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 2,
+          "name": "DF_BONES",
+          "pos": {
+            "x": 56,
+            "y": 12
+          }
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "machineNumber": 1,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+      "pos": {
+        "x": 23,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 21,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 27,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 29,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "GAS_TRAP_PARALYSIS_HIDDEN",
+      "pos": {
+        "x": 51,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 49,
+        "y": 16
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 54,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "trap_paralysis_hidden",
+      "ceBlueprintId": 68,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 50,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 49,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 53,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 44,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 55,
+        "y": 9
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 52,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 57,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 57,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_AMBIENT_BLOOD",
+      "pos": {
+        "x": 47,
+        "y": 4
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_ASH",
+      "pos": {
+        "x": 47,
+        "y": 3
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_ASH",
+      "pos": {
+        "x": 46,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_ASH",
+      "pos": {
+        "x": 54,
+        "y": 10
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_ASH",
+      "pos": {
+        "x": 48,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 56,
+        "y": 11
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 55,
+        "y": 8
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 42,
+        "y": 5
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "ce_64_dismal",
+      "ceBlueprintId": 64,
+      "kind": "featureDF",
+      "featureIndex": 2,
+      "name": "DF_BONES",
+      "pos": {
+        "x": 56,
+        "y": 12
+      }
+    }
+  ]
+}

@@ -47,6 +47,8 @@ import { resolveDFName } from '../Map/Promotion';
 import { catalogFeature } from '../Map/DungeonFeature';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
+import type { Monster } from '../../entities/Monster';
+import type { Item } from '../Items/Item';
 import blueprintData from '../../data/blueprints.json';
 import { Architect, type DungeonProfileId } from './Architect';
 import { getMachineObservationHook, getMachineObservationSeed, recordMachineRollback, type MachineFeatureTrace, type MachineTrace } from './MachineObservation';
@@ -130,6 +132,8 @@ export interface BlueprintDef {
 /** A deferred item instance. Adoption copies placement, never instanceId.
  * IDs are local to the generated level and consume no RNG/entity IDs. */
 export interface MachineItemSpawn {
+    /** Immediate instance shared by every adoption/ownership recipe. */
+    entity?: Item;
     /** U17e library items carry CE ITEM_IS_KEY and their existing item flags. */
     itemFlags?: string[];
     instanceId?: string;
@@ -151,7 +155,20 @@ export interface MachineItemSpawn {
  * 单只（CE `feature->monsterID` 分支，Architect.c:1601）与成群
  * （CE MF_GENERATE_HORDE 分支，:1591-1599）两形并列，数据上互斥。
  */
+/** Optional entity adapter: standalone Architect callers can still inspect a
+ * terrain/recipe preview. Game always supplies this adapter during construction. */
+export interface MachineEntityRuntime {
+    checkpoint(): () => void;
+    hasMonster(x: number, y: number): boolean;
+    hasItem(x: number, y: number): boolean;
+    spawn(spawn: MachineMonsterSpawn, machineNumber: number): Monster[];
+    item(spawn: MachineItemSpawn, place: boolean): Item;
+    handOff(spawn: MachineMonsterSpawn, item: MachineItemSpawn): void;
+}
+
 export interface MachineMonsterSpawn {
+    /** Present (including []) once attempted; population must never spawn again. */
+    entities?: Monster[];
     sourceFeatureIndex?: number;
     /** CE `feature->monsterID` 分支（Architect.c:1601）的单只生成。 */
     monsterId?: string;
@@ -718,9 +735,9 @@ export function blueprintQualifies(
 export class BlueprintEngine {
     private grid: Grid;
     private depth: number;
-    // V-2b-9e：生成期 HAS_ITEM / HAS_MONSTER。物品/怪物稍后由 Game 实化；
-    // 此处跟随成功 feature 指令记占用，子机器可见，整机失败随 levelBackup 回滚。
-    // 休眠怪不带 HAS_MONSTER；携带/外包物品不占地面。
+    // Terrain-only previews retain reservations. Game construction queries the
+    // live adapter, including horde members, DF movement, dormancy and rollback.
+    // Dormant monsters and carried/outsourced items have no active/floor bit.
     private pendingItems = new Set<number>();
     private pendingMonsters = new Set<number>();
     private blueprints: BlueprintDef[];
@@ -757,7 +774,7 @@ export class BlueprintEngine {
      */
     private loopMapCache: boolean[][] | null = null;
 
-    constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[]) {
+    constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[], private entities?: MachineEntityRuntime) {
         this.grid = grid;
         this.depth = depth;
         this.blueprints = blueprints ?? (blueprintData as BlueprintDef[]);
@@ -768,8 +785,16 @@ export class BlueprintEngine {
      * including children and rollback. Stairs/player are placed after machines.
      * Dormant monsters and carried/outsourced source items do not occupy floor.
      */
+    private hasItem(x: number, y: number): boolean {
+        return this.entities ? this.entities.hasItem(x, y) : this.pendingItems.has(cellKey(x, y));
+    }
+
+    private hasMonster(x: number, y: number): boolean {
+        return this.entities ? this.entities.hasMonster(x, y) : this.pendingMonsters.has(cellKey(x, y));
+    }
+
     public hasPendingOccupant(x: number, y: number): boolean {
-        return this.pendingItems.has(cellKey(x, y)) || this.pendingMonsters.has(cellKey(x, y));
+        return this.hasItem(x, y) || this.hasMonster(x, y);
     }
 
     /**
@@ -931,8 +956,8 @@ export class BlueprintEngine {
                 do {
                     areaOrigin = chooseLocation
                         ? randomMatchingLocation(this.grid, TerrainType.FLOOR, TerrainType.NOTHING, {
-                            isOccupied: (x, y) => this.pendingItems.has(cellKey(x, y))
-                                || this.pendingMonsters.has(cellKey(x, y)),
+                            isOccupied: (x, y) => this.hasItem(x, y)
+                                || this.hasMonster(x, y),
                             // CE :1156 不检查 boolean 返回值，保留最后一次坐标。
                             acceptLastAttempt: true,
                         })!
@@ -1056,7 +1081,7 @@ export class BlueprintEngine {
 
         const gate = candidates[rng.randRange(0, candidates.length - 1)]!;
         const cells = mapMachineInterior(this.grid, analysis, gate,
-            (x, y) => this.pendingItems.has(cellKey(x, y)));
+            (x, y) => this.hasItem(x, y));
         if (!cells) return { kind: 'retry' };
         if (!this.gateSealsOnlyInterior(gate, cells)) return { kind: 'retry' }; // 会误封别处 → 弃用该门位
 
@@ -1213,6 +1238,23 @@ export class BlueprintEngine {
      * 新增 ctx.adoptiveItem：递归领养时父机器交来的物品指令（CE adoptiveItem）。
      */
     private applyBlueprint(
+        bp: BlueprintDef,
+        room: { cells: Pos[]; center: Pos; door: Pos | null },
+        ctx: { adoptiveItem?: MachineItemSpawn | null } = {}
+    ): MachineResult | null {
+        const backup = this.entities ? this.backupLevel() : null;
+        const abort = this.entities?.checkpoint();
+        try {
+            const result = this.applyBlueprintContents(bp, room, ctx);
+            if (!result && backup) { this.restoreLevel(backup); abort!(); }
+            return result;
+        } catch (error) {
+            if (backup) { this.restoreLevel(backup); abort!(); }
+            throw error;
+        }
+    }
+
+    private applyBlueprintContents(
         bp: BlueprintDef,
         room: { cells: Pos[]; center: Pos; door: Pos | null },
         ctx: { adoptiveItem?: MachineResult['itemSpawns'][number] | null } = {}
@@ -1383,6 +1425,20 @@ export class BlueprintEngine {
         // 4. Process features
         const itemSpawns: MachineItemSpawn[] = [];
         const generatedItems: MachineItemSpawn[] = [];
+        const fail = (reason: string): null => {
+            if (this.entities) {
+                const abortChild = (child: MachineResult): void => {
+                    child.subMachines.forEach(abortChild);
+                    recordMachineRollback(child.observation, `ancestor rolled back: ${reason}`);
+                };
+                subMachines.forEach(abortChild);
+                if (observation) for (const spawn of generatedItems) if (spawn.entity) {
+                    observation.products.push({kind: 'item', featureIndex: spawn.sourceFeatureIndex ?? null,
+                        instanceId: spawn.entity.id, name: spawn.entity.name, pos: {...spawn.entity.loc}, outcome: 'rolled back'});
+                }
+            }
+            return recordMachineRollback(observation, reason);
+        };
         const priorItemIds: string[] = [];
         const collectCreated = (m: MachineResult): MachineItemSpawn[] => [
             ...(m.generatedItems ?? []), ...(m.subMachines ?? []).flatMap(collectCreated),
@@ -1460,6 +1516,20 @@ export class BlueprintEngine {
         // It spans the whole machine, and is committed only after all features succeed.
         let torch: MachineItemSpawn | null = null;
         let torchBearer: MachineMonsterSpawn | null = null;
+        let machineLeader: Monster | null = null;
+        const realize = (spawn: MachineMonsterSpawn): boolean => {
+            if (!this.entities) return true;
+            const made = spawn.entities = this.entities.spawn(spawn, machineNum);
+            for (const mon of made) {
+                // CE keeps horde-assigned leaders/followers; otherwise the
+                // first successful feature monster leads the machine tribe.
+                if (!machineLeader || machineLeader.hp <= 0) machineLeader = mon;
+                if (!mon.leader && !made.some(m => m.leader === mon) && mon !== machineLeader) mon.leader = machineLeader;
+                if (observation) observation.products.push({kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,
+                    instanceId: mon.id, name: mon.name, pos: {...mon.loc}, owner: mon.isDormant ? 'dormant' : 'floor'});
+            }
+            return made.length > 0;
+        };
 
         for (const [feat, feature] of bp.features.entries()) {
             const featureTrace: MachineFeatureTrace | undefined = observation ? {
@@ -1736,13 +1806,15 @@ export class BlueprintEngine {
                             this.pendingItems.add(cellKey(pos.x, pos.y));
                         }
 
+                        if (theItem && this.entities) this.entities.item(theItem,
+                            !fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && !fFlags.has('MF_MONSTER_TAKE_ITEM'));
+
                         // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
                         // 10 次重试建子机器；任一次成功即把子机器并入本机器
                         // （CE :1555-1567 并入 spawnedItems/Monsters 缓冲的 web 等价），
                         // 10 次全败 → 整机失败（CE :1576-1583，备份由 buildAMachine 恢复）。
-                        // CE 每次重试前把领养物品从地面/背包摘链的注释（:1546-1551）在
-                        // web 结构性成立：物品指令不在网格上，失败的子机器结果整体丢弃，
-                        // 无"留在地上"的残骸可摘。
+                        // The entity checkpoint detaches failed child placements and
+                        // restores the incoming item's identity/metadata before retry.
                         if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') || fFlags.has('MF_BUILD_VESTIBULE')) {
                             let success = false;
                             for (let i = 10; i > 0; i--) {
@@ -1755,7 +1827,7 @@ export class BlueprintEngine {
                                 }
                                 if (success) break;
                             }
-                            if (!success) return recordMachineRollback(observation, `feature #${feat}: child machine failed`);
+                            if (!success) return fail(`feature #${feat}: child machine failed`);
                             theItem = null; // CE :1585: outsourced item cannot also be carried here.
                         }
                         const carryItem = fFlags.has('MF_MONSTER_TAKE_ITEM') ? theItem : null;
@@ -1774,7 +1846,7 @@ export class BlueprintEngine {
                         // 21/43/56/69 号四条蓝图用 HORDE_MACHINE_STATUE /
                         // HORDE_MACHINE_TURRET 让 horde 只从机器族里抽。
                         if (fFlags.has('MF_GENERATE_HORDE')) {
-                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
+                            if (!this.entities && !fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
                             monsterSpawns.push({
                                 hordeFlags: feature.hordeFlags ?? [],
                                 pos: { x: pos.x, y: pos.y },
@@ -1786,7 +1858,8 @@ export class BlueprintEngine {
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
-                            if (carryItem) {
+                            const hasBearer = realize(monsterSpawns[monsterSpawns.length - 1]!);
+                            if (carryItem && hasBearer) {
                                 torch = carryItem;
                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
                             }
@@ -1799,7 +1872,7 @@ export class BlueprintEngine {
                         // 皆有（行为零变化），但 24/25 号的图腾/守卫 feature 按 CE
                         // 数据不带该旗标，旧条件会漏生成。照 CE 改为只看 monsterId。
                         if (feature.monsterId) {
-                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
+                            if (!this.entities && !fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
                             monsterSpawns.push({
                                 monsterId: feature.monsterId,
                                 pos: { x: pos.x, y: pos.y },
@@ -1814,7 +1887,8 @@ export class BlueprintEngine {
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
-                            if (carryItem) {
+                            const hasBearer = realize(monsterSpawns[monsterSpawns.length - 1]!);
+                            if (carryItem && hasBearer) {
                                 torch = carryItem;
                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
                             }
@@ -1844,11 +1918,14 @@ export class BlueprintEngine {
             // findFeaturePosition 找不到可落格（房间太小/格子被占光）与
             // V-2b-2a 的阻断否决（CE :1444-1452）。REPEAT 豁免（CE :1675）。
             if (placed < minInstances && !repeatUntilNoProgress) {
-                return recordMachineRollback(observation, `feature #${feat}: ${placed} < minimum ${minInstances}`);
+                return fail(`feature #${feat}: ${placed} < minimum ${minInstances}`);
             }
 
         }
-        if (torchBearer && torch) torchBearer.carriedItem = torch;
+        if (torchBearer && torch) {
+            if (this.entities && (!torchBearer.entities?.[0] || torchBearer.entities[0].hp <= 0)) return fail('item bearer removed during construction');
+            torchBearer.carriedItem = torch;
+        }
 
         // 5. 机器旗标（P1-37）：本方法第 1 步已把 room.cells 全部写入
         // cell.machineNumber（web 的 IS_IN_MACHINE 等价物，CE Rogue.h:1113，
@@ -1896,7 +1973,7 @@ export class BlueprintEngine {
         for (const spawn of itemSpawns) {
             if (!spawn.viaAdoption) continue;
             const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
-            if (!cell || isPathingBlocker(cell.terrain)) return recordMachineRollback(observation, 'adopted item destination blocked');
+            if (!cell || isPathingBlocker(cell.terrain)) return fail('adopted item destination blocked');
         }
 
         // Do not publish a transaction with an unowned creation or duplicate
@@ -1913,7 +1990,7 @@ export class BlueprintEngine {
         if ([...ownerCounts.values()].some(count => count !== 1)
             || [...generatedItems, ...children.flatMap(m => m.generatedItems ?? [])]
                 .some(item => ownerCounts.get(item.instanceId!) !== 1)
-            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return recordMachineRollback(observation, 'item ownership invariant');
+            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return fail('item ownership invariant');
 
         // V-2b-9c: #32 can overlay the pre-feature center with deep water.
         // Keep the existing web room-center contract in final terrain, without
@@ -1926,7 +2003,7 @@ export class BlueprintEngine {
             candidates.sort((a, b) =>
                 Math.abs(a.x - room.center.x) + Math.abs(a.y - room.center.y)
                 - Math.abs(b.x - room.center.x) - Math.abs(b.y - room.center.y));
-            if (!candidates.length) return recordMachineRollback(observation, 'no passable room center');
+            if (!candidates.length) return fail('no passable room center');
             finalCenter = candidates[0]!;
         }
 
@@ -1947,6 +2024,7 @@ export class BlueprintEngine {
             generatedKey: machineGeneratedKey,
             subMachines,
         };
+        if (torchBearer && torch) this.entities?.handOff(torchBearer, torch);
         if (observation) result.observation = observation;
         return result;
     }
@@ -1999,7 +2077,7 @@ export class BlueprintEngine {
                     if (cells.length >= goal) break;
                     if (dist[x]![y] === k) {
                         cells.push({ x, y });
-                        if (this.pendingItems.has(cellKey(x, y))) return null;
+                        if (this.hasItem(x, y)) return null;
                     }
                 }
             }
@@ -2051,8 +2129,7 @@ export class BlueprintEngine {
                 if (cells.length >= goal) break;
                 if (dist[x]![y] !== k) continue;
                 cells.push({ x, y });
-                const key = cellKey(x, y);
-                if (this.pendingItems.has(key) || this.pendingMonsters.has(key)
+                if (this.hasItem(x, y) || this.hasMonster(x, y)
                     || this.grid.getCell(x, y)!.machineNumber !== 0) {
                     tryAgain = true; // HAS_ITEM | HAS_MONSTER | IS_IN_MACHINE
                     break shells;

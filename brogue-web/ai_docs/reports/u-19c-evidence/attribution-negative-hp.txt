@@ -1,0 +1,101 @@
+s6 captured
+undo-s6 captured
+[
+  {
+    from: 's0',
+    to: 's1',
+    layers: 78,
+    fields: {
+      fp: 47,
+      n: 38,
+      species: 39,
+      items: 42,
+      terrain: 69,
+      monsters: 77,
+      dormant: 29,
+      player: 25,
+      itemsState: 78,
+      rng: 78,
+      machines: 41,
+      committed: 41,
+      entities: 43,
+      views: 4,
+      viewCount: 3
+    }
+  },
+  {
+    from: 's1',
+    to: 's2',
+    layers: 101,
+    fields: {
+      fp: 41,
+      n: 24,
+      species: 24,
+      items: 29,
+      terrain: 86,
+      monsters: 97,
+      itemsState: 101,
+      rng: 101,
+      machines: 45,
+      committed: 45,
+      dormant: 29,
+      entities: 60,
+      player: 13,
+      views: 3,
+      viewCount: 2
+    }
+  },
+  { from: 's2', to: 's3a', layers: 0, fields: {} },
+  {
+    from: 's3a',
+    to: 's3b',
+    layers: 32,
+    fields: {
+      fp: 2,
+      n: 2,
+      species: 2,
+      items: 5,
+      terrain: 25,
+      monsters: 32,
+      itemsState: 30,
+      rng: 30,
+      machines: 19,
+      committed: 19,
+      dormant: 11,
+      entities: 24,
+      player: 1
+    }
+  },
+  { from: 's3b', to: 's4', layers: 0, fields: {} },
+  { from: 's4', to: 's5a', layers: 0, fields: {} },
+  { from: 's5a', to: 's5b', layers: 0, fields: {} },
+  { from: 's5b', to: 's5c', layers: 0, fields: {} },
+  {
+    from: 's5c',
+    to: 's5d',
+    layers: 38,
+    fields: {
+      n: 7,
+      species: 7,
+      monsters: 38,
+      itemsState: 36,
+      rng: 34,
+      entities: 19,
+      machines: 14,
+      committed: 14,
+      dormant: 10,
+      items: 5,
+      terrain: 12,
+      fp: 5
+    }
+  },
+  { from: 's5d', to: 's5', layers: 0, fields: {} },
+  { from: 's5', to: 's6', layers: 0, fields: {} },
+  { from: 's0', to: 'undo-s1', layers: 0, fields: {} },
+  { from: 's1', to: 'undo-s2', layers: 0, fields: {} },
+  { from: 's2', to: 'undo-s3a', layers: 0, fields: {} },
+  { from: 's3a', to: 'undo-s3b', layers: 0, fields: {} },
+  { from: 's3b', to: 'undo-s4', layers: 0, fields: {} },
+  { from: 's5d', to: 'undo-s5', layers: 0, fields: {} },
+  { from: 's5', to: 'undo-s6', layers: 0, fields: {} }
+]

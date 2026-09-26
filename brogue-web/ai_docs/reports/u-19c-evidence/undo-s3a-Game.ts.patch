@@ -1,0 +1,11 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -2142,7 +2142,7 @@
+         if (!picked) return null;
+ 
+         const collected: Monster[] = [];
+-        this.spawnHordeAt(picked, spawn.pos, roll.depth, false, undefined, collected);
++        this.spawnHordeAt(picked, spawn.pos, depth, false, undefined, collected);
+         for (const mon of collected) {
+             this.finalizeBlueprintMonster(mon, spawn, machineNumber);
+         }

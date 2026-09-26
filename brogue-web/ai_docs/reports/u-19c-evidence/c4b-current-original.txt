@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/c_4b_dungeon_feature.test.ts (31 tests | 1 failed | 30 skipped) 1368ms
+     × F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空 1367ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+AssertionError: expected 59 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 59
+
+ ❯ Game.g.catchUpEnvironment src/test/c_4b_dungeon_feature.test.ts:1323:60
+    1321|                             // 其 FOLIAGE feature 又可在 SURFACE 层生长；
+    1322|                             // 新确认的区域机器形态已由上面的逐字段白名单处理。
+    1323|                             expect(cell.layers[L.DUNGEON]).toBe(C.FLOO…
+       |                                                            ^
+    1324|                             expect([
+    1325|                                 C.FLOOR_FLOODABLE,
+ ❯ Game.generateDepth src/engine/Core/Game.ts:1312:14
+ ❯ src/test/c_4b_dungeon_feature.test.ts:1534:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 skipped (31)
+   Start at  13:55:07
+   Duration  2.37s (transform 503ms, setup 0ms, import 894ms, tests 1.37s, environment 0ms)
+

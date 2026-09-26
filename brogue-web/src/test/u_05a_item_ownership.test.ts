@@ -167,7 +167,10 @@ describe('U05a real consumer and U01 snapshot contract',()=>{
         const proto=Game.prototype as any,spawn=proto.spawnHordeAtFeature;
         const displaced=ItemLoader.spawnKey('cage_key',3,3)!;
         vi.spyOn(proto,'spawnHordeAtFeature').mockImplementation(function(this:any,...args:any[]){
-            const leader=spawn.apply(this,args);if(leader)leader.carriedItem=displaced;return leader;
+            const leader=spawn.apply(this,args);
+            // Only the synthetic incoming parent:key is under test. Real machines
+            // now spawn during Architect.generateLevel, before its result is replaced.
+            if(leader && args[0]?.carriedItem?.instanceId==='parent:key')leader.carriedItem=displaced;return leader;
         });
         const {g,r}=materializedGame(true);
         const leader=g.monsters.find((m:any)=>m.machineHome===r.machineNumber&&m.carriedItem);

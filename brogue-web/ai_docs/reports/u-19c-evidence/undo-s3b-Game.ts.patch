@@ -1,0 +1,28 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -2261,10 +2261,23 @@
+             if (!memberMData) continue;
+ 
+             for (let c = 0; c < count; c++) {
++                // CE spawnMinions creates each individual before searching for
++                // its location. Even a failed placement consumes initialization RNG.
++                let mon: Monster | undefined;
++                if (collected) {
++                    mon = new Monster(0, 0, memberMData);
++                    this.applyRandomMutation(mon, depth);
++                }
+                 const pos = this.findMinionSpawnSpot(centerPos, memberMData, h.spawnsIn, false);
+                 if (!pos) break;
+-                const mon = new Monster(pos.x, pos.y, memberMData);
+-                this.applyRandomMutation(mon, depth);
++                if (!mon) {
++                    mon = new Monster(pos.x, pos.y, memberMData);
++                    this.applyRandomMutation(mon, depth);
++                } else {
++                    mon.loc = {...pos};
++                    mon.spawnLoc = {...pos};
++                    mon.state = leaderMon.state;
++                }
+                 if (wandering) mon.state = MonsterState.WANDERING;
+                 mon.leader = leaderMon;
+                 mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');

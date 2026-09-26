@@ -13,7 +13,7 @@ import type {Game} from '../../engine/Core/Game';
 import type {Pos} from '../../types';
 
 export const affectedCE=[15,18,24,36,37,38,46,49,55,56,62,65,66,71];
-export function machineScene(game:Game,ce:number,seed:number,size=0){
+export function machineScene(game:Game,ce:number,seed:number,size=0,immediate=false){
  const g:any=game,bp=(blueprints as BlueprintDef[]).find(b=>b.ceBlueprintId===ce)!;
  g.grid=new Grid(DCOLS,DROWS);g.fov=new FOVSys(g.grid);g.lightMap=new LightMap(g.grid);g.environment=new EnvironmentManager(g.grid);
  g.bindDormantAwakener();g.machineCells=new Set();g.depth=Math.max(bp.depthRange[0],Math.min(10,bp.depthRange[1]));
@@ -27,7 +27,7 @@ export function machineScene(game:Game,ce:number,seed:number,size=0){
  const roomType=bp.flags.includes('BP_ROOM')||bp.category==='reward'||bp.category==='key';
  const origin={x:roomType?12:17,y:14};
  const room={cells,center:roomType?{x:17,y:14}:origin,door:roomType?origin:null};
- const engine:any=new BlueprintEngine(grid,g.depth),snapshots:any[]=[],seen=new WeakSet();
+ const engine:any=new BlueprintEngine(grid,g.depth,undefined,immediate?g.createMachineRuntime(g.depth):undefined),snapshots:any[]=[],seen=new WeakSet();
  const apply=engine.applyBlueprint.bind(engine),view=engine.featureView.bind(engine);let current=bp,index=-1;
  engine.applyBlueprint=(row:BlueprintDef,...args:any[])=>{const previous=current,previousIndex=index;current=row;index=-1;try{return apply(row,...args);}finally{current=previous;index=previousIndex;}};
  engine.featureView=(p:Pos,flags:Set<string>)=>{
@@ -49,7 +49,7 @@ export function machineScene(game:Game,ce:number,seed:number,size=0){
   return accepted;
  };
  rng.seedRandomGenerator(seed);
- const result=engine.applyBlueprint(bp,room,{adoptiveItem:bp.flags.includes('BP_ADOPT_ITEM')?{category:'KEY',id:'iron_key',instanceId:'u19a-key',pos:origin,keyLoc:[],viaAdoption:true}:null});
+ const result=engine.applyBlueprint(bp,room,{adoptiveItem:(bp.flags.includes('BP_ADOPT_ITEM')||(immediate&&bp.category==='key_guard'))?{category:'KEY',id:'iron_key',instanceId:'u19a-key',pos:origin,keyLoc:[],viaAdoption:true}:null});
  if(!result)return null;
  for(const s of snapshots)s.placements=result.featureSpawns.filter((f:any)=>f.featureIndex===s.feature).map((f:any)=>f.pos);
  return {ce,seed,size,bp,origin,result,snapshots};

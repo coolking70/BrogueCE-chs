@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "bad-layer",
+    "file": "c_4b_dungeon_feature",
+    "test": "F3 留痕",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "bad-gas",
+    "file": "c_4b_dungeon_feature",
+    "test": "F3 留痕",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-explosion-decay",
+    "file": "f_2c_explosion",
+    "test": "对抗④：",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-legacy-handoff",
+    "file": "u_05a_item_ownership",
+    "test": "handoff replaces",
+    "exit": 1,
+    "assertionFailure": true
+  }
+]

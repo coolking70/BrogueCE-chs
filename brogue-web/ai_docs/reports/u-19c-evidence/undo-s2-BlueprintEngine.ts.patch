@@ -1,0 +1,46 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -48,6 +48,7 @@
+ import { rng } from '../Random';
+ import type { Pos } from '../../types';
+ import type { Monster } from '../../entities/Monster';
++import type { Item } from '../Items/Item';
+ import blueprintData from '../../data/blueprints.json';
+ import { Architect, type DungeonProfileId } from './Architect';
+ import { getMachineObservationHook, getMachineObservationSeed, recordMachineRollback, type MachineFeatureTrace, type MachineTrace } from './MachineObservation';
+@@ -131,6 +132,8 @@
+ /** A deferred item instance. Adoption copies placement, never instanceId.
+  * IDs are local to the generated level and consume no RNG/entity IDs. */
+ export interface MachineItemSpawn {
++    /** Immediate instance shared by every adoption/ownership recipe. */
++    entity?: Item;
+     /** U17e library items carry CE ITEM_IS_KEY and their existing item flags. */
+     itemFlags?: string[];
+     instanceId?: string;
+@@ -158,6 +161,8 @@
+     checkpoint(): () => void;
+     hasMonster(x: number, y: number): boolean;
+     spawn(spawn: MachineMonsterSpawn, machineNumber: number): Monster[];
++    item(spawn: MachineItemSpawn, place: boolean): Item;
++    handOff(spawn: MachineMonsterSpawn, item: MachineItemSpawn): void;
+ }
+ 
+ export interface MachineMonsterSpawn {
+@@ -1782,6 +1787,9 @@
+                             this.pendingItems.add(cellKey(pos.x, pos.y));
+                         }
+ 
++                        if (theItem && this.entities) this.entities.item(theItem,
++                            !fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && !fFlags.has('MF_MONSTER_TAKE_ITEM'));
++
+                         // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
+                         // 10 次重试建子机器；任一次成功即把子机器并入本机器
+                         // （CE :1555-1567 并入 spawnedItems/Monsters 缓冲的 web 等价），
+@@ -1995,6 +2003,7 @@
+             generatedKey: machineGeneratedKey,
+             subMachines,
+         };
++        if (torchBearer && torch) this.entities?.handOff(torchBearer, torch);
+         if (observation) result.observation = observation;
+         return result;
+     }

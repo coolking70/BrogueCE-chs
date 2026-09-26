@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > matches the compiled CE call-site RNG oracle before the NEXT feature (allocation stubs only)
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 355ms
+     × matches the compiled CE call-site RNG oracle before the NEXT feature (allocation stubs only) 353ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > matches the compiled CE call-site RNG oracle before the NEXT feature (allocation stubs only)
+AssertionError: expected [ 'feature:0', 'horde:1', …(6) ] to deeply equal [ 'feature:0', 'item:1', …(7) ]
+
+- Expected
++ Received
+
+  [
+    "feature:0",
+-   "item:1",
+-   "horde:2",
++   "horde:1",
++   "monster:2",
+    "monster:3",
+    "monster:4",
+-   "monster:5",
+-   "feature:6",
+-   "monster:7",
+-   "commit:8",
++   "feature:5",
++   "monster:6",
++   "commit:7",
+  ]
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:40:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:29:55
+   Duration  1.85s (transform 821ms, setup 0ms, import 1.32s, tests 355ms, environment 0ms)
+

@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > real items, the leader AND every minion exist and occupy cells before the next feature
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 566ms
+     × real items, the leader AND every minion exist and occupy cells before the next feature 562ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > real items, the leader AND every minion exist and occupy cells before the next feature
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ BlueprintEngine.engine.findFeaturePosition src/test/u_19c_immediate_entities.test.ts:44:187
+
+ ❯ BlueprintEngine.applyBlueprintContents src/engine/Generator/BlueprintEngine.ts:1604:38
+ ❯ BlueprintEngine.applyBlueprint src/engine/Generator/BlueprintEngine.ts:1248:33
+ ❯ apply src/test/u_19c_immediate_entities.test.ts:19:63
+ ❯ src/test/u_19c_immediate_entities.test.ts:45:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:29:58
+   Duration  2.27s (transform 807ms, setup 0ms, import 1.53s, tests 566ms, environment 0ms)
+

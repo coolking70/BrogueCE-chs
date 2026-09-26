@@ -1,0 +1,18 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1709,6 +1709,15 @@
+             // Spawn monsters
+             for (const spawn of mr.monsterSpawns) {
+                 if (spawn.entities) {
++                    // U25 reports final ownership/location, including later DF
++                    // movement, awakening and quiet replacement during construction.
++                    if (trace) for (const mon of spawn.entities) {
++                        const product = trace.products.find(p => p.kind === 'monster' && p.instanceId === mon.id);
++                        if (!product) continue;
++                        product.pos = {...mon.loc};
++                        product.owner = this.dormantMonsters.includes(mon) ? 'dormant' : this.monsters.includes(mon) ? 'floor' : undefined;
++                        if (!product.owner) product.outcome = 'removed during construction';
++                    }
+                     const leader = spawn.entities[0];
+                     if (leader && (this.monsters.includes(leader) || this.dormantMonsters.includes(leader))) handOff(leader, spawn, mr);
+                     continue;

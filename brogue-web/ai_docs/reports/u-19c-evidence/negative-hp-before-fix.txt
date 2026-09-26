@@ -1,0 +1,2041 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 18 skipped) 407ms
+     × a bearer killed by later construction effects (HP -1) cannot receive the committed item 225ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > a bearer killed by later construction effects (HP -1) cannot receive the committed item
+AssertionError: expected { blueprintId: 'immediate', …(12) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "blueprintId": "immediate",
+  "category": "thematic",
+  "cells": [
+    {
+      "x": 30,
+      "y": 13,
+    },
+    {
+      "x": 25,
+      "y": 20,
+    },
+    {
+      "x": 7,
+      "y": 9,
+    },
+    {
+      "x": 27,
+      "y": 11,
+    },
+    {
+      "x": 7,
+      "y": 12,
+    },
+    {
+      "x": 5,
+      "y": 6,
+    },
+    {
+      "x": 21,
+      "y": 13,
+    },
+    {
+      "x": 20,
+      "y": 17,
+    },
+    {
+      "x": 27,
+      "y": 10,
+    },
+    {
+      "x": 25,
+      "y": 9,
+    },
+    {
+      "x": 9,
+      "y": 14,
+    },
+    {
+      "x": 26,
+      "y": 20,
+    },
+    {
+      "x": 5,
+      "y": 9,
+    },
+    {
+      "x": 16,
+      "y": 13,
+    },
+    {
+      "x": 13,
+      "y": 7,
+    },
+    {
+      "x": 15,
+      "y": 12,
+    },
+    {
+      "x": 5,
+      "y": 5,
+    },
+    {
+      "x": 9,
+      "y": 5,
+    },
+    {
+      "x": 23,
+      "y": 6,
+    },
+    {
+      "x": 10,
+      "y": 6,
+    },
+    {
+      "x": 29,
+      "y": 15,
+    },
+    {
+      "x": 23,
+      "y": 10,
+    },
+    {
+      "x": 17,
+      "y": 7,
+    },
+    {
+      "x": 7,
+      "y": 19,
+    },
+    {
+      "x": 28,
+      "y": 20,
+    },
+    {
+      "x": 28,
+      "y": 12,
+    },
+    {
+      "x": 29,
+      "y": 8,
+    },
+    {
+      "x": 11,
+      "y": 16,
+    },
+    {
+      "x": 16,
+      "y": 11,
+    },
+    {
+      "x": 28,
+      "y": 7,
+    },
+    {
+      "x": 7,
+      "y": 14,
+    },
+    {
+      "x": 12,
+      "y": 17,
+    },
+    {
+      "x": 11,
+      "y": 15,
+    },
+    {
+      "x": 24,
+      "y": 5,
+    },
+    {
+      "x": 5,
+      "y": 11,
+    },
+    {
+      "x": 14,
+      "y": 7,
+    },
+    {
+      "x": 26,
+      "y": 10,
+    },
+    {
+      "x": 27,
+      "y": 15,
+    },
+    {
+      "x": 8,
+      "y": 11,
+    },
+    {
+      "x": 29,
+      "y": 17,
+    },
+    {
+      "x": 28,
+      "y": 6,
+    },
+    {
+      "x": 17,
+      "y": 14,
+    },
+    {
+      "x": 5,
+      "y": 17,
+    },
+    {
+      "x": 17,
+      "y": 18,
+    },
+    {
+      "x": 19,
+      "y": 11,
+    },
+    {
+      "x": 12,
+      "y": 20,
+    },
+    {
+      "x": 20,
+      "y": 19,
+    },
+    {
+      "x": 30,
+      "y": 18,
+    },
+    {
+      "x": 11,
+      "y": 6,
+    },
+    {
+      "x": 12,
+      "y": 11,
+    },
+    {
+      "x": 18,
+      "y": 6,
+    },
+    {
+      "x": 10,
+      "y": 8,
+    },
+    {
+      "x": 11,
+      "y": 10,
+    },
+    {
+      "x": 16,
+      "y": 10,
+    },
+    {
+      "x": 24,
+      "y": 13,
+    },
+    {
+      "x": 6,
+      "y": 16,
+    },
+    {
+      "x": 5,
+      "y": 10,
+    },
+    {
+      "x": 9,
+      "y": 6,
+    },
+    {
+      "x": 13,
+      "y": 9,
+    },
+    {
+      "x": 25,
+      "y": 15,
+    },
+    {
+      "x": 24,
+      "y": 8,
+    },
+    {
+      "x": 23,
+      "y": 18,
+    },
+    {
+      "x": 10,
+      "y": 11,
+    },
+    {
+      "x": 12,
+      "y": 16,
+    },
+    {
+      "x": 15,
+      "y": 18,
+    },
+    {
+      "x": 9,
+      "y": 20,
+    },
+    {
+      "x": 22,
+      "y": 15,
+    },
+    {
+      "x": 10,
+      "y": 18,
+    },
+    {
+      "x": 19,
+      "y": 6,
+    },
+    {
+      "x": 8,
+      "y": 18,
+    },
+    {
+      "x": 25,
+      "y": 17,
+    },
+    {
+      "x": 19,
+      "y": 8,
+    },
+    {
+      "x": 18,
+      "y": 16,
+    },
+    {
+      "x": 15,
+      "y": 7,
+    },
+    {
+      "x": 14,
+      "y": 6,
+    },
+    {
+      "x": 9,
+      "y": 17,
+    },
+    {
+      "x": 15,
+      "y": 14,
+    },
+    {
+      "x": 20,
+      "y": 6,
+    },
+    {
+      "x": 23,
+      "y": 15,
+    },
+    {
+      "x": 6,
+      "y": 7,
+    },
+    {
+      "x": 16,
+      "y": 12,
+    },
+    {
+      "x": 27,
+      "y": 18,
+    },
+    {
+      "x": 20,
+      "y": 10,
+    },
+    {
+      "x": 16,
+      "y": 19,
+    },
+    {
+      "x": 21,
+      "y": 16,
+    },
+    {
+      "x": 10,
+      "y": 5,
+    },
+    {
+      "x": 23,
+      "y": 14,
+    },
+    {
+      "x": 30,
+      "y": 15,
+    },
+    {
+      "x": 22,
+      "y": 5,
+    },
+    {
+      "x": 30,
+      "y": 5,
+    },
+    {
+      "x": 16,
+      "y": 16,
+    },
+    {
+      "x": 26,
+      "y": 18,
+    },
+    {
+      "x": 24,
+      "y": 14,
+    },
+    {
+      "x": 8,
+      "y": 6,
+    },
+    {
+      "x": 6,
+      "y": 17,
+    },
+    {
+      "x": 6,
+      "y": 10,
+    },
+    {
+      "x": 15,
+      "y": 8,
+    },
+    {
+      "x": 7,
+      "y": 17,
+    },
+    {
+      "x": 11,
+      "y": 11,
+    },
+    {
+      "x": 19,
+      "y": 15,
+    },
+    {
+      "x": 13,
+      "y": 18,
+    },
+    {
+      "x": 27,
+      "y": 20,
+    },
+    {
+      "x": 13,
+      "y": 13,
+    },
+    {
+      "x": 29,
+      "y": 9,
+    },
+    {
+      "x": 23,
+      "y": 17,
+    },
+    {
+      "x": 15,
+      "y": 17,
+    },
+    {
+      "x": 30,
+      "y": 11,
+    },
+    {
+      "x": 29,
+      "y": 18,
+    },
+    {
+      "x": 10,
+      "y": 13,
+    },
+    {
+      "x": 6,
+      "y": 18,
+    },
+    {
+      "x": 8,
+      "y": 15,
+    },
+    {
+      "x": 8,
+      "y": 16,
+    },
+    {
+      "x": 24,
+      "y": 15,
+    },
+    {
+      "x": 8,
+      "y": 5,
+    },
+    {
+      "x": 17,
+      "y": 5,
+    },
+    {
+      "x": 18,
+      "y": 20,
+    },
+    {
+      "x": 12,
+      "y": 14,
+    },
+    {
+      "x": 8,
+      "y": 7,
+    },
+    {
+      "x": 21,
+      "y": 5,
+    },
+    {
+      "x": 21,
+      "y": 14,
+    },
+    {
+      "x": 22,
+      "y": 20,
+    },
+    {
+      "x": 8,
+      "y": 12,
+    },
+    {
+      "x": 22,
+      "y": 13,
+    },
+    {
+      "x": 16,
+      "y": 20,
+    },
+    {
+      "x": 22,
+      "y": 6,
+    },
+    {
+      "x": 7,
+      "y": 15,
+    },
+    {
+      "x": 28,
+      "y": 10,
+    },
+    {
+      "x": 18,
+      "y": 7,
+    },
+    {
+      "x": 17,
+      "y": 13,
+    },
+    {
+      "x": 30,
+      "y": 20,
+    },
+    {
+      "x": 13,
+      "y": 16,
+    },
+    {
+      "x": 18,
+      "y": 11,
+    },
+    {
+      "x": 16,
+      "y": 18,
+    },
+    {
+      "x": 11,
+      "y": 19,
+    },
+    {
+      "x": 14,
+      "y": 11,
+    },
+    {
+      "x": 12,
+      "y": 15,
+    },
+    {
+      "x": 29,
+      "y": 6,
+    },
+    {
+      "x": 29,
+      "y": 13,
+    },
+    {
+      "x": 8,
+      "y": 9,
+    },
+    {
+      "x": 9,
+      "y": 9,
+    },
+    {
+      "x": 8,
+      "y": 14,
+    },
+    {
+      "x": 24,
+      "y": 18,
+    },
+    {
+      "x": 17,
+      "y": 17,
+    },
+    {
+      "x": 22,
+      "y": 14,
+    },
+    {
+      "x": 6,
+      "y": 19,
+    },
+    {
+      "x": 5,
+      "y": 14,
+    },
+    {
+      "x": 30,
+      "y": 10,
+    },
+    {
+      "x": 10,
+      "y": 19,
+    },
+    {
+      "x": 18,
+      "y": 18,
+    },
+    {
+      "x": 17,
+      "y": 20,
+    },
+    {
+      "x": 12,
+      "y": 6,
+    },
+    {
+      "x": 14,
+      "y": 14,
+    },
+    {
+      "x": 20,
+      "y": 14,
+    },
+    {
+      "x": 12,
+      "y": 10,
+    },
+    {
+      "x": 18,
+      "y": 17,
+    },
+    {
+      "x": 11,
+      "y": 8,
+    },
+    {
+      "x": 14,
+      "y": 10,
+    },
+    {
+      "x": 26,
+      "y": 7,
+    },
+    {
+      "x": 17,
+      "y": 10,
+    },
+    {
+      "x": 20,
+      "y": 12,
+    },
+    {
+      "x": 26,
+      "y": 8,
+    },
+    {
+      "x": 25,
+      "y": 8,
+    },
+    {
+      "x": 6,
+      "y": 9,
+    },
+    {
+      "x": 6,
+      "y": 11,
+    },
+    {
+      "x": 24,
+      "y": 10,
+    },
+    {
+      "x": 11,
+      "y": 20,
+    },
+    {
+      "x": 19,
+      "y": 12,
+    },
+    {
+      "x": 11,
+      "y": 5,
+    },
+    {
+      "x": 21,
+      "y": 9,
+    },
+    {
+      "x": 27,
+      "y": 8,
+    },
+    {
+      "x": 26,
+      "y": 11,
+    },
+    {
+      "x": 19,
+      "y": 20,
+    },
+    {
+      "x": 12,
+      "y": 18,
+    },
+    {
+      "x": 6,
+      "y": 6,
+    },
+    {
+      "x": 9,
+      "y": 12,
+    },
+    {
+      "x": 5,
+      "y": 13,
+    },
+    {
+      "x": 22,
+      "y": 9,
+    },
+    {
+      "x": 20,
+      "y": 16,
+    },
+    {
+      "x": 18,
+      "y": 9,
+    },
+    {
+      "x": 29,
+      "y": 20,
+    },
+    {
+      "x": 14,
+      "y": 17,
+    },
+    {
+      "x": 28,
+      "y": 15,
+    },
+    {
+      "x": 25,
+      "y": 16,
+    },
+    {
+      "x": 14,
+      "y": 16,
+    },
+    {
+      "x": 9,
+      "y": 18,
+    },
+    {
+      "x": 23,
+      "y": 11,
+    },
+    {
+      "x": 12,
+      "y": 12,
+    },
+    {
+      "x": 29,
+      "y": 19,
+    },
+    {
+      "x": 19,
+      "y": 14,
+    },
+    {
+      "x": 26,
+      "y": 13,
+    },
+    {
+      "x": 12,
+      "y": 8,
+    },
+    {
+      "x": 25,
+      "y": 19,
+    },
+    {
+      "x": 19,
+      "y": 5,
+    },
+    {
+      "x": 12,
+      "y": 13,
+    },
+    {
+      "x": 29,
+      "y": 11,
+    },
+    {
+      "x": 8,
+      "y": 13,
+    },
+    {
+      "x": 27,
+      "y": 7,
+    },
+    {
+      "x": 10,
+      "y": 15,
+    },
+    {
+      "x": 25,
+      "y": 10,
+    },
+    {
+      "x": 7,
+      "y": 13,
+    },
+    {
+      "x": 19,
+      "y": 10,
+    },
+    {
+      "x": 14,
+      "y": 19,
+    },
+    {
+      "x": 19,
+      "y": 17,
+    },
+    {
+      "x": 18,
+      "y": 14,
+    },
+    {
+      "x": 14,
+      "y": 20,
+    },
+    {
+      "x": 6,
+      "y": 5,
+    },
+    {
+      "x": 24,
+      "y": 7,
+    },
+    {
+      "x": 27,
+      "y": 5,
+    },
+    {
+      "x": 22,
+      "y": 12,
+    },
+    {
+      "x": 12,
+      "y": 9,
+    },
+    {
+      "x": 20,
+      "y": 8,
+    },
+    {
+      "x": 28,
+      "y": 19,
+    },
+    {
+      "x": 22,
+      "y": 11,
+    },
+    {
+      "x": 15,
+      "y": 13,
+    },
+    {
+      "x": 21,
+      "y": 7,
+    },
+    {
+      "x": 7,
+      "y": 18,
+    },
+    {
+      "x": 6,
+      "y": 8,
+    },
+    {
+      "x": 5,
+      "y": 20,
+    },
+    {
+      "x": 16,
+      "y": 15,
+    },
+    {
+      "x": 9,
+      "y": 13,
+    },
+    {
+      "x": 9,
+      "y": 8,
+    },
+    {
+      "x": 19,
+      "y": 18,
+    },
+    {
+      "x": 23,
+      "y": 7,
+    },
+    {
+      "x": 15,
+      "y": 5,
+    },
+    {
+      "x": 28,
+      "y": 13,
+    },
+    {
+      "x": 7,
+      "y": 10,
+    },
+    {
+      "x": 5,
+      "y": 8,
+    },
+    {
+      "x": 24,
+      "y": 19,
+    },
+    {
+      "x": 15,
+      "y": 9,
+    },
+    {
+      "x": 20,
+      "y": 9,
+    },
+    {
+      "x": 21,
+      "y": 15,
+    },
+    {
+      "x": 13,
+      "y": 19,
+    },
+    {
+      "x": 9,
+      "y": 7,
+    },
+    {
+      "x": 21,
+      "y": 8,
+    },
+    {
+      "x": 16,
+      "y": 14,
+    },
+    {
+      "x": 7,
+      "y": 5,
+    },
+    {
+      "x": 11,
+      "y": 14,
+    },
+    {
+      "x": 11,
+      "y": 9,
+    },
+    {
+      "x": 26,
+      "y": 15,
+    },
+    {
+      "x": 11,
+      "y": 7,
+    },
+    {
+      "x": 16,
+      "y": 5,
+    },
+    {
+      "x": 5,
+      "y": 15,
+    },
+    {
+      "x": 21,
+      "y": 11,
+    },
+    {
+      "x": 25,
+      "y": 18,
+    },
+    {
+      "x": 28,
+      "y": 17,
+    },
+    {
+      "x": 23,
+      "y": 13,
+    },
+    {
+      "x": 6,
+      "y": 14,
+    },
+    {
+      "x": 14,
+      "y": 9,
+    },
+    {
+      "x": 28,
+      "y": 9,
+    },
+    {
+      "x": 29,
+      "y": 14,
+    },
+    {
+      "x": 15,
+      "y": 16,
+    },
+    {
+      "x": 27,
+      "y": 12,
+    },
+    {
+      "x": 18,
+      "y": 13,
+    },
+    {
+      "x": 23,
+      "y": 16,
+    },
+    {
+      "x": 22,
+      "y": 18,
+    },
+    {
+      "x": 27,
+      "y": 19,
+    },
+    {
+      "x": 13,
+      "y": 10,
+    },
+    {
+      "x": 17,
+      "y": 12,
+    },
+    {
+      "x": 8,
+      "y": 17,
+    },
+    {
+      "x": 14,
+      "y": 18,
+    },
+    {
+      "x": 10,
+      "y": 7,
+    },
+    {
+      "x": 19,
+      "y": 13,
+    },
+    {
+      "x": 21,
+      "y": 10,
+    },
+    {
+      "x": 11,
+      "y": 18,
+    },
+    {
+      "x": 26,
+      "y": 12,
+    },
+    {
+      "x": 5,
+      "y": 16,
+    },
+    {
+      "x": 10,
+      "y": 12,
+    },
+    {
+      "x": 11,
+      "y": 17,
+    },
+    {
+      "x": 24,
+      "y": 16,
+    },
+    {
+      "x": 22,
+      "y": 17,
+    },
+    {
+      "x": 24,
+      "y": 12,
+    },
+    {
+      "x": 29,
+      "y": 16,
+    },
+    {
+      "x": 26,
+      "y": 19,
+    },
+    {
+      "x": 16,
+      "y": 8,
+    },
+    {
+      "x": 29,
+      "y": 7,
+    },
+    {
+      "x": 25,
+      "y": 5,
+    },
+    {
+      "x": 17,
+      "y": 15,
+    },
+    {
+      "x": 13,
+      "y": 8,
+    },
+    {
+      "x": 26,
+      "y": 16,
+    },
+    {
+      "x": 10,
+      "y": 9,
+    },
+    {
+      "x": 26,
+      "y": 14,
+    },
+    {
+      "x": 8,
+      "y": 8,
+    },
+    {
+      "x": 23,
+      "y": 12,
+    },
+    {
+      "x": 13,
+      "y": 15,
+    },
+    {
+      "x": 20,
+      "y": 18,
+    },
+    {
+      "x": 16,
+      "y": 7,
+    },
+    {
+      "x": 16,
+      "y": 6,
+    },
+    {
+      "x": 8,
+      "y": 19,
+    },
+    {
+      "x": 21,
+      "y": 12,
+    },
+    {
+      "x": 26,
+      "y": 6,
+    },
+    {
+      "x": 25,
+      "y": 7,
+    },
+    {
+      "x": 19,
+      "y": 19,
+    },
+    {
+      "x": 26,
+      "y": 9,
+    },
+    {
+      "x": 18,
+      "y": 8,
+    },
+    {
+      "x": 10,
+      "y": 17,
+    },
+    {
+      "x": 18,
+      "y": 12,
+    },
+    {
+      "x": 5,
+      "y": 7,
+    },
+    {
+      "x": 12,
+      "y": 19,
+    },
+    {
+      "x": 25,
+      "y": 13,
+    },
+    {
+      "x": 10,
+      "y": 10,
+    },
+    {
+      "x": 20,
+      "y": 15,
+    },
+    {
+      "x": 19,
+      "y": 7,
+    },
+    {
+      "x": 14,
+      "y": 8,
+    },
+    {
+      "x": 9,
+      "y": 19,
+    },
+    {
+      "x": 21,
+      "y": 19,
+    },
+    {
+      "x": 14,
+      "y": 13,
+    },
+    {
+      "x": 25,
+      "y": 11,
+    },
+    {
+      "x": 7,
+      "y": 11,
+    },
+    {
+      "x": 30,
+      "y": 16,
+    },
+    {
+      "x": 15,
+      "y": 11,
+    },
+    {
+      "x": 6,
+      "y": 12,
+    },
+    {
+      "x": 27,
+      "y": 6,
+    },
+    {
+      "x": 25,
+      "y": 6,
+    },
+    {
+      "x": 13,
+      "y": 6,
+    },
+    {
+      "x": 18,
+      "y": 10,
+    },
+    {
+      "x": 28,
+      "y": 14,
+    },
+    {
+      "x": 7,
+      "y": 6,
+    },
+    {
+      "x": 30,
+      "y": 14,
+    },
+    {
+      "x": 5,
+      "y": 18,
+    },
+    {
+      "x": 6,
+      "y": 15,
+    },
+    {
+      "x": 13,
+      "y": 14,
+    },
+    {
+      "x": 19,
+      "y": 9,
+    },
+    {
+      "x": 13,
+      "y": 12,
+    },
+    {
+      "x": 14,
+      "y": 12,
+    },
+    {
+      "x": 7,
+      "y": 16,
+    },
+    {
+      "x": 22,
+      "y": 19,
+    },
+    {
+      "x": 30,
+      "y": 19,
+    },
+    {
+      "x": 13,
+      "y": 17,
+    },
+    {
+      "x": 17,
+      "y": 19,
+    },
+    {
+      "x": 11,
+      "y": 13,
+    },
+    {
+      "x": 20,
+      "y": 7,
+    },
+    {
+      "x": 27,
+      "y": 9,
+    },
+    {
+      "x": 29,
+      "y": 12,
+    },
+    {
+      "x": 23,
+      "y": 19,
+    },
+    {
+      "x": 24,
+      "y": 9,
+    },
+    {
+      "x": 16,
+      "y": 17,
+    },
+    {
+      "x": 11,
+      "y": 12,
+    },
+    {
+      "x": 10,
+      "y": 16,
+    },
+    {
+      "x": 28,
+      "y": 11,
+    },
+    {
+      "x": 30,
+      "y": 12,
+    },
+    {
+      "x": 8,
+      "y": 20,
+    },
+    {
+      "x": 18,
+      "y": 5,
+    },
+    {
+      "x": 9,
+      "y": 16,
+    },
+    {
+      "x": 30,
+      "y": 7,
+    },
+    {
+      "x": 26,
+      "y": 5,
+    },
+    {
+      "x": 24,
+      "y": 11,
+    },
+    {
+      "x": 20,
+      "y": 20,
+    },
+    {
+      "x": 28,
+      "y": 18,
+    },
+    {
+      "x": 22,
+      "y": 16,
+    },
+    {
+      "x": 15,
+      "y": 10,
+    },
+    {
+      "x": 28,
+      "y": 16,
+    },
+    {
+      "x": 13,
+      "y": 5,
+    },
+    {
+      "x": 22,
+      "y": 8,
+    },
+    {
+      "x": 27,
+      "y": 13,
+    },
+    {
+      "x": 23,
+      "y": 8,
+    },
+    {
+      "x": 20,
+      "y": 5,
+    },
+    {
+      "x": 24,
+      "y": 17,
+    },
+    {
+      "x": 7,
+      "y": 8,
+    },
+    {
+      "x": 30,
+      "y": 6,
+    },
+    {
+      "x": 12,
+      "y": 5,
+    },
+    {
+      "x": 17,
+      "y": 11,
+    },
+    {
+      "x": 23,
+      "y": 5,
+    },
+    {
+      "x": 6,
+      "y": 20,
+    },
+    {
+      "x": 23,
+      "y": 20,
+    },
+    {
+      "x": 22,
+      "y": 10,
+    },
+    {
+      "x": 15,
+      "y": 19,
+    },
+    {
+      "x": 25,
+      "y": 12,
+    },
+    {
+      "x": 18,
+      "y": 19,
+    },
+    {
+      "x": 7,
+      "y": 20,
+    },
+    {
+      "x": 17,
+      "y": 8,
+    },
+    {
+      "x": 28,
+      "y": 8,
+    },
+    {
+      "x": 15,
+      "y": 6,
+    },
+    {
+      "x": 15,
+      "y": 20,
+    },
+    {
+      "x": 9,
+      "y": 10,
+    },
+    {
+      "x": 19,
+      "y": 16,
+    },
+    {
+      "x": 30,
+      "y": 9,
+    },
+    {
+      "x": 28,
+      "y": 5,
+    },
+    {
+      "x": 21,
+      "y": 6,
+    },
+    {
+      "x": 27,
+      "y": 16,
+    },
+    {
+      "x": 13,
+      "y": 20,
+    },
+    {
+      "x": 25,
+      "y": 14,
+    },
+    {
+      "x": 20,
+      "y": 11,
+    },
+    {
+      "x": 30,
+      "y": 17,
+    },
+    {
+      "x": 22,
+      "y": 7,
+    },
+    {
+      "x": 26,
+      "y": 17,
+    },
+    {
+      "x": 23,
+      "y": 9,
+    },
+    {
+      "x": 21,
+      "y": 18,
+    },
+    {
+      "x": 29,
+      "y": 10,
+    },
+    {
+      "x": 9,
+      "y": 11,
+    },
+    {
+      "x": 15,
+      "y": 15,
+    },
+    {
+      "x": 8,
+      "y": 10,
+    },
+    {
+      "x": 27,
+      "y": 14,
+    },
+    {
+      "x": 10,
+      "y": 14,
+    },
+    {
+      "x": 12,
+      "y": 7,
+    },
+    {
+      "x": 5,
+      "y": 12,
+    },
+    {
+      "x": 7,
+      "y": 7,
+    },
+    {
+      "x": 29,
+      "y": 5,
+    },
+    {
+      "x": 24,
+      "y": 6,
+    },
+    {
+      "x": 5,
+      "y": 19,
+    },
+    {
+      "x": 14,
+      "y": 5,
+    },
+    {
+      "x": 18,
+      "y": 15,
+    },
+    {
+      "x": 17,
+      "y": 9,
+    },
+    {
+      "x": 17,
+      "y": 6,
+    },
+    {
+      "x": 27,
+      "y": 17,
+    },
+    {
+      "x": 16,
+      "y": 9,
+    },
+    {
+      "x": 9,
+      "y": 15,
+    },
+    {
+      "x": 6,
+      "y": 13,
+    },
+    {
+      "x": 24,
+      "y": 20,
+    },
+    {
+      "x": 21,
+      "y": 20,
+    },
+    {
+      "x": 21,
+      "y": 17,
+    },
+    {
+      "x": 14,
+      "y": 15,
+    },
+    {
+      "x": 13,
+      "y": 11,
+    },
+    {
+      "x": 10,
+      "y": 20,
+    },
+    {
+      "x": 30,
+      "y": 8,
+    },
+    {
+      "x": 17,
+      "y": 16,
+    },
+    {
+      "x": 20,
+      "y": 13,
+    },
+  ],
+  "center": {
+    "x": 10,
+    "y": 10,
+  },
+  "door": null,
+  "featureSpawns": [
+    {
+      "featureDF": undefined,
+      "featureIndex": 0,
+      "pos": {
+        "x": 10,
+        "y": 10,
+      },
+      "terrain": undefined,
+    },
+    {
+      "featureDF": undefined,
+      "featureIndex": 1,
+      "pos": {
+        "x": 20,
+        "y": 10,
+      },
+      "terrain": undefined,
+    },
+  ],
+  "generatedItems": [
+    {
+      "category": "KEY",
+      "entity": Item {
+        "arcanaInstanceVersion": undefined,
+        "armor": undefined,
+        "canBeIdentified": false,
+        "category": 10,
+        "char": "k",
+        "charges": undefined,
+        "clumping": undefined,
+        "color": 12566463,
+        "consumableId": undefined,
+        "cooldownRemaining": undefined,
+        "cooldownTurns": undefined,
+        "damage": undefined,
+        "description": undefined,
+        "enchantment": 0,
+        "flags": undefined,
+        "id": 22,
+        "identified": true,
+        "identityId": undefined,
+        "inventoryLetter": undefined,
+        "isCursed": false,
+        "isProtected": false,
+        "keyLoc": [
+          {
+            "disposableHere": false,
+            "loc": {
+              "x": 10,
+              "y": 10,
+            },
+            "machine": 0,
+          },
+        ],
+        "loc": {
+          "x": 10,
+          "y": 10,
+        },
+        "magicDetected": false,
+        "maxCharges": undefined,
+        "maxChargesKnown": false,
+        "name": "Iron Key",
+        "originDepth": 10,
+        "quantity": 1,
+        "quiverNumber": undefined,
+        "rechargeCounter": undefined,
+        "rechargeTurns": undefined,
+        "runicKnown": false,
+        "runicType": undefined,
+        "spawnTurnNumber": 0,
+        "staffRechargeRemaining": undefined,
+        "strengthRequired": undefined,
+        "timesEnchanted": 0,
+        "timesUsed": undefined,
+        "vorpalEnemy": undefined,
+        "weight": 1,
+      },
+      "id": "iron_key",
+      "instanceId": "1:0",
+      "isAltar": false,
+      "itemQualifiers": undefined,
+      "keyLoc": [
+        {
+          "disposableHere": false,
+          "loc": {
+            "x": 10,
+            "y": 10,
+          },
+          "machine": 0,
+        },
+      ],
+      "pos": {
+        "x": 10,
+        "y": 10,
+      },
+      "priorItemIds": [],
+    },
+  ],
+  "generatedKey": true,
+  "itemSpawns": [],
+  "machineNumber": 1,
+  "monsterSpawns": [
+    {
+      "carriedItem": {
+        "category": "KEY",
+        "entity": Item {
+          "arcanaInstanceVersion": undefined,
+          "armor": undefined,
+          "canBeIdentified": false,
+          "category": 10,
+          "char": "k",
+          "charges": undefined,
+          "clumping": undefined,
+          "color": 12566463,
+          "consumableId": undefined,
+          "cooldownRemaining": undefined,
+          "cooldownTurns": undefined,
+          "damage": undefined,
+          "description": undefined,
+          "enchantment": 0,
+          "flags": undefined,
+          "id": 22,
+          "identified": true,
+          "identityId": undefined,
+          "inventoryLetter": undefined,
+          "isCursed": false,
+          "isProtected": false,
+          "keyLoc": [
+            {
+              "disposableHere": false,
+              "loc": {
+                "x": 10,
+                "y": 10,
+              },
+              "machine": 0,
+            },
+          ],
+          "loc": {
+            "x": 10,
+            "y": 10,
+          },
+          "magicDetected": false,
+          "maxCharges": undefined,
+          "maxChargesKnown": false,
+          "name": "Iron Key",
+          "originDepth": 10,
+          "quantity": 1,
+          "quiverNumber": undefined,
+          "rechargeCounter": undefined,
+          "rechargeTurns": undefined,
+          "runicKnown": false,
+          "runicType": undefined,
+          "spawnTurnNumber": 0,
+          "staffRechargeRemaining": undefined,
+          "strengthRequired": undefined,
+          "timesEnchanted": 0,
+          "timesUsed": undefined,
+          "vorpalEnemy": undefined,
+          "weight": 1,
+        },
+        "id": "iron_key",
+        "instanceId": "1:0",
+        "isAltar": false,
+        "itemQualifiers": undefined,
+        "keyLoc": [
+          {
+            "disposableHere": false,
+            "loc": {
+              "x": 10,
+              "y": 10,
+            },
+            "machine": 0,
+          },
+        ],
+        "pos": {
+          "x": 10,
+          "y": 10,
+        },
+        "priorItemIds": [],
+      },
+      "dormant": false,
+      "entities": [
+        Monster {
+          "abilities": Set {},
+          "abilityFlags": Set {},
+          "absorbBehavior": false,
+          "absorptionBolt": 0,
+          "absorptionFlags": null,
+          "accuracy": 80,
+          "approaching": 0,
+          "attackSpeed": 100,
+          "baseAttackSpeed": 100,
+          "baseMoveSpeed": 100,
+          "behaviorFlags": Set {},
+          "bolts": [],
+          "boundToLeader": false,
+          "boundToPlayer": false,
+          "carriedItem": Item {
+            "arcanaInstanceVersion": undefined,
+            "armor": undefined,
+            "canBeIdentified": false,
+            "category": 10,
+            "char": "k",
+            "charges": undefined,
+            "clumping": undefined,
+            "color": 12566463,
+            "consumableId": undefined,
+            "cooldownRemaining": undefined,
+            "cooldownTurns": undefined,
+            "damage": undefined,
+            "description": undefined,
+            "enchantment": 0,
+            "flags": undefined,
+            "id": 22,
+            "identified": true,
+            "identityId": undefined,
+            "inventoryLetter": undefined,
+            "isCursed": false,
+            "isProtected": false,
+            "keyLoc": [
+              {
+                "disposableHere": false,
+                "loc": [Object],
+                "machine": 0,
+              },
+            ],
+            "loc": {
+              "x": 10,
+              "y": 10,
+            },
+            "magicDetected": false,
+            "maxCharges": undefined,
+            "maxChargesKnown": false,
+            "name": "Iron Key",
+            "originDepth": 10,
+            "quantity": 1,
+            "quiverNumber": undefined,
+            "rechargeCounter": undefined,
+            "rechargeTurns": undefined,
+            "runicKnown": false,
+            "runicType": undefined,
+            "spawnTurnNumber": 0,
+            "staffRechargeRemaining": undefined,
+            "strengthRequired": undefined,
+            "timesEnchanted": 0,
+            "timesUsed": undefined,
+            "vorpalEnemy": undefined,
+            "weight": 1,
+          },
+          "carriedMonster": null,
+          "char": "r",
+          "color": 11163187,
+          "corpseAbsorptionCounter": 0,
+          "creatureMode": 0,
+          "damageClumping": 1,
+          "damageString": "1d3",
+          "deathEffectTriggered": false,
+          "deathProcessed": false,
+          "defense": 0,
+          "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+          "doesNotResurrect": false,
+          "doesNotTrackLeader": false,
+          "dominated": false,
+          "entersLevelIn": 0,
+          "falling": false,
+          "givenUpOnScent": false,
+          "goldDropChance": 0,
+          "hp": -1,
+          "id": 23,
+          "isAbsorbing": false,
+          "isAlly": false,
+          "isCaged": false,
+          "isClone": false,
+          "isDormant": false,
+          "itemDropChance": 0,
+          "leader": null,
+          "leaderlessAfterDemotion": false,
+          "loc": {
+            "x": 10,
+            "y": 10,
+          },
+          "machineHome": 1,
+          "markedForSacrifice": false,
+          "maxHp": 6,
+          "maxShield": 0,
+          "maxStatus": {},
+          "movementSpeed": 100,
+          "mutation": undefined,
+          "name": "Rat",
+          "newPowerCount": 0,
+          "onHitChance": 0,
+          "onHitDuration": 0,
+          "onHitStatus": undefined,
+          "poisonAmount": 0,
+          "polymorphKeepsSpeed": false,
+          "polymorphed": false,
+          "preplaced": false,
+          "regenCounter": 0,
+          "regenTurns": 20,
+          "safetySnapshot": null,
+          "seized": false,
+          "seizing": false,
+          "spawnLoc": {
+            "x": 0,
+            "y": 0,
+          },
+          "state": 0,
+          "statusDurations": {},
+          "statusImmunities": Set {
+            "confused",
+          },
+          "statusResistTurns": {
+            "paralyzed": 1,
+          },
+          "targetCorpseLoc": null,
+          "targetCorpseName": "",
+          "targetWaypointIndex": -1,
+          "ticksUntilTurn": 100,
+          "totalPowerCount": 0,
+          "typeId": "rat",
+          "wasNegated": false,
+          "waypointAlreadyVisited": null,
+          "weaknessAmount": 0,
+        },
+      ],
+      "fleeing": false,
+      "isAlly": false,
+      "isCaged": false,
+      "monsterId": "rat",
+      "pos": {
+        "x": 10,
+        "y": 10,
+      },
+      "sleeping": false,
+    },
+  ],
+  "needsKey": false,
+  "subMachines": [],
+}
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:120:148
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 18 skipped (20)
+   Start at  14:08:21
+   Duration  1.13s (transform 372ms, setup 0ms, import 634ms, tests 407ms, environment 0ms)
+

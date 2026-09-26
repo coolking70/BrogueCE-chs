@@ -1,0 +1,511 @@
+[
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 62,
+    "y": 12,
+    "layers": [
+      "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "MUD",
+      "NOTHING",
+      "GRASS"
+    ],
+    "machineNumber": 7,
+    "error": "AssertionError: expected 59 to be 2 // Object.is equality",
+    "observed": [
+      "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "MUD",
+      "NOTHING",
+      "GRASS"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 62,
+        "y": 12,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34111:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 62,
+        "y": 12,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34166:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34123:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 62,
+        "y": 12,
+        "args": [
+          10,
+          "\"",
+          3385907
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34540:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34131:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 62,
+        "y": 12,
+        "args": [
+          0,
+          59
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "after": [
+          "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33178:29)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32878:27)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32646:27)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34193:30",
+          "    at runAutogenerators (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:25609:27)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34192:27)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 62,
+        "y": 12,
+        "args": [
+          1,
+          25
+        ],
+        "before": [
+          "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "after": [
+          "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "MUD",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13259:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13589:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13672:7)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33155:32)"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 56,
+    "y": 12,
+    "layers": [
+      "GAS_TRAP_PARALYSIS_HIDDEN",
+      "MUD",
+      "NOTHING",
+      "GRASS"
+    ],
+    "machineNumber": 5,
+    "error": "AssertionError: expected 58 to be 2 // Object.is equality",
+    "observed": [
+      "GAS_TRAP_PARALYSIS_HIDDEN",
+      "MUD",
+      "NOTHING",
+      "GRASS"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 56,
+        "y": 12,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34111:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 56,
+        "y": 12,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34166:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34123:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 56,
+        "y": 12,
+        "args": [
+          3,
+          10
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13259:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13589:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at runAutogenerators (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:25583:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34551:30)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34131:10)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 56,
+        "y": 12,
+        "args": [
+          0,
+          58
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "after": [
+          "GAS_TRAP_PARALYSIS_HIDDEN",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33178:29)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32878:27)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32646:27)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34193:30",
+          "    at runAutogenerators (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:25609:27)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34192:27)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 56,
+        "y": 12,
+        "args": [
+          1,
+          25
+        ],
+        "before": [
+          "GAS_TRAP_PARALYSIS_HIDDEN",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ],
+        "after": [
+          "GAS_TRAP_PARALYSIS_HIDDEN",
+          "MUD",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13259:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13589:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13672:7)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33155:32)"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 61,
+    "y": 6,
+    "layers": [
+      "TRAP",
+      "MUD",
+      "NOTHING",
+      "GRAY_FUNGUS"
+    ],
+    "machineNumber": 0,
+    "error": "AssertionError: expected 18 to be 2 // Object.is equality",
+    "observed": [
+      "TRAP",
+      "MUD",
+      "NOTHING",
+      "GRAY_FUNGUS"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 61,
+        "y": 6,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34111:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 61,
+        "y": 6,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34166:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34123:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34179:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 61,
+        "y": 6,
+        "args": [
+          18,
+          "^",
+          8930304
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "TRAP",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.placeTraps (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34224:17)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:34181:12)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:39032:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:47640:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 61,
+        "y": 6,
+        "args": [
+          1,
+          25
+        ],
+        "before": [
+          "TRAP",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "TRAP",
+          "MUD",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13259:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13589:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13672:7)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33155:32)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 61,
+        "y": 6,
+        "args": [
+          3,
+          99
+        ],
+        "before": [
+          "TRAP",
+          "MUD",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "TRAP",
+          "MUD",
+          "NOTHING",
+          "GRAY_FUNGUS"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13259:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13589:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:13523:20)",
+          "    at BlueprintEngine.applyBlueprintContents (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:33155:32)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32878:27)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u19c-layer-trace-52o0fU/trace.mjs:32646:27)"
+        ]
+      }
+    ]
+  }
+]

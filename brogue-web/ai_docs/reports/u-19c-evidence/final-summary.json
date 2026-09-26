@@ -1,0 +1,67 @@
+{
+  "gates": [
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-26T07:19:39.507Z",
+      "end": "2026-09-26T07:19:44.798Z",
+      "exit": 0
+    },
+    {
+      "name": "regression",
+      "command": [
+        "/opt/homebrew/Cellar/node/25.2.1/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--exclude",
+        "**/generation_baseline.test.ts",
+        "--maxWorkers=4",
+        "--reporter=default",
+        "--reporter=json",
+        "--reporter=./scripts/u19c-failure-reporter.mjs",
+        "--outputFile=ai_docs/reports/u-19c-evidence/regression-final.json"
+      ],
+      "start": "2026-09-26T07:19:44.799Z",
+      "end": "2026-09-26T07:50:19.251Z",
+      "exit": 0
+    },
+    {
+      "name": "drift",
+      "command": [
+        "npm",
+        "run",
+        "test:drift"
+      ],
+      "start": "2026-09-26T07:50:19.251Z",
+      "end": "2026-09-26T07:50:41.303Z",
+      "exit": 0
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-26T07:50:41.303Z",
+      "end": "2026-09-26T07:50:41.324Z",
+      "exit": 0
+    }
+  ],
+  "files": 189,
+  "passed": 3667,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "changedInputs": [],
+  "missing": [],
+  "missingNamed": [],
+  "baselineBefore": "b2a1a92a4328e007350cd45f91a6c28d83d75813aad50549c6e9dccfb9cf3154",
+  "baselineAfter": "81365535edab45ac3d04464bed6242fa832f3bd1e8e3b0e80d3c3a6af6d346e3",
+  "head": "71921f654152c5ad7db634a814291be0ae4a0843",
+  "staged": ""
+}

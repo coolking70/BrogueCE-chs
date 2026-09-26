@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > handoff replaces the horde leader’s existing item without a second floor/inventory owner
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_05a_item_ownership.test.ts (51 tests | 1 failed | 50 skipped) 1455ms
+     × handoff replaces the horde leader’s existing item without a second floor/inventory owner 1454ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > handoff replaces the horde leader’s existing item without a second floor/inventory owner
+AssertionError: expected Item{ spawnTurnNumber: +0, …(40) } not to be Item{ spawnTurnNumber: +0, …(40) } // Object.is equality
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_05a_item_ownership.test.ts:177:40
+    175|         const {g,r}=materializedGame(true);
+    176|         const leader=g.monsters.find((m:any)=>m.machineHome===r.machin…
+    177|         expect(leader.carriedItem).not.toBe(displaced);
+       |                                        ^
+    178|         expect(leader.carriedItem.keyLoc).toEqual(key().keyLoc);
+    179|         expect([...g.items,...g.player.inventory.items,...g.monsters.m…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 50 skipped (51)
+   Start at  15:30:02
+   Duration  2.97s (transform 837ms, setup 0ms, import 1.34s, tests 1.45s, environment 0ms)
+

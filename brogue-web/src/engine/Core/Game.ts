@@ -1,3 +1,4 @@
+import type { MachineEntityRuntime } from '../Generator/BlueprintEngine';
 import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
 import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
@@ -1005,6 +1006,110 @@ export class Game {
         }
     }
 
+    /** CE buildAMachine creates entities inside the feature loop. The ledger is
+     * shared across recursive machines; abort deletes all creations since the
+     * checkpoint without restoring RNG or resurrecting quietly replaced monsters. */
+    private createMachineRuntime(depth: number): MachineEntityRuntime {
+        const created: Monster[] = [];
+        const items = new Map<string | MachineItemSpawn, Item>();
+        const remove = (mon: Monster): void => {
+            this.demoteMonsterFromLeadership(mon);
+            this.monsters = this.monsters.filter(m => m !== mon);
+            this.dormantMonsters = this.dormantMonsters.filter(m => m !== mon);
+            this.visibleMonsters.delete(mon);
+            mon.carriedItem = null;
+            mon.leader = null;
+            mon.hp = 0;
+        };
+        const itemsHas = (item: Item): boolean => [...items.values()].includes(item);
+        return {
+            item: (spawn, place) => {
+                const identity = spawn.instanceId ?? spawn;
+                let item = items.get(identity) ?? spawn.entity;
+                if (!item) {
+                    const previous = (spawn.priorItemIds ?? []).map(id => {
+                        const prior = items.get(id);
+                        if (!prior) throw new Error(`Missing prior machine item: ${id}`);
+                        return prior;
+                    });
+                    item = this.spawnBlueprintItem(spawn.category, spawn.id, spawn.pos.x, spawn.pos.y,
+                        depth, spawn.itemQualifiers ?? [], previous) ?? undefined;
+                    if (!item) throw new Error(`Cannot generate machine item: ${spawn.category}/${spawn.id ?? '*'}`);
+                }
+                spawn.entity = item; items.set(identity, item);
+                item.loc = {...spawn.pos};
+                if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({...k, loc: {...k.loc}}));
+                if (spawn.itemFlags) {
+                    item.flags = [...new Set([...(item.flags ?? []), ...spawn.itemFlags])];
+                    if (spawn.itemFlags.includes('ITEM_MAX_CHARGES_KNOWN')) item.maxChargesKnown = true;
+                }
+                item.originDepth = depth;
+                // CE placeItemAt accepts the feature location unconditionally.
+                // Eligibility and adopted-item reachability remain BlueprintEngine's contract.
+                this.items = this.items.filter(i => i !== item);
+                if (place) this.items.push(item);
+                return item;
+            },
+            handOff: (spawn, item) => {
+                const bearer = spawn.entities?.[0];
+                if (!bearer || !item.entity) throw new Error('Machine item has no realized bearer');
+                this.items = this.items.filter(i => i !== item.entity);
+                bearer.carriedItem = item.entity;
+                item.entity.loc = {...bearer.loc};
+            },
+            checkpoint: () => {
+                const start = created.length;
+                const previous = new Map(items);
+                const floor = new Set(this.items);
+                const carriers = new Map([...this.monsters, ...this.dormantMonsters].map(m => [m, m.carriedItem]));
+                const borrowed = [...items.values()].map(item => ({item, loc: {...item.loc},
+                    keyLoc: item.keyLoc?.map(k => ({...k, loc: {...k.loc}})), flags: item.flags ? [...item.flags] : undefined,
+                    originDepth: item.originDepth, maxChargesKnown: item.maxChargesKnown}));
+                return () => {
+                    const discarded = new Set([...items].filter(([id]) => !previous.has(id)).map(([, item]) => item));
+                    this.items = this.items.filter(item => !discarded.has(item) && (!itemsHas(item) || floor.has(item)));
+                    for (const mon of [...this.monsters, ...this.dormantMonsters]) {
+                        if (mon.carriedItem && (discarded.has(mon.carriedItem) || borrowed.some(b => b.item === mon.carriedItem))) mon.carriedItem = null;
+                    }
+                    for (const item of floor) if (itemsHas(item) && !this.items.includes(item)) this.items.push(item);
+                    for (const state of borrowed) Object.assign(state.item, {loc: state.loc, keyLoc: state.keyLoc,
+                        flags: state.flags, originDepth: state.originDepth, maxChargesKnown: state.maxChargesKnown});
+                    items.clear(); for (const [id, item] of previous) items.set(id, item);
+                    for (const mon of created.splice(start)) remove(mon);
+                    for (const [mon, item] of carriers) if (mon.hp > 0 && (this.monsters.includes(mon) || this.dormantMonsters.includes(mon))) mon.carriedItem = item;
+                    for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) this.grid.getCell(x, y)!.hasDormantMonster = false;
+                    for (const mon of this.dormantMonsters) this.grid.getCell(mon.x, mon.y)!.hasDormantMonster = true;
+                };
+            },
+            hasItem: (x, y) => this.items.some(i => i.x === x && i.y === y),
+            hasMonster: (x, y) => this.monsters.some(m => m.hp > 0 && m.x === x && m.y === y),
+            spawn: (spawn, machineNumber) => {
+                const made: Monster[] = [];
+                // Both CE spawnHorde and the explicit monsterID branch quietly
+                // replace an occupant. Do not run combat/death-drop callbacks.
+                const old = this.monsters.find(m => m.hp > 0 && m.x === spawn.pos.x && m.y === spawn.pos.y);
+                if (spawn.hordeFlags) {
+                    this.spawnHordeAtFeature(spawn, depth, machineNumber, made);
+                    if (made.length && old) remove(old);
+                } else if (spawn.monsterId) {
+                    if (old) remove(old);
+                    const data = this.resolveBlueprintMonster(spawn.monsterId, depth);
+                    if (data) {
+                        const mon = new Monster(spawn.pos.x, spawn.pos.y, data);
+                        if (spawn.isAlly) mon.isAlly = true;
+                        if (spawn.isCaged) mon.isCaged = true;
+                        this.applyRandomMutation(mon, depth);
+                        this.monsters.push(mon);
+                        this.finalizeBlueprintMonster(mon, spawn, machineNumber);
+                        made.push(mon);
+                    }
+                }
+                created.push(...made);
+                return made;
+            },
+        };
+    }
+
     /** Resolve a blueprint monster ID placeholder to actual MonsterData */
     private resolveBlueprintMonster(monsterId: string, depth: number): MonsterData | null {
         const allMonsters = monsterData as MonsterData[];
@@ -1128,7 +1233,14 @@ export class Game {
                 let architect!: Architect;
                 let stairsPlaced = false;
                 for (let attempt = 0; attempt < 50; attempt++) {
-                    architect = new Architect();
+                    this.monsters = [];
+                    this.dormantMonsters = [];
+                    this.items = [];
+                    this.grid = new Grid(DCOLS, DROWS);
+                    this.player.loc = {x: 0, y: 0}; // CE removes the player during digDungeon.
+                    this.pendingCaughtFireCells = [];
+                    this.bindDormantAwakener(); // Later machine DFs see already-created entities.
+                    architect = new Architect(this.grid, this.createMachineRuntime(this.depth));
                     this.grid = architect.generateLevel(this.depth);
                     if (this.placeStairs(architect.machineResults)) {
                         stairsPlaced = true;
@@ -1136,7 +1248,6 @@ export class Game {
                     }
                 }
                 if (!stairsPlaced) throw new Error(`Failed to place stairs at depth ${this.depth} after 50 attempts`);
-                this.bindDormantAwakener();
                 this.environment = new EnvironmentManager(this.grid);
                 this.fov = new FOVSys(this.grid);
                 this.lightMap = new LightMap(this.grid);
@@ -1148,9 +1259,7 @@ export class Game {
                 this.pendingCaughtFireCells = [];
                 this.waypoints = new WaypointSystem();
 
-                // Fresh state for new level
-                this.monsters = [];
-                this.items = [];
+                // Machine entities already occupy the successfully generated level.
                 this.visibleMonsters = new Set();
                 this.visibleItems = new Set();
 
@@ -1187,6 +1296,9 @@ export class Game {
                 this.rebuildWaypoints(); // CE: inside the new level stream, before oldSeed.
                 level.visited = true;
             } finally {
+                // Generation borrows the off-map position; environment catch-up
+                // owns its own borrow, and level entry owns the final placement.
+                this.player.loc = { ...exit };
                 // This is reseeding from oldSeed, not restoring the pre-entry state tuple.
                 rng.seedRandomGenerator(oldSeed);
             }
@@ -1313,7 +1425,8 @@ export class Game {
     private placeStairs(machineResults: MachineResult[] = []): boolean {
         const level = this.levelSeeds[this.depth - 1]!;
         const occupied = new Set([
-            ...machineResults.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns]).map(s => s.pos),
+            ...machineResults.flatMap(m => [...m.itemSpawns.filter(s => !s.entity),
+                ...m.monsterSpawns.filter(s => !s.entities)]).map(s => s.pos),
             ...this.items.map(i => i.loc), ...this.monsters.map(m => m.loc), ...this.dormantMonsters.map(m => m.loc),
         ].map(p => p.y * this.grid.width + p.x));
         const candidates = stairCandidates(this.grid, occupied);
@@ -1481,7 +1594,7 @@ export class Game {
         } : null;
         const materialize = (spawn: MachineItemSpawn, pos: Pos): Item | null => {
             const identity = spawn.instanceId ?? spawn;
-            let item = instances.get(identity);
+            let item = spawn.entity ?? instances.get(identity);
             if (!item) {
                 // The CE duplicate list includes earlier creations and committed child
                 // creations, but not an incoming adopted item or a later sibling.
@@ -1508,6 +1621,10 @@ export class Game {
         };
         const handOff = (mon: Monster, spawn: MachineMonsterSpawn, mr: MachineResult): void => {
             if (!spawn.carriedItem) return;
+            if (spawn.carriedItem.entity && mon.carriedItem === spawn.carriedItem.entity) {
+                if (mr.observation) recordItem!(mr.observation, mr, spawn.carriedItem, mon.carriedItem, 'monster', mon.id);
+                return;
+            }
             // CE :1705-1710 discards the bearer's previous carried item.
             mon.carriedItem = materialize(spawn.carriedItem, mon.loc);
             if (mr.observation && mon.carriedItem) recordItem!(mr.observation, mr, spawn.carriedItem, mon.carriedItem, 'monster', mon.id);
@@ -1547,6 +1664,10 @@ export class Game {
 
             // Spawn items
             for (const spawn of mr.itemSpawns) {
+                if (spawn.entity) {
+                    if (trace && this.items.includes(spawn.entity)) recordItem!(trace, mr, spawn, spawn.entity, 'floor');
+                    continue;
+                }
                 // B-4b：KEY 类 feature 物品跳过——钥匙总量恒等于锁数。
                 // V-2b-6：例外 = **经领养链路**（viaAdoption）落地的绑定钥匙。
                 // CE Architect.c 里一切 KEY feature 要么 MF_OUTSOURCE（领养链
@@ -1589,6 +1710,20 @@ export class Game {
 
             // Spawn monsters
             for (const spawn of mr.monsterSpawns) {
+                if (spawn.entities) {
+                    // U25 reports final ownership/location, including later DF
+                    // movement, awakening and quiet replacement during construction.
+                    if (trace) for (const mon of spawn.entities) {
+                        const product = trace.products.find(p => p.kind === 'monster' && p.instanceId === mon.id);
+                        if (!product) continue;
+                        product.pos = {...mon.loc};
+                        product.owner = this.dormantMonsters.includes(mon) ? 'dormant' : this.monsters.includes(mon) ? 'floor' : undefined;
+                        if (!product.owner) product.outcome = 'removed during construction';
+                    }
+                    const leader = spawn.entities[0];
+                    if (leader && (this.monsters.includes(leader) || this.dormantMonsters.includes(leader))) handOff(leader, spawn, mr);
+                    continue;
+                }
                 // V-2b-5（CE Architect.c:1591-1599）：MF_GENERATE_HORDE 指令——
                 // 按 horde 表成群生成（CE 在 spawnHorde 内部抽 horde 与核地形，
                 // 落点即 feature 落点）。
@@ -2004,7 +2139,7 @@ export class Game {
      *   - horde 的领袖与成员（CE spawnMinions Monsters.c:743 同置
      *     MB_JUST_SUMMONED）一并走机器收尾：记属机 / 睡姿 / 休眠。
      */
-    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number): Monster | null {
+    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number, created?: Monster[]): Monster | null {
         const required = spawn.hordeFlags ?? [];
         const forbidden = ['HORDE_IS_SUMMONED', 'HORDE_LEADER_CAPTIVE']
             .filter(f => !required.includes(f));
@@ -2027,10 +2162,11 @@ export class Game {
         if (!picked) return null;
 
         const collected: Monster[] = [];
-        this.spawnHordeAt(picked, spawn.pos, roll.depth, false, undefined, collected);
+        this.spawnHordeAt(picked, spawn.pos, depth, false, undefined, collected);
         for (const mon of collected) {
             this.finalizeBlueprintMonster(mon, spawn, machineNumber);
         }
+        created?.push(...collected);
         return collected[0] ?? null; // spawnHordeAt records the leader first.
     }
 
@@ -2145,10 +2281,23 @@ export class Game {
             if (!memberMData) continue;
 
             for (let c = 0; c < count; c++) {
-                const pos = this.findMinionSpawnSpot(centerPos, memberMData, h.spawnsIn, false);
+                // CE spawnMinions creates each individual before searching for
+                // its location. Even a failed placement consumes initialization RNG.
+                let mon: Monster | undefined;
+                if (collected) {
+                    mon = new Monster(0, 0, memberMData);
+                    this.applyRandomMutation(mon, depth);
+                }
+                const pos = this.findMinionSpawnSpot(centerPos, memberMData, h.spawnsIn, false, !!collected);
                 if (!pos) break;
-                const mon = new Monster(pos.x, pos.y, memberMData);
-                this.applyRandomMutation(mon, depth);
+                if (!mon) {
+                    mon = new Monster(pos.x, pos.y, memberMData);
+                    this.applyRandomMutation(mon, depth);
+                } else {
+                    mon.loc = {...pos};
+                    mon.spawnLoc = {...pos};
+                    mon.state = leaderMon.state;
+                }
                 if (wandering) mon.state = MonsterState.WANDERING;
                 mon.leader = leaderMon;
                 mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
@@ -2166,14 +2315,14 @@ export class Game {
     }
 
     /** CE spawnMinions: species catalog flags, then up to 20 special-tile retries.
-     * Preserve deferred machine materialization; no runtime immunity or monsterAvoids. */
-    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | null | undefined, summoned: boolean): Pos | null {
+     * Uses current entity occupancy, without runtime immunity or monsterAvoids. */
+    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | null | undefined, summoned: boolean, machine = false): Pos | null {
         const target = spawnsIn ? Game.SPAWNS_IN_TERRAIN[spawnsIn] : undefined;
         if (spawnsIn && target === undefined) return null;
         let failsafe = 0;
         let pos: Pos | null;
         do {
-            pos = minionPlacement(this, origin, species, summoned, target);
+            pos = minionPlacement(machine ? {grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: []} : this, origin, species, summoned, target);
             if (!pos) return null;
         } while (target !== undefined && !this.grid.getCell(pos.x, pos.y)!.layers.includes(target) && failsafe++ < 20);
         return failsafe >= 20 ? null : pos;

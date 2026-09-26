@@ -1,0 +1,44 @@
+[
+  {
+    "variant": "no-rollback",
+    "test": "rolls back active",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-monsters",
+    "test": "real items, the leader",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-items",
+    "test": "matches the compiled CE",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-occupancy",
+    "test": "real items, the leader",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "late-minions",
+    "test": "initializes each minion",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-handoff",
+    "test": "commits a single item",
+    "exit": 1,
+    "assertionFailure": true
+  },
+  {
+    "variant": "no-carrier-restore",
+    "test": "a failed later machine",
+    "exit": 1,
+    "assertionFailure": true
+  }
+]

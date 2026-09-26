@@ -1,0 +1,5 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const out='ai_docs/reports/u-19c-evidence',rows=[];
+for(const [variant,test] of [['no-rollback','rolls back active'],['no-monsters','real items, the leader'],['no-items','matches the compiled CE'],['no-occupancy','real items, the leader'],['late-minions','initializes each minion'],['no-handoff','commits a single item'],['no-carrier-restore','a failed later machine']]){
+ const fd=fs.openSync(`${out}/negative-${variant}.txt`,'w');const r=spawnSync(process.execPath,['node_modules/vitest/vitest.mjs','run','--config','scripts/u19c-counterfactual.config.ts','src/test/u_19c_immediate_entities.test.ts','-t',test],{env:{...process.env,U19C_VARIANT:variant},stdio:['ignore',fd,fd]});fs.closeSync(fd);const log=fs.readFileSync(`${out}/negative-${variant}.txt`,'utf8');const caught=r.status!==0&&/AssertionError/.test(log);rows.push({variant,test,exit:r.status,assertionFailure:caught});if(!caught)throw Error(`Not caught by an assertion: ${variant}`);console.log(variant,'red');
+}fs.writeFileSync(`${out}/negative-summary.json`,JSON.stringify(rows,null,2)+'\n');

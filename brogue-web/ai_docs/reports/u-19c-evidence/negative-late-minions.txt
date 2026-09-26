@@ -1,0 +1,34 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > initializes each minion BEFORE placement, even when no cell exists; does not rewind RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19c_immediate_entities.test.ts (20 tests | 1 failed | 19 skipped) 474ms
+     × initializes each minion BEFORE placement, even when no cell exists; does not rewind RNG 473ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19c_immediate_entities.test.ts > U19c immediate machine entities > initializes each minion BEFORE placement, even when no cell exists; does not rewind RNG
+AssertionError: expected [ 'create', 'place' ] to deeply equal [ 'create', 'create', 'place' ]
+
+- Expected
++ Received
+
+  [
+    "create",
+-   "create",
+    "place",
+  ]
+
+ ❯ src/test/u_19c_immediate_entities.test.ts:72:113
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  15:30:00
+   Duration  2.23s (transform 830ms, setup 0ms, import 1.58s, tests 474ms, environment 0ms)
+

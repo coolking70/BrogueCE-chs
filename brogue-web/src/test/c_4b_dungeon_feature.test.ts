@@ -1216,6 +1216,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // U19c: exact writer traces (424242/D9) in layer-writer-trace.json.
+            // CE66 writes DUNGEON (GlobalsBrogue.c:606-607), then CE61's
+            // DF_SWAMP_MUD writes LIQUID only (Globals.c:904-906, flags=0).
+            [C.MACHINE_PARALYSIS_VENT_HIDDEN, C.MUD, C.NOTHING, C.GRASS],
+            [C.GAS_TRAP_PARALYSIS_HIDDEN, C.MUD, C.NOTHING, C.GRASS],
+            // Existing web TRAP carrier, already admitted with MUD below;
+            // DF_SWAMP also writes GRAY_FUNGUS to SURFACE without clearing it.
+            [C.TRAP, C.MUD, C.NOTHING, C.GRAY_FUNGUS],
             // U17c: exact generation writer traces in layer-writer-trace.json.
             // CE Goblin warren (GlobalsBrogue.c:266/268/273/274) writes
             // DUNGEON after lake LIQUID; grass/bones write SURFACE only.
@@ -1307,7 +1315,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         if (verified9e) {
                             // CE58/34/Goblin warren 没有 NO_INTERIOR_FLAG，保留机器归属守卫。
                             if (cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK
-                                || [C.MUD_FLOOR, C.MUD_WALL, C.FLOOR_FLOODABLE, C.ALTAR_SWITCH].includes(cell.layers[L.DUNGEON] as TerrainType)) {
+                                || [C.MUD_FLOOR, C.MUD_WALL, C.FLOOR_FLOODABLE, C.ALTAR_SWITCH, C.MACHINE_PARALYSIS_VENT_HIDDEN, C.GAS_TRAP_PARALYSIS_HIDDEN].includes(cell.layers[L.DUNGEON] as TerrainType)) {
                                 expect(cell.machineNumber).toBeGreaterThan(0);
                             }
                         } else if (nonEmpty.length === 3 && cell.layers[L.DUNGEON] === C.FLAMETHROWER_HIDDEN) {

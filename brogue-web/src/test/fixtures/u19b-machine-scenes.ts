@@ -6,10 +6,10 @@ import {setMachineObservationHook} from '../../engine/Generator/MachineObservati
 import {TerrainType} from '../../engine/Map/Grid';
 import type {Game} from '../../engine/Core/Game';
 const flatten=(m:MachineResult):MachineResult[]=>[m,...m.subMachines.flatMap(flatten)];
-export function preparePendingScene(game:Game,ce:number,seed=1,size=0){
+export function preparePendingScene(game:Game,ce:number,seed=1,size=0,immediate=false){
  const g:any=game;g.startNewGame({seed:19,mode:'test'});resetMachineCounter();setMachineObservationHook(()=>{});
  try{
-  const scene=machineScene(game,ce,seed,size);if(!scene)throw Error(`CE${ce} complete blueprint failed`);
+  const scene=machineScene(game,ce,seed,size,immediate);if(!scene)throw Error(`CE${ce} complete blueprint failed`);
   const machines=flatten(scene.result);g.populateLevel(g.depth,false,false,machines);
   // Isolate inspection from ordinary population combat; retain every actual
   // parent/child machine resident, item, terrain and mechanism.

@@ -1,0 +1,12 @@
+--- src/engine/Core/Game.ts
++++ src/engine/Core/Game.ts
+@@ -1296,6 +1296,9 @@
+                 this.rebuildWaypoints(); // CE: inside the new level stream, before oldSeed.
+                 level.visited = true;
+             } finally {
++                // Generation borrows the off-map position; environment catch-up
++                // owns its own borrow, and level entry owns the final placement.
++                this.player.loc = { ...exit };
+                 // This is reseeding from oldSeed, not restoring the pre-entry state tuple.
+                 rng.seedRandomGenerator(oldSeed);
+             }

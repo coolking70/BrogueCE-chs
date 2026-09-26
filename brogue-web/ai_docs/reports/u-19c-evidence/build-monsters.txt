@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/engine/Core/Game.ts(1027,52): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.

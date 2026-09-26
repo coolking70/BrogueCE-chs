@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/92df/brogue/brogue-web
+
+stdout | src/test/f_2c_explosion.test.ts > F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 + VANISHES） > 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/f_2c_explosion.test.ts (14 tests | 1 failed | 12 skipped) 4578ms
+     × 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。 3138ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/f_2c_explosion.test.ts > F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 + VANISHES） > 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。
+AssertionError: 10000 = 100%/回合：本趟必晋升: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/test/f_2c_explosion.test.ts:186:62
+    184|         const r = runPromotionUpdate(grid, { keyOnTileAt: () => false …
+    185|
+    186|         expect(r.promotions.length, '10000 = 100%/回合：本趟必晋升').toBe(1);
+       |                                                              ^
+    187|         expect(r.promotions[0]!.vanished, 'VANISHES_UPON_PROMOTION：晋升即…
+    188|         expect(r.promotions[0]!.df, 'promoteType 0：晋升不落任何新 DF（不是衰老成 EM…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 12 skipped (14)
+   Start at  13:54:12
+   Duration  6.85s (transform 1.24s, setup 0ms, import 2.06s, tests 4.58s, environment 1ms)
+
