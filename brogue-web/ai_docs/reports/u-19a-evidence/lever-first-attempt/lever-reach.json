@@ -1,0 +1,5942 @@
+{
+  "results": [
+    {
+      "ce": 18,
+      "origin": {
+        "x": 17,
+        "y": 14
+      },
+      "target": {
+        "x": 11,
+        "y": 15
+      },
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 17,
+            "y": 14
+          },
+          "after": {
+            "x": 16,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 16,
+            "y": 14
+          },
+          "after": {
+            "x": 15,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 15,
+            "y": 14
+          },
+          "after": {
+            "x": 14,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 14,
+            "y": 14
+          },
+          "after": {
+            "x": 13,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 13,
+            "y": 14
+          },
+          "after": {
+            "x": 12,
+            "y": 14
+          }
+        }
+      ],
+      "searches": 5,
+      "final": {
+        "x": 12,
+        "y": 14
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 2,
+          "effectiveStrength": 10,
+          "maxStatus": {
+            "weakened": 300
+          },
+          "x": 12,
+          "y": 14,
+          "hp": 10000,
+          "nutrition": 2140,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 300
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "蜈蚣",
+            "x": 11,
+            "y": 14,
+            "hp": 20,
+            "maxHp": 20,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 20,
+            "damage": "1d9+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_CAUSES_WEAKNESS"
+            ],
+            "bolts": [],
+            "typeId": "centipede",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "哥布林",
+            "x": 10,
+            "y": 15,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 26,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "酸液土堆",
+            "x": 11,
+            "y": 15,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_DEFEND_DEGRADE_WEAPON"
+            ],
+            "abilityFlags": [
+              "MA_HIT_DEGRADE_ARMOR"
+            ],
+            "bolts": [],
+            "typeId": "acid_mound",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "酸液土堆",
+            "x": 7,
+            "y": 15,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_DEFEND_DEGRADE_WEAPON"
+            ],
+            "abilityFlags": [
+              "MA_HIT_DEGRADE_ARMOR"
+            ],
+            "bolts": [],
+            "typeId": "acid_mound",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 36,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "酸液土堆",
+            "x": 4,
+            "y": 11,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_DEFEND_DEGRADE_WEAPON"
+            ],
+            "abilityFlags": [
+              "MA_HIT_DEGRADE_ARMOR"
+            ],
+            "bolts": [],
+            "typeId": "acid_mound",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 36,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "吸血蝙蝠",
+            "x": 3,
+            "y": 13,
+            "hp": 18,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 25,
+            "damage": "1d5+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLIES",
+              "MONST_FLITS"
+            ],
+            "abilityFlags": [
+              "MA_TRANSFERENCE"
+            ],
+            "bolts": [],
+            "typeId": "vampire_bat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 50,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 5,
+            "y": 14
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 11,
+            "y": 14
+          }
+        ]
+      }
+    },
+    {
+      "ce": 36,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 11,
+        "y": 11
+      },
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 12,
+            "y": 13
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          },
+          "before": {
+            "x": 12,
+            "y": 13
+          },
+          "after": {
+            "x": 12,
+            "y": 12
+          }
+        }
+      ],
+      "searches": 0,
+      "final": {
+        "x": 12,
+        "y": 12
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "蜈蚣",
+            "x": 11,
+            "y": 16,
+            "hp": 20,
+            "maxHp": 20,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 20,
+            "damage": "1d9+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_CAUSES_WEAKNESS"
+            ],
+            "bolts": [],
+            "typeId": "centipede",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 22,
+            "y": 9
+          }
+        ]
+      }
+    },
+    {
+      "ce": 38,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 2,
+        "y": 14
+      },
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 11,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 11,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 8,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 8,
+            "y": 14
+          },
+          "after": {
+            "x": 7,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 7,
+            "y": 14
+          },
+          "after": {
+            "x": 6,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 6,
+            "y": 14
+          },
+          "after": {
+            "x": 5,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 5,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 3,
+            "y": 14
+          }
+        }
+      ],
+      "searches": 4,
+      "final": {
+        "x": 3,
+        "y": 14
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 3,
+          "y": 14,
+          "hp": 10000,
+          "nutrition": 2002,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "吸血蝙蝠",
+            "x": 4,
+            "y": 14,
+            "hp": 443,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 25,
+            "damage": "1d5+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLIES",
+              "MONST_FLITS"
+            ],
+            "abilityFlags": [
+              "MA_TRANSFERENCE"
+            ],
+            "bolts": [],
+            "typeId": "vampire_bat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "酸液土堆",
+            "x": 5,
+            "y": 15,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_DEFEND_DEGRADE_WEAPON"
+            ],
+            "abilityFlags": [
+              "MA_HIT_DEGRADE_ARMOR"
+            ],
+            "bolts": [],
+            "typeId": "acid_mound",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "哥布林法师",
+            "x": 4,
+            "y": 17,
+            "hp": 10,
+            "maxHp": 10,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_MAINTAINS_DISTANCE",
+              "MONST_CARRY_ITEM_25"
+            ],
+            "abilityFlags": [
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [
+              "SHIELDING"
+            ],
+            "typeId": "goblin_mystic",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": true,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "狗头人",
+            "x": 5,
+            "y": 13,
+            "hp": 7,
+            "maxHp": 7,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "kobold",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 27,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "狗头人",
+            "x": 4,
+            "y": 15,
+            "hp": 5,
+            "maxHp": 7,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "kobold",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 27,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "狗头人",
+            "x": 3,
+            "y": 15,
+            "hp": 7,
+            "maxHp": 7,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "kobold",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 27,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 4,
+            "y": 13,
+            "hp": 5,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 3,
+            "y": 13,
+            "hp": 12,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 33,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 1,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 3,
+            "y": 12,
+            "hp": 12,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 33,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 1,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 3,
+            "y": 11,
+            "hp": 12,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 33,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 1,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 4,
+            "y": 11,
+            "hp": 5,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 33,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 1,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 10,
+            "y": 7
+          },
+          {
+            "name": "口粮",
+            "x": 8,
+            "y": 18
+          },
+          {
+            "name": "口粮",
+            "x": 4,
+            "y": 21
+          },
+          {
+            "name": "黑色药水",
+            "x": 4,
+            "y": 10
+          },
+          {
+            "name": "金币",
+            "x": 7,
+            "y": 9
+          },
+          {
+            "name": "金币",
+            "x": 3,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 22
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 6
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 4,
+            "y": 7
+          },
+          {
+            "name": "金币",
+            "x": 7,
+            "y": 10
+          },
+          {
+            "name": "金币",
+            "x": 5,
+            "y": 16
+          }
+        ]
+      }
+    },
+    {
+      "ce": 55,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 2,
+        "y": 14
+      },
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 11,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 11,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 15
+          },
+          "after": {
+            "x": 10,
+            "y": 15
+          }
+        }
+      ],
+      "searches": 0,
+      "final": {
+        "x": 10,
+        "y": 15
+      },
+      "adjacent": false,
+      "revealed": false,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 15,
+          "hp": 9962,
+          "nutrition": 2000,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林图腾",
+            "x": 10,
+            "y": 22,
+            "hp": 30,
+            "maxHp": 30,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 0,
+            "defense": 0,
+            "damage": "0d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NEVER_SLEEPS",
+              "MONST_IMMOBILE",
+              "MONST_INANIMATE",
+              "MONST_WILL_NOT_USE_STAIRS"
+            ],
+            "abilityFlags": [],
+            "bolts": [
+              "HASTE",
+              "SPARK"
+            ],
+            "typeId": "goblin_totem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "哥布林",
+            "x": 8,
+            "y": 15,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 27,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "吸血蝙蝠",
+            "x": 9,
+            "y": 14,
+            "hp": 354,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 25,
+            "damage": "1d5+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLIES",
+              "MONST_FLITS"
+            ],
+            "abilityFlags": [
+              "MA_TRANSFERENCE"
+            ],
+            "bolts": [],
+            "typeId": "vampire_bat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "怨灵",
+            "x": 9,
+            "y": 15,
+            "hp": 45,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 120,
+            "defense": 60,
+            "damage": "1d8+5",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLEES_NEAR_DEATH"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "wraith",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "食人魔",
+            "x": 11,
+            "y": 14,
+            "hp": 55,
+            "maxHp": 55,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4
+            },
+            "accuracy": 125,
+            "defense": 60,
+            "damage": "1d5+8",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_MALE",
+              "MONST_FEMALE"
+            ],
+            "abilityFlags": [
+              "MA_AVOID_CORRIDORS",
+              "MA_ATTACKS_STAGGER"
+            ],
+            "bolts": [],
+            "typeId": "ogre",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "粉红果冻",
+            "x": 9,
+            "y": 16,
+            "hp": 10,
+            "maxHp": 50,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 85,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [
+              "MA_CLONE_SELF_ON_DEFEND"
+            ],
+            "bolts": [],
+            "typeId": "pink_jelly",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 1,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "name": "口粮",
+            "x": 7,
+            "y": 14
+          },
+          {
+            "name": "芒果",
+            "x": 7,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 3,
+            "y": 20
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 10
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

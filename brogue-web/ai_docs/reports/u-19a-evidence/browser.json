@@ -1,0 +1,6549 @@
+{
+  "rows": [
+    {
+      "ce": 15,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                67,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                67,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "terrain only; existing AMULET/* materialization unsupported"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 2,
+            "pos": {
+              "x": 22,
+              "y": 19
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              67,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "ce": 18,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 11,
+                "y": 15
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 11,
+                "y": 15
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 2,
+            "pos": {
+              "x": 11,
+              "y": 15
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              56,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "吸血蝙蝠",
+              "x": 3,
+              "y": 13,
+              "hp": 18,
+              "maxHp": 18,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 25,
+              "damage": "1d5+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLIES",
+                "MONST_FLITS"
+              ],
+              "abilityFlags": [
+                "MA_TRANSFERENCE"
+              ],
+              "bolts": [],
+              "typeId": "vampire_bat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 5,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 9,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 11,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 24,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 4,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "镜像图腾",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 4,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "镜像图腾",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 2,
+            "pos": {
+              "x": 4,
+              "y": 15
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 22,
+                "name": "镜像图腾",
+                "dormant": false
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "镜像图腾",
+              "x": 4,
+              "y": 15,
+              "hp": 80,
+              "maxHp": 80,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_ALWAYS_HUNTING",
+                "MONST_WILL_NOT_USE_STAIRS",
+                "MONST_GETS_TURN_ON_ACTIVATION",
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_IMMUNE_TO_WEAPONS",
+                "MONST_IMMUNE_TO_FIRE"
+              ],
+              "abilityFlags": [
+                "MA_REFLECT_100"
+              ],
+              "bolts": [
+                "BECKONING"
+              ],
+              "typeId": "mirrored_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林图腾",
+              "x": 10,
+              "y": 13,
+              "hp": 30,
+              "maxHp": 30,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_WILL_NOT_USE_STAIRS"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "goblin_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 9,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 10,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "粉红果冻",
+              "x": 5,
+              "y": 15,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 85,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [
+                "MA_CLONE_SELF_ON_DEFEND"
+              ],
+              "bolts": [],
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "金币",
+              "x": 4,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 36,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 11,
+                "y": 11
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 11,
+                "y": 11
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 6,
+            "pos": {
+              "x": 11,
+              "y": 11
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              146,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "蜘蛛",
+              "x": 5,
+              "y": 12,
+              "hp": 20,
+              "maxHp": 20,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 90,
+              "defense": 70,
+              "damage": "1d2+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_ALWAYS_USE_ABILITY"
+              ],
+              "abilityFlags": [
+                "MA_POISONS"
+              ],
+              "bolts": [
+                "SPIDERWEB"
+              ],
+              "typeId": "spider",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 400,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "怨灵",
+              "x": 5,
+              "y": 14,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 120,
+              "defense": 60,
+              "damage": "1d8+5",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLEES_NEAR_DEATH"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "wraith",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "幽火",
+              "x": 8,
+              "y": 16,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 90,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_FLIES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_FIERY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_HIT_BURN"
+              ],
+              "bolts": [],
+              "typeId": "wisp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "粉红果冻",
+              "x": 4,
+              "y": 15,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 85,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [
+                "MA_CLONE_SELF_ON_DEFEND"
+              ],
+              "bolts": [],
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 9,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 4
+              },
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 8,
+              "y": 13,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 3
+              },
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 29,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 10,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 29,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 9,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 7
+              },
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 29,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 9,
+              "y": 13,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 7
+              },
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 29,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "豺狼",
+              "x": 10,
+              "y": 13,
+              "hp": 8,
+              "maxHp": 8,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 6
+              },
+              "accuracy": 70,
+              "defense": 0,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "jackal",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 29,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 22,
+              "y": 9
+            },
+            {
+              "name": "口粮",
+              "x": 6,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 3,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 37,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                69,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "蜘蛛",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                69,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "蜘蛛",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 0,
+            "pos": {
+              "x": 22,
+              "y": 19
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              69,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 23,
+                "name": "蜘蛛",
+                "dormant": false
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "蜘蛛",
+              "x": 22,
+              "y": 19,
+              "hp": 20,
+              "maxHp": 20,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 90,
+              "defense": 70,
+              "damage": "1d2+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_ALWAYS_USE_ABILITY"
+              ],
+              "abilityFlags": [
+                "MA_POISONS"
+              ],
+              "bolts": [
+                "SPIDERWEB"
+              ],
+              "typeId": "spider",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 4,
+              "y": 13,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 11,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 22,
+              "y": 19
+            },
+            {
+              "name": "口粮",
+              "x": 4,
+              "y": 17
+            },
+            {
+              "name": "口粮",
+              "x": 8,
+              "y": 12
+            },
+            {
+              "name": "口粮",
+              "x": 5,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 5,
+              "y": 13
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 38,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 2,
+                "y": 14
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 2,
+                "y": 14
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 6,
+            "pos": {
+              "x": 2,
+              "y": 14
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              56,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "吸血蝙蝠",
+              "x": 5,
+              "y": 14,
+              "hp": 18,
+              "maxHp": 18,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 25,
+              "damage": "1d5+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLIES",
+                "MONST_FLITS"
+              ],
+              "abilityFlags": [
+                "MA_TRANSFERENCE"
+              ],
+              "bolts": [],
+              "typeId": "vampire_bat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 7,
+              "y": 13,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 6,
+              "y": 16,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 4,
+              "y": 17,
+              "hp": 3,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "狗头人",
+              "x": 5,
+              "y": 15,
+              "hp": 7,
+              "maxHp": 7,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "kobold",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "狗头人",
+              "x": 4,
+              "y": 16,
+              "hp": 7,
+              "maxHp": 7,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "kobold",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "狗头人",
+              "x": 4,
+              "y": 15,
+              "hp": 7,
+              "maxHp": 7,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "kobold",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 22,
+              "y": 9
+            },
+            {
+              "name": "金币",
+              "x": 3,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 6,
+              "y": 13
+            },
+            {
+              "name": "金币",
+              "x": 5,
+              "y": 16
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 46,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 3,
+                "y": 16
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                53,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 6,
+              "pos": {
+                "x": 3,
+                "y": 16
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                53,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 6,
+            "pos": {
+              "x": 3,
+              "y": 16
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              53,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "蜘蛛",
+              "x": 6,
+              "y": 13,
+              "hp": 20,
+              "maxHp": 20,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 90,
+              "defense": 70,
+              "damage": "1d2+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_ALWAYS_USE_ABILITY"
+              ],
+              "abilityFlags": [
+                "MA_POISONS"
+              ],
+              "bolts": [
+                "SPIDERWEB"
+              ],
+              "typeId": "spider",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "吸血蝙蝠",
+              "x": 5,
+              "y": 14,
+              "hp": 18,
+              "maxHp": 18,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 25,
+              "damage": "1d5+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLIES",
+                "MONST_FLITS"
+              ],
+              "abilityFlags": [
+                "MA_TRANSFERENCE"
+              ],
+              "bolts": [],
+              "typeId": "vampire_bat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 5,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 4,
+              "y": 12
+            },
+            {
+              "name": "金币",
+              "x": 4,
+              "y": 16
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 49,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                22,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 12,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "镜像图腾",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 22,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                22,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 12,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "镜像图腾",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 0,
+            "pos": {
+              "x": 22,
+              "y": 19
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              22,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 12,
+              "y": 15
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 23,
+                "name": "镜像图腾",
+                "dormant": false
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "镜像图腾",
+              "x": 12,
+              "y": 15,
+              "hp": 80,
+              "maxHp": 80,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_ALWAYS_HUNTING",
+                "MONST_WILL_NOT_USE_STAIRS",
+                "MONST_GETS_TURN_ON_ACTIVATION",
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_IMMUNE_TO_WEAPONS",
+                "MONST_IMMUNE_TO_FIRE"
+              ],
+              "abilityFlags": [
+                "MA_REFLECT_100"
+              ],
+              "bolts": [
+                "BECKONING"
+              ],
+              "typeId": "mirrored_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "达尔剑客",
+              "x": 5,
+              "y": 16,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 160,
+              "defense": 70,
+              "damage": "1d5+4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_CARRY_ITEM_25",
+                "MONST_MALE",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "dar_blademaster",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "爆炸膨胀怪",
+              "x": 10,
+              "y": 14,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLIES",
+                "MONST_FLITS"
+              ],
+              "abilityFlags": [
+                "MA_KAMIKAZE",
+                "MA_DF_ON_DEATH"
+              ],
+              "bolts": [],
+              "typeId": "explosive_bloat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "幽火",
+              "x": 10,
+              "y": 15,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 90,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_FLIES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_FIERY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_HIT_BURN"
+              ],
+              "bolts": [],
+              "typeId": "wisp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 22,
+              "y": 19
+            },
+            {
+              "name": "口粮",
+              "x": 5,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 9,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 55,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 12,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 5,
+              "pos": {
+                "x": 2,
+                "y": 14
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 5,
+              "pos": {
+                "x": 2,
+                "y": 14
+              },
+              "passable": true,
+              "visible": true,
+              "layers": [
+                56,
+                0,
+                0,
+                0
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 12,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 5,
+            "pos": {
+              "x": 2,
+              "y": 14
+            },
+            "passable": true,
+            "visible": true,
+            "layers": [
+              56,
+              0,
+              0,
+              0
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 12,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "酸液土堆",
+              "x": 4,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 6,
+              "y": 16,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 34,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 3,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 34,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 7,
+              "y": 14
+            },
+            {
+              "name": "芒果",
+              "x": 7,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 9,
+              "y": 13
+            },
+            {
+              "name": "金币",
+              "x": 6,
+              "y": 13
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 56,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 1,
+              "pos": {
+                "x": 11,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 17,
+                "y": 8
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 24,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 13,
+                "y": 20
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 25,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 23,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 26,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 1,
+              "pos": {
+                "x": 11,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 17,
+                "y": 8
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 24,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 13,
+                "y": 20
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 25,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 23,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 26,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 1,
+            "pos": {
+              "x": 11,
+              "y": 18
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 23,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 17,
+              "y": 8
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 24,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 13,
+              "y": 20
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 25,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 23,
+              "y": 18
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 26,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哥布林图腾",
+              "x": 17,
+              "y": 10,
+              "hp": 30,
+              "maxHp": 30,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_WILL_NOT_USE_STAIRS"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "goblin_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林图腾",
+              "x": 17,
+              "y": 11,
+              "hp": 30,
+              "maxHp": 30,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_WILL_NOT_USE_STAIRS"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "goblin_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 300,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 15,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 18,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 16,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 16,
+              "y": 10,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 19,
+              "y": 11,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 19,
+              "y": 10,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 27,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 5,
+              "y": 13,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 6,
+              "y": 14,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 35,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "达尔剑客",
+              "x": 20,
+              "y": 13,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 160,
+              "defense": 70,
+              "damage": "1d5+4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_CARRY_ITEM_25",
+                "MONST_MALE",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "dar_blademaster",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "幽火",
+              "x": 21,
+              "y": 13,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 90,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_FLIES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_FIERY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_HIT_BURN"
+              ],
+              "bolts": [],
+              "typeId": "wisp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 21,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 16,
+              "y": 14
+            },
+            {
+              "name": "口粮",
+              "x": 10,
+              "y": 18
+            },
+            {
+              "name": "口粮",
+              "x": 4,
+              "y": 22
+            },
+            {
+              "name": "金币",
+              "x": 21,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 9,
+              "y": 20
+            },
+            {
+              "name": "金币",
+              "x": 15,
+              "y": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 62,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 18,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 13,
+                "y": 13
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                81
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 21,
+                "y": 9
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                81
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 19,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 18,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 18,
+                "y": 17
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                24
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 3,
+              "pos": {
+                "x": 21,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                95
+              ],
+              "occupants": []
+            }
+          ],
+          "after": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 18,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 13,
+                "y": 13
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                81
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 1,
+              "pos": {
+                "x": 21,
+                "y": 9
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                81
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 19,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 18,
+                "y": 18
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                10
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 2,
+              "pos": {
+                "x": 18,
+                "y": 17
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                24
+              ],
+              "occupants": []
+            },
+            {
+              "feature": 3,
+              "pos": {
+                "x": 21,
+                "y": 15
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                2,
+                0,
+                0,
+                95
+              ],
+              "occupants": []
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 0,
+            "pos": {
+              "x": 18,
+              "y": 19
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              10
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 13,
+              "y": 13
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              81
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 1,
+            "pos": {
+              "x": 21,
+              "y": 9
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              81
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 2,
+            "pos": {
+              "x": 19,
+              "y": 19
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              10
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 2,
+            "pos": {
+              "x": 18,
+              "y": 18
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              10
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 2,
+            "pos": {
+              "x": 18,
+              "y": 17
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              24
+            ],
+            "occupants": []
+          },
+          {
+            "feature": 3,
+            "pos": {
+              "x": 21,
+              "y": 15
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              2,
+              0,
+              0,
+              95
+            ],
+            "occupants": []
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "粉红果冻",
+              "x": 4,
+              "y": 15,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 85,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [
+                "MA_CLONE_SELF_ON_DEFEND"
+              ],
+              "bolts": [],
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "幽火",
+              "x": 17,
+              "y": 15,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 90,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_FLIES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_FIERY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_HIT_BURN"
+              ],
+              "bolts": [],
+              "typeId": "wisp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "粉红果冻",
+              "x": 13,
+              "y": 13,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 85,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [
+                "MA_CLONE_SELF_ON_DEFEND"
+              ],
+              "bolts": [],
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "食人魔",
+              "x": 17,
+              "y": 9,
+              "hp": 14,
+              "maxHp": 55,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 125,
+              "defense": 60,
+              "damage": "1d5+8",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MALE",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS",
+                "MA_ATTACKS_STAGGER"
+              ],
+              "bolts": [],
+              "typeId": "ogre",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 16,
+              "y": 10,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 25,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 17,
+              "y": 11,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 25,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 18,
+              "y": 10,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 25,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "巨魔",
+              "x": 16,
+              "y": 16,
+              "hp": 65,
+              "maxHp": 65,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 125,
+              "defense": 70,
+              "damage": "1d6+9",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MALE",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "troll",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 15,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 14,
+              "y": 13,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 30,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 15,
+              "y": 13,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 30,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 16,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 30,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "芒果",
+              "x": 22,
+              "y": 18
+            },
+            {
+              "name": "口粮",
+              "x": 20,
+              "y": 19
+            },
+            {
+              "name": "口粮",
+              "x": 15,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 21,
+              "y": 11
+            },
+            {
+              "name": "金币",
+              "x": 3,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 18,
+              "y": 18
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 65,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 3,
+              "pos": {
+                "x": 17,
+                "y": 20
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 3,
+              "pos": {
+                "x": 17,
+                "y": 20
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 3,
+            "pos": {
+              "x": 17,
+              "y": 20
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 22,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "芒果",
+              "x": 3,
+              "y": 13
+            },
+            {
+              "name": "金币",
+              "x": 3,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 17,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 66,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 12,
+                "y": 8
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 2,
+              "pos": {
+                "x": 12,
+                "y": 8
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                75,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "箭塔",
+                  "dormant": true
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 2,
+            "pos": {
+              "x": 12,
+              "y": 8
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              75,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 22,
+                "name": "箭塔",
+                "dormant": true
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "蜘蛛",
+              "x": 6,
+              "y": 14,
+              "hp": 20,
+              "maxHp": 20,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 90,
+              "defense": 70,
+              "damage": "1d2+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_ALWAYS_USE_ABILITY"
+              ],
+              "abilityFlags": [
+                "MA_POISONS"
+              ],
+              "bolts": [
+                "SPIDERWEB"
+              ],
+              "typeId": "spider",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 8,
+              "y": 13,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 7,
+              "y": 14,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 24,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 4,
+              "y": 14,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 5,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "酸液土堆",
+              "x": 9,
+              "y": 15,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_DEFEND_DEGRADE_WEAPON"
+              ],
+              "abilityFlags": [
+                "MA_HIT_DEGRADE_ARMOR"
+              ],
+              "bolts": [],
+              "typeId": "acid_mound",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "电鳗",
+              "x": 17,
+              "y": 13,
+              "hp": 18,
+              "maxHp": 18,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 27,
+              "damage": "1d5+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_RESTRICTED_TO_LIQUID",
+                "MONST_IMMUNE_TO_WATER",
+                "MONST_SUBMERGES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "eel",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "电鳗",
+              "x": 18,
+              "y": 14,
+              "hp": 18,
+              "maxHp": 18,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 27,
+              "damage": "1d5+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_RESTRICTED_TO_LIQUID",
+                "MONST_IMMUNE_TO_WATER",
+                "MONST_SUBMERGES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "eel",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 7,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 6,
+              "y": 14
+            },
+            {
+              "name": "金币",
+              "x": 7,
+              "y": 14
+            }
+          ]
+        }
+      }
+    },
+    {
+      "ce": 71,
+      "before": {
+        "observed": {
+          "action": "search",
+          "origin": {
+            "x": 17,
+            "y": 14
+          },
+          "before": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 18,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            },
+            {
+              "feature": 0,
+              "pos": {
+                "x": 13,
+                "y": 13
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            },
+            {
+              "feature": 0,
+              "pos": {
+                "x": 21,
+                "y": 9
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 24,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "feature": 0,
+              "pos": {
+                "x": 18,
+                "y": 19
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 22,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            },
+            {
+              "feature": 0,
+              "pos": {
+                "x": 13,
+                "y": 13
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 23,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            },
+            {
+              "feature": 0,
+              "pos": {
+                "x": 21,
+                "y": 9
+              },
+              "passable": false,
+              "visible": true,
+              "layers": [
+                48,
+                0,
+                0,
+                0
+              ],
+              "occupants": [
+                {
+                  "id": 24,
+                  "name": "哨兵",
+                  "dormant": false
+                }
+              ]
+            }
+          ],
+          "player": {
+            "x": 17,
+            "y": 14
+          },
+          "materialization": "Game.populateLevel"
+        },
+        "recorded": null
+      },
+      "after": {
+        "targets": [
+          {
+            "feature": 0,
+            "pos": {
+              "x": 18,
+              "y": 19
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              48,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 22,
+                "name": "哨兵",
+                "dormant": false
+              }
+            ]
+          },
+          {
+            "feature": 0,
+            "pos": {
+              "x": 13,
+              "y": 13
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              48,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 23,
+                "name": "哨兵",
+                "dormant": false
+              }
+            ]
+          },
+          {
+            "feature": 0,
+            "pos": {
+              "x": 21,
+              "y": 9
+            },
+            "passable": false,
+            "visible": true,
+            "layers": [
+              48,
+              0,
+              0,
+              0
+            ],
+            "occupants": [
+              {
+                "id": 24,
+                "name": "哨兵",
+                "dormant": false
+              }
+            ]
+          }
+        ],
+        "text": {
+          "seed": "19",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "stuck": 5
+            },
+            "x": 17,
+            "y": 14,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "stuck": 5
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哨兵",
+              "x": 18,
+              "y": 19,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HEALING",
+                "SPARK"
+              ],
+              "typeId": "sentinel",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哨兵",
+              "x": 13,
+              "y": 13,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HEALING",
+                "SPARK"
+              ],
+              "typeId": "sentinel",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哨兵",
+              "x": 21,
+              "y": 9,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HEALING",
+                "SPARK"
+              ],
+              "typeId": "sentinel",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "蜘蛛",
+              "x": 14,
+              "y": 17,
+              "hp": 20,
+              "maxHp": 20,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 90,
+              "defense": 70,
+              "damage": "1d2+2",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_ALWAYS_USE_ABILITY"
+              ],
+              "abilityFlags": [
+                "MA_POISONS"
+              ],
+              "bolts": [
+                "SPIDERWEB"
+              ],
+              "typeId": "spider",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 400,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "怨灵",
+              "x": 20,
+              "y": 12,
+              "hp": 50,
+              "maxHp": 50,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 120,
+              "defense": 60,
+              "damage": "1d8+5",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLEES_NEAR_DEATH"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "wraith",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林图腾",
+              "x": 21,
+              "y": 18,
+              "hp": 30,
+              "maxHp": 30,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_WILL_NOT_USE_STAIRS"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "goblin_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林图腾",
+              "x": 21,
+              "y": 19,
+              "hp": 30,
+              "maxHp": 30,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_WEBS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_IMMOBILE",
+                "MONST_INANIMATE",
+                "MONST_WILL_NOT_USE_STAIRS"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "goblin_totem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 19,
+              "y": 17,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 22,
+              "y": 19,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 19,
+              "y": 18,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 20,
+              "y": 16,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 21,
+              "y": 17,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林",
+              "x": 21,
+              "y": 16,
+              "hp": 15,
+              "maxHp": 15,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 28,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 16,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林召唤师",
+              "x": 15,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CAST_SPELLS_SLOWLY",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_CAST_SUMMON",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin_conjurer",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 36,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "哥布林法师",
+              "x": 17,
+              "y": 11,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d3+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "SHIELDING"
+              ],
+              "typeId": "goblin_mystic",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 36,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "幽火",
+              "x": 19,
+              "y": 14,
+              "hp": 10,
+              "maxHp": 10,
+              "weaknessAmount": 0,
+              "maxStatus": {
+                "stuck": 5
+              },
+              "accuracy": 100,
+              "defense": 90,
+              "damage": "0d1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_FLIES",
+                "MONST_FLITS",
+                "MONST_NEVER_SLEEPS",
+                "MONST_FIERY",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_HIT_BURN"
+              ],
+              "bolts": [],
+              "typeId": "wisp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 20,
+              "y": 16
+            },
+            {
+              "name": "黑色药水",
+              "x": 15,
+              "y": 10
+            },
+            {
+              "name": "金币",
+              "x": 12,
+              "y": 19
+            },
+            {
+              "name": "金币",
+              "x": 22,
+              "y": 15
+            },
+            {
+              "name": "金币",
+              "x": 22,
+              "y": 14
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web
+
+ ❯ src/test/u_19a_machine_view.test.ts (18 tests | 2 failed) 292ms
+     × integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_VIEW_OF_ORIGIN 3ms
+     × integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_PASSABLE_VIEW_OF_ORIGIN 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_VIEW_OF_ORIGIN
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_PASSABLE_VIEW_OF_ORIGIN
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_19a_machine_view.test.ts:59:101
+     57|   const g=arena();g.setTerrain(37,12,T.GRANITE);const e:any=new Bluepr…
+     58|   // CE patch-1: (38,10) is behind the blocker according to the center…
+     59|   expect(e.cellIsFeatureCandidate(38,10,origin,new Set([10*DCOLS+38]),…
+       |                                                                                                     ^
+     60|  });
+     61|  it('does not consume RNG or write player visibility/memory; radius is…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  10:00:02
+   Duration  540ms (transform 138ms, setup 0ms, import 171ms, tests 292ms, environment 0ms)
+

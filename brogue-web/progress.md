@@ -1340,3 +1340,14 @@ U17f: final six carriers, DF192 successor, RUBBLE autogen index7, contact-key co
 U17f final frozen retry started 2026-09-26 05:53:49 CST after correcting the remaining C6 AD-8 index7 whitelist (original HEAD proof + 17/17 C6 positive). Full npm test without file filtering, six workers; R∪S 179 files; audit/build passed, regression and drift pending. Freeze covers 633 src/public/scripts/config inputs. Do not edit frozen inputs until completion; report/evidence/progress only. No additional recapture, staging or commit.
 
 U17f guard self-review: interrupted the second and short third freeze attempts to separate CE8 legal anchor-overlap allowances from true BUILD_AT_ORIGIN non-vacuity samples, reject missing instance IDs and deduplicate allowances. Added negative assertions; build and guard unit pass. Production, U17f behavior tests and generation baseline unchanged. Final full retry now running from 2026-09-26 06:09 CST; freeze all inputs until completion. Archived each interrupted attempt under evidence; only final completed run is an acceptance gate.
+
+
+## 2026-09-26 U19a：蓝图 origin 视图约束
+
+- 阅读任务书与 X-0 K28/K32；现树 U18a-3 已接入两个 view 旗标，因此本轮核实并修正其 CE 整数斜率边界，未重复添加候选门。新增 MachineView，仅 BlueprintEngine 消费，玩家/光/气味 FOV 保持原实现。
+- CE Movement.c 的原 scanner 与 Math.c 的原 fixed-point sqrt 编译为独立 oracle：579 张图、两模式逐图对比通过；18 条 CE feature 的字面旗标转录核对。
+- 普通/passable 两段独立归因，分别反向应用真实补丁再重新生成 104 层：均精确恢复上一阶段。普通视图只改 seed20260913 D16/D26 的 fp，passable 无四字段变化；生成期视图本身有变化。
+- 14 台完整蓝图固定房址 writer → 真实 Game/键盘搜索 → 可见地形/怪物证据；18 个 feature 全候选/落点由 CE C 复核。CE15 既有 AMULET/* 实化不支持，限定验证真实雕像地形，未虚报整机 payoff。CE18/55 原退池及 frequency=0 不改；未发现因 view 单独退池的条目。
+- 独立候选门反例去掉各旗标均红；生成基线按任务书仅重捕获一次。最终 R∪S 178份全覆盖；build、185文件全量测试（3626 passed / 0 failed / 8 skipped / 5 todo）、独立 drift 全部通过，655个冻结输入前后哈希变化0。报告 ai_docs/reports/u-19a.report.md；未提交。
+- 浏览器14台真实键盘搜索记录与整页截图核验通过；四台暗杆额外保留机器居民、隔离普通散布怪物后，从 origin 经真实移动到邻格并搜索显露，首次受普通怪物战斗阻挡的原记录一并保留。
+- 后续：U19b pendingItems 前厅占用、U19c 实体时序；CE15 AMULET/守卫完整实化及机器回池另轮处理。

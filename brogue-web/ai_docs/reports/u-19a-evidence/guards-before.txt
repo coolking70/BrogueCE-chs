@@ -1,0 +1,61 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web
+
+ ❯ src/test/u_19a_machine_view.test.ts (17 tests | 3 failed) 26ms
+     × 579 whole-map masks agree with the actual CE C scanner in both modes 3ms
+     × oracle source hashes pin the C inputs, and the old web scan demonstrably differs 1ms
+     × does not consume RNG or write player visibility/memory; radius is map-wide 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a independent compiled CE visibility oracle > 579 whole-map masks agree with the actual CE C scanner in both modes
+TypeError: terrainFlagsOfCell is not a function
+ ❯ blocked src/engine/Generator/MachineView.ts:30:45
+     28|         }
+     29|     };
+     30|     const blocked = (p: Pos): boolean => !!(terrainFlagsOfCell(grid.ge…
+       |                                             ^
+     31|     const scan = (octant: number, column: number, start: number, end: …
+     32|         if (column >= radius) return;
+ ❯ scan src/engine/Generator/MachineView.ts:49:33
+ ❯ computeMachineView src/engine/Generator/MachineView.ts:62:49
+ ❯ src/test/u_19a_machine_view.test.ts:22:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a independent compiled CE visibility oracle > oracle source hashes pin the C inputs, and the old web scan demonstrably differs
+TypeError: terrainFlagsOfCell is not a function
+ ❯ src/test/u_19a_machine_view.test.ts:30:77
+     28|   }
+     29|   const row=golden.cases.find(c=>c.name==='patch-1')!,g=arena();for(co…
+     30|   const old=new FOVSys(g).computeFOVMask(row.origin.x,row.origin.y,79,…
+       |                                                                             ^
+     31|   expect(digest(old)).not.toBe(row.mask);
+     32|  });
+ ❯ FOVSys.castLightMask src/engine/Lighting/FOV.ts:83:36
+ ❯ FOVSys.computeFOVMask src/engine/Lighting/FOV.ts:44:18
+ ❯ src/test/u_19a_machine_view.test.ts:30:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > does not consume RNG or write player visibility/memory; radius is map-wide
+TypeError: terrainFlagsOfCell is not a function
+ ❯ blocked src/engine/Generator/MachineView.ts:30:45
+     28|         }
+     29|     };
+     30|     const blocked = (p: Pos): boolean => !!(terrainFlagsOfCell(grid.ge…
+       |                                             ^
+     31|     const scan = (octant: number, column: number, start: number, end: …
+     32|         if (column >= radius) return;
+ ❯ scan src/engine/Generator/MachineView.ts:49:33
+ ❯ computeMachineView src/engine/Generator/MachineView.ts:62:49
+ ❯ src/test/u_19a_machine_view.test.ts:62:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 14 passed (17)
+   Start at  09:58:47
+   Duration  274ms (transform 139ms, setup 0ms, import 172ms, tests 26ms, environment 0ms)
+

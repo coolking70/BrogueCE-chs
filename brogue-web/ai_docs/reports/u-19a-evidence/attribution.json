@@ -1,0 +1,1064 @@
+[
+  {
+    "from": "s0",
+    "to": "s1",
+    "layers": 18,
+    "baselineFields": 2,
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 19,
+        "field": "views",
+        "before": "6c36593e634f5855cda8ec8b45631a8279513c9d1e634a0be519caad97a767bf",
+        "after": "e1d3249ee950d6edde623c97e2e730e10eba2e56e6d5f14bf20ed3ecfd8d55ab"
+      },
+      {
+        "seed": 424242,
+        "depth": 25,
+        "field": "views",
+        "before": "a0de11734dbf781b60bbff31f5baea5ad14dee10d00d5c5dc69b13069a2a0509",
+        "after": "8bc26e78a21356c997894e1d731d3d46044f7dba05451bf77ef4db18eaf63c8f"
+      },
+      {
+        "seed": 777,
+        "depth": 8,
+        "field": "views",
+        "before": "491a303a0115dc8d301a37af51ee0acbf10f677c2772f7978ef08fbd47756803",
+        "after": "ea84f659bbd1fa3e68ffb9780d0cb9d93786b142a55b2f1d4eefe7e4fce2aeb8"
+      },
+      {
+        "seed": 20260913,
+        "depth": 9,
+        "field": "views",
+        "before": "dfff594dea3c2fe85165fb2c159f21fe3835f568ff7a848eb90600eb41a011ad",
+        "after": "2eff7704c9b10b0214da7d9eff7ea8949f4f24f31d0823b688dca4531d8c7dd0"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "fp",
+        "before": "9f6ece6f:5068",
+        "after": "e6beec9d:5069"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "terrain",
+        "before": "077a18b7e3b02ff29154592bc901b692da3b87bea48dc06ac062d573e2e8703c",
+        "after": "a6913aef2d2e9d4942ff338347c5784e9547ca1a45f598df285458912bf87581"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "monsters",
+        "before": "d020a9e292210951d02c00bdbf5b42ade347e228d21eb3261e5cf3de69dcceef",
+        "after": "6e36d48cb3a7e2e949e25f1622537e2f0fa14467433cb9fa4ae685b8c6bc1b8d"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "itemsState",
+        "before": "d14cc9e68c15125339bed196716a3222b6110bd4a3f9c9faa441e898dd9f38b5",
+        "after": "0d975c1c3135984168d30c20fcda086ecc8b91539305eeb574117b100f7d27f8"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 272169587,
+              "b": 1803769985,
+              "c": 328108869,
+              "d": 3515994573
+            },
+            {
+              "a": 2698920433,
+              "b": 1407218815,
+              "c": 1180784949,
+              "d": 3229368109
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 856237,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2653506380,
+              "b": 2225368839,
+              "c": 3359229832,
+              "d": 1289389066
+            },
+            {
+              "a": 2698920433,
+              "b": 1407218815,
+              "c": 1180784949,
+              "d": 3229368109
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 856188,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "views",
+        "before": "f720a84864e8191a67a4e92145f6e5ee495a86dfcafc3dc7c25b1ae1dc0f9fa1",
+        "after": "2d0b27659f4b8f7578623d250ba00131d87af1e51eac6b797b52e3c78934673a"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "machines",
+        "before": "94010f3ba291869caaf7ec02898af8618cc5c343d592e8f268505e786fcffb1e",
+        "after": "7e77bc250b73061c97a1d75a2d17bba822f19a00aa7c4cbd8f1103e06f4e72c3"
+      },
+      {
+        "seed": 20260913,
+        "depth": 16,
+        "field": "committed",
+        "before": [
+          {
+            "ce": 6,
+            "number": 1,
+            "features": []
+          },
+          {
+            "ce": 23,
+            "number": 2,
+            "features": []
+          },
+          {
+            "ce": 4,
+            "number": 3,
+            "features": []
+          },
+          {
+            "ce": 24,
+            "number": 4,
+            "features": [
+              {
+                "index": 2,
+                "request": {
+                  "monsterId": "mirrored_totem",
+                  "instanceCount": [
+                    1,
+                    1
+                  ],
+                  "minimum": 1,
+                  "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                  ]
+                },
+                "iterations": 1,
+                "placements": [
+                  {
+                    "x": 68,
+                    "y": 10
+                  }
+                ],
+                "status": "placed"
+              }
+            ]
+          },
+          {
+            "ce": 7,
+            "number": 5,
+            "features": []
+          },
+          {
+            "ce": 16,
+            "number": 6,
+            "features": []
+          },
+          {
+            "ce": 34,
+            "number": 7,
+            "features": []
+          },
+          {
+            "ce": 68,
+            "number": 8,
+            "features": []
+          },
+          {
+            "ce": 58,
+            "number": 9,
+            "features": []
+          }
+        ],
+        "after": [
+          {
+            "ce": 6,
+            "number": 1,
+            "features": []
+          },
+          {
+            "ce": 23,
+            "number": 2,
+            "features": []
+          },
+          {
+            "ce": 4,
+            "number": 3,
+            "features": []
+          },
+          {
+            "ce": 24,
+            "number": 4,
+            "features": [
+              {
+                "index": 2,
+                "request": {
+                  "monsterId": "mirrored_totem",
+                  "instanceCount": [
+                    1,
+                    1
+                  ],
+                  "minimum": 1,
+                  "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                  ]
+                },
+                "iterations": 1,
+                "placements": [
+                  {
+                    "x": 67,
+                    "y": 9
+                  }
+                ],
+                "status": "placed"
+              }
+            ]
+          },
+          {
+            "ce": 7,
+            "number": 5,
+            "features": []
+          },
+          {
+            "ce": 16,
+            "number": 6,
+            "features": []
+          },
+          {
+            "ce": 34,
+            "number": 7,
+            "features": []
+          },
+          {
+            "ce": 68,
+            "number": 8,
+            "features": []
+          },
+          {
+            "ce": 58,
+            "number": 9,
+            "features": []
+          }
+        ]
+      },
+      {
+        "seed": 20260913,
+        "depth": 17,
+        "field": "terrain",
+        "before": "ae16928639bd9a5c2aea1a41f786fe9dfb945bc8a0d976e4f56461f03d0ea25d",
+        "after": "72e9c3b0f8cbdbe442a50a69b698380e6aef628dc76891672813232d184cc300"
+      },
+      {
+        "seed": 20260913,
+        "depth": 17,
+        "field": "monsters",
+        "before": "975e4bc411a013f22318fba56f2cb267fba0db106f12d104c0eed3c8da71bc40",
+        "after": "92b9b6f28237271bc13976499e12dd2cfc01397605977bbc34548adf9c3db2e4"
+      },
+      {
+        "seed": 20260913,
+        "depth": 17,
+        "field": "itemsState",
+        "before": "6a11c068b7c1ddc3e023de7de0715dd9c56b13998576e28fc9df38ae43d788f9",
+        "after": "143046f7f1d895e14adc4c7285823a4f97170e843e5878ccc664d3121ea2af72"
+      },
+      {
+        "seed": 20260913,
+        "depth": 17,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3706929034,
+              "b": 1755004157,
+              "c": 1367028952,
+              "d": 4086339363
+            },
+            {
+              "a": 2713419271,
+              "b": 3234077236,
+              "c": 271028520,
+              "d": 1586792786
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 968653,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1933426948,
+              "b": 1388304123,
+              "c": 906830860,
+              "d": 165061234
+            },
+            {
+              "a": 2746479788,
+              "b": 1670484154,
+              "c": 2413111329,
+              "d": 178072867
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 970402,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 18,
+        "field": "terrain",
+        "before": "769de8134058f7f87432c559a3f9b1ec5a7cb7464c3497657d1c155013695a74",
+        "after": "48c4b758c7fe1eb207fc3b6c1f62cdc7750c93a6e323e85829c4fe267340d841"
+      },
+      {
+        "seed": 20260913,
+        "depth": 18,
+        "field": "monsters",
+        "before": "38e213b5791bcd76c67127c1133362284eefe32694e4ebdbfe9a27f12e06ca8c",
+        "after": "8bc1a99949b816e3bafef8b50b1272196688ea73dd3e53bddcc64ad3efb74c82"
+      },
+      {
+        "seed": 20260913,
+        "depth": 18,
+        "field": "itemsState",
+        "before": "616cf55b865f8200fe31e37b7e2f562d7f6d86285fc9cc3c48a4d815450d0c2d",
+        "after": "bf3d6a7b7101fc527ab094cd7624f884646d00c8797d573c85a8491ad90ef77c"
+      },
+      {
+        "seed": 20260913,
+        "depth": 18,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3908359208,
+              "b": 1276356733,
+              "c": 1022301024,
+              "d": 1902630041
+            },
+            {
+              "a": 2899211423,
+              "b": 141374267,
+              "c": 2393060964,
+              "d": 2379730955
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1028004,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 177913354,
+              "b": 2830649823,
+              "c": 182071521,
+              "d": 2567986774
+            },
+            {
+              "a": 3662684634,
+              "b": 2837753213,
+              "c": 576991272,
+              "d": 2711049704
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1019973,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 19,
+        "field": "terrain",
+        "before": "a53ba9f53bfafd5c6429bb669249053fd53742b1d2c6f7df19010e8831b614cf",
+        "after": "79e73df6012d75d2fdfbd96de5cdfb6421291ace59408a73b8eedae24cfd301d"
+      },
+      {
+        "seed": 20260913,
+        "depth": 19,
+        "field": "monsters",
+        "before": "65baf518f2e9e9069c0f1ad8b6234bb225b5017671e0a71c4a6e664b068723ca",
+        "after": "b93f84ccb672f01160d1d015ad9cb2ff448aa61540393c8fd314e859a69310cb"
+      },
+      {
+        "seed": 20260913,
+        "depth": 19,
+        "field": "itemsState",
+        "before": "787f2b1f809a2ca21aff5774b069260aa68cde65d79d4373f90a9e6ec4044cf8",
+        "after": "69974e1c14dc17a0ec9cd8f7d9a6513af9d3cdc0a147d54b8b758b432fc5af5f"
+      },
+      {
+        "seed": 20260913,
+        "depth": 19,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3805725530,
+              "b": 1806067406,
+              "c": 915551327,
+              "d": 2431600879
+            },
+            {
+              "a": 3761347484,
+              "b": 2646722365,
+              "c": 2112230516,
+              "d": 537266049
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1077227,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3471054508,
+              "b": 1246502187,
+              "c": 3521641110,
+              "d": 3529708655
+            },
+            {
+              "a": 3995032151,
+              "b": 789191876,
+              "c": 424475477,
+              "d": 3538354448
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1067156,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 19,
+        "field": "machines",
+        "before": "d504266387c2ef375452a96acd757db0e12ed1f1c269947ade88bb849f4c25c8",
+        "after": "04d3af5083e9f46128e662bce6669718714ab4a7762568587e0ce5eefe3f0159"
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "terrain",
+        "before": "58b7311e860fb4e36585b6f74c4e33bc74e978029f0a05adb1e7c3525a5182c9",
+        "after": "a08008a408e34aed2c642b69781833a7baaca03a5e24699a5a42ab57fc668b66"
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "monsters",
+        "before": "e872f297662e5da1d3c456b160d0b5a1b7868a2569bdb71333e09481c7fd7396",
+        "after": "4445cb1917c851064ba60918eaf3c52fa11a129c99f0753c6cc67a8cfc7db6f3"
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "dormant",
+        "before": "f515f83546a17562f29b78bacd0f64760a59a8f1459bfc780950b3c5044e758f",
+        "after": "3b7191d58e1fb6a41745c25ae2b72b4c1246763107c16f9bc6bf465345f4ebb8"
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "itemsState",
+        "before": "7dc9adea8b7934d2a5a6f83e80cd229f5da5040c6a327d231e0bca3d52684c57",
+        "after": "3e044f2a1e0863ad72bd8a85c11b88dbd17131d20019d26f7132968c0b98c6c7"
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1335542517,
+              "b": 164616261,
+              "c": 1571659185,
+              "d": 2070551568
+            },
+            {
+              "a": 2380927070,
+              "b": 1763081329,
+              "c": 1048946595,
+              "d": 2364442026
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1157006,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3680867299,
+              "b": 2989333376,
+              "c": 1061528115,
+              "d": 1812780647
+            },
+            {
+              "a": 3343311831,
+              "b": 1010506440,
+              "c": 4080864951,
+              "d": 1224463585
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1159311,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 20,
+        "field": "machines",
+        "before": "30054e061757c6a2e1dfc6059441782d5e43454787de1ef0470cad61dfd96c3c",
+        "after": "4aef75bd4a309e330073af3ddb844b492fde3d1230d6c44c49f9124ede9b09b7"
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "terrain",
+        "before": "70bb16cbd5c14334a54c1bcd1a51380ad9902fbf3abc330019f83cd768411ff1",
+        "after": "88e91576df43977dec85f49a41d0b570da3d22cc2ea01dd2d7d90f4cee4bae31"
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "monsters",
+        "before": "ebbf641f88ce25521e428854efcc1a84def30d562bb79fc0533458da787d8ad8",
+        "after": "f04c5722f92ab051ce88335571c002ca7e258ca4b350a63f2b9108d0bf64d0c4"
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "itemsState",
+        "before": "6457dc79cdbda2750c555ec44659367874f712f55c9d5a900ce7f580b6720be2",
+        "after": "02fdfe150022dcf693fced9c06fe46f983fd8bba4ab3839e5aad61e067183ec9"
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1382157788,
+              "b": 430990864,
+              "c": 264969972,
+              "d": 646664666
+            },
+            {
+              "a": 2708463996,
+              "b": 1768463187,
+              "c": 3901157885,
+              "d": 1188950013
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1234414,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1987781288,
+              "b": 2533489587,
+              "c": 2338236301,
+              "d": 3640700984
+            },
+            {
+              "a": 3322628993,
+              "b": 3026766925,
+              "c": 260639089,
+              "d": 3179336647
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1240823,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "views",
+        "before": "cf3b7ae3f7e1dc94b155f2b42ec85924d2a7abd7f459582a789ddcb37b4cc1f5",
+        "after": "38662e294c48e69a1709fc5c3f73769e7d7f00f584dfff8c2cf032891493c903"
+      },
+      {
+        "seed": 20260913,
+        "depth": 21,
+        "field": "machines",
+        "before": "11530ab4a154690ea8759b46e327d5212c9f39140db6c2e0ff7d7c88b8ec7983",
+        "after": "38394082196aee8c6171870af73b4bce0296eb133d2b72118968e9f8a91406f6"
+      },
+      {
+        "seed": 20260913,
+        "depth": 22,
+        "field": "terrain",
+        "before": "7b7ea8b59257a9d0ce3479be1daf95e63511ac61f5e213e06a1bb0c31d166cb0",
+        "after": "8990613acca4a64328a240de8c32e88f6f1fb08fa47da128014205b8cddfb6a9"
+      },
+      {
+        "seed": 20260913,
+        "depth": 22,
+        "field": "monsters",
+        "before": "e4e2df0e0cdab5ff8200512320e9dc6aa67c2b65a018ae3893c30cb7005ca9f4",
+        "after": "1e71b73540da9dae346bdb87277ed32dd3b26f23331a3b1b5dfebaf25770e637"
+      },
+      {
+        "seed": 20260913,
+        "depth": 22,
+        "field": "itemsState",
+        "before": "16324469b4fd84f5fb1471fba5526f996812d1d5a79012567b6e1cc3e474eda2",
+        "after": "a28eea964ab734fd2e14432551a7ca6641479ebd3f6faa37240e356ac0593ede"
+      },
+      {
+        "seed": 20260913,
+        "depth": 22,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 728935043,
+              "b": 2695794071,
+              "c": 6311165,
+              "d": 2914363670
+            },
+            {
+              "a": 972671508,
+              "b": 1036641840,
+              "c": 857391354,
+              "d": 2570098350
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1295927,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1242624619,
+              "b": 920526576,
+              "c": 3111164249,
+              "d": 3375917239
+            },
+            {
+              "a": 2000581703,
+              "b": 1362205297,
+              "c": 857727468,
+              "d": 924028493
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1292772,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 23,
+        "field": "terrain",
+        "before": "7510b8decd393820a373ef22663bb537c8f1397bcf467e442f3a3660a41030ec",
+        "after": "516592462c6b8fe0f36e34c119a9b91d31e5bda8c8e9893445e051f1e935c254"
+      },
+      {
+        "seed": 20260913,
+        "depth": 23,
+        "field": "monsters",
+        "before": "8722c338fbd72ae136bf04839efecf443d55d0286835b62fa999d70c739ce0a7",
+        "after": "daa9ac75354fd89b8600725b815a8bb76af8ce04aba9af938d333ab578cc929b"
+      },
+      {
+        "seed": 20260913,
+        "depth": 23,
+        "field": "itemsState",
+        "before": "ae17521e9391d39cd0b03e6d3f36489cb4a41b376f7be6f5aada681334f01efc",
+        "after": "c5f474f961e0e3f6d40c585ac3770898f02c1e512ed168fa7072ecb6a9932d93"
+      },
+      {
+        "seed": 20260913,
+        "depth": 23,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 733709513,
+              "b": 1166042099,
+              "c": 3410966462,
+              "d": 2855964516
+            },
+            {
+              "a": 976714544,
+              "b": 3623566467,
+              "c": 880573763,
+              "d": 29142524
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1427682,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2256687374,
+              "b": 1725347606,
+              "c": 3554310399,
+              "d": 3155866173
+            },
+            {
+              "a": 1296178098,
+              "b": 1446246728,
+              "c": 3432011775,
+              "d": 3992672123
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1399663,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 24,
+        "field": "terrain",
+        "before": "56358c564173ada460a36428d78e23047ed4bdcc3911ee1e4c88e143a1214fa4",
+        "after": "6d40b64bb9bea3345f08f73a4af02e8af3c9b3ce0b13984eae7a6a92bfe8b1b9"
+      },
+      {
+        "seed": 20260913,
+        "depth": 24,
+        "field": "monsters",
+        "before": "ba44db445bc6354196e3a7d616ba9743dfd50e50fe3ee03aadcefd3900ce84fe",
+        "after": "8e3d3a5bbe44cacd5989d0eb4452c4d2188a509185b79cde9b06afb2cdbddcae"
+      },
+      {
+        "seed": 20260913,
+        "depth": 24,
+        "field": "itemsState",
+        "before": "3d99f80d65c258a82b32a6999d633c5f2556808e07aa78dc8b0744a76f2927e2",
+        "after": "419a721fc677b0d078b0541c20232696a97e1caddd3498a03f6aa12318705260"
+      },
+      {
+        "seed": 20260913,
+        "depth": 24,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 617071371,
+              "b": 1739886,
+              "c": 3766032000,
+              "d": 3836603149
+            },
+            {
+              "a": 289968001,
+              "b": 1907933318,
+              "c": 4071609577,
+              "d": 4269608702
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1523850,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 388129430,
+              "b": 2813616536,
+              "c": 1160760002,
+              "d": 2411914357
+            },
+            {
+              "a": 2040984373,
+              "b": 1662466935,
+              "c": 2382417260,
+              "d": 2671813915
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1506583,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "field": "monsters",
+        "before": "a5405892a92ec84c54d9d78259d272fdf8780ac7ce065ab2ca049fe3a2505fcd",
+        "after": "130b288e42d2d9c7331ca8ea0027f9c186010e556f6fc0af6d1df82e7968c24f"
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "field": "itemsState",
+        "before": "84eaae33f9511ce715bf216e7e7a68080a2a039a4e571794b3355de17c3bcc1e",
+        "after": "65b2e0ffe91d1f53c8c1452a23b5ce80b2b51c92343a3407779e632f8c75f48b"
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 293319646,
+              "b": 706122252,
+              "c": 3785274048,
+              "d": 848697290
+            },
+            {
+              "a": 293319646,
+              "b": 706122252,
+              "c": 3785274048,
+              "d": 848697290
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1557425,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1951329354,
+              "b": 711186965,
+              "c": 2228163042,
+              "d": 2581948983
+            },
+            {
+              "a": 1951329354,
+              "b": 711186965,
+              "c": 2228163042,
+              "d": 2581948983
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1540158,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "fp",
+        "before": "cc2e8309:4837",
+        "after": "258fc923:4838"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "terrain",
+        "before": "d090591a15d7357fede8cb15e3d141e7f0f06e0c1a0926b08e2bed3a4cb59092",
+        "after": "7a25006bfbf05b772d63ecf2f6e8f440f230a333f7e2c3c2b76703fa35ac33c6"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "monsters",
+        "before": "253f0bb560690e9ab1c122a1e90314ae07f4b8050b8e22db26adee582a2fe899",
+        "after": "b3c4a23521dfbf4562b60ea1385c5e22198ef45cc56575f4599e0a2360646959"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "dormant",
+        "before": "399d8437b5750910c4a1dcf799a27d88e45e12cc5ab00e3bc473dd58dcdcfa83",
+        "after": "4c4b1653dcb1e603b489bc65f933ca6f91ffae8ac55425d068892f517b0ffbfc"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "itemsState",
+        "before": "b3b2c350c100003b4f3e82754071cd5010fe0223b43cadeb3ea9cc438ae4b674",
+        "after": "a80cc824d286cb4532cbfbda348e5056f3fbddcbdc2a2b18bf7c94f94ae55e62"
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "rng",
+        "before": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 3780537200,
+              "b": 1257329005,
+              "c": 3093776937,
+              "d": 1621509414
+            },
+            {
+              "a": 1113849150,
+              "b": 3171772146,
+              "c": 3587144729,
+              "d": 3669299378
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1598413,
+          "cosmeticNumbersGenerated": 155
+        },
+        "after": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2617061821,
+              "b": 2037626805,
+              "c": 2436529847,
+              "d": 2914439490
+            },
+            {
+              "a": 821321275,
+              "b": 3515323037,
+              "c": 1553954656,
+              "d": 3583716478
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 1581139,
+          "cosmeticNumbersGenerated": 155
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 26,
+        "field": "machines",
+        "before": "71c132f2a0f7a3f454d5dc45bdf8afc8614c3393c3aec956da4e7b24a3ed0533",
+        "after": "b1f374b63316d528f65cf9a584108a49a752210befc4c76e7f181b329256bf28"
+      },
+      {
+        "seed": 31337,
+        "depth": 11,
+        "field": "views",
+        "before": "63ccdb569bb049fafc8aac8865bf4167c54a9800bc55c1398f0042e48251dc31",
+        "after": "d371db0d16ff3062cf2bd651cc57f95b8ba340d6780f8d6856eebc784eb780f7"
+      },
+      {
+        "seed": 31337,
+        "depth": 24,
+        "field": "views",
+        "before": "67c37cf798dcdffa4842c4f1663179edd7ad2a6db9b38d7e89a591708adca4a4",
+        "after": "97e002aa2b7ea2d5f826763e1180c9a8522092f57eba970a238668a745ab2cc5"
+      },
+      {
+        "seed": 31337,
+        "depth": 25,
+        "field": "views",
+        "before": "26396338a3011f229775aeca5c38dfe28aa0b46a6300ea50f962bced173238b5",
+        "after": "f0929fadb6193a726d232c25fca0c95c842eaa2e5c7368c50ece4b2a66add00c"
+      }
+    ]
+  },
+  {
+    "from": "s1",
+    "to": "s2",
+    "layers": 2,
+    "baselineFields": 0,
+    "differences": [
+      {
+        "seed": 777,
+        "depth": 4,
+        "field": "views",
+        "before": "2a14bba340ec37f0a15cfc21fbd4608c538c28c28b6f8a6ae5131c401774c04e",
+        "after": "c3be9764e3399ac5217aa867c083fe91e0766362cf63c46304d73454d495bc2d"
+      },
+      {
+        "seed": 31337,
+        "depth": 1,
+        "field": "views",
+        "before": "2ca10bd2ec1088d61617d63abd6a5449bea4ea79121585017d39e58ee415992e",
+        "after": "afca074565c83f01e0a3bb25d4ef7cb7bb71d10694deefc932c805e438292301"
+      }
+    ]
+  },
+  {
+    "from": "s1",
+    "to": "undo-passable",
+    "layers": 0,
+    "baselineFields": 0,
+    "differences": []
+  },
+  {
+    "from": "s0",
+    "to": "undo-ordinary",
+    "layers": 0,
+    "baselineFields": 0,
+    "differences": []
+  }
+]

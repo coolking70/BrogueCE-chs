@@ -1,3 +1,4 @@
+import { FOVSys } from '../Lighting/FOV';
 import { computeMachineView } from './MachineView';
 import { genericPathCost } from '../Map/TerrainRules';
 /**
@@ -2341,7 +2342,7 @@ export class BlueprintEngine {
         if (!flags.has('MF_IN_VIEW_OF_ORIGIN') && !flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN')) return null;
         let view = this.featureViews.get(flags);
         if (!view) {
-            view = computeMachineView(this.grid, origin, flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN'));
+            if (flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN')) { view = new FOVSys(this.grid).computeFOVMask(origin.x, origin.y, Math.max(DCOLS, DROWS), cell => !!(cellTerrainFlags(this.grid, cell.x, cell.y) & T_PATHING_BLOCKER)); view[origin.x][origin.y] = true; } else { view = computeMachineView(this.grid, origin, false); }
             this.featureViews.set(flags, view);
         }
         return view;

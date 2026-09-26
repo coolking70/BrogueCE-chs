@@ -1,0 +1,320 @@
+{
+  "stages": [
+    {
+      "from": "s0",
+      "to": "s1",
+      "layers": 18,
+      "fields": {
+        "views": 9,
+        "fp": 2,
+        "terrain": 10,
+        "monsters": 11,
+        "itemsState": 11,
+        "rng": 11,
+        "machines": 5,
+        "committed": 1,
+        "dormant": 2
+      },
+      "baselineFields": 2
+    },
+    {
+      "from": "s1",
+      "to": "s2",
+      "layers": 2,
+      "fields": {
+        "views": 2
+      },
+      "baselineFields": 0
+    },
+    {
+      "from": "s1",
+      "to": "undo-passable",
+      "layers": 0,
+      "fields": {},
+      "baselineFields": 0
+    },
+    {
+      "from": "s0",
+      "to": "undo-ordinary",
+      "layers": 0,
+      "fields": {},
+      "baselineFields": 0
+    }
+  ],
+  "startDiff": [],
+  "natural": [
+    {
+      "ce": 15,
+      "machines": []
+    },
+    {
+      "ce": 18,
+      "machines": []
+    },
+    {
+      "ce": 24,
+      "machines": [
+        {
+          "seed": 20260913,
+          "depth": 16,
+          "number": 4,
+          "features": [
+            {
+              "index": 2,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 36,
+      "machines": [
+        {
+          "seed": 31337,
+          "depth": 1,
+          "number": 3,
+          "features": [
+            {
+              "index": 6,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 37,
+      "machines": [
+        {
+          "seed": 424242,
+          "depth": 19,
+          "number": 3,
+          "features": [
+            {
+              "index": 0,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        },
+        {
+          "seed": 20260913,
+          "depth": 9,
+          "number": 4,
+          "features": [
+            {
+              "index": 0,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        },
+        {
+          "seed": 31337,
+          "depth": 11,
+          "number": 3,
+          "features": [
+            {
+              "index": 0,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 38,
+      "machines": [
+        {
+          "seed": 777,
+          "depth": 4,
+          "number": 3,
+          "features": [
+            {
+              "index": 6,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 46,
+      "machines": []
+    },
+    {
+      "ce": 49,
+      "machines": []
+    },
+    {
+      "ce": 55,
+      "machines": []
+    },
+    {
+      "ce": 56,
+      "machines": []
+    },
+    {
+      "ce": 62,
+      "machines": []
+    },
+    {
+      "ce": 65,
+      "machines": [
+        {
+          "seed": 777,
+          "depth": 8,
+          "number": 3,
+          "features": [
+            {
+              "index": 3,
+              "placements": 1,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 66,
+      "machines": []
+    },
+    {
+      "ce": 71,
+      "machines": [
+        {
+          "seed": 424242,
+          "depth": 25,
+          "number": 3,
+          "features": [
+            {
+              "index": 0,
+              "placements": 3,
+              "status": "placed"
+            }
+          ]
+        },
+        {
+          "seed": 20260913,
+          "depth": 21,
+          "number": 4,
+          "features": [
+            {
+              "index": 0,
+              "placements": 3,
+              "status": "placed"
+            }
+          ]
+        },
+        {
+          "seed": 31337,
+          "depth": 24,
+          "number": 3,
+          "features": [
+            {
+              "index": 0,
+              "placements": 3,
+              "status": "placed"
+            }
+          ]
+        },
+        {
+          "seed": 31337,
+          "depth": 25,
+          "number": 7,
+          "features": [
+            {
+              "index": 0,
+              "placements": 3,
+              "status": "placed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "machineFeatureChecks": 18,
+  "candidates": 715,
+  "placements": 26,
+  "browser": {
+    "machines": 14,
+    "errors": [],
+    "actions": [
+      {
+        "ce": 15,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 18,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 24,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 36,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 37,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 38,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 46,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 49,
+        "recorded": 1,
+        "visible": 2
+      },
+      {
+        "ce": 55,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 56,
+        "recorded": 1,
+        "visible": 4
+      },
+      {
+        "ce": 62,
+        "recorded": 1,
+        "visible": 7
+      },
+      {
+        "ce": 65,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 66,
+        "recorded": 1,
+        "visible": 1
+      },
+      {
+        "ce": 71,
+        "recorded": 1,
+        "visible": 3
+      }
+    ]
+  }
+}

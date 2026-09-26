@@ -1,0 +1,218 @@
+{
+  "file": "../BrogueCE-master/src/variants/GlobalsBrogue.c",
+  "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+  "rows": [
+    {
+      "ce": 15,
+      "index": 2,
+      "line": 293,
+      "flags": [
+        "MF_TREAT_AS_BLOCKING",
+        "MF_NOT_IN_HALLWAY",
+        "MF_MONSTERS_DORMANT",
+        "MF_FAR_FROM_ORIGIN",
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_IMPREGNABLE"
+      ],
+      "literal": "{0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         MK_WARDEN_OF_YENDOR,1,          0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_IMPREGNABLE)},"
+    },
+    {
+      "ce": 18,
+      "index": 2,
+      "line": 308,
+      "flags": [
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_BUILD_ANYWHERE_ON_LEVEL",
+        "MF_IMPREGNABLE"
+      ],
+      "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_IMPREGNABLE)}}},"
+    },
+    {
+      "ce": 24,
+      "index": 2,
+      "line": 336,
+      "flags": [
+        "MF_TREAT_AS_BLOCKING",
+        "MF_NOT_IN_HALLWAY",
+        "MF_IN_VIEW_OF_ORIGIN",
+        "MF_BUILD_ANYWHERE_ON_LEVEL"
+      ],
+      "literal": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_MIRRORED_TOTEM,3,            0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+    },
+    {
+      "ce": 36,
+      "index": 6,
+      "line": 412,
+      "flags": [
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_BUILD_ANYWHERE_ON_LEVEL",
+        "MF_ALTERNATIVE",
+        "MF_IMPREGNABLE"
+      ],
+      "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_ALTERNATIVE | MF_IMPREGNABLE)}}},"
+    },
+    {
+      "ce": 37,
+      "index": 0,
+      "line": 415,
+      "flags": [
+        "MF_ADOPT_ITEM",
+        "MF_FAR_FROM_ORIGIN",
+        "MF_TREAT_AS_BLOCKING",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         MK_SPIDER,      3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_IN_VIEW_OF_ORIGIN)},"
+    },
+    {
+      "ce": 38,
+      "index": 6,
+      "line": 428,
+      "flags": [
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_BUILD_ANYWHERE_ON_LEVEL",
+        "MF_ALTERNATIVE",
+        "MF_IMPREGNABLE"
+      ],
+      "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_ALTERNATIVE | MF_IMPREGNABLE)}}},"
+    },
+    {
+      "ce": 46,
+      "index": 6,
+      "line": 486,
+      "flags": [
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_NOT_IN_HALLWAY",
+        "MF_BUILD_ANYWHERE_ON_LEVEL"
+      ],
+      "literal": "{0,         MACHINE_GLYPH,DUNGEON,      {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_NOT_IN_HALLWAY | MF_BUILD_ANYWHERE_ON_LEVEL)}}},"
+    },
+    {
+      "ce": 49,
+      "index": 0,
+      "line": 501,
+      "flags": [
+        "MF_ADOPT_ITEM",
+        "MF_TREAT_AS_BLOCKING",
+        "MF_NOT_IN_HALLWAY",
+        "MF_FAR_FROM_ORIGIN",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN | MF_IN_VIEW_OF_ORIGIN)},"
+    },
+    {
+      "ce": 49,
+      "index": 1,
+      "line": 502,
+      "flags": [
+        "MF_NEAR_ORIGIN",
+        "MF_TREAT_AS_BLOCKING",
+        "MF_NOT_IN_HALLWAY",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_MIRRORED_TOTEM,3,            0,          0,          (MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},"
+    },
+    {
+      "ce": 55,
+      "index": 5,
+      "line": 544,
+      "flags": [
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+        "MF_BUILD_ANYWHERE_ON_LEVEL",
+        "MF_IMPREGNABLE"
+      ],
+      "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_IMPREGNABLE)}}},"
+    },
+    {
+      "ce": 56,
+      "index": 1,
+      "line": 548,
+      "flags": [
+        "MF_TREAT_AS_BLOCKING",
+        "MF_GENERATE_HORDE",
+        "MF_MONSTERS_DORMANT",
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         TURRET_DORMANT,DUNGEON,     {4,6},      4,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+    },
+    {
+      "ce": 62,
+      "index": 0,
+      "line": 576,
+      "flags": [
+        "MF_NOT_IN_HALLWAY",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{DF_HAY,    0,          0,              {1, 3},     1,          0,          -1,         0,              1,              0,          0,          (MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},"
+    },
+    {
+      "ce": 62,
+      "index": 1,
+      "line": 577,
+      "flags": [
+        "MF_NOT_IN_HALLWAY",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{DF_JUNK,   0,          0,              {1, 2},     1,          0,          -1,         0,              3,              0,          0,          (MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},"
+    },
+    {
+      "ce": 62,
+      "index": 2,
+      "line": 578,
+      "flags": [
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{DF_URINE,  0,          0,              {3, 5},     1,          0,          -1,         0,              1,              0,          0,          MF_IN_VIEW_OF_ORIGIN},"
+    },
+    {
+      "ce": 62,
+      "index": 3,
+      "line": 579,
+      "flags": [
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{DF_VOMIT,  0,          0,              {0, 2},     0,          0,          -1,         0,              1,              0,          0,          MF_IN_VIEW_OF_ORIGIN}}},"
+    },
+    {
+      "ce": 65,
+      "index": 3,
+      "line": 594,
+      "flags": [
+        "MF_TREAT_AS_BLOCKING",
+        "MF_GENERATE_HORDE",
+        "MF_MONSTERS_DORMANT",
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         TURRET_DORMANT,DUNGEON,     {1, 2},     1,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+    },
+    {
+      "ce": 66,
+      "index": 2,
+      "line": 599,
+      "flags": [
+        "MF_TREAT_AS_BLOCKING",
+        "MF_GENERATE_HORDE",
+        "MF_MONSTERS_DORMANT",
+        "MF_BUILD_IN_WALLS",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         TURRET_DORMANT,DUNGEON,     {1, 2},     1,          0,          -1,         0,              2,              HORDE_MACHINE_TURRET,0, (MF_TREAT_AS_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_IN_VIEW_OF_ORIGIN)}}},"
+    },
+    {
+      "ce": 71,
+      "index": 0,
+      "line": 619,
+      "flags": [
+        "MF_NOT_IN_HALLWAY",
+        "MF_TREAT_AS_BLOCKING",
+        "MF_IN_VIEW_OF_ORIGIN"
+      ],
+      "literal": "{0,         STATUE_INERT,DUNGEON,       {3, 3},     3,          0,          -1,         MK_SENTINEL,    2,              0,          0,          (MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING | MF_IN_VIEW_OF_ORIGIN)},"
+    }
+  ]
+}

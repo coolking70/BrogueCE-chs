@@ -1,0 +1,48 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -1,4 +1,5 @@
+ import { FOVSys } from '../Lighting/FOV';
++import { computeMachineView } from './MachineView';
+ import { genericPathCost } from '../Map/TerrainRules';
+ /**
+  * src/engine/Generator/BlueprintEngine.ts
+@@ -25,7 +26,6 @@
+ import {
+     T_OBSTRUCTS_ITEMS,
+     T_OBSTRUCTS_PASSABILITY,
+-    T_OBSTRUCTS_VISION,
+     T_PATHING_BLOCKER,
+     isPathingBlocker,
+     TERRAIN_FLAGS,
+@@ -36,7 +36,6 @@
+ import {
+     cellTerrainFlags,
+     discoveredTerrainFlagsOfCell,
+-    terrainFlagsOfCell,
+     cellTerrainMechFlags,
+     createSpawnMap,
+     levelIsDisconnectedOnMovementGraph,
+@@ -2329,8 +2328,9 @@
+      *   - IS_CHOKEPOINT：用 analyzeChokeMap 的 chokepoint（web 既有的
+      *     IS_CHOKEPOINT 等价物，gateSite 同源；其 passMap 口径是
+      *     terrainAllowsMove 而非 CE 的 T_PATHING_BLOCKER，已知留形）；
+-     *   - viewMap（U18a-3）：每条 feature 开始时建立快照；普通视野 P|V，
+-     *     passable 视野 PB。MF_BUILD_AT_ORIGIN 的早返回仍先于视野门。
++     *   - viewMap（U18a-3 接线，U19a 对齐 CE 整数斜率）：每条 feature
++     *     开始时建立快照；普通视野 P|V，passable 视野 PB。
++     *     MF_BUILD_AT_ORIGIN 的早返回仍先于视野门。
+      *   - distanceMap 界（CE :537-557）：web 无 interior 路径距离设施，NEAR/
+      *     FAR 以曼哈顿最近/最远选格近似（V-2b-1 留形），界折叠进选格策略，
+      *     不在候选判定里。
+@@ -2342,10 +2342,7 @@
+         if (!flags.has('MF_IN_VIEW_OF_ORIGIN') && !flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN')) return null;
+         let view = this.featureViews.get(flags);
+         if (!view) {
+-            const mask = flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN') ? T_PATHING_BLOCKER : T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
+-            view = new FOVSys(this.grid).computeFOVMask(origin.x, origin.y, Math.max(DCOLS, DROWS),
+-                cell => !!(terrainFlagsOfCell(cell) & mask));
+-            view[origin.x]![origin.y] = true;
++            if (flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN')) { view = new FOVSys(this.grid).computeFOVMask(origin.x, origin.y, Math.max(DCOLS, DROWS), cell => !!(cellTerrainFlags(this.grid, cell.x, cell.y) & T_PATHING_BLOCKER)); view[origin.x][origin.y] = true; } else { view = computeMachineView(this.grid, origin, false); }
+             this.featureViews.set(flags, view);
+         }
+         return view;

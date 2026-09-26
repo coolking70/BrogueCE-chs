@@ -1,0 +1,947 @@
+{
+  "results": [
+    {
+      "ce": 18,
+      "origin": {
+        "x": 17,
+        "y": 14
+      },
+      "target": {
+        "x": 11,
+        "y": 15
+      },
+      "removedOrdinary": [
+        {
+          "id": 22,
+          "name": "蜈蚣"
+        },
+        {
+          "id": 23,
+          "name": "幽火"
+        },
+        {
+          "id": 24,
+          "name": "蜘蛛"
+        },
+        {
+          "id": 25,
+          "name": "蜈蚣"
+        },
+        {
+          "id": 26,
+          "name": "哥布林图腾"
+        },
+        {
+          "id": 27,
+          "name": "哥布林图腾"
+        },
+        {
+          "id": 28,
+          "name": "哥布林图腾"
+        },
+        {
+          "id": 29,
+          "name": "哥布林召唤师"
+        },
+        {
+          "id": 30,
+          "name": "哥布林法师"
+        },
+        {
+          "id": 31,
+          "name": "哥布林"
+        },
+        {
+          "id": 32,
+          "name": "哥布林"
+        },
+        {
+          "id": 33,
+          "name": "哥布林"
+        },
+        {
+          "id": 34,
+          "name": "哥布林"
+        },
+        {
+          "id": 35,
+          "name": "哥布林"
+        },
+        {
+          "id": 36,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 37,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 38,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 39,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 40,
+          "name": "吸血蝙蝠"
+        }
+      ],
+      "premise": "CE forbiddenFlags=0: retain machine residents, isolate terrain reach from unrelated population",
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 17,
+            "y": 14
+          },
+          "after": {
+            "x": 16,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 16,
+            "y": 14
+          },
+          "after": {
+            "x": 15,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 15,
+            "y": 14
+          },
+          "after": {
+            "x": 14,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 14,
+            "y": 14
+          },
+          "after": {
+            "x": 13,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 13,
+            "y": 14
+          },
+          "after": {
+            "x": 12,
+            "y": 14
+          }
+        }
+      ],
+      "searches": 1,
+      "final": {
+        "x": 12,
+        "y": 14
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 14,
+          "hp": 10000,
+          "nutrition": 2144,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 5,
+            "y": 14
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 11,
+            "y": 14
+          }
+        ]
+      }
+    },
+    {
+      "ce": 36,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 11,
+        "y": 11
+      },
+      "removedOrdinary": [
+        {
+          "id": 23,
+          "name": "蜘蛛"
+        },
+        {
+          "id": 24,
+          "name": "巨魔"
+        },
+        {
+          "id": 25,
+          "name": "怨灵"
+        },
+        {
+          "id": 26,
+          "name": "怨灵"
+        },
+        {
+          "id": 27,
+          "name": "幽火"
+        },
+        {
+          "id": 28,
+          "name": "粉红果冻"
+        },
+        {
+          "id": 29,
+          "name": "哥布林"
+        },
+        {
+          "id": 30,
+          "name": "哥布林"
+        },
+        {
+          "id": 31,
+          "name": "哥布林"
+        },
+        {
+          "id": 32,
+          "name": "哥布林"
+        },
+        {
+          "id": 33,
+          "name": "哥布林法师"
+        },
+        {
+          "id": 34,
+          "name": "豺狼"
+        },
+        {
+          "id": 35,
+          "name": "蜈蚣"
+        }
+      ],
+      "premise": "CE forbiddenFlags=0: retain machine residents, isolate terrain reach from unrelated population",
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 12,
+            "y": 13
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": 0,
+            "y": -1
+          },
+          "before": {
+            "x": 12,
+            "y": 13
+          },
+          "after": {
+            "x": 12,
+            "y": 12
+          }
+        }
+      ],
+      "searches": 0,
+      "final": {
+        "x": 12,
+        "y": 12
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 22,
+            "y": 9
+          }
+        ]
+      }
+    },
+    {
+      "ce": 38,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 2,
+        "y": 14
+      },
+      "removedOrdinary": [
+        {
+          "id": 23,
+          "name": "吸血蝙蝠"
+        },
+        {
+          "id": 24,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 25,
+          "name": "达尔剑客"
+        },
+        {
+          "id": 26,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 27,
+          "name": "哥布林法师"
+        },
+        {
+          "id": 28,
+          "name": "狗头人"
+        },
+        {
+          "id": 29,
+          "name": "狗头人"
+        },
+        {
+          "id": 30,
+          "name": "狗头人"
+        },
+        {
+          "id": 31,
+          "name": "狗头人"
+        },
+        {
+          "id": 32,
+          "name": "狗头人"
+        },
+        {
+          "id": 33,
+          "name": "粉红果冻"
+        }
+      ],
+      "premise": "CE forbiddenFlags=0: retain machine residents, isolate terrain reach from unrelated population",
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 11,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 11,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 8,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 8,
+            "y": 14
+          },
+          "after": {
+            "x": 7,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 7,
+            "y": 14
+          },
+          "after": {
+            "x": 6,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 6,
+            "y": 14
+          },
+          "after": {
+            "x": 5,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 5,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 3,
+            "y": 14
+          }
+        }
+      ],
+      "searches": 2,
+      "final": {
+        "x": 3,
+        "y": 14
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 3,
+          "y": 14,
+          "hp": 10000,
+          "nutrition": 2139,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 10,
+            "y": 7
+          },
+          {
+            "name": "口粮",
+            "x": 8,
+            "y": 18
+          },
+          {
+            "name": "口粮",
+            "x": 4,
+            "y": 21
+          },
+          {
+            "name": "黑色药水",
+            "x": 4,
+            "y": 10
+          },
+          {
+            "name": "金币",
+            "x": 7,
+            "y": 9
+          },
+          {
+            "name": "金币",
+            "x": 3,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 22
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 6
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 4,
+            "y": 7
+          },
+          {
+            "name": "金币",
+            "x": 7,
+            "y": 10
+          },
+          {
+            "name": "金币",
+            "x": 5,
+            "y": 16
+          }
+        ]
+      }
+    },
+    {
+      "ce": 55,
+      "origin": {
+        "x": 12,
+        "y": 14
+      },
+      "target": {
+        "x": 2,
+        "y": 14
+      },
+      "removedOrdinary": [
+        {
+          "id": 26,
+          "name": "粉红果冻"
+        },
+        {
+          "id": 27,
+          "name": "哥布林图腾"
+        },
+        {
+          "id": 28,
+          "name": "哥布林"
+        },
+        {
+          "id": 29,
+          "name": "哥布林"
+        },
+        {
+          "id": 30,
+          "name": "吸血蝙蝠"
+        },
+        {
+          "id": 31,
+          "name": "怨灵"
+        },
+        {
+          "id": 32,
+          "name": "食人魔"
+        },
+        {
+          "id": 33,
+          "name": "幽火"
+        },
+        {
+          "id": 34,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 35,
+          "name": "酸液土堆"
+        },
+        {
+          "id": 36,
+          "name": "酸液土堆"
+        }
+      ],
+      "premise": "CE forbiddenFlags=0: retain machine residents, isolate terrain reach from unrelated population",
+      "actions": [
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 12,
+            "y": 14
+          },
+          "after": {
+            "x": 11,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 11,
+            "y": 14
+          },
+          "after": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 10,
+            "y": 14
+          },
+          "after": {
+            "x": 9,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 9,
+            "y": 14
+          },
+          "after": {
+            "x": 8,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 8,
+            "y": 14
+          },
+          "after": {
+            "x": 7,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 7,
+            "y": 14
+          },
+          "after": {
+            "x": 6,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 6,
+            "y": 14
+          },
+          "after": {
+            "x": 5,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 5,
+            "y": 14
+          },
+          "after": {
+            "x": 4,
+            "y": 14
+          }
+        },
+        {
+          "action": "move",
+          "data": {
+            "x": -1,
+            "y": 0
+          },
+          "before": {
+            "x": 4,
+            "y": 14
+          },
+          "after": {
+            "x": 3,
+            "y": 14
+          }
+        }
+      ],
+      "searches": 4,
+      "final": {
+        "x": 3,
+        "y": 14
+      },
+      "adjacent": true,
+      "revealed": true,
+      "visible": true,
+      "text": {
+        "seed": "19",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 3,
+          "y": 14,
+          "hp": 10000,
+          "nutrition": 2137,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 7,
+            "y": 7
+          },
+          {
+            "name": "口粮",
+            "x": 7,
+            "y": 14
+          },
+          {
+            "name": "芒果",
+            "x": 7,
+            "y": 15
+          },
+          {
+            "name": "金币",
+            "x": 3,
+            "y": 20
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 6,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 9,
+            "y": 10
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

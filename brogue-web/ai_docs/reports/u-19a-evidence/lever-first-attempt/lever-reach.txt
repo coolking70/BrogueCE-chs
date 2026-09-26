@@ -1,0 +1,22 @@
+18 true true 5 5
+36 true true 2 0
+38 true true 144 4
+55 false false 150 0
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(results.every(r=>r.adjacent&&r.revealed&&r.visible))
+
+    at file:///Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web/ai_docs/reports/u-19a-evidence/reach-levers.mjs:23:90 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

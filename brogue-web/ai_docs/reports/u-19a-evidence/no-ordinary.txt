@@ -1,0 +1,107 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web
+
+ ❯ src/test/u_19a_machine_view.test.ts (32 tests | 11 failed) 7555ms
+     × layered obstruction 4/0: ordinary=false passable=true 2ms
+     × layered obstruction 19/0: ordinary=false passable=false 0ms
+     × layered obstruction 21/0: ordinary=false passable=false 0ms
+     × layered obstruction 7/1: ordinary=true passable=false 0ms
+     × layered obstruction 9/1: ordinary=true passable=false 0ms
+     × layered obstruction 8/1: ordinary=true passable=false 0ms
+     × layered obstruction 31/3: ordinary=true passable=false 0ms
+     × layered obstruction 11/3: ordinary=false passable=true 0ms
+     × layered obstruction 43/3: ordinary=false passable=false 0ms
+     × integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_VIEW_OF_ORIGIN 0ms
+     × CE24 literal complete blueprint, including retired explicit fixtures 154ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 4/0: ordinary=false passable=true
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 19/0: ordinary=false passable=false
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 21/0: ordinary=false passable=false
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 11/3: ordinary=false passable=true
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 43/3: ordinary=false passable=false
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_19a_machine_view.test.ts:53:86
+     51|   const e:any=new BlueprintEngine(g,5,[]),origin={x:4,y:6},interior=ne…
+     52|   for(const [flag,want] of [[VIEW,ordinary],[PASS,passable]] as const){
+     53|    expect(e.cellIsFeatureCandidate(8,6,origin,interior,1,new Set([flag…
+       |                                                                                      ^
+     54|    expect(e.featureView(origin,new Set([flag]))[6][6]).toBe(true);
+     55|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 7/1: ordinary=true passable=false
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 9/1: ordinary=true passable=false
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 8/1: ordinary=true passable=false
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > layered obstruction 31/3: ordinary=true passable=false
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_19a_machine_view.test.ts:56:90
+     54|    expect(e.featureView(origin,new Set([flag]))[6][6]).toBe(true);
+     55|   }
+     56|   expect(e.cellIsFeatureCandidate(8,6,origin,interior,1,new Set([VIEW,…
+       |                                                                                          ^
+     57|   expect(e.cellIsFeatureCandidate(8,6,origin,interior,1,new Set(),new …
+     58|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a candidate gates and feature-time snapshots > integer-slope boundary rejects a cell the legacy scanner admits: MF_IN_VIEW_OF_ORIGIN
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_19a_machine_view.test.ts:62:101
+     60|   const g=arena();g.setTerrain(37,12,T.GRANITE);const e:any=new Bluepr…
+     61|   // CE patch-1: (38,10) is behind the blocker according to the center…
+     62|   expect(e.cellIsFeatureCandidate(38,10,origin,new Set([10*DCOLS+38]),…
+       |                                                                                                     ^
+     63|  });
+     64|  it('does not consume RNG or write player visibility/memory; radius is…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  src/test/u_19a_machine_view.test.ts > U19a all affected machine writers -> player at origin -> search -> visible feature > CE24 literal complete blueprint, including retired explicit fixtures
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19a_machine_view.test.ts:118:97
+    116|    expect(snapshot.placements.length).toBeGreaterThan(0);
+    117|    expect(snapshot.accepted.length).toBeGreaterThan(0);
+    118|    for(const p of [...snapshot.accepted,...snapshot.placements])expect…
+       |                                                                                                 ^
+    119|   }
+    120|   const observed=observeFromOrigin(g,scene);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 21 passed (32)
+   Start at  10:11:58
+   Duration  8.28s (transform 373ms, setup 0ms, import 654ms, tests 7.56s, environment 0ms)
+

@@ -1,0 +1,43 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 19905ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 19904ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 2 处（若非有意改动，请查清成因）: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed20260913 D16 fp: 基线=9f6ece6f:5068 现在=e6beec9d:5069",
++   "seed20260913 D26 fp: 基线=cc2e8309:4837 现在=258fc923:4838",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  10:09:36
+   Duration  20.58s (transform 357ms, setup 0ms, import 600ms, tests 19.90s, environment 0ms)
+

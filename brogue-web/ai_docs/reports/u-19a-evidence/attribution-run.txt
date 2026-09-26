@@ -1,0 +1,11 @@
+s0 captured ea1f65342932928d0690fd00d1d8690c4c80ecee05582299d86d50a3ec6409ef
+s1 captured 5584df1bc2e5a024b02bced3d36ced66ad22b9e9f577272e61559b7290bd6da6
+s2 captured c28f21ed44e5e77da351d9b92b91b0083ddca947c6ca2d16a3d49b63de598393
+undo-passable captured 5584df1bc2e5a024b02bced3d36ced66ad22b9e9f577272e61559b7290bd6da6
+undo-ordinary captured ea1f65342932928d0690fd00d1d8690c4c80ecee05582299d86d50a3ec6409ef
+[
+  { from: 's0', to: 's1', layers: 18, baselineFields: 2 },
+  { from: 's1', to: 's2', layers: 2, baselineFields: 0 },
+  { from: 's1', to: 'undo-passable', layers: 0, baselineFields: 0 },
+  { from: 's0', to: 'undo-ordinary', layers: 0, baselineFields: 0 }
+]

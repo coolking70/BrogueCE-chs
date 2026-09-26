@@ -1,0 +1,14 @@
+s0 captured ea1f65342932928d0690fd00d1d8690c4c80ecee05582299d86d50a3ec6409ef
+s1 captured 5584df1bc2e5a024b02bced3d36ced66ad22b9e9f577272e61559b7290bd6da6
+s2 captured c28f21ed44e5e77da351d9b92b91b0083ddca947c6ca2d16a3d49b63de598393
+undo-passable captured 5584df1bc2e5a024b02bced3d36ced66ad22b9e9f577272e61559b7290bd6da6
+undo-ordinary captured ea1f65342932928d0690fd00d1d8690c4c80ecee05582299d86d50a3ec6409ef
+file:///Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web/scripts/u19a-attribution.mjs:34
+  if(b.startsWith('undo')&&differences.length)throw Error(`Counterfactual mismatch ${b}`);
+                                                    ^
+
+Error: Counterfactual mismatch undo-passable
+    at file:///Users/coolking70/.codex/worktrees/fc28/brogue/brogue-web/scripts/u19a-attribution.mjs:34:53
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1
