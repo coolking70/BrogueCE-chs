@@ -362,16 +362,11 @@ function traversable(terrain: TerrainType): boolean {
 }
 
 describe('V-2b-6 F：§6 可解性证明（合并前置条件）', () => {
-    it('F0 缺少 wired lever 晋升时 secret-lever 前厅退池留形，避免把外包钥匙封在 PORTCULLIS_CLOSED 后', () => {
+    it('F0 U19d restores the executable secret-lever vestibule with CE frequency and features intact', () => {
         const bp = (blueprintData as BlueprintDef[]).find(b => b.id === 'vestibule_secret_lever')!;
-        // 退池走**引擎侧过滤**，不是改数据——数据必须保持 CE 逐字
-        // （frequency = CE GlobalsBrogue.c:305 的 8，由 v_2b_3_wired E4 钉死；
-        // 两处若冲突说明有人用错了退池口径）。同 47 号先例。
-        expect(bp.frequency, '数据须保持 CE 逐字：退池靠 blueprintQualifies 过滤，不靠改 frequency').toBe(8);
-        expect(
-            blueprintQualifies(bp, 15, [BP_VESTIBULE]),
-            'web 尚不能触发 WALL_LEVER_HIDDEN → 开闸；恢复入池会重现 seed42/D15 死局',
-        ).toBe(false);
+        // U17c closed search/bump/wiring; U19d verifies the complete natural action chain.
+        expect(bp.frequency, 'CE GlobalsBrogue.c:305 frequency remains 8').toBe(8);
+        expect(blueprintQualifies(bp, 15, [BP_VESTIBULE])).toBe(true);
         expect(bp.features.map(f => f.terrain)).toEqual([
             'WORM_TUNNEL_OUTER_WALL', 'PORTCULLIS_CLOSED', 'WALL_LEVER_HIDDEN',
         ]);

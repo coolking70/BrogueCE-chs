@@ -1,0 +1,84 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 154 player step powers only same-number remote gate and leaves an inactive pressure plate
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17c_triggers.test.ts (17 tests) 3607ms
+     ✓ 95 searching then bumping wall lever leaves player in place, consumes a turn and opens a distant gate exactly once  408ms
+     ✓ 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not  446ms
+     ✓ 144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory  408ms
+     ✓ 152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues  755ms
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u25_machine_observation.test.ts > U25 machine observation is generation neutral > matches fingerprint and both complete RNG streams at every D1–26 for all drift seeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u25_machine_observation.test.ts (1 test) 51113ms
+     ✓ matches fingerprint and both complete RNG streams at every D1–26 for all drift seeds  51111ms
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=35 D1..D26 substantive RNG 抽取总数: 1710978
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 1708216
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 1833772
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 1897995
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 1685297
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 2045222
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 2109955
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 1974526
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 1735837
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 1996301
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 1922803
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 1791965
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 1866435
+[bp-center] seed=2 D1..D26 substantive RNG 抽取总数: 1911798
+[bp-center] seed=3 D1..D26 substantive RNG 抽取总数: 1991510
+[bp-center] seed=4 D1..D26 substantive RNG 抽取总数: 2152477
+[bp-center] seed=5 D1..D26 substantive RNG 抽取总数: 1919905
+[bp-center] seed=6 D1..D26 substantive RNG 抽取总数: 2212361
+[bp-center] seed=7 D1..D26 substantive RNG 抽取总数: 1875826
+[bp-center] seed=8 D1..D26 substantive RNG 抽取总数: 1864896
+[bp-center] seed=9 D1..D26 substantive RNG 抽取总数: 1733949
+[bp-center] seed=10 D1..D26 substantive RNG 抽取总数: 1786192
+[bp-center] seed=11 D1..D26 substantive RNG 抽取总数: 1702439
+[bp-center] seed=12 D1..D26 substantive RNG 抽取总数: 1838571
+[bp-center] seed=13 D1..D26 substantive RNG 抽取总数: 2147755
+[bp-center] seed=14 D1..D26 substantive RNG 抽取总数: 1900507
+[bp-center] seed=15 D1..D26 substantive RNG 抽取总数: 2230205
+[bp-center] seed=16 D1..D26 substantive RNG 抽取总数: 1683660
+[bp-center] seed=17 D1..D26 substantive RNG 抽取总数: 1775508
+[bp-center] seed=18 D1..D26 substantive RNG 抽取总数: 1902654
+[bp-center] seed=19 D1..D26 substantive RNG 抽取总数: 1856616
+[bp-center] seed=20 D1..D26 substantive RNG 抽取总数: 1804665
+[bp-center] seed=21 D1..D26 substantive RNG 抽取总数: 2015765
+[bp-center] seed=22 D1..D26 substantive RNG 抽取总数: 1990578
+[bp-center] seed=23 D1..D26 substantive RNG 抽取总数: 1915917
+[bp-center] seed=24 D1..D26 substantive RNG 抽取总数: 1495280
+[bp-center] seed=25 D1..D26 substantive RNG 抽取总数: 1843058
+[bp-center] seed=26 D1..D26 substantive RNG 抽取总数: 2091278
+[bp-center] seed=27 D1..D26 substantive RNG 抽取总数: 1738933
+[bp-center] seed=28 D1..D26 substantive RNG 抽取总数: 1908653
+[bp-center] seed=29 D1..D26 substantive RNG 抽取总数: 1900454
+[bp-center] seed=30 D1..D26 substantive RNG 抽取总数: 1633642
+[bp-center] seed=31 D1..D26 substantive RNG 抽取总数: 1733662
+[bp-center] seed=32 D1..D26 substantive RNG 抽取总数: 1671799
+[bp-center] 扫描 44 seeds × 26 层 = 1144 层，共 3621 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 2 件宝藏：scroll_of_enchantment×2；宝藏违例 0 条
+
+ ✓ src/test/blueprint_center.test.ts (7 tests) 283417ms
+     ✓ b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）  283409ms
+ ✓ src/test/v_2b_7_features.test.ts (22 tests) 440556ms
+     ✓ D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录  12158ms
+     ✓ D2 落点记录带诊断字段（featureIndex/terrain/featureDF），且位置与网格机器格一致  1087ms
+     ✓ E3 Game 段（确定性）：finalizeBlueprintMonster 消费 fleeing；dormant 分支按 CE 顺序覆盖它  390ms
+     ✓ F1 携钥匙怪的出生态可达、不在致死地形上，且携带品带 keyLoc 绑定  122811ms
+     ✓ F2 携带指令：钥匙有绑定；CE8 非钥匙奖励有完整的外包/领养来源  220975ms
+     ✓ G2 引擎面：47/52 号因领养落点不可达而退池，且它确实不再生成  83118ms
+
+ Test Files  4 passed (4)
+      Tests  47 passed (47)
+   Start at  16:28:55
+   Duration  441.43s (transform 1.34s, setup 0ms, import 3.13s, tests 778.69s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web/ai_docs/reports/u-19d-evidence/discovery-regression.json

@@ -1,0 +1,55 @@
+s0 captured
+s1 captured
+s2 captured
+s3 captured
+undo-s1 captured
+undo-s2 captured
+undo-s3 captured
+[
+  {
+    from: 's0',
+    to: 's1',
+    layers: 24,
+    fields: {
+      fp: 6,
+      n: 5,
+      species: 5,
+      items: 6,
+      terrain: 18,
+      monsters: 21,
+      player: 4,
+      itemsState: 22,
+      rng: 24,
+      views: 3,
+      machines: 11,
+      viewCount: 3,
+      committed: 11,
+      dormant: 5,
+      entities: 18
+    }
+  },
+  {
+    from: 's1',
+    to: 's2',
+    layers: 23,
+    fields: {
+      fp: 3,
+      n: 1,
+      species: 1,
+      items: 2,
+      terrain: 20,
+      monsters: 23,
+      itemsState: 23,
+      rng: 23,
+      views: 1,
+      machines: 10,
+      committed: 10,
+      entities: 22,
+      dormant: 7
+    }
+  },
+  { from: 's2', to: 's3', layers: 0, fields: {} },
+  { from: 's0', to: 'undo-s1', layers: 0, fields: {} },
+  { from: 's1', to: 'undo-s2', layers: 0, fields: {} },
+  { from: 's2', to: 'undo-s3', layers: 0, fields: {} }
+]

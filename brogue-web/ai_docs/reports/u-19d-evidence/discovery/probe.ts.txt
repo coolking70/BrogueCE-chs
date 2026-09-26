@@ -1,0 +1,13 @@
+import {createHeadlessGame} from '../src/test/harness';
+import {machineScene} from '../src/test/fixtures/u19a-machine-scenes';
+import {TerrainType as T} from '../src/engine/Map/Grid';
+import {setMachineObservationHook} from '../src/engine/Generator/MachineObservation';
+setMachineObservationHook(m=>{if(m.ceBlueprintId===28)console.log(JSON.stringify(m));});
+const g:any=createHeadlessGame(19,'test');
+for(const ce of [28]){
+ let found=false;
+ for(let seed=1;seed<=1&&!found;seed++)for(let size=0;size<3&&!found;size++){
+ const s=machineScene(g,ce,seed,size,true);if(!s)continue;
+ console.log(JSON.stringify({ce,seed,size,origin:s.origin,items:g.items.map((i:any)=>({id:i.id,loc:i.loc,terrain:T[g.grid.getCell(i.x,i.y).terrain]})),features:s.result.featureSpawns.map(f=>({f:f.featureIndex,p:f.pos,t:f.terrain})).filter(f=>f.t?.includes('LEVER')||f.t?.includes('CAGE')||f.t?.includes('PLATE'))}));found=true;
+ }if(!found)console.log(ce,'failed');
+}

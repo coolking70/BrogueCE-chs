@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE28 seed3/D2: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 607ms
+     × natural CE28 seed3/D2: natural action chain 607ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE28 seed3/D2: natural action chain
+Error: CE28: no route {"x":24,"y":8} -> {"x":27,"y":5}
+ ❯ walk src/test/fixtures/u19d-machine-actions.ts:31:130
+
+ ❯ runMachineActions src/test/fixtures/u19d-machine-actions.ts:68:14
+ ❯ src/test/u_19d_machine_families.test.ts:45:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:49
+   Duration  1.31s (transform 384ms, setup 0ms, import 623ms, tests 607ms, environment 0ms)
+

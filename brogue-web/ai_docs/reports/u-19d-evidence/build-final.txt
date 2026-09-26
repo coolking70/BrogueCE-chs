@@ -1,0 +1,26 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 853 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.76 kB │ gzip:   0.43 kB
+dist/assets/index-DScGcHYj.css                 21.74 kB │ gzip:   5.12 kB
+dist/assets/Filter-CJwFSZ7M.js                  0.90 kB │ gzip:   0.48 kB
+dist/assets/BufferResource-DyRz0ESe.js         10.60 kB │ gzip:   2.79 kB
+dist/assets/webworkerAll-DEzTYPiu.js           11.88 kB │ gzip:   3.94 kB
+dist/assets/CanvasRenderer-BH2F7GAH.js         22.67 kB │ gzip:   7.09 kB
+dist/assets/WebGPURenderer-BY_c44yo.js         38.19 kB │ gzip:  10.65 kB
+dist/assets/browserAll-jwyR8dPq.js             41.30 kB │ gzip:  10.83 kB
+dist/assets/RenderTargetSystem-KkihcqSS.js     45.60 kB │ gzip:  12.57 kB
+dist/assets/WebGLRenderer-CxoVGchJ.js          68.42 kB │ gzip:  18.72 kB
+dist/assets/index-BV8ZYzRh.js               1,282.82 kB │ gzip: 373.25 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.53s

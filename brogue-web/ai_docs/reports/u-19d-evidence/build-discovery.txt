@@ -1,0 +1,6 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/fixtures/u19d-machine-actions.ts(96,120): error TS2550: Property 'at' does not exist on type 'any[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+src/test/u_19d_machine_families.test.ts(86,42): error TS7006: Parameter 'f' implicitly has an 'any' type.

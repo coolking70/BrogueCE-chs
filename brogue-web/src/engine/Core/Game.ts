@@ -1,4 +1,4 @@
-import type { MachineEntityRuntime } from '../Generator/BlueprintEngine';
+import { isThrowingTutorialReward, type MachineEntityRuntime } from '../Generator/BlueprintEngine';
 import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
 import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
@@ -1696,7 +1696,8 @@ export class Game {
                 // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
                 // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
                 // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
-                if (!spawnCell || isPathingBlocker(spawnCell.terrain)) {
+                if ((!spawnCell || isPathingBlocker(spawnCell.terrain))
+                    && !isThrowingTutorialReward(this.grid, mr.blueprintId, mr.machineNumber, spawn)) {
                     if (trace) trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
                         pos: { ...spawn.pos }, outcome: 'destination blocked' });
                     continue;

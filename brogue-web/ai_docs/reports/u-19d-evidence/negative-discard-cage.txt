@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > CE28 deferred population retains the caged reward instead of silently dropping it
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 195ms
+   × CE28 deferred population retains the caged reward instead of silently dropping it 194ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > CE28 deferred population retains the caged reward instead of silently dropping it
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/test/u_19d_machine_families.test.ts:101:91
+     99|  for(const spawn of scene.result.itemSpawns)delete spawn.entity;g.item…
+    100|  g.populateLevel(g.depth,false,false,[scene.result]);const pos=scene.r…
+    101|  expect(g.items.filter((i:any)=>i.category===ItemCategory.KEY&&i.x===p…
+       |                                                                                           ^
+    102| });
+    103|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:45
+   Duration  905ms (transform 386ms, setup 0ms, import 629ms, tests 195ms, environment 0ms)
+

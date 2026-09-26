@@ -1,0 +1,182 @@
+{
+  "seeds": [
+    424242,
+    777,
+    31337,
+    20260913,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "layers": 884,
+  "depths": "first four D1\u201326; seeds 1\u201360 D1\u201313",
+  "source": "final Game.populateLevel machineResults only; failed stair-placement maps excluded",
+  "rates": [
+    {
+      "ce": 18,
+      "nominalFrequency": 8,
+      "autogen": null,
+      "eligibleLevels": 692,
+      "committedMachines": 10,
+      "machinesPerEligibleLevel": 0.014450867052023121
+    },
+    {
+      "ce": 22,
+      "nominalFrequency": 8,
+      "autogen": null,
+      "eligibleLevels": 256,
+      "committedMachines": 7,
+      "machinesPerEligibleLevel": 0.02734375
+    },
+    {
+      "ce": 28,
+      "nominalFrequency": 8,
+      "autogen": null,
+      "eligibleLevels": 256,
+      "committedMachines": 10,
+      "machinesPerEligibleLevel": 0.0390625
+    },
+    {
+      "ce": 36,
+      "nominalFrequency": 10,
+      "autogen": null,
+      "eligibleLevels": 832,
+      "committedMachines": 9,
+      "machinesPerEligibleLevel": 0.010817307692307692
+    },
+    {
+      "ce": 38,
+      "nominalFrequency": 7,
+      "autogen": null,
+      "eligibleLevels": 704,
+      "committedMachines": 1,
+      "machinesPerEligibleLevel": 0.0014204545454545455
+    },
+    {
+      "ce": 67,
+      "nominalFrequency": 0,
+      "autogen": {
+        "index": 16,
+        "line": 132,
+        "terrain": "0",
+        "machine": "MT_PARALYSIS_TRAP_AREA",
+        "foundation": [
+          "FLOOR",
+          "NOTHING"
+        ],
+        "minDepth": 2,
+        "maxDepth": 6,
+        "frequency": 20,
+        "minNumberIntercept": 0,
+        "minNumberSlope": 0,
+        "maxNumber": 1
+      },
+      "eligibleLevels": 320,
+      "committedMachines": 53,
+      "machinesPerEligibleLevel": 0.165625
+    },
+    {
+      "ce": 68,
+      "nominalFrequency": 0,
+      "autogen": {
+        "index": 23,
+        "line": 141,
+        "terrain": "0",
+        "machine": "MT_PARALYSIS_TRAP_HIDDEN_AREA",
+        "foundation": [
+          "FLOOR",
+          "NOTHING"
+        ],
+        "minDepth": 7,
+        "maxDepth": 39,
+        "frequency": 20,
+        "minNumberIntercept": 100,
+        "minNumberSlope": 0,
+        "maxNumber": 3
+      },
+      "eligibleLevels": 500,
+      "committedMachines": 627,
+      "machinesPerEligibleLevel": 1.254
+    },
+    {
+      "ce": 69,
+      "nominalFrequency": 0,
+      "autogen": {
+        "index": 46,
+        "line": 168,
+        "terrain": "0",
+        "machine": "MT_TRICK_STATUE_AREA",
+        "foundation": [
+          "FLOOR",
+          "NOTHING"
+        ],
+        "minDepth": 6,
+        "maxDepth": 39,
+        "frequency": 15,
+        "minNumberIntercept": 0,
+        "minNumberSlope": 0,
+        "maxNumber": 3
+      },
+      "eligibleLevels": 564,
+      "committedMachines": 101,
+      "machinesPerEligibleLevel": 0.17907801418439717
+    }
+  ]
+}

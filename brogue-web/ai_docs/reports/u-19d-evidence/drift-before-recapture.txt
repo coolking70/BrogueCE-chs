@@ -1,0 +1,70 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 20262ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 20262ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 29 处（若非有意改动，请查清成因）: expected [ …(29) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed777 D4 fp: 基线=27211e41:5127 现在=4b002b0c:5050",
++   "seed777 D4 n: 基线=6 现在=10",
++   "seed777 D4 species: 基线=Kobold,Monkey,Rat,Toad 现在=Bloat,Eel,Goblin,Kobold,Monkey,Pink jelly,Rat",
++   "seed777 D4 items: 基线=18 现在=11",
++   "seed777 D19 fp: 基线=7d0932cb:4815 现在=55a666d7:4814",
++   "seed777 D19 items: 基线=7 现在=5",
++   "seed777 D20 fp: 基线=8aab6f2a:4824 现在=21cda8f0:4816",
++   "seed20260913 D7 fp: 基线=be7b1fc4:5679 现在=a5050e92:5632",
++   "seed20260913 D7 n: 基线=36 现在=42",
++   "seed20260913 D7 species: 基线=Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Jackal,Toad,Vampire bat 现在=Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Jackal,Kobold,Ogre,Pink jelly,Toad",
++   "seed20260913 D7 items: 基线=19 现在=17",
++   "seed20260913 D8 fp: 基线=d60bfd2b:4896 现在=6ab7eac7:4896",
++   "seed20260913 D8 n: 基线=9 现在=12",
++   "seed20260913 D8 species: 基线=Centipede,Monkey,Toad,Vampire bat 现在=Centipede,Goblin,Goblin totem,Monkey,Ogre",
++   "seed20260913 D8 items: 基线=7 现在=11",
++   "seed20260913 D16 fp: 基线=aa165ce3:5090 现在=ae0acf86:5053",
++   "seed20260913 D16 n: 基线=9 现在=10",
++   "seed20260913 D16 species: 基线=Dar blademaster,Dar priestess,Eel,Imp,Kraken,Naga,Salamander,Zombie 现在=Bog monster,Dar blademaster,Dar priestess,Kraken,Zombie,grappling Acidic jelly",
++   "seed20260913 D16 items: 基线=25 现在=12",
++   "seed20260913 D17 fp: 基线=7f53b836:4938 现在=dadac24e:4938",
++   "seed20260913 D17 n: 基线=9 现在=10",
++   "seed20260913 D17 species: 基线=Acidic jelly,Imp,Ogre,Ogre totem,Revenant,infested Troll,infested Wraith,vampiric Naga 现在=Ogre,Ogre shaman,Phantom,Salamander,Troll,explosive Imp,infested Ogre,vampiric Naga",
++   "seed20260913 D17 items: 基线=8 现在=18",
++   "seed20260913 D18 items: 基线=9 现在=7",
++   "seed31337 D23 fp: 基线=70cedf36:4951 现在=1e625671:4981",
++   "seed31337 D23 n: 基线=28 现在=26",
++   "seed31337 D23 species: 基线=Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Golem,Imp,Phylactery,Revenant,Tentacle horror,Wraith,agile Dar priestess,explosive Wraith,juggernaut Dar blademaster,juggernaut Tentacle horror,reflective Dar battlemage,vampiric Wraith 现在=Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Imp,Phantom,Phylactery,infested Bog monster,juggernaut Bog monster,juggernaut Fury,juggernaut Golem,toxic Fury",
++   "seed31337 D23 items: 基线=11 现在=13",
++   "seed31337 D25 fp: 基线=53db6d8c:4973 现在=470c3aa1:4974",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  16:40:42
+   Duration  20.98s (transform 373ms, setup 0ms, import 632ms, tests 20.26s, environment 0ms)
+

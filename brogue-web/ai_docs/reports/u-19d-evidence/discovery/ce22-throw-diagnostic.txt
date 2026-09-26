@@ -1,0 +1,29 @@
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+landing { x: 11, y: 4 } { x: 11, y: 4 }
+Error: CE22: no route {"x":11,"y":4} -> {"x":7,"y":5,"layers":[54,0,0,0],"char":"#","color":7237230,"volume":0,"isExplored":true,"isVisible":true,"isClairvoyantVisible":false,"hasMemory":true,"rememberedTerrain":54,"rememberedAppearance":{"char":"#","color":"#333333","bgColor":1118481},"rememberedLayers":[54,0,0,0],"rememberedItem":null,"rememberedItemCategory":null,"isMagicMapped":false,"rememberedTerrainFlags":5,"rememberedTMFlags":5145600,"knownTrapFree":false,"rememberedFlags":{"passable":true,"opaque":false,"trapFree":true},"light":0,"isPassable":true,"isOpaque":false,"exposedToFire":0,"trapType":null,"isDiscovered":false,"autoSearched":false,"machineNumber":2,"isPowered":false,"hasDormantMonster":false}
+tilemap
+2 4:CARPET 5:CARPET 6:ALTAR_CAGE_OPEN 7:CARPET 8:CARPET 9:CARPET 10:ALTAR_CAGE_OPEN 11:CARPET 12:CARPET 13:CARPET 14:CARPET 15:WALL
+3 4:CARPET 5:CARPET 6:CARPET 7:CARPET 8:CARPET 9:FLOOR 10:CARPET 11:CARPET 12:CARPET 13:CARPET 14:CARPET 15:WALL
+4 4:CARPET 5:ALTAR_CAGE_OPEN 6:CARPET 7:CARPET 8:CARPET 9:ALTAR_CAGE_OPEN 10:CARPET 11:CARPET 12:CARPET 13:ALTAR_CAGE_OPEN 14:WALL 15:WALL
+5 4:WALL 5:WALL 6:WALL 7:PORTCULLIS_CLOSED 8:WALL 9:WALL 10:WALL 11:WALL 12:WALL 13:WALL 14:WALL 15:GRANITE
+6 4:FLOOR 5:FLOOR 6:WATER_SHALLOW 7:WATER_SHALLOW 8:WATER_SHALLOW 9:FLOOR/TRAP_DOOR 10:FLOOR/TRAP_DOOR 11:FLOOR/TRAP_DOOR 12:FLOOR/TRAP_DOOR 13:WALL 14:GRANITE 15:GRANITE
+7 4:FLOOR 5:FLOOR 6:WATER_SHALLOW 7:WATER_SHALLOW 8:WATER_SHALLOW 9:FLOOR/TRAP_DOOR 10:FLOOR/TRAP_DOOR 11:FLOOR/PRESSURE_PLATE 12:FLOOR/TRAP_DOOR 13:WALL 14:WALL 15:WALL
+8 4:FLOOR 5:FLOOR 6:FLOOR 7:WATER_SHALLOW 8:WATER_SHALLOW 9:WATER_SHALLOW 10:FLOOR/TRAP_DOOR 11:FLOOR/TRAP_DOOR 12:FLOOR/TRAP_DOOR 13:WALL 14:FLOOR/GRASS 15:FLOOR/GRASS
+9 4:FLOOR 5:FLOOR 6:FLOOR 7:FLOOR 8:FLOOR 9:FLOOR/CHASM_EDGE 10:FLOOR/TRAP_DOOR 11:FLOOR/TRAP_DOOR 12:FLOOR/CHASM_EDGE 13:WALL 14:FLOOR/GRASS 15:FLOOR/GRASS
+10 4:FLOOR 5:FLOOR 6:FLOOR 7:FLOOR 8:FLOOR 9:FLOOR 10:FLOOR/CHASM_EDGE 11:FLOOR/CHASM_EDGE 12:FLOOR 13:FLOOR 14:FLOOR/GRASS 15:FLOOR/GRASS
+items [
+  { name: 'Staff of Tunneling', loc: { x: 10, y: 2 } },
+  { name: 'Staff of Conjuration', loc: { x: 9, y: 4 } },
+  { name: 'Staff of Discord', loc: { x: 5, y: 4 } },
+  { name: 'Staff of Protection', loc: { x: 6, y: 2 } },
+  { name: 'Staff of Entrancement', loc: { x: 13, y: 4 } },
+  { name: 'Potion of Invisibility', loc: { x: 68, y: 5 } },
+  { name: 'Banded Mail', loc: { x: 35, y: 23 } },
+  { name: 'Scroll of Enchanting', loc: { x: 21, y: 3 } },
+  { name: 'Scroll of Negation', loc: { x: 33, y: 14 } },
+  { name: 'Scroll of Protect Weapon', loc: { x: 4, y: 19 } },
+  { name: 'Dagger', loc: { x: 11, y: 4 } }
+]
+logs [
+  { id: 0, text: 'You throw the Dagger.', color: '#aaaaaa', count: 1 }
+]

@@ -709,16 +709,7 @@ export function blueprintQualifies(
     }
     if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
-    // V-2b-9b（验收方）：18 号 lever 前厅退池留形。
-    // 现场（v_2b_6_keys F1，seed42/D15）：钥匙在 key_nested_library(machine #5)
-    // 的 (68,3)，唯一出口 (66,4) 被其前厅的 PORTCULLIS_CLOSED 封住；CE 靠
-    // WALL_LEVER_HIDDEN 的 wired 晋升开闸（Globals.c:347），web 尚不能执行
-    // 该晋升 ⇒ 外包钥匙永久不可达。九条环境蓝图入池只是把 RNG 推到这个
-    // **既存**缺口上，不是它们自己封的钥匙。
-    // 口径同 47 号先例（见 buildAMachine 里 canReceiveAdoptedItem 的说明）：
-    // **数据照 CE 逐字**（frequency 仍是 CE :305 的 8，由 v_2b_3_wired E4 钉死），
-    // 只是它不再被抽中；wired lever 落地的那一轮摘掉这一条即可（届时复跑 F 组）。
-    if (bp.id === 'vestibule_secret_lever') return false;
+    // U19d: CE18 is eligible again: search → hidden lever → wired gate is executable.
     // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
     // Web cannot yet bump-activate the impassable TURRET_LEVER; the adopted
     // key is also rejected on its blocked cage tile. Keep CE frequency/flags.
@@ -730,6 +721,23 @@ export function blueprintQualifies(
     if (bp.id === 'key_worm_tunnels') return false;
     if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
     return true;
+}
+
+/** CE28 places the adopted item inside its retractable cage (Architect.c:1531).
+ * Only this verified throwing puzzle is reopened here; CE47/52 remain deferred.
+ * Check the finished circuit, not merely a terrain name: later hole DF must not
+ * have overwritten the reward or the plate, and no other layer may block it.
+ */
+export function isThrowingTutorialReward(grid: Grid, blueprintId: string, machineNumber: number, spawn: MachineItemSpawn): boolean {
+    if (blueprintId !== 'key_throwing_tutorial_cage' || !spawn.viaAdoption) return false;
+    const cell = grid.getCell(spawn.pos.x, spawn.pos.y);
+    if (!cell || cell.machineNumber !== machineNumber || cell.layers[DungeonLayer.DUNGEON] !== TerrainType.ALTAR_CAGE_RETRACTABLE) return false;
+    if (cell.layers.some((t, layer) => layer !== DungeonLayer.DUNGEON && isPathingBlocker(t))) return false;
+    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
+        const plate = grid.getCell(x, y)!;
+        if (plate.machineNumber === machineNumber && plate.layers[DungeonLayer.LIQUID] === TerrainType.PRESSURE_PLATE) return true;
+    }
+    return false;
 }
 
 export class BlueprintEngine {
@@ -907,17 +915,17 @@ export class BlueprintEngine {
             //（v_2b_6_keys 的 F1/F2 翻红）。
             // 按 D2 口径退池留形：**数据照带旗标**，只是它不再被抽为领养机器；
             // 献祭机制落地的那一轮摘掉这条过滤即可（届时 F 组应复跑）。
-            const canReceiveAdoptedItem = (f: FeatureDef): boolean => {
+            const canReceiveAdoptedItem = (bp: BlueprintDef, f: FeatureDef): boolean => {
                 if (!f.flags.includes('MF_ADOPT_ITEM')) return false;
                 if (!f.terrain) return true; // 纯 DF / 无地形 feature：落点即格，无堵格体
                 const t = TERRAIN_MAP[f.terrain];
                 if (t === undefined) return false; // 未知地形名——宁可不让它领养
-                return !isPathingBlocker(t);
+                return !isPathingBlocker(t) || (bp.ceBlueprintId === 28 && t === TerrainType.ALTAR_CAGE_RETRACTABLE);
             };
             const chooseBP = requestedBp <= 0;
             const eligible = this.blueprints.filter(bp =>
                 (chooseBP ? blueprintQualifies(bp, this.depth, requiredFlags) : bp.ceBlueprintId === requestedBp)
-                && (adoptiveItem === null || bp.features.some(canReceiveAdoptedItem))
+                && (adoptiveItem === null || bp.features.some(f => canReceiveAdoptedItem(bp, f)))
             );
             let totalFreq = 0;
             for (const bp of eligible) totalFreq += bp.frequency;
@@ -1973,7 +1981,8 @@ export class BlueprintEngine {
         for (const spawn of itemSpawns) {
             if (!spawn.viaAdoption) continue;
             const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
-            if (!cell || isPathingBlocker(cell.terrain)) return fail('adopted item destination blocked');
+            if ((!cell || isPathingBlocker(cell.terrain))
+                && !isThrowingTutorialReward(this.grid, bp.id, machineNum, spawn)) return fail('adopted item destination blocked');
         }
 
         // Do not publish a transaction with an unowned creation or duplicate

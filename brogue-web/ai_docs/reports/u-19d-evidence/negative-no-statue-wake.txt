@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE69 seed424242/D8: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 1977ms
+     × natural CE69 seed424242/D8: natural action chain 1976ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE69 seed424242/D8: natural action chain
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19d_machine_families.test.ts:64:178
+     62|   if([21,43,69].includes(row.ce)){
+     63|    expect(result.before.residents.length).toBeGreaterThan(0);expect(re…
+     64|    expect(result.after.residents.map((m:any)=>m.id).sort()).toEqual(re…
+       |                                                                                                                                                                                  ^
+     65|    expect(result.after.tiles.some((c:any)=>[T.STATUE_DORMANT,T.STATUE_…
+     66|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:54
+   Duration  2.74s (transform 384ms, setup 0ms, import 680ms, tests 1.98s, environment 0ms)
+

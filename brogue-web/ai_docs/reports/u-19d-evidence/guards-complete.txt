@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE18 seed31337/D23: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_19d_machine_families.test.ts (24 tests) 27332ms
+     ✓ natural CE18 seed31337/D23: natural action chain  5275ms
+     ✓ natural CE22 seed30/D3: natural action chain  955ms
+     ✓ natural CE23 seed14/D3: natural action chain  828ms
+     ✓ natural CE28 seed3/D2: natural action chain  607ms
+     ✓ natural CE36 seed777/D4: natural action chain  1159ms
+     ✓ natural CE40 seed12/D10: natural action chain  2415ms
+     ✓ natural CE67 seed424242/D4: natural action chain  1021ms
+     ✓ natural CE68 seed424242/D7: natural action chain  1510ms
+     ✓ natural CE69 seed424242/D8: natural action chain  1494ms
+     ✓ natural CE21 seed31337/D17: natural action chain  3760ms
+     ✓ natural CE35 seed31337/D12: natural action chain  2792ms
+     ✓ natural CE29 seed4/D1: natural action chain  543ms
+     ✓ natural CE43 seed19/D11: natural action chain  2211ms
+   ✓ CE36 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  357ms
+   ✓ CE38 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  360ms
+   ✓ CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred  446ms
+   ✓ CE28 deferred population retains the caged reward instead of silently dropping it  302ms
+   ✓ CE18 both complete barrier alternatives open after search and bump  662ms
+
+ Test Files  1 passed (1)
+      Tests  24 passed (24)
+   Start at  16:39:16
+   Duration  28.12s (transform 396ms, setup 0ms, import 708ms, tests 27.33s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web/ai_docs/reports/u-19d-evidence/guards-complete.json

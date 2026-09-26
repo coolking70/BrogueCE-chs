@@ -1,0 +1,41 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE67 seed424242/D4: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:38923) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 2 failed | 20 skipped) 2341ms
+     × natural CE67 seed424242/D4: natural action chain 1051ms
+     × natural CE68 seed424242/D7: natural action chain 1289ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE67 seed424242/D4: natural action chain
+AssertionError: expected 0 to be greater than 0
+ ❯ src/test/u_19d_machine_families.test.ts:59:41
+     57|   if([67,68].includes(row.ce)){
+     58|    expect(phase('triggered').tiles.filter((c:any)=>c.layers.includes(T…
+     59|    expect(phase('paralyzed').paralyzed).toBeGreaterThan(0);expect(phas…
+       |                                         ^
+     60|    expect(phase('escaped').paralyzed).toBe(0);expect(phase('escaped').…
+     61|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE68 seed424242/D7: natural action chain
+Error: player died
+ ❯ act src/test/fixtures/u19d-machine-actions.ts:29:125
+
+ ❯ runMachineActions src/test/fixtures/u19d-machine-actions.ts:74:58
+ ❯ src/test/u_19d_machine_families.test.ts:45:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 20 skipped (22)
+   Start at  16:36:51
+   Duration  3.06s (transform 379ms, setup 0ms, import 635ms, tests 2.34s, environment 0ms)
+

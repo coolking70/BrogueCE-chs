@@ -1,0 +1,70 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE18 seed31337/D23: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (20 tests | 2 failed) 32542ms
+     × all fifteen family rows retain CE depth, size, frequency and literal feature flags 6ms
+     ✓ CE18 reenters only its CE depth and vestibule pool, CE67/68/69 keep zero lottery weight 0ms
+     ✓ paralysis/statue/hidden-trap autoGen rate columns equal CE, including minima and caps 0ms
+     ✓ natural CE18 seed31337/D23: natural action chain  6505ms
+     ✓ natural CE22 seed30/D3: natural action chain  1115ms
+     ✓ natural CE23 seed14/D3: natural action chain  994ms
+     ✓ natural CE28 seed3/D2: natural action chain  836ms
+     ✓ natural CE36 seed777/D4: natural action chain  1566ms
+     ✓ natural CE40 seed12/D10: natural action chain  3197ms
+     ✓ natural CE67 seed424242/D4: natural action chain  1328ms
+     ✓ natural CE68 seed424242/D7: natural action chain  2024ms
+     ✓ natural CE69 seed424242/D8: natural action chain  1804ms
+     ✓ natural CE21 seed31337/D17: natural action chain  4537ms
+     ✓ natural CE35 seed31337/D12: natural action chain  3518ms
+     ✓ natural CE29 seed4/D1: natural action chain  843ms
+     ✓ natural CE43 seed19/D11: natural action chain  2640ms
+   ✓ CE36 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  423ms
+   ✓ CE38 complete ALTERNATIVE lever branch: search, pull, wait for passage, collect the adopted key and return  485ms
+   × CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits 194ms
+   ✓ CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred  525ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d CE selection contract > all fifteen family rows retain CE depth, size, frequency and literal feature flags
+AssertionError: expected [ …(7) ] to have a length of 9 but got 7
+
+- Expected
++ Received
+
+- 9
++ 7
+
+ ❯ src/test/u_19d_machine_families.test.ts:21:24
+     19|   for(const row of golden.machines){const bp=bps.find(b=>b.ceBlueprint…
+     20|    expect(bp.depthRange).toEqual(row.depthRange);expect(bp.roomSize).t…
+     21|    expect(bp.features).toHaveLength(row.featureCount);row.features.for…
+       |                        ^
+     22|   }
+     23|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19d_machine_families.test.ts:83:87
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 passed (20)
+   Start at  16:32:36
+   Duration  33.51s (transform 481ms, setup 0ms, import 875ms, tests 32.54s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web/ai_docs/reports/u-19d-evidence/guards-first.json

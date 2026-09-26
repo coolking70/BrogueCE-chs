@@ -1,0 +1,57 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -721,6 +721,23 @@
+     if (bp.id === 'key_worm_tunnels') return false;
+     if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
+     return true;
++}
++
++/** CE28 places the adopted item inside its retractable cage (Architect.c:1531).
++ * Only this verified throwing puzzle is reopened here; CE47/52 remain deferred.
++ * Check the finished circuit, not merely a terrain name: later hole DF must not
++ * have overwritten the reward or the plate, and no other layer may block it.
++ */
++export function isThrowingTutorialReward(grid: Grid, blueprintId: string, machineNumber: number, spawn: MachineItemSpawn): boolean {
++    if (blueprintId !== 'key_throwing_tutorial_cage' || !spawn.viaAdoption) return false;
++    const cell = grid.getCell(spawn.pos.x, spawn.pos.y);
++    if (!cell || cell.machineNumber !== machineNumber || cell.layers[DungeonLayer.DUNGEON] !== TerrainType.ALTAR_CAGE_RETRACTABLE) return false;
++    if (cell.layers.some((t, layer) => layer !== DungeonLayer.DUNGEON && isPathingBlocker(t))) return false;
++    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
++        const plate = grid.getCell(x, y)!;
++        if (plate.machineNumber === machineNumber && plate.layers[DungeonLayer.LIQUID] === TerrainType.PRESSURE_PLATE) return true;
++    }
++    return false;
+ }
+ 
+ export class BlueprintEngine {
+@@ -898,17 +915,17 @@
+             //（v_2b_6_keys 的 F1/F2 翻红）。
+             // 按 D2 口径退池留形：**数据照带旗标**，只是它不再被抽为领养机器；
+             // 献祭机制落地的那一轮摘掉这条过滤即可（届时 F 组应复跑）。
+-            const canReceiveAdoptedItem = (f: FeatureDef): boolean => {
++            const canReceiveAdoptedItem = (bp: BlueprintDef, f: FeatureDef): boolean => {
+                 if (!f.flags.includes('MF_ADOPT_ITEM')) return false;
+                 if (!f.terrain) return true; // 纯 DF / 无地形 feature：落点即格，无堵格体
+                 const t = TERRAIN_MAP[f.terrain];
+                 if (t === undefined) return false; // 未知地形名——宁可不让它领养
+-                return !isPathingBlocker(t);
++                return !isPathingBlocker(t) || (bp.ceBlueprintId === 28 && t === TerrainType.ALTAR_CAGE_RETRACTABLE);
+             };
+             const chooseBP = requestedBp <= 0;
+             const eligible = this.blueprints.filter(bp =>
+                 (chooseBP ? blueprintQualifies(bp, this.depth, requiredFlags) : bp.ceBlueprintId === requestedBp)
+-                && (adoptiveItem === null || bp.features.some(canReceiveAdoptedItem))
++                && (adoptiveItem === null || bp.features.some(f => canReceiveAdoptedItem(bp, f)))
+             );
+             let totalFreq = 0;
+             for (const bp of eligible) totalFreq += bp.frequency;
+@@ -1964,7 +1981,8 @@
+         for (const spawn of itemSpawns) {
+             if (!spawn.viaAdoption) continue;
+             const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+-            if (!cell || isPathingBlocker(cell.terrain)) return fail('adopted item destination blocked');
++            if ((!cell || isPathingBlocker(cell.terrain))
++                && !isThrowingTutorialReward(this.grid, bp.id, machineNum, spawn)) return fail('adopted item destination blocked');
+         }
+ 
+         // Do not publish a transaction with an unowned creation or duplicate

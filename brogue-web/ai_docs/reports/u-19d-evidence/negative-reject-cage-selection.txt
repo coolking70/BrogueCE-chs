@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 150ms
+   × CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred 150ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > CE28 explicit builder can adopt a key; unsupported CE47/52 blocked adoption remains deferred
+AssertionError: expected null not to be null
+ ❯ src/test/u_19d_machine_families.test.ts:92:28
+     90|   const bp=bps.find(b=>b.ceBlueprintId===ce)!,engine=new BlueprintEngi…
+     91|   const r=engine.buildAMachine(ce,[],{category:'KEY',id:'iron_key',ins…
+     92|   if(ce===28)expect(r).not.toBeNull();else expect(r).toBeNull();
+       |                            ^
+     93|  }
+     94| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:43
+   Duration  869ms (transform 368ms, setup 0ms, import 639ms, tests 150ms, environment 0ms)
+

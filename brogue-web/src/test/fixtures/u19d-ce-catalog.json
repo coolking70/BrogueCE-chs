@@ -1,0 +1,855 @@
+{
+  "file": "../BrogueCE-master/src/variants/GlobalsBrogue.c",
+  "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+  "machines": [
+    {
+      "ce": 15,
+      "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+      "line": 289,
+      "depthRange": [
+        10,
+        26
+      ],
+      "roomSize": [
+        35,
+        40
+      ],
+      "frequency": 0,
+      "featureCount": 4,
+      "flags": [
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR"
+      ],
+      "features": [
+        {
+          "line": 291,
+          "literal": "{DF_LUMINESCENT_FUNGUS, AMULET_SWITCH, DUNGEON, {1,1}, 1,       AMULET,     -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NEAR_ORIGIN",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 292,
+          "literal": "{0,         FUNGUS_FOREST,SURFACE,      {2,3},      0,          0,          -1,         0,              2,              0,          0,          MF_NOT_IN_HALLWAY},",
+          "flags": [
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 293,
+          "literal": "{0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         MK_WARDEN_OF_YENDOR,1,          0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY",
+            "MF_MONSTERS_DORMANT",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 294,
+          "literal": "{0,         TORCH_WALL, DUNGEON,        {3,4},      0,          0,          0,          0,              1,              0,          0,          (MF_BUILD_IN_WALLS)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 18,
+      "name": "Lever and either an exploding wall or a portcullis",
+      "line": 304,
+      "depthRange": [
+        4,
+        26
+      ],
+      "roomSize": [
+        1,
+        1
+      ],
+      "frequency": 8,
+      "featureCount": 3,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "features": [
+        {
+          "line": 306,
+          "literal": "{0,         WORM_TUNNEL_OUTER_WALL,DUNGEON,{1,1},   1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_IMPREGNABLE | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_IMPREGNABLE",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 307,
+          "literal": "{0,         PORTCULLIS_CLOSED,DUNGEON,  {1,1},      1,          0,          0,          0,              3,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_IMPREGNABLE | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_IMPREGNABLE",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 308,
+          "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 21,
+      "name": "Statue in the doorway -- bursts to reveal monster",
+      "line": 318,
+      "depthRange": [
+        5,
+        26
+      ],
+      "roomSize": [
+        2,
+        2
+      ],
+      "frequency": 6,
+      "featureCount": 2,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "features": [
+        {
+          "line": 320,
+          "literal": "{0,         STATUE_DORMANT_DOORWAY,DUNGEON,     {1, 1}, 1,      0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_PERMIT_BLOCKING | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_PERMIT_BLOCKING",
+            "MF_GENERATE_HORDE",
+            "MF_MONSTERS_DORMANT",
+            "MF_BUILD_AT_ORIGIN",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 321,
+          "literal": "{0,         MACHINE_TRIGGER_FLOOR,DUNGEON,{0,0},    1,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)}}},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 22,
+      "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the portcullis",
+      "line": 322,
+      "depthRange": [
+        1,
+        4
+      ],
+      "roomSize": [
+        70,
+        70
+      ],
+      "frequency": 8,
+      "featureCount": 3,
+      "flags": [
+        "BP_VESTIBULE"
+      ],
+      "features": [
+        {
+          "line": 324,
+          "literal": "{DF_MEDIUM_HOLE, MACHINE_PRESSURE_PLATE, LIQUID, {1,1}, 1,      0,          0,          0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 325,
+          "literal": "{0,         PORTCULLIS_CLOSED,DUNGEON,  {1,1},      1,          0,          0,          0,              3,              0,          0,          (MF_IMPREGNABLE | MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_IMPREGNABLE",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_AT_ORIGIN",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 326,
+          "literal": "{0,         WORM_TUNNEL_OUTER_WALL,DUNGEON,{1,1},   1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_IMPREGNABLE | MF_ALTERNATIVE)}}},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING",
+            "MF_IMPREGNABLE",
+            "MF_ALTERNATIVE"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 23,
+      "name": "Pit traps -- area outside entrance is full of pit traps",
+      "line": 327,
+      "depthRange": [
+        1,
+        26
+      ],
+      "roomSize": [
+        30,
+        60
+      ],
+      "frequency": 8,
+      "featureCount": 3,
+      "flags": [
+        "BP_VESTIBULE",
+        "BP_OPEN_INTERIOR",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "features": [
+        {
+          "line": 329,
+          "literal": "{0,         DOOR,       DUNGEON,        {1,1},      1,          0,          0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_AT_ORIGIN",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 330,
+          "literal": "{0,         SECRET_DOOR,DUNGEON,        {1,1},      1,          0,          0,          0,              1,              0,          0,          (MF_IMPREGNABLE | MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_IMPREGNABLE",
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_AT_ORIGIN",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 331,
+          "literal": "{0,         TRAP_DOOR_HIDDEN,DUNGEON,   {60, 60},   1,          0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_REPEAT_UNTIL_NO_PROGRESS"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 28,
+      "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key",
+      "line": 360,
+      "depthRange": [
+        1,
+        4
+      ],
+      "roomSize": [
+        70,
+        80
+      ],
+      "frequency": 8,
+      "featureCount": 2,
+      "flags": [
+        "BP_ADOPT_ITEM"
+      ],
+      "features": [
+        {
+          "line": 362,
+          "literal": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_IMPREGNABLE",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 363,
+          "literal": "{DF_MEDIUM_HOLE, MACHINE_PRESSURE_PLATE, LIQUID, {1,1}, 1,      0,          0,          0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 29,
+      "name": "Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls",
+      "line": 364,
+      "depthRange": [
+        1,
+        8
+      ],
+      "roomSize": [
+        30,
+        70
+      ],
+      "frequency": 7,
+      "featureCount": 3,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_ROOM"
+      ],
+      "features": [
+        {
+          "line": 366,
+          "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 367,
+          "literal": "{0,         MACHINE_PARALYSIS_VENT_HIDDEN,DUNGEON,{1,1},1,      0,          -1,         0,              2,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_FAR_FROM_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 368,
+          "literal": "{0,         RAT_TRAP_WALL_DORMANT,DUNGEON,{10,20},  5,          0,          -1,         MK_RAT,         1,              0,          0,          (MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_NOT_ON_LEVEL_PERIMETER)}}},",
+          "flags": [
+            "MF_MONSTERS_DORMANT",
+            "MF_BUILD_IN_WALLS",
+            "MF_NOT_ON_LEVEL_PERIMETER"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 35,
+      "name": "Pit traps -- key on an altar, room full of pit traps",
+      "line": 399,
+      "depthRange": [
+        1,
+        26
+      ],
+      "roomSize": [
+        30,
+        100
+      ],
+      "frequency": 10,
+      "featureCount": 3,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM"
+      ],
+      "features": [
+        {
+          "line": 401,
+          "literal": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 402,
+          "literal": "{0,         TRAP_DOOR_HIDDEN,DUNGEON,   {30, 40},   1,          0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_REPEAT_UNTIL_NO_PROGRESS"
+          ]
+        },
+        {
+          "line": 403,
+          "literal": "{0,         SECRET_DOOR,DUNGEON,        {1,1},      1,          0,          0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)}}},",
+          "flags": [
+            "MF_PERMIT_BLOCKING",
+            "MF_BUILD_AT_ORIGIN"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 36,
+      "name": "Levitation challenge -- key on an altar, room filled with pit, levitation or lever elsewhere on level, bridge appears when you grab the key/lever.",
+      "line": 404,
+      "depthRange": [
+        1,
+        13
+      ],
+      "roomSize": [
+        75,
+        120
+      ],
+      "frequency": 10,
+      "featureCount": 9,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_OPEN_INTERIOR",
+        "BP_SURROUND_WITH_WALLS"
+      ],
+      "features": [
+        {
+          "line": 406,
+          "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 407,
+          "literal": "{0,         TORCH_WALL, DUNGEON,        {1,4},      0,          0,          0,          0,              1,              0,          0,          (MF_BUILD_IN_WALLS)},",
+          "flags": [
+            "MF_BUILD_IN_WALLS"
+          ]
+        },
+        {
+          "line": 408,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              3,              0,          0,          MF_BUILD_AT_ORIGIN},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN"
+          ]
+        },
+        {
+          "line": 409,
+          "literal": "{DF_ADD_DORMANT_CHASM_HALO, CHASM,LIQUID,{120, 120},1,          0,          -1,         0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_REPEAT_UNTIL_NO_PROGRESS"
+          ]
+        },
+        {
+          "line": 410,
+          "literal": "{DF_ADD_DORMANT_CHASM_HALO, CHASM_WITH_HIDDEN_BRIDGE,LIQUID,{1,1},1,0,      0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_EVERYWHERE)},",
+          "flags": [
+            "MF_PERMIT_BLOCKING",
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 411,
+          "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_LEVITATION, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 412,
+          "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_ALTERNATIVE | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_ALTERNATIVE",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 38,
+      "name": "Lava moat room -- key on an altar, room filled with lava, levitation/fire immunity/lever elsewhere on level, lava retracts when you grab the key/lever",
+      "line": 420,
+      "depthRange": [
+        3,
+        13
+      ],
+      "roomSize": [
+        75,
+        120
+      ],
+      "frequency": 7,
+      "featureCount": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_ADOPT_ITEM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_OPEN_INTERIOR"
+      ],
+      "features": [
+        {
+          "line": 422,
+          "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_FAR_FROM_ORIGIN",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 423,
+          "literal": "{0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN)},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN"
+          ]
+        },
+        {
+          "line": 424,
+          "literal": "{0,         LAVA,       LIQUID,         {60,60},    1,          0,          0,          0,              1,              0,          0,          (MF_TREAT_AS_BLOCKING | MF_REPEAT_UNTIL_NO_PROGRESS)},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_REPEAT_UNTIL_NO_PROGRESS"
+          ]
+        },
+        {
+          "line": 425,
+          "literal": "{DF_LAVA_RETRACTABLE, LAVA_RETRACTABLE, LIQUID, {1,1}, 1,       0,          0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_EVERYWHERE)},",
+          "flags": [
+            "MF_PERMIT_BLOCKING",
+            "MF_EVERYWHERE"
+          ]
+        },
+        {
+          "line": 426,
+          "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_LEVITATION, 0,       1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 427,
+          "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_FIRE_IMMUNITY, 0,    1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 428,
+          "literal": "{0,         WALL_LEVER_HIDDEN,DUNGEON,  {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_BUILD_ANYWHERE_ON_LEVEL | MF_ALTERNATIVE | MF_IMPREGNABLE)}}},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+            "MF_BUILD_ANYWHERE_ON_LEVEL",
+            "MF_ALTERNATIVE",
+            "MF_IMPREGNABLE"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 40,
+      "name": "Poison gas -- key on an altar; take key to cause a caustic gas vent to appear and the door to be blocked; there is a hidden trapdoor or an escape item somewhere inside",
+      "line": 436,
+      "depthRange": [
+        4,
+        26
+      ],
+      "roomSize": [
+        35,
+        60
+      ],
+      "frequency": 7,
+      "featureCount": 7,
+      "flags": [
+        "BP_ROOM",
+        "BP_PURGE_INTERIOR",
+        "BP_SURROUND_WITH_WALLS",
+        "BP_ADOPT_ITEM"
+      ],
+      "features": [
+        {
+          "line": 438,
+          "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_TREAT_AS_BLOCKING"
+          ]
+        },
+        {
+          "line": 439,
+          "literal": "{0,         MACHINE_POISON_GAS_VENT_HIDDEN,DUNGEON,{1,2}, 1,    0,          -1,         0,              2,              0,          0,          0},",
+          "flags": []
+        },
+        {
+          "line": 440,
+          "literal": "{0,         TRAP_DOOR_HIDDEN,DUNGEON,   {1,1},      1,          0,          -1,         0,              2,              0,          0,          MF_ALTERNATIVE},",
+          "flags": [
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 441,
+          "literal": "{0,         0,          0,              {1,1},      1,          SCROLL,     SCROLL_TELEPORT, 0,         2,              0,          0,          (MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 442,
+          "literal": "{0,         0,          0,              {1,1},      1,          POTION,     POTION_DESCENT, 0,          2,              0,          0,          (MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_ITEM",
+            "MF_NOT_IN_HALLWAY",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 443,
+          "literal": "{0,         WALL_LEVER_HIDDEN_DORMANT,DUNGEON,{1,1},1,          0,          -1,         0,              1,              0,          0,          (MF_BUILD_IN_WALLS | MF_IMPREGNABLE)},",
+          "flags": [
+            "MF_BUILD_IN_WALLS",
+            "MF_IMPREGNABLE"
+          ]
+        },
+        {
+          "line": 444,
+          "literal": "{0,         PORTCULLIS_DORMANT,DUNGEON,{1,1},       1,          0,          0,          0,              1,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING)}}},",
+          "flags": [
+            "MF_BUILD_AT_ORIGIN",
+            "MF_PERMIT_BLOCKING"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 43,
+      "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+      "line": 460,
+      "depthRange": [
+        10,
+        26
+      ],
+      "roomSize": [
+        35,
+        90
+      ],
+      "frequency": 10,
+      "featureCount": 2,
+      "flags": [
+        "BP_ADOPT_ITEM",
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "features": [
+        {
+          "line": 462,
+          "literal": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_ADOPT_ITEM",
+            "MF_NEAR_ORIGIN",
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 463,
+          "literal": "{0,         STATUE_DORMANT,DUNGEON,     {3,5},      3,          0,          -1,         0,              2,              HORDE_MACHINE_STATUE,0, (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN)}}},",
+          "flags": [
+            "MF_TREAT_AS_BLOCKING",
+            "MF_NOT_IN_HALLWAY",
+            "MF_GENERATE_HORDE",
+            "MF_MONSTERS_DORMANT",
+            "MF_FAR_FROM_ORIGIN"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 67,
+      "name": "Paralysis trap -- already-revealed pressure plate with a few hidden vents nearby.",
+      "line": 600,
+      "depthRange": [
+        1,
+        40
+      ],
+      "roomSize": [
+        35,
+        40
+      ],
+      "frequency": 0,
+      "featureCount": 2,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "features": [
+        {
+          "line": 602,
+          "literal": "{0,         GAS_TRAP_PARALYSIS, DUNGEON, {1,2},     1,          0,          0,          0,              3,              0,          0,          (MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_NEAR_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 603,
+          "literal": "{0,         MACHINE_PARALYSIS_VENT_HIDDEN,DUNGEON,{3, 4},2,     0,          0,          0,              3,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)}}},",
+          "flags": [
+            "MF_FAR_FROM_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 68,
+      "name": "Paralysis trap -- hidden pressure plate with a few vents nearby.",
+      "line": 604,
+      "depthRange": [
+        1,
+        40
+      ],
+      "roomSize": [
+        35,
+        40
+      ],
+      "frequency": 0,
+      "featureCount": 2,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "features": [
+        {
+          "line": 606,
+          "literal": "{0,         GAS_TRAP_PARALYSIS_HIDDEN, DUNGEON, {1,2},1,        0,          0,          0,              3,              0,          0,          (MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY)},",
+          "flags": [
+            "MF_NEAR_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        },
+        {
+          "line": 607,
+          "literal": "{0,         MACHINE_PARALYSIS_VENT_HIDDEN,DUNGEON,{3, 4},2,     0,          0,          0,              3,              0,          0,          (MF_FAR_FROM_ORIGIN | MF_NOT_IN_HALLWAY)}}},",
+          "flags": [
+            "MF_FAR_FROM_ORIGIN",
+            "MF_NOT_IN_HALLWAY"
+          ]
+        }
+      ]
+    },
+    {
+      "ce": 69,
+      "name": "Statue comes alive -- innocent-looking statue that bursts to reveal a monster when the player approaches",
+      "line": 608,
+      "depthRange": [
+        1,
+        40
+      ],
+      "roomSize": [
+        5,
+        5
+      ],
+      "frequency": 0,
+      "featureCount": 3,
+      "flags": [
+        "BP_NO_INTERIOR_FLAG"
+      ],
+      "features": [
+        {
+          "line": 610,
+          "literal": "{0,         STATUE_DORMANT,DUNGEON,     {1, 1},     1,          0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_AT_ORIGIN | MF_ALTERNATIVE)},",
+          "flags": [
+            "MF_GENERATE_HORDE",
+            "MF_MONSTERS_DORMANT",
+            "MF_BUILD_AT_ORIGIN",
+            "MF_ALTERNATIVE"
+          ]
+        },
+        {
+          "line": 611,
+          "literal": "{0,         STATUE_DORMANT,DUNGEON,     {1, 1},     1,          0,          -1,         0,              1,              HORDE_MACHINE_STATUE,0, (MF_GENERATE_HORDE | MF_MONSTERS_DORMANT | MF_BUILD_IN_WALLS | MF_ALTERNATIVE | MF_NOT_ON_LEVEL_PERIMETER)},",
+          "flags": [
+            "MF_GENERATE_HORDE",
+            "MF_MONSTERS_DORMANT",
+            "MF_BUILD_IN_WALLS",
+            "MF_ALTERNATIVE",
+            "MF_NOT_ON_LEVEL_PERIMETER"
+          ]
+        },
+        {
+          "line": 612,
+          "literal": "{0,         MACHINE_TRIGGER_FLOOR,DUNGEON,{0,0},    2,          0,          -1,         0,              0,              0,          0,          (MF_EVERYWHERE)}}},",
+          "flags": [
+            "MF_EVERYWHERE"
+          ]
+        }
+      ]
+    }
+  ],
+  "autogen": [
+    {
+      "index": 16,
+      "line": 132,
+      "terrain": "0",
+      "machine": "MT_PARALYSIS_TRAP_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 2,
+      "maxDepth": 6,
+      "frequency": 20,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 1
+    },
+    {
+      "index": 23,
+      "line": 141,
+      "terrain": "0",
+      "machine": "MT_PARALYSIS_TRAP_HIDDEN_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 7,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    },
+    {
+      "index": 25,
+      "line": 143,
+      "terrain": "TRAP_DOOR_HIDDEN",
+      "machine": "0",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 9,
+      "maxDepth": 39,
+      "frequency": 20,
+      "minNumberIntercept": 100,
+      "minNumberSlope": 0,
+      "maxNumber": 2
+    },
+    {
+      "index": 46,
+      "line": 168,
+      "terrain": "0",
+      "machine": "MT_TRICK_STATUE_AREA",
+      "foundation": [
+        "FLOOR",
+        "NOTHING"
+      ],
+      "minDepth": 6,
+      "maxDepth": 39,
+      "frequency": 15,
+      "minNumberIntercept": 0,
+      "minNumberSlope": 0,
+      "maxNumber": 3
+    }
+  ]
+}

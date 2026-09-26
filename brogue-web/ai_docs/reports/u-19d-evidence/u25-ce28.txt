@@ -1,0 +1,98 @@
+seed 3 / D2: 5 machines, 79 products
+instance #22: 1 match(es); machine #3 CE28 feature #0 source #2/#0
+machine #1 CE2 reward_single_category_library committed; interior expansion 2 iterations, +4 cells
+  feature #0 placed 50 placements / 1 iterations; request={"terrain":"CARPET","instanceCount":[0,0],"minimum":0,"flags":["MF_EVERYWHERE"]}
+  feature #1 placed 1 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_BUILD_VESTIBULE"]}
+  feature #2 placed 4 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"RING","instanceCount":[3,4],"minimum":3,"flags":["MF_GENERATE_ITEM","MF_TREAT_AS_BLOCKING","MF_ALTERNATIVE","MF_IMPREGNABLE"]}
+  feature #3 skipped 0 placements / 0 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"STAFF","instanceCount":[4,5],"minimum":4,"flags":["MF_GENERATE_ITEM","MF_TREAT_AS_BLOCKING","MF_ALTERNATIVE","MF_IMPREGNABLE"]}
+  feature #4 placed 2 placements / 1 iterations; request={"terrain":"STATUE_INERT","instanceCount":[2,3],"minimum":0,"flags":["MF_TREAT_AS_BLOCKING","MF_BUILD_IN_WALLS","MF_IMPREGNABLE"]}
+  terrain #- CARPET @63,7 from feature #0
+  terrain #- CARPET @62,9 from feature #0
+  terrain #- CARPET @63,5 from feature #0
+  terrain #- CARPET @63,9 from feature #0
+  terrain #- CARPET @69,10 from feature #0
+  terrain #- CARPET @68,11 from feature #0
+  terrain #- CARPET @70,8 from feature #0
+  terrain #- CARPET @65,7 from feature #0
+  terrain #- CARPET @63,8 from feature #0
+  terrain #- CARPET @64,6 from feature #0
+  terrain #- CARPET @64,5 from feature #0
+  terrain #- CARPET @63,6 from feature #0
+  terrain #- CARPET @62,10 from feature #0
+  terrain #- CARPET @65,10 from feature #0
+  terrain #- CARPET @65,6 from feature #0
+  terrain #- CARPET @62,6 from feature #0
+  terrain #- CARPET @64,9 from feature #0
+  terrain #- CARPET @65,5 from feature #0
+  terrain #- CARPET @61,9 from feature #0
+  terrain #- CARPET @66,7 from feature #0
+  terrain #- CARPET @66,6 from feature #0
+  terrain #- CARPET @66,9 from feature #0
+  terrain #- CARPET @69,9 from feature #0
+  terrain #- CARPET @63,10 from feature #0
+  terrain #- CARPET @66,10 from feature #0
+  terrain #- CARPET @68,6 from feature #0
+  terrain #- CARPET @62,7 from feature #0
+  terrain #- CARPET @67,8 from feature #0
+  terrain #- CARPET @67,7 from feature #0
+  terrain #- CARPET @67,5 from feature #0
+  terrain #- CARPET @68,7 from feature #0
+  terrain #- CARPET @66,5 from feature #0
+  terrain #- CARPET @61,7 from feature #0
+  terrain #- CARPET @64,10 from feature #0
+  terrain #- CARPET @67,9 from feature #0
+  terrain #- CARPET @60,8 from feature #0
+  terrain #- CARPET @64,8 from feature #0
+  terrain #- CARPET @68,8 from feature #0
+  terrain #- CARPET @70,9 from feature #0
+  terrain #- CARPET @67,6 from feature #0
+  terrain #- CARPET @69,8 from feature #0
+  terrain #- CARPET @65,9 from feature #0
+  terrain #- CARPET @66,8 from feature #0
+  terrain #- CARPET @62,8 from feature #0
+  terrain #- CARPET @67,10 from feature #0
+  terrain #- CARPET @68,10 from feature #0
+  terrain #- CARPET @64,7 from feature #0
+  terrain #- CARPET @69,7 from feature #0
+  terrain #- CARPET @61,8 from feature #0
+  terrain #- CARPET @68,9 from feature #0
+  terrain #- ALTAR_CAGE_OPEN @63,7 from feature #2
+  terrain #- ALTAR_CAGE_OPEN @62,9 from feature #2
+  terrain #- ALTAR_CAGE_OPEN @63,5 from feature #2
+  terrain #- ALTAR_CAGE_OPEN @69,10 from feature #2
+  terrain #- STATUE_INERT @61,6 from feature #4
+  terrain #- STATUE_INERT @67,4 from feature #4
+  item #23 Ring of Clairvoyance @63,7 from feature #2 owner=floor
+  item #24 Ring of Stealth @62,9 from feature #2 owner=floor
+  item #25 Ring of Regeneration @63,5 from feature #2 owner=floor
+  item #26 Ring of Awareness @69,10 from feature #2 owner=floor
+machine #2 CE16 vestibule_locked committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"LOCKED_DOOR","itemCategory":"KEY","itemId":"iron_key","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_GENERATE_ITEM","MF_OUTSOURCE_ITEM_TO_MACHINE","MF_KEY_DISPOSABLE","MF_IMPREGNABLE"]}
+  terrain #- LOCKED_DOOR @66,11 from feature #0
+machine #3 CE28 key_throwing_tutorial_cage committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_RETRACTABLE","instanceCount":[1,1],"minimum":1,"flags":["MF_ADOPT_ITEM","MF_IMPREGNABLE","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 1 placements / 1 iterations; request={"terrain":"MACHINE_PRESSURE_PLATE","featureDF":"DF_MEDIUM_HOLE","instanceCount":[1,1],"minimum":1,"flags":["MF_TREAT_AS_BLOCKING","MF_NOT_IN_HALLWAY"]}
+  terrain #- ALTAR_CAGE_RETRACTABLE @27,5 from feature #0
+  terrain #- MACHINE_PRESSURE_PLATE @27,8 from feature #1
+  featureDF #- DF_MEDIUM_HOLE @27,8 from feature #1
+  item #22 Iron Key @27,5 from feature #0 (source machine #2 feature #0) owner=floor
+machine #4 CE58 ce_58_bloodwort committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"BLOODFLOWER_STALK","featureDF":"DF_GRASS","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 1 placements / 1 iterations; request={"featureDF":"DF_BLOODFLOWER_PODS_GROW_INITIAL","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_TREAT_AS_BLOCKING"]}
+  terrain #- BLOODFLOWER_STALK @46,6 from feature #0
+  featureDF #- DF_GRASS @46,6 from feature #0
+  featureDF #- DF_BLOODFLOWER_PODS_GROW_INITIAL @46,6 from feature #1
+machine #5 CE60 ce_60_idyll committed
+  feature #0 placed 4 placements / 1 iterations; request={"terrain":"FOLIAGE","featureDF":"DF_GRASS","instanceCount":[3,4],"minimum":3,"flags":[]}
+  feature #1 placed 3 placements / 1 iterations; request={"featureDF":"DF_DEEP_WATER_POOL","instanceCount":[2,3],"minimum":2,"flags":["MF_NOT_IN_HALLWAY"]}
+  terrain #- FOLIAGE @45,8 from feature #0
+  featureDF #- DF_GRASS @45,8 from feature #0
+  terrain #- FOLIAGE @52,20 from feature #0
+  featureDF #- DF_GRASS @52,20 from feature #0
+  terrain #- FOLIAGE @50,12 from feature #0
+  featureDF #- DF_GRASS @50,12 from feature #0
+  terrain #- FOLIAGE @51,13 from feature #0
+  featureDF #- DF_GRASS @51,13 from feature #0
+  featureDF #- DF_DEEP_WATER_POOL @52,11 from feature #1
+  featureDF #- DF_DEEP_WATER_POOL @45,12 from feature #1
+  featureDF #- DF_DEEP_WATER_POOL @51,6 from feature #1

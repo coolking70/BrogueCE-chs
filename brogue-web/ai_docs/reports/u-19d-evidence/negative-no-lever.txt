@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > CE18 both complete barrier alternatives open after search and bump
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 331ms
+   × CE18 both complete barrier alternatives open after search and bump 330ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > CE18 both complete barrier alternatives open after search and bump
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_19d_machine_families.test.ts:109:175
+    107|   const g:any=createHeadlessGame(19,'test'),scene=machineScene(g,18,se…
+    108|   g.populateLevel(g.depth,false,false,[scene.result]);const gate=scene…
+    109|   const r=runMachineActions(g,scene.result.observation!,{x:16,y:14});e…
+       |                                                                                                                                                                               ^
+    110|   expect(g.grid.getCell(gate.pos.x,gate.pos.y).isPassable).toBe(true);
+    111|  }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:46
+   Duration  1.05s (transform 370ms, setup 0ms, import 635ms, tests 331ms, environment 0ms)
+

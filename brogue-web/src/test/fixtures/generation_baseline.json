@@ -1,5 +1,5 @@
 {
-  "note": "U19c: immediate machine entities, feature-local item/monster RNG, minion initialization before placement, recursive entity rollback and live occupancy. Individually attributed; one recapture; see u-19c.report.md.",
+  "note": "U19d: restore CE18 secret-lever eligibility and CE28 caged adoption; complete action chains and CE selection contracts verified, individually attributed, one recapture; see u-19d.report.md.",
   "seeds": [
     424242,
     777,
@@ -27,10 +27,10 @@
         "items": 6
       },
       {
-        "fp": "27211e41:5127",
-        "n": 6,
-        "species": "Kobold,Monkey,Rat,Toad",
-        "items": 18
+        "fp": "4b002b0c:5050",
+        "n": 10,
+        "species": "Bloat,Eel,Goblin,Kobold,Monkey,Pink jelly,Rat",
+        "items": 11
       },
       {
         "fp": "679066dc:4936",
@@ -117,13 +117,13 @@
         "items": 11
       },
       {
-        "fp": "7d0932cb:4815",
+        "fp": "55a666d7:4814",
         "n": 10,
         "species": "Phantom,Pixie,Troll,Wraith,agile Dragon,infested Wraith,vampiric Wraith",
-        "items": 7
+        "items": 5
       },
       {
-        "fp": "8aab6f2a:4824",
+        "fp": "21cda8f0:4816",
         "n": 21,
         "species": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Ogre,Ogre shaman,Pink jelly,agile Dar priestess,juggernaut Fury",
         "items": 10
@@ -299,10 +299,10 @@
         "items": 9
       },
       {
-        "fp": "70cedf36:4951",
-        "n": 28,
-        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Golem,Imp,Phylactery,Revenant,Tentacle horror,Wraith,agile Dar priestess,explosive Wraith,juggernaut Dar blademaster,juggernaut Tentacle horror,reflective Dar battlemage,vampiric Wraith",
-        "items": 11
+        "fp": "1e625671:4981",
+        "n": 26,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Imp,Phantom,Phylactery,infested Bog monster,juggernaut Bog monster,juggernaut Fury,juggernaut Golem,toxic Fury",
+        "items": 13
       },
       {
         "fp": "c20ee949:4737",
@@ -311,7 +311,7 @@
         "items": 11
       },
       {
-        "fp": "53db6d8c:4973",
+        "fp": "470c3aa1:4974",
         "n": 23,
         "species": "Bog monster,Dar priestess,Fury,Phylactery,Revenant,Tentacle horror,agile Dar blademaster,agile Golem,explosive Bog monster,grappling Fury,infested Bog monster,infested Dar battlemage,infested Dar blademaster,infested Dar priestess,infested Fury,toxic Fury",
         "items": 10
@@ -519,16 +519,16 @@
         "items": 9
       },
       {
-        "fp": "be7b1fc4:5679",
-        "n": 36,
-        "species": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Jackal,Toad,Vampire bat",
-        "items": 19
+        "fp": "a5050e92:5632",
+        "n": 42,
+        "species": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Jackal,Kobold,Ogre,Pink jelly,Toad",
+        "items": 17
       },
       {
-        "fp": "d60bfd2b:4896",
-        "n": 9,
-        "species": "Centipede,Monkey,Toad,Vampire bat",
-        "items": 7
+        "fp": "6ab7eac7:4896",
+        "n": 12,
+        "species": "Centipede,Goblin,Goblin totem,Monkey,Ogre",
+        "items": 11
       },
       {
         "fp": "03e065cc:4836",
@@ -573,22 +573,22 @@
         "items": 6
       },
       {
-        "fp": "aa165ce3:5090",
-        "n": 9,
-        "species": "Dar blademaster,Dar priestess,Eel,Imp,Kraken,Naga,Salamander,Zombie",
-        "items": 25
+        "fp": "ae0acf86:5053",
+        "n": 10,
+        "species": "Bog monster,Dar blademaster,Dar priestess,Kraken,Zombie,grappling Acidic jelly",
+        "items": 12
       },
       {
-        "fp": "7f53b836:4938",
-        "n": 9,
-        "species": "Acidic jelly,Imp,Ogre,Ogre totem,Revenant,infested Troll,infested Wraith,vampiric Naga",
-        "items": 8
+        "fp": "dadac24e:4938",
+        "n": 10,
+        "species": "Ogre,Ogre shaman,Phantom,Salamander,Troll,explosive Imp,infested Ogre,vampiric Naga",
+        "items": 18
       },
       {
         "fp": "6b8575ee:4819",
         "n": 9,
         "species": "Centaur,Fury,Imp,Phantom,Troll,agile Fury",
-        "items": 9
+        "items": 7
       },
       {
         "fp": "fcf9767d:4945",

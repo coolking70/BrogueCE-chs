@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 159ms
+   × CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits 158ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > CE28 no observer: accept the intact cage/plate circuit, preserve item identity through population and storage, reject damaged circuits
+AssertionError: expected null not to be null
+ ❯ src/test/u_19d_machine_families.test.ts:77:89
+     75|
+     76| it('CE28 no observer: accept the intact cage/plate circuit, preserve i…
+     77|  const g:any=createHeadlessGame(19,'test'),s=machineScene(g,28,1,0,tru…
+       |                                                                                         ^
+     78|  expect(item).toBeDefined();expect(isThrowingTutorialReward(g.grid,s.r…
+     79|  g.populateLevel(g.depth,false,false,[s.result]);expect(g.items.filter…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:44
+   Duration  832ms (transform 369ms, setup 0ms, import 595ms, tests 159ms, environment 0ms)
+

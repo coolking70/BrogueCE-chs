@@ -1,0 +1,56 @@
+[
+  {
+    "variant": "retire-lever",
+    "test": "natural CE18",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "reject-cage-selection",
+    "test": "explicit builder",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "reject-cage-final",
+    "test": "no observer",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "discard-cage",
+    "test": "deferred population",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "no-lever",
+    "test": "both complete barrier",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "no-hole",
+    "test": "natural CE22",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "no-cage",
+    "test": "natural CE28",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "no-paralysis",
+    "test": "natural CE67|natural CE68",
+    "exit": 1,
+    "behaviorFailure": true
+  },
+  {
+    "variant": "no-statue-wake",
+    "test": "natural CE69",
+    "exit": 1,
+    "behaviorFailure": true
+  }
+]

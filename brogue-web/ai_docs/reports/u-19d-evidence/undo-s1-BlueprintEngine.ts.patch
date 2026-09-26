@@ -1,0 +1,20 @@
+--- src/engine/Generator/BlueprintEngine.ts
++++ src/engine/Generator/BlueprintEngine.ts
+@@ -709,16 +709,7 @@
+     }
+     if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
+     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
+-    // V-2b-9b（验收方）：18 号 lever 前厅退池留形。
+-    // 现场（v_2b_6_keys F1，seed42/D15）：钥匙在 key_nested_library(machine #5)
+-    // 的 (68,3)，唯一出口 (66,4) 被其前厅的 PORTCULLIS_CLOSED 封住；CE 靠
+-    // WALL_LEVER_HIDDEN 的 wired 晋升开闸（Globals.c:347），web 尚不能执行
+-    // 该晋升 ⇒ 外包钥匙永久不可达。九条环境蓝图入池只是把 RNG 推到这个
+-    // **既存**缺口上，不是它们自己封的钥匙。
+-    // 口径同 47 号先例（见 buildAMachine 里 canReceiveAdoptedItem 的说明）：
+-    // **数据照 CE 逐字**（frequency 仍是 CE :305 的 8，由 v_2b_3_wired E4 钉死），
+-    // 只是它不再被抽中；wired lever 落地的那一轮摘掉这一条即可（届时复跑 F 组）。
+-    if (bp.id === 'vestibule_secret_lever') return false;
++    // U19d: CE18 is eligible again: search → hidden lever → wired gate is executable.
+     // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
+     // Web cannot yet bump-activate the impassable TURRET_LEVER; the adopted
+     // key is also rejected on its blocked cage tile. Keep CE frequency/flags.

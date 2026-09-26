@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/2156/brogue/brogue-web
+
+stdout | src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE18 seed31337/D23: natural action chain
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19d_machine_families.test.ts (22 tests | 1 failed | 21 skipped) 4736ms
+     × natural CE18 seed31337/D23: natural action chain 4735ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE18 seed31337/D23: natural action chain
+AssertionError: final realized machine, not an abandoned build: expected undefined to be defined
+ ❯ src/test/u_19d_machine_families.test.ts:44:152
+     42|   g.startNewGame({seed:row.seed,mode:'normal'});
+     43|   for(let d=2;d<=row.depth;d++){g.depth=d;g.generateDepth(false,false)…
+     44|   const trace=current.find(m=>m.ceBlueprintId===row.ce&&m.machineNumbe…
+       |                                                                                                                                                        ^
+     45|   const result=runMachineActions(g,trace),phase=(name:string)=>result.…
+     46|   expect(result.commands.length).toBeGreaterThan(0);expect(result.afte…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 21 skipped (22)
+   Start at  16:36:37
+   Duration  5.43s (transform 382ms, setup 0ms, import 616ms, tests 4.74s, environment 0ms)
+
