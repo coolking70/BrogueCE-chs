@@ -26,7 +26,7 @@ const CMD_KEY = { search: 's', wait: 'z', pickup: 'g', toggle_inventory: 'i', th
 
 const log = [];
 const note = (s) => { log.push(s); console.log(s); };
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 const recordings = {};
 
 for (const vp of VIEWPORTS) {

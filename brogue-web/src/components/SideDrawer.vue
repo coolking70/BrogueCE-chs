@@ -43,7 +43,7 @@ const emit = defineEmits<{ (e: 'close'): void }>();
   height: 44px;
   border-radius: 10px;
   border: 1px solid var(--panel-border, #ffffff26);
-  background: #1f2430;
+  background: var(--btn-bg);
   color: var(--text-primary);
   font-size: 1.5rem;
   cursor: pointer;

@@ -14,7 +14,7 @@ const VIEWPORTS = [
   { name: 'phone-land-844x390', width: 844, height: 390, mobile: true },
 ];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 const report = [];
 for (const vp of VIEWPORTS) {
   const ctx = await browser.newContext({

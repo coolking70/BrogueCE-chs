@@ -23,7 +23,7 @@ const { logs, hoverText } = useGameHud(props.lines);
   padding: 4px max(10px, env(safe-area-inset-left));
   font-size: 0.85rem;
   line-height: 1.35;
-  background: #0b0c10e6;
+  background: var(--panel-bg-strong);
   overflow: hidden;
   cursor: pointer;
 }
@@ -37,7 +37,8 @@ const { logs, hoverText } = useGameHud(props.lines);
   text-overflow: ellipsis;
 }
 .strip-line {
-  opacity: 0.7;
+  /* FE-1 D：0.7 会把本就偏暗的日志色（如 #8888aa）压到对比度 < 4.5:1，暗环境下难读 */
+  opacity: 0.85;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

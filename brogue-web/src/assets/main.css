@@ -46,6 +46,14 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   outline-offset: 2px;
 }
 
+/* FE-1 D：禁用态不只靠变暗（暗底上与正常态难区分），统一加虚线描边 + 禁止光标。
+   各组件 scoped 样式里若另写了 :disabled 仍以其为准（选择器更具体）。 */
+button:disabled {
+  opacity: 0.45;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
 body {
   margin: 0;
   padding: 0;

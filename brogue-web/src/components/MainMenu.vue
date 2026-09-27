@@ -296,7 +296,8 @@ button {
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
+  border-style: dashed;
   cursor: not-allowed;
 }
 
