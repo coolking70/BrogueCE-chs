@@ -1,0 +1,27 @@
+{
+  "command": "npm run test:drift -- --maxWorkers=1 --reporter=json --outputFile=ai_docs/reports/x4a-evidence/drift.json",
+  "started": "2026-09-27T18:29:57.073Z",
+  "finished": "2026-09-27T18:30:22.798Z",
+  "seconds": 25.725,
+  "exitCode": 0,
+  "files": 1,
+  "total": 1,
+  "passed": 1,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "failures": [],
+  "protectedUnchanged": true,
+  "productionHashes": {
+    "src/engine/Core/Game.ts": "457cf40a8bfabd7a8636d14377c88245cd436e000904446ab8ec931bd5280a94",
+    "src/engine/Movement/PlayerTravel.ts": "308b713992b6cbe0b94fd9a019b9c7a7c78a1281f1fa7d0b0d08cd20a767724a",
+    "src/engine/Map/Pathfind.ts": "45180ece574acc7ade21950d80fd1817f740889674c3cdbc49817c4a20cdf4e6",
+    "src/components/GameCanvas.vue": "67c564f85e6d05776653a646b24a914599bd6b2b9770e2061b86a697986ff3fb",
+    "src/components/TargetBar.vue": "9c29ac57fcbed5f1cf4fe93bae76ed9c7ba1a9a7d2d4c669b521bc12fd76ce35",
+    "src/ui/mapGlyph.ts": "9f1ee93897a507b5181a6dd25d51c662e9a1c2506836e9364771728c527ab5e1",
+    "src/locales/zh_CN.json": "e376c52a2403c631380b4116a528a14f94ad9c13bf33da0e870534e948beb8c8",
+    "src/test/x4a_movement_rendering.test.ts": "f2890cdeb5c2d731cff5670e6088c6332ac7b6f2d1f524e1e32d12adae82b65f",
+    "scripts/u03-state-contract.json": "739d80cf3c52d9b1f61df9e58425d204295ad033371bacbcc4a0cacdf80b2f2a",
+    "src/test/fixtures/u19e-machine-actions.ts": "1c226b86c751d38724a104b3d576aa48679c5fdde45f233c6c0d6668c783f3a3"
+  }
+}

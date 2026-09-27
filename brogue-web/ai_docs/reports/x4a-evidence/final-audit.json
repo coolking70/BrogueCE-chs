@@ -1,0 +1,107 @@
+{
+  "head": "ae63cadd45877d551f93965da3c839ca6487bfa7",
+  "stagedFiles": [],
+  "phases": {
+    "tsc": {
+      "exitCode": 0,
+      "seconds": 4.608
+    },
+    "build": {
+      "exitCode": 0,
+      "seconds": 6.518
+    },
+    "full": {
+      "exitCode": 0,
+      "seconds": 1910.81,
+      "total": 4073,
+      "passed": 4060,
+      "failed": 0,
+      "pending": 8,
+      "todo": 5
+    },
+    "drift": {
+      "exitCode": 0,
+      "seconds": 25.725,
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0
+    }
+  },
+  "closure": {
+    "R": 56,
+    "S": 72,
+    "union": 97,
+    "executedFiles": 222,
+    "missing": []
+  },
+  "protectedCount": 18,
+  "protectedChanges": [],
+  "sourceMismatches": [],
+  "oldGuardChanges": [],
+  "contractDelta": {
+    "added": [
+      "isAutoExploring"
+    ],
+    "removed": [],
+    "changedExisting": []
+  },
+  "fixturePremiseChanges": [
+    "src/test/fixtures/u19e-machine-actions.ts"
+  ],
+  "crlf": [],
+  "distChanges": [],
+  "failures": [],
+  "uncommittedFiles": [
+    "scripts/u03-state-contract.json",
+    "src/components/GameCanvas.vue",
+    "src/components/TargetBar.vue",
+    "src/engine/Core/Game.ts",
+    "src/engine/Map/Pathfind.ts",
+    "src/engine/Movement/PlayerTravel.ts",
+    "src/locales/zh_CN.json",
+    "src/test/fixtures/u19e-machine-actions.ts",
+    "ai_docs/reports/x4a-evidence/README.md",
+    "ai_docs/reports/x4a-evidence/baseline-after.json",
+    "ai_docs/reports/x4a-evidence/baseline-before.json",
+    "ai_docs/reports/x4a-evidence/build-summary.json",
+    "ai_docs/reports/x4a-evidence/build.txt",
+    "ai_docs/reports/x4a-evidence/ce-references.txt",
+    "ai_docs/reports/x4a-evidence/drift-summary.json",
+    "ai_docs/reports/x4a-evidence/drift.json",
+    "ai_docs/reports/x4a-evidence/drift.txt",
+    "ai_docs/reports/x4a-evidence/final-audit.json",
+    "ai_docs/reports/x4a-evidence/fix-targeted-summary.json",
+    "ai_docs/reports/x4a-evidence/fix-targeted.json",
+    "ai_docs/reports/x4a-evidence/fix-targeted.txt",
+    "ai_docs/reports/x4a-evidence/full-summary.json",
+    "ai_docs/reports/x4a-evidence/full.json",
+    "ai_docs/reports/x4a-evidence/full.txt",
+    "ai_docs/reports/x4a-evidence/initial-targeted.txt",
+    "ai_docs/reports/x4a-evidence/interrupted-full-summary.json",
+    "ai_docs/reports/x4a-evidence/interrupted-full.txt",
+    "ai_docs/reports/x4a-evidence/mandatory-results.json",
+    "ai_docs/reports/x4a-evidence/pre-fix-full-summary.json",
+    "ai_docs/reports/x4a-evidence/pre-fix-full.json",
+    "ai_docs/reports/x4a-evidence/pre-fix-full.txt",
+    "ai_docs/reports/x4a-evidence/rs-closure.json",
+    "ai_docs/reports/x4a-evidence/tsc-initial.txt",
+    "ai_docs/reports/x4a-evidence/tsc-summary.json",
+    "ai_docs/reports/x4a-evidence/tsc.txt",
+    "ai_docs/reports/x4a-evidence/u03-contract-delta.json",
+    "ai_docs/reports/x4a-evidence/u03-counterfactual.json",
+    "ai_docs/reports/x4a-evidence/u19e-counterfactual.json",
+    "ai_docs/reports/x4a-evidence/u19e-counterfactual.txt",
+    "ai_docs/reports/x4a-evidence/u19e-failure.txt",
+    "ai_docs/reports/x4a-evidence/x4a-final-targeted.txt",
+    "ai_docs/reports/x4a-evidence/x4a-initial.txt",
+    "ai_docs/reports/x4a.report.md",
+    "scripts/x4a-audit.mjs",
+    "scripts/x4a-browser-evidence.mjs",
+    "scripts/x4a-validate.mjs",
+    "src/test/x4a_movement_rendering.test.ts",
+    "src/ui/mapGlyph.ts"
+  ],
+  "ok": true
+}

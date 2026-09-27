@@ -121,6 +121,7 @@ import { displaySettings } from '../engine/Settings';
 import { computeMapCamera, cameraState, zoomBy } from '../ui/mapCamera';
 // FE-1：触屏手势与目标选择（改状态的输出只经 ui/commands 的录制边界）
 import { GestureTracker, type GestureEvent } from '../ui/touchGestures';
+import { normalizeMapGlyph } from '../ui/mapGlyph';
 import { targetingState, clearAim, targetingTapCommand, type TapCommand, THROW_AIM_FILL, THROW_AIM_STROKE } from '../ui/targeting';
 import { dispatch as dispatchCommand, travelTo } from '../ui/commands';
 
@@ -418,7 +419,8 @@ onMounted(async () => {
                 // Update tile text (avoid unnecessary style object allocation)
                 sprite.visible = char !== ' ';
                 if (char !== ' ') {
-                    if (sprite.text !== char)     sprite.text = char;
+                    const text = normalizeMapGlyph(char);
+                    if (sprite.text !== text) sprite.text = text;
                     // @ts-ignore: fill is a standard style property
                     if ((sprite.style as TextStyle).fill !== color) (sprite.style as TextStyle).fill = color;
                 }
@@ -438,7 +440,7 @@ onMounted(async () => {
         ) => {
             if (entityIdx >= MAX_ENTITY_SPRITES) return;
             const s = entitySprites[entityIdx]!;
-            s.text = text;
+            s.text = normalizeMapGlyph(text);
             (s.style as TextStyle).fill = color as never;
             s.x = ex * TILE_SIZE;
             s.y = ey * TILE_SIZE;
@@ -513,7 +515,7 @@ onMounted(async () => {
         // ---- Bolt projectile ----
         const boltFrame = game.getCurrentBoltFrame();
         if (boltFrame) {
-            boltSprite.text = boltFrame.char;
+            boltSprite.text = normalizeMapGlyph(boltFrame.char);
             const hexColor = '#' + boltFrame.color.toString(16).padStart(6, '0');
             (boltSprite.style as TextStyle).fill = hexColor as never;
             (boltSprite.style as TextStyle).dropShadow = {
@@ -535,7 +537,7 @@ onMounted(async () => {
         for (const ft of game.floatingTexts) {
             if (floatIdx >= MAX_FLOAT_SPRITES) break;
             const s = floatSprites[floatIdx]!;
-            s.text = ft.text;
+            s.text = normalizeMapGlyph(ft.text);
             (s.style as TextStyle).fill = ft.color;
             s.x = (ft.x + 0.5) * TILE_SIZE - s.width / 2;
             s.y = ft.y * TILE_SIZE;

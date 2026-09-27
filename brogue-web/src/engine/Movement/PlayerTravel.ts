@@ -3,17 +3,28 @@
  * This supplies the existing A* frontier policy, not CE's weighted cost map.
  */
 import type { Player } from '../../entities/Player';
-import type { Cell } from '../Map/Grid';
+import type { Cell, Grid } from '../Map/Grid';
+import type { Pos } from '../../types';
 import { terrainMechFlags } from '../Map/DungeonFeature';
 import {
     TERRAIN_FLAGS, T_OBSTRUCTS_PASSABILITY, T_AUTO_DESCENT, T_LAVA_INSTA_DEATH,
     T_IS_DEEP_WATER, T_IS_DF_TRAP, T_IS_FIRE, T_SPONTANEOUSLY_IGNITES,
-    T_HARMFUL_TERRAIN, T_RESPIRATION_IMMUNITIES, T_CAUSES_POISON, TM_IS_SECRET,
+    T_HARMFUL_TERRAIN, T_RESPIRATION_IMMUNITIES, T_CAUSES_POISON, TM_IS_SECRET, T_OBSTRUCTS_DIAGONAL_MOVEMENT,
 } from '../Map/TerrainCatalog';
 
 function knownFlags(cell: Cell): number {
+    if (!cell.isVisible && !cell.hasMemory && !cell.isMagicMapped && !cell.isExplored) return 0;
     const layers = cell.isVisible ? cell.layers : cell.rememberedLayers;
     return layers.reduce((flags, tile) => flags | TERRAIN_FLAGS[tile].flags, 0);
+}
+
+/** CE diagonalBlocked(..., true): neither corner may be a known obstruction. */
+export function playerTravelDiagonalBlocked(grid: Grid, from: Pos, to: Pos): boolean {
+    if (from.x === to.x || from.y === to.y) return false;
+    return [[from.x, to.y], [to.x, from.y]].some(([x, y]) => {
+        const cell = grid.getCell(x!, y!);
+        return !cell || !!(knownFlags(cell) & T_OBSTRUCTS_DIAGONAL_MOVEMENT);
+    });
 }
 
 export function playerTravelTerrainAllowed(cell: Cell, here: Cell, player: Player): boolean {

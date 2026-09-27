@@ -1,0 +1,54 @@
+{
+  "command": "npm test -- --maxWorkers=8 --reporter=default --reporter=json --outputFile=ai_docs/reports/x4a-evidence/full.json",
+  "started": "2026-09-27T17:50:27.108Z",
+  "finished": "2026-09-27T18:23:56.186Z",
+  "seconds": 2009.078,
+  "exitCode": 1,
+  "files": 221,
+  "total": 4073,
+  "passed": 4056,
+  "failed": 4,
+  "pending": 8,
+  "todo": 5,
+  "failures": [
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "title": "U03 whole-run persistence every Game instance field has an explicit U00 lifecycle/persistence decision",
+      "messages": [
+        "AssertionError: expected [ 'absoluteTurnNumber', …(104) ] to deeply equal [ 'absoluteTurnNumber', …(105) ]\n    at /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/u_03_whole_run_snapshot.test.ts:44:46\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "title": "U19e natural machines: entrance → player commands → original payoff natural CE1 seed31337/D2",
+      "messages": [
+        "Error: no second loan\n    at runAltarActions (/Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/fixtures/u19e-machine-actions.ts:102:103)\n    at /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      ]
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "title": "U19e natural machines: entrance → player commands → original payoff natural CE26 seed424242/D5",
+      "messages": [
+        "Error: CE26: no route {\"x\":14,\"y\":5} -> {\"x\":15,\"y\":4}\n    at walk (/Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/fixtures/u19e-machine-actions.ts:41:67)\n    at runAltarActions (/Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/fixtures/u19e-machine-actions.ts:96:41)\n    at /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/u_19e_machine_families.test.ts:56:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+      ]
+    },
+    {
+      "file": "src/test/x3a_live_iteration.test.ts",
+      "title": "X3a audited live consumers auto-explore does not auto-attack or mark a stale visible corpse as seen",
+      "messages": [
+        "AssertionError: expected [ Monster{ mapToMe: null, …(84) } ] to not include Monster{ mapToMe: null, id: 21, …(83) }\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/expect/dist/index.js:1319:15)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/src/test/x3a_live_iteration.test.ts:157:75\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+      ]
+    }
+  ],
+  "protectedUnchanged": true,
+  "productionHashes": {
+    "src/engine/Core/Game.ts": "e25123513da67cc4730b9c1f249ce34859b2250879d77e93b2abf4c263cc20c3",
+    "src/engine/Movement/PlayerTravel.ts": "308b713992b6cbe0b94fd9a019b9c7a7c78a1281f1fa7d0b0d08cd20a767724a",
+    "src/engine/Map/Pathfind.ts": "45180ece574acc7ade21950d80fd1817f740889674c3cdbc49817c4a20cdf4e6",
+    "src/components/GameCanvas.vue": "67c564f85e6d05776653a646b24a914599bd6b2b9770e2061b86a697986ff3fb",
+    "src/components/TargetBar.vue": "9c29ac57fcbed5f1cf4fe93bae76ed9c7ba1a9a7d2d4c669b521bc12fd76ce35",
+    "src/ui/mapGlyph.ts": "9f1ee93897a507b5181a6dd25d51c662e9a1c2506836e9364771728c527ab5e1",
+    "src/locales/zh_CN.json": "e376c52a2403c631380b4116a528a14f94ad9c13bf33da0e870534e948beb8c8",
+    "src/test/x4a_movement_rendering.test.ts": "f2890cdeb5c2d731cff5670e6088c6332ac7b6f2d1f524e1e32d12adae82b65f"
+  }
+}

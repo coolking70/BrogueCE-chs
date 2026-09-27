@@ -11,7 +11,6 @@ import { clearAim, targetingState } from '../ui/targeting';
 const { t } = useTranslation();
 const { targeting } = useGameHud();
 const itemName = ref('');
-const cancelUnsupported = ref(false);
 
 watch(targeting, (mode) => {
   itemName.value = mode === 'arcana'
@@ -19,13 +18,11 @@ watch(targeting, (mode) => {
     : mode === 'throw' ? activeGame.throwItemTarget?.displayName ?? '' : '';
   if (mode !== 'throw') {
     clearAim();
-    cancelUnsupported.value = false;
   }
 }, { immediate: true });
 
 const prompt = computed(() => {
   if (targeting.value === 'arcana') return t('mobile.target.arcana_prompt', { name: itemName.value, interpolation: { escapeValue: false } });
-  if (cancelUnsupported.value) return t('mobile.target.throw_cancel_unsupported');
   return targetingState.aim
     ? t('mobile.target.throw_confirm_prompt', { name: itemName.value, interpolation: { escapeValue: false } })
     : t('mobile.target.throw_prompt', { name: itemName.value, interpolation: { escapeValue: false } });
@@ -47,12 +44,9 @@ const confirm = () => {
 const next = () => dispatch('cycle_target', 1);
 
 const cancel = () => {
-  const wasThrow = targeting.value === 'throw';
   clearAim();
   dispatch('escape');
-  // 引擎目前没有取消投掷模式的命令（isThrowing 只在投出后清零，桌面 Esc 同样无效），
-  // 见 fe-1 报告"引擎接口需求 #1"。这里如实提示，不在 UI 层伪造取消。
-  if (wasThrow && activeGame.isThrowing) cancelUnsupported.value = true;
+
 };
 </script>
 

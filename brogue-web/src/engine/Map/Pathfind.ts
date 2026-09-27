@@ -12,7 +12,8 @@ export class Pathfind {
      * Returns an array of Pos from the next step up to the goal.
      * Returns null if no path found.
      */
-    static findPath(grid: Grid, startX: number, startY: number, goalX: number, goalY: number, canPass: (x: number, y: number) => boolean): Pos[] | null {
+    static findPath(grid: Grid, startX: number, startY: number, goalX: number, goalY: number, canPass: (x: number, y: number) => boolean,
+        canStep?: (from: Pos, to: Pos) => boolean): Pos[] | null {
         if (!grid.isValidPos(goalX, goalY)) return null;
         if (!canPass(goalX, goalY)) return null;
 
@@ -60,6 +61,7 @@ export class Pathfind {
                     const ny = current.y + dy;
 
                     if (!grid.isValidPos(nx, ny) || !canPass(nx, ny)) continue;
+                    if (canStep && !canStep(current, { x: nx, y: ny })) continue;
 
                     // Diagonals cost slightly more
                     const moveCost = (dx !== 0 && dy !== 0) ? 1.414 : 1.0;

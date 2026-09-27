@@ -17,11 +17,17 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
  const cells=g.grid.cells.flat(),owned=cells.filter((c:any)=>c.machineNumber===number);
  // CE47 routes use ordinary diagonal moves and searches without attacking the marked target.
  const route=(world:any,from:Pos,to:Pos,allowTrap=false):Pos[]|null=>{
-  if(ce!==47)return oldRoute(world,from,to,allowTrap);
+  const library=[1,2,26].includes(ce);
+  if(ce!==47&&!library)return oldRoute(world,from,to,allowTrap);
   const q=[from],seen=new Map<string,Pos|null>([[`${from.x},${from.y}`,null]]);
   for(let n=0;n<q.length;n++){const p=q[n]!;if(same(p,to)){const r:Pos[]=[];let v:Pos|null=p;while(v&&!same(v,from)){r.unshift(v);v=seen.get(`${v.x},${v.y}`)!;}return r;}
-   for(const d of around){const v={x:p.x+d.x,y:p.y+d.y},k=`${v.x},${v.y}`,c=world.grid.getCell(v.x,v.y);
-    if(!seen.has(k)&&c&&c.trapType!=='teleport'&&(safe(world,v,true)||c.layers.includes(T.SECRET_DOOR))&&!world.monsters.some((m:any)=>m.markedForSacrifice&&same(m.loc,v))){seen.set(k,p);q.push(v);}
+   for(const d of library?dirs:around){const v={x:p.x+d.x,y:p.y+d.y},k=`${v.x},${v.y}`,c=world.grid.getCell(v.x,v.y);
+    // CE walking picks up items: borrowing one selected loan must not cross
+    // another loan first (or pick up the returned loan again on the way out).
+    const allowed=c&&(library
+     ? safe(world,v,allowTrap)&&(same(v,to)||c.machineNumber!==number||!world.items.some((i:any)=>same(i.loc,v)))
+     : c.trapType!=='teleport'&&(safe(world,v,true)||c.layers.includes(T.SECRET_DOOR))&&!world.monsters.some((m:any)=>m.markedForSacrifice&&same(m.loc,v)));
+    if(!seen.has(k)&&allowed){seen.set(k,p);q.push(v);}
    }
   }return null;
  };
