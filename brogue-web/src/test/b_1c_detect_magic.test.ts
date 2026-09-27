@@ -290,6 +290,8 @@ describe('B-1c D4：恶意品使用确认的两个析取项，缺一不可', () 
     it('magicCharDiscoverySuffix：戒指恒 0（与 ringTable 全 +1 的 magicPolarity 相反）', () => {
         const ring = ItemLoader.spawnRing('ring_of_wisdom', -1, -1)!;
         ring.enchantment = 2;
+        // X2h 验收修订：U15b-2 起 CE 出生有 16% 诅咒（Items.c:347–362），随全局 RNG 位置抽取；显式构造 +2 非诅咒前提
+        ring.isCursed = false;
         expect(ItemLoader.itemMagicPolarity(ring), '实例极性 = +1').toBe(1);
         expect(ItemLoader.magicCharDiscoverySuffix(ring),
             'CE :8250-8252 发现屏后缀对戒指恒 0（"说不准好坏"）').toBe(0);

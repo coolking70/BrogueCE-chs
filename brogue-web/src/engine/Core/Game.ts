@@ -32,7 +32,8 @@ import {
     resetRewardRoomsGenerated,
     resetMachineCounter, getNextMachineNumber, restoreNextMachineNumber,
     type MachineMonsterSpawn,
-    type MachineResult
+    type MachineResult,
+    RETIRED_INVENTED_BLUEPRINT_IDS,
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { getMachineObservationHook, setMachineObservationSeed } from '../Generator/MachineObservation';
@@ -255,6 +256,7 @@ type TestAssetCategory = 'weapons' | 'wands' | 'scrolls' | 'potions' | 'other' |
 
 interface TestRoomState {
     id: number;
+    blueprintId?: string;
     x1: number;
     y1: number;
     x2: number;
@@ -2028,6 +2030,7 @@ export class Game {
 
         type RoomPayload = {
             roomName: string;
+            blueprintId?: string;
             spawn: (x: number, y: number) => { item?: Item; monster?: Monster; terrainSet?: { terrain: TerrainType; char: string; color: number } };
         };
 
@@ -2042,22 +2045,23 @@ export class Game {
 
         let assets: RoomPayload[] = [];
         if (category === 'weapons') {
-            assets = ItemLoader.getWeaponConfigs().map((cfg) => ({
+            assets = ItemLoader.genWeapons.map((cfg) => ({
                 roomName: cfg.name,
                 spawn: (x, y) => ({ item: ItemLoader.spawnWeapon(cfg.id, x, y, this.depth) ?? undefined })
             }));
         } else if (category === 'wands') {
-            assets = ItemLoader.wands.map((cfg) => ({
+            assets = ItemLoader.genWands.map((cfg) => ({
                 roomName: cfg.name,
                 spawn: (x, y) => ({ item: ItemLoader.spawnWand(cfg.id, x, y) ?? undefined })
             }));
         } else if (category === 'scrolls') {
-            assets = ItemLoader.scrolls.map((cfg) => ({
+            assets = ItemLoader.genScrolls.map((cfg) => ({
                 roomName: cfg.trueName,
                 spawn: (x, y) => ({ item: ItemLoader.spawnScroll(cfg.id, x, y) ?? undefined })
             }));
         } else if (category === 'potions') {
-            assets = ItemLoader.potions.map((cfg) => ({
+            // Darkness is CE native but paused in the natural pool until its thrown DF works.
+            assets = ItemLoader.potions.filter(cfg => !cfg.excludeFromGeneration || cfg.id === 'potion_of_darkness').map((cfg) => ({
                 roomName: cfg.trueName,
                 spawn: (x, y) => ({ item: ItemLoader.spawnPotion(cfg.id, x, y) ?? undefined })
             }));
@@ -2067,7 +2071,7 @@ export class Game {
                     roomName: cfg.name,
                     spawn: (x: number, y: number) => ({ item: ItemLoader.spawnArmor(cfg.id, x, y, this.depth) ?? undefined })
                 })),
-                ...ItemLoader.staffs.map((cfg) => ({
+                ...ItemLoader.genStaffs.map((cfg) => ({
                     roomName: cfg.name,
                     spawn: (x: number, y: number) => ({ item: ItemLoader.spawnStaff(cfg.id, x, y) ?? undefined })
                 })),
@@ -2099,8 +2103,9 @@ export class Game {
                     monsterId?: string; instanceCount: [number, number]; flags: string[]
                 }>;
             }>;
-            assets = bpList.map((bp) => ({
+            assets = bpList.filter(bp => !RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)).map((bp) => ({
                 roomName: `${bp.name} [D${bp.depthRange[0]}-${bp.depthRange[1]}]`,
+                blueprintId: bp.id,
                 spawn: (x: number, y: number) => {
                     const result: { item?: Item; monster?: Monster; terrainSet?: { terrain: TerrainType; char: string; color: number } } = {};
                     // Place the first terrain feature if any
@@ -2139,8 +2144,8 @@ export class Game {
                 }
             }));
         } else if (category === 'runics') {
-            const weaponRunics = ['paralyzing', 'venom', 'quietus', 'vampirism', 'speed', 'confusion', 'force', 'slaying', 'mercy'];
-            const armorRunics = ['reflection', 'dampening', 'mutuality', 'respiration', 'vitality', 'absorption', 'reprisal', 'immunity'];
+            const weaponRunics = ItemLoader.GENERATED_WEAPON_RUNICS;
+            const armorRunics = ItemLoader.GENERATED_ARMOR_RUNICS;
 
             const dummyMonsterData = (monsterData as MonsterData[]).find(m => m.id === 'troll') || (monsterData as MonsterData[])[0];
 
@@ -2276,6 +2281,7 @@ export class Game {
 
                 this.testRooms.set(roomId, {
                     id: roomId,
+                    blueprintId: payload.blueprintId,
                     x1: roomX1,
                     y1: row.y1,
                     x2: roomX2,

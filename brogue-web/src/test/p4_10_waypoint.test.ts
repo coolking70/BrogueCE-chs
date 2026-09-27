@@ -231,7 +231,11 @@ describe('P4-10: waypoint 游荡导航', () => {
         for (let turn = 0; turn < 3; turn++) {
             waitOnce(game);
             if (rat.targetWaypointIndex !== target) {
+                // X2h 验收修订：到达目标后换点是 CE 合法语义（Monsters.c:3608–3615，同用例上半段所验）；
+                // 新目标的距离不能与旧目标比较——从新目标重新计量，持目标期间仍须严格下坡
                 target = rat.targetWaypointIndex;
+                d0 = wp.distanceMaps[target]![rat.loc.x]![rat.loc.y]!;
+                continue;
             }
             const d1 = wp.distanceMaps[target]![rat.loc.x]![rat.loc.y]!;
             expect(d1).toBeLessThan(d0);

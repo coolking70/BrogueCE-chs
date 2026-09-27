@@ -514,6 +514,8 @@ describe('A12: 鉴定卷轴 = 实例全亮 + 种类亮（CE identify()，Items.c
 
     it('CAN_BE_IDENTIFIED 维护（CE updateIdentifiableItem，Items.c:7699-7713）', () => {
         const done = ItemLoader.spawnWeapon('sword', -1, -1)!; // 无符文
+        // X2h 验收修订：出生符文随全局 RNG 位置抽取；显式构造注释所述"无符文"前提（有符文分支见下方用例）
+        done.runicType = undefined;
         done.identified = true;
         ItemLoader.updateIdentifiableItem(done);
         expect(done.canBeIdentified).toBe(false); // 没有可学的了
