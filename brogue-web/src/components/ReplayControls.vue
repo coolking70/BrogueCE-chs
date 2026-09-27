@@ -110,4 +110,20 @@ button:hover {
     width: 100%;
     cursor: pointer;
 }
+
+/* FE-1：紧凑模式——贴底全宽（回放期间触控命令栏隐藏，由本条占位），按钮 44px */
+@media (max-width: 1023px), (max-height: 599px) {
+    .replay-controls {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: none;
+        min-width: 0;
+        border-radius: 12px 12px 0 0;
+        padding: 8px 12px max(8px, env(safe-area-inset-bottom));
+    }
+    button { min-height: 44px; min-width: 72px; }
+    .slider { height: 32px; }
+}
 </style>

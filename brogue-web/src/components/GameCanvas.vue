@@ -117,6 +117,8 @@ import { activeGame } from '../engine/Core/Game';
 import { inputManager } from '../engine/Input';
 import i18next from 'i18next';
 import { displaySettings } from '../engine/Settings';
+// FE-1：小屏跟随相机（纯显示状态，不进存档/录像）
+import { computeMapCamera, cameraState } from '../ui/mapCamera';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
 let pixiApp: Application | null = null;
@@ -125,6 +127,7 @@ const arcanaPrompt = ref('');
 let resizeObserver: ResizeObserver | null = null;
 // P2-6：地图缩放模式切换的 watch 停止器（onMounted 内创建，onUnmounted 内停止）
 let stopScaleModeWatch: (() => void) | null = null;
+let stopCameraWatch: (() => void) | null = null;
 
 onMounted(async () => {
   if (canvasContainer.value) {
@@ -151,6 +154,10 @@ onMounted(async () => {
     // 重算（observe 建立于图层创建之后），四个图层与 hitArea 同步更新。
     let offsetX = 0;
     let offsetY = 0;
+    // FE-1：相机跟随的上次焦点与当前文字纹理分辨率
+    let lastFocusX = -1;
+    let lastFocusY = -1;
+    let textResolution = window.devicePixelRatio || 1;
 
     // ---------- Pre-allocated tile layer ----------
     // One Graphics for bg rectangles (batch-drawn every frame)
@@ -241,13 +248,33 @@ onMounted(async () => {
         // 用容器 clientWidth/Height 而非 pixiApp.screen：resizeTo 的渲染器
         // 尺寸要等 Pixi 下一个渲染帧才跟上（queueResize），clientWidth 是
         // 布局完成后的即时真值，且能覆盖非 window 尺寸变化（如侧栏增减）。
-        const { scaleX, scaleY, offsetX: ox, offsetY: oy } = computeMapLayout(
+        const base = computeMapLayout(
             el.clientWidth,
             el.clientHeight,
             displaySettings.mapScaleMode,
         );
-        offsetX = ox;
-        offsetY = oy;
+        // FE-1：桌面口径（上面的 computeMapLayout）每格 ≥ 12px 时原样使用；
+        // 小屏下才叠加跟随相机（以玩家为中心 + 用户平移/缩放，夹在地图边界内）。
+        const focus = activeGame.player?.loc ?? { x: 0, y: 0 };
+        const cam = computeMapCamera(
+            el.clientWidth, el.clientHeight, base, DCOLS, DROWS, TILE_SIZE,
+            focus, cameraState.zoom, { x: cameraState.panX, y: cameraState.panY },
+        );
+        cameraState.follow = cam.follow;
+        if (cameraState.panX !== cam.panX) cameraState.panX = cam.panX;
+        if (cameraState.panY !== cam.panY) cameraState.panY = cam.panY;
+        lastFocusX = focus.x;
+        lastFocusY = focus.y;
+        const { scaleX, scaleY } = cam;
+        offsetX = cam.offsetX;
+        offsetY = cam.offsetY;
+        // 放大（scale > 1）时按比例提高文字纹理分辨率，避免字形被拉糊。
+        const wantedResolution = Math.min(4, (window.devicePixelRatio || 1) * Math.max(1, scaleX, scaleY));
+        if (wantedResolution !== textResolution) {
+            textResolution = wantedResolution;
+            for (const column of tileSprites) for (const t of column) t.resolution = wantedResolution;
+            for (const t of entitySprites) t.resolution = wantedResolution;
+        }
         // 四个图层同步缩放 + 居中。toLocal 走完整的仿射逆矩阵，x/y 缩放不同
         // （stretch 模式）也会被正确换算，因此指针→格子的映射
         // （pointermove / pointerup）无需另外处理。
@@ -270,6 +297,8 @@ onMounted(async () => {
     // P2-6：地图缩放模式切换不改变容器尺寸（ResizeObserver 不会触发），
     // 需显式走同一条 applyLayout 重算路径，设置变更即时生效、无需刷新页面。
     stopScaleModeWatch = watch(() => displaySettings.mapScaleMode, () => applyLayout());
+    // FE-1：缩放级 / 平移量变化同样走 applyLayout（纯显示，不影响玩法）。
+    stopCameraWatch = watch(() => [cameraState.zoom, cameraState.panX, cameraState.panY], () => applyLayout());
 
     const game = activeGame;
     // P2-4 动画节奏（决策 E1-修订，CE Time.c:2704 口径）：UI 挂载后启用分步
@@ -284,6 +313,12 @@ onMounted(async () => {
     });
 
     const render = () => {
+        // FE-1：玩家移动后相机回到跟随（清掉临时平移）并重算视口
+        if (game.player.loc.x !== lastFocusX || game.player.loc.y !== lastFocusY) {
+            cameraState.panX = 0;
+            cameraState.panY = 0;
+            applyLayout();
+        }
         // ---- Background rectangles (batch draw) ----
         bgGraphics.clear();
         arcanaCursor.clear();
@@ -703,6 +738,8 @@ onUnmounted(() => {
 
   stopScaleModeWatch?.();
   stopScaleModeWatch = null;
+  stopCameraWatch?.();
+  stopCameraWatch = null;
 
   delete (window as Window & { advanceTime?: (ms: number) => void }).advanceTime;
   delete (window as Window & { render_game_to_text?: () => string }).render_game_to_text;
@@ -740,7 +777,11 @@ onUnmounted(() => {
 .game-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   overflow: hidden;
   background-color: #000;
   display: flex;

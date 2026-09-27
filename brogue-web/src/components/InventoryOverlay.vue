@@ -659,6 +659,54 @@ const confirmCall = () => {
   color: #fff;
 }
 
+/* FE-1：紧凑模式（与 src/ui/layout.ts 同一断点）——底部弹层、全宽、
+   操作按钮自动换行且 ≥ 44px 触控高度。 */
+@media (max-width: 1023px), (max-height: 599px) {
+  .inventory-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+    background-color: rgba(0, 0, 0, 0.55);
+  }
+  .inventory-modal {
+    width: 100%;
+    max-width: 720px;
+    max-height: 92dvh;
+    border-radius: 14px 14px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .modal-header { padding: 0.5rem 0.75rem 0.5rem 1rem; }
+  .modal-header h2 { font-size: 1.1rem; }
+  .close-btn { width: 44px; height: 44px; }
+  .modal-content { padding: 0.75rem; }
+  .category-block { margin-bottom: 0.75rem; }
+  .category-title { padding: 0.4rem 0.75rem; }
+  .item-row { padding: 0.65rem 0.75rem; min-height: 44px; box-sizing: border-box; }
+  .item-name { flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .item-letter { margin-right: 8px; }
+  .item-char { margin-right: 10px; }
+  .item-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0.75rem;
+  }
+  .action-btn {
+    min-height: 44px;
+    min-width: 72px;
+    padding: 0 14px;
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+  .confirm-label { flex-basis: 100%; }
+  .call-input { min-height: 44px; flex-basis: 100%; font-size: 16px; }
+}
+@media (max-height: 599px) and (min-width: 600px) {
+  /* 横屏矮视口：侧边抽屉比底部弹层更能多显示几行 */
+  .inventory-overlay { align-items: stretch; justify-content: flex-end; }
+  .inventory-modal { max-height: 100dvh; height: 100dvh; width: min(560px, 70vw); border-radius: 14px 0 0 14px; }
+}
+
 .empty-msg {
   text-align: center;
   color: var(--text-secondary);

@@ -32,6 +32,11 @@ body {
   color: var(--text-primary);
   font-family: var(--font-main);
   overflow: hidden;
+  /* FE-1：禁止移动端下拉刷新/回弹把整页拖走；双击不缩放 */
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

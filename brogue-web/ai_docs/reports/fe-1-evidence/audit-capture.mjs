@@ -70,7 +70,7 @@ for (const vp of VIEWPORTS) {
   await shot('06-help');
   await page.keyboard.press('Escape');
   await page.waitForTimeout(200);
-  const menuBtn = page.locator('.menu-btn');
+  const menuBtn = page.locator('.menu-btn, .mobile-hud .hud-btn').first();
   if (await menuBtn.count()) {
     await menuBtn.click();
     await page.waitForTimeout(300);

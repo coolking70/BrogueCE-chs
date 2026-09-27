@@ -221,6 +221,21 @@ function colorToCSS(color: number): string {
     color: rgba(100, 120, 160, 0.6);
 }
 
+/* FE-1：紧凑模式——底部弹层、全宽、关闭钮 44px */
+@media (max-width: 1023px), (max-height: 599px) {
+    .detail-overlay { align-items: flex-end; }
+    .detail-panel {
+        min-width: 0;
+        width: 100%;
+        max-width: 640px;
+        max-height: 85dvh;
+        border-radius: 14px 14px 0 0;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    .detail-close { width: 44px; height: 44px; font-size: 18px; }
+    .section-line { font-size: 15px; }
+}
+
 /* Scrollbar styling */
 .detail-panel::-webkit-scrollbar {
     width: 6px;

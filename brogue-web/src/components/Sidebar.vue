@@ -13,11 +13,16 @@ import { visibleMonsterRows } from '../engine/UI/MonsterSidebar';
 // 侧栏是 app-layout（100vw flex 行）的直接子元素，容器宽即窗口宽；
 // 与地图不同，这里用 window.innerWidth 是正确口径（地图必须用画布容器尺寸，
 // 见 GameCanvas.computeMapLayout 的注释）。
+// FE-1：variant='drawer' 时侧栏装在紧凑模式的右侧抽屉里，铺满抽屉。
+const props = withDefaults(defineProps<{ variant?: 'panel' | 'drawer' }>(), { variant: 'panel' });
 const containerWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1280);
 const onWindowResize = () => {
   containerWidth.value = window.innerWidth;
 };
 const sidebarStyle = computed(() => {
+  if (props.variant === 'drawer') {
+    return { width: '100%', minWidth: '0', maxWidth: '100%', height: '100%' };
+  }
   if (containerWidth.value <= 600) {
     return { width: '100%', minWidth: '100%', maxWidth: '100%', height: '48vh' };
   }
@@ -72,7 +77,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="sidebar glass-panel" :style="sidebarStyle">
+  <div class="sidebar glass-panel" :class="{ 'sidebar-drawer': variant === 'drawer' }" :style="sidebarStyle">
     
     <!-- Title Area -->
     <div class="brand-header">
@@ -181,6 +186,14 @@ onUnmounted(() => {
   background: linear-gradient(180deg, rgba(20,20,24,0.95) 0%, rgba(10,10,12,0.98) 100%);
   z-index: 10;
 }
+
+/* FE-1：抽屉内——给右上角关闭钮让位、缩小留白、尊重安全区 */
+.sidebar-drawer {
+  padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+  border-left: none;
+}
+.sidebar-drawer .brand-header { margin-bottom: 1rem; padding-right: 52px; }
+.sidebar-drawer .monster-panel { max-height: 34dvh; }
 
 /* Brand Header */
 .brand-header {

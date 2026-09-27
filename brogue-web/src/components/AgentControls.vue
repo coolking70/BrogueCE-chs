@@ -6,6 +6,10 @@ import { iterateCreatures } from '../engine/Core/MonsterLifecycle';
 import { logger } from '../engine/Systems/Logger';
 import { Direction } from '../types';
 
+// FE-1：紧凑/触屏布局下由 TouchControls 提供可见的触控按钮，这里的
+// 近乎隐形的浮动按钮会遮挡背包与日志，故只隐藏按钮区（ai-agent-state 照常输出）。
+defineProps<{ hideControls?: boolean }>();
+
 const act = (action: string, data?: any) => {
     inputManager.triggerAction(action, data);
 };
@@ -71,7 +75,7 @@ const recentLogs = computed(() => {
         </div>
     </div>
 
-    <div class="agent-controls" :aria-label="$t('controls.title')">
+    <div v-if="!hideControls" class="agent-controls" :aria-label="$t('controls.title')">
       <div class="d-pad">
         <button @click="act('move', Direction.UPLEFT)" :aria-label="$t('controls.up_left')">↖</button>
         <button @click="act('move', Direction.UP)" :aria-label="$t('controls.up')">↑</button>

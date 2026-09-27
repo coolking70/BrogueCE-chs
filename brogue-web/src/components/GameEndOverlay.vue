@@ -307,4 +307,26 @@ function enchantLabel(ench: number): string {
     background: #444;
     border-color: #777;
 }
+
+/* FE-1：紧凑模式——全屏面板、内部滚动、不再强制 400px 最小宽度 */
+@media (max-width: 1023px), (max-height: 599px) {
+    .game-end-overlay {
+        height: 100dvh;
+        align-items: flex-start;
+    }
+    .end-panel {
+        min-width: 0;
+        width: 100%;
+        max-width: 600px;
+        margin: 0;
+        padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+        border-radius: 0;
+        border-width: 0;
+        min-height: 100dvh;
+        box-sizing: border-box;
+    }
+    .title-win, .title-loss { font-size: 1.8rem; }
+    .stats-grid { gap: 10px; padding: 12px; }
+    .return-btn { width: 100%; min-height: 48px; }
+}
 </style>

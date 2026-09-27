@@ -319,4 +319,26 @@ button:disabled {
 .file-input {
   display: none;
 }
+
+/* FE-1：矮视口/小屏——卡片可滚动（原先 body overflow:hidden 下横屏被裁且无法滚动），
+   按钮与输入框放大到触控尺寸。 */
+.menu-overlay {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  box-sizing: border-box;
+}
+.menu-card {
+  margin: auto;
+  box-sizing: border-box;
+}
+@media (max-width: 1023px), (max-height: 599px) {
+  .menu-overlay { align-items: flex-start; }
+  .menu-card { margin: 12px auto; }
+  button { height: 44px; padding: 0 14px; }
+  select, input { height: 44px; font-size: 16px; }
+}
+@media (max-height: 599px) and (min-width: 600px) {
+  .menu-card { width: min(720px, 94vw); }
+}
 </style>

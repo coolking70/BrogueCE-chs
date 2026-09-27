@@ -64,4 +64,11 @@ onUnmounted(() => { window.clearInterval(timer); window.removeEventListener('key
 .reference-backdrop{position:fixed;inset:0;z-index:1900;background:#000c;display:grid;place-items:center;padding:12px}
 .reference-panel{width:min(920px,100%);max-height:calc(100dvh - 24px);overflow:auto;background:#101827;color:#ddd;border:1px solid #64748b;border-radius:8px;padding:16px;box-sizing:border-box}
 header{display:flex;justify-content:space-between;align-items:center}h2{margin:0 0 12px}button{background:none;border:1px solid #64748b;color:#fff;font-size:24px;cursor:pointer}h3{color:#c4b5fd;margin:8px 0}.discovery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}.discovery-column,.discovery-group{min-width:0}.discovery-group+.discovery-group{margin-top:20px}.discovery-row{display:flex;gap:8px;color:#6b7280;padding:3px 0;overflow-wrap:anywhere}.discovery-row.known{color:white}.sigil{width:1.2em;flex:none;color:#d8c9a1}.sigil.good{color:#59c987}.sigil.bad{color:#db7878}.help-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.help-list>div{display:flex;gap:12px}.help-list kbd{color:#facc15;min-width:90px}footer{text-align:center;color:#94a3b8;margin-top:16px}@media(max-width:650px){.discovery-grid,.help-list{grid-template-columns:1fr}.reference-panel{font-size:14px}}
+/* FE-1：紧凑模式——全屏面板、关闭钮 44px、尊重安全区 */
+@media (max-width: 1023px), (max-height: 599px) {
+  .reference-backdrop{padding:0}
+  .reference-panel{width:100%;max-height:100dvh;height:100dvh;border-radius:0;border:none;padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+  header button{width:44px;height:44px;border-radius:10px}
+}
+@media (max-height: 599px) and (min-width: 651px){.discovery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
