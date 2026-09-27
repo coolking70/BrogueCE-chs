@@ -1,0 +1,146 @@
+{
+  "scope": "Unmodified current implementation; synthetic scenes do not establish natural occurrence rates.",
+  "corpseFear": {
+    "corpse": {
+      "hp": 0,
+      "processed": true,
+      "listed": true,
+      "occupies": false
+    },
+    "feared": true,
+    "beforeSweep": 3,
+    "afterSweep": 2
+  },
+  "corpseFearTurn": [
+    {
+      "sweep": false,
+      "rat": {
+        "loc": {
+          "x": 14,
+          "y": 12
+        },
+        "state": 3,
+        "hp": 6
+      },
+      "corpseListed": false,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 77487015,
+            "b": 1030963497,
+            "c": 263291924,
+            "d": 1407362115
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2571,
+        "cosmeticNumbersGenerated": 158
+      }
+    },
+    {
+      "sweep": true,
+      "rat": {
+        "loc": {
+          "x": 11,
+          "y": 10
+        },
+        "state": 2,
+        "hp": 6
+      },
+      "corpseListed": false,
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1195594064,
+            "b": 2363608949,
+            "c": 2062945236,
+            "d": 2678352543
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2574,
+        "cosmeticNumbersGenerated": 158
+      }
+    }
+  ],
+  "flareItemReplay": {
+    "flashed": true,
+    "recordedTarget": {
+      "x": 10,
+      "y": 10
+    },
+    "events": [
+      {
+        "action": "item:command",
+        "data": "quaff|e|",
+        "tick": 100,
+        "turn": 1
+      },
+      {
+        "action": "item:command",
+        "data": "use|f|",
+        "tick": 100,
+        "turn": 1
+      },
+      {
+        "action": "confirm_target",
+        "data": null,
+        "tick": 100,
+        "turn": 1
+      }
+    ],
+    "replay": [
+      {
+        "render": false,
+        "visibleBeforeItem": false,
+        "target": {
+          "x": 10,
+          "y": 10
+        },
+        "cursor": 3,
+        "error": null,
+        "charges": 10,
+        "slowed": 0
+      },
+      {
+        "render": true,
+        "visibleBeforeItem": true,
+        "target": {
+          "x": 14,
+          "y": 10
+        },
+        "cursor": 2,
+        "error": "OOS at command 3: state mismatch after command 3",
+        "charges": 9,
+        "slowed": 49
+      }
+    ]
+  },
+  "zeroStrengthDetail": {
+    "strength": 12,
+    "requirement": 0,
+    "combatNetEnchant": 15,
+    "detailNetEnchant": 12,
+    "combatFraction": 2.57183837890625,
+    "lines": [
+      "基础伤害: 1d2+2 (3~4)",
+      "实际伤害: 6~8 (附魔 +12)"
+    ]
+  }
+}

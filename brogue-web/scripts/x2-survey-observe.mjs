@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {createRequire} from 'node:module';
+const root=path.resolve(import.meta.dirname,'..'),evidence=path.join(root,'ai_docs/reports/x-2-evidence');
+const {project}=JSON.parse(fs.readFileSync(path.join(evidence,'validation-stage.json')));
+const require=createRequire(import.meta.url),{buildSync}=require(path.join(project,'node_modules/esbuild'));
+const outfile=path.join(project,'x2-survey-observations.mjs');
+buildSync({stdin:{contents:fs.readFileSync(path.join(root,'scripts/x2-survey-observe.ts'),'utf8'),resolveDir:project,sourcefile:'x2-survey-observe.ts',loader:'ts'},outfile,bundle:true,platform:'node',format:'esm',logLevel:'silent'});
+const {default:result}=await import(pathToFileURL(outfile).href+'?t='+Date.now());
+fs.writeFileSync(path.join(evidence,'runtime-observations.json'),JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify(result));

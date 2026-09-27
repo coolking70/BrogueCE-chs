@@ -1,0 +1,982 @@
+[
+  {
+    "file": "x2a.report.md",
+    "line": 5,
+    "text": "依据 `x-1-survey.report.md` §4 N01、§7.1，以及 U27 v2 命令录像合同。v2 的既定字段是命令完成后的状态；同步录像本来如此，动画在推进前提交属实现错误。因此保持 v2，既有正确 v2 录像继续接受，v1 仍直接拒绝。不改生成流程或 `test:drift`。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 9,
+    "text": "- `Game.executeCommand` 在命令边界立即写入动作、参数和确认决策事件。若动作开启分帧推进，把该事件引用置于实例隔离的 `RecordingRuntime`；`finishAdvancement` 完成怪物、环境和回合尾声后，更新其位置、深度、tick、回合、双流 RNG 和终局 checkpoint。同步路径当场提交同一时点。推进期间拒绝导出未完成的录像；新局/读档/seek 重建会丢弃在途提交引用。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 10,
+    "text": "- 动画 `replayStep` 同样延至推进结束才核对 checkpoint、推进游标和报告 OOS。同步回放与 seek 走同一核对函数。自动行走仍按原同步快进路线，每步单独记录。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 15,
+    "text": "- 新增 `x2a_recording_checkpoint.test.ts`：seed424242 动画 wait 在命令边界已有一条事件但 checkpoint 未提交、收尾后与同步完整事件相等；动画逐条回放和 seek 无 OOS；篡改 tick 准确报第 1 条 OOS；慢回合中间暂停帧仍不提交 checkpoint；发现屏关闭事件与 modal 回放；另以同 seed 混合序列逐条对比动画开/关的全部 checkpoint。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 16,
+    "text": "- 新增 `scripts/x2a-browser-acceptance.mjs`，在本机 Edge 真页面启动 seed424242，确认 `animationEnabled`，执行等待、搜索、移动、背包开关、食物确认取消/接受、发现屏鼠标关闭、帮助屏 Escape 关闭、鼠标自动行走一步、楼梯命令。导出 JSON，重载页面，逐条回放与 seek。14 条事件，确认决策 `[[false],[true]]`，`auto_step` 存在，两条回放均 `cursor=14, error=null`。该场景的楼梯命令在非楼梯格上执行，未覆盖实际换层。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 18,
+    "text": "- 反事实门禁：最初延迟写入整个事件，`p2_2_real_speed` 的 C2/D1/D2 三条守卫因命令边界事件数不增而失败。按任务书“事件本身在命令边界”修正为立即写事件、只延后 checkpoint；未改守卫。修复后该文件与 X2a/U27 定向合跑通过。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 11,
+    "text": "保留 Cell 的两个 own fields、序列化字段和 FOV 热路径上的常数时间读取，没有引入逐读扫描或 Proxy。为解除 Grid 与属性目录的环依赖，把原 TerrainType 枚举原样移到无依赖的 `Map/TerrainType.ts`；Grid 继续重导出，枚举值和所有既有导入接口不变。没有复制另一份地形白名单。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 16,
+    "text": "| Grid.setTerrainLayer / 清层 | 只改指定层，再按四层重算；独立测试在每一层放完整 catalog，并保留另一层阻挡后清除当前层。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 21,
+    "text": "| Gas 添加、换型、归零、搬运 | 直接写 GAS 的分支立即刷新；搬运目标保留原层写入并立即刷新；气体清除不会清掉其他层的阻挡。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 22,
+    "text": "| Game 结晶术 | FORCEFIELD 中间态及边缘 CRYSTAL_WALL 保留原直接写层方式并紧接统一刷新，DF 回调读不到旧缓存。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 25,
+    "text": "新增 AST 守卫锁定生产代码只在统一方法写这两个布尔值，并穷举仍直接写 layers 的函数集合。生产读写清单见 [terrain-accesses.json](x2b-evidence/terrain-accesses.json)，运行守卫见 [x2b_terrain_derivation.test.ts](../../src/test/x2b_terrain_derivation.test.ts)。本轮没有把测试故意构造的坏缓存写入改成生产支持的第二事实来源。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 31,
+    "text": "| FOV / LightMap / 矿灯 / 搜索视域 | CE getFOVMask 的 T_OBSTRUCTS_VISION。保留现有 isOpaque 热读，缓存修复后与全层旗标等价；自然 foliage 与 torch wall 遮挡被恢复。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 33,
+    "text": "| BoltTrajectory / 魔法弹道 / blink / beckoning | CE Items.c 的 T_OBSTRUCTS_PASSABILITY **或** T_OBSTRUCTS_VISION，另有 bolt 的火焰/隧道等特例。已有轨迹代码直接查全层 flags，保留；没有换成单一 opacity。W-14 等原守卫纳入门禁。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 34,
+    "text": "| 鞭 / 矛 / 横扫 / 突进 | 射线停止继续读 passability OR vision；近战目标准入仍有 ATTACKABLE_THRU_WALLS 例外。怪物提交移动的物理闸放在几何攻击尝试之后，避免阻断合法隔墙攻击。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 35,
+    "text": "| 搜索概率 | CE Movement.c:2459–2489：先直视再掷骰，阻挡通行格取 2/3 概率。把显示层 blocksPassability 改成全层派生位；保留掷骰次序、半径、低概率 RNG 消耗。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 36,
+    "text": "| 自动探索 / 自动旅行 | CE getLocationFlags 的当前/记忆区别及 monsterAvoids 的危险/免疫区别。探索候选与 A* 准入共用 PlayerTravel 判据：已知墙、渊、水、火、陷阱等按玩家状态过滤；不偷读不可见格的当前地形；未知边界可探索；未知地面陷阱按 TM_IS_SECRET 例外放行，秘密墙仍被物理阻挡先行拒绝。实际迈步检查物理通行，不能因“可走入深渊”就自动选择深渊。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 37,
+    "text": "| 玩家手动移动 | 保留已有直接全层阻挡查询、游泳分支、钥匙/门、跌落确认、入迷与特殊近战分支。没有用 generic 或 safety cost 代替手动移动。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 39,
+    "text": "| 气味 | 保留 T_OBSTRUCTS_SCENT、T_OBSTRUCTS_PASSABILITY 两个独立判据（CE Movement.c:2877–2878 / Time.c updateScent）；门可通行但仍阻气味。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 40,
+    "text": "| 逃跑图 / safety map | 保留 CE Time.c:1807–1876 的双 cost：如深水 [5,5]、未见密门 [100,1]，以及玩家/怪物的危险差别。新守卫显式证明这些数值不等于 physical passability。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 41,
+    "text": "| generic Dijkstra.calculateMap | 此旧 API 没有生产调用者，但仍不能因 CHASM.passable=true 放行。接入已有 genericPathCost（Movement.c:2017–2037），仅将 -2/-1 映射回该 API 原来的 30000/29999；batchScan 及其他 cost 不改。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 42,
+    "text": "| 生成 arcCount / 落位 | Game 私有 arcCount 原先读物理 passable，现复用 CE Architect.c:48、171 的 T_PATHING_BLOCKER + 密门/钥匙/楼梯门例外；锁门与渊的独立合成样本、零 RNG 守卫覆盖。GenerationCoordinator 的最终地板池仍只排物理阻挡，后续各物种落位规则保持职责。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 43,
+    "text": "| 力量符文击退 | CE Combat.c:539 forceWeaponHit 使用 blink 轨迹；补上 vision 阻挡，落地结算环境效果。既有范围/伤害公式保留。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 46,
+    "text": "| 记忆 / 快照 / 复活落位 | 记忆保存观察时的真实派生位；快照恢复按层重算；复活等已有 T_PATHING_BLOCKER / T_HARMFUL_TERRAIN 附加条件保留。 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 48,
+    "text": "范围澄清：`isPassable` 表示“不阻挡物理通行”，**不表示可安全寻路**。CE 允许踏入 CHASM 后跌落，允许通行 FOLIAGE 而遮挡视线，也有透明且不可通行的 CRYSTAL_WALL。任务书与 CE 在这些语义上不冲突。自动旅行仍沿用项目既有 A* 与目标选择算法；本轮核对/修正的是地形准入，未冒称已完整移植 CE populateCreatureCostMap 的全部权重和 mapToShore 时长预算。一般怪物 AI 调度、几何光学算法本身也不是本轮的重写范围。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 53,
+    "text": "- 同 4 seed × D1–40 的 160 层，入场合计 **20,293 格**至少一个缓存不同；只修派生写口之后，160 层均为 **0**。后续各阶段仍为 0。输出保留逐格坐标、层数组与 flags，不仅是总数。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 55,
+    "text": "- 全 catalog × 四层覆盖包含 GAS、显示优先级反例、保留其他层阻挡、反向清除；运行链覆盖 DF 回调、晋升、发现、开门、燃烧、气体竞争/搬运、结晶术和恢复。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 58,
+    "text": "反事实过程也约束了新增测试本身：最初搜索夹具用 SECRET_DOOR+火，密门 drawPriority=0，火实际没遮住它，旧 effective 查询仍能通过；改成隐藏地面陷阱 + LIQUID 锁门 + SURFACE 火，并断言 effective 确实为火后，旧查询被检出。首次新测试还漏传 PromotionDriverOptions，按真实接口补上 keyOnTileAt；传送夹具最初全图透明，使所有落点都在 FOV 内，补上真实遮挡与清除目标机器标记后才构成有效正例。没有为这些夹具问题改生产语义。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 82,
+    "text": "`guard` 最后一段只调整 Gas/Game 的调用形状，以保留 C-4a-0 的层 API 许可清单；重新跑 160 层及三组 trace，所有观测字段均零变化。已于 03:29:36 CST 完成一次性重捕获：浅层 44 字段、深层 62 字段（含宝石坐标）；UR3 用原 `UR3_CAPTURE=1 npx vitest run src/test/u_r3_trace.test.ts --maxWorkers=1` 一次重录，最终差异 141 个叶路径。UR2、UR4 逐值相同，未写文件。登记见 [recapture.json](x2b-evidence/recapture.json)。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 96,
+    "text": "以下前提迁移均保留原样本、原结果要求、原超时与零违规门槛，提交验收方裁决："
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 98,
+    "text": "1. `c_4a_terrain_catalog.test.ts` 的两个留痕用例：全枚举旧白名单（锁门可通行、渊不可通行）及旧 calculateMap 启发式（锁门 cost=1）。原注释明确允许接 CE 判据后翻转。[原 HEAD + 原断言](x2b-evidence/premise-and-deep-before.json)两项通过；[派生修复 + 原断言](x2b-evidence/premise-derived.json)两项失败。新预期仍覆盖全枚举及点名反例，generic cost 保留不同 sentinel。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 100,
+    "text": "3. `u_26a_deep_levels.test.ts` 的即时拾取前提：原 HEAD 与仅派生阶段都通过，arcCount 生成阶段后 seed777/D32 第一颗宝石后的真实战斗施加了 20 回合麻痹，下一次拾取输入只负责恢复行动，物品仍在地面。[阶段反事实](x2b-evidence/deep-premise-generation.json)、[逐命令状态](x2b-evidence/deep-action-probe.txt)。脚本在拾取前用有界的真实 wait 恢复行动，并断言麻痹已消失；不删除怪、不清状态、不改生产的麻痹输入闸，所有宝石数量、可达、存档、往返、胜利和计分断言保留。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 101,
+    "text": "4. `fixtures/u19e-machine-actions.ts` 的诱导站位前提：同一个 seed424242/D8 的完整 CE47 机器，search 阶段原脚本成功，movement 阶段原脚本失败。固定北侧 fallback 在食人魔新的合法追踪路线下反复进入近战距离并被击退。只把原候选位置按“目标下一步接近祭坛”排序，仍走真实路线/命令，原 160 次界限不变，未操纵目标位置/HP/AI。[原脚本失败](x2b-evidence/sacrifice-movement.json.gz)、[调整后完整奖励链](x2b-evidence/sacrifice-guard-fixed.json.gz)。`p1_20_item_placement.test.ts` 及 U19d/e 的全部结果断言不改。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 103,
+    "text": "另有 C-4a-0 层 API 许可守卫在预检发现新增调用文件；没有扩大清单，改为让 Game/Gas 保留原层写入并紧接刷新。[原守卫与写口专项复核通过](x2b-evidence/writer-guard-fixed.json)。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 116,
+    "text": "完整预检于 02:45:55–03:26:51 CST 跑完：200 文件、3775 passed、8 failed、8 skipped、5 todo。八项失败分别为 C4a 旧前提两项、层 API 许可、闭笼钥匙前提、麻痹时即时拾取、献祭诱导脚本、原 UR3、原深层基线，均已按前述证据处理。这轮期间实现仍在调整，因此只算完整预检，不能充当冻结终验。[原始完整结果](x2b-evidence/preflight-all.json)。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 140,
+    "text": "最终 HEAD 仍为 `f18eb6d05c004722a1bc9b1b8880ac2be1b2a128`，暂存区为空，**未提交**。实现与门禁已完成；§5 四类旧前提/操作脚本迁移保留完整反事实证据，交验收方裁决。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 7,
+    "text": "逐行查 `src/data/monsters.json` 的 67 个自然条目、CE `monsterCatalog` 的 `flags`/`abilityFlags`/DF，并核对命中实施代码。仅三种带 `onHitStatus`，八种带 `statusImmunities` 或 `statusResistTurns`。下表把每种含状态字段的自然物种列全；CE 没有通用状态免疫或按回合减时字段，因此这些 JSON 值均是 web 自创。实例和 polymorph 仍投影这些值供数据/快照结构使用，状态判定入口不让自然默认值发挥效果；运行期显式赋予的其他免疫/抗性仍按既有来源工作。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 14,
+    "text": "| goblin | paralyzed on hit；immune hallucinating；confused -2 | `Globals.c:1041–1042` 为 `MA_ATTACKS_PENETRATE`、`MA_AVOID_CORRIDORS`，没有麻痹命中；legacy 状态不生效，矛几何仍保留。 |"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 18,
+    "text": "| vampire | paralyzed on hit；immune poisoned；confused/hallucinating -2 | `Globals.c:1130–1131` 为 `MA_TRANSFERENCE`、`MA_DF_ON_DEATH`、召唤/进入召唤与 `DF_BLOOD_EXPLOSION`，没有麻痹命中或毒免疫；legacy 状态不生效，原生吸血/死亡 DF 等出口保留。 |"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 20,
+    "text": "CE 真正的接触状态来自能力位，例如 toad 的 `MA_HIT_HALLUCINATE`（`Globals.c:1052–1053`）、spider 的 `MA_POISONS`（:1067–1068）、centipede/dart turret 的 `MA_CAUSES_WEAKNESS`（:1058–1059/:1098–1099）。`Combat.ts:273–325` 已将毒和虚弱施于实际 defender；本轮把幻觉出口也覆盖怪物目标。`MA_HIT_BURN`、`MA_HIT_DEGRADE_ARMOR`、`MA_HIT_STEAL_FLEE` 及 `MA_DF_ON_DEATH` 各自独立，不能拿 legacy 通用状态替代；本轮不扩大这些能力的既有实现边界。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 22,
+    "text": "67 个自然条目均有 `goldDropChance`/`itemDropChance` 键，其中 66 种至少一个非零，jackal 双零。这些字段全部是 web 自创的概率，不对应 CE 掉落。CE `Monsters.c:133–153` 仅在 `itemPossible` 且有 `MONST_CARRY_ITEM_25/100` 时，从 `monsterItemsHopper` 取预生成物放入 `carriedItem`；对应自然物种为 goblin_conjurer、goblin_mystic、dar_blademaster、dar_priestess、dar_battlemage、lich、goblin_warlord（25）及 dragon（100），均**不是** JSON 数值的同义转换。其余带掉落字段的物种是 rat、kobold、jackal、eel、monkey、bloat、pit_bloat、goblin、goblin_totem、pink_jelly、toad、vampire_bat、arrow_turret、acid_mound、centipede、ogre、bog_monster、ogre_totem、spider、spark_turret、wisp、wraith、zombie、troll、ogre_shaman、naga、salamander、explosive_bloat、acidic_jelly、centaur、underworm、sentinel、dart_turret、kraken、phylactery、pixie、phantom、flame_turret、imp、fury、revenant、tentacle_horror、golem、black_jelly、vampire、flamedancer、spectral_blade、spectral_sword、stone_guardian、winged_guardian、guardian_spirit、Warden_of_Yendor、eldritch_totem、mirrored_totem、unicorn、ifrit、phoenix、phoenix_egg、mangrove_dryad。`Monster.ts:305–306` 实例仍默认 0，构造器不复制 JSON 概率；`Game.dropMonsterLoot` 遗留出口因此不会按自然 JSON 概率产生金币或物品。没有改实例默认值，也没有实现 CE hopper。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 26,
+    "text": "- `Monster.hasEffectiveOnHitStatus()` 把自然 kobold/goblin/vampire 的三条无 CE 对应能力的 legacy 命中关掉，字段仍保留于 JSON、实例及快照结构。`Game.applyStatusToMonster` 在实际状态判定时排除对应的自然目录默认免疫/减时；构造、polymorph 和快照字段继续保留。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 28,
+    "text": "- 盟友普通近战删除了对玩家 helper 与怪物 helper 的双重调用；怪物几何攻击、discordant 近战和玩家近战、BE_ATTACK/POISON_DART 的命中路径均把实际受击者传入。`MA_HIT_HALLUCINATE` 对怪物目标也走同一目标入口。BE_DAMAGE 法伤不携带近战 rider；反射在 bolt travel 已选定真实目标。玩家投掷的状态出口仍以碰撞目标执行，不经过怪物 legacy helper。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 43,
+    "text": "首次全量运行在边改边跑期间完整结束，198 文件通过、4 文件失败。四处失败分别是：曾临时增加未登记的 `legacyStatusImmunities` 实例字段触发 U01 快照守卫；曾临时不投影自然默认免疫触发 W19 polymorph 守卫与 X2c 新断言；同一中途版本使 UR3 全层 hash 改变。随后仅调整实现前提：保留字段投影，状态消费时排除无 CE 依据的自然默认值，且不增加实例字段；对应单测和 UR3 均单独转绿，最终完整复跑全绿。没有改守卫、`test:drift`、深层基线或黄金 trace。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 15,
+    "text": "| 戒指与魔法资源 | `Items.c:7852–7871` | 戒指 E+1、未鉴定有效附魔随次数提高；已装备千里眼继续更新视野。STAFF 的 E/容量/剩余次数/500÷新E 倒计时、WAND 按出生下界补次数、CHARM E+1 并回充，复用 W-7/U15b/U15c。 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 16,
+    "text": "| 解咒 | `uncurse:7740–7745`、附魔 `7892`、解咒卷轴 `7806–7814` | 附魔目标无条件清诅咒；E=-3→-2 仍解除。解咒卷轴遍历全包，只清 flag，所有负 E、力量、次数、符文保持；不影响地面物品。 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 18,
+    "text": "| 随机符文 | 附魔分支没有授符文分支 | 删除原 20% 随机授符文和额外骰子。保留出生符文生成，未修改 ItemLoader 或任何生成逻辑。 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 20,
+    "text": "主要代码为 [ItemUseCoordinator.ts](../../src/engine/Items/ItemUseCoordinator.ts)、[Game.ts](../../src/engine/Core/Game.ts)、[WholeRunSnapshot.ts](../../src/engine/Core/WholeRunSnapshot.ts)。旧私有 `enchantEquippedItem` 名称保留供已有直接调用者使用；玩家选物始终显式传入选中实例，共享同一个实现，不保留旧随机路径。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 28,
+    "text": "[独立 C 提取脚本](../../scripts/x2d-ce-oracle.mjs)编译并执行原文附魔 case、收尾、identify/autoIdentify/uncurse，得到 [36 个 C 样本](x2d-evidence/ce-oracle.json)；[生成的 C](x2d-evidence/ce-oracle.c)保留完整提取段，UI/重装备更新端口为空实现，唯一弹药组随机端口计数并返回固定 8929。它验证控制流/旗标/资源，不宣称全 CE RNG 或 UI 等价。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 30,
+    "text": "为跨待选存档保留原卷轴知识，新增 `pendingEnchantmentScrollWasKnown`，仅待选时写入 `run.enchantmentScrollWasKnown`；待选档缺失或非布尔值被拒绝，完成/新局重置，普通快照省略。已在 [U03 生命周期合同](../../scripts/u03-state-contract.json)登记这一真实新增字段，未修改 U03 的字段等式或其他断言。专项测试覆盖已知/未知两种 pending JSON 往返与缺字段拒绝。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 34,
+    "text": "[34 项专项测试](../../src/test/x2d_scroll_equipment.test.ts)全部通过：[结果](x2d-evidence/new-summary.json)。覆盖六类目标、原始对象资格、负 E、力量下限、次数、知识状态、弹药组精确骰子与拆分回堆、已穿/备用护甲的 DONNING 正反例、只变选中备用装备、全包/地面边界、消息/自亮、存档，以及同步/动画命令回放。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 38,
+    "text": "[浏览器脚本](../../scripts/x2d-browser.mjs)使用独立无头 Edge 和 Vite、真实 Vue 背包操作、固定 seed 27027。初始包为明确的合成夹具，回放新局初始化后按相同步骤重建；未替换任何游戏方法或 checkpoint，不宣称自然寻获这些物品的整局录像。实测 8 个合格目标高亮、六类中文提示、隐藏其他动作/禁用关闭、Escape/遮罩/无效选择不消耗、未装备长剑 -3→-2 且解咒、15 支飞镖整堆附魔、全包解咒与空效果消息；**16 条真实 UI 命令全部回放，双流/资源/回合一致、零 OOS、零 page/console error**。证据：[状态和命令](x2d-evidence/browser.json)、[选物截图](x2d-evidence/browser-selection.png)、[结果截图](x2d-evidence/browser-result.png)，截图均实际打开检查。普通解咒动画结束后若背包仍开，脚本通过真实关闭按钮关闭，再继续操作。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 44,
+    "text": "修改前原 W-7、invented_content_pool、P1-37 三文件 **46/46 通过**：[before](x2d-evidence/before-summary.json)。只在测试进程内注入单个旧行为的[反事实脚本](../../scripts/x2d-counterfactual.mjs)/[配置](../../scripts/x2d-counterfactual.config.ts)，保留原测试、断言和生产文件，结果见 [counterfactual-summary](x2d-evidence/counterfactual-summary.json)："
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 48,
+    "text": "| W-7 `arcana alternative...` 第255行 | 武器护甲仅允许优先已装备件 | 原用例通过，而新“全部合格包内物品”用例失败。旧否定对象本来是合法包内备用武器；可由验收方将拒绝对象前提改为地面/已移除实例，保留拒绝断言，同时保留本轮包内接收正例。 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 49,
+    "text": "| invented_content_pool `8000 次附魔...` | 仅恢复 20% 授原生符文及其文案 | 原池用例和 P1-37 AD5c 通过；新零耗骰/弹药组精确耗骰测试失败。原反真空断言要求授符文 >1000 次，与 CE 没有该功能直接矛盾，无法靠保留期望的诚实前提修复；交验收方决定迁移出生池抽样或撤销到期的附魔授符文断言。 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 71,
+    "text": "前两次全量预检启动后分别补齐了 CE 收尾自动鉴定、强制重装备的 DONNING 清除，已不能作为终验。为减少重复运行占用，06:15 停止了这两轮预检，分别运行 4323.294 / 3086.476 秒，**没有完整结果，不计入门禁通过**；保留[第一次运行记录](x2d-evidence/full-summary.json)、[第二次运行记录](x2d-evidence/full-final-summary.json)。最终完整运行在所有生产/测试源码和 U03 合同冻结后启动，[终验摘要](x2d-evidence/full-final2-summary.json)逐项登记失败与运行前后 SHA；[终验原始 JSON](x2d-evidence/full-final2.json)保留完整结果。构建与 drift 也在最终冻结后复跑。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 79,
+    "text": "均依 CE Items.c:7740–7899，随被删 web 自创功能到期或因 CE 目标范围扩大而前提失效；守卫目的保留："
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 80,
+    "text": "1. W-7 :255 拒绝对象由\"卸下但仍在包内的匕首\"（CE 下合法）改为\"已离开背包的实例\"，拒绝断言保留。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 81,
+    "text": "2. invented_content_pool 8000 次附魔：自创符文 0 次断言保留；旧\"反真空 >1000 次授予\"随授符文功能到期，改为授予**任何**符文均为 0（严格更强）；符文池完整性由同文件出生路径抽样负责。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 83,
+    "text": "4. P1-37 AD5a：单物品\"不再受诅咒\"文案随旧行为到期，改守新整包净化消息的中文渲染，并加断言负附魔保留（CE uncurse 只清旗标）。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 19,
+    "text": "| recharging | 原 `rechargeStaffsAndCharms(false)`，内部仍调用 W-6 `rechargeStaffFully` | 所有包内法杖充满；魔杖与其他护符不变 | 5499 / 3024 / 503 |"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 20,
+    "text": "| negation | 原 `negationBlastFromPlayer` 接收距离，仍处理自身、生物及地面物品 | 详情半径 4 / 7 / 16；判定距离再加 1 | 1499 / 899 / 194 |"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 22,
+    "text": "CE 的特殊口径保留如下："
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 25,
+    "text": "- `summonGuardian` 的落点使用现有召唤搜索，新增可选回避掩码。复用现有 `avoidedFlagsForCaster` 计算守卫的免疫与禁入地形；刀刃默认掩码及行为保持原样。找不到合法落点时不放入非法实体，使用仍花费回合和冷却。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 26,
+    "text": "- CE `useCharm` 的传送第三参为 `true`；旧随机传送原语默认 `false`，因此扩参数而非另写选择器。距离图仍使用 forbidden flags，最终候选才使用 avoided flags。`Monsters.c:1147–1153` 的 `disentangle` 只清 `STUCK`；保留抓取标记，后续移动验证抓取者。这一点与“传送直接清抓取”的直觉不同。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 36,
+    "text": "U15c 的 `{1,2,1}` 出生附魔和 7% 尾部、U05 的种类抽签/品质流程继续使用。测试逐一验证全部十二种 category-only 机器 CHARM 请求。护符出生即鉴定；新增六种不需要未知外观。保留既有六外观槽的 shuffle 次数，避免数据阶段增加无关耗骰；不足槽的已知护符不再错误打印 Unknown 警告。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 38,
+    "text": "中文名称、效果、当前数值、附魔后数值和剩余冷却接入现有详情。U22 的 CE Discoveries 仍为卷轴、戒指、药水、法杖、魔杖五组；护符没有未知态，不新增一组虚构的发现概率。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 40,
+    "text": "所有新实例复用现有 U01 字段合同；未新增实例字段或 schema。逐种完整 Item 往返，守卫整局保存/恢复、绑定、剩余寿命、下一步到期死亡均有执行断言。附魔继续加 E 并立即解除冷却，充能卷轴仍恢复所有法杖与护符；充能护符单独限制为法杖。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 72,
+    "text": "- [CE C oracle 脚本](../../scripts/x2e-ce-oracle.py) 直接提取原 CE 表、POW 数组、`fp_pow` 和公式函数，`cc -std=c99 -O0` 编译执行；保留 [C 源](x2e-evidence/ce-oracle.c)、[624 个黄金值及原文件 SHA](x2e-evidence/ce-oracle.json)。覆盖附魔夹取、精确舍入、高 E 的 signed-short 边界。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 73,
+    "text": "- [新增专项](../../src/test/x2e_charms.test.ts) 11 项：黄金公式、出生、完整字段往返、附魔零 RNG、中文详情、悬浮、碎墙、守卫落点/寿命/无位置、传送有害地形/无候选、法杖/卷轴充能、消魔边界/遮挡/背包豁免以及 CE 目录/机器请求。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 76,
+    "text": "- 按 develop-web-game 技能运行标准 Playwright 客户端，文本状态/移动有效。canvas 导出仍为该环境已知黑图，已打开确认，未作为视觉通过依据。使用默认动画的有头完整页面补验：[浏览器脚本](../../scripts/x2e-browser.mjs)、[状态与断言](x2e-evidence/browser.json)。六种详情/真实背包点击使用、守卫寿命显示、保存→刷新→继续、消魔消除守卫、附魔选物均通过，控制台及页面错误 0。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 79,
+    "text": "## 5. 反查、门禁、交付边界"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 85,
+    "text": "W-5 的默认报告明确记录 `Test timed out in 900000ms`（同步长用例返回时已耗时约 1201 秒）；当时机器存在另一份全量运行。未改超时、样本或断言，同一原测试独立复核 **18/18** 通过、总耗时 **473.59 秒**，见 [复核结果](x2e-evidence/w5-recheck.json)。终验仍会再次运行完整原测试。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 90,
+    "text": "- 只把未知外观资格限定为 CE 的药水、卷轴、魔杖、法杖、戒指五类。原覆盖数、同类双射、中文、跨 seed 和多 seed 检查完整保留；既有六条护符兼容词表的无重复检查也保留。新增护符专门断言：删除其外观映射后，每种仍出生已鉴定、种类已知、名称非空且为中文。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 110,
+    "text": "沿用现有原语已登记的边界：召唤落点的 web 搜索/回退及构造耗骰不是完整 CE 逐骰 oracle；消魔复用实时 LOS 门；光波/渐显等表现沿既有渲染能力，本轮不宣称完整 CE 视觉同构。没有旧存档迁移或无关生成规则修改。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 7,
+    "text": "- 投掷走 `attackHit`：STUCK、PARALYZED、CAPTIVE 真短路，不耗命中骰；slaying 对应类别与 seized/seizing 是命中率 100，仍耗一次 `rand_percent`。睡眠和游荡不构成投掷自动命中或偷袭倍率。命中前解除 entrancement、调整追踪状态。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 13,
+    "text": "- `src/engine/Combat/Combat.ts`：投掷伤害使用保存的 `item.clumping`，旧实例缺失时回退解析值；改为 CE 截断；slaying 类别及 seized/seizing 命中率 100 仍掷命中骰。近战端点和投掷伤害共同调用 `enchantedDamage`，分别保持各自 CE 计算次序。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 19,
+    "text": "`ai_docs/reports/x2f-evidence/compile-original.py` 从 CE `Items.c` 原样抽取完整 `hitMonsterWithProjectileWeapon`，连同 U13 已编译核对的 CE `randClump`、`damageFraction`、`netEnchant`、`attackHit` 等原函数，使用最小 UI/世界副作用桩编译执行。生成的 C 翻译单元为 `ce-thrown-original.c`，运行输出为 `original-output.txt`。7 组武器区间、实例 clump、附魔、力量组合的全部离散分布与 `ce-thrown.json` 黄金值一致（包括每组合的 RNG 骰数）；JS 实战测试逐组合复核该 JSON。实例 `3..11/clump=3/enchant=10/strength=12` 的 48 种骰面组合分布为 `5:1, 7:3, 9:6, 11:9, 13:10, 15:9, 16:6, 18:3, 20:1`，每次恰好 3 个伤害骰；同区间 clump=1 只耗 1 骰。常量 `7..7` 不耗伤害骰。C 桩隔离的是 UI/世界副作用，保留原命中和伤害分支。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 9,
+    "text": "以仓库内 `BrogueCE-master/src/brogue/` 和 `src/variants/GlobalsBrogue.c` 为依据。地衣是 **SURFACE 地形**，不是新怪物或旧 `GasType.CREEPING_DEATH` 气体。潜没是独立运行态，不能由 `MONST_SUBMERGES` 能力代替；也并非绝对不可见、不可近战攻击：站在深水且未悬浮的观察者能看见，队友共享知识；实际投掷物及 bolt 碰撞仍穿过潜没者。任务书的简写与这些 CE 细节不一致时采用 CE。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 22,
+    "text": "- 状态与交互：投掷生成真实气层，进入现有扩散、消散和光照流程；不会给玩家施加喝下的 darkness 状态。喝下仍使用原有状态、矿灯缩减和渐退逻辑，两者共存。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 23,
+    "text": "- 显示：黑暗区域由负光照产生，保留下层地形字形；实际光照读数和浏览器画面验证。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 28,
+    "text": "- 数据与来源：追加 GAS层 `ROT_GAS`，可燃、致恶心、快速消散；`DF_ROT_GAS_BLOOD` 基值12，`DF_ROT_GAS_PUFF` 为15。Globals.c:649、664、1075。僵尸在 Time.c:2682–2692 的客观100-tick块喷气，不依赖动作速度；替换了死亡DF的突变不会保留普通喷气。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 31,
+    "text": "- 显示：IO.c:1196–1204、1316–1334 的 `min(90,30+volume)` 混合前景与背景，保留底层字形。直接读取权威气层，刚流血或喷气、旧 gasGrid 镜像尚未刷新时仍可见。浏览器 QA 发现漏染色后补齐。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 45,
+    "text": "上述闭环完成后，删除 Game 的 creeping_death 过滤和 darkness 的 `excludeFromGeneration`。常规抽取、类别限定蓝图均使用同一生成池；两者各保留 CE `GlobalsBrogue.c:679/681` 的 frequency=7。未让 minDepth/maxDepth 介入 chooseKind。自创药水、符文、法器的退池约束保留。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 55,
+    "text": "历史快照还保留了与生产模块同目录的测试文本；生成归因和最终生产一致性比较排除 `.test.ts`。实际终验所执行的测试版本由最终冻结输入清单记录，旧守卫另有原版与反事实档案。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 68,
+    "text": "复核期间完善的腐气直接伤害出口/染色，以及潜没抓取/纷争筛选，另建立 `rot-complete` 与 `submerged-review` 单族反事实分支，验证其生成和 UR2/3/4 均不改变。后续即死伤害接线、潜没选线/闪现/陷阱边界、环境死亡归属分别保存为 `rot-lethal`、`submerged-complete`、`final`，逐段复核同一160层和三组trace；结果登记于 `lethal-attribution.json`、`subm-final-attribution.json`、`death-final-attribution.json`。保留原时序源码快照，不把事后修正冒充原阶段实现。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 70,
+    "text": "UR2、UR4 原方法候选全部不变；UR3 在潜没阶段120处摘要变化，回池阶段116处。UR3 分解记录原摘要、各快照字段摘要、完整机器观察、RNG和日志；潜没只增 `submerged` 字段，回池保留真实地图/计量/随机变化，不通过扩大归一化掩盖。最终 review 不再增加 trace 变化。所有120个原UR3摘要在各阶段均与原观察器吻合；潜没归一化后剩余差异0，review剩余差异0。回池116个摘要均保留实质快照差异：run计量记录116处、grid与缓存levels各21处、物品5处、waypoints4处、RNG22处；机器药水名称的逐值变化另列29条。详见 [trace-audit-summary.json](x2g-evidence/trace-audit-summary.json)，精确归一化字段值另存压缩证据。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 78,
+    "text": "十六份原守卫完整保留为 `original-*.test.ts.txt`，首批五份在 HEAD 的生产源码快照上 **65通过/0失败**，在回池候选上 **59通过/6失败**。全量期间另发现十份目录或调用上下文守卫：原版定向检查在 HEAD **17通过/0失败**，在 review **0通过/17失败**；补齐前提后 **17通过/0失败**。另有 Discoveries 整文件在 HEAD **3通过/0失败**，在 review **2通过/1失败**，修后 **3通过/0失败**。十六份原文件的 SHA-256 均核对 HEAD，见 [premise-original-provenance.json](x2g-evidence/premise-original-provenance.json)。这些失败源于载体未实现、目录未收录或仍退池的旧前提。以下前提修订提交验收方裁决："
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 82,
+    "text": "| c_7_lighting | tile期望表不含新3行；非零光源集合缺 darkness，共2断言 | 加入3行精确光源值，继续穷尽比对全目录 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 83,
+    "text": "| g_2_gas_df_wiring | ROT/DARKNESS无tile/DF | 保留HEALING缺载体约束，为新2气体和DF增加正向精确断言；未新增旧 GasType 别名 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 84,
+    "text": "| invented_content_pool | darkness仍必须退池 | 移出原生待补列表，并校验两者各frequency=7；自创排他断言不变 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 87,
+    "text": "| c_4b_dungeon_feature | DF历史目录、外部来源起点和调用方清单缺新增链，3项 | 保留135条历史投影；新增6条精确DF值、5个来源起点和Monster流血调用方；完整闭包与源码扫描不变 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 88,
+    "text": "| c_4a_terrain_catalog | 历史135行投影和总数190缺新增3行，1项 | 历史投影仍135，总数193；保留所有键和全部字段的逐项检查 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 91,
+    "text": "| w_4_bolt_reflection / u_06_monster_damage | BE_ATTACK 调用 options 只允许旧 isWeaponAttack 字段，共5项 | 精确期望增加当前 Grid；仍要求 isWeaponAttack=true，原命中、伤害、反射、武器免疫和RNG检查不变 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 93,
+    "text": "| b_2_throwing | darkness投掷未实现、仍退池，1项 | 完整DF链后要求进入自然池，frequency=7 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 97,
+    "text": "W-15 原死亡次数守卫发现真实实现错误，**没有修改该守卫**：环境伤害改走 `Monster.takeDamage` 后，旧分支重复调用 `die()`。移除坠落到达、燃烧、爆炸及持续地形伤害中的重复死亡/吸收中断调用，保持盾结算和死亡归属；原W-15及新增三类致死场景均要求死亡回调恰一次。另增即死符文血雾测试，旧实现红、补齐Grid上下文后绿；新增潜没选线、闪现落点/静默移除、踩陷阱三个边界测试也保留修前红与修后绿。见 `death-fixed.json`、`lethal-test-summary.json`、`subm-edge-summary.json`。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 107,
+    "text": "人工打开全页截图确认腐气扩散黄褐染色、地衣字形、黑暗区域和潜没出口。技能通用客户端的 canvas 导出为黑图，不能用作视觉通过证据；保留该原始结果，视觉结论来自已打开核验的全页截图。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 111,
+    "text": "完整发现轮于2026-09-27 08:00:40–09:04:57（Asia/Shanghai）结束：206文件，3851通过、20失败、8既有跳过、5既有todo；build、浅层drift、独立深层及diff-check均通过。19项失败为上文列明的旧前提，1项为W-15发现的重复死亡实现错误，均已保留修前结果。发现轮期间生产源码和测试保持review版本，但两个辅助脚本发生变化，因此明确不作为最终冻结验收；全套结果归档于 [first-full](x2g-evidence/first-full/README.md)。更早一次中止的预检登记在 `preflight-status.json`，不计入完成的门禁。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 3,
+    "text": "依据：`x2h.prompt.md` §0 指向的 X-1 §4 N09、§7.1；CE 身份以 `BrogueCE-master`、D2 退池清单、`invented_content_pool.test.ts`、`RETIRED_INVENTED_BLUEPRINT_IDS` 和数据中的 `excludeFromGeneration` 交叉核定。合同：菜单公开 test 模式保留教学展陈，但展陈不得产生 web 自创物品、符文或蓝图；直接构造定义仍保留，正常自然生成不变。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 12,
+    "text": "| D2 魔杖，9 | wand_of_teleportation, wand_of_slowness, wand_of_polymorphism, wand_of_negation, wand_of_domination, wand_of_beckoning, wand_of_plenty, wand_of_invisibility, wand_of_empowerment | `wand_of_fire`、`wand_of_lightning` 移除；CE 火/闪电示例仍可在 D5 的 `staff_of_fire`、`staff_of_lightning` 找到。 |"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 14,
+    "text": "| D4 药水，16 | potion_of_life, potion_of_strength, potion_of_fire_immunity, potion_of_invisibility, potion_of_levitation, potion_of_telepathy, potion_of_haste, potion_of_detect_magic, potion_of_descent, potion_of_incineration, potion_of_poison, potion_of_confusion, potion_of_paralysis, potion_of_hallucination, potion_of_darkness, potion_of_creeping_death | `potion_of_healing` 移除；`potion_of_life` 是 CE 的生命示例。`potion_of_poison` = CE caustic gas（B-4a 反转），`potion_of_creeping_death` = CE lichen；`potion_of_darkness` 虽暂不进自然池，仍属 CE，保留于教学展陈。后两种的效果实现边界见 X-1 N07。 |"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 15,
+    "text": "| D5 其他，42 | 护甲：leather_armor, scale_mail, chain_mail, banded_mail, splint_mail, plate_mail；法杖：staff_of_lightning, staff_of_fire, staff_of_poison, staff_of_tunneling, staff_of_blinking, staff_of_entrancement, staff_of_obstruction, staff_of_discord, staff_of_conjuration, staff_of_healing, staff_of_haste, staff_of_protection；戒指：ring_of_clairvoyance, ring_of_stealth, ring_of_regeneration, ring_of_transference, ring_of_light, ring_of_awareness, ring_of_wisdom, ring_of_reaping；护符：charm_of_health, charm_of_protection, charm_of_speed, charm_of_fire_immunity, charm_of_invisibility, charm_of_telepathy, charm_of_levitation, charm_of_shattering, charm_of_guardian, charm_of_teleportation, charm_of_recharging, charm_of_negation；钥匙：iron_key, cage_key, crystal_orb；护身符：amulet_of_yendor | `staff_of_light` 移除；CE 光源可用 `ring_of_light` 展示。钥匙类虽有自然池排除项，仍是 CE 机器道具，保持展陈。未实现护符效果不在本任务内。 |"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 18,
+    "text": "| D8 蓝图，48 | reward_treasure_room (CE3), reward_pedestal_permanent (CE4), reward_pedestal_consumable (CE5), reward_kennel (CE10), reward_commutation (CE6), reward_mixed_library (CE1), reward_single_category_library (CE2), reward_resurrection_altar (CE7), reward_statuary (CE15), vestibule_locked (CE16), vestibule_secret_door (CE17), vestibule_flammable_barricade (CE19), vestibule_statue_doorway (CE20), vestibule_pit_trap_field (CE23), vestibule_secret_lever (CE18), vestibule_throwing_tutorial (CE22), vestibule_beckoning_obstacle (CE24), vestibule_guardian_obstacle (CE25), key_poison_gas (CE40), key_pit_trap (CE35), key_secret_room (CE27), key_nested_library (CE26), key_throwing_tutorial_cage (CE28), trap_paralysis_revealed (CE67), trap_paralysis_hidden (CE68), vestibule_statue_monster (CE21), key_rat_trap_dormant (CE29), key_explosive_trap (CE41), key_statuary (CE43), key_worm_trap (CE50), key_turret_trap (CE56), area_trick_statue (CE69), area_worm (CE70), reward_chained_allies (CE9), reward_vampire_lair (CE11), reward_legendary_ally (CE12), key_fun_with_fire (CE30), key_thief_area (CE33), key_burning_grass (CE42), key_guardian_gauntlet (CE45), key_guardian_corridor (CE46), key_sacrifice_altar (CE47), key_beckoning_obstacle (CE49), key_zombie_crypt (CE53), key_worm_tunnels (CE55), key_boss_secret_room (CE57), ce_58_bloodwort (CE58), ce_59_shrine (CE59) | 11 个 `RETIRED_INVENTED_BLUEPRINT_IDS` 从展陈移除，定义与正常资格门保留。48 间上限使其余 22 个 CE 蓝图仍未显示；不把“目录存在”误写成“玩家可见”。展陈只投射首个地形/物品/怪物 feature，不等于真正建成机器。 |"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 23,
+    "text": "D8 移除的 web 自创蓝图逐项为：`reward_library`、`reward_consumables`、`vestibule_flammable`、`vestibule_guardian`、`vestibule_pit_traps`、`key_rat_trap`、`key_fire_trap`、`key_flood_trap`、`key_web_room`、`key_lava_moat`、`key_boss`；数据行、feature 与自然模式资格拒绝均保留。原展陈对蓝图只投射首个 feature，本来就不能证明其机器在测试房里可建成。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 44,
+    "text": "- **B-1a / B-1c / P4-10**：夹具隐含前提随全局 RNG 位置变化失效，均显式构造原注释所述前提，断言不改——B-1a 剑显式 `runicType=undefined`（\"无符文\"）；B-1c 戒指显式 `isCursed=false`（U15b-2 起 CE 出生 16% 诅咒）；P4-10 到达后换点为 CE 合法语义（Monsters.c:3608–3615），换点时从新目标重新计量，持目标期间仍严格下坡。三文件 65/65。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 9,
+    "text": "| 发现屏未知种类概率 | CE `IO.c printDiscoveries` 用未知种类频率作每类分母；本项目地面普通抽取与机器无 ID 抽取均读取 `ItemLoader.genPotions` | `consumables.json` 对地衣药水标记 `excludeFromGeneration`，移除 `Game.ts` 两处分散的 D2 过滤。发现屏沿用同一 `genPotions`，分子、分母和列表都排除该种。`x2i_discovery_text` 逐项核对集合及 `floor(100 × frequency / denominator)`。CE 原生 `POTION_LICHEN` 频率 7，但 web 地衣效果仍为 stub；继续退池是已登记的 CE 偏差，回池须先实现载体。显式指定 ID 的机器物品不属于随机种类概率公式。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 10,
+    "text": "| `MA_HIT_BURN` 点燃 | CE `Combat.c:450–454,1403` 命中且目标存活时 `exposeCreatureToFire`；web 已有该火焰入口 | 将五个真实怪物近战出口接入既有火焰函数，保留火免、灭火地形和燃烧计时。新测试以真实 `takeTurn` 命中验证点火与免疫，详情声称保留。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 12,
+    "text": "| `MONST_SUBMERGES` 潜水 | CE 有 `MB_SUBMERGED` 状态和对应时序；web 未实现该载体 | 详情不再宣称可以潜入水中，保留数据旗标以供后续原生效果任务使用。新测试检查其不出现在详情。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 14,
+    "text": "| 动态英文门 | 原 `findHardcodedLogStrings` 仅识别 `logger.log` 首参的直接字面量 | 扩展为追踪近处 `const` 字符串模板到 `logger.log(variable)`；仍跳过 `i18next.t` 的结果。新测试用 OOS 模板反例与已翻译变量正例。扫描范围有意限制在局部不可变赋值，避免跨函数同名变量误报。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 20,
+    "text": "首次定向测试在原断言下显示 `Discoveries.test.ts` 只差药水行数：旧预期 15，实际合格池 14。反事实原因可由数据直接验证：`potion_of_creeping_death` 原先仅在 `Game.ts` 两处分散过滤，而发现屏仍包含它。该旧计数只覆盖旧规则；本轮只把预期 15 改为 14，保留其余分类、命名、已知状态与百分比断言，并另加“发现集合 = 实际生成池集合”的断言。全量运行又在 `invented_content_pool.test.ts` 暴露同一旧前提：`CE_PENDING_POTIONS` 只列黑暗药水，按旧清单计算池大小。仅将地衣药水列入清单，保留逐项标记、池排除和大小公式守卫。两项前提更新提交验收方裁决。首次定向测试另一失败是删除虚假抢物消息后的死 i18n 键，已按原 i18n 守卫要求归档至 `zh_CN.legacy.json`，未改守卫。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 29,
+    "text": "## 验收方合并记录"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 33,
+    "text": "- `DetailGenerator` 恢复 `MONST_SUBMERGES: 可以潜入水中`（有 X2g 执行出口）；x2i 专项对应断言改为\"须出现\"，lichen 入池断言翻正；\"发现集合 = 生成池集合\"核心断言保留。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 34,
+    "text": "- `Monster.ts` 三处近战：保留 X2g 的 `{ grid }` 参数并接入本轮 MA_HIT_BURN 点火；`exposeCreatureToFire` 改 public 并保留 X2g 的潜没豁免。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 35,
+    "text": "- 偷窃详情暂保留本轮\"攻击造成伤害后会逃跑\"，待 X2j 实现完整 CE 盗窃后恢复声称。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 3,
+    "text": "任务：`ai_docs/tasks/x2j.prompt.md`，权威边界为 X-1 §4 N10、§7.1；事实来源为仓库内 `BrogueCE-master/src/brogue`。入场 HEAD `ea568b5a8b1d100042b52b8cc122759205a2a544`，工作树干净。本轮只处理 AI 单元及其携物出口，不把 X2 的死亡时序、玩家自反射致死等其他单元宣称为已完成。未暂存、未提交。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 9,
+    "text": "| CE 事实 | 本轮实现与边界 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 12,
+    "text": "| 从未装备的包内条目等概率选物，按条目而非数量加权。武器堆 ≤3 全偷，>3 偷 `(q+1)/2` 向下取整；其他品类只偷 1。 | 同时排除武器、护甲、左右戒指引用和 `ITEM_EQUIPPED`。完整搬走原实例；拆堆复制全部 Item 合同字段、保留新实例 ID，原堆扣量。CE 拆堆先调用 `generateItem(ALL_ITEMS,-1)`，本轮通过 web 既有分类权重/种类和实例分配器执行运行期分配，再覆盖字段；包括 GOLD，不调用楼层物品分配器。 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 14,
+    "text": "| `Monsters.c:4074 makeMonsterDropItem`；`Combat.c:1959` 死亡、`Monsters.c:3353` 俘虏、`:1940–1946` 盟友 discord 消退等出口。 | 提取 `Game.makeMonsterDropItem`，复用已有合格近邻落点与最终物品落点回退；死亡、俘虏、归顺和盟友 discord 消退接入同一出口，清携物指针并触发落物地形晋升。死亡仍由现有收口时点负责，不声称改成完整 CE 即时死亡时序。 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 15,
+    "text": "| `Monsters.c:1591–1827` 的 alert/wake/update，及 `:2956 monsterFleesFrom`。 | 新 `MonsterAI.ts` 保留原分支次序；在睡眠/施法/普通移动前更新状态；唤醒消耗该次行动，队友仅 NORMAL 模式参与，醒后再计算队友状态。补入最后见到玩家的位置及向最近 waypoint 游荡。恐惧来源检查敌我攻击意愿、距离、可通行路径及射线遮挡。 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 16,
+    "text": "| `Items.c:5193/6793` 的永久逃跑排除。 | 玩家/怪物两条伤害 bolt 路径及投掷武器前置激怒均排除 PERM。投掷 miss 不通过被排除的激怒分支缩短恐惧；投掷命中后的存活 `moralAttack` 语义仍缩短恐惧，bolt 存活受击也保留该效果。 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 22,
+    "text": "游荡且感知到玩家则 alert；睡眠感知用已有 `awareOfTarget` 的 25% 掷骰唤醒；追踪失去感知则游荡到最后见到玩家处；追踪且恐惧对象距离 <3 则逃跑。`MONST_FLEES_NEAR_DEATH` 在 HP ≤ floor(maxHP/4) 进入逃跑，已经逃跑时在 HP ≤ floor(3×maxHP/4) 保持。100 HP 的边界为 25 进入、75 保持、76 才可恢复，不能只照抄末尾一个 `>=75%` 分支而忽略前面的保留分支。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 24,
+    "text": "NORMAL 逃跑在没有魔法恐惧、最近恐惧对象距离 ≥3 时恢复；永久偷窃怪只有无携物且无魔法恐惧时才进入对应 mode 恢复分支，仍受前面分支优先级约束。盟友在 web 以 `isAlly` 独立存储，映射回现有 U12a/b 流程。`monsterFleesFrom` 包括移动的武器免疫/无敌敌人、盟友祭品目标、保持距离、kamikaze 和已中足量致命毒的目标；攻击意愿按 CE 原次序处理 entrancement、俘虏、discord 和 confusion。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 30,
+    "text": "`Monsters.c:2108–2117` 的 `target.mapToMe` 属于目标，首次建立；只有目标当前位置在旧图中的距离 >3 才重建。地形变化或另一个追逐者不会立即使其失效，本轮保留这项历史性。`mapToMe` 加入 Creature 快照，克隆清空，离层清空当前怪物的该图（`RogueMain.c:630–635`）。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 32,
+    "text": "安全地形图和盟友安全图共用 `Game.monsterPathCache`，blink 和已有逃离危险地形消费者共用惰性缓存。**CE `Time.c:2616–2618` 在每个玩家行动开始重置，不是每个 100 tick 客观块重置。** 换层、新局也清空。缓存及 `lastSeenPlayerAt` 加入已有 U01/U03 序列化合同，保存后继续使用原图；旧档缺字段时取空值。U10 已实现的学习/吸收入口继续使用既有流程，本轮补的是缓存边界，没有另造学习渠道。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 38,
+    "text": "`src/test/x2j_monster_ai.test.ts` 增加 38 项：六种拆堆边界、装备排除、二次命中与零伤害、混乱/携物/死亡/免疫等拒绝、真实下一步存读一致、死亡/俘虏/归顺/discord 落物并拾取、唤醒耗时和队友、状态优先级、25/75% 阈值、最后位置、恐惧路径、自动寻路中止、视野外 PERM、两种共享缓存及目标缓存、投掷和两个 bolt 出口。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 50,
+    "text": "| P4-9 | 半血普通 rat 被手写 FLEEING，旧逻辑持续逃跑；CE NORMAL、无恐惧、无近敌，应立即恢复。 | 逃跑夹具补 `MONST_FLEES_NEAR_DEATH`，使半血满足 CE 的既有逃跑保留条件。 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 55,
+    "text": "另外，完整门禁发现 U19f CE55 的旧操作路线结束时仍留下一只地虫（ID 343，HP 80，WANDERING，`lastSeenPlayerAt=null`）；原 HEAD 同文件 **3/3** 通过。CE 的游荡感知不保证旧路线能吸引全部地虫，因此“取宝并返回入口”不等于原守卫要求的“原住怪全清”。先以原夹具执行再追加 **155 条真实追击/攻击操作**，该虫死亡、剩余原住怪为 0，见 [追击诊断](x2j-evidence/u19f-pursuit.json)和 [HEAD 结果](x2j-evidence/u19f-head.json)。只在 `fixtures/u19f-machine-actions.ts` 中补了有上限的清怪操作及返回入口，没有改生成规则、怪物属性、伤害公式或 `u_19f_machines.test.ts` 的任何断言。新增正常操作会按原逻辑消耗 RNG，未直接改写 RNG 状态。该**第五处前提提案**同样留验收方裁决；原 helper 留存为 `original-u19f-machine-actions.ts.txt`。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 57,
+    "text": "[原 HEAD 结果](x2j-evidence/premises-head.json)、[原 W18 结果](x2j-evidence/w18-head.json)、[候选失败](x2j-evidence/first-targeted.json)、[W18 候选失败](x2j-evidence/second-targeted.json)、[最终 P4-8 前提](x2j-evidence/scent-unreachable-premise.json)、[最终 W18 前提](x2j-evidence/w18-premise.json)。中间的 waypoint 重建/清空及每步清记忆尝试未保留；其日志不计最终门禁。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 77,
+    "text": "按 develop-web-game 技能运行了标准 `web_game_playwright_client.js`，输出状态正常、记录两次输入；其 canvas 导出仍为已有黑图问题，未拿黑图当视觉通过，采用上述有头整页截图核验。浏览器脚本和本地服务只用于本任务。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 83,
+    "text": "`scripts/x2j-traces.mjs` 在三个条件下运行原 UR2/3/4 捕获逻辑：入场 HEAD、候选原样、候选仅在快照计算 hash/比较前投影掉新增 `mapToMe` / `lastSeenPlayerAt` / `monsterPathCache`。HEAD 三项均重现旧黄金；候选 UR2 差异 0，UR3 120 处 hash，UR4 60 处新增字段；**投影后全部差异 0**。仅移除新增序列化字段，保留候选的所有状态转换、RNG 和运行代码，未覆盖全局 `toSnapshot` 方法。见 `ur2/3/4-{head,projected,current}-diff.json` 与 [traces.txt](x2j-evidence/traces.txt)。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 99,
+    "text": "| `npm test -- --maxWorkers=6` | 完整跑完，209 文件、3924 通过、0 失败；记录保留 default/json 报告器参数 |"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 107,
+    "text": "`x2j-validate.mjs` 固定 **906** 个输入（src/public/scripts、依赖与 Vite 配置、UR2/3/4 黄金、C oracle 数据）。构建、drift、独立深层与最终全量均使用这组相同输入，各自前后变化 0。第二轮与第三轮的输入清单逐项完全相同。最终原始记录为 `full-clean*`，`full-final*` 是它们的同字节交付别名，映射及 SHA 见 [delivery-records.json](x2j-evidence/delivery-records.json)。[最终交付检查](x2j-evidence/final-check.json)保留四项门禁的真实结果，退出码 0。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 114,
+    "text": "- AI-1 B1：`wanderToward` 原本应零骰，候选却提前做了 40 次 waypoint 惰性初始化。现只记录目标及已存在数组的访问标记；在真正开始游荡时沿用原初始化边界，再标记该目标未访问。没有把这 40 次骰移回生成期，也没有修改 AI-1 的零骰/零位移断言。新守卫检查记忆到首次游荡的完整链。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 117,
+    "text": "剩余 U19f 一项按 §3 提供 HEAD/候选反事实后只补操作前提。随后 AI-1、P4-8/P4-10、W16、P1-30、U19f、X2j 共 **128/128** 通过，见 [settled-targeted.json](x2j-evidence/settled-targeted.json)。原守卫字节不变证明见 [unchanged-failure-guards.json](x2j-evidence/unchanged-failure-guards.json)，五份前提原件与 HEAD 一致证明见 [premise-originals.json](x2j-evidence/premise-originals.json)。最终完整运行也全部通过这些文件。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 119,
+    "text": "第二次冻结完整运行自行结束：209 文件、3922 通过、2 超时、8 跳过、5 todo，2898.845 秒，原始退出码 1，906 输入变化 0；见 [第二次完整结果](x2j-evidence/second-complete-full-final-summary.json)。[默认报告器日志](x2j-evidence/second-complete-full-final.txt)明确给出两条 `Test timed out in 900000ms`；Vitest JSON 的 `failureMessages` 只保留 `STACK_TRACE_ERROR` 调用栈，超时分类以默认报告器为准。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 123,
+    "text": "保留原断言、原 900 秒门限，以 `--maxWorkers=2` 独立复跑两文件：**25/25，通过，426.423 秒，906 输入与第二轮一致且前后变化 0**；两文件分别约 385/425 秒，见 [复验结果](x2j-evidence/timeout-retry-summary.json)。最终完整运行里，两文件也分别约 502/531 秒通过。结合负载观察与相同输入复验，将第二轮超时归因为环境竞争。前两轮完整失败记录均保留，未改超时门限或合并测试结果。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 127,
+    "text": "最终代码上已重跑 38 项专项（含 10,240 组原 C oracle）、14 个故障变体、128 项相关守卫、UR2/3/4 的正常黄金比较，以及自然种子 20260927 的 117 条命令、菜单存读与物品取回。浏览器仍为 0 错误，最终截图已查看；最后的完整 npm test 再次覆盖全部 209 文件。生成基线未重捕获，UR3/4 仅按 §5 的归因各重录一次，最终复跑未再次捕获黄金。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 131,
+    "text": "## 验收方合并记录"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 134,
+    "text": "- `Monster.ts`：删除两处\"偷窃只改 FLEEING\"的旧捷径（取本轮，真实盗窃在 Combat 出口）；三处近战取本轮 `{ grid, itemGenerationDepth }` 调用并保留 X2i 的 MA_HIT_BURN 点火。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 15,
+    "text": "5. **物理摘链和 purgatory 登记仍在 `RogueMain.c:950–982`，`Time.c:2913` 调用清扫。** 本轮遵循 CE，不把盟友过早放进复活池。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 23,
+    "text": "| 即时死亡 | `Monster.die → notifyMonsterDeath → Game.killMonster`。运行期所有权及 DYING 均放在 MonsterLifecycle 模块的弱集合，名单插入/替换时绑定；生成构造、读档和寄宿释放都不新增 RNG。保留数组 API 与普通序列化形状。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 24,
+    "text": "| 重入、占用、清扫 | WeakSet 对应 DYING；`deathProcessed` 对应已完成死亡事务。落物/DF 回调期间 `getMonsterAt` 仍能查到正在死亡者，DF 完成后查不到；物理摘链/入池留到清扫。原始 HP 写入兼容入口只补处理未收口对象。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 28,
+    "text": "| DF | 保留毒气 2000、爆炸、坑洞、地衣出口；补齐 CE `DF_BLOOD_EXPLOSION=36`（150/30）和 `DF_MUTATION_EXPLOSION=38`（350/100、爆炸 flare）。变异覆盖物种 DF；FALLING/行政删除均抑制。死亡消息按可见性，补坑膨胀怪消息及不可见盟友失落提示。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 29,
+    "text": "| 落物 | `makeMonsterDropItem` 和既有携物消费者共用 CE 距离候选：blocking=`T_DIVIDES_LEVEL`，destination=`T_OBSTRUCTS_ITEMS` 与玩家/楼梯/已有物品；其他怪物、机器不排除。物品最后的 randomMatchingLocation 回退保留。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 30,
+    "text": "| 复活 | 最高 `totalPowerCount`，平手较高 CE monsterID（原排序已正确，本轮核实保留）。blocking=`T_PATHING_BLOCKER | T_HARMFUL_TERRAIN`，只排玩家/活动怪占用，不排休眠怪。复活原对象、清死亡/坠落/不适用的燃烧和 discord、heal；按**原始目录** ENTER_SUMMONS 恢复 info/status，即使该实例已被否定。保留 mutation bookkeeping，但恢复原生 DFType；变异吸血鬼复活、读档、再死亡均为原生血迹。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 31,
+    "text": "| 外观与存档 | 活着时外观在死亡时保存，仍保留 P1-24 尸体 `%` 约定；入 purgatory、JSON 往返及复活后恢复原外观，不把 `%` 带回活体。死亡处理标志、行政删除、外观和恢复的 DFType 均由 U01/UR1 显式 codec 承接。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 35,
+    "text": "边界：完全没有合法复活格时保留 purgatory 并返回 false；没有复制 CE 对 INVALID_POS 下标访问的未定义行为。现有 web 死亡概率战利品仍由原战斗/毒伤出口生成，没有迁移到 CE item hopper，符合本任务“不移动生成流”的范围；本轮对齐的是携物归属、位置及死亡时序。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 46,
+    "text": "原文件均逐字节匹配入场 HEAD，见 [原件与 SHA](x2k-evidence/premise-provenance.json)。先跑原 HEAD 通过，再保留当前失败证据；未调低断言强度、样本数或超时。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 50,
+    "text": "| `p1_24_death_sink` | 与 W19 原 HEAD 合计 **66/66**；即时处理后近战原格毒气断言失败，补齐死亡 DF 后“没有火”的留痕断言失败。 | 原动作观测前提设客观门为 200 ticks，观察击杀后、气体扩散前的状态，结果断言不变。旧注明确说“内容实现之日翻红，届时改回真实内容断言”：仅将爆炸变异尚未实现的 5 个 isBurning=false 前提改为 true，保留全部载体、死亡/旗标/毒气断言。 |"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 70,
+    "text": "首轮完整全量 **213 文件、3927 通过/18 失败、8 skip/5 todo**，2079.845 秒，942 输入零变化：[原始总结](x2k-evidence/full-attempt1-summary.json)、[完整结果](x2k-evidence/full-attempt1.json)。其中 17 项由 U00/U03 抓出新增 Game 自有 callback / WeakSet 无法进入可审计对象图及字段登记遗漏；修生产实现，把运行期所有者与 DYING 移到 MonsterLifecycle 模块，数组仍为 Game 可观察的自有字段，`scripts/u03-state-contract.json` 仅把原两数组的登记映射到其访问器 backing 字段，层级/快照归属不变。**U00/U03 测试未改**。另 1 项是上表 U08 历史投影。修后 U00/U03/U08/X2k **77/77**；9 个故障变体及 headed 浏览器流程再次通过。第二轮全量改用 6 workers，原超时、样本、断言不变。随后对照 `Monsters.c:2937` 的整份 info 重置，隔离证实变异吸血鬼复活后仍错用旧变异 DF：[修前失败](x2k-evidence/summoner-df-before.json)。因此在源码尚未修改时中止第二轮，942 输入零变化：[中止记录](x2k-evidence/full-attempt2-cancelled.json)。补齐 `deathDFType` 存档字段及变形/再次变异的重置，爆炸/地衣两种变异均覆盖复活→JSON→再次死亡；[修后 157 项](x2k-evidence/restoration-final.json)，10 个故障变体全部检出。随后启动第三轮完整门禁，仍用 6 workers。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 72,
+    "text": "第三轮完整运行中，**项目内 213 文件、3947 项断言全部通过，8 skip/5 todo**，但我新增的两份证据副本误用 `.test.ts` 后缀，被 Vitest 自动发现并发生导入失败，命令退出 1（总发现 215 个套件，其中两个无测试）。[完整原结果](x2k-evidence/full-attempt3.json)保留。证据副本已改为 `.txt`，字节内容不变；未修改任何生产源码、实际测试或 Vitest 配置。验证器补充前后实际测试发现清单及套件错误统计；清单应为 214 文件（含由 drift 单独执行的 generation_baseline）。第四轮完整复跑使用 4 workers，以降低同机并发竞争。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 74,
+    "text": "第四轮完整跑完 **213 文件、3946 通过/1 超时、8 skip/5 todo**，2812.959 秒；942 输入和 214 文件发现清单均零变化。唯一失败是原 `blueprint_center` 44 seeds × D1–D26 的 900 秒门限，实测套件 951.868 秒；[原始日志](x2k-evidence/full-attempt4.txt)、[总结](x2k-evidence/full-attempt4-summary.json)。该生产/测试源码与第三轮全 3947 断言通过时完全相同：[SHA 对照](x2k-evidence/attempt4-source-equivalence.json)。原门限、样本、断言均保留。同机其他 Vitest 进程结束后，使用 6 workers 启动第五轮完整门禁，最终第五轮已完整退出 0；同一蓝图用例按原 900 秒门限通过，套件 620.309 秒。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 76,
+    "text": "最终构建、全量、drift、独立深层由 [验证脚本](../../scripts/x2k-validate.mjs)统一冻结 **942 个输入**（源码/测试/public/scripts/config、黄金、C oracle 与 CE 源码），保留每轮前后 SHA 差异及实际退出码。探索性全量因输入仍修订而中止，不计完成门禁；[中止记录](x2k-evidence/discovery-cancelled.json)及原日志保留，未把部分绿灯称为全量通过。"
+  },
+  {
+    "file": "x2k.report.md",
+    "line": 88,
+    "text": "未暂存、未提交；本任务浏览器和预览服务已关闭。五处旧前提修订及其反事实证据保留，交验收方裁决。"
+  },
+  {
+    "file": "x2l.report.md",
+    "line": 6,
+    "text": "- 怪物法伤由原施法怪物归因，即使路径发生反射也不归给反射者。毒法杖的反射接触仅施加中毒，后续毒伤死亡仍按毒伤归因；投掷药水的爆炸由地形瞬时伤害入口处理，不伪装成反射 bolt。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 9,
+    "text": "**验收例外：** 原 C-7 的载体名单与原 W-21 的强化闪光可见性前提不再符合 CE。本轮先保留原守卫运行并做隔离反事实实验，再按任务书“先反事实证明、只修前提、交验收方裁决”修正这两处前提。没有删除、跳过或削弱其他断言；详见 §5，须由验收方裁决该例外。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 19,
+    "text": "| Architect.c:3450 | DF 的 `lightFlare`，沿真实 DF 事务触发 | 保留 `DungeonFeature` → Game effect sink → `createFlare`；逐条以 Globals.c 的 DF 行审计。补上漏项 `DF_ACTIVATE_PORTCULLIS` 的 `GENERIC_FLASH_LIGHT`（Globals.c:853）。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 23,
+    "text": "| Items.c:5316 | 成功强化怪物后无条件 `EMPOWERMENT_LIGHT`；`canSeeMonster` 仅约束自动识别等观察结果 | 将 `createFlare` 从 `if (autoID)` 中移出，保留免疫、反射、死亡对象等原效果资格门。不可见身份不因地面受光而自动暴露。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 24,
+    "text": "| Items.c:7901 | 附魔卷轴 `SCROLL_ENCHANTMENT_LIGHT` | 已有真实卷轴事务，保留并由 U21/W 系列守护。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 25,
+    "text": "| Items.c:7920、7939 | 护甲/武器保护卷轴 `SCROLL_PROTECTION_LIGHT` | 已有，保留。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 26,
+    "text": "| Items.c:8111 | 力量药水 `POTION_STRENGTH_LIGHT` | 已有，保留。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 27,
+    "text": "| Monsters.c:1070 | 有合法召唤 horde 的召唤过程后 `SUMMONING_FLASH_LIGHT`；即使本次没有成功放下随从也产生光 | 在 `summonMinionsFor` 的共同出口新增，位置为召唤者坐标，保留无 horde 的早退。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 28,
+    "text": "| Time.c:1168 | 坠落处理后的 `GENERIC_FLASH_LIGHT`，包括最深层的坠落传送分支 | 在 `playerFalls` 新增，使用落点层/坐标；致命坠落早退也保留该光。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 34,
+    "text": "CE Light.c:291–403 的可达调用均通过 `createFlare` 构造衰减光：系数初值 100000，变化量 -15；每帧 `coeff += change * 100`、`change = trunc(change * 12 / 10)`；整数 `coeff / 1000 < 0` 时结束。保留 `turn > 0 && turn < absoluteTurn - 1` 的过期条件。半径用完整系数缩放，颜色及其随机分量用整数百分比缩放。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 38,
+    "text": "- 从 `updateVision` 提取共享的 `updateFieldOfViewDisplay`，基础光和临时光使用同一几何 FOV、正/负千里眼和逐通道钳零后的光强阈值。墙和生物遮挡仍由原 LightMap 管线处理。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 42,
+    "text": "- 下一条命令、保存快照前完成发现并收掉已显示的瞬态光，避免把某个浏览器帧的可见性带入 AI、目标选择或持久化。尚未播放的事件保留给动画入口，届时按回合过期规则处理；保存则连未播放队列一起清空。换层、读档、重开沿既有瞬态清理流程丢弃队列和光图。最后一个动画 tick 仍要求重绘，清除残帧。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 46,
+    "text": "## 3. 动态色与 RNG 边界"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 48,
+    "text": "`TerrainColorCatalog.ts` 从本地 CE 提取 212 个颜色定义、6 组深度颜色和 193 个 web 地形的 fore/back 颜色名映射。可通过 `python scripts/x2m-colors.py` 重建。保留 CE 的 RGB、三通道随机幅度、共享随机幅度及 `colorDances`，不是只抄基础 RGB。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 52,
+    "text": "可见气体也消费真实 GAS 层的背景随机色（例如迷乱气体），按 CE IO.c:1196–1204、1316–1334 的 `min(90, 30 + volume)` 混合前/背景并保留底层字形；无采样参数的旧目录预览接口保持原约定。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 58,
+    "text": "| 空闲地形/持续光闪烁 | 从 COSMETIC 状态初始化的独立展示续流，绑定 Grid 生命周期；全部抽取仍选择 COSMETIC。空闲帧不推进录像保存的全局两条流，也不改变下一次 flare 的知识结果。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 59,
+    "text": "| 快照/录像 | 不保存展示缓存；命令边界归一化瞬态状态。快/慢播放和插入空闲帧均有两条 RNG 状态及记忆一致性断言。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 61,
+    "text": "这里遵循任务书明确的“只用 cosmetic、不得移动主流”约束。CE 原生 Light.c:65、374 明确使用 SUBSTANTIVE；web 此处不是 CE 随机序列逐骰同构。光的采样公式与可见性机制对齐，保留 C-7 已登记的基础光确定化和定点平方根近似，不借本轮重录生成基线。动画按队列预采样，不承诺与 CE 多光源帧内随机消耗的逐位顺序一致。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 82,
+    "text": "先运行未修改守卫的测试；最初还出现 C-7 的渲染绑定断言，已通过保留真实 `lightMap.lightAt` 基础通道输入、另外注入展示通道来修正生产结构，**没有修改该守卫**。其余冲突如下。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 88,
+    "text": "隔离副本中保留 HEAD 原守卫，仅撤掉新增召唤、坠落和符文光调用：原 C-7 整文件转绿，但新增的真实召唤、坠落、速度/安息/杀戮来源测试共 5 项转红。见 [negative-missing-sources.json](x2m-evidence/negative-missing-sources.json)。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 90,
+    "text": "仅修前提：在 C-7 的 `CARRIER_KINDS` 中登记上述四种已有真实载体的光。源码扫描范围、剥除注释/字符串规则、未登记光不得出现的断言均保留；没有隐藏光名字符串来逃避扫描。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 98,
+    "text": "仅修前提：成功强化始终期望同一个精确 flare payload。原 `autoID === seen`、拒绝伪造 bolt impact 帧、免疫目标不得写状态/flash/RNG、充能和回合断言均保留；新增测试继续验证隐形身份不会出现在侧栏。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 106,
+    "text": "第一轮实现后的完整全量（[interim-all.json](x2m-evidence/interim-all.json)）有 19 项失败：U00 的 12 项重开完整状态图检测发现 LightMap 新缓存保留了函数回调；U17c/d/e 的 7 项真实搜索/祭坛入口检测发现，连续无渲染命令提前删掉了未播放的 DF 事件。这些不是旧前提例外，U00/U17 守卫完全未修改。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 108,
+    "text": "修复将仅供渲染重放的光源回调移到以 LightMap 实例为键的展示缓存，新地图/重开自然更换缓存归属；命令边界只清除已显示帧，保留未播放事件，由动画入口检查回合过期，快照仍彻底清空。定向复跑 U00、U17c/d/e、X2m 共 108 项全部通过，见 [lifecycle-final.json](x2m-evidence/lifecycle-final.json)。随后重新冻结源码并执行最终全量，未用定向绿灯代替该全量。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 129,
+    "text": "初始工作树完整全量为 3893 passed、0 failed、8 pending、5 todo，共 3906；见 [preflight-all.json](x2m-evidence/preflight-all.json)。新增 X2m 测试 18 项全绿，见 [x2m-final.json](x2m-evidence/x2m-final.json) 及最终生命周期/全量复跑中的同组案例。开发期失败结果保留，文本日志仅统一为 UTF-8/LF；文件名 `first`/`negative` 不表示最终结果。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 135,
+    "text": "最终 `git diff --check` 通过；所有新增/修改文本均以 UTF-8/LF 交付，没有新 CRLF。工作树 HEAD 仍为 `05cbe2dca14faf7f5794074252f13c2d2cd5d409`。"
+  },
+  {
+    "file": "x2n.report.md",
+    "line": 19,
+    "text": "生产变更仅为 `src/engine/Core/Endgame.ts`、`src/engine/Core/Game.ts`。删除含混的共享 `lumenstoneCount` 名称，分成两个明确函数，不保留兼容别名。`HighScores.ts` 保存／读取正确的新结算描述；`GameEndOverlay.vue:30,81–84` 原样消费榜单数据，已通过真实浏览器验证。历史榜单只保存描述快照，本轮未迁移历史记录。CE 摘录见 [ce-evidence.json](x2n-evidence/ce-evidence.json)。"
+  },
+  {
+    "file": "x2n.report.md",
+    "line": 27,
+    "text": "- `u_26a_deep_levels.test.ts` 原第 249 行的胜利描述从 14 改为 25，并就地注明 CE 行号。其余三处调用仅随函数重命名，原堆数 2／14 和死亡兑换断言全部保留；三 seed 自然生成与真实拾取、存读、楼梯／portal 流程未改。"
+  },
+  {
+    "file": "x2n.report.md",
+    "line": 28,
+    "text": "- 当前 U26b 没有直接断言“胜利描述按条目数”的代码，但“胜利 itemValue 才乘 quantity”的注释容易延续该推广。已更正注释，在已有普通／超胜利 fixture 中新增一堆两颗必须显示 `2 lumenstones` 的榜单断言；死亡 1734／2234、胜利 46234／81234、easy 8123 的断言原样保留。"
+  },
+  {
+    "file": "x2n.report.md",
+    "line": 30,
+    "text": "历史 [U26a 报告第 30 行](u-26a.report.md) 的“CE 高分描述与死亡兑换统计的是 GEM 背包条目数”结论错误，由本报告以上 CE 依据更正。历史报告本身保留，不能继续以其旧结论验收胜利描述；U26b 的死亡裁决仍正确。"
+  },
+  {
+    "file": "x2n.report.md",
+    "line": 45,
+    "text": "页面与 console 错误列表为空；截图已逐张查看，描述可读、没有裁切。结构化结果见 [browser.json](x2n-evidence/browser.json)。这些是终结事务的受控夹具，截图中最深层统计仍为起始值，不冒称自然全程通关；自然地图到 D40 的链由未改变流程的 U26a 三 seed 守卫验证。浏览器和临时 Vite 服务已关闭。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 10,
+    "text": "- `extract_hordes.cjs` 原先已解析第三分量，但在产出成员和最终 JSON 时丢弃。现保留必填 `clumpFactor`；原有 `minCount/maxCount` 分别就是 CE `lowerBound/upperBound`，未重复保存两套上下界。重新从 CE 生成 **175 条 horde、91 个成员三元组**。89 个成员的 clump 为 1；仅 D30–39 GOLEM/KRAKEN 两个成员为 2。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 11,
+    "text": "- `Game.spawnHordeAt` 与 `Game.summonMinionsFor` 两处均改用现有 `rng.randClumpedRange(minCount,maxCount,clumpFactor)`。每物种一次调用，位置仍在成员放置之前。`Random.ts` 原算法已符合 CE，无须改写；常量区间零 RNG、clump≤1 一次非退化均匀抽样、其余按余数先大骰后小骰。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 12,
+    "text": "- 其他抽样核对：`pickHordeType` 的 `1..Σfrequency`、OOD 的 10% 与 `1..min(5,floor(depth/2))`、populate 的基础数量及重复 60% 都按 CE 保留。机器 feature 的 **instanceCountRange** 在 CE `Architect.c:1393` 本来就是 `rand_range`，Web `BlueprintEngine` 同样使用 `randRange`，没有误换成 clump。召唤表当前第三分量虽均为 1，入口仍消费完整三元组，避免以后目录变化再次丢参数。[调用点及源码 SHA](x2o-evidence/ce-callsite-audit.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 21,
+    "text": "同脚本截取 `Math.c` 的原始 `randClump`/`randClumpedRange`，交 `cc -std=c99 -O0 -Wall -Wextra` 编译。测试 stub 在需要一个新 `rand_range` 返回值时分支穷举，保留每条 C 路径的参数、返回值、调用顺序和最终数量。**14 个目录独特区间 + 3 个边界区间，共 17 个区间、54 条穷举路径**。[原 C](x2o-evidence/ce-oracle.c)、[来源](x2o-evidence/ce-oracle-provenance.json)、[输出](../../src/test/fixtures/x2o-clump-oracle.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 28,
+    "text": "- **全部 70 条 CE 映射 Web 蓝图**的上下界相等，并测试下界前/下界/上界/上界后资格；11 条无 CE 来源的历史自创蓝图必须仍在退役集合；CE48 在 CE 自身的 frequency=0 且名字注明 `DISABLED (Not fun enough.)`，Web 原本未纳入；显式锁住这项排除，不虚报 71 行 Web 均存在。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 30,
+    "text": "- 原 C 全分支和两条真实 RNG 流；常量、反向区间、clump=0、clump 大于区间等边界。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 36,
+    "text": "`src/data/hordes.test.ts` 的 7 项严格对象比较原来只允许两个数量分量，新增 clump 字段会使它们翻红。先跑原文件及 UR2–4 **28/28**，再保留改数据后的 **7 项失败**，确认失败仅为多出 CE 字段。原文件字节与 HEAD 一致，SHA 与失败名称见 [来源记录](x2o-evidence/premise-provenance.json)，[原文件](x2o-evidence/hordes-test-before.txt)、[原先通过](x2o-evidence/premises-head.json)、[修改后失败](x2o-evidence/first.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 38,
+    "text": "仅给这些成员对象增加独立 CE 表确认的 `clumpFactor`（KRAKEN=2，其余被抽查成员=1）及测试接口字段。原上下界、物种、行号、全表计数、频率、深度与严格相等断言均保留，没有改为部分匹配、删断言、减样本或放宽超时。新全表守卫另做独立三元组相等。该旧形状前提的修订作为提案交验收方裁决。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 55,
+    "text": "[一次重捕获脚本](../../scripts/x2o-recapture.mjs)在独立守卫和故障变体通过后，先校验全部保护文件仍为入场 SHA、原阶段能重现旧浅/深基线、生产源仍等于已归因版本，再各写浅/深文件一次。浅层维持原元数据及相同字节；深层单独更新，未把它合并进浅层。三份黄金 trace 候选全等原件，因此 **writes=0**，无需重录。[登记与全部字段差异](x2o-evidence/recapture.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 70,
+    "text": "探索浏览器最初直接改 depth 而未执行生成，存档校验器正确拒绝（currentLevelDepth/visited 不一致）；后来又纠正夹具状态名 `telepathic` → `telepathy`。两项均只修浏览器辅助脚本，未改存档或显示生产逻辑。原失败记录保留在 `browser-first/` 与 `browser-diagnostic.txt`。为冻结验证输入，两次刚启动的门禁已中止并归档，不计完成全量；见 [第一次中止](x2o-evidence/full-attempt1-cancelled.json)、[第二次中止](x2o-evidence/attempt2-cancelled.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 78,
+    "text": "只读进程检查观察到同机另有 9 个 Vitest worker，竞争负载与耗时增长相符；这项环境归因随后由相同输入、原门限的完整复跑通过得到支持。原源码、测试、样本数和超时全部保留。等其他 worker 连续三次（间隔30秒）为0后，已完整执行 build → npm test → drift → independent deep。负载记录见 [retry-load-checks.json](x2o-evidence/retry-load-checks.json)。"
+  },
+  {
+    "file": "x2o.report.md",
+    "line": 91,
+    "text": "最终 [机器核验](x2o-evidence/final-checks.json)确认四次门禁的 966 项输入 SHA 和 216 项发现清单彼此相同、运行前后均零变化，当前文件也仍与冻结输入相同；R=205、R∪S=212、点名57、源码/文件读取69均覆盖。12 个保护文件中仅已登记的深层基线变化，浅层与 UR2/3/4 保持原 SHA；独立 CE 黄金表的来源文件哈希仍一致。全部新增/修改文本无 CRLF，`git diff --check` 通过。最终门禁之后仅补报告、进度和证据结果，未修改源码、测试、配置或黄金输入。浏览器与开发预览服务已关闭，未暂存、未提交。"
+  }
+]

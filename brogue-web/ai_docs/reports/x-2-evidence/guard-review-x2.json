@@ -1,0 +1,3470 @@
+[
+  {
+    "file": "src/test/x2a_recording_checkpoint.test.ts",
+    "tests": [
+      {
+        "line": 10,
+        "name": "'commits after the animated turn and matches synchronous recording, replay and seek'"
+      },
+      {
+        "line": 43,
+        "name": "'records reference screen closes through the command boundary'"
+      },
+      {
+        "line": 59,
+        "name": "'keeps a slow-turn checkpoint pending through the intermediate animation frame'"
+      },
+      {
+        "line": 78,
+        "name": "'keeps every checkpoint equal across a mixed animated and synchronous command sequence'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 6,
+        "text": "expect(game.isAdvancing).toBe(false)"
+      },
+      {
+        "line": 14,
+        "text": "expect(animated.isAdvancing).toBe(true)"
+      },
+      {
+        "line": 15,
+        "text": "expect(animated.recordedInputEvents).toHaveLength(1)"
+      },
+      {
+        "line": 16,
+        "text": "expect(animated.recordedInputEvents[0]!.turn).toBe(0)"
+      },
+      {
+        "line": 17,
+        "text": "expect(() => animated.exportRecording()).toThrow('advancing')"
+      },
+      {
+        "line": 20,
+        "text": "expect(recording.events).toHaveLength(1)"
+      },
+      {
+        "line": 21,
+        "text": "expect(recording.events[0]!.turn).toBe(1)"
+      },
+      {
+        "line": 25,
+        "text": "expect(recording.events).toEqual(synchronous.exportRecording().events)"
+      },
+      {
+        "line": 27,
+        "text": "expect(animated.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 29,
+        "text": "expect(animated.replayCursor).toBe(0)"
+      },
+      {
+        "line": 31,
+        "text": "expect(animated.replayCursor).toBe(1)"
+      },
+      {
+        "line": 32,
+        "text": "expect(animated.replayError).toBeNull()"
+      },
+      {
+        "line": 34,
+        "text": "expect(animated.replayCursor).toBe(1)"
+      },
+      {
+        "line": 35,
+        "text": "expect(animated.replayError).toBeNull()"
+      },
+      {
+        "line": 38,
+        "text": "expect(animated.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 40,
+        "text": "expect(animated.replayError).toContain('OOS at command 1')"
+      },
+      {
+        "line": 46,
+        "text": "expect(game.referenceScreen).toBe('discoveries')"
+      },
+      {
+        "line": 48,
+        "text": "expect(game.referenceScreen).toBeNull()"
+      },
+      {
+        "line": 51,
+        "text": "expect(recording.events.map(event => event.action)).toEqual(['discoveries', 'escape', 'wait'])"
+      },
+      {
+        "line": 52,
+        "text": "expect(game.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 54,
+        "text": "expect(game.replayCursor).toBe(3)"
+      },
+      {
+        "line": 55,
+        "text": "expect(game.replayError).toBeNull()"
+      },
+      {
+        "line": 56,
+        "text": "expect(game.referenceScreen).toBeNull()"
+      },
+      {
+        "line": 62,
+        "text": "expect(game.player.applyStatus('slowed', 30)).toBe(true)"
+      },
+      {
+        "line": 64,
+        "text": "expect(game.isAdvancing).toBe(true)"
+      },
+      {
+        "line": 65,
+        "text": "expect(game.stepAdvancement()).toBe(true)"
+      },
+      {
+        "line": 66,
+        "text": "expect(game.pendingPauseMs).toBe(25)"
+      },
+      {
+        "line": 67,
+        "text": "expect(game.recordedInputEvents).toHaveLength(1)"
+      },
+      {
+        "line": 68,
+        "text": "expect(game.recordedInputEvents[0]!.turn).toBe(0)"
+      },
+      {
+        "line": 70,
+        "text": "expect(game.recordedInputEvents).toHaveLength(1)"
+      },
+      {
+        "line": 73,
+        "text": "expect(synchronous.player.applyStatus('slowed', 30)).toBe(true)"
+      },
+      {
+        "line": 75,
+        "text": "expect(game.exportRecording().events).toEqual(synchronous.exportRecording().events)"
+      },
+      {
+        "line": 92,
+        "text": "expect(delta).toBeDefined()"
+      },
+      {
+        "line": 110,
+        "text": "expect(animated.map(e => e.action)).toContain('auto_step')"
+      },
+      {
+        "line": 111,
+        "text": "expect(animated).toEqual(collect(false))"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2b_terrain_derivation.test.ts",
+    "tests": [
+      {
+        "line": 48,
+        "name": "'production has one boolean derivation owner and an exhaustive direct-layer writer inventory'"
+      },
+      {
+        "line": 73,
+        "name": "'fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags'"
+      },
+      {
+        "line": 88,
+        "name": "'natural seed424242 D1 contains TORCH_WALL and FOLIAGE with correct blocking'"
+      },
+      {
+        "line": 98,
+        "name": "'natural Architect/Blueprint/Lake generation through D40 and runtime turns retain the invariant'"
+      },
+      {
+        "line": 110,
+        "name": "'lake filling/cleanup and blueprint rollback recompute both directions'"
+      },
+      {
+        "line": 123,
+        "name": "'snapshot restoration derives from layers, even if saved caches are stale'"
+      },
+      {
+        "line": 129,
+        "name": "'DF effect callbacks see already refreshed flags; DF clear and promotion preserve other-layer blockers'"
+      },
+      {
+        "line": 141,
+        "name": "'discovery, opening doors, foliage promotion, combustion and fire aging keep flags current'"
+      },
+      {
+        "line": 151,
+        "name": "'test-room restore and shattering refresh whole-layer replacement and border crystal'"
+      },
+      {
+        "line": 164,
+        "name": "'gas insertion/competition/evacuation and clearing retain both positive and negative blockers'"
+      },
+      {
+        "line": 176,
+        "name": "'generation arc counts use pathing blockers and door exceptions, without consuming RNG'"
+      },
+      {
+        "line": 183,
+        "name": "'FOV and LOS block foliage but see through crystal; movement does the reverse'"
+      },
+      {
+        "line": 193,
+        "name": "'search uses full-layer blocking for the probability discount and opacity before RNG'"
+      },
+      {
+        "line": 203,
+        "name": "'flight walks through foliage, blocks crystal and allows chasms; ground avoids chasms'"
+      },
+      {
+        "line": 212,
+        "name": "'auto travel uses remembered full-layer terrain, hazards and player immunity without revealing unseen changes'"
+      },
+      {
+        "line": 224,
+        "name": "'auto travel does not reveal secret floor hazards, but still blocks secret walls'"
+      },
+      {
+        "line": 234,
+        "name": "'generic/safety/scent keep distinct costs despite identical physical passability'"
+      },
+      {
+        "line": 241,
+        "name": "'force respects both optical and physical blockers, unlike ordinary stagger'"
+      },
+      {
+        "line": 249,
+        "name": "'random player teleport never admits physically passable hazards; split uses monster avoidance'"
+      },
+      {
+        "line": 260,
+        "name": "'stagger checks source/destination passability, can enter water and crosses opaque foliage'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 25,
+        "text": "expect([c.isPassable, c.isOpaque], `${c.x},${c.y}: ${c.layers.map(t=>T[t]).join('/')}`)\n        .toEqual([!(flags & F.T_OBSTRUCTS_PASSABILITY), !!(flags & F.T_OBSTRUCTS_VISION)])"
+      },
+      {
+        "line": 66,
+        "text": "expect(booleans.sort()).toEqual(['src/engine/Map/Grid.ts:refreshTerrainProperties:isOpaque','src/engine/Map/Grid.ts:refreshTerrainProperties:isPassable'])"
+      },
+      {
+        "line": 67,
+        "text": "expect([...writers].sort()).toEqual([\n            'src/engine/Core/Game.ts:crystalizeFromPlayer','src/engine/Core/Game.ts:resetTestRoom',\n            'src/engine/Environment/Gas.ts:addGas','src/engine/Environment/Gas.ts:clearGasAt','src/engine/Environment/Gas.ts:updateGases',\n            'src/engine/Generator/BlueprintEngine.ts:restoreLevel','src/engine/Map/Grid.ts:setTerrainLayer','src/engine/Map/Grid.ts:writeTerrainHome',\n        ])"
+      },
+      {
+        "line": 92,
+        "text": "expect(c.isPassable).toBe(false)"
+      },
+      {
+        "line": 92,
+        "text": "expect(c.isOpaque).toBe(true)"
+      },
+      {
+        "line": 93,
+        "text": "expect(c.isOpaque).toBe(true)"
+      },
+      {
+        "line": 95,
+        "text": "expect(counts.torch).toBeGreaterThan(0)"
+      },
+      {
+        "line": 95,
+        "text": "expect(counts.foliage).toBeGreaterThan(0)"
+      },
+      {
+        "line": 96,
+        "text": "expect(g.grid.getCell(1,6)!.layers).toContain(T.TORCH_WALL)"
+      },
+      {
+        "line": 116,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(true)"
+      },
+      {
+        "line": 116,
+        "text": "expect(grid.getCell(12,10)!.isOpaque).toBe(true)"
+      },
+      {
+        "line": 121,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 127,
+        "text": "expect(restored.getCell(2,2)!.isPassable).toBe(false)"
+      },
+      {
+        "line": 127,
+        "text": "expect(restored.getCell(0,0)!.isPassable).toBe(true)"
+      },
+      {
+        "line": 133,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(true)"
+      },
+      {
+        "line": 133,
+        "text": "expect(callbacks).toBeGreaterThan(0)"
+      },
+      {
+        "line": 136,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(true)"
+      },
+      {
+        "line": 139,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 143,
+        "text": "expect(grid.getCell(10,10)!.isPassable).toBe(true)"
+      },
+      {
+        "line": 145,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 147,
+        "text": "expect(grid.getCell(12,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 148,
+        "text": "expect(exposeTileToFire(grid,12,10,true).ignited).toBe(true)"
+      },
+      {
+        "line": 155,
+        "text": "expect(c.isPassable).toBe(false)"
+      },
+      {
+        "line": 155,
+        "text": "expect(c.isOpaque).toBe(true)"
+      },
+      {
+        "line": 156,
+        "text": "expect(c.isOpaque).toBe(false)"
+      },
+      {
+        "line": 159,
+        "text": "expect(g.grid.getCell(0,10)!.layers[L.DUNGEON]).toBe(T.CRYSTAL_WALL)"
+      },
+      {
+        "line": 160,
+        "text": "expect(g.grid.getCell(0,10)!.isPassable).toBe(false)"
+      },
+      {
+        "line": 160,
+        "text": "expect(g.grid.getCell(0,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 162,
+        "text": "expect(c.isPassable).toBe(true)"
+      },
+      {
+        "line": 168,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(true)"
+      },
+      {
+        "line": 171,
+        "text": "expect(grid.getCell(10,10)!.isOpaque).toBe(false)"
+      },
+      {
+        "line": 180,
+        "text": "expect(g.passableArcCount(20,10)).toBe(2)"
+      },
+      {
+        "line": 180,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 181,
+        "text": "expect(g.passableArcCount(20,10)).toBe(1)"
+      },
+      {
+        "line": 186,
+        "text": "expect(g.hasLineOfSight(10,10,14,10)).toBe(false)"
+      },
+      {
+        "line": 187,
+        "text": "expect(fov.computeFOVMask(10,10,10,c=>c.isOpaque)[14]![10]).toBe(false)"
+      },
+      {
+        "line": 188,
+        "text": "expect(g.grid.getCell(12,10)!.isPassable).toBe(true)"
+      },
+      {
+        "line": 190,
+        "text": "expect(g.hasLineOfSight(10,10,14,10)).toBe(true)"
+      },
+      {
+        "line": 191,
+        "text": "expect(g.grid.getCell(12,10)!.isPassable).toBe(false)"
+      },
+      {
+        "line": 197,
+        "text": "expect(g.grid.getCell(12,10)!.terrain).toBe(T.PLAIN_FIRE)"
+      },
+      {
+        "line": 199,
+        "text": "expect(rolls).toHaveBeenCalledWith(40*2/3)"
+      },
+      {
+        "line": 201,
+        "text": "expect(rolls).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 205,
+        "text": "expect(m.canEnterMovementTerrain(g,12,10)).toBe(true)"
+      },
+      {
+        "line": 206,
+        "text": "expect(m.canEnterMovementTerrain(g,12,10)).toBe(false)"
+      },
+      {
+        "line": 207,
+        "text": "expect(m.x).toBe(11)"
+      },
+      {
+        "line": 208,
+        "text": "expect(m.canEnterMovementTerrain(g,12,10)).toBe(true)"
+      },
+      {
+        "line": 209,
+        "text": "expect(ground.canEnterMovementTerrain(g,12,10)).toBe(false)"
+      },
+      {
+        "line": 210,
+        "text": "expect(ground.canEnterMovementTerrain(g,12,10)).toBe(true)"
+      },
+      {
+        "line": 214,
+        "text": "expect(cell.isPassable).toBe(true)"
+      },
+      {
+        "line": 215,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(false)"
+      },
+      {
+        "line": 216,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(true)"
+      },
+      {
+        "line": 217,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(false)"
+      },
+      {
+        "line": 219,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(true)"
+      },
+      {
+        "line": 221,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(false)"
+      },
+      {
+        "line": 222,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(true)"
+      },
+      {
+        "line": 227,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(true)"
+      },
+      {
+        "line": 229,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(true)"
+      },
+      {
+        "line": 230,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(false)"
+      },
+      {
+        "line": 232,
+        "text": "expect(playerTravelTerrainAllowed(cell,here,g.player)).toBe(false)"
+      },
+      {
+        "line": 236,
+        "text": "expect(c.isPassable).toBe(true)"
+      },
+      {
+        "line": 236,
+        "text": "expect(genericPathCost(c)).toBe(-1)"
+      },
+      {
+        "line": 236,
+        "text": "expect(safetyTerrainCosts(c,ctx)).toEqual([5,5])"
+      },
+      {
+        "line": 237,
+        "text": "expect(c.isPassable).toBe(true)"
+      },
+      {
+        "line": 237,
+        "text": "expect(safetyTerrainCosts(c,ctx)).toEqual([-1,-1])"
+      },
+      {
+        "line": 238,
+        "text": "expect(c.isPassable).toBe(true)"
+      },
+      {
+        "line": 238,
+        "text": "expect(c.isOpaque).toBe(true)"
+      },
+      {
+        "line": 238,
+        "text": "expect(terrainBlocksScent(c)).toBe(true)"
+      },
+      {
+        "line": 239,
+        "text": "expect(c.isPassable).toBe(false)"
+      },
+      {
+        "line": 239,
+        "text": "expect(genericPathCost(c)).toBe(1)"
+      },
+      {
+        "line": 239,
+        "text": "expect(safetyTerrainCosts(c,ctx)).toEqual([100,1])"
+      },
+      {
+        "line": 245,
+        "text": "expect(m.x).toBe(11)"
+      },
+      {
+        "line": 246,
+        "text": "expect(m.x).toBe(11)"
+      },
+      {
+        "line": 247,
+        "text": "expect(m.x).toBeGreaterThan(11)"
+      },
+      {
+        "line": 255,
+        "text": "expect(g.player.loc).toEqual({x:70,y:20})"
+      },
+      {
+        "line": 258,
+        "text": "expect(g.monsters).toHaveLength(1)"
+      },
+      {
+        "line": 258,
+        "text": "expect(jelly.hp).toBe(hp)"
+      },
+      {
+        "line": 262,
+        "text": "expect(m.loc).toEqual({x:12,y:10})"
+      },
+      {
+        "line": 263,
+        "text": "expect(m.x).toBe(12)"
+      },
+      {
+        "line": 264,
+        "text": "expect(m.x).toBe(11)"
+      },
+      {
+        "line": 265,
+        "text": "expect(m.x).toBe(11)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2c_hit_status_owner.test.ts",
+    "tests": [
+      {
+        "line": 24,
+        "name": "'keeps legacy rows in data but gives the three non-CE hits no effect'"
+      },
+      {
+        "line": 34,
+        "name": "'ally kobold hits a rat without confusing the untouched player'"
+      },
+      {
+        "line": 47,
+        "name": "'targeted status helper affects only its monster recipient'"
+      },
+      {
+        "line": 59,
+        "name": "'native on-hit hallucination follows geometry contact onto the monster'"
+      },
+      {
+        "line": 71,
+        "name": "'distance attack uses the contacted monster'"
+      },
+      {
+        "line": 81,
+        "name": "'penetrating geometry applies a native status to its remote recipient'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 27,
+        "text": "expect(row.onHitStatus).toBeTruthy()"
+      },
+      {
+        "line": 29,
+        "text": "expect(monster.onHitStatus).toBe(row.onHitStatus)"
+      },
+      {
+        "line": 30,
+        "text": "expect(monster.hasEffectiveOnHitStatus()).toBe(false)"
+      },
+      {
+        "line": 42,
+        "text": "expect(rat.hp).toBeLessThan(10000)"
+      },
+      {
+        "line": 43,
+        "text": "expect(game.player.getStatusDuration('confused')).toBe(0)"
+      },
+      {
+        "line": 44,
+        "text": "expect(rat.getStatusDuration('confused')).toBe(0)"
+      },
+      {
+        "line": 50,
+        "text": "expect(rat.statusImmunities.has('confused')).toBe(true)"
+      },
+      {
+        "line": 51,
+        "text": "expect(rat.statusResistTurns.paralyzed).toBe(1)"
+      },
+      {
+        "line": 52,
+        "text": "expect(game.applyMonsterOnHitStatus(rat, 'toad', 'hallucinating', 15)).toBe(true)"
+      },
+      {
+        "line": 53,
+        "text": "expect(rat.getStatusDuration('hallucinating')).toBe(15)"
+      },
+      {
+        "line": 54,
+        "text": "expect(game.player.getStatusDuration('hallucinating')).toBe(0)"
+      },
+      {
+        "line": 55,
+        "text": "expect(game.applyMonsterOnHitStatus(rat, 'kobold', 'confused', 5)).toBe(true)"
+      },
+      {
+        "line": 56,
+        "text": "expect(rat.getStatusDuration('confused')).toBe(5)"
+      },
+      {
+        "line": 66,
+        "text": "expect(rat.hp).toBeLessThan(10000)"
+      },
+      {
+        "line": 67,
+        "text": "expect(rat.getStatusDuration('hallucinating')).toBe(15)"
+      },
+      {
+        "line": 68,
+        "text": "expect(game.player.getStatusDuration('hallucinating')).toBe(0)"
+      },
+      {
+        "line": 77,
+        "text": "expect(rat.getStatusDuration('hallucinating')).toBe(15)"
+      },
+      {
+        "line": 78,
+        "text": "expect(game.player.getStatusDuration('hallucinating')).toBe(0)"
+      },
+      {
+        "line": 90,
+        "text": "expect(rat.hp).toBeLessThan(10000)"
+      },
+      {
+        "line": 91,
+        "text": "expect(rat.getStatusDuration('hallucinating')).toBe(15)"
+      },
+      {
+        "line": 92,
+        "text": "expect(game.player.getStatusDuration('hallucinating')).toBe(0)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2d_scroll_equipment.test.ts",
+    "tests": [
+      {
+        "line": 39,
+        "name": "'accepts every valid carried category including spare gear and thrown stacks, rejecting objects outside the pack'"
+      },
+      {
+        "line": 52,
+        "name": "'%s increments times, removes curse, keeps knowledge and draws no dice'"
+      },
+      {
+        "line": 69,
+        "name": "'enchants the entire thrown stack and draws exactly the CE 1..60000 quiver roll'"
+      },
+      {
+        "line": 90,
+        "name": "'core mutation preserves existing rune knowledge=%s; identify reveals it'"
+      },
+      {
+        "line": 99,
+        "name": "'CE forced refresh: enchanting the worn armor=%s clears only its DONNING, preserving maxStatus'"
+      },
+      {
+        "line": 109,
+        "name": "'first unknown scroll: CE kind alias at autoIdentify tail, %s reveals rune=%s'"
+      },
+      {
+        "line": 124,
+        "name": "'known scroll=%s persists the exact autoIdentify decision while target selection is pending'"
+      },
+      {
+        "line": 144,
+        "name": "'first unknown scroll: target kind %s auto-identifies=%s without granting full instance knowledge'"
+      },
+      {
+        "line": 159,
+        "name": "'selects the spare armor while both slots are occupied, then persists all changes and references'"
+      },
+      {
+        "line": 178,
+        "name": "'remove curse: effect=%s clears the whole pack only, preserves negative E and auto-identifies once'"
+      },
+      {
+        "line": 198,
+        "name": "'U27 replay, animation=%s: read, rejected cancellation/invalid target, spare gear and stack selection'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 42,
+        "text": "expect(game.canEnchantTarget(item)).toBe(true)"
+      },
+      {
+        "line": 43,
+        "text": "expect(game.canEnchantTarget(Object.assign(new Item('clone', '?', 0, item.category), item))).toBe(false)"
+      },
+      {
+        "line": 48,
+        "text": "expect(canEnchantChosenItem(game.player, item)).toBe(false)"
+      },
+      {
+        "line": 57,
+        "text": "expect(item.timesEnchanted).toBe(3)"
+      },
+      {
+        "line": 58,
+        "text": "expect(item.isCursed).toBe(false)"
+      },
+      {
+        "line": 59,
+        "text": "expect([item.identified, item.runicKnown, item.maxChargesKnown, item.timesUsed, item.magicDetected]).toEqual(knowledge)"
+      },
+      {
+        "line": 60,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 61,
+        "text": "expect([item.enchantment, item.strengthRequired, item.runicType]).toEqual([-2, 11, undefined])"
+      },
+      {
+        "line": 62,
+        "text": "expect([item.enchantment, item.strengthRequired, item.runicType]).toEqual([-1, 0, 'reflection'])"
+      },
+      {
+        "line": 63,
+        "text": "expect([item.enchantment, effectiveRingEnchant(item)]).toEqual([8, 4])"
+      },
+      {
+        "line": 64,
+        "text": "expect([item.enchantment, item.maxCharges, item.charges, item.staffRechargeRemaining]).toEqual([4, 4, 2, 125])"
+      },
+      {
+        "line": 65,
+        "text": "expect([item.enchantment, item.maxCharges, item.charges, item.timesUsed]).toEqual([0, 1, 3, 5])"
+      },
+      {
+        "line": 66,
+        "text": "expect([item.enchantment, item.cooldownRemaining]).toEqual([3, 0])"
+      },
+      {
+        "line": 75,
+        "text": "expect([darts.enchantment, darts.strengthRequired, darts.quantity, darts.timesEnchanted, darts.quiverNumber]).toEqual([1, 9, 15, 3, quiver])"
+      },
+      {
+        "line": 76,
+        "text": "expect(rng.getState()).toEqual(reference.getState())"
+      },
+      {
+        "line": 77,
+        "text": "expect(darts.runicType).toBeUndefined()"
+      },
+      {
+        "line": 81,
+        "text": "expect(game.player.inventory.items).toContain(oldGroup)"
+      },
+      {
+        "line": 82,
+        "text": "expect(darts.quantity).toBe(15)"
+      },
+      {
+        "line": 84,
+        "text": "expect([darts.quantity, thrown.quantity, thrown.quiverNumber, thrown.enchantment]).toEqual([14, 1, quiver, 1])"
+      },
+      {
+        "line": 85,
+        "text": "expect(thrown.id).not.toBe(darts.id)"
+      },
+      {
+        "line": 87,
+        "text": "expect([darts.quantity, oldGroup.quantity]).toEqual([15, 1])"
+      },
+      {
+        "line": 94,
+        "text": "expect(armor.runicKnown).toBe(known)"
+      },
+      {
+        "line": 96,
+        "text": "expect(armor.runicKnown).toBe(true)"
+      },
+      {
+        "line": 104,
+        "text": "expect(game.player.getStatusDuration('donning')).toBe(worn ? 0 : 8)"
+      },
+      {
+        "line": 105,
+        "text": "expect(game.player.maxStatus.donning).toBe(8)"
+      },
+      {
+        "line": 106,
+        "text": "expect(game.player.equippedArmor === armor).toBe(worn)"
+      },
+      {
+        "line": 118,
+        "text": "expect(game.chooseEnchantTarget(item)).toBe(true)"
+      },
+      {
+        "line": 119,
+        "text": "expect(item.runicKnown).toBe(reveal)"
+      },
+      {
+        "line": 120,
+        "text": "expect(item.identified).toBe(false)"
+      },
+      {
+        "line": 121,
+        "text": "expect(item.runicType).toBe(category === C.WEAPON ? 'speed' : 'reflection')"
+      },
+      {
+        "line": 132,
+        "text": "expect(saved.run.enchantmentScrollWasKnown).toBe(known)"
+      },
+      {
+        "line": 135,
+        "text": "expect(game.loadSnapshot(invalid)).toBe(false)"
+      },
+      {
+        "line": 136,
+        "text": "expect(game.loadSnapshot(saved)).toBe(true)"
+      },
+      {
+        "line": 138,
+        "text": "expect(game.chooseEnchantTarget(restored)).toBe(true)"
+      },
+      {
+        "line": 139,
+        "text": "expect(restored.runicKnown).toBe(!known)"
+      },
+      {
+        "line": 140,
+        "text": "expect(restored.identified).toBe(false)"
+      },
+      {
+        "line": 141,
+        "text": "expect(game.toSnapshot().run.enchantmentScrollWasKnown).toBeUndefined()"
+      },
+      {
+        "line": 155,
+        "text": "expect(ItemLoader.identifiedItems.has(id)).toBe(reveal)"
+      },
+      {
+        "line": 156,
+        "text": "expect(item.identified).toBe(false)"
+      },
+      {
+        "line": 167,
+        "text": "expect(game.chooseEnchantTarget(armor)).toBe(true)"
+      },
+      {
+        "line": 168,
+        "text": "expect([weapon.enchantment, worn.enchantment]).toEqual(before)"
+      },
+      {
+        "line": 169,
+        "text": "expect([armor.enchantment, armor.strengthRequired, armor.timesEnchanted, armor.isCursed]).toEqual([-1, 0, 3, false])"
+      },
+      {
+        "line": 170,
+        "text": "expect(game.stats.turns).toBe(turn + 1)"
+      },
+      {
+        "line": 172,
+        "text": "expect(game.loadSnapshot(snapshot)).toBe(true)"
+      },
+      {
+        "line": 174,
+        "text": "expect([restored.enchantment, restored.strengthRequired, restored.timesEnchanted, restored.runicKnown]).toEqual([-1, 0, 3, false])"
+      },
+      {
+        "line": 175,
+        "text": "expect(game.player.equippedArmor?.id).toBe(worn.id)"
+      },
+      {
+        "line": 188,
+        "text": "expect(gear.every(i => !i.isCursed)).toBe(true)"
+      },
+      {
+        "line": 189,
+        "text": "expect(gear.map(i => [i.enchantment, i.strengthRequired, i.timesEnchanted, i.runicKnown])).toEqual(before)"
+      },
+      {
+        "line": 190,
+        "text": "expect([weapon.enchantment, armor.enchantment, floor.isCursed, floor.enchantment]).toEqual([-3, -2, true, -3])"
+      },
+      {
+        "line": 191,
+        "text": "expect(game.player.inventory.items).not.toContain(scroll)"
+      },
+      {
+        "line": 192,
+        "text": "expect(game.stats.turns).toBe(turn + 1)"
+      },
+      {
+        "line": 193,
+        "text": "expect(ItemLoader.identifiedItems.has('scroll_of_remove_curse')).toBe(true)"
+      },
+      {
+        "line": 194,
+        "text": "expect(logger.messages.filter(m => m.text.includes('cleansing light'))).toHaveLength(1)"
+      },
+      {
+        "line": 195,
+        "text": "expect(logger.messages.some(m => m.text.includes(cursed ? 'malevolent energy disperses' : 'nothing happens'))).toBe(true)"
+      },
+      {
+        "line": 206,
+        "text": "expect([game.pendingEnchantment, game.isInventoryOpen, timeSystem.currentTick]).toEqual([true, true, tick])"
+      },
+      {
+        "line": 207,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 209,
+        "text": "expect(game.pendingEnchantment).toBe(true)"
+      },
+      {
+        "line": 216,
+        "text": "expect(recording.events).toHaveLength(8)"
+      },
+      {
+        "line": 217,
+        "text": "expect(game.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 223,
+        "text": "expect(game.replayError).toBeNull()"
+      },
+      {
+        "line": 224,
+        "text": "expect(game.replayCursor).toBe(recording.events.length)"
+      },
+      {
+        "line": 225,
+        "text": "expect(game.player.inventory.items.map(i => ({ ...i }))).toEqual(final)"
+      },
+      {
+        "line": 226,
+        "text": "expect(rng.getState()).toEqual(finalRng)"
+      },
+      {
+        "line": 227,
+        "text": "expect(timeSystem.currentTick).toBe(finalTick)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2e_charms.test.ts",
+    "tests": [
+      {
+        "line": 54,
+        "name": "'matches 624 compiled original C cases, including clamp and signed-short boundaries'"
+      },
+      {
+        "line": 70,
+        "name": "'retains birth range/tail, identified state, cooldown, all own fields and zero-RNG enchanting for each new kind'"
+      },
+      {
+        "line": 88,
+        "name": "'uses the same formulas for current/enchant preview in Chinese and leaves the five CE Discoveries groups intact'"
+      },
+      {
+        "line": 110,
+        "name": "'overwrites levitation duration/maxStatus, frees seizure, and rejects cooling/foreign items without time or RNG'"
+      },
+      {
+        "line": 126,
+        "name": "'shatters through walls at CE radius, preserves outside/protected cells and invokes U15a exactly once'"
+      },
+      {
+        "line": 140,
+        "name": "'summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry'"
+      },
+      {
+        "line": 170,
+        "name": "'keeps a no-space guardian attempt finite while still spending cooldown and a turn'"
+      },
+      {
+        "line": 182,
+        "name": "'uses CE terrain-aware teleport selection/commit, disentangles, retains seizure flags and spends once even without destinations'"
+      },
+      {
+        "line": 206,
+        "name": "'recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms'"
+      },
+      {
+        "line": 231,
+        "name": "'negates self, creatures and floor items at radius+1, with LOS/radius boundaries and inventory exclusion'"
+      },
+      {
+        "line": 257,
+        "name": "'matches all twelve CE table rows in order and frequency, including category-only machine requests'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 41,
+        "text": "expect(item).not.toBeNull()"
+      },
+      {
+        "line": 55,
+        "text": "expect(oracle.cases).toHaveLength(624)"
+      },
+      {
+        "line": 58,
+        "text": "expect(charm.isCharmKind(id), id).toBe(true)"
+      },
+      {
+        "line": 59,
+        "text": "expect(charm.charmEffectDuration(id, e), `${id}/E${e}/duration`).toBe(row.duration)"
+      },
+      {
+        "line": 60,
+        "text": "expect(charm.charmRechargeDelay(id, e), `${id}/E${e}/recharge`).toBe(row.recharge)"
+      },
+      {
+        "line": 66,
+        "text": "expect(magnitude, `${id}/E${e}/magnitude`).toBe(row.magnitude)"
+      },
+      {
+        "line": 75,
+        "text": "expect(range).toHaveBeenCalledExactlyOnceWith(1, 2, 1)"
+      },
+      {
+        "line": 76,
+        "text": "expect(tail.mock.calls).toEqual([[7], [7]])"
+      },
+      {
+        "line": 77,
+        "text": "expect(item).toMatchObject({ enchantment: 3, identified: true, cooldownRemaining: 0, arcanaInstanceVersion: 2 })"
+      },
+      {
+        "line": 79,
+        "text": "expect(deserializeItem(serializeItem(item))).toEqual(item)"
+      },
+      {
+        "line": 81,
+        "text": "expect(enchantArcana(item)).toBe(true)"
+      },
+      {
+        "line": 82,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 83,
+        "text": "expect(item).toMatchObject({ enchantment: 4, cooldownRemaining: 0, cooldownTurns: charm.charmRechargeDelay(id as Kind, 4) })"
+      },
+      {
+        "line": 98,
+        "text": "expect(text).toContain(part)"
+      },
+      {
+        "line": 99,
+        "text": "expect(text).toContain(`冷却回合: ${charm.charmRechargeDelay(id as Kind, 2)}`)"
+      },
+      {
+        "line": 100,
+        "text": "expect(text).toContain(`冷却 ${charm.charmRechargeDelay(id as Kind, 3)} 回合`)"
+      },
+      {
+        "line": 101,
+        "text": "expect(text).toContain('剩余冷却: 7')"
+      },
+      {
+        "line": 102,
+        "text": "expect(item.displayName).toMatch(/[\\u4e00-\\u9fff]/)"
+      },
+      {
+        "line": 103,
+        "text": "expect(text).not.toMatch(/charm_of_|Charm of|Unknown/)"
+      },
+      {
+        "line": 105,
+        "text": "expect(getDiscoveries().map(g => g.category)).toEqual([C.SCROLL, C.RING, C.POTION, C.STAFF, C.WAND])"
+      },
+      {
+        "line": 116,
+        "text": "expect([g.player.getStatusDuration('levitating'), g.player.maxStatus.levitating, g.player.seized]).toEqual([15, 15, false])"
+      },
+      {
+        "line": 117,
+        "text": "expect(timeSystem.currentTick - tick).toBe(100)"
+      },
+      {
+        "line": 118,
+        "text": "expect(item.cooldownRemaining).toBe(352)"
+      },
+      {
+        "line": 122,
+        "text": "expect(end).toHaveBeenCalledTimes(1)"
+      },
+      {
+        "line": 123,
+        "text": "expect(timeSystem.currentTick).toBe(afterTick)"
+      },
+      {
+        "line": 123,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 133,
+        "text": "expect(effect).toHaveBeenCalledExactlyOnceWith(5)"
+      },
+      {
+        "line": 134,
+        "text": "expect(g.grid.getCell(15, 10)!.layers[L.DUNGEON]).toBe(T.FORCEFIELD)"
+      },
+      {
+        "line": 135,
+        "text": "expect(g.grid.getCell(16, 10)!.terrain).toBe(T.WALL)"
+      },
+      {
+        "line": 136,
+        "text": "expect(g.grid.getCell(10, 14)!.terrain).toBe(T.WALL)"
+      },
+      {
+        "line": 137,
+        "text": "expect(item.cooldownRemaining).toBe(1499)"
+      },
+      {
+        "line": 151,
+        "text": "expect(guardian).toMatchObject({ typeId: 'guardian_spirit', isAlly: true, boundToPlayer: true,\n            doesNotTrackLeader: true, leader: null, ticksUntilTurn: 101, hp: 1000, accuracy: 200,\n            goldDropChance: 0, itemDropChance: 0, loc: { x: 11, y: 10 } })"
+      },
+      {
+        "line": 154,
+        "text": "expect([guardian.getStatusDuration('lifespan_remaining'), guardian.maxStatus.lifespan_remaining]).toEqual([8, 8])"
+      },
+      {
+        "line": 155,
+        "text": "expect(guardian.hasBehavior('MONST_FLIES')).toBe(false)"
+      },
+      {
+        "line": 156,
+        "text": "expect(guardian.isImmuneToWeapons()).toBe(true)"
+      },
+      {
+        "line": 157,
+        "text": "expect(item.cooldownRemaining).toBe(360)"
+      },
+      {
+        "line": 160,
+        "text": "expect(g.loadSnapshot(snap)).toBe(true)"
+      },
+      {
+        "line": 162,
+        "text": "expect(serializeItem(g.player.inventory.items[0]!)).toEqual(serializeItem(item))"
+      },
+      {
+        "line": 163,
+        "text": "expect(restored).toMatchObject({ id: guardian.id, boundToPlayer: true, doesNotTrackLeader: true, ticksUntilTurn: 101 })"
+      },
+      {
+        "line": 165,
+        "text": "expect(g.monsters).not.toContain(restored)"
+      },
+      {
+        "line": 166,
+        "text": "expect(g.purgatory).not.toContain(restored)"
+      },
+      {
+        "line": 167,
+        "text": "expect(g.items).toHaveLength(0)"
+      },
+      {
+        "line": 177,
+        "text": "expect(g.monsters).toHaveLength(0)"
+      },
+      {
+        "line": 178,
+        "text": "expect(item.cooldownRemaining).toBe(507)"
+      },
+      {
+        "line": 179,
+        "text": "expect(timeSystem.currentTick - tick).toBe(100)"
+      },
+      {
+        "line": 187,
+        "text": "expect(teleportCandidates(g, g.player)).toContainEqual({ x: 50, y: 10 })"
+      },
+      {
+        "line": 188,
+        "text": "expect(teleportCandidates(g, g.player, true)).not.toContainEqual({ x: 50, y: 10 })"
+      },
+      {
+        "line": 192,
+        "text": "expect(teleport).toHaveBeenCalledExactlyOnceWith(g.player, true)"
+      },
+      {
+        "line": 193,
+        "text": "expect(g.player.x).toBeGreaterThan(30)"
+      },
+      {
+        "line": 193,
+        "text": "expect(g.player.seized).toBe(true)"
+      },
+      {
+        "line": 194,
+        "text": "expect(g.player.hasStatus('stuck')).toBe(false)"
+      },
+      {
+        "line": 195,
+        "text": "expect(g.grid.getCell(g.player.x, g.player.y)!.isVisible).toBe(true)"
+      },
+      {
+        "line": 196,
+        "text": "expect(item.cooldownRemaining).toBe(551)"
+      },
+      {
+        "line": 202,
+        "text": "expect(g.player.loc).toEqual(at)"
+      },
+      {
+        "line": 202,
+        "text": "expect(item.cooldownRemaining).toBe(551)"
+      },
+      {
+        "line": 203,
+        "text": "expect(timeSystem.currentTick - tick).toBe(100)"
+      },
+      {
+        "line": 216,
+        "text": "expect(staff.charges).toBe(3)"
+      },
+      {
+        "line": 217,
+        "text": "expect(staff.staffRechargeRemaining).toBe(['staff_of_blinking', 'staff_of_obstruction'].includes(staff.identityId!) ? 3333 : 1666)"
+      },
+      {
+        "line": 219,
+        "text": "expect(wand.charges).toBe(wandCharge)"
+      },
+      {
+        "line": 219,
+        "text": "expect(other.cooldownRemaining).toBe(42)"
+      },
+      {
+        "line": 220,
+        "text": "expect(item.cooldownRemaining).toBe(5499)"
+      },
+      {
+        "line": 227,
+        "text": "expect(all.map(c => c.cooldownRemaining)).toEqual(all.map(() => 0))"
+      },
+      {
+        "line": 228,
+        "text": "expect(wand.charges).toBe(wandCharge)"
+      },
+      {
+        "line": 247,
+        "text": "expect(effect.mock.calls[0]![1]).toBe(5)"
+      },
+      {
+        "line": 248,
+        "text": "expect(g.player.hasStatus('hasted')).toBe(false)"
+      },
+      {
+        "line": 249,
+        "text": "expect(atBoundary.hp).toBe(0)"
+      },
+      {
+        "line": 249,
+        "text": "expect(outside.hp).toBe(1000)"
+      },
+      {
+        "line": 249,
+        "text": "expect(hidden.hp).toBe(1000)"
+      },
+      {
+        "line": 250,
+        "text": "expect(c.cooldownRemaining).toBe(charm.charmRechargeDelay(c.identityId as Kind, c.enchantment))"
+      },
+      {
+        "line": 251,
+        "text": "expect([hiddenItem.cooldownRemaining, outsideItem.cooldownRemaining, pack.cooldownRemaining]).toEqual([0, 0, 19])"
+      },
+      {
+        "line": 252,
+        "text": "expect(item.cooldownRemaining).toBe(1499)"
+      },
+      {
+        "line": 263,
+        "text": "expect(rows).toHaveLength(12)"
+      },
+      {
+        "line": 264,
+        "text": "expect(ItemLoader.genCharms.map(c => ({ id: c.id, frequency: c.frequency }))).toEqual(rows)"
+      },
+      {
+        "line": 270,
+        "text": "expect(item.identityId).toBe(rows[i]!.id)"
+      },
+      {
+        "line": 271,
+        "text": "expect(item.identified).toBe(true)"
+      },
+      {
+        "line": 272,
+        "text": "expect(item.cooldownRemaining).toBe(0)"
+      },
+      {
+        "line": 273,
+        "text": "expect(chosen).toHaveBeenLastCalledWith(rows.map(r => r.frequency))"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2f_thrown_math.test.ts",
+    "tests": [
+      {
+        "line": 20,
+        "name": "'instance {$lo,$hi,$clump}, enchant {$enchant}, strength {$strength}: distribution and RNG tuples'"
+      },
+      {
+        "line": 53,
+        "name": "'a miss spends one hit die; auto hit spends none; immune hit spends no damage dice'"
+      },
+      {
+        "line": 81,
+        "name": "'slaying gives 100% hit probability but still consumes attackHit die'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 45,
+        "text": "expect(result.hit).toBe(true)"
+      },
+      {
+        "line": 47,
+        "text": "expect(roll.mock.calls).toEqual(row.dice)"
+      },
+      {
+        "line": 48,
+        "text": "expect(roll).toHaveBeenCalledTimes(row.calls)"
+      },
+      {
+        "line": 50,
+        "text": "expect(counts).toEqual(row.weights)"
+      },
+      {
+        "line": 61,
+        "text": "expect(CombatSystem.resolveThrownWeapon(thrower, defender, item).hit).toBe(false)"
+      },
+      {
+        "line": 62,
+        "text": "expect(roll.mock.calls).toEqual([[0, 99]])"
+      },
+      {
+        "line": 66,
+        "text": "expect(roll).toHaveBeenCalledTimes(item.clumping!)"
+      },
+      {
+        "line": 71,
+        "text": "expect(immune.damage).toBe(0)"
+      },
+      {
+        "line": 72,
+        "text": "expect(roll).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 77,
+        "text": "expect(CombatSystem.resolveThrownWeapon(thrower, defender, item).damage).toBe(0)"
+      },
+      {
+        "line": 78,
+        "text": "expect(roll).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 92,
+        "text": "expect(result.hit).toBe(true)"
+      },
+      {
+        "line": 93,
+        "text": "expect(result.killed).toBe(true)"
+      },
+      {
+        "line": 94,
+        "text": "expect(roll.mock.calls).toEqual([[0, 99]])"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2g_native_effects.test.ts",
+    "tests": [
+      {
+        "line": 43,
+        "name": "'uses CE surface lichen and all three DF sources, not a lichen monster or gas'"
+      },
+      {
+        "line": 52,
+        "name": "'quaff, throw and infested death plant real terrain; contact caps duration without adding concentration'"
+      },
+      {
+        "line": 65,
+        "name": "'lichen regrows at the old cell, spreads at 2%, cannot cross lava, and respects flight/inanimate immunity'"
+      },
+      {
+        "line": 75,
+        "name": "'darkness throw creates a negative light gas, drinking keeps its own status; terrain and statuses survive save'"
+      },
+      {
+        "line": 92,
+        "name": "'matches original C blood truncation for 8000 damage/HP pairs; fully shielded hits do not bleed'"
+      },
+      {
+        "line": 103,
+        "name": "'CE inflictLethalDamage from quietus/slaying still emits zombie blood and bypasses shields'"
+      },
+      {
+        "line": 115,
+        "name": "'zombies emit 15 volume per objective tick; living contact causes nausea, inanimate and respiration are immune; gas burns and saves'"
+      },
+      {
+        "line": 128,
+        "name": "'matches 1024 CE submerge eligibility cases and 16 observer cases'"
+      },
+      {
+        "line": 144,
+        "name": "'submerges at 20%, surfaces on attack/dry placement, retains seizure exception, and saves the actual runtime bit'"
+      },
+      {
+        "line": 160,
+        "name": "'hides identity above water, telepathy only marks location, underwater observers see; throws and bolts pass through even when seen'"
+      },
+      {
+        "line": 172,
+        "name": "'submerged creatures resist nausea, damage, paralysis, explosions, fire and webs but not confusion'"
+      },
+      {
+        "line": 186,
+        "name": "'renders rot tint from the live gas layer before mirror refresh, preserving glyph and using CE density weight'"
+      },
+      {
+        "line": 197,
+        "name": "'restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state'"
+      },
+      {
+        "line": 220,
+        "name": "'submerged creatures never alter bolt tuning or blink impact, even for underwater observers'"
+      },
+      {
+        "line": 234,
+        "name": "'blink lands on submerged occupants after CE shuffled Manhattan relocation; no home is silent administrative death'"
+      },
+      {
+        "line": 246,
+        "name": "'submerged and surfaced aquatic creatures on submergible terrain do not press either legacy or CE plates'"
+      },
+      {
+        "line": 262,
+        "name": "'lethal rot blood from burning, explosion and gradual terrain has exactly one death callback'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 45,
+        "text": "expect(ce).toMatch(/\\/\\*LICHEN\\*\\/[^\\n]*60, 50, DF_PLAIN_FIRE,0,DF_LICHEN_GROW,\\s*10000/)"
+      },
+      {
+        "line": 46,
+        "text": "expect(TERRAIN_FLAGS[T.LICHEN]).toMatchObject({flags:T_CAUSES_POISON|T_IS_FLAMMABLE,promoteChance:10000,promoteType:'DF_LICHEN_GROW'})"
+      },
+      {
+        "line": 47,
+        "text": "expect(TERRAIN_FLAGS[T.LICHEN].mechFlags & TM_VANISHES_UPON_PROMOTION).not.toBe(0)"
+      },
+      {
+        "line": 48,
+        "text": "expect(DRAW_PRIORITY[T.LICHEN]).toBe(60)"
+      },
+      {
+        "line": 48,
+        "text": "expect(TERRAIN_HOME_LAYER[T.LICHEN]).toBe(L.SURFACE)"
+      },
+      {
+        "line": 49,
+        "text": "expect(catalogFeature(DF.DF_LICHEN_GROW)).toMatchObject({startProbability:2,probabilityDecrement:100,flags:DFF_BLOCKED_BY_OTHER_LAYERS})"
+      },
+      {
+        "line": 50,
+        "text": "expect(catalogFeature(id)).toMatchObject({tile:T.LICHEN,startProbability:70,probabilityDecrement:60})"
+      },
+      {
+        "line": 54,
+        "text": "expect(g.grid.getCell(10,10)!.layers[L.SURFACE]).toBe(T.LICHEN)"
+      },
+      {
+        "line": 55,
+        "text": "expect(g.player.hasStatus('poisoned')).toBe(true)"
+      },
+      {
+        "line": 55,
+        "text": "expect(g.player.poisonAmount).toBe(1)"
+      },
+      {
+        "line": 58,
+        "text": "expect(g.player.getStatusDuration('poisoned')).toBe(duration)"
+      },
+      {
+        "line": 58,
+        "text": "expect(g.player.poisonAmount).toBe(3)"
+      },
+      {
+        "line": 60,
+        "text": "expect(h.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.LICHEN)"
+      },
+      {
+        "line": 61,
+        "text": "expect(ItemLoader.identifiedItems.has('potion_of_creeping_death')).toBe(true)"
+      },
+      {
+        "line": 63,
+        "text": "expect(h.grid.getCell(30,10)!.layers[L.SURFACE]).toBe(T.LICHEN)"
+      },
+      {
+        "line": 69,
+        "text": "expect(g.grid.getCell(10,10)!.layers[L.SURFACE]).toBe(T.LICHEN)"
+      },
+      {
+        "line": 70,
+        "text": "expect(g.grid.getCell(9,10)!.layers[L.SURFACE]).toBe(T.LICHEN)"
+      },
+      {
+        "line": 71,
+        "text": "expect(g.grid.getCell(11,10)!.layers[L.SURFACE]).not.toBe(T.LICHEN)"
+      },
+      {
+        "line": 72,
+        "text": "expect(g.player.hasStatus('poisoned')).toBe(false)"
+      },
+      {
+        "line": 73,
+        "text": "expect(m.hasStatus('poisoned')).toBe(false)"
+      },
+      {
+        "line": 78,
+        "text": "expect(g.lightMap.lightSumAt(14,10)).toBeLessThan(before)"
+      },
+      {
+        "line": 79,
+        "text": "expect(g.grid.getCell(14,10)!.layers[L.GAS]).toBe(T.DARKNESS_CLOUD)"
+      },
+      {
+        "line": 80,
+        "text": "expect(ItemLoader.identifiedItems.has('potion_of_darkness')).toBe(true)"
+      },
+      {
+        "line": 81,
+        "text": "expect(g.player.hasStatus('darkness')).toBe(false)"
+      },
+      {
+        "line": 82,
+        "text": "expect(TERRAIN_FLAGS[T.DARKNESS_CLOUD].glowLight).toBe(LightKind.DARKNESS_CLOUD_LIGHT)"
+      },
+      {
+        "line": 83,
+        "text": "expect(catalogFeature(DF.DF_DARKNESS_POTION)).toMatchObject({layer:L.GAS,startProbability:200,probabilityDecrement:0})"
+      },
+      {
+        "line": 84,
+        "text": "expect(g.player.hasStatus('darkness')).toBe(true)"
+      },
+      {
+        "line": 86,
+        "text": "expect({...g.toSnapshot(), savedAt:s.savedAt}).toEqual(s)"
+      },
+      {
+        "line": 97,
+        "text": "expect(grid.getCell(2,2)!.volume,`${hp}/${damage}`).toBe(volume)"
+      },
+      {
+        "line": 98,
+        "text": "expect(grid.getCell(2,2)!.layers[L.GAS]).toBe(T.ROT_GAS)"
+      },
+      {
+        "line": 101,
+        "text": "expect(grid.getCell(2,2)!.volume).toBe(0)"
+      },
+      {
+        "line": 110,
+        "text": "expect(z.hp).toBe(0)"
+      },
+      {
+        "line": 110,
+        "text": "expect(z.getStatusDuration('shielded')).toBe(1000)"
+      },
+      {
+        "line": 111,
+        "text": "expect(g.grid.getCell(15,10)!.volume).toBe(1600)"
+      },
+      {
+        "line": 112,
+        "text": "expect(g.grid.getCell(15,10)!.layers[L.GAS]).toBe(T.ROT_GAS)"
+      },
+      {
+        "line": 117,
+        "text": "expect(g.grid.getCell(10,10)!.volume).toBe(15)"
+      },
+      {
+        "line": 118,
+        "text": "expect(g.player.getStatusDuration('nauseous')).toBe(20)"
+      },
+      {
+        "line": 119,
+        "text": "expect(z.getStatusDuration('nauseous')).toBe(20)"
+      },
+      {
+        "line": 121,
+        "text": "expect(z.hasStatus('nauseous')).toBe(false)"
+      },
+      {
+        "line": 123,
+        "text": "expect(g.player.hasStatus('nauseous')).toBe(false)"
+      },
+      {
+        "line": 123,
+        "text": "expect(armor.runicKnown).toBe(true)"
+      },
+      {
+        "line": 124,
+        "text": "expect({...g.toSnapshot(),savedAt:s.savedAt}).toEqual(s)"
+      },
+      {
+        "line": 125,
+        "text": "expect(g.grid.getCell(10,10)!.layers[L.SURFACE]).toBe(T.GAS_FIRE)"
+      },
+      {
+        "line": 126,
+        "text": "expect(g.grid.getCell(10,10)!.volume).toBe(0)"
+      },
+      {
+        "line": 135,
+        "text": "expect(monsterCanSubmergeNow(m,grid),String(i)).toBe(!!oracle.submerge[i])"
+      },
+      {
+        "line": 141,
+        "text": "expect(hiddenBySubmersion(g.grid,target,(i&8)?g.player:null),String(i)).toBe(!!oracle.hidden[i])"
+      },
+      {
+        "line": 147,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 147,
+        "text": "expect(roll).toHaveBeenCalledExactlyOnceWith(20)"
+      },
+      {
+        "line": 148,
+        "text": "expect(m.submerged).toBe(true)"
+      },
+      {
+        "line": 148,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 149,
+        "text": "expect(roll).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 150,
+        "text": "expect(restored.submerged).toBe(true)"
+      },
+      {
+        "line": 151,
+        "text": "expect(restored.submerged).toBe(false)"
+      },
+      {
+        "line": 153,
+        "text": "expect(restored.submerged).toBe(true)"
+      },
+      {
+        "line": 155,
+        "text": "expect(restored.submerged).toBe(false)"
+      },
+      {
+        "line": 157,
+        "text": "expect(restored.submerged).toBe(true)"
+      },
+      {
+        "line": 158,
+        "text": "expect(restored.submerged).toBe(false)"
+      },
+      {
+        "line": 162,
+        "text": "expect(canSeeMonster(g.player,g.grid,m)).toBe(false)"
+      },
+      {
+        "line": 163,
+        "text": "expect(canDisplayMonster(g.player,g.grid,m)).toBe(true)"
+      },
+      {
+        "line": 163,
+        "text": "expect(canSeeMonster(g.player,g.grid,m)).toBe(false)"
+      },
+      {
+        "line": 164,
+        "text": "expect(canSeeMonster(g.player,g.grid,m)).toBe(true)"
+      },
+      {
+        "line": 165,
+        "text": "expect(canSeeMonster(g.player,g.grid,m)).toBe(false)"
+      },
+      {
+        "line": 168,
+        "text": "expect(result.hits.map(h=>h.creature)).not.toContain(m)"
+      },
+      {
+        "line": 168,
+        "text": "expect(result.hits.map(h=>h.creature)).toContain(behind)"
+      },
+      {
+        "line": 169,
+        "text": "expect(g.grid.getCell(14,10)!.layers[L.GAS]).toBe(T.DARKNESS_CLOUD)"
+      },
+      {
+        "line": 170,
+        "text": "expect(g.grid.getCell(11,10)!.layers[L.GAS]).not.toBe(T.DARKNESS_CLOUD)"
+      },
+      {
+        "line": 175,
+        "text": "expect(m.hasStatus('nauseous')).toBe(false)"
+      },
+      {
+        "line": 178,
+        "text": "expect(m.hp).toBe(hp)"
+      },
+      {
+        "line": 178,
+        "text": "expect(m.hasStatus('paralyzed')).toBe(false)"
+      },
+      {
+        "line": 181,
+        "text": "expect(m.hasStatus('stuck')).toBe(false)"
+      },
+      {
+        "line": 182,
+        "text": "expect((g as any).resolveExplosionDamage(m)).toBe(false)"
+      },
+      {
+        "line": 183,
+        "text": "expect((m.statusDurations as any).burning).toBeUndefined()"
+      },
+      {
+        "line": 184,
+        "text": "expect(m.hasStatus('confused')).toBe(true)"
+      },
+      {
+        "line": 190,
+        "text": "expect(result.char).toBe(base.char)"
+      },
+      {
+        "line": 194,
+        "text": "expect(result.bgColor).toBe(expected)"
+      },
+      {
+        "line": 194,
+        "text": "expect(result.color).not.toBe(base.color)"
+      },
+      {
+        "line": 195,
+        "text": "expect(cellAppearance(c,ctx)!.char).toBe(base.char)"
+      },
+      {
+        "line": 200,
+        "text": "expect(ce).toMatch(new RegExp(`\\\\{\"${name}\",[^\\\\n]*?7,`))"
+      },
+      {
+        "line": 201,
+        "text": "expect(ItemLoader.genPotions.find(p=>p.id===`potion_of_${id}`)?.frequency).toBe(7)"
+      },
+      {
+        "line": 209,
+        "text": "expect(g.loadSnapshot(initial)).toBe(true)"
+      },
+      {
+        "line": 215,
+        "text": "expect(differences(uninterrupted,resumed)).toEqual([])"
+      },
+      {
+        "line": 226,
+        "text": "expect(boltLine(g.grid,g.player.loc,aim,bolt,{caster:g.player,creatureAt:p=>g.getMonsterAt(p.x,p.y)}))\n                .toEqual(boltLine(g.grid,g.player.loc,aim,bolt,empty))"
+      },
+      {
+        "line": 231,
+        "text": "expect(submergedImpact).toEqual(monsterBlinkImpact(g,caster,{x:25,y:10}))"
+      },
+      {
+        "line": 232,
+        "text": "expect(monsterBlinkImpact(g,caster,{x:25,y:10})).toEqual(caster.loc)"
+      },
+      {
+        "line": 237,
+        "text": "expect((g as any).finishBlink({caster:g.player,landingPos:{x:15,y:10}})).toBe(true)"
+      },
+      {
+        "line": 238,
+        "text": "expect(g.player.loc).toEqual({x:15,y:10})"
+      },
+      {
+        "line": 238,
+        "text": "expect(m.loc).toEqual({x:16,y:10})"
+      },
+      {
+        "line": 238,
+        "text": "expect(m.submerged).toBe(true)"
+      },
+      {
+        "line": 239,
+        "text": "expect(shuffle.mock.calls.map(c=>c[0].length)).toEqual([g.grid.width,g.grid.height])"
+      },
+      {
+        "line": 242,
+        "text": "expect((h as any).finishBlink({caster:h.player,landingPos:{x:15,y:10}})).toBe(true)"
+      },
+      {
+        "line": 243,
+        "text": "expect(trapped.hp).toBe(0)"
+      },
+      {
+        "line": 243,
+        "text": "expect(trapped.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 243,
+        "text": "expect(trapped.carriedItem).toBeNull()"
+      },
+      {
+        "line": 244,
+        "text": "expect(h.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.NOTHING)"
+      },
+      {
+        "line": 244,
+        "text": "expect(h.items).toHaveLength(0)"
+      },
+      {
+        "line": 252,
+        "text": "expect(g.grid.getCell(15,10)!.layers[L.GAS]).toBe(T.NOTHING)"
+      },
+      {
+        "line": 254,
+        "text": "expect(legacy).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 254,
+        "text": "expect(pressure).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 257,
+        "text": "expect(g.grid.getCell(15,10)!.layers[L.GAS]).toBe(T.POISON_GAS)"
+      },
+      {
+        "line": 269,
+        "text": "expect(m.hp,source).toBe(0)"
+      },
+      {
+        "line": 269,
+        "text": "expect(death,source).toHaveBeenCalledTimes(1)"
+      },
+      {
+        "line": 270,
+        "text": "expect(g.grid.getCell(15,10)!.layers[L.GAS],source).toBe(T.ROT_GAS)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2h_test_mode_reachability.test.ts",
+    "tests": [
+      {
+        "line": 19,
+        "name": "'menu mode payload descends every exhibit, permits pickup, and exposes no invented identity, runic, or blueprint'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 28,
+        "text": "expect(game.depth).toBe(depth)"
+      },
+      {
+        "line": 31,
+        "text": "expect(game.testRooms.size, `D${depth} ${category}: empty exhibit`).toBeGreaterThan(0)"
+      },
+      {
+        "line": 42,
+        "text": "expect(inventedItems.has(identity), `D${depth}: ${identity}`).toBe(false)"
+      },
+      {
+        "line": 46,
+        "text": "expect(inventedRunics.has(item.runicType), `D${depth}: ${item.runicType}`).toBe(false)"
+      },
+      {
+        "line": 53,
+        "text": "expect(id, `D${depth}: missing blueprint identity`).toBeDefined()"
+      },
+      {
+        "line": 54,
+        "text": "expect(inventedBlueprints.has(id!), `D${depth}: ${id}`).toBe(false)"
+      },
+      {
+        "line": 55,
+        "text": "expect(blueprintData.find(bp => bp.id === id)?.ceBlueprintId, `D${depth}: ${id}`).not.toBeNull()"
+      },
+      {
+        "line": 57,
+        "text": "expect(ids.length).toBe(48)"
+      },
+      {
+        "line": 65,
+        "text": "expect(game.player.inventory.items).toContain(item)"
+      },
+      {
+        "line": 70,
+        "text": "expect(game.grid.getCell(5, 3)?.layers).toContain(TerrainType.STAIRS_DOWN)"
+      },
+      {
+        "line": 74,
+        "text": "expect(seenCategories).toEqual(new Set([\n            'weapons', 'wands', 'scrolls', 'potions', 'other',\n            'terrain', 'enemies', 'blueprints', 'runics',\n        ]))"
+      },
+      {
+        "line": 78,
+        "text": "expect(seenItems.has('dagger')).toBe(true)"
+      },
+      {
+        "line": 79,
+        "text": "expect(seenItems.has('potion_of_life')).toBe(true)"
+      },
+      {
+        "line": 80,
+        "text": "expect(seenItems.has('potion_of_darkness')).toBe(true)"
+      },
+      {
+        "line": 81,
+        "text": "expect(seenRunics.has('paralyzing')).toBe(true)"
+      },
+      {
+        "line": 82,
+        "text": "expect(seenRunics.has('reflection')).toBe(true)"
+      },
+      {
+        "line": 83,
+        "text": "expect(pickedUp).toBe(5)"
+      },
+      {
+        "line": 84,
+        "text": "expect(game.player.inventory.items.some(item => item.category === ItemCategory.WAND)).toBe(true)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2i_discovery_text.test.ts",
+    "tests": [
+      {
+        "line": 19,
+        "name": "'uses the same eligible potion set in the discovery numerator and denominator'"
+      },
+      {
+        "line": 38,
+        "name": "'burns a contacted target through the real combat and fire outlets'"
+      },
+      {
+        "line": 59,
+        "name": "'claims theft and submersion only with execution paths (X2j theft, X2g MB_SUBMERGED)'"
+      },
+      {
+        "line": 69,
+        "name": "'shows a localized replay failure while preserving the diagnostic code'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 26,
+        "text": "expect(entries.some(p => p.id === 'potion_of_creeping_death')).toBe(true)"
+      },
+      {
+        "line": 27,
+        "text": "expect(new Set(group.rows.map(r => r.id))).toEqual(new Set(entries.map(e => e.id)))"
+      },
+      {
+        "line": 31,
+        "text": "expect(row.percentage).toBe(frequency > 0 ? Math.floor(100 * frequency / denominator) : undefined)"
+      },
+      {
+        "line": 51,
+        "text": "expect((game.player.statusDurations as Record<string, number>).burning).toBeGreaterThan(0)"
+      },
+      {
+        "line": 52,
+        "text": "expect(detailLines(attacker)).toContain('命中会点燃目标')"
+      },
+      {
+        "line": 56,
+        "text": "expect((game.player.statusDurations as Record<string, number>).burning ?? 0).toBe(0)"
+      },
+      {
+        "line": 63,
+        "text": "expect(claims).toContain('攻击会偷取物品并逃跑')"
+      },
+      {
+        "line": 66,
+        "text": "expect(detailLines(eel).join(' ')).toContain('可以潜入水中')"
+      },
+      {
+        "line": 76,
+        "text": "expect(game.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 78,
+        "text": "expect(game.replayError).toContain('OOS at command 1')"
+      },
+      {
+        "line": 79,
+        "text": "expect(game.replayErrorDisplay).toContain('回放在第 1 条命令处不同步')"
+      },
+      {
+        "line": 80,
+        "text": "expect(game.replayErrorDisplay).not.toMatch(/[A-Za-z]/)"
+      },
+      {
+        "line": 81,
+        "text": "expect(logger.messages[logger.messages.length - 1]?.text).toBe(game.replayErrorDisplay)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2i_i18n_flow.test.ts",
+    "tests": [
+      {
+        "line": 8,
+        "name": "'follows a local template into logger.log without flagging translated values'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 21,
+        "text": "expect(hits.map(hit => [hit.file, hit.text, hit.hasAsciiLetters]))\n                .toEqual([['feature/messages.ts', 'OOS at command ', true]])"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2j_monster_ai.test.ts",
+    "tests": [
+      {
+        "line": 38,
+        "name": "'steals category %s stack %i -> %i with one owner'"
+      },
+      {
+        "line": 54,
+        "name": "'excludes every equipped slot but samples unequipped stacks equally, not individual quantities'"
+      },
+      {
+        "line": 65,
+        "name": "'requires a second attackHit and permits a zero-damage hit to steal'"
+      },
+      {
+        "line": 72,
+        "name": "'does not steal: %s'"
+      },
+      {
+        "line": 84,
+        "name": "'save/reload during flight preserves split identity, private maps and exact next action'"
+      },
+      {
+        "line": 106,
+        "name": "'returns carried item on %s without duplicating it'"
+      },
+      {
+        "line": 120,
+        "name": "'sleep awareness is a 25% roll and awakening consumes the action, alerting normal horde members'"
+      },
+      {
+        "line": 130,
+        "name": "'always-hunting outranks permanent flight; immobile awareness outranks the ordinary mode branches'"
+      },
+      {
+        "line": 137,
+        "name": "'lost awareness wanders toward the remembered location, not the current player'"
+      },
+      {
+        "line": 143,
+        "name": "'quarter-health entry / three-quarter retention at %i HP'"
+      },
+      {
+        "line": 148,
+        "name": "'remembering a waypoint consumes no RNG and survives until lazy initialization on actual wandering'"
+      },
+      {
+        "line": 160,
+        "name": "'fears attackers within 3, recovers at 3, and respects fear, immunity, kamikaze and poisoned prey'"
+      },
+      {
+        "line": 171,
+        "name": "'feared enemies require both traversible terrain and an unobstructed creature path'"
+      },
+      {
+        "line": 178,
+        "name": "'successful scheduled theft interrupts automatic travel'"
+      },
+      {
+        "line": 186,
+        "name": "'thief keeps fleeing out of sight; loss of the item resets mode only after magical fear expires'"
+      },
+      {
+        "line": 192,
+        "name": "'noise wakes a permanent thief without losing its mode or waking permanent-mode packmates'"
+      },
+      {
+        "line": 198,
+        "name": "'target-owned map reuses stale terrain / traveler costs until current target distance exceeds 3'"
+      },
+      {
+        "line": 204,
+        "name": "'safe terrain and ally maps persist through a player action and reset on the next action'"
+      },
+      {
+        "line": 209,
+        "name": "'PERM_FLEEING survives thrown attempts and both damage bolt paths, with thrown miss retaining fear and bolt damage shortening it'"
+      },
+      {
+        "line": 226,
+        "name": "'matches the original compiled CE updateMonsterState over all 10,240 branch combinations'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 45,
+        "text": "expect(attack(m).hit).toBe(true)"
+      },
+      {
+        "line": 46,
+        "text": "expect(m.carriedItem?.quantity).toBe(stolen)"
+      },
+      {
+        "line": 46,
+        "text": "expect(m.carriedItem?.enchantment).toBe(3)"
+      },
+      {
+        "line": 47,
+        "text": "expect(m.carriedItem?.originDepth).toBe(7)"
+      },
+      {
+        "line": 47,
+        "text": "expect(m.carriedItem?.flags).not.toContain('ITEM_PLAYER_AVOIDS')"
+      },
+      {
+        "line": 48,
+        "text": "expect(m.creatureMode).toBe(MonsterMode.PERM_FLEEING)"
+      },
+      {
+        "line": 48,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 49,
+        "text": "expect(g.items).not.toContain(m.carriedItem)"
+      },
+      {
+        "line": 49,
+        "text": "expect(g.player.inventory.items).not.toContain(m.carriedItem)"
+      },
+      {
+        "line": 50,
+        "text": "expect(item.quantity).toBe(quantity - stolen)"
+      },
+      {
+        "line": 50,
+        "text": "expect(m.carriedItem!.id).not.toBe(item.id)"
+      },
+      {
+        "line": 51,
+        "text": "expect(m.carriedItem).toBe(item)"
+      },
+      {
+        "line": 52,
+        "text": "expect(logger.messages[logger.messages.length - 1]?.text).toContain('stole')"
+      },
+      {
+        "line": 62,
+        "text": "expect(m.carriedItem).toBe(food)"
+      },
+      {
+        "line": 62,
+        "text": "expect(roll).toHaveBeenCalledWith(1, 1)"
+      },
+      {
+        "line": 63,
+        "text": "expect(g.player.inventory.items).toEqual([weapon, armor, a, b])"
+      },
+      {
+        "line": 69,
+        "text": "expect(attack(m).hit).toBe(true)"
+      },
+      {
+        "line": 69,
+        "text": "expect(m.carriedItem).toBeFalsy()"
+      },
+      {
+        "line": 69,
+        "text": "expect(roll).toHaveBeenCalledTimes(2)"
+      },
+      {
+        "line": 70,
+        "text": "expect(m.carriedItem).toBe(item)"
+      },
+      {
+        "line": 82,
+        "text": "expect(m.carriedItem).toBe(before)"
+      },
+      {
+        "line": 82,
+        "text": "expect(m.creatureMode).toBe(MonsterMode.NORMAL)"
+      },
+      {
+        "line": 94,
+        "text": "expect(loaded.carriedItem?.id).toBe(stolenId)"
+      },
+      {
+        "line": 94,
+        "text": "expect(loaded.carriedItem?.quantity).toBe(4)"
+      },
+      {
+        "line": 95,
+        "text": "expect(loaded.creatureMode).toBe(MonsterMode.PERM_FLEEING)"
+      },
+      {
+        "line": 96,
+        "text": "expect(loaded.lastSeenPlayerAt).toEqual(m.lastSeenPlayerAt)"
+      },
+      {
+        "line": 97,
+        "text": "expect(g.player.mapToMe).toEqual(saved.player.mapToMe)"
+      },
+      {
+        "line": 104,
+        "text": "expect(differences(actual, expected)).toEqual([])"
+      },
+      {
+        "line": 113,
+        "text": "expect(m.carriedItem).toBeNull()"
+      },
+      {
+        "line": 113,
+        "text": "expect(g.items.filter(i => i.id === item.id)).toHaveLength(1)"
+      },
+      {
+        "line": 115,
+        "text": "expect(g.player.inventory.items.some(i => i.id === item.id)).toBe(true)"
+      },
+      {
+        "line": 115,
+        "text": "expect(g.items).not.toContain(item)"
+      },
+      {
+        "line": 124,
+        "text": "expect(leader.state).toBe(MonsterState.ASLEEP)"
+      },
+      {
+        "line": 126,
+        "text": "expect(leader.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 126,
+        "text": "expect(mate.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 127,
+        "text": "expect(leader.ticksUntilTurn).toBe(100)"
+      },
+      {
+        "line": 127,
+        "text": "expect(mate.ticksUntilTurn).toBe(100)"
+      },
+      {
+        "line": 128,
+        "text": "expect(cast).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 128,
+        "text": "expect(attackSpy).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 133,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 133,
+        "text": "expect(perception).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 135,
+        "text": "expect(m.state).toBe(MonsterState.ASLEEP)"
+      },
+      {
+        "line": 135,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 141,
+        "text": "expect(m.state).toBe(MonsterState.WANDERING)"
+      },
+      {
+        "line": 141,
+        "text": "expect(m.targetWaypointIndex).toBe(1)"
+      },
+      {
+        "line": 141,
+        "text": "expect(m.waypointAlreadyVisited[1]).toBe(false)"
+      },
+      {
+        "line": 145,
+        "text": "expect(m.state).toBe(hp <= 25 ? MonsterState.FLEEING : MonsterState.HUNTING)"
+      },
+      {
+        "line": 146,
+        "text": "expect(m.state).toBe(hp <= 75 ? MonsterState.FLEEING : MonsterState.HUNTING)"
+      },
+      {
+        "line": 154,
+        "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+      },
+      {
+        "line": 154,
+        "text": "expect(m.waypointAlreadyVisited).toBeNull()"
+      },
+      {
+        "line": 155,
+        "text": "expect(m.targetWaypointIndex).toBe(1)"
+      },
+      {
+        "line": 157,
+        "text": "expect(m.targetWaypointIndex).toBe(1)"
+      },
+      {
+        "line": 157,
+        "text": "expect(m.waypointAlreadyVisited![1]).toBe(false)"
+      },
+      {
+        "line": 158,
+        "text": "expect(m.loc).toEqual({ x: 12, y: 10 })"
+      },
+      {
+        "line": 162,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 162,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 163,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 165,
+        "text": "expect(monsterFleesFrom(m, enemy)).toBe(true)"
+      },
+      {
+        "line": 166,
+        "text": "expect(monsterFleesFrom(m, enemy)).toBe(false)"
+      },
+      {
+        "line": 167,
+        "text": "expect(monsterFleesFrom(m, enemy)).toBe(true)"
+      },
+      {
+        "line": 169,
+        "text": "expect(monsterFleesFrom(m, enemy)).toBe(true)"
+      },
+      {
+        "line": 173,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 175,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 176,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 184,
+        "text": "expect(m.carriedItem).toBeTruthy()"
+      },
+      {
+        "line": 184,
+        "text": "expect(g.autoPath).toEqual([])"
+      },
+      {
+        "line": 184,
+        "text": "expect(g.isMouseTraveling).toBe(false)"
+      },
+      {
+        "line": 188,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 189,
+        "text": "expect(m.creatureMode).toBe(MonsterMode.PERM_FLEEING)"
+      },
+      {
+        "line": 190,
+        "text": "expect(m.creatureMode).toBe(MonsterMode.NORMAL)"
+      },
+      {
+        "line": 190,
+        "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+      },
+      {
+        "line": 196,
+        "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+      },
+      {
+        "line": 196,
+        "text": "expect(m.lastSeenPlayerAt).toEqual(g.player.loc)"
+      },
+      {
+        "line": 196,
+        "text": "expect(mate.state).toBe(MonsterState.ASLEEP)"
+      },
+      {
+        "line": 201,
+        "text": "expect(getBlinkTargetMap(g, m, g.player)).toBe(map)"
+      },
+      {
+        "line": 202,
+        "text": "expect(getBlinkTargetMap(g, m, g.player)).not.toBe(map)"
+      },
+      {
+        "line": 206,
+        "text": "expect(getBlinkSafeTerrainMap(g)).toBe(terrain)"
+      },
+      {
+        "line": 206,
+        "text": "expect(getBlinkAllySafetyMap(g)).toBe(safety)"
+      },
+      {
+        "line": 207,
+        "text": "expect(getBlinkSafeTerrainMap(g)).not.toBe(terrain)"
+      },
+      {
+        "line": 207,
+        "text": "expect(getBlinkAllySafetyMap(g)).not.toBe(safety)"
+      },
+      {
+        "line": 213,
+        "text": "expect(m.state).toBe(MonsterState.WANDERING)"
+      },
+      {
+        "line": 213,
+        "text": "expect(m.getStatusDuration('magical_fear')).toBe(9)"
+      },
+      {
+        "line": 215,
+        "text": "expect(m.creatureMode).toBe(MonsterMode.PERM_FLEEING)"
+      },
+      {
+        "line": 215,
+        "text": "expect(m.getStatusDuration('magical_fear')).toBe(1)"
+      },
+      {
+        "line": 219,
+        "text": "expect(m.state).toBe(MonsterState.WANDERING)"
+      },
+      {
+        "line": 219,
+        "text": "expect(m.getStatusDuration('magical_fear')).toBe(1)"
+      },
+      {
+        "line": 222,
+        "text": "expect(m.state).toBe(MonsterState.WANDERING)"
+      },
+      {
+        "line": 222,
+        "text": "expect(m.getStatusDuration('magical_fear')).toBe(1)"
+      },
+      {
+        "line": 239,
+        "text": "expect([resultState, m.creatureMode, (m.lastSeenPlayerAt as { x: number } | null)?.x ?? -1, m.ticksUntilTurn],\n            JSON.stringify([state,mode,flags,fear,steal,carrying,perceived,hp,closest])).toEqual([expectedState,expectedMode,seenX,ticks])"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2k_lifecycle.test.ts",
+    "tests": [
+      {
+        "line": 34,
+        "name": "'restored vampire info replaces %s death DF across JSON, retaining mutation bookkeeping'"
+      },
+      {
+        "line": 51,
+        "name": "'drops before the DF; dying reentry is inert; list/purgatory move only at sweep'"
+      },
+      {
+        "line": 68,
+        "name": "'nested explosive deaths finish before the outer leadership demotion'"
+      },
+      {
+        "line": 77,
+        "name": "'releases a passenger immediately, applies lethal contact, and does not repeat either death'"
+      },
+      {
+        "line": 86,
+        "name": "'silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers'"
+      },
+      {
+        "line": 94,
+        "name": "'falling suppresses DF, dormant death suppresses release and clears dormant occupancy'"
+      },
+      {
+        "line": 103,
+        "name": "'vampire death uses the CE blood explosion on the existing surface layer'"
+      },
+      {
+        "line": 107,
+        "name": "'binds restored monsters and preserves appearance through purgatory save/raise'"
+      },
+      {
+        "line": 122,
+        "name": "'uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls'"
+      },
+      {
+        "line": 131,
+        "name": "'drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG'"
+      },
+      {
+        "line": 137,
+        "name": "'selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion'"
+      },
+      {
+        "line": 145,
+        "name": "'catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG'"
+      },
+      {
+        "line": 158,
+        "name": "'matches original C Grid.c + Dijkstra.c + getQualifyingLocNear on 256 terrain/occupancy maps'"
+      },
+      {
+        "line": 176,
+        "name": "'pins CE death DF rows and the explosive mutation override'"
+      },
+      {
+        "line": 181,
+        "name": "'reports loss immediately only for an unseen, unbound ally without a passenger'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 41,
+        "text": "expect(g.resurrectAlly({ x: 7, y: 7 })).toBe(true)"
+      },
+      {
+        "line": 42,
+        "text": "expect(m.mutation?.id).toBe(id)"
+      },
+      {
+        "line": 42,
+        "text": "expect(m.deathDFType).toBe(DF.DF_BLOOD_EXPLOSION)"
+      },
+      {
+        "line": 45,
+        "text": "expect(raised.mutation?.id).toBe(id)"
+      },
+      {
+        "line": 45,
+        "text": "expect(raised.deathDFType).toBe(DF.DF_BLOOD_EXPLOSION)"
+      },
+      {
+        "line": 47,
+        "text": "expect(loaded.grid.getCell(7, 7)!.layers[L.SURFACE]).toBe(T.BLOOD)"
+      },
+      {
+        "line": 57,
+        "text": "expect(g.items).toContain(key)"
+      },
+      {
+        "line": 57,
+        "text": "expect(m.carriedItem).toBeNull()"
+      },
+      {
+        "line": 58,
+        "text": "expect(m.deathProcessed).toBe(false)"
+      },
+      {
+        "line": 58,
+        "text": "expect(g.getMonsterAt(m.x, m.y)).toBe(m)"
+      },
+      {
+        "line": 62,
+        "text": "expect(gas).toHaveBeenCalledOnce()"
+      },
+      {
+        "line": 62,
+        "text": "expect(m.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 63,
+        "text": "expect(g.getMonsterAt(m.x, m.y)).toBeUndefined()"
+      },
+      {
+        "line": 63,
+        "text": "expect(g.monsters).toContain(m)"
+      },
+      {
+        "line": 64,
+        "text": "expect(g.purgatory).toEqual([])"
+      },
+      {
+        "line": 65,
+        "text": "expect(g.monsters).not.toContain(m)"
+      },
+      {
+        "line": 65,
+        "text": "expect(g.purgatory).toEqual([m])"
+      },
+      {
+        "line": 66,
+        "text": "expect(gas).toHaveBeenCalledOnce()"
+      },
+      {
+        "line": 73,
+        "text": "expect(b.hp).toBe(0)"
+      },
+      {
+        "line": 73,
+        "text": "expect(b.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 74,
+        "text": "expect(drops.mock.calls.map(c => c[0])).toEqual([a, b])"
+      },
+      {
+        "line": 74,
+        "text": "expect(f.leader).toBeNull()"
+      },
+      {
+        "line": 75,
+        "text": "expect(g.environment.gasGrid[8]![7]!.type).toBe(GasType.POISON)"
+      },
+      {
+        "line": 81,
+        "text": "expect(child.loc).toEqual(host.loc)"
+      },
+      {
+        "line": 81,
+        "text": "expect(child.ticksUntilTurn).toBe(200)"
+      },
+      {
+        "line": 82,
+        "text": "expect(child.hp).toBe(0)"
+      },
+      {
+        "line": 82,
+        "text": "expect(child.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 83,
+        "text": "expect(host.carriedMonster).toBeNull()"
+      },
+      {
+        "line": 83,
+        "text": "expect(drops.mock.calls.map(c => c[0])).toEqual([host, child])"
+      },
+      {
+        "line": 84,
+        "text": "expect(g.monsters).toEqual([])"
+      },
+      {
+        "line": 84,
+        "text": "expect(drops).toHaveBeenCalledTimes(2)"
+      },
+      {
+        "line": 91,
+        "text": "expect(gas).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 91,
+        "text": "expect(g.items).toEqual([])"
+      },
+      {
+        "line": 91,
+        "text": "expect(g.purgatory).toEqual([])"
+      },
+      {
+        "line": 92,
+        "text": "expect(m.carriedMonster).toBeNull()"
+      },
+      {
+        "line": 92,
+        "text": "expect(f.leader).toBeNull()"
+      },
+      {
+        "line": 97,
+        "text": "expect(gas).not.toHaveBeenCalled()"
+      },
+      {
+        "line": 101,
+        "text": "expect(g.monsters).not.toContain(d.carriedMonster)"
+      },
+      {
+        "line": 101,
+        "text": "expect(g.grid.getCell(9, 7)!.hasDormantMonster).toBe(false)"
+      },
+      {
+        "line": 105,
+        "text": "expect(g.grid.getCell(7, 7)!.layers[L.SURFACE]).toBe(T.BLOOD)"
+      },
+      {
+        "line": 111,
+        "text": "expect(g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())))).toBe(true)"
+      },
+      {
+        "line": 113,
+        "text": "expect(restored.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 114,
+        "text": "expect(g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())))).toBe(true)"
+      },
+      {
+        "line": 115,
+        "text": "expect(g.resurrectAlly({x: 20, y: 10})).toBe(true)"
+      },
+      {
+        "line": 116,
+        "text": "expect(raised.char).toBe(glyph)"
+      },
+      {
+        "line": 116,
+        "text": "expect(raised.color).toBe(color)"
+      },
+      {
+        "line": 117,
+        "text": "expect(raised.deathProcessed).toBe(true)"
+      },
+      {
+        "line": 126,
+        "text": "expect(cells).toEqual([{x: 7, y: 8}, {x: 8, y: 7}, {x: 8, y: 8}])"
+      },
+      {
+        "line": 129,
+        "text": "expect(fallback).toHaveLength(16)"
+      },
+      {
+        "line": 129,
+        "text": "expect(fallback[0]).toEqual({x:5,y:5})"
+      },
+      {
+        "line": 134,
+        "text": "expect(g.items[0]!.loc).toEqual(m.loc)"
+      },
+      {
+        "line": 134,
+        "text": "expect(rng.randomNumbersGenerated).toBe(n)"
+      },
+      {
+        "line": 135,
+        "text": "expect(captiveItemDropCandidates(g, m.loc, g.items)).toHaveLength(8)"
+      },
+      {
+        "line": 142,
+        "text": "expect(g.resurrectAlly({x:10,y:10})).toBe(true)"
+      },
+      {
+        "line": 143,
+        "text": "expect(g.monsters[0]).toBe(goblin)"
+      },
+      {
+        "line": 143,
+        "text": "expect(goblin.loc).toEqual({x:10,y:10})"
+      },
+      {
+        "line": 143,
+        "text": "expect(rng.randomNumbersGenerated).toBe(n)"
+      },
+      {
+        "line": 149,
+        "text": "expect(g.purgatory).toContain(m)"
+      },
+      {
+        "line": 150,
+        "text": "expect(g.resurrectAlly({x:10,y:10})).toBe(true)"
+      },
+      {
+        "line": 151,
+        "text": "expect(m.wasNegated).toBe(false)"
+      },
+      {
+        "line": 151,
+        "text": "expect(m.hasAbility('MA_ENTER_SUMMONS')).toBe(true)"
+      },
+      {
+        "line": 152,
+        "text": "expect(m.hasStatus('paralyzed')).toBe(false)"
+      },
+      {
+        "line": 152,
+        "text": "expect(m.bolts).toEqual(data('vampire').bolts)"
+      },
+      {
+        "line": 153,
+        "text": "expect(rng.randomNumbersGenerated).toBe(n)"
+      },
+      {
+        "line": 162,
+        "text": "expect(rows).toHaveLength(256)"
+      },
+      {
+        "line": 172,
+        "text": "expect(cells.map(p => [p.x,p.y]), `CE seed=${row.seed} mode=${row.mode}`).toEqual(row.candidates)"
+      },
+      {
+        "line": 177,
+        "text": "expect(DUNGEON_FEATURE_CATALOG[DF.DF_BLOOD_EXPLOSION]).toMatchObject({id:36,tile:T.BLOOD,layer:L.SURFACE,startProbability:150,probabilityDecrement:30})"
+      },
+      {
+        "line": 178,
+        "text": "expect(DUNGEON_FEATURE_CATALOG[DF.DF_MUTATION_EXPLOSION]).toMatchObject({id:38,tile:T.GAS_EXPLOSION,layer:L.SURFACE,startProbability:350,probabilityDecrement:100,lightFlare:'EXPLOSION_FLARE_LIGHT'})"
+      },
+      {
+        "line": 186,
+        "text": "expect(messages).toHaveBeenCalledWith('You feel a sense of loss.', '#ff8888')"
+      },
+      {
+        "line": 188,
+        "text": "expect(messages).toHaveBeenCalledTimes(count)"
+      },
+      {
+        "line": 191,
+        "text": "expect(messages).toHaveBeenCalledTimes(count)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2l_reflected_death.test.ts",
+    "tests": [
+      {
+        "line": 29,
+        "name": "'%s ends on fatal contact with CE attribution'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 43,
+        "text": "expect(result.reflections).toHaveLength(1)"
+      },
+      {
+        "line": 44,
+        "text": "expect(result.hits.map(hit => hit.creature)).toEqual([g.player])"
+      },
+      {
+        "line": 45,
+        "text": "expect(result.landingPos).toEqual(g.player.loc)"
+      },
+      {
+        "line": 46,
+        "text": "expect(g.player.hp).toBe(0)"
+      },
+      {
+        "line": 47,
+        "text": "expect(behind.hp).toBe(100)"
+      },
+      {
+        "line": 48,
+        "text": "expect(g.grid.getCell(4, 5)!.layers[L.SURFACE]).toBe(T.GRASS)"
+      },
+      {
+        "line": 49,
+        "text": "expect(g.isGameOver).toBe(true)"
+      },
+      {
+        "line": 50,
+        "text": "expect(g.gameOverReason).toBe(`Killed by a reflected ${boltName} on depth 1.`)"
+      },
+      {
+        "line": 51,
+        "text": "expect(g.gameOverScore).toBeGreaterThanOrEqual(0)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2m_lighting.test.ts",
+    "tests": [
+      {
+        "line": 40,
+        "name": "'reveals dark FOV, shares sidebar gates, remembers items, restores base light/shadows and hides identity afterward'"
+      },
+      {
+        "line": 59,
+        "name": "'does not reveal through a wall or cursed clairvoyance'"
+      },
+      {
+        "line": 72,
+        "name": "'negative runic light can temporarily extinguish visibility without altering base channels'"
+      },
+      {
+        "line": 83,
+        "name": "'skipped frames, fine playback and save during playback preserve identical knowledge and both RNG states'"
+      },
+      {
+        "line": 97,
+        "name": "'expires stale turn entries and discards light across level travel'"
+      },
+      {
+        "line": 108,
+        "name": "'empowerment actually casts on hidden=%s; light has no identity-observation gate'"
+      },
+      {
+        "line": 118,
+        "name": "'summoning uses random-only CE color and remains neutral to substantive RNG during animation'"
+      },
+      {
+        "line": 126,
+        "name": "'real falling move creates the landing flare on the destination level'"
+      },
+      {
+        "line": 135,
+        "name": "'real %s runic dispatcher queues CE flare and respects submersion'"
+      },
+      {
+        "line": 144,
+        "name": "'checks every DF flare symbol against its CE source row and executes explosion DF'"
+      },
+      {
+        "line": 166,
+        "name": "'confusion gas consumes its background random channels and preserves the terrain glyph'"
+      },
+      {
+        "line": 177,
+        "name": "'bakes separate fore/back random channels with CE integer arithmetic'"
+      },
+      {
+        "line": 186,
+        "name": "'keeps terrain samples stable between renders, dances only visible dancers, never draws main RNG'"
+      },
+      {
+        "line": 199,
+        "name": "'samples light color/radius and preserves stream selection even on exceptions; base light never dances'"
+      },
+      {
+        "line": 210,
+        "name": "'idle render color draws do not move either recorded RNG stream or later flare knowledge'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 44,
+        "text": "expect(cell.isVisible).toBe(false)"
+      },
+      {
+        "line": 45,
+        "text": "expect(visibleMonsterRows(g.player, g.grid, g.monsters)).toHaveLength(0)"
+      },
+      {
+        "line": 47,
+        "text": "expect(cell.isVisible).toBe(true)"
+      },
+      {
+        "line": 48,
+        "text": "expect(visibleMonsterRows(g.player, g.grid, g.monsters)).toHaveLength(1)"
+      },
+      {
+        "line": 50,
+        "text": "expect(visibleMonsterRows(g.player, g.grid, g.monsters)).toHaveLength(0)"
+      },
+      {
+        "line": 51,
+        "text": "expect(cell.rememberedItem?.name).toBe(item.displayName)"
+      },
+      {
+        "line": 52,
+        "text": "expect(g.lightMap.lightAt(m.x, m.y)).toEqual(before)"
+      },
+      {
+        "line": 53,
+        "text": "expect(g.lightMap.inShadowAt(m.x, m.y)).toBe(shadow)"
+      },
+      {
+        "line": 55,
+        "text": "expect(cell.isVisible).toBe(false)"
+      },
+      {
+        "line": 55,
+        "text": "expect(cell.isExplored && cell.hasMemory).toBe(true)"
+      },
+      {
+        "line": 56,
+        "text": "expect(g.flareLightAt(m.x, m.y)).toBeNull()"
+      },
+      {
+        "line": 56,
+        "text": "expect(main()).toEqual(state)"
+      },
+      {
+        "line": 63,
+        "text": "expect(g.grid.getCell(15, 10)!.isVisible).toBe(false)"
+      },
+      {
+        "line": 64,
+        "text": "expect(g.grid.getCell(15, 10)!.hasMemory).toBe(false)"
+      },
+      {
+        "line": 69,
+        "text": "expect(g.grid.getCell(11, 10)!.isVisible).toBe(false)"
+      },
+      {
+        "line": 78,
+        "text": "expect(cell.isVisible).toBe(false)"
+      },
+      {
+        "line": 79,
+        "text": "expect(cell.isVisible).toBe(true)"
+      },
+      {
+        "line": 80,
+        "text": "expect(g.lightMap.lightAt(10, 10)).toEqual(before)"
+      },
+      {
+        "line": 90,
+        "text": "expect(run(true)).toEqual(run(false))"
+      },
+      {
+        "line": 93,
+        "text": "expect(saved.grid.find(c => c.x === 14 && c.y === 10)).toMatchObject({ isVisible: false, hasMemory: true })"
+      },
+      {
+        "line": 94,
+        "text": "expect(g.loadSnapshot(saved)).toBe(true)"
+      },
+      {
+        "line": 94,
+        "text": "expect(g.flareLightAt(14, 10)).toBeNull()"
+      },
+      {
+        "line": 100,
+        "text": "expect(g.flareLightAt(10, 10)).toBeNull()"
+      },
+      {
+        "line": 103,
+        "text": "expect(g.flareLightAt(10, 10)).toBeNull()"
+      },
+      {
+        "line": 103,
+        "text": "expect(g.tickFlareAnimation(10)).toBe(false)"
+      },
+      {
+        "line": 112,
+        "text": "expect(m.totalPowerCount).toBe(1)"
+      },
+      {
+        "line": 112,
+        "text": "expect(r.outcome?.autoID).toBe(false)"
+      },
+      {
+        "line": 113,
+        "text": "expect((g as any).activeFlares.some((f: any) => f.kind === LightKind.EMPOWERMENT_LIGHT)).toBe(true)"
+      },
+      {
+        "line": 114,
+        "text": "expect(g.visualLightAt(m.x, m.y)!.g).toBeGreaterThan(0)"
+      },
+      {
+        "line": 115,
+        "text": "expect(visibleMonsterRows(g.player, g.grid, g.monsters)).toHaveLength(hidden ? 0 : 1)"
+      },
+      {
+        "line": 120,
+        "text": "expect(g.summonMinionsFor(m)).toBe(true)"
+      },
+      {
+        "line": 123,
+        "text": "expect(light.r + light.b).toBeGreaterThan(0)"
+      },
+      {
+        "line": 123,
+        "text": "expect(main()).toEqual(before)"
+      },
+      {
+        "line": 129,
+        "text": "expect(g.depth).toBe(2)"
+      },
+      {
+        "line": 130,
+        "text": "expect((g as any).activeFlares).toContainEqual({ x: g.player.x, y: g.player.y,\n            kind: LightKind.GENERIC_FLASH_LIGHT, coeff: 100000, change: -15 })"
+      },
+      {
+        "line": 132,
+        "text": "expect(g.flareLightAt(g.player.x, g.player.y)!.r).toBeGreaterThan(0)"
+      },
+      {
+        "line": 137,
+        "text": "expect(weapon).toBeTruthy()"
+      },
+      {
+        "line": 138,
+        "text": "expect((g as any).activeFlares).toHaveLength(1)"
+      },
+      {
+        "line": 141,
+        "text": "expect((h as any).activeFlares).toHaveLength(0)"
+      },
+      {
+        "line": 153,
+        "text": "expect(feature.lightFlare, `${feature.id} CE:${feature.ceLine}`).toBe(flare)"
+      },
+      {
+        "line": 157,
+        "text": "expect(checked).toBeGreaterThan(20)"
+      },
+      {
+        "line": 160,
+        "text": "expect((g as any).activeFlares.some((f: any) => f.kind === LightKind.EXPLOSION_FLARE_LIGHT)).toBe(true)"
+      },
+      {
+        "line": 161,
+        "text": "expect(g.grid.getCell(16, 10)!.isVisible).toBe(true)"
+      },
+      {
+        "line": 173,
+        "text": "expect(low.char).toBe(terrainAppearance(T.FLOOR, true).char)"
+      },
+      {
+        "line": 174,
+        "text": "expect(high.char).toBe(low.char)"
+      },
+      {
+        "line": 174,
+        "text": "expect(high.bgColor!).toBeGreaterThan(low.bgColor!)"
+      },
+      {
+        "line": 180,
+        "text": "expect(bakeTerrainColor('fireForeColor', 1, vals, false)).toBe('#d83f00')"
+      },
+      {
+        "line": 181,
+        "text": "expect(bakeTerrainColor('fireForeColor', 1, vals, true)).toBe('#b23f00')"
+      },
+      {
+        "line": 183,
+        "text": "expect(field.char).toBe('#')"
+      },
+      {
+        "line": 183,
+        "text": "expect(field.color).not.toBe('#000000')"
+      },
+      {
+        "line": 190,
+        "text": "expect(terrainRandomValues(cell)).toEqual(initial)"
+      },
+      {
+        "line": 192,
+        "text": "expect(terrainRandomValues(cell)).not.toEqual(initial)"
+      },
+      {
+        "line": 195,
+        "text": "expect(terrainRandomValues(cell)).toBeUndefined()"
+      },
+      {
+        "line": 196,
+        "text": "expect(terrainRandomValues(cell)).toEqual(held)"
+      },
+      {
+        "line": 196,
+        "text": "expect(main()).toEqual(state)"
+      },
+      {
+        "line": 202,
+        "text": "expect(new Set(draws.map(d => d.color.red)).size).toBeGreaterThan(1)"
+      },
+      {
+        "line": 203,
+        "text": "expect(g.lightMap.lightAt(10, 10)).toEqual(base)"
+      },
+      {
+        "line": 203,
+        "text": "expect(main()).toEqual(state)"
+      },
+      {
+        "line": 205,
+        "text": "expect(() => cosmeticDraw(() => { throw new Error('probe'); })).toThrow('probe')"
+      },
+      {
+        "line": 206,
+        "text": "expect(rng.getState().currentRNG).toBe(RNGType.RNG_COSMETIC)"
+      },
+      {
+        "line": 219,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 223,
+        "text": "expect(run(true)).toEqual(run(false))"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2n_lumenstone_description.test.ts",
+    "tests": [
+      {
+        "line": 39,
+        "name": "'$label: persists the CE description and preserves both scoring rules'"
+      },
+      {
+        "line": 57,
+        "name": "'records and replays a real terminal command with the 25-gem pack'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 46,
+        "text": "expect(endgameScore(1234, game.player.inventory.items, false, false, false)).toBe(1234 + quantities.length * 500)"
+      },
+      {
+        "line": 49,
+        "text": "expect(game.gameOverScore).toBe(score)"
+      },
+      {
+        "line": 50,
+        "text": "expect(readHighScores()).toHaveLength(1)"
+      },
+      {
+        "line": 51,
+        "text": "expect(readHighScores()[0]).toMatchObject({\n            score, description: `${superVictory ? 'Mastered' : 'Escaped'} the Dungeons of Doom${suffix}`\n        })"
+      },
+      {
+        "line": 54,
+        "text": "expect(rng.getState()).toEqual(before)"
+      },
+      {
+        "line": 72,
+        "text": "expect(recording.events).toHaveLength(1)"
+      },
+      {
+        "line": 73,
+        "text": "expect(recording.events[0]!.end).toEqual({ won: true, superVictory, score })"
+      },
+      {
+        "line": 74,
+        "text": "expect(readHighScores()[0]).toMatchObject({\n            score, description: `${superVictory ? 'Mastered' : 'Escaped'} the Dungeons of Doom with 25 lumenstones!`\n        })"
+      },
+      {
+        "line": 78,
+        "text": "expect(game.loadReplay(recording)).toBe(true)"
+      },
+      {
+        "line": 81,
+        "text": "expect(game.replayError).toBeNull()"
+      },
+      {
+        "line": 82,
+        "text": "expect(game.replayCursor).toBe(1)"
+      },
+      {
+        "line": 83,
+        "text": "expect(game.gameOverScore).toBe(score)"
+      },
+      {
+        "line": 84,
+        "text": "expect(game.gameOverSuperVictory).toBe(superVictory)"
+      },
+      {
+        "line": 85,
+        "text": "expect([...store.entries()]).toEqual(savedScores)"
+      }
+    ]
+  },
+  {
+    "file": "src/test/x2o_horde_clump.test.ts",
+    "tests": [
+      {
+        "line": 26,
+        "name": "'pins CE source provenance and every member triple in all 175 rows'"
+      },
+      {
+        "line": 36,
+        "name": "'all CE-mapped blueprints match both depth endpoints; unmapped rows remain explicitly retired'"
+      },
+      {
+        "line": 51,
+        "name": "'exhausts every C branch, value and rand_range call sequence, including constant and oversized clumps'"
+      },
+      {
+        "line": 65,
+        "name": "'same initial real RNG has the C-oracle result, logical draw count and complete final state on both streams'"
+      },
+      {
+        "line": 79,
+        "name": "'every ordinary/captive/machine horde consumes each member triple exactly once before placement'"
+      },
+      {
+        "line": 91,
+        "name": "'%s clumped D30 horde places exactly the rolled members on real terrain'"
+      },
+      {
+        "line": 104,
+        "name": "'all summon rows use their complete CE triple through the actual summon consumer'"
+      }
+    ],
+    "assertions": [
+      {
+        "line": 28,
+        "text": "expect(createHash('sha256').update(readFileSync(`../${file}`)).digest('hex')).toBe(hash)"
+      },
+      {
+        "line": 29,
+        "text": "expect(hordes).toHaveLength(golden.hordes.length)"
+      },
+      {
+        "line": 32,
+        "text": "expect(h.leader).toBe(ce.leader)"
+      },
+      {
+        "line": 33,
+        "text": "expect(h.members.map(m => ({ type: m.type, lower: m.minCount, upper: m.maxCount, clumpFactor: m.clumpFactor }))).toEqual(ce.members)"
+      },
+      {
+        "line": 38,
+        "text": "expect(mapped).toHaveLength(70)"
+      },
+      {
+        "line": 39,
+        "text": "expect(new Set(mapped.map(b => b.ceBlueprintId)).size).toBe(70)"
+      },
+      {
+        "line": 41,
+        "text": "expect(golden.blueprints.filter(c => !mapped.some(b => b.ceBlueprintId === c.ceBlueprintId)).map(c => c.ceBlueprintId)).toEqual([48])"
+      },
+      {
+        "line": 43,
+        "text": "expect(RETIRED_INVENTED_BLUEPRINT_IDS.has(b.id)).toBe(true)"
+      },
+      {
+        "line": 45,
+        "text": "expect(b.depthRange, b.id).toEqual(ce.depthRange)"
+      },
+      {
+        "line": 48,
+        "text": "expect(blueprintQualifies(b as BlueprintDef, d, flags), `${b.id} D${d}`).toBe(d >= ce.depthRange[0]! && d <= ce.depthRange[1]!)"
+      },
+      {
+        "line": 55,
+        "text": "expect(call).toBeDefined()"
+      },
+      {
+        "line": 56,
+        "text": "expect([lo, hi]).toEqual(call!.slice(0, 2))"
+      },
+      {
+        "line": 58,
+        "text": "expect(r.randClumpedRange(row.range[0]!, row.range[1]!, row.range[2]!)).toBe(c.value)"
+      },
+      {
+        "line": 59,
+        "text": "expect(index).toBe(c.calls.length)"
+      },
+      {
+        "line": 62,
+        "text": "expect([5,6,7,8,9,10].map(n => deep.cases.filter(c => c.value === n).length)).toEqual([1,2,3,3,2,1])"
+      },
+      {
+        "line": 63,
+        "text": "expect(deep.cases.every(c => c.calls.length === 2)).toBe(true)"
+      },
+      {
+        "line": 72,
+        "text": "expect(actual.randClumpedRange(row.range[0]!, row.range[1]!, row.range[2]!)).toBe(match.value)"
+      },
+      {
+        "line": 73,
+        "text": "expect(actual.getState()).toEqual(expected.getState())"
+      },
+      {
+        "line": 85,
+        "text": "expect(g.spawnHordeAt(h, { x: 35, y: 14 }, 1, false)).toBe(true)"
+      },
+      {
+        "line": 86,
+        "text": "expect(roll.mock.calls).toEqual(h.members.map(m => [m.minCount, m.maxCount, m.clumpFactor]))"
+      },
+      {
+        "line": 87,
+        "text": "expect(g.monsters).toHaveLength(1)"
+      },
+      {
+        "line": 88,
+        "text": "expect(g.monsters[0].isCaged).toBe(h.flags.includes('HORDE_LEADER_CAPTIVE'))"
+      },
+      {
+        "line": 93,
+        "text": "expect(h).toBeDefined()"
+      },
+      {
+        "line": 97,
+        "text": "expect(g.spawnHordeAt(h, { x: 35, y: 14 }, 30, false, undefined, collected)).toBe(true)"
+      },
+      {
+        "line": 98,
+        "text": "expect(roll.mock.calls).toEqual([[5, 10, 2]])"
+      },
+      {
+        "line": 99,
+        "text": "expect(collected.length).toBe(1 + roll.mock.results[0]!.value)"
+      },
+      {
+        "line": 100,
+        "text": "expect(new Set(collected.map(m => `${m.x},${m.y}`)).size).toBe(collected.length)"
+      },
+      {
+        "line": 101,
+        "text": "expect(collected.slice(1).every(m => m.leader === collected[0])).toBe(true)"
+      },
+      {
+        "line": 102,
+        "text": "expect(collected.every(m => g.grid.getCell(m.x,m.y).terrain === (type === 'KRAKEN' ? T.WATER_DEEP : T.FLOOR))).toBe(true)"
+      },
+      {
+        "line": 112,
+        "text": "expect(roll.mock.calls).toEqual(h.members.map(m => [m.minCount, m.maxCount, m.clumpFactor]))"
+      },
+      {
+        "line": 113,
+        "text": "expect(g.monsters.filter((m: Monster) => m !== summoner).length).toBe(roll.mock.results.reduce((n, r) => n + r.value, 0))"
+      }
+    ]
+  }
+]
