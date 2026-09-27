@@ -228,8 +228,8 @@ const sidebarWidthModel = computed({
 
 .menu-card {
   width: min(480px, 92vw);
-  background: #101214;
-  border: 1px solid #2b2f33;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: 10px;
   padding: 20px;
 }
@@ -287,8 +287,8 @@ input {
 
 button {
   height: 34px;
-  border: 1px solid #4b5563;
-  background: #1f2937;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
   color: #e5e7eb;
   border-radius: 6px;
   padding: 0 12px;
@@ -308,7 +308,7 @@ button:disabled {
 .save-meta {
   margin-top: 14px;
   padding: 10px;
-  border: 1px solid #2b2f33;
+  border: 1px solid var(--panel-border);
   border-radius: 6px;
   font-size: 13px;
   color: #c5ced9;

@@ -108,8 +108,8 @@ function colorToCSS(color: number): string {
 }
 
 .detail-panel {
-    background: linear-gradient(135deg, rgba(15, 20, 45, 0.96), rgba(10, 15, 35, 0.98));
-    border: 1px solid rgba(80, 100, 160, 0.5);
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
     min-width: 320px;
     max-width: 480px;
@@ -189,8 +189,6 @@ function colorToCSS(color: number): string {
     font-size: 13px;
     font-weight: 600;
     color: rgba(140, 160, 220, 0.9);
-    text-transform: uppercase;
-    letter-spacing: 1px;
     margin-bottom: 4px;
     padding-bottom: 3px;
     border-bottom: 1px solid rgba(60, 80, 130, 0.4);
@@ -217,8 +215,8 @@ function colorToCSS(color: number): string {
 }
 
 .footer-hint {
-    font-size: 11px;
-    color: rgba(100, 120, 160, 0.6);
+    font-size: 12px;
+    color: var(--text-secondary);
 }
 
 /* FE-1：紧凑模式——底部弹层、全宽、关闭钮 44px */

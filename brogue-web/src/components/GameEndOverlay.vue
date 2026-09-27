@@ -141,8 +141,8 @@ function enchantLabel(ench: number): string {
 }
 
 .end-panel {
-    background: #111;
-    border: 2px solid #444;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
     padding: 32px 40px;
     min-width: 400px;
@@ -157,8 +157,6 @@ function enchantLabel(ench: number): string {
     font-size: 2.5rem;
     margin-top: 0;
     margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 .title-loss {
@@ -166,8 +164,6 @@ function enchantLabel(ench: number): string {
     font-size: 2.5rem;
     margin-top: 0;
     margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 .reason {
@@ -188,7 +184,6 @@ function enchantLabel(ench: number): string {
 .score-label {
     color: #888;
     font-size: 1rem;
-    text-transform: uppercase;
 }
 
 .score-value {
@@ -229,7 +224,6 @@ function enchantLabel(ench: number): string {
 .stat-label {
     color: #888;
     font-size: 0.8rem;
-    text-transform: uppercase;
     margin-bottom: 4px;
 }
 
@@ -247,7 +241,6 @@ function enchantLabel(ench: number): string {
 .inventory-title {
     color: #888;
     font-size: 0.8rem;
-    text-transform: uppercase;
     margin-bottom: 8px;
     text-align: center;
 }

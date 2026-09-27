@@ -457,7 +457,6 @@ const confirmCall = () => {
   font-family: var(--font-main);
   font-weight: 700;
   font-size: 1.4rem;
-  letter-spacing: 1px;
   color: var(--text-primary);
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
@@ -501,7 +500,6 @@ const confirmCall = () => {
   font-family: var(--font-main);
   font-weight: 600;
   text-align: center;
-  letter-spacing: 0.5px;
 }
 
 .item-row.identify-candidate, .item-row.enchant-candidate {
@@ -555,8 +553,6 @@ const confirmCall = () => {
   padding: 0.75rem 1rem;
   background: rgba(0,0,0,0.3);
   border-bottom: 1px solid rgba(255,255,255,0.03);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .strength-warning {
@@ -630,8 +626,6 @@ const confirmCall = () => {
   font-size: 0.75rem;
   font-family: var(--font-main);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .item-actions {
