@@ -4101,7 +4101,7 @@ export class Game {
         }) as BoltResult | null;
         this.needsRender = true;
         // CE Time.c:2604-2605 uses movementSpeed at turn end (after effects).
-        finishItemUse(this.player, () => this.playerTurnEnded());
+        if (!this.isGameOver) finishItemUse(this.player, () => this.playerTurnEnded());
         return result;
     }
 
@@ -4211,7 +4211,9 @@ export class Game {
                     impactFrames.push(...contact.frames.slice(1));
                     applied = true;
                 }
+                if (this.player.hp <= 0 || this.isGameOver) return false;
                 autoID = this.applyBoltTerrainAt(result.bolt, pos) || autoID;
+                if (this.player.hp <= 0 || this.isGameOver) return false;
             },
         });
         Object.assign(result, actual);
@@ -4439,6 +4441,8 @@ export class Game {
         const hpDamage = target.absorbShieldDamage(damage);
         if (result.caster) CombatSystem.transferMonsterHealth(result.caster, target, hpDamage);
         target.takeDamage(hpDamage, true, this.grid);
+        if (this.finishLethalBoltHit(target, result.caster,
+            result.bolt.ceType === null ? result.bolt.name : CE_BOLT_CATALOG[result.bolt.ceType].name)) return damage;
         if (target.hp > 0) {
             if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
                 && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
@@ -4450,6 +4454,25 @@ export class Game {
             if (!alreadyReflected) target.setStatusDuration('entranced', 0);
         }
         return damage;
+    }
+
+    /** CE Items.c:5168-5177: a fatal player contact ends the zap immediately.
+     * The original caster owns the death, including after a reflection. */
+    private finishLethalBoltHit(target: Creature, caster: Creature | null, boltName: string): boolean {
+        if (target !== this.player || target.hp > 0) return false;
+        if (caster === this.player) {
+            this.lastDamageSource = `reflected ${boltName}`;
+            const displayedBolt = i18next.t(`bolt.name.${boltName}`, { defaultValue: boltName });
+            this.triggerGameOver(false, i18next.t('death.reflected_bolt', {
+                bolt: displayedBolt, defaultValue: 'Killed by a reflected {{bolt}}.'
+            }));
+        } else {
+            this.lastDamageSource = caster instanceof Monster ? caster.name : boltName;
+            this.triggerGameOver(false, i18next.t('death.killed_by', {
+                monster: this.lastDamageSource, defaultValue: 'Killed by a {{monster}}.'
+            }));
+        }
+        return true;
     }
 
     private boltCasterMovement(result: BoltResult) {
@@ -4638,6 +4661,7 @@ export class Game {
                 if (target) autoID = true; // CE :5146-5150, even if immune; reflectors never enter this branch.
                 // Terrain exposure is sequenced by the travel loop after contact.
                 const damage = target ? this.applyDirectBoltDamage(target, result, item, alreadyReflected) : null;
+                if (this.isGameOver) return autoID;
                 if (target && damage !== null) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         interpolation: { escapeValue: false },
@@ -4670,6 +4694,7 @@ export class Game {
                     const m = hit.creature;
                     autoID = true; // CE BE_DAMAGE contact, not HP delta.
                     const damage = this.applyDirectBoltDamage(m, result, item, alreadyReflected);
+                    if (this.isGameOver) return autoID;
                     if (damage === null) {
                         continue;
                     }
@@ -4944,8 +4969,9 @@ export class Game {
                 if (hit) autoID = this.applyMonsterBoltHit(caster, hit.creature, ceBoltName, meta) || autoID;
                 // CE Items.c:5168-5178: lethal player damage returns before
                 // tile exposure and terminates even a piercing spark.
-                if (BOLT_EFFECT_CE_EFFECT[meta.effect!] === CEBoltEffect.DAMAGE && this.player.hp <= 0) return false;
+                if (this.player.hp <= 0 || this.isGameOver) return false;
                 autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
+                if (this.player.hp <= 0 || this.isGameOver) return false;
             },
         });
         // CE detonateBolt :5562: target DF at the actual landing, even a wall
@@ -4996,10 +5022,11 @@ export class Game {
                 // including when reflection makes caster and victim identical.
                 CombatSystem.transferMonsterHealth(caster, target, hpDamage);
                 target.takeDamage(hpDamage, true, this.grid); // shield already consumed once.
+                if (hpDamage > 0 && isPlayer) this.lastDamageSource = caster.name;
+                if (this.finishLethalBoltHit(target, caster, ceBoltName)) return autoID;
                 if (hpDamage > 0) {
                     // CE monsterCastSpell: a reflected monster bolt still kills
                     // in the original caster's name, never in the reflector's.
-                    if (isPlayer) this.lastDamageSource = caster.name;
                     this.spawnFloatingText(`-${hpDamage}`, target.loc.x, target.loc.y, 0xff5555);
                     if (isPlayer) this.spawnBlood(target.loc.x, target.loc.y);
                 }
@@ -7976,6 +8003,7 @@ export class Game {
     }
 
     private playerTurnEnded() {
+        if (this.isGameOver) return;
         return playerTurnEnded(this.timePorts());
     }
 
