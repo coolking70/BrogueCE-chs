@@ -14,7 +14,7 @@ const isPlaying = computed(() => { pulse.value; return activeGame.replayStatus =
 
 const currentCursor = computed(() => { pulse.value; return activeGame.replayCursor; });
 const totalEvents = computed(() => { pulse.value; return activeGame.replayEvents.length; });
-const replayError = computed(() => { pulse.value; return activeGame.replayError; });
+const replayError = computed(() => { pulse.value; return activeGame.replayErrorDisplay; });
 
 const togglePlay = () => {
   if (isPlaying.value) {

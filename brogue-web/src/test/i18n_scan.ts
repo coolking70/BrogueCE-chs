@@ -500,6 +500,21 @@ function firstArgBareString(code: string, paren: number): string | null {
     return null;
 }
 
+/** Follow a nearby immutable template assigned to a logger argument. This catches
+ * `const message = `...`; logger.log(message)` without treating arbitrary data or
+ * already translated `i18next.t(...)` values as hardcoded prose. */
+function firstArgLocalTemplate(code: string, paren: number): string | null {
+    const arg = /^([A-Za-z_$][\w$]*)\s*[,)]/.exec(code.slice(skipWs(code, paren)));
+    if (!arg) return null;
+    const before = code.slice(Math.max(0, paren - 1200), paren);
+    const assignments = [...before.matchAll(/\bconst\s+([A-Za-z_$][\w$]*)\s*=\s*/g)]
+        .filter(match => match[1] === arg[1]);
+    const assignment = assignments[assignments.length - 1];
+    if (!assignment || assignment.index === undefined) return null;
+    const valueStart = assignment.index + assignment[0].length;
+    return firstArgBareString(before, valueStart);
+}
+
 /** 扫描 src/ 下 logger.log(...) 首参为裸字符串字面量/模板的调用点。 */
 export function findHardcodedLogStrings(srcDir: string): HardcodedLogHit[] {
     const files: string[] = [];
@@ -511,7 +526,7 @@ export function findHardcodedLogStrings(srcDir: string): HardcodedLogHit[] {
         const rel = relative(srcDir, file).split(sep).join('/');
         const code = readFileSync(file, 'utf-8');
         for (const paren of findCallStarts(code, LOG_CALL_START, 'l')) {
-            const text = firstArgBareString(code, paren);
+            const text = firstArgBareString(code, paren) ?? firstArgLocalTemplate(code, paren);
             if (text === null || text.trim() === '') continue;
             hits.push({
                 file: rel,

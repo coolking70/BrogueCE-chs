@@ -1252,6 +1252,8 @@ export class Monster extends Creature {
         const result = CombatSystem.attack(this, target, { grid: game.grid,
             beforeDamage: target === game.player ? damage => game.tryTriggerArmorRunic(this, damage, true) : undefined,
         });
+        if (result.hit && !result.kamikazeSelfDestruct && !result.seized && target.hp > 0
+            && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(target as Player | Monster);
         if (result.kamikazeSelfDestruct) {
             // 仅变异注入场景可达（五种几何怪原生无 MA_KAMIKAZE）
             const kamikazeKey = voice === 'ally' ? 'combat.ally_kamikaze'
@@ -1296,7 +1298,6 @@ export class Monster extends Creature {
                 }
                 if (this.hasAbility('MA_HIT_STEAL_FLEE')) {
                     this.state = MonsterState.FLEEING;
-                    logger.log(i18next.t('combat.monkey_steals', { defaultValue: `The ${game.monsterDisplayName(this)} grabs something and flees!` }), '#ffffaa');
                 }
                 if (game.player.hp <= 0) {
                     logger.log(i18next.t('combat.you_have_been_slain', {
@@ -1526,6 +1527,8 @@ export class Monster extends Creature {
                         return;
                     }
                     const result = CombatSystem.attack(this, target, { grid: game.grid });
+                    if (result.hit && !result.kamikazeSelfDestruct && !result.seized && target.hp > 0
+                        && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(target);
                     if (result.kamikazeSelfDestruct) {
                         // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替
                         // 造成伤害而自毁，早于命中掷骰，不会走"miss"分支。
@@ -1725,6 +1728,8 @@ export class Monster extends Creature {
                         return;
                     }
                     const result = CombatSystem.attack(this, game.player, { grid: game.grid });
+                    if (result.hit && !result.kamikazeSelfDestruct && !result.seized && game.player.hp > 0
+                        && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(game.player);
                     if (result.kamikazeSelfDestruct) {
                         logger.log(i18next.t('combat.monster_kamikaze', {
                             monster: game.monsterDisplayName(this),
@@ -1811,6 +1816,8 @@ export class Monster extends Creature {
                             return;
                         }
                         const result = CombatSystem.attack(this, other, { grid: game.grid });
+                        if (result.hit && !result.kamikazeSelfDestruct && !result.seized && other.hp > 0
+                            && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(other);
                         if (result.kamikazeSelfDestruct) {
                             logger.log(i18next.t('combat.discordant_kamikaze', {
                                 attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(other),
@@ -1874,6 +1881,8 @@ export class Monster extends Creature {
                 const result = CombatSystem.attack(this, game.player, { grid: game.grid,
                     beforeDamage: damage => game.tryTriggerArmorRunic(this, damage, true),
                 });
+                if (result.hit && !result.kamikazeSelfDestruct && !result.seized && game.player.hp > 0
+                    && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(game.player);
                 if (result.kamikazeSelfDestruct) {
                     // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者自毁代替
                     // 造成伤害；三只膨胀怪的 damage 都是 0d1，本来也打不出伤害，
@@ -1920,7 +1929,6 @@ export class Monster extends Creature {
                     }
                     if (this.hasAbility('MA_HIT_STEAL_FLEE')) {
                         this.state = MonsterState.FLEEING;
-                        logger.log(i18next.t('combat.monkey_steals', { defaultValue: `The ${game.monsterDisplayName(this)} grabs something and flees!` }), '#ffffaa');
                     }
                     if (game.player.hp <= 0) {
                         logger.log(i18next.t('combat.you_have_been_slain', {

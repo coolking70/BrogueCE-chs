@@ -461,6 +461,19 @@ export class Game {
     private readonly replayFramesPerStep: number = 6;
     public get replayError(): string | null { return recordingState(this).replayError; }
     private set replayError(value: string | null) { recordingState(this).replayError = value; }
+    /** Player-facing replay failure; replayError remains a diagnostic for tooling. */
+    public get replayErrorDisplay(): string | null {
+        if (!this.replayError) return null;
+        const match = /^OOS at command (\d+): (.*)$/.exec(this.replayError);
+        if (!match) return i18next.t('replay.out_of_sync_unknown', { defaultValue: 'Replay is out of sync.' });
+        const reason = match[2]!.startsWith('state mismatch') ? 'state'
+            : match[2]!.startsWith('endgame mismatch') ? 'endgame' : 'other';
+        return i18next.t('replay.out_of_sync', {
+            command: Number(match[1]),
+            reason: i18next.t('replay.out_of_sync_reason.' + reason),
+            defaultValue: 'Replay is out of sync at command {{command}}: {{reason}}',
+        });
+    }
     private get commandDecisions(): boolean[] | null { return recordingState(this).commandDecisions; }
     private set commandDecisions(value: boolean[] | null) { recordingState(this).commandDecisions = value; }
     private get replayDecisionCursor(): number { return recordingState(this).replayDecisionCursor; }
@@ -909,6 +922,7 @@ export class Game {
                 return null;
             }
             case 'POTION': {
+                // Random floor items, machines and discoveries share one eligibility pool.
                 const potions = ItemLoader.genPotions;
                 if (potions.length > 0) {
                     const pick = ItemLoader.chooseKind(potions.map(p => p.frequency ?? 0));
@@ -2818,7 +2832,7 @@ export class Game {
     private failReplayEvent(event: RecordedInputEvent, error: unknown): void {
         this.replayError = `OOS at command ${event.index + 1}: ${error instanceof Error ? error.message : String(error)}`;
         this.replayStatus = 'loaded';
-        logger.log(this.replayError, '#ff6666');
+        logger.log(this.replayErrorDisplay ?? '', '#ff6666');
     }
 
     public tickReplay() {
@@ -8564,7 +8578,7 @@ export class Game {
      * （原 status==0）播报"着火"，玩家自己 / 可见怪物（CE canDirectlySeeMonster，
      * web 以格子可见度近似）。
      */
-    private exposeCreatureToFire(entity: Player | Monster): void {
+    public exposeCreatureToFire(entity: Player | Monster): void {
         if (entity.hp <= 0 || isSubmerged(entity)) return;
         if (entity.hasStatus('immune_fire')) return;
         if (entity !== this.player && (entity as Monster).isInvulnerable()) return;
