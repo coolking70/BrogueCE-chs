@@ -1,3 +1,4 @@
+import { isSubmerged, hiddenBySubmersion } from '../Movement/Submersion';
 import type { Pos } from '../../types';
 import type { Creature } from '../../entities/Creature';
 import { Monster, monstersAreEnemies, monstersAreTeammates } from '../../entities/Monster';
@@ -45,8 +46,8 @@ function offsetLine(grid: Grid, from: Pos, to: Pos, offset: readonly [number, nu
 
 /** CE Items.c:4146-4291, including the 21 diamond offsets and first-best tie.
  * No bolt = untuned center line. No RNG or mutation. Range limits belong to travel,
- * not scoring. Web has no MAGIC_MAPPED/submerged bookkeeping;
- * discovery uses its visible/remembered cells. W-13 tunes only known tunneling. */
+ * not scoring. Discovery uses visible/remembered/magic-mapped cells;
+ * W-13 tunes only known tunneling. Submersion affects scoring and collision separately. */
 export function boltLine(grid: Grid, from: Pos, to: Pos, bolt?: BoltConfig, world?: BoltWorld): Pos[] {
     if (from.x === to.x && from.y === to.y) return [];
     if (![from.x, from.y, to.x, to.y].every(Number.isSafeInteger)) return [];
@@ -64,9 +65,9 @@ export function boltLine(grid: Grid, from: Pos, to: Pos, bolt?: BoltConfig, worl
             const invisible = occupant?.hasStatus('invisible') || (occupant instanceof Monster && occupant.isTrulyInvisible());
             // CE monsterIsHidden ignores telepathy but gas outlines invisible
             // creatures; teammates can see one another, including the player.
-            const hidden = invisible && !cell.layers[DungeonLayer.GAS]
-                && (!world.caster || !occupant || !monstersAreTeammates(world.caster, occupant));
-            const creature = hidden ? undefined : occupant;
+            const hidden = !!occupant && (!world.caster || !monstersAreTeammates(world.caster, occupant))
+                && ((invisible && !cell.layers[DungeonLayer.GAS]) || hiddenBySubmersion(grid, occupant, world.caster));
+            const creature = hidden || isSubmerged(occupant) ? undefined : occupant; // CE Items.c:4221
             const enemy = !!occupant && !!world.caster && monstersAreEnemies(world.caster, occupant);
             const ally = !!occupant && !!world.caster && monstersAreTeammates(world.caster, occupant);
             const burning = !!(flags & F.FIERY) && !!(terrain & T_IS_FLAMMABLE);
@@ -181,7 +182,8 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         if (path.length >= blinkRange) break;
         if (bolt.maxRange > 0 && path.length >= bolt.maxRange) break;
         const pos = pending[next++]!;
-        const creature = world.creatureAt(pos);
+        const occupant = world.creatureAt(pos);
+        const creature = isSubmerged(occupant) ? undefined : occupant;
         const blocked = !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS);
         if (!path.length && bolt.effect === BoltEffect.BLINKING && (blocked || (creature && !piercing))) break;
         path.push(pos);
@@ -206,7 +208,7 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         const ahead = pending[next];
         if (!ahead) break;
         const aheadBlocked = !!(cellTerrainFlags(grid, ahead.x, ahead.y) & BLOCKS);
-        if ((flags & F.HALTS_BEFORE_OBSTRUCTION) && (aheadBlocked || (!piercing && world.creatureAt(ahead)))) break;
+        if ((flags & F.HALTS_BEFORE_OBSTRUCTION) && (aheadBlocked || (!piercing && world.creatureAt(ahead) && !isSubmerged(world.creatureAt(ahead))))) break;
         if (canReflect && aheadBlocked && ((cellTerrainMechFlags(grid, ahead.x, ahead.y) & TM_REFLECTS_BOLTS)
             || (tunneling && grid.isImpregnable(ahead.x, ahead.y)))
             && path.length - 1 < reflectionLimit) {

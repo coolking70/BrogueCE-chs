@@ -1,0 +1,36 @@
+{
+  "at": "2026-09-27T01:06:22.625Z",
+  "sourceStage": "final",
+  "changed": [
+    {
+      "file": "src/engine/Combat/BoltTrajectory.ts",
+      "before": "cf6426c2736a303fbb79fad53b066fbc428d42c2f51fc8bc330fe8a49baeb766",
+      "after": "d72efe359f89e3522080d255bc7cb118a1eaa2862703ac38ed711dad62ee46d7"
+    },
+    {
+      "file": "src/engine/Combat/MonsterBlink.ts",
+      "before": "5e76560b5dc5d3ba3c0d6ac25c7cc068cb5d1324028172487b1e5b1417620e48",
+      "after": "e57050bfdf28de4a0a5149c5923ffc9f7018c8067d8ba5887ec3869db15621d6"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "before": "8eef9091d2573eabe8e6d31b23539c059bfd91b126706c22b5f1893b48dece64",
+      "after": "966b570bfbb9961d9f0450b0724b571393ae0d86689c86688119eb90bd210933"
+    }
+  ],
+  "guardFiles": [
+    "src/engine/UI/Discoveries.test.ts",
+    "src/test/b_2_throwing.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/w_4_bolt_reflection.test.ts"
+  ],
+  "originalGuards": 16
+}

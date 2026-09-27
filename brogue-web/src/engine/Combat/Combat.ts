@@ -5,6 +5,8 @@
  */
 
 import { monsterDamageAdjustmentAmount, monsterAccuracyAdjusted, monsterDefenseAdjusted } from './CombatFormulas';
+import { canSeeMonster } from '../UI/MonsterVisibility';
+import type { Grid } from '../Map/Grid';
 import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
 import { Monster, MonsterState } from '../../entities/Monster';
@@ -69,6 +71,7 @@ export class CombatSystem {
          * （CE inflictDamage 本身只认 MONST_INVULNERABLE，不检查 IMMUNE_TO_WEAPONS）。
          */
         isWeaponAttack?: boolean;
+        grid?: Grid;
         /** CE armor adjustment precedes contact poison and shield absorption. */
         beforeDamage?: (damage: number) => number;
         /**
@@ -88,6 +91,8 @@ export class CombatSystem {
         let backstab = false;
         let clumping: number | undefined;
 
+        if (attacker instanceof Monster && opts?.isWeaponAttack !== false
+            && !(attacker.hasAbility('MA_SEIZES') && !attacker.seizing)) attacker.submerged = false;
         // --- Determine attacker stats ---
         if (attacker instanceof Player) {
             if (!attacker.equippedWeapon) attackerAccuracy = monsterAccuracyAdjusted(100, attacker.weaknessAmount);
@@ -195,6 +200,8 @@ export class CombatSystem {
             (!attacker.seizing || !defender.seized)) {
             attacker.seizing = true;
             defender.seized = true;
+            if (defender instanceof Player && attacker.submerged && opts?.grid
+                && canSeeMonster(defender, opts.grid, attacker)) attacker.submerged = false;
             return { damage: 0, weaponName, hit: false, backstab: false, seized: true };
         }
 
@@ -284,7 +291,7 @@ export class CombatSystem {
         if (damage > 0) {
             const hpDamage = applyTo.absorbShieldDamage(damage);
             CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
-            applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
+            applyTo.takeDamage(hpDamage, true, opts?.grid); // already passed through the shield exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         } else {
             // CE inflictDamage still applies the ring's minimum ±1 on a hit
@@ -397,7 +404,8 @@ export class CombatSystem {
     public static resolveThrownWeapon(
         thrower: Player,
         defender: Monster,
-        item: Item
+        item: Item,
+        grid?: Grid
     ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
         // CE Items.c:6790: a thrown weapon attempt releases even on a miss.
         defender.setStatusDuration('entranced', 0);
@@ -433,7 +441,7 @@ export class CombatSystem {
 
         const hpDamage = defender.absorbShieldDamage(damage);
         CombatSystem.transferMonsterHealth(thrower, defender, hpDamage);
-        defender.takeDamage(hpDamage, true);
+        defender.takeDamage(hpDamage, true, grid);
         const killed = defender.hp <= 0;
         defender.enrageAfterAttack();
 

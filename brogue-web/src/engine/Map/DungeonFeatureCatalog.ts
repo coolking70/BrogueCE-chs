@@ -50,6 +50,12 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    DF_ROT_GAS_PUFF = 41,
+    DF_ROT_GAS_BLOOD = 32,
+    DF_DARKNESS_POTION = 134,
+    DF_MUTATION_LICHEN = 39,
+    DF_LICHEN_PLANTED = 136,
+    DF_LICHEN_GROW = 54,
     DF_GRANITE_CRUMBLES = 192, // CE Globals.c:881; active tunnel marker successor.
     DF_VENT_SPEW_POISON_GAS = 178, // CE Rogue.h:1703; Globals.c:855; required U17d successor.
     DF_ARMOR_IMMOLATION = 137, // CE Rogue.h:1636; Globals.c:786. Spawned by the immolation armor runic (U15d-2).
@@ -372,6 +378,12 @@ const df = (
  *   显式写成零值（项目约定：省略字段不序列化成 null/undefined）。
  */
 export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeatureEntry>>> = {
+    [DF.DF_ROT_GAS_PUFF]: df(41, 664, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 15, 0, 0, '', null, null, ''),
+    [DF.DF_ROT_GAS_BLOOD]: df(32, 649, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 12, 0, 0, '', null, null, ''),
+    [DF.DF_DARKNESS_POTION]: df(134, 781, 'DARKNESS_CLOUD', TerrainType.DARKNESS_CLOUD, DungeonLayer.GAS, 200, 0, 0, '', null, null, ''),
+    [DF.DF_MUTATION_LICHEN]: df(39, 660, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 70, 60, 0, '', null, null, 'Poisonous spores burst from the corpse!'),
+    [DF.DF_LICHEN_PLANTED]: df(136, 783, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 70, 60, 0, '', null, null, ''),
+    [DF.DF_LICHEN_GROW]: df(54, 677, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 2, 100, DFF_BLOCKED_BY_OTHER_LAYERS, '', null, null, ''),
     [DF.DF_WEB_SMALL]: {
         id: DF.DF_WEB_SMALL, ceLine: 681, ceTile: 'SPIDERWEB', tile: TerrainType.WEB,
         layer: DungeonLayer.SURFACE, startProbability: 15, probabilityDecrement: 12,
@@ -1706,6 +1718,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
+// X2g additionally wires ROT_GAS blood/puff, DARKNESS_POTION and all three lichen sources.
 // U17f closes the last six registered gaps. Retain the explicit empty guard;
 // unported CE features outside this catalog are not implied to be implemented.
 export const DF_MISSING_TILES: readonly DF[] = [];

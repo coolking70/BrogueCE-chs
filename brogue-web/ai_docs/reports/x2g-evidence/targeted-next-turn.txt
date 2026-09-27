@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+ ❯ src/test/x2g_native_effects.test.ts (12 tests | 1 failed) 5541ms
+     × restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state 631ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g rot gas and MB_SUBMERGED > restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state
+AssertionError: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "/run/recordedInputEvents/0: {\"index\":0,\"tick\":100,\"depth\":1,\"player\":{\"x\":10,\"y\":10},\"action\":\"wait\",\"data\":null,\"decisions\":[],\"turn\":1,\"rng\":{\"version\":2,\"algorithm\":\"brogue-web-ranval32-uint64-level-v2\",\"streams\":[{\"a\":3653418273,\"b\":3429259010,\"c\":2801882089,\"d\":2190600239},{\"a\":1519259528,\"b\":3727091417,\"c\":2571261208,\"d\":3212710243}],\"currentRNG\":0,\"randomNumbersGenerated\":7214,\"cosmeticNumbersGenerated\":156}} → undefined",
++   "/run/recordedInputIndex: 1 → 0",
++ ]
+
+ ❯ src/test/x2g_native_effects.test.ts:201:52
+    199|             return [`${path}: ${JSON.stringify(a)} → ${JSON.stringify(…
+    200|         };
+    201|         expect(differences(uninterrupted,resumed)).toEqual([]);
+       |                                                    ^
+    202|     });
+    203| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  07:34:54
+   Duration  7.42s (transform 932ms, setup 0ms, import 1.71s, tests 5.54s, environment 0ms)
+

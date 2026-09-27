@@ -414,15 +414,21 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
     // 其余四气体仍无载体，只登记的半边原样保留。原断言内容存档：
     // "ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 成员、
     // 无 GasType 成员、无 DF 条目"。
-    it('ROT/DARKNESS/HEALING 三气体无 tile 载体、无 GasType 成员、无 DF 条目（G-3 翻转：PARALYSIS 出列）', () => {
+    it('HEALING 尚无载体；X2g 的 ROT/DARKNESS 具有完整 CE 来源', () => {
         // "只登记"的形态（本断言即登记）：这四种气体不迁 tile——
         // 它们没有 TerrainType/GasType 成员、不在目录里。接成空转链的
         // 错误实现（tile 迁了但无生产写入点、或 DF 条目 tile=null 挂着
         // 无人触发）在这组结构性断言下无所遁形。
         const names = (TerrainType as unknown as Record<string, unknown>);
-        for (const n of ['ROT_GAS', 'DARKNESS_CLOUD', 'HEALING_CLOUD']) {
+        for (const n of ['HEALING_CLOUD']) {
             expect(names[n], `${n} 不得有 tile 成员（载体盘点：无 web 载体，只登记）`).toBeUndefined();
         }
+        // X2g: absence is now the wrong premise for these native sources.
+        expect(isGasTerrain(C.ROT_GAS)).toBe(true);
+        expect(isGasTerrain(C.DARKNESS_CLOUD)).toBe(true);
+        expect(catalogFeature(DF.DF_ROT_GAS_BLOOD).tile).toBe(C.ROT_GAS);
+        expect(catalogFeature(DF.DF_ROT_GAS_PUFF).tile).toBe(C.ROT_GAS);
+        expect(catalogFeature(DF.DF_DARKNESS_POTION).tile).toBe(C.DARKNESS_CLOUD);
         const gasNames = (GasType as unknown as Record<string, unknown>);
         for (const n of ['ROT', 'STENCH', 'DARKNESS', 'HEALING']) {
             expect(gasNames[n], `GasType.${n} 不得存在`).toBeUndefined();
@@ -443,7 +449,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // 159 实为 DF_SHALLOW_WATER，本轮水扩散闭包合法使用该 id。
         // V-2b-9a：159=DF_SHALLOW_WATER 是水扩散闭包成员；218=DF_STENCH_SMOLDER
         // 由 MUD_FLOOR.fireType 引入。二者已获授权，边界守卫只移除这两项。
-        for (const id of [32, 41, 70, 134, 217]) {
+        for (const id of [70, 217]) {
             expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
         }
     });

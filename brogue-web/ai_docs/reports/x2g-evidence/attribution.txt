@@ -1,0 +1,42 @@
+[
+  { from: 's0', to: 'lichen', shallow: 0, deep: 0, mismatches: 0 },
+  {
+    from: 'lichen',
+    to: 'darkness',
+    shallow: 0,
+    deep: 0,
+    mismatches: 0
+  },
+  { from: 'darkness', to: 'rot', shallow: 0, deep: 0, mismatches: 0 },
+  {
+    from: 'rot',
+    to: 'submerged',
+    shallow: 182,
+    deep: 84,
+    mismatches: 0
+  },
+  {
+    from: 'submerged',
+    to: 'pool',
+    shallow: 279,
+    deep: 99,
+    mismatches: 0
+  },
+  { from: 'pool', to: 'review', shallow: 0, deep: 0, mismatches: 0 }
+] [
+  {
+    trace: 2,
+    headMatchesGolden: true,
+    stages: [ [Object], [Object], [Object], [Object], [Object], [Object] ]
+  },
+  {
+    trace: 3,
+    headMatchesGolden: true,
+    stages: [ [Object], [Object], [Object], [Object], [Object], [Object] ]
+  },
+  {
+    trace: 4,
+    headMatchesGolden: true,
+    stages: [ [Object], [Object], [Object], [Object], [Object], [Object] ]
+  }
+]

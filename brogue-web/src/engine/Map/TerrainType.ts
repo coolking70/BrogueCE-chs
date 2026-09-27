@@ -241,4 +241,7 @@ export enum TerrainType {
     // U19f: CE autoGen closure carriers; append-only saved terrain identities.
     FUNGUS_FOREST, TRAMPLED_FUNGUS_FOREST, SUNLIGHT_POOL, DARKNESS_PATCH, DEEP_WATER_ALGAE_WELL, DEEP_WATER_ALGAE_1, DEEP_WATER_ALGAE_2, NET_TRAP, NET_TRAP_HIDDEN, NETTING, ALARM_TRAP, ALARM_TRAP_HIDDEN, GAS_TRAP_CONFUSION, GAS_TRAP_CONFUSION_HIDDEN, FLOOD_TRAP_HIDDEN, STEAM_VENT, DEWAR_CAUSTIC_GAS, DEWAR_CONFUSION_GAS, DEWAR_PARALYSIS_GAS, DEWAR_METHANE_GAS, BROKEN_GLASS,
 
+    LICHEN, // X2g: CE native terrain; append to preserve existing IDs.
+    DARKNESS_CLOUD, // X2g: CE native terrain; append to preserve existing IDs.
+    ROT_GAS, // X2g: CE native terrain; append to preserve existing IDs.
 }

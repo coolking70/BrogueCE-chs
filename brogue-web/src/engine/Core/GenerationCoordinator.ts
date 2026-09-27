@@ -1,3 +1,4 @@
+import { monsterCanSubmergeNow } from '../Movement/Submersion';
 /**
  * Floor generation transaction. Ports are live accessors and bound callbacks:
  * a stair retry discards only that attempt's geometry, a successful dig commits
@@ -128,6 +129,7 @@ export function createMachineRuntime(ports: GenerationPorts, depth: number): Mac
                         if (spawn.isAlly) mon.isAlly = true;
                         if (spawn.isCaged) mon.isCaged = true;
                         ports.applyRandomMutation(mon, depth);
+                        mon.submerged = monsterCanSubmergeNow(mon, ports.grid);
                         ports.monsters.push(mon);
                         ports.finalizeBlueprintMonster(mon, spawn, machineNumber);
                         made.push(mon);
@@ -623,6 +625,7 @@ export function populateLevel(ports: GenerationPorts,
                     if (spawn.isCaged) mon.isCaged = true;
                     handOff(mon, spawn, mr);
                     ports.applyRandomMutation(mon, depth);
+                    mon.submerged = monsterCanSubmergeNow(mon, ports.grid);
                     ports.monsters.push(mon);
                     ports.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
                     if (trace) trace.products.push({ kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,

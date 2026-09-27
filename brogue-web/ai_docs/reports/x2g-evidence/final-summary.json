@@ -1,0 +1,81 @@
+{
+  "gates": [
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-27T01:10:26.921Z",
+      "end": "2026-09-27T01:10:34.170Z",
+      "exit": 0
+    },
+    {
+      "name": "regression",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=4",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2g-evidence/regression-final.json"
+      ],
+      "start": "2026-09-27T01:10:34.171Z",
+      "end": "2026-09-27T01:46:19.354Z",
+      "exit": 0
+    },
+    {
+      "name": "drift",
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1"
+      ],
+      "start": "2026-09-27T01:46:19.355Z",
+      "end": "2026-09-27T01:46:44.945Z",
+      "exit": 0
+    },
+    {
+      "name": "deep",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "src/test/u_26a_deep_baseline.test.ts",
+        "--maxWorkers=1"
+      ],
+      "start": "2026-09-27T01:46:44.945Z",
+      "end": "2026-09-27T01:47:22.966Z",
+      "exit": 0
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-27T01:47:22.966Z",
+      "end": "2026-09-27T01:47:23.634Z",
+      "exit": 0
+    }
+  ],
+  "files": 206,
+  "passed": 3876,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "frozenInputs": 959,
+  "changedInputs": [],
+  "missing": [],
+  "missingClosure": [],
+  "missingNamed": [],
+  "unexpectedBaselines": [],
+  "crlf": [],
+  "head": "b5c0d481831b5f32fdac79892168b33df915becc",
+  "staged": ""
+}

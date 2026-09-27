@@ -68,6 +68,9 @@ export enum DungeonLayer {
  *   PLAIN_FIRE=10（CE Globals.c:492 原值；F-1）。
  */
 export const DRAW_PRIORITY: Record<TerrainType, number> = {
+    [TerrainType.ROT_GAS]: 35,
+    [TerrainType.DARKNESS_CLOUD]: 35,
+    [TerrainType.LICHEN]: 60,
     [TerrainType.NOTHING]: 100,
     [TerrainType.GRANITE]: 0,
     [TerrainType.FLOOR]: 95,
@@ -357,6 +360,9 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
  *   Globals.c:740；F-0 §3.2：十种火 DF 无一例外落 SURFACE——F-1）。
  */
 export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
+    [TerrainType.ROT_GAS]: DungeonLayer.GAS,
+    [TerrainType.DARKNESS_CLOUD]: DungeonLayer.GAS,
+    [TerrainType.LICHEN]: DungeonLayer.SURFACE,
     [TerrainType.NOTHING]: DungeonLayer.DUNGEON,
     [TerrainType.GRANITE]: DungeonLayer.DUNGEON,
     [TerrainType.FLOOR]: DungeonLayer.DUNGEON,

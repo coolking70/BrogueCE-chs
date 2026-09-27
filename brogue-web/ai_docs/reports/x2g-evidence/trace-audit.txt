@@ -1,0 +1,26 @@
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48883
+    if (process.env.UR3_CAPTURE === "1") writeFileSync(fixture, gzipSync(JSON.stringify(result)));
+                                                                              ^
+
+RangeError: Invalid string length
+    at JSON.stringify (<anonymous>)
+    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48883:79
+    at describe (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48838:27)
+    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48881:3
+    at describe (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48838:27)
+    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-traces-3N4nwO/trace.mjs:48880:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v25.2.1
+file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/scripts/x2g-trace-audit.mjs:30
+   if(r.status)throw Error(`UR${n}/${stage} failed`);
+                     ^
+
+Error: UR3/s0 failed
+    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/scripts/x2g-trace-audit.mjs:30:22
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1

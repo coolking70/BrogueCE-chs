@@ -1,0 +1,2171 @@
+{
+  "seeds": [
+    "src/data/consumables.json",
+    "src/engine/Combat/BoltTargeting.ts",
+    "src/engine/Combat/BoltTrajectory.ts",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Combat/MonsterBlink.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Map/DungeonFeatureCatalog.ts",
+    "src/engine/Map/Grid.ts",
+    "src/engine/Map/TerrainCatalog.ts",
+    "src/engine/Map/TerrainType.ts",
+    "src/engine/Movement/Submersion.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/UI/MonsterVisibility.ts",
+    "src/engine/UI/TerrainAppearanceCatalog.ts",
+    "src/entities/Creature.ts",
+    "src/entities/Monster.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "symbols": "/lichen|LICHEN|creeping_death|DARKNESS_CLOUD|DF_DARKNESS_POTION|ROT_GAS|submerged|Submersion|MONST_SUBMERGES|readFileSync|readFile|createSourceFile/",
+  "reverseImportClosure": [
+    "src/App.vue",
+    "src/components/AgentControls.vue",
+    "src/components/DetailPanel.vue",
+    "src/components/GameCanvas.vue",
+    "src/components/GameEndOverlay.vue",
+    "src/components/InventoryOverlay.vue",
+    "src/components/MainMenu.vue",
+    "src/components/ReferenceOverlay.vue",
+    "src/components/ReplayControls.vue",
+    "src/components/Sidebar.vue",
+    "src/data/consumables.json",
+    "src/data/monsterBolts.test.ts",
+    "src/data/monsterDamage.test.ts",
+    "src/data/weapons.test.ts",
+    "src/engine/Combat/BlinkTargeting.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/engine/Combat/BoltReflection.ts",
+    "src/engine/Combat/BoltTargeting.ts",
+    "src/engine/Combat/BoltTrajectory.ts",
+    "src/engine/Combat/Cloning.ts",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Combat/Conjuration.ts",
+    "src/engine/Combat/MonsterAbsorption.ts",
+    "src/engine/Combat/MonsterBlink.ts",
+    "src/engine/Combat/Negation.ts",
+    "src/engine/Combat/Polymorph.ts",
+    "src/engine/Core/Endgame.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Core/LevelSnapshot.ts",
+    "src/engine/Core/LevelState.ts",
+    "src/engine/Core/SaveStorage.ts",
+    "src/engine/Core/TimeCoordinator.ts",
+    "src/engine/Core/WholeRunSnapshot.ts",
+    "src/engine/Core/snapshotQuantity.test.ts",
+    "src/engine/Core/startingKit.test.ts",
+    "src/engine/Environment/Gas.ts",
+    "src/engine/Generator/Architect.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Generator/GenerationPlacement.ts",
+    "src/engine/Generator/MachineView.ts",
+    "src/engine/Generator/Stairs.ts",
+    "src/engine/Items/ArcanaEnchantment.ts",
+    "src/engine/Items/ArcanaRecharge.ts",
+    "src/engine/Items/Commutation.ts",
+    "src/engine/Items/Inventory.ts",
+    "src/engine/Items/Item.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Items/ItemSpawnHeatMap.ts",
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/engine/Items/MachineItemGeneration.ts",
+    "src/engine/Items/RingBonuses.ts",
+    "src/engine/Items/itemFlavors.test.ts",
+    "src/engine/Lighting/FOV.ts",
+    "src/engine/Lighting/LightMap.ts",
+    "src/engine/Map/AutoGenerator.ts",
+    "src/engine/Map/Connectivity.ts",
+    "src/engine/Map/DungeonFeature.ts",
+    "src/engine/Map/DungeonFeatureCatalog.ts",
+    "src/engine/Map/Grid.ts",
+    "src/engine/Map/LakeSystem.ts",
+    "src/engine/Map/LoopMap.ts",
+    "src/engine/Map/MachineCells.ts",
+    "src/engine/Map/Pathfind.ts",
+    "src/engine/Map/Pathfinding.ts",
+    "src/engine/Map/Promotion.ts",
+    "src/engine/Map/SafetyMap.ts",
+    "src/engine/Map/Scent.ts",
+    "src/engine/Map/TerrainCatalog.ts",
+    "src/engine/Map/TerrainRules.ts",
+    "src/engine/Map/TerrainType.ts",
+    "src/engine/Map/WallDoorFinish.ts",
+    "src/engine/Map/WaypointMap.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/engine/Movement/Entrancement.ts",
+    "src/engine/Movement/LevelTravel.ts",
+    "src/engine/Movement/PlayerTravel.ts",
+    "src/engine/Movement/Submersion.ts",
+    "src/engine/Status/statusConfig.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/UI/DetailGenerator.test.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/engine/UI/Discoveries.test.ts",
+    "src/engine/UI/Discoveries.ts",
+    "src/engine/UI/ItemKnowledge.ts",
+    "src/engine/UI/MonsterSidebar.ts",
+    "src/engine/UI/MonsterVisibility.ts",
+    "src/engine/UI/TerrainAppearanceCatalog.ts",
+    "src/entities/Creature.ts",
+    "src/entities/Monster.ts",
+    "src/entities/Player.ts",
+    "src/i18n.ts",
+    "src/locales/zh_CN.json",
+    "src/main.ts",
+    "src/test/ai_1_scent_tracking.test.ts",
+    "src/test/armor_display_effect.test.ts",
+    "src/test/armor_model_effect.test.ts",
+    "src/test/armor_runic_effect.test.ts",
+    "src/test/b1_retire_invented.test.ts",
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_1_weapon_specials.test.ts",
+    "src/test/b_1a_identification.test.ts",
+    "src/test/b_1b_identification_persistence.test.ts",
+    "src/test/b_1c_detect_magic.test.ts",
+    "src/test/b_2_throwing.test.ts",
+    "src/test/b_4a_item_generation.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/c_0_add_loops.test.ts",
+    "src/test/c_1_room_profile.test.ts",
+    "src/test/c_2_lakes.test.ts",
+    "src/test/c_2_lakes_determinism.test.ts",
+    "src/test/c_2_lakes_e2e.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/f_1_fire_as_terrain.test.ts",
+    "src/test/f_2a_fire_mechanics.test.ts",
+    "src/test/f_2b_creature_burning.test.ts",
+    "src/test/f_2c_explosion.test.ts",
+    "src/test/fixtures/u19a-machine-scenes.ts",
+    "src/test/fixtures/u19b-machine-scenes.ts",
+    "src/test/fixtures/u19c-machine-actions.ts",
+    "src/test/fixtures/u19d-machine-actions.ts",
+    "src/test/fixtures/u19e-machine-actions.ts",
+    "src/test/fixtures/u19f-auto-actions.ts",
+    "src/test/fixtures/u19f-machine-actions.ts",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/g_3_gas_effects.test.ts",
+    "src/test/generation_baseline.test.ts",
+    "src/test/harness.ts",
+    "src/test/horde_selection.test.ts",
+    "src/test/horde_terrain_spawn.test.ts",
+    "src/test/hunger_curve_sim.test.ts",
+    "src/test/hunger_regen.test.ts",
+    "src/test/i_1_interaction.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/monster_damage_balance.test.ts",
+    "src/test/monster_stats_effect.test.ts",
+    "src/test/p1_20_item_placement.test.ts",
+    "src/test/p1_24_death_sink.test.ts",
+    "src/test/p1_26_invariants.test.ts",
+    "src/test/p1_27_remove_drowning.test.ts",
+    "src/test/p1_28_flag_channel.test.ts",
+    "src/test/p1_29_adversarial_gate.test.ts",
+    "src/test/p1_29_lake_connectivity.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/p1_31_35_placement_snapshot.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts",
+    "src/test/p1_34_loopmap_reset.test.ts",
+    "src/test/p1_37_machine_flag_i18n.test.ts",
+    "src/test/p1_42_secret_door_search.test.ts",
+    "src/test/p2_0_seeded_rng.test.ts",
+    "src/test/p2_1_tick_architecture.test.ts",
+    "src/test/p2_2_real_speed.test.ts",
+    "src/test/p2_3_objective_time.test.ts",
+    "src/test/p2_4_animation_cadence.test.ts",
+    "src/test/p2_6_display_settings.test.ts",
+    "src/test/p4_10_waypoint.test.ts",
+    "src/test/p4_1b_monster_casting.test.ts",
+    "src/test/p4_2_monster_summoning.test.ts",
+    "src/test/p4_3_special_monster_flags.test.ts",
+    "src/test/p4_4_split_kamikaze.test.ts",
+    "src/test/p4_5_melee_specials.test.ts",
+    "src/test/p4_6_attack_geometry.test.ts",
+    "src/test/p4_7_player_weapon_geometry.test.ts",
+    "src/test/p4_8_scent_map.test.ts",
+    "src/test/p4_9_safety_map.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/scroll_effects.test.ts",
+    "src/test/smoke.test.ts",
+    "src/test/t_1_tail.test.ts",
+    "src/test/u20_inventory.test.ts",
+    "src/test/u21c_flare_sidebar.test.ts",
+    "src/test/u21c_terrain_appearance.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u25_machine_observation.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_02a_rng_snapshot.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_04c_machine_cells.test.ts",
+    "src/test/u_05_machine_items.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_07_monster_blink.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_09_learning_consumers.test.ts",
+    "src/test/u_10_absorption_snapshot.test.ts",
+    "src/test/u_11_corpse_learning.test.ts",
+    "src/test/u_12a_cast_eligibility.test.ts",
+    "src/test/u_12b_ally_mode.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_14b_status_gaps.test.ts",
+    "src/test/u_15a_shattering.test.ts",
+    "src/test/u_15b2_ring_birth.test.ts",
+    "src/test/u_15b_rings.test.ts",
+    "src/test/u_15c_charms.test.ts",
+    "src/test/u_15d2_armor_runic.test.ts",
+    "src/test/u_15d3_runic_generation.test.ts",
+    "src/test/u_15d_weapon_runic.test.ts",
+    "src/test/u_15e_potions.test.ts",
+    "src/test/u_15f_food.test.ts",
+    "src/test/u_16_lifecycle.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/u_17f_carriers.test.ts",
+    "src/test/u_18_water_cage.test.ts",
+    "src/test/u_18a_2_generation_terrain.test.ts",
+    "src/test/u_18a_3_generation.test.ts",
+    "src/test/u_18a_terrain_contracts.test.ts",
+    "src/test/u_19a_machine_view.test.ts",
+    "src/test/u_19b_pending_occupancy.test.ts",
+    "src/test/u_19c_immediate_entities.test.ts",
+    "src/test/u_19d_machine_families.test.ts",
+    "src/test/u_19e_machine_families.test.ts",
+    "src/test/u_19f_autogen.test.ts",
+    "src/test/u_19f_fire.test.ts",
+    "src/test/u_19f_machines.test.ts",
+    "src/test/u_23_memory_mapping.test.ts",
+    "src/test/u_26a_deep_baseline.test.ts",
+    "src/test/u_26a_deep_levels.test.ts",
+    "src/test/u_26b_endgame.test.ts",
+    "src/test/u_27_recording.test.ts",
+    "src/test/u_r1_codec.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/ui_1_rendering.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_1c_machine_structure.test.ts",
+    "src/test/v_2a_vestibule_return.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_6_keys.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9a_carriers.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/v_2b_9e_2_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/w_12_blink_beckoning.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_18_entrancement.test.ts",
+    "src/test/w_19_polymorph.test.ts",
+    "src/test/w_20_cloning.test.ts",
+    "src/test/w_21_empowerment.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_26_arcana_closure.test.ts",
+    "src/test/w_2_arcana_submission.test.ts",
+    "src/test/w_3_bolt_trajectory.test.ts",
+    "src/test/w_4_bolt_reflection.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/w_8_staff_damage.test.ts",
+    "src/test/w_9_directed_status.test.ts",
+    "src/test/x2a_recording_checkpoint.test.ts",
+    "src/test/x2b_terrain_derivation.test.ts",
+    "src/test/x2c_hit_status_owner.test.ts",
+    "src/test/x2d_scroll_equipment.test.ts",
+    "src/test/x2e_charms.test.ts",
+    "src/test/x2g_native_effects.test.ts"
+  ],
+  "sourceHits": [
+    {
+      "file": "src/data/blueprints.json",
+      "line": 3248,
+      "text": "\"itemId\": \"potion_of_creeping_death\","
+    },
+    {
+      "file": "src/data/consumables.json",
+      "line": 148,
+      "text": "\"id\": \"potion_of_creeping_death\","
+    },
+    {
+      "file": "src/data/consumables.json",
+      "line": 150,
+      "text": "\"effect\": \"creeping_death\","
+    },
+    {
+      "file": "src/data/monsters.json",
+      "line": 108,
+      "text": "\"MONST_SUBMERGES\","
+    },
+    {
+      "file": "src/data/monsters.json",
+      "line": 528,
+      "text": "\"MONST_SUBMERGES\","
+    },
+    {
+      "file": "src/data/monsters.json",
+      "line": 787,
+      "text": "\"MONST_SUBMERGES\","
+    },
+    {
+      "file": "src/data/monsters.json",
+      "line": 816,
+      "text": "\"MONST_SUBMERGES\","
+    },
+    {
+      "file": "src/data/monsters.json",
+      "line": 1112,
+      "text": "\"MONST_SUBMERGES\","
+    },
+    {
+      "file": "src/data/mutations.json",
+      "line": 15,
+      "text": "\"MONST_SUBMERGES\""
+    },
+    {
+      "file": "src/data/mutations.json",
+      "line": 36,
+      "text": "\"description\": \"It has been infested by deadly lichen spores; poisonous fungus will spread from its corpse when it dies.\""
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 10,
+      "text": "const ce = (file: string) => readFileSync(new URL(`../../../../BrogueCE-master/src/${file}`, import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/engine/Combat/BoltTargeting.ts",
+      "line": 16,
+      "text": "* No new submerged bookkeeping or clairvoyance is introduced here. */"
+    },
+    {
+      "file": "src/engine/Combat/BoltTargeting.ts",
+      "line": 33,
+      "text": "if (m.hp <= 0 || m.submerged || !canObserveBoltCreature(player, grid, m)) return false;"
+    },
+    {
+      "file": "src/engine/Combat/BoltTargeting.ts",
+      "line": 39,
+      "text": "|| monsters.some(other => other !== m && other.hp > 0 && !other.isDormant && !other.submerged"
+    },
+    {
+      "file": "src/engine/Combat/BoltTrajectory.ts",
+      "line": 1,
+      "text": "import { isSubmerged, hiddenBySubmersion } from '../Movement/Submersion';"
+    },
+    {
+      "file": "src/engine/Combat/BoltTrajectory.ts",
+      "line": 50,
+      "text": "* W-13 tunes only known tunneling. Submersion affects scoring and collision separately. */"
+    },
+    {
+      "file": "src/engine/Combat/BoltTrajectory.ts",
+      "line": 69,
+      "text": "&& ((invisible && !cell.layers[DungeonLayer.GAS]) || hiddenBySubmersion(grid, occupant, world.caster));"
+    },
+    {
+      "file": "src/engine/Combat/Combat.ts",
+      "line": 95,
+      "text": "&& !(attacker.hasAbility('MA_SEIZES') && !attacker.seizing)) attacker.submerged = false;"
+    },
+    {
+      "file": "src/engine/Combat/Combat.ts",
+      "line": 203,
+      "text": "if (defender instanceof Player && attacker.submerged && opts?.grid"
+    },
+    {
+      "file": "src/engine/Combat/Combat.ts",
+      "line": 204,
+      "text": "&& canSeeMonster(defender, opts.grid, attacker)) attacker.submerged = false;"
+    },
+    {
+      "file": "src/engine/Combat/MonsterBlink.ts",
+      "line": 1,
+      "text": "import { hiddenBySubmersion } from '../Movement/Submersion';"
+    },
+    {
+      "file": "src/engine/Combat/MonsterBlink.ts",
+      "line": 138,
+      "text": "|| hiddenBySubmersion(g.grid, occupant, m));"
+    },
+    {
+      "file": "src/engine/Combat/MonsterBlink.ts",
+      "line": 250,
+      "text": "if ((target.submerged && !m.submerged) || !attacks(m,target) || d >= shortest || !blinkTraversiblePath(g,m,target.loc)"
+    },
+    {
+      "file": "src/engine/Core/EntitySnapshot.ts",
+      "line": 33,
+      "text": "'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc', 'submerged',"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 120,
+      "text": "import { isSubmerged, monsterCanSubmergeNow, surfaceOnDryLand, hiddenBySubmersion } from '../Movement/Submersion';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1563,
+      "text": "leaderMon.submerged = monsterCanSubmergeNow(leaderMon, this.grid);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1596,
+      "text": "mon.submerged = monsterCanSubmergeNow(mon, this.grid);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1723,
+      "text": "mon.submerged = monsterCanSubmergeNow(mon, this.grid);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3379,
+      "text": "logger.log(i18next.t('item.lava_reach', { defaultValue: `The ${item.name} is submerged in lava.` }), '#ff4444');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3702,
+      "text": "case 'creeping_death':"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3703,
+      "text": "// CE Items.c:8133: surface lichen, not a volumetric gas."
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3704,
+      "text": "spawnDungeonFeature(this.grid, this.player.x, this.player.y, catalogFeature(DF.DF_LICHEN_PLANTED), false);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3705,
+      "text": "logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A handful of tiny spores burst out of the open flask!' }), '#88ff88');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5601,
+      "text": "mon.submerged = monsterCanSubmergeNow(mon, this.grid);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5686,
+      "text": "*   POTION_DARKNESS    → darkness          DF_DARKNESS_POTION"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5687,
+      "text": "*   POTION_LICHEN      → creeping_death    DF_LICHEN_PLANTED"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5691,
+      "text": "new Set(['poison_burst', 'confusion_burst', 'paralyze_burst', 'fire_burst', 'fall_down', 'creeping_death', 'darkness']);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5750,
+      "text": "if (monst && monst.hp > 0 && !monst.submerged) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5855,
+      "text": "spawnDungeonFeature(this.grid, x, y, catalogFeature(DF.DF_DARKNESS_POTION), false);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5857,
+      "text": "} else if (effect === 'creeping_death') {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5858,
+      "text": "spawnDungeonFeature(this.grid, x, y, catalogFeature(DF.DF_LICHEN_PLANTED), false);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6159,
+      "text": "// effect; submerged targets identify only through an observable effect."
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6562,
+      "text": "m.updateSubmersion(this.grid);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6570,
+      "text": "spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_ROT_GAS_PUFF), false);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6739,
+      "text": "if (c && !c.hasStatus('invisible') && !hiddenBySubmersion(this.grid, c, this.player)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6776,
+      "text": "if (i === 0 || (!defender.hasStatus('invisible') && !hiddenBySubmersion(this.grid, defender, this.player))) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7196,
+      "text": "spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_MUTATION_LICHEN), false);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8554,
+      "text": "*   4. MB_SUBMERGED——X2g 的独立 submerged 运行态；"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8749,
+      "text": "/** CE Time.c:421-439: submerged, inanimate and invulnerable creatures are immune. */"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8774,
+      "text": "logger.log(i18next.t('env.lichen_poison', { defaultValue: \"The lichen's grasping tendrils poison {{name}}.\", name: entity === this.player ? i18next.t('entity.you', { defaultValue: 'you' }) : this.monsterDisplayName(entity as Monster) }), '#88bb55');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8977,
+      "text": "// （X2g 的 submerged 运行态）。CE 不惊醒睡眠怪。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8993,
+      "text": "// D2 留痕：本分支随 creeping_death 退池后不可达"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8999,
+      "text": "logger.log(i18next.t('env.player_creeping_death', { defaultValue: 'Spores of creeping death eat away at your flesh!' }), '#ff4444');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9138,
+      "text": "case \"Poisonous spores burst from the corpse!\": return i18next.t('df.lichen_corpse', { defaultValue: 'Poisonous spores burst from the corpse!' });"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9855,
+      "text": "if (caster instanceof Monster) caster.submerged = false; // CE blink always surfaces."
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10059,
+      "text": "case TerrainType.DARKNESS_CLOUD: return i18next.t('terrain.darkness_cloud', { defaultValue: 'a cloud of supernatural darkness' });"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10060,
+      "text": "case TerrainType.ROT_GAS: return i18next.t('terrain.rot_gas', { defaultValue: 'a cloud of putrescence' });"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10061,
+      "text": "case TerrainType.LICHEN: return i18next.t('terrain.lichen', { defaultValue: 'deadly lichen' });"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 1,
+      "text": "import { monsterCanSubmergeNow } from '../Movement/Submersion';"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 132,
+      "text": "mon.submerged = monsterCanSubmergeNow(mon, ports.grid);"
+    },
+    {
+      "file": "src/engine/Core/GenerationCoordinator.ts",
+      "line": 628,
+      "text": "mon.submerged = monsterCanSubmergeNow(mon, ports.grid);"
+    },
+    {
+      "file": "src/engine/Core/TimeCoordinator.ts",
+      "line": 493,
+      "text": "deathReason = i18next.t('death.creeping_death', { defaultValue: 'Consumed by creeping death.' });"
+    },
+    {
+      "file": "src/engine/Environment/Gas.ts",
+      "line": 170,
+      "text": "* 并返回 false——P1-45 幽灵气（Game.ts 旧 creeping_death 药水写"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 191,
+      "text": "{ category: 'POTION', ceKind: 'POTION_LICHEN',        webId: 'potion_of_creeping_death', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 532,
+      "text": "* 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均为原生种类且"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 536,
+      "text": "// X2g: darkness and lichen include their native thrown DF sources."
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 557,
+      "text": "potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN）"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 53,
+      "text": "DF_ROT_GAS_PUFF = 41,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 54,
+      "text": "DF_ROT_GAS_BLOOD = 32,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 55,
+      "text": "DF_DARKNESS_POTION = 134,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 56,
+      "text": "DF_MUTATION_LICHEN = 39,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 57,
+      "text": "DF_LICHEN_PLANTED = 136,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 58,
+      "text": "DF_LICHEN_GROW = 54,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 381,
+      "text": "[DF.DF_ROT_GAS_PUFF]: df(41, 664, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 15, 0, 0, '', null, null, ''),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 382,
+      "text": "[DF.DF_ROT_GAS_BLOOD]: df(32, 649, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 12, 0, 0, '', null, null, ''),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 383,
+      "text": "[DF.DF_DARKNESS_POTION]: df(134, 781, 'DARKNESS_CLOUD', TerrainType.DARKNESS_CLOUD, DungeonLayer.GAS, 200, 0, 0, '', null, null, ''),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 384,
+      "text": "[DF.DF_MUTATION_LICHEN]: df(39, 660, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 70, 60, 0, '', null, null, 'Poisonous spores burst from the corpse!'),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 385,
+      "text": "[DF.DF_LICHEN_PLANTED]: df(136, 783, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 70, 60, 0, '', null, null, ''),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 386,
+      "text": "[DF.DF_LICHEN_GROW]: df(54, 677, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 2, 100, DFF_BLOCKED_BY_OTHER_LAYERS, '', null, null, ''),"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 786,
+      "text": "// :677 DF_LICHEN_GROW / :678 DF_TUNNELIZE 双重锚定。start=0 → 只标记"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 1717,
+      "text": "*  注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 1721,
+      "text": "// X2g additionally wires ROT_GAS blood/puff, DARKNESS_POTION and all three lichen sources."
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 71,
+      "text": "[TerrainType.ROT_GAS]: 35,"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 72,
+      "text": "[TerrainType.DARKNESS_CLOUD]: 35,"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 73,
+      "text": "[TerrainType.LICHEN]: 60,"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 363,
+      "text": "[TerrainType.ROT_GAS]: DungeonLayer.GAS,"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 364,
+      "text": "[TerrainType.DARKNESS_CLOUD]: DungeonLayer.GAS,"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 365,
+      "text": "[TerrainType.LICHEN]: DungeonLayer.SURFACE,"
+    },
+    {
+      "file": "src/engine/Map/LightCatalog.ts",
+      "line": 184,
+      "text": "DARKNESS_CLOUD_LIGHT,          // 50"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 183,
+      "text": "[TerrainType.LICHEN]: e(T_CAUSES_POISON | T_IS_FLAMMABLE, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION, 50, 'DF_PLAIN_FIRE', '', 'DF_LICHEN_GROW', 10000),"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 184,
+      "text": "[TerrainType.DARKNESS_CLOUD]: e(0, TM_STAND_IN_TILE, 0, 'DF_GAS_FIRE', '', '', 0, false, LightKind.DARKNESS_CLOUD_LIGHT),"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 185,
+      "text": "[TerrainType.ROT_GAS]: e(T_IS_FLAMMABLE | T_CAUSES_NAUSEA, TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY, 100, 'DF_GAS_FIRE', '', '', 0),"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 1203,
+      "text": "[TerrainType.DARK_FLOOR]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.DARKNESS_CLOUD_LIGHT),"
+    },
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "line": 244,
+      "text": "LICHEN, // X2g: CE native terrain; append to preserve existing IDs."
+    },
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "line": 245,
+      "text": "DARKNESS_CLOUD, // X2g: CE native terrain; append to preserve existing IDs."
+    },
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "line": 246,
+      "text": "ROT_GAS, // X2g: CE native terrain; append to preserve existing IDs."
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 7,
+      "text": "/** MB_SUBMERGED is bookkeeping, independent of invisibility and MONST_SUBMERGES. */"
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 9,
+      "text": "return !!creature && 'submerged' in creature && creature.submerged === true;"
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 14,
+      "text": "return m.hasBehavior('MONST_SUBMERGES')"
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 22,
+      "text": "/** CE Monsters.c:179–192. Gas does not outline submerged creatures. */"
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 23,
+      "text": "export function hiddenBySubmersion(grid: Grid, target: Creature, observer?: Creature | null): boolean {"
+    },
+    {
+      "file": "src/engine/Movement/Submersion.ts",
+      "line": 31,
+      "text": "if (m.submerged && !(cellTerrainMechFlags(grid, m.x, m.y) & TM_ALLOWS_SUBMERGING)) m.submerged = false;"
+    },
+    {
+      "file": "src/engine/UI/Appearance.ts",
+      "line": 304,
+      "text": "if (cell.layers[DungeonLayer.GAS] === TerrainType.ROT_GAS && cell.volume > 0) {"
+    },
+    {
+      "file": "src/engine/UI/Appearance.ts",
+      "line": 308,
+      "text": "const tint = ColorUtils.hexToRGB(TERRAIN_APPEARANCES[TerrainType.ROT_GAS].bgColor!);"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 118,
+      "text": "MONST_SUBMERGES: '可以潜入水中',"
+    },
+    {
+      "file": "src/engine/UI/Discoveries.ts",
+      "line": 12,
+      "text": "potions: ['potion_of_life','potion_of_strength','potion_of_telepathy','potion_of_levitation','potion_of_detect_magic','potion_of_haste','potion_of_fire_immunity','potion_of_invisibility','potion_of_poison','potion_of_paralysis','potion_of_hallucination','potion_of_confusion','potion_of_incineration','potion_of_darkness','potion_of_descent','potion_of_creeping_death'],"
+    },
+    {
+      "file": "src/engine/UI/MonsterVisibility.ts",
+      "line": 2,
+      "text": "import { hiddenBySubmersion } from '../Movement/Submersion';"
+    },
+    {
+      "file": "src/engine/UI/MonsterVisibility.ts",
+      "line": 16,
+      "text": "return (monster.hasStatus('invisible') && !monsterInGas(grid, monster)) || hiddenBySubmersion(grid, monster, observer);"
+    },
+    {
+      "file": "src/engine/UI/TerrainAppearanceCatalog.ts",
+      "line": 10,
+      "text": "[TerrainType.LICHEN]: { char: '\"', color: '#7f0c3f', bgColor: null },"
+    },
+    {
+      "file": "src/engine/UI/TerrainAppearanceCatalog.ts",
+      "line": 11,
+      "text": "[TerrainType.DARKNESS_CLOUD]: { char: ' ', color: '#000000', bgColor: null, transparentFore: true },"
+    },
+    {
+      "file": "src/engine/UI/TerrainAppearanceCatalog.ts",
+      "line": 12,
+      "text": "[TerrainType.ROT_GAS]: { char: ' ', color: '#000000', bgColor: 0x997f0c, transparentFore: true },"
+    },
+    {
+      "file": "src/entities/Creature.ts",
+      "line": 230,
+      "text": "* (lichen-style exposure) establishes one dose but never raises existing doses. */"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 6,
+      "text": "import { hiddenBySubmersion, surfaceOnDryLand, monsterCanSubmergeNow } from '../engine/Movement/Submersion';"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 143,
+      "text": "if (target instanceof Monster && (target.isDormant || target.submerged)) return false;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 371,
+      "text": "public submerged = false;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 391,
+      "text": "const blood = catalogFeature(DF.DF_ROT_GAS_BLOOD);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 770,
+      "text": "public updateSubmersion(grid: Grid): void {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 771,
+      "text": "if (this.hp <= 0 || this.submerged || !monsterCanSubmergeNow(this, grid)) return;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 773,
+      "text": "this.submerged = true;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 827,
+      "text": "this.behaviorFlags.delete('MONST_SUBMERGES');"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 828,
+      "text": "this.submerged = false;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1126,
+      "text": "if (c && !c.hasStatus('invisible') && !hiddenBySubmersion(game.grid, c, this)) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1170,
+      "text": "if (i === 0 || (!defender.hasStatus('invisible') && !hiddenBySubmersion(game.grid, defender, this))) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1680,
+      "text": "&& !(this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.submerged)) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1806,
+      "text": "if (other && other !== this && other.hp > 0 && (!other.submerged || this.submerged)) {"
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 5,
+      "text": "\"env.lichen_poison\": \"地衣的攀附触手使{{name}}中毒！\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 6,
+      "text": "\"df.lichen_corpse\": \"有毒的孢子从尸体中迸出！\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 7,
+      "text": "\"terrain.lichen\": \"致命地衣\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 144,
+      "text": "\"potion.creeping_death\": \"一把微小的孢子从敞开的瓶中迸出！\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 284,
+      "text": "\"death.creeping_death\": \"被蔓延的死亡孢子吞噬。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 617,
+      "text": "\"env.player_creeping_death\": \"蔓延的死亡孢子侵蚀着你的血肉！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 276,
+      "text": "\"$HESHE has been infested by deadly lichen spores; poisonous fungus will spread from $HISHER corpse when $HESHE dies.\": \"它已被致命地衣孢子感染；它死亡时，有毒真菌将从它的尸体扩散。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1677,
+      "text": "\"deadly lichen\": \" deadly 地衣\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1767,
+      "text": "\"is submerged\": \"被淹没\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1981,
+      "text": "\"the lichen's grasping tendrils poison %s.\": \"地衣的 grasping 触手毒害了 %s。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2048,
+      "text": "\"venomous barbs cover the quivering tendrils of this fast-growing lichen.\": \" venomous 的倒刺覆盖着这种快速生长地衣的 quivering 触手。\","
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 30,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 473,
+      "text": "// 或\"对侧极性类全识别\"才升格。恶意药水类含退池的 poison/creeping_death"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 773,
+      "text": "const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 104,
+      "text": "const gameSource = fs.readFileSync(\"src/engine/Core/Game.ts\", \"utf8\");"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 761,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 824,
+      "text": "const gridSrc = readFileSync("
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 852,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 24,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1151,
+      "text": "stripComments(readFileSync(f, 'utf8')).split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1199,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 226,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 144,
+      "text": "[TerrainType.LICHEN]: LightKind.NO_LIGHT, // X2g CE Globals.c:451"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 145,
+      "text": "[TerrainType.ROT_GAS]: LightKind.NO_LIGHT, // X2g CE Globals.c:504"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 146,
+      "text": "[TerrainType.DARKNESS_CLOUD]: LightKind.DARKNESS_CLOUD_LIGHT, // X2g CE Globals.c:509"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 335,
+      "text": "[TerrainType.DARK_FLOOR]: LightKind.DARKNESS_CLOUD_LIGHT,"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 796,
+      "text": "// 模拟 8 份 DARKNESS_CLOUD（500=5 格，无衰减）压在这一格"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 855,
+      "text": "'DARKNESS_CLOUD_LIGHT', 'ECTOPLASM_LIGHT', 'HAUNTED_TORCH_LIGHT',"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 886,
+      "text": "let text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 914,
+      "text": "const text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 920,
+      "text": "const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');"
+    },
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "line": 2,
+      "text": "\"note\": \"X2g: native lichen/darkness/rot/submersion effects and separate CE potion pool restoration. Pool-only drift independently attributed; see x2g.report.md. D27–40 remain separate.\","
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 427,
+      "text": "expect(isGasTerrain(C.ROT_GAS)).toBe(true);"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 428,
+      "text": "expect(isGasTerrain(C.DARKNESS_CLOUD)).toBe(true);"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 429,
+      "text": "expect(catalogFeature(DF.DF_ROT_GAS_BLOOD).tile).toBe(C.ROT_GAS);"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 430,
+      "text": "expect(catalogFeature(DF.DF_ROT_GAS_PUFF).tile).toBe(C.ROT_GAS);"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 431,
+      "text": "expect(catalogFeature(DF.DF_DARKNESS_POTION).tile).toBe(C.DARKNESS_CLOUD);"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 446,
+      "text": "// U19f 已闭包 DF_DEWAR_*（71-74）；仍未迁入 DF_ROT_GAS_*（32/41）、DF_STENCH_*（217）、"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "line": 447,
+      "text": "// DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 512,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 557,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/invented_content_pool.test.ts",
+      "line": 118,
+      "text": "const CE_PENDING_POTIONS: string[] = []; // X2g: darkness/lichen native DF chains are complete."
+    },
+    {
+      "file": "src/test/invented_content_pool.test.ts",
+      "line": 119,
+      "text": "for (const id of ['potion_of_darkness', 'potion_of_creeping_death']) {"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 36,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 240,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 19,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 268,
+      "text": "if (readFileSync(p, 'utf8').includes('Math.random(')) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 45,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 58,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 228,
+      "text": "const timeTs = readFileSync(join(srcRoot, 'engine/Systems/Time.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 242,
+      "text": "if (/scheduleEvent|eventQueue|advanceToNextEvent|clearEventsForActor|ScheduledEvent/.test(readFileSync(p, 'utf8'))) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 252,
+      "text": "const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 51,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 64,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 49,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 61,
+      "text": "readFileSync(new URL('./fixtures/p2_3_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 70,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 279,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 20,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 305,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 315,
+      "text": "const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 19,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 505,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 556,
+      "text": "const appearanceSrc = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 5,
+      "text": "import { readdirSync, readFileSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 23,
+      "text": "expect(files.filter(f => MARKER.test(readFileSync(f, 'utf8')))).toEqual([]);"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 27,
+      "text": "try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; }"
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "line": 93,
+      "text": "// X2g: the native lichen chain now closes; CE frequency 7 must be reachable."
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "line": 94,
+      "text": "expect(potions['potion_of_creeping_death'] ?? 0, 'CE POTION_LICHEN 已闭环并按频率 7 回池').toBeGreaterThan(0);"
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "line": 105,
+      "text": "// 药水侧同理：telepathy 权重 20/175≈0.1143（D2 剔除 creeping_death 后归一）。"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 67,
+      "text": "const raw = readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 69,
+      "text": "const source = ts.createSourceFile(file, script, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 97,
+      "text": "const template = parseSfc(readFileSync(file, 'utf8')).descriptor.template?.content;"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 32,
+      "text": "const source = ts.createSourceFile(path, fs.readFileSync(path, 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_02b_level_rng.test.ts",
+      "line": 9,
+      "text": "const ce = JSON.parse(fs.readFileSync('ai_docs/reports/u-02b-evidence/ce-reference.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 39,
+      "text": "const source = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 43,
+      "text": "const contract = JSON.parse(fs.readFileSync('scripts/u03-state-contract.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 48,
+      "text": "const source = ts.createSourceFile('Grid.ts', fs.readFileSync('src/engine/Map/Grid.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 64,
+      "text": "const history=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/historical-null-requests.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 81,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "line": 34,
+      "text": "for(const line of fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8').split('\\n')){"
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "line": 49,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-06-evidence/ce-staff-damage.json', 'utf8'))"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 45,
+      "text": "const source=fs.readFileSync('../BrogueCE-master/src/brogue/Rogue.h','utf8');"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 80,
+      "text": "const oracle=JSON.parse(fs.readFileSync('ai_docs/reports/u-09-evidence/ce-target-cases.json','utf8')) as {"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 241,
+      "text": "const m=new Monster(1,1,{...data(),behaviorFlags:['MONST_FLIES','MONST_RESTRICTED_TO_LIQUID','MONST_SUBMERGES']});"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 243,
+      "text": "expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(false);expect(m.hasBehavior('MONST_SUBMERGES')).toBe(false);"
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "line": 249,
+      "text": "for(const f of ['MONST_FIERY','MONST_FLIES','MONST_INVISIBLE','MONST_RESTRICTED_TO_LIQUID','MONST_SUBMERGES'])m.behaviorFlags.add(f);"
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "line": 250,
+      "text": "m.takeTurn(g,0);expect(m.bolts).toEqual(['FIRE']);expect(m.hasBehavior('MONST_REFLECT_50')).toBe(false);expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(false);expect(m.hasBehavior('MONST_SUBMERGES')).toBe(false);"
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "line": 15,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-13-evidence/ce-combat.json', 'utf8')) as {"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14a-evidence/ce-weakness.json','utf8')) as Array<Record<string,number>>;"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 184,
+      "text": "const ce=readFileSync('../BrogueCE-master/src/brogue/Items.c','utf8');expect(ce).toContain('//void causeFear(');"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14b-evidence/ce-donning.json', 'utf8')) as Array<Record<string, number>>;"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 19,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-15b2-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 41,
+      "text": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable ringTable[NUMBER_RING_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/u_15d3_runic_generation.test.ts",
+      "line": 13,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-15d3-evidence/ce-golden.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_15e_potions.test.ts",
+      "line": 81,
+      "text": "expect(ItemLoader.potions.find(p => p.id === 'potion_of_creeping_death')?.frequency).toBe(7);"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 55,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 54,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 67,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 78,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);const g=scene();"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 58,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 3,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 31,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(`../BrogueCE-master/src/brogue/${file}`)).digest('hex')).toBe(golden.source[key]);"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 99,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(carriers.file)).digest('hex')).toBe(carriers.sha256);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';import crypto from 'node:crypto';"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 19,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(golden.file)).digest('hex')).toBe(golden.sha256);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 20,
+      "text": "for(const [file,sha] of [[golden.file,golden.sha256],[golden.headerFile,golden.headerSHA256]])expect(crypto.createHash('sha256').update(readFileSync(file!)).digest('hex')).toBe(sha);"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 18,
+      "text": "for(const [file,hash] of Object.entries(golden.sources))expect(crypto.createHash('sha256').update(readFileSync(file)).digest('hex')).toBe(hash);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 30,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 92,
+      "text": "else expect(traces).toEqual(JSON.parse(readFileSync(fixture, 'utf8')));"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 53,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 88,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 198,
+      "text": "const src = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 384,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 439,
+      "text": "const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 11,
+      "text": "*      readFileSync 静态守卫模式。"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 261,
+      "text": "const overlaySrc = readFileSync("
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 106,
+      "text": "const json = readFileSync(new URL('../data/blueprints.json', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 121,
+      "text": "const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1b_alternative.test.ts",
+      "line": 173,
+      "text": "// GRASS / DF_SWAMP / POTION_LICHEN 三选一 + FLAMETHROWER_HIDDEN /"
+    },
+    {
+      "file": "src/test/v_1b_alternative.test.ts",
+      "line": 211,
+      "text": "{ bpId: 'key_fun_with_fire', alt1: true, alt2: false, item: 'potion_of_creeping_death' },"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 16,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 584,
+      "text": "const code = stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 605,
+      "text": "const code = rel.endsWith('.json') ? readFileSync(f, 'utf8') : stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 614,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 663,
+      "text": "const zh = readFileSync(fileURLToPath(new URL('../locales/zh_CN.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 664,
+      "text": "const legacy = readFileSync(fileURLToPath(new URL('../locales/zh_CN.legacy.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 755,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 23,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 439,
+      "text": "// 30 号：环形木栅（DF 列）+ 毒气板 + 喷火口 + 蚀菌药水（POTION_LICHEN"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 440,
+      "text": "// ≙ web potion_of_creeping_death）。"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 445,
+      "text": "expect(fire.features.find(f => f.itemId === 'potion_of_creeping_death')).toBeDefined();"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 688,
+      "text": "const ratData = (JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../data/monsters.json'), 'utf8')) as Array<{ id: string }>)"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 5,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 77,
+      "text": "const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 101,
+      "text": "const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 138,
+      "text": "[C.DARK_FLOOR,0,0,'',0,95,L.DUNGEON,LightKind.DARKNESS_CLOUD_LIGHT],"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 52,
+      "text": "const ce=readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c',import.meta.url),'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 59,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/brogue/PowerTables.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 45,
+      "text": "const values=fs.readFileSync('ai_docs/reports/w-16-evidence/ce-blade-count.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 42,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-17-evidence/ce-domination.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 243,
+      "text": "expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);"
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "line": 45,
+      "text": "for(const row of fs.readFileSync('ai_docs/reports/w-18-evidence/ce-entrancement.txt','utf8').trim().split('\\n')){"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 42,
+      "text": "const rows=JSON.parse(fs.readFileSync('ai_docs/reports/w-19-evidence/ce-catalog.json','utf8'));"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 55,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-19-evidence/ce-polymorph.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "line": 146,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-20-evidence/ce-clone.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 41,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\\n').filter(l=>l.startsWith('empower '));"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 69,
+      "text": "const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\\n').find(l=>l.startsWith(`heal ${duration} `))!;"
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "line": 52,
+      "text": "const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\\n').filter(s => s.startsWith(`status ${+player} `));"
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "line": 45,
+      "text": "const ce = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 43,
+      "text": "const body = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable staffTable[NUMBER_STAFF_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 266,
+      "text": "const src = readFileSync(fileURLToPath(new URL('../components/InventoryOverlay.vue', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "line": 52,
+      "text": "const ast=ts.createSourceFile(file,fs.readFileSync(file,'utf8'),ts.ScriptTarget.Latest,true);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 22,
+      "text": "const oracle = JSON.parse(fs.readFileSync(new URL('../../ai_docs/reports/x2e-evidence/ce-oracle.json', import.meta.url), 'utf8'));"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 258,
+      "text": "const ce = fs.readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 5,
+      "text": "import { monsterCanSubmergeNow, hiddenBySubmersion } from '../engine/Movement/Submersion';"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 42,
+      "text": "it('uses CE surface lichen and all three DF sources, not a lichen monster or gas',()=>{"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 43,
+      "text": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8');"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 44,
+      "text": "expect(ce).toMatch(/\\/\\*LICHEN\\*\\/[^\\n]*60, 50, DF_PLAIN_FIRE,0,DF_LICHEN_GROW,\\s*10000/);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 45,
+      "text": "expect(TERRAIN_FLAGS[T.LICHEN]).toMatchObject({flags:T_CAUSES_POISON|T_IS_FLAMMABLE,promoteChance:10000,promoteType:'DF_LICHEN_GROW'});"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 46,
+      "text": "expect(TERRAIN_FLAGS[T.LICHEN].mechFlags & TM_VANISHES_UPON_PROMOTION).not.toBe(0);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 47,
+      "text": "expect(DRAW_PRIORITY[T.LICHEN]).toBe(60);expect(TERRAIN_HOME_LAYER[T.LICHEN]).toBe(L.SURFACE);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 48,
+      "text": "expect(catalogFeature(DF.DF_LICHEN_GROW)).toMatchObject({startProbability:2,probabilityDecrement:100,flags:DFF_BLOCKED_BY_OTHER_LAYERS});"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 49,
+      "text": "for(const id of [DF.DF_LICHEN_PLANTED,DF.DF_MUTATION_LICHEN]) expect(catalogFeature(id)).toMatchObject({tile:T.LICHEN,startProbability:70,probabilityDecrement:60});"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 52,
+      "text": "const g=scene();g.quaffItem(potion(g,'creeping_death'),true);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 53,
+      "text": "expect(g.grid.getCell(10,10)!.layers[L.SURFACE]).toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 58,
+      "text": "const h=scene();h.throwItemAt(potion(h,'creeping_death'),15,10);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 59,
+      "text": "expect(h.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 60,
+      "text": "expect(ItemLoader.identifiedItems.has('potion_of_creeping_death')).toBe(true);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 62,
+      "text": "(h as any).triggerDeathFeatures(m);expect(h.grid.getCell(30,10)!.layers[L.SURFACE]).toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 64,
+      "text": "it('lichen regrows at the old cell, spreads at 2%, cannot cross lava, and respects flight/inanimate immunity',()=>{"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 65,
+      "text": "const g=scene();g.player.applyStatus('levitating',30);g.grid.setTerrain(10,10,T.LICHEN);g.grid.setTerrain(11,10,T.LAVA);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 68,
+      "text": "expect(g.grid.getCell(10,10)!.layers[L.SURFACE]).toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 69,
+      "text": "expect(g.grid.getCell(9,10)!.layers[L.SURFACE]).toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 70,
+      "text": "expect(g.grid.getCell(11,10)!.layers[L.SURFACE]).not.toBe(T.LICHEN);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 78,
+      "text": "expect(g.grid.getCell(14,10)!.layers[L.GAS]).toBe(T.DARKNESS_CLOUD);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 81,
+      "text": "expect(TERRAIN_FLAGS[T.DARKNESS_CLOUD].glowLight).toBe(LightKind.DARKNESS_CLOUD_LIGHT);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 82,
+      "text": "expect(catalogFeature(DF.DF_DARKNESS_POTION)).toMatchObject({layer:L.GAS,startProbability:200,probabilityDecrement:0});"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 84,
+      "text": "g.grid.setTerrain(25,25,T.LICHEN);g.player.addPoison(5,0);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 89,
+      "text": "const oracle = JSON.parse(fs.readFileSync(new URL('../../ai_docs/reports/x2g-evidence/ce-oracle.json',import.meta.url),'utf8'));"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 97,
+      "text": "expect(grid.getCell(2,2)!.layers[L.GAS]).toBe(T.ROT_GAS);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 118,
+      "text": "m.behaviorFlags.clear();for(const [bit,flag] of [[1,'MONST_SUBMERGES'],[2,'MONST_IMMUNE_TO_FIRE'],[4,'MONST_INVULNERABLE']] as const)if(i&bit)m.behaviorFlags.add(flag);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 127,
+      "text": "target.submerged=!!(i&1);g.grid.setTerrain(10,10,(i&2)?T.WATER_DEEP:T.FLOOR);g.player.setStatusDuration('levitating',(i&4)?10:0);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 128,
+      "text": "expect(hiddenBySubmersion(g.grid,target,(i&8)?g.player:null),String(i)).toBe(!!oracle.hidden[i]);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 134,
+      "text": "m.updateSubmersion(g.grid);expect(m.state).toBe(MonsterState.FLEEING);expect(roll).toHaveBeenCalledExactlyOnceWith(20);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 135,
+      "text": "roll.mockClear().mockReturnValue(true);m.updateSubmersion(g.grid);expect(m.submerged).toBe(true);expect(m.state).toBe(MonsterState.HUNTING);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 136,
+      "text": "roll.mockClear();m.updateSubmersion(g.grid);expect(roll).not.toHaveBeenCalled();"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 137,
+      "text": "const s=g.toSnapshot();g.loadSnapshot(s);const restored=g.monsters[0]!;expect(restored.submerged).toBe(true);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 138,
+      "text": "CombatSystem.attack(restored,g.player,{grid:g.grid});expect(restored.submerged).toBe(false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 139,
+      "text": "restored.submerged=true;restored.abilityFlags.add('MA_SEIZES');restored.seizing=false;g.player.seized=false;"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 140,
+      "text": "CombatSystem.attack(restored,g.player,{grid:g.grid});expect(restored.submerged).toBe(true);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 142,
+      "text": "CombatSystem.attack(restored,g.player,{grid:g.grid});expect(restored.submerged).toBe(false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 143,
+      "text": "restored.submerged=true;restored.seizing=false;g.player.seized=false;restored.applyStatus('invisible',20);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 144,
+      "text": "CombatSystem.attack(restored,g.player,{grid:g.grid});expect(restored.submerged).toBe(true);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 145,
+      "text": "restored.submerged=true;g.placeCreature(restored,{x:12,y:10});expect(restored.submerged).toBe(false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 148,
+      "text": "const g=scene();g.grid.setTerrain(11,10,T.WATER_DEEP);const m=add(g,'eel');m.submerged=true;"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 156,
+      "text": "g.throwItemAt(potion(g,'darkness'),14,10);expect(g.grid.getCell(14,10)!.layers[L.GAS]).toBe(T.DARKNESS_CLOUD);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 157,
+      "text": "expect(g.grid.getCell(11,10)!.layers[L.GAS]).not.toBe(T.DARKNESS_CLOUD);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 159,
+      "text": "it('submerged creatures resist nausea, damage, paralysis, explosions, fire and webs but not confusion',()=>{"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 160,
+      "text": "const g=scene();g.grid.setTerrain(11,10,T.WATER_DEEP);const m=add(g,'eel');m.submerged=true;"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 161,
+      "text": "spawnDungeonFeature(g.grid,11,10,catalogFeature(DF.DF_ROT_GAS_PUFF),false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 176,
+      "text": "const base=cellAppearance(c,ctx)!;spawnDungeonFeature(grid,2,2,catalogFeature(DF.DF_ROT_GAS_PUFF),false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 182,
+      "text": "c.layers[L.GAS]=T.DARKNESS_CLOUD;expect(cellAppearance(c,ctx)!.char).toBe(base.char);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 184,
+      "text": "it('restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state',()=>{"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 185,
+      "text": "const ce=fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8');"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 186,
+      "text": "for(const [id,name] of [['creeping_death','creeping death'],['darkness','darkness']]) {"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 190,
+      "text": "const g=scene();g.grid.setTerrain(11,10,T.WATER_DEEP);add(g,'eel').submerged=false;"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 191,
+      "text": "spawnDungeonFeature(g.grid,30,15,catalogFeature(DF.DF_ROT_GAS_PUFF),false);"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "line": 192,
+      "text": "spawnDungeonFeature(g.grid,35,15,catalogFeature(DF.DF_LICHEN_PLANTED),false);"
+    }
+  ],
+  "mandatory": [
+    "src/test/f_1_fire_as_terrain.test.ts",
+    "src/test/f_2a_fire_mechanics.test.ts",
+    "src/test/f_2b_creature_burning.test.ts",
+    "src/test/f_2c_explosion.test.ts",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/g_3_gas_effects.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_15e_potions.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/u_17f_carriers.test.ts",
+    "src/test/u_18_water_cage.test.ts",
+    "src/test/u_18a_2_generation_terrain.test.ts",
+    "src/test/u_18a_3_generation.test.ts",
+    "src/test/u_18a_terrain_contracts.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/x2g_native_effects.test.ts"
+  ]
+}

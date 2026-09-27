@@ -1,3 +1,4 @@
+import { hiddenBySubmersion, isSubmerged } from '../Movement/Submersion';
 /** U07: monster-only decisions. CE Monsters.c:1313,2098,2299,3049,3430.
  * No player targeting, item resource, generation or learning policy lives here.
  */
@@ -68,7 +69,7 @@ function arcs(g: Game, p: Pos): number {
 /** Ordered monsterAvoids contract for blink preferences/maps. Occupancy is NOT
  * blanket rejection here: cardinal attack squares participate in the baseline.
  * Actual ray/commit owns physical obstruction and occupancy independently.
- * Unrepresented CE bookkeeping (submerged, plate depressed) stays out.
+ * Plate-depressed bookkeeping remains outside this terrain preference query.
  */
 export function monsterBlinkAvoids(g: Game, m: Monster, p: Pos): boolean {
     const cell = g.grid.getCell(p.x, p.y);
@@ -132,9 +133,10 @@ export function monsterBlinkImpact(g: Game, m: Monster, aim: Pos): Pos {
     const line = boltLine(g.grid, m.loc, aim, MONSTER_BLINK, world(g, m));
     for (const p of line.slice(0, staffBlinkDistance(5))) {
         const occupant = at(g, p);
-        const hidden = occupant?.hasStatus('invisible') && !g.grid.getCell(p.x, p.y)!.layers[DungeonLayer.GAS]
-            && !monstersAreTeammates(m, occupant);
-        if ((occupant && !hidden) || (flags(g, p) & (T.T_OBSTRUCTS_PASSABILITY | T.T_OBSTRUCTS_VISION))) break;
+        const hidden = !!occupant && !monstersAreTeammates(m, occupant)
+            && ((occupant.hasStatus('invisible') && !g.grid.getCell(p.x, p.y)!.layers[DungeonLayer.GAS])
+                || hiddenBySubmersion(g.grid, occupant, m));
+        if ((occupant && !hidden && !isSubmerged(occupant)) || (flags(g, p) & (T.T_OBSTRUCTS_PASSABILITY | T.T_OBSTRUCTS_VISION))) break;
         last = p;
     }
     return last;
@@ -245,7 +247,7 @@ export function closestBlinkEnemy(g: Game, m: Monster): Monster | null {
     let closest: Monster | null = null, shortest = Math.max(g.grid.width,g.grid.height);
     for (const target of g.monsters) {
         const d = distance(m.loc,target.loc);
-        if (!attacks(m,target) || d >= shortest || !blinkTraversiblePath(g,m,target.loc)
+        if ((target.submerged && !m.submerged) || !attacks(m,target) || d >= shortest || !blinkTraversiblePath(g,m,target.loc)
             || ((flags(g,target.loc) & T.T_OBSTRUCTS_PASSABILITY) && !target.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))
             || (target.hasStatus('invisible') && !rng.randPercent(33))) continue;
         closest = target; shortest = d;

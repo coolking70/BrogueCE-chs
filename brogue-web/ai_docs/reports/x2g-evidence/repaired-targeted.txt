@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests | 19 skipped) 3ms
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests | 29 skipped) 10ms
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests | 31 skipped) 3ms
+ ✓ src/test/u_14a_status_gaps.test.ts (49 tests | 48 skipped) 3ms
+ ✓ src/test/c_7_lighting.test.ts (28 tests | 26 skipped) 8ms
+stdout | src/test/u_06_monster_damage.test.ts > U06 reflected attribution/death and preserved BE_ATTACK > DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests | 28 skipped) 35ms
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests | 26 skipped) 3ms
+ ✓ src/test/u_06_monster_damage.test.ts (37 tests | 34 skipped) 1759ms
+     ✓ POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG  604ms
+     ✓ BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it  858ms
+stdout | src/test/b_2_throwing.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_2_throwing.test.ts (16 tests | 15 skipped) 4ms
+ ✓ src/test/w_15_shielding.test.ts (57 tests | 55 skipped) 11ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests | 42 skipped) 6ms
+ ✓ src/test/w_4_bolt_reflection.test.ts (29 tests | 27 skipped) 11ms
+ ✓ src/engine/UI/Discoveries.test.ts (3 tests) 3ms
+stdout | src/test/x2g_native_effects.test.ts > X2g native effects > quaff, throw and infested death plant real terrain; contact caps duration without adding concentration
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2g_native_effects.test.ts (17 tests) 5766ms
+     ✓ quaff, throw and infested death plant real terrain; contact caps duration without adding concentration  477ms
+     ✓ darkness throw creates a negative light gas, drinking keeps its own status; terrain and statuses survive save  325ms
+     ✓ CE inflictLethalDamage from quietus/slaying still emits zombie blood and bypasses shields  317ms
+     ✓ zombies emit 15 volume per objective tick; living contact causes nausea, inanimate and respiration are immune; gas burns and saves  337ms
+     ✓ matches 1024 CE submerge eligibility cases and 16 observer cases  317ms
+     ✓ blink lands on submerged occupants after CE shuffled Manhattan relocation; no home is silent administrative death  455ms
+     ✓ lethal rot blood from burning, explosion and gradual terrain has exactly one death callback  1829ms
+
+ Test Files  14 passed (14)
+      Tests  41 passed | 380 skipped (421)
+   Start at  09:06:43
+   Duration  11.33s (transform 1.08s, setup 0ms, import 7.23s, tests 7.63s, environment 3ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/ai_docs/reports/x2g-evidence/repaired-targeted.json

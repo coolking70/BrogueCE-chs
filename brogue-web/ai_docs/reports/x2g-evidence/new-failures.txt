@@ -1,0 +1,98 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+ ❯ src/test/w_4_bolt_reflection.test.ts (29 tests | 2 failed | 27 skipped) 61ms
+     ↓ fire retraces to the player: reflector is not a hit, frames include the return, instance E is retained on return
+     ↓ the first diagonal return follows the exact tuned incoming cells; extension passes the origin
+     ↓ a second successful roll returns to the caster; a failed second roll reaches a bystander instead
+     ↓ reflection alone does not identify damage magic; an empty random branch has no hits or HP loss
+     ↓ piercing revisits an earlier hit, hits the player and a creature behind the caster; later reflectors remain relevant
+     ↓ openPath examines only cells before the candidate; execution can reflect beyond the aimed candidate
+     ↓ terrain reflects before the crystal on any layer, with live obstruction on the new branch
+     ↓ random direction retries blocked first cells and stops after 50 failed attempts
+     ↓ random retry accepts the next open direction without rescoring for allies/enemies
+     ↓ repeated guaranteed reflection terminates at the CE path budget and keeps every animation/hit index finite
+     ↓ maxRange counts outbound and return cells; a reflector at the limit does not become a damage hit
+     ↓ preview and automatic targeting stay RNG-free and do not identify reflection armor
+     ↓ staff_of_poison reaches the player (W-9 slow/invisibility; W-10 retires poison 12 in favor of CE E2=5)
+     ↓ wand_of_slowness reaches the player (W-9 slow/invisibility; W-10 retires poison 12 in favor of CE E2=5)
+     ↓ wand_of_invisibility reaches the player (W-9 slow/invisibility; W-10 retires poison 12 in favor of CE E2=5)
+     ↓ reflected teleport moves the caster and snapshots the contact before movement, without autoID
+     ↓ W-9 closes reflected discord: actual player gets discordant at catalog magnitude 10 * 4
+     ↓ U06 monster return rolls catalog damage on the caster then the player behind it
+     ↓ actual reflected recipient invulnerability is checked instead of the original reflector defense
+     ↓ reflection precedes invulnerability for a creature carrying both flags
+     × DISTANCE_ATTACK never reflects from monster/armor/crystal and remains a physical attack 38ms
+     × POISON_DART never reflects from monster/armor/crystal and remains a physical attack 21ms
+     ↓ BE_ATTACK respects weapon immunity while the unchanged BE_DAMAGE formula still hurts revenants
+     ↓ adjacent casting reflects before damage and identifies armor; the old post-hit hook cannot reflect twice
+     ↓ zero/negative reflection level never rolls; guaranteed monster reflection does not consume RNG
+     ↓ immunity armor reflects only its enemy class, using the original caster; no roll or armor autoID
+     ↓ reflectors skip cell effects while the returned branch exposes terrain in travel order
+     ↓ W-8 reverses the W-4 split assumption: player-reflected fire damages the bystander but does not split
+     ↓ a moved or dead occupant is not a stale hit on the return path
+ ❯ src/test/w_15_shielding.test.ts (57 tests | 1 failed | 56 skipped) 10ms
+     ↓ matches compiled CE fp_pow/staffProtection golden values, including negative exponent
+     ↓ shield 130 / incoming 3: residual 0, current 100, max 130
+     ↓ shield 130 / incoming 13: residual 0, current 0, max 0
+     ↓ shield 130 / incoming 16: residual 3, current 0, max 0
+     ↓ shield 1 / incoming 1: residual 0, current 0, max 0
+     ↓ shield 11 / incoming 3: residual 1, current 0, max 0
+     ↓ damage reducer does not own HP/death; zero/bypassed damage never spends shielding
+     ↓ full/weak/repeated casts take max(current,new), reset max even without an increase, never add
+     ↓ player decays by integer max/20, not current/20 or one turn
+     ↓ monster decays by integer max/20, not current/20 or one turn
+     ↓ objective scheduler: haste two half-actions/slow double-block, zero shield RNG
+     ↓ E2 ignores charge/capacity/config constants, applies 130 to hit target
+     ↓ E3 ignores charge/capacity/config constants, applies 181 to hit target
+     ↓ E8 ignores charge/capacity/config constants, applies 978 to hit target
+     ↓ empty does not buff the caster or identify
+     ↓ wall does not buff the caster or identify
+     ↓ origin does not buff the caster or identify
+     ↓ returning bolt shields player, reflector untouched
+     ↓ hidden/inanimate targets and unchanged shields still autoID, CE has no living gate
+     ↓ retired light mapping clears telepathy mismatch, remains outside item pool
+     ↓ monster magnitude5 =>356 for player; shielded target is excluded until depleted
+     ↓ monster magnitude5 =>356 for monster; shielded target is excluded until depleted
+     ↓ physical contact and poison rider: player loses shield, still receives poison
+     ↓ physical contact and poison rider: monster loses shield, still receives poison
+     ↓ transference only heals from damage left after shielding
+     ↓ fire direct damage uses shield once
+     ↓ lightning direct damage uses shield once
+     ↓ thrown direct damage uses shield once
+     ↓ monster-bolt direct damage uses shield once
+     ↓ player explosion consumes shield, preserves immunity/death ordering
+     × monster explosion consumes shield, preserves immunity/death ordering 9ms
+     ↓ dampening and invulnerable explosion retain shield and consume their existing RNG
+     ↓ burning bypasses both species shields
+     ↓ poison bypasses both species shields
+     ↓ gas bypasses both species shields
+     ↓ steam bypasses both species shields
+     ↓ both starvation APIs bypass shields
+     ↓ poison then other lethal sources settle death and loot once under a full shield
+     ↓ quietus instant death bypasses large shield
+     ↓ slaying instant death bypasses large shield
+     ↓ negation instant death bypasses large shield
+     ↓ kamikaze instant death bypasses large shield
+     ↓ tunnel instant death bypasses large shield
+     ↓ shatter instant death bypasses large shield
+     ↓ lava instant death bypasses large shield
+     ↓ split HP division bypasses shield and clone owns an independent copy of current/max
+     ↓ ordinary negation clears both fields
+     ↓ player fall uses reducer without calling takeDamage or introducing another death owner
+     ↓ falling monster keeps unspent shield while pending; activation monster still dies directly
+     ↓ absorption runs before shielding without phantom healing
+     ↓ mutuality runs before shielding without phantom healing
+     ↓ reprisal runs before shielding without phantom healing
+     ↓ immunity runs before shielding without phantom healing
+     ↓ ordinary melee uses armor-before-shield too
+     ↓ JSON roundtrip retains partial shields for player, active and dormant monsters plus half-block
+     ↓ test-room snapshot restoration retains current/max
+     ↓ old/invalid snapshot fallback is deterministic and cannot leave an immortal countdown shield
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 83 skipped (86)
+   Start at  08:29:45
+   Duration  2.55s (transform 858ms, setup 0ms, import 2.19s, tests 70ms, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/ai_docs/reports/x2g-evidence/new-failures.json

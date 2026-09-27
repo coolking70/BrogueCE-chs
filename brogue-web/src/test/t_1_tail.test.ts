@@ -90,7 +90,8 @@ describe('T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（C
         const potions = tally('POTION', 6000, 4243);
         expect(potions['potion_of_life'] ?? 0, 'life 药水基频 0').toBe(0);
         expect(potions['potion_of_strength'] ?? 0, 'strength 药水基频 0').toBe(0);
-        expect(potions['potion_of_creeping_death'] ?? 0, 'D2 退池条目不得出现（登记偏差：web 先剔除再加权）').toBe(0);
+        // X2g: the native lichen chain now closes; CE frequency 7 must be reachable.
+        expect(potions['potion_of_creeping_death'] ?? 0, 'CE POTION_LICHEN 已闭环并按频率 7 回池').toBeGreaterThan(0);
         const weapons = tally('WEAPON', 6000, 4244);
         expect(weapons['dart'] ?? 0, 'dart 基频 0').toBe(0);
     });

@@ -1,0 +1,17 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+stdout | src/test/x2g_native_effects.test.ts > X2g submerged interaction edge cases > submerged creatures never alter bolt tuning or blink impact, even for underwater observers
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2g_native_effects.test.ts (16 tests | 13 skipped) 1413ms
+     ✓ submerged creatures never alter bolt tuning or blink impact, even for underwater observers  402ms
+     ✓ blink lands on submerged occupants after CE shuffled Manhattan relocation; no home is silent administrative death  690ms
+     ✓ submerged and surfaced aquatic creatures on submergible terrain do not press either legacy or CE plates  319ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed | 13 skipped (16)
+   Start at  08:25:49
+   Duration  2.91s (transform 821ms, setup 0ms, import 1.35s, tests 1.41s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/ai_docs/reports/x2g-evidence/subm-edge-fixed.json

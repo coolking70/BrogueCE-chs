@@ -301,7 +301,15 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
     // 火视觉 = 地形本体；Grid.isBurning 仍供气体的 !isBurning 守卫使用）。
     if (cell.isVisible) {
         const gas = ctx.gas;
-        if (gas && gas.density > 0) {
+        if (cell.layers[DungeonLayer.GAS] === TerrainType.ROT_GAS && cell.volume > 0) {
+            // CE IO.c:1196–1204,1316–1334: gas tints both colors and keeps
+            // the underlying glyph. Read the authoritative layer, including
+            // blood/puffs created before the next legacy gas mirror refresh.
+            const tint = ColorUtils.hexToRGB(TERRAIN_APPEARANCES[TerrainType.ROT_GAS].bgColor!);
+            const weight = Math.min(90, 30 + cell.volume);
+            color = ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(color), tint, weight));
+            bgColor = parseInt(ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(bgColor ?? 0), tint, weight)).slice(1), 16);
+        } else if (gas && gas.density > 0) {
             if (gas.type === GasType.POISON) {
                 bgColor = 0x660066;
                 if (!cell.isBurning) { char = '~'; color = '#ff55ff'; }

@@ -7,6 +7,9 @@ export interface BaseTerrainAppearance { readonly char: string; readonly color: 
 export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.DUNGEON_PORTAL]: { char: "Ω", color: '#666699', bgColor: 0x19193f }, // CE Globals.c:336
 
+    [TerrainType.LICHEN]: { char: '"', color: '#7f0c3f', bgColor: null },
+    [TerrainType.DARKNESS_CLOUD]: { char: ' ', color: '#000000', bgColor: null, transparentFore: true },
+    [TerrainType.ROT_GAS]: { char: ' ', color: '#000000', bgColor: 0x997f0c, transparentFore: true },
     [TerrainType.NOTHING]: { char: " ", color: '#000000', bgColor: 0x000000 }, // CE NOTHING
     [TerrainType.GRANITE]: { char: "#", color: '#726666', bgColor: 0x191919 , foreDynamic: 'wallBackColor' }, // CE GRANITE
     [TerrainType.FLOOR]: { char: "\u00b7", color: '#4c4c4c', bgColor: 0x050519 , backDynamic: 'floorBackColor' }, // CE FLOOR

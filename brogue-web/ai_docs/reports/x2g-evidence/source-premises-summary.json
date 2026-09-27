@@ -1,0 +1,77 @@
+[
+  {
+    "label": "s0",
+    "exit": 0,
+    "passed": 3,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）",
+        "status": "passed",
+        "messages": []
+      }
+    ]
+  },
+  {
+    "label": "review",
+    "exit": 1,
+    "passed": 0,
+    "failed": 3,
+    "tests": [
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected 141 to be 135 // Object.is equality\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-source-premises-lPO6fH/brogue-web/src/test/c_4b_dungeon_feature.test.ts:625:29\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      },
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected [ 2, 3, 4, 5, 6, 7, 8, 9, 10, …(164) ] to deeply equal [ 2, 3, 4, 5, 6, 7, 8, 9, 10, …(169) ]\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-source-premises-lPO6fH/brogue-web/src/test/c_4b_dungeon_feature.test.ts:797:52\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      },
+      {
+        "name": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）",
+        "status": "failed",
+        "messages": [
+          "AssertionError: DF 子系统被生产代码引用（本轮是纯库）：\nentities/Monster.ts:26: import { catalogFeature, spawnDungeonFeature } from '../engine/Map/DungeonFeature';\nentities/Monster.ts:391: const blood = catalogFeature(DF.DF_ROT_GAS_BLOOD);\nentities/Monster.ts:393: spawnDungeonFeature(grid, this.x, this.y, { ...blood, startProbability: volume }, false);: expected [ …(3) ] to deeply equal []\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-source-premises-lPO6fH/brogue-web/src/test/c_4b_dungeon_feature.test.ts:1157:77\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "label": "repaired",
+    "exit": 0,
+    "passed": 3,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）",
+        "status": "passed",
+        "messages": []
+      }
+    ]
+  }
+]

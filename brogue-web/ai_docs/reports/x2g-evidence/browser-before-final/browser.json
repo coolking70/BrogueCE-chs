@@ -1,0 +1,648 @@
+{
+  "errors": [],
+  "rows": [
+    {
+      "label": "lichen-thrown",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "lichen-drunk",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 199,
+          "nutrition": 2148,
+          "poisonAmount": 1,
+          "maxShield": 0,
+          "statuses": {
+            "poisoned": 5
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "light-before",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "darkness-thrown",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "rot-gas",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "nauseous": 20
+          },
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "nauseous": 20
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "僵尸",
+            "x": 35,
+            "y": 15,
+            "hp": 60,
+            "maxHp": 80,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 120,
+            "defense": 0,
+            "damage": "1d6+6",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "zombie",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "rot-spread",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "nauseous": 20
+          },
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "nauseous": 20
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "僵尸",
+            "x": 35,
+            "y": 15,
+            "hp": 60,
+            "maxHp": 80,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 120,
+            "defense": 0,
+            "damage": "1d6+6",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "zombie",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "eel-hidden",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "eel-marker",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "telepathy": 30
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [
+          {
+            "x": 36,
+            "y": 15,
+            "marker": "x"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "label": "eel-underwater",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 200,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "电鳗",
+            "x": 36,
+            "y": 15,
+            "hp": 18,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 27,
+            "damage": "1d5+2",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_RESTRICTED_TO_LIQUID",
+              "MONST_IMMUNE_TO_WATER",
+              "MONST_SUBMERGES",
+              "MONST_FLITS",
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "eel",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "eel-surfaced",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 15,
+          "hp": 196,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "电鳗",
+            "x": 36,
+            "y": 15,
+            "hp": 18,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 27,
+            "damage": "1d5+2",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_RESTRICTED_TO_LIQUID",
+              "MONST_IMMUNE_TO_WATER",
+              "MONST_SUBMERGES",
+              "MONST_FLITS",
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "eel",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "eel-restored",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 34,
+          "y": 15,
+          "hp": 196,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "final",
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 34,
+          "y": 15,
+          "hp": 196,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ],
+  "scope": "Real menu/input/render; deterministic effect fixtures via public engine entry points."
+}

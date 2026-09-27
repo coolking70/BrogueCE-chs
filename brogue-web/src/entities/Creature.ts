@@ -3,6 +3,7 @@
  * Base class for all living things (Player and Monsters)
  */
 
+import type { Grid } from '../engine/Map/Grid';
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
 
@@ -304,7 +305,7 @@ export class Creature implements Entity {
         // Implement movement logic
     }
 
-    public takeDamage(amount: number, ignoresProtectionShield = false) {
+    public takeDamage(amount: number, ignoresProtectionShield = false, _grid?: Grid) {
         this.hp -= ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
         if (this.hp <= 0) {
             this.die();

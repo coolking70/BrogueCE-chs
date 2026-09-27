@@ -1,0 +1,4967 @@
+{
+  "events": [
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "WAND",
+        null,
+        67,
+        21,
+        1,
+        [],
+        []
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1192985453,
+            "b": 3349949747,
+            "c": 3722968928,
+            "d": 2461915850
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11690,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1605379494,
+            "b": 928396915,
+            "c": 2272036023,
+            "d": 2012910869
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11693,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "wand_of_negation",
+      "loc": {
+        "x": 67,
+        "y": 21
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "WEAPON|ARMOR|WAND",
+        null,
+        62,
+        24,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1605379494,
+            "b": 928396915,
+            "c": 2272036023,
+            "d": 2012910869
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11693,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 451740028,
+            "b": 2653032065,
+            "c": 2266746503,
+            "d": 3730009595
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11696,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "wand_of_plenty",
+      "loc": {
+        "x": 62,
+        "y": 24
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "WEAPON|ARMOR|WAND",
+        null,
+        68,
+        26,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 7,
+            "char": "/",
+            "color": 11197951,
+            "name": "Wand of Plenty",
+            "loc": {
+              "x": 62,
+              "y": 24
+            },
+            "identityId": "wand_of_plenty",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 2,
+            "charges": 2,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 62,
+                  "y": 24
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 451740028,
+            "b": 2653032065,
+            "c": 2266746503,
+            "d": 3730009595
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11696,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 418648738,
+            "b": 4057473728,
+            "c": 2001389656,
+            "d": 3827308817
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11702,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "splint_mail",
+      "loc": {
+        "x": 68,
+        "y": 26
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "WEAPON|ARMOR|WAND",
+        null,
+        65,
+        25,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 7,
+            "char": "/",
+            "color": 11197951,
+            "name": "Wand of Plenty",
+            "loc": {
+              "x": 62,
+              "y": 24
+            },
+            "identityId": "wand_of_plenty",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 2,
+            "charges": 2,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 62,
+                  "y": 24
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 9,
+            "char": "]",
+            "color": 8947848,
+            "name": "Splint Mail",
+            "loc": {
+              "x": 68,
+              "y": 26
+            },
+            "identityId": "splint_mail",
+            "category": 1,
+            "weight": 20,
+            "armor": 9,
+            "strengthRequired": 17,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 1000,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 68,
+                  "y": 26
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 418648738,
+            "b": 4057473728,
+            "c": 2001389656,
+            "d": 3827308817
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11702,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1308924617,
+            "b": 775557848,
+            "c": 1072491981,
+            "d": 3910338793
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11705,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "war_pike",
+      "loc": {
+        "x": 65,
+        "y": 25
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "STAFF|RING|CHARM",
+        null,
+        69,
+        23,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 7,
+            "char": "/",
+            "color": 11197951,
+            "name": "Wand of Plenty",
+            "loc": {
+              "x": 62,
+              "y": 24
+            },
+            "identityId": "wand_of_plenty",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 2,
+            "charges": 2,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 62,
+                  "y": 24
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 9,
+            "char": "]",
+            "color": 8947848,
+            "name": "Splint Mail",
+            "loc": {
+              "x": 68,
+              "y": 26
+            },
+            "identityId": "splint_mail",
+            "category": 1,
+            "weight": 20,
+            "armor": 9,
+            "strengthRequired": 17,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 1000,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 68,
+                  "y": 26
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 10,
+            "char": ")",
+            "color": 13421772,
+            "name": "War Pike",
+            "loc": {
+              "x": 65,
+              "y": 25
+            },
+            "identityId": "war_pike",
+            "category": 0,
+            "weight": 26,
+            "damage": "1d5+10",
+            "clumping": 1,
+            "strengthRequired": 18,
+            "flags": [
+              "ITEM_ATTACKS_PENETRATE",
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 20,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 65,
+                  "y": 25
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4120931585,
+            "b": 687863478,
+            "c": 1973801756,
+            "d": 2184394548
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11706,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3044987454,
+            "b": 37344266,
+            "c": 3985645286,
+            "d": 3636537301
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11710,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "charm_of_teleportation",
+      "loc": {
+        "x": 69,
+        "y": 23
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "STAFF|RING|CHARM",
+        null,
+        64,
+        21,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 7,
+            "char": "/",
+            "color": 11197951,
+            "name": "Wand of Plenty",
+            "loc": {
+              "x": 62,
+              "y": 24
+            },
+            "identityId": "wand_of_plenty",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 2,
+            "charges": 2,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 62,
+                  "y": 24
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 9,
+            "char": "]",
+            "color": 8947848,
+            "name": "Splint Mail",
+            "loc": {
+              "x": 68,
+              "y": 26
+            },
+            "identityId": "splint_mail",
+            "category": 1,
+            "weight": 20,
+            "armor": 9,
+            "strengthRequired": 17,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 1000,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 68,
+                  "y": 26
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 10,
+            "char": ")",
+            "color": 13421772,
+            "name": "War Pike",
+            "loc": {
+              "x": 65,
+              "y": 25
+            },
+            "identityId": "war_pike",
+            "category": 0,
+            "weight": 26,
+            "damage": "1d5+10",
+            "clumping": 1,
+            "strengthRequired": 18,
+            "flags": [
+              "ITEM_ATTACKS_PENETRATE",
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 20,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 65,
+                  "y": 25
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 11,
+            "char": "*",
+            "color": 13408767,
+            "name": "Charm of Teleportation",
+            "loc": {
+              "x": 69,
+              "y": 23
+            },
+            "identityId": "charm_of_teleportation",
+            "category": 9,
+            "weight": 1,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_MAX_CHARGES_KNOWN",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 2,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 2,
+            "charges": 0,
+            "identified": true,
+            "canBeIdentified": false,
+            "maxChargesKnown": true,
+            "magicDetected": false,
+            "cooldownTurns": 331,
+            "cooldownRemaining": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 69,
+                  "y": 23
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3044987454,
+            "b": 37344266,
+            "c": 3985645286,
+            "d": 3636537301
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11710,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2899281206,
+            "b": 1897839798,
+            "c": 3163519404,
+            "d": 1945667938
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11715,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "ring_of_reaping",
+      "loc": {
+        "x": 64,
+        "y": 21
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "STAFF|RING|CHARM",
+        null,
+        63,
+        26,
+        1,
+        [
+          "MF_NO_THROWING_WEAPONS"
+        ],
+        [
+          {
+            "spawnTurnNumber": 0,
+            "id": 6,
+            "char": "/",
+            "color": 16746700,
+            "name": "Wand of Negation",
+            "loc": {
+              "x": 67,
+              "y": 21
+            },
+            "identityId": "wand_of_negation",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 5,
+            "charges": 5,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 67,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 7,
+            "char": "/",
+            "color": 11197951,
+            "name": "Wand of Plenty",
+            "loc": {
+              "x": 62,
+              "y": 24
+            },
+            "identityId": "wand_of_plenty",
+            "category": 6,
+            "weight": 2,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 1,
+            "maxCharges": 2,
+            "charges": 2,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "timesUsed": 0,
+            "rechargeTurns": 200,
+            "rechargeCounter": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 62,
+                  "y": 24
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 9,
+            "char": "]",
+            "color": 8947848,
+            "name": "Splint Mail",
+            "loc": {
+              "x": 68,
+              "y": 26
+            },
+            "identityId": "splint_mail",
+            "category": 1,
+            "weight": 20,
+            "armor": 9,
+            "strengthRequired": 17,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 1000,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 68,
+                  "y": 26
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 10,
+            "char": ")",
+            "color": 13421772,
+            "name": "War Pike",
+            "loc": {
+              "x": 65,
+              "y": 25
+            },
+            "identityId": "war_pike",
+            "category": 0,
+            "weight": 26,
+            "damage": "1d5+10",
+            "clumping": 1,
+            "strengthRequired": 18,
+            "flags": [
+              "ITEM_ATTACKS_PENETRATE",
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 0,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 20,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": false,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 65,
+                  "y": 25
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 11,
+            "char": "*",
+            "color": 13408767,
+            "name": "Charm of Teleportation",
+            "loc": {
+              "x": 69,
+              "y": 23
+            },
+            "identityId": "charm_of_teleportation",
+            "category": 9,
+            "weight": 1,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_MAX_CHARGES_KNOWN",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 2,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "arcanaInstanceVersion": 2,
+            "charges": 0,
+            "identified": true,
+            "canBeIdentified": false,
+            "maxChargesKnown": true,
+            "magicDetected": false,
+            "cooldownTurns": 331,
+            "cooldownRemaining": 0,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 69,
+                  "y": 23
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          },
+          {
+            "spawnTurnNumber": 0,
+            "id": 12,
+            "char": "=",
+            "color": 16733525,
+            "name": "Ring of Reaping",
+            "loc": {
+              "x": 64,
+              "y": 21
+            },
+            "identityId": "ring_of_reaping",
+            "category": 8,
+            "weight": 1,
+            "flags": [
+              "ITEM_IS_KEY",
+              "ITEM_KIND_AUTO_ID",
+              "ITEM_MAX_CHARGES_KNOWN",
+              "ITEM_PLAYER_AVOIDS"
+            ],
+            "isCursed": false,
+            "isProtected": false,
+            "enchantment": 2,
+            "timesEnchanted": 0,
+            "runicKnown": false,
+            "charges": 1500,
+            "identified": false,
+            "canBeIdentified": true,
+            "maxChargesKnown": true,
+            "magicDetected": false,
+            "quantity": 1,
+            "keyLoc": [
+              {
+                "loc": {
+                  "x": 64,
+                  "y": 21
+                },
+                "machine": 0,
+                "disposableHere": false
+              }
+            ],
+            "originDepth": 1
+          }
+        ]
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2899281206,
+            "b": 1897839798,
+            "c": 3163519404,
+            "d": 1945667938
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11715,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2915304241,
+            "b": 502941756,
+            "c": 961504152,
+            "d": 3409152288
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 11723,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "staff_of_fire",
+      "loc": {
+        "x": 63,
+        "y": 26
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 820727464,
+            "b": 895026731,
+            "c": 1616424154,
+            "d": 2882428460
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16375,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3311406363,
+            "b": 3342676404,
+            "c": 2159729491,
+            "d": 32283485
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16377,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_enchantment",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1905930433,
+            "b": 2192012976,
+            "c": 554876651,
+            "d": 2428523599
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16378,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 313374047,
+            "b": 708481569,
+            "c": 326528481,
+            "d": 3937627401
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16384,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scale_mail",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4059608269,
+            "b": 4264155882,
+            "c": 4094643671,
+            "d": 4216624539
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16385,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 107268523,
+            "b": 720168748,
+            "c": 3369498467,
+            "d": 3325277346
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16389,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "charm_of_negation",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3291182720,
+            "b": 2399808517,
+            "c": 1799427860,
+            "d": 1765333234
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16390,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 677245393,
+            "b": 969022905,
+            "c": 2740275886,
+            "d": 2463964376
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16392,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_remove_curse",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2896124691,
+            "b": 909272966,
+            "c": 4050451900,
+            "d": 187644919
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16393,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4211160457,
+            "b": 3461763332,
+            "c": 1973416136,
+            "d": 677894427
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16395,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_enchantment",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 1,
+      "method": "spawnPopulateItem",
+      "args": [
+        1,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 801552955,
+            "b": 2651310563,
+            "c": 4244003868,
+            "d": 72695100
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16396,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1931196175,
+            "b": 1346397475,
+            "c": 2672328512,
+            "d": 3645868628
+          },
+          {
+            "a": 1411139770,
+            "b": 1145439332,
+            "c": 1184210000,
+            "d": 2423464126
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 16398,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_shattering",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1160017035,
+            "b": 793593768,
+            "c": 1524195368,
+            "d": 4156454887
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61103,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1459367646,
+            "b": 3996155549,
+            "c": 1733373890,
+            "d": 3414516280
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61105,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "mango",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 934818383,
+            "b": 3785699751,
+            "c": 2728373789,
+            "d": 2801346074
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61131,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 337767295,
+            "b": 1441639478,
+            "c": 3113954129,
+            "d": 393451894
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61133,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_life",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 55500544,
+            "b": 3507406023,
+            "c": 2028345236,
+            "d": 1690393886
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61134,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2888954217,
+            "b": 1314480631,
+            "c": 1970947592,
+            "d": 4158028604
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61138,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "staff_of_discord",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3259599619,
+            "b": 1834008900,
+            "c": 3918897558,
+            "d": 3020468573
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61139,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1273772862,
+            "b": 2240555465,
+            "c": 1349152381,
+            "d": 1958857604
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61145,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "flail",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1500940573,
+            "b": 3308009985,
+            "c": 1954653556,
+            "d": 1496736525
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61146,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1703885947,
+            "b": 3066913105,
+            "c": 3883198885,
+            "d": 4070560220
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61149,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "sword",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 2,
+      "method": "spawnPopulateItem",
+      "args": [
+        2,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1703325624,
+            "b": 3658791809,
+            "c": 3396903757,
+            "d": 1029669161
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61150,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 299043933,
+            "b": 2270872657,
+            "c": 3751126937,
+            "d": 4263738026
+          },
+          {
+            "a": 2674559992,
+            "b": 2203607110,
+            "c": 4243704108,
+            "d": 508017502
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 61152,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "mango",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 3,
+      "method": "spawnPopulateItem",
+      "args": [
+        3,
+        -1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2404477971,
+            "b": 2647113503,
+            "c": 3523070612,
+            "d": 31111187
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150293,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 149822692,
+            "b": 3554181799,
+            "c": 2487084590,
+            "d": 2605796095
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150294,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "ration_of_food",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 3,
+      "method": "spawnPopulateItem",
+      "args": [
+        3,
+        -1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1746139756,
+            "b": 1333110649,
+            "c": 2682139902,
+            "d": 505228223
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150296,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4119019729,
+            "b": 3987031788,
+            "c": 495407168,
+            "d": 3258156188
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150300,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "staff_of_blinking",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 3,
+      "method": "spawnPopulateItem",
+      "args": [
+        3,
+        -1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1294302690,
+            "b": 3753563356,
+            "c": 1347001142,
+            "d": 3678114940
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150301,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1559604596,
+            "b": 2439075651,
+            "c": 2826462813,
+            "d": 3044014150
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150303,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_protect_weapon",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 3,
+      "method": "spawnPopulateItem",
+      "args": [
+        3,
+        -1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1574569907,
+            "b": 1575509667,
+            "c": 4124744448,
+            "d": 2655300205
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150304,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1246267187,
+            "b": 2416175359,
+            "c": 2921149631,
+            "d": 1234256414
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150306,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_strength",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 3,
+      "method": "spawnPopulateItem",
+      "args": [
+        3,
+        -1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3522252870,
+            "b": 1653033152,
+            "c": 186155387,
+            "d": 3975147358
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150312,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4071950147,
+            "b": 3944446543,
+            "c": 3221196892,
+            "d": 2204508846
+          },
+          {
+            "a": 226075062,
+            "b": 1625501931,
+            "c": 495422336,
+            "d": 3799368594
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 150314,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_magic_mapping",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1689165283,
+            "b": 857124460,
+            "c": 2946046950,
+            "d": 916852759
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224984,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 389109898,
+            "b": 1101910613,
+            "c": 496751053,
+            "d": 752570505
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224986,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_enchantment",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3795315042,
+            "b": 1249321558,
+            "c": 2583640705,
+            "d": 1331417946
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224987,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3994022747,
+            "b": 4002956706,
+            "c": 3481369394,
+            "d": 1312369813
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224989,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_invisibility",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 419289760,
+            "b": 498771911,
+            "c": 617897411,
+            "d": 4019784654
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224990,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 906819267,
+            "b": 1442186497,
+            "c": 2749789940,
+            "d": 1403419110
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224992,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_invisibility",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3089056461,
+            "b": 4153209050,
+            "c": 2130952321,
+            "d": 3816589672
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224993,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2883571287,
+            "b": 449859283,
+            "c": 2188048050,
+            "d": 3612990181
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224995,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_confusion",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4155853318,
+            "b": 1506070935,
+            "c": 3932366534,
+            "d": 180262375
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224996,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2279814118,
+            "b": 2564153900,
+            "c": 4124057655,
+            "d": 746793810
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224998,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_identify",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3636070796,
+            "b": 575884169,
+            "c": 1335865383,
+            "d": 4225142369
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 224999,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2417156729,
+            "b": 2174661085,
+            "c": 2776783261,
+            "d": 2239623393
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 225002,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "war_pike",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 849738457,
+            "b": 721439358,
+            "c": 696507852,
+            "d": 3601590212
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 225003,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1036686138,
+            "b": 2044801334,
+            "c": 1267371463,
+            "d": 1870366552
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 225009,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "war_axe",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 4,
+      "method": "spawnPopulateItem",
+      "args": [
+        4,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1651484195,
+            "b": 3137738015,
+            "c": 4185329929,
+            "d": 3966447572
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 225010,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 939241676,
+            "b": 730975196,
+            "c": 1430142601,
+            "d": 2417180415
+          },
+          {
+            "a": 574695626,
+            "b": 972188494,
+            "c": 2861144298,
+            "d": 4072583989
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 225014,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "charm_of_fire_immunity",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 5,
+      "method": "spawnPopulateItem",
+      "args": [
+        5,
+        -2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4047086531,
+            "b": 1605498299,
+            "c": 2574555236,
+            "d": 1226229100
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244645,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1368384373,
+            "b": 3842487530,
+            "c": 1847150540,
+            "d": 972312537
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244647,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_strength",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 5,
+      "method": "spawnPopulateItem",
+      "args": [
+        5,
+        -2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3987743599,
+            "b": 682754181,
+            "c": 1432654063,
+            "d": 641359368
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244671,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3655352784,
+            "b": 4086969453,
+            "c": 1657860557,
+            "d": 1199640139
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244676,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "incendiary_dart",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 5,
+      "method": "spawnPopulateItem",
+      "args": [
+        5,
+        -2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 268497356,
+            "b": 2857500696,
+            "c": 2982444664,
+            "d": 2051301881
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244677,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2877516180,
+            "b": 1715767585,
+            "c": 1855250921,
+            "d": 2026276385
+          },
+          {
+            "a": 1689810783,
+            "b": 1197944399,
+            "c": 3007743711,
+            "d": 2942334622
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 244679,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_haste",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 6,
+      "method": "spawnPopulateItem",
+      "args": [
+        6,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1784988395,
+            "b": 16281554,
+            "c": 646406085,
+            "d": 3967122654
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326325,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3211928284,
+            "b": 318561443,
+            "c": 3335683147,
+            "d": 2580488777
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326326,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "ration_of_food",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 6,
+      "method": "spawnPopulateItem",
+      "args": [
+        6,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3993087902,
+            "b": 3913980387,
+            "c": 948798489,
+            "d": 1067116494
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326332,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4245845827,
+            "b": 3196225124,
+            "c": 1441261920,
+            "d": 2731154652
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326334,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_detect_magic",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 6,
+      "method": "spawnPopulateItem",
+      "args": [
+        6,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1816276395,
+            "b": 4172416572,
+            "c": 2045280236,
+            "d": 1130401979
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326335,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3777142557,
+            "b": 1405403547,
+            "c": 1432895693,
+            "d": 2862828676
+          },
+          {
+            "a": 4263126069,
+            "b": 1995527230,
+            "c": 2361245651,
+            "d": 1396463375
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 326337,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_detect_magic",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 7,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "WEAPON",
+        null,
+        11,
+        25,
+        7,
+        [
+          "MF_NO_THROWING_WEAPONS",
+          "MF_REQUIRE_GOOD_RUNIC"
+        ],
+        []
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 721517242,
+            "b": 1424259510,
+            "c": 206663520,
+            "d": 2569432582
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 395357,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2879447082,
+            "b": 3432095329,
+            "c": 3396751279,
+            "d": 2863965743
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 395418,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "sword",
+      "loc": {
+        "x": 11,
+        "y": 25
+      }
+    },
+    {
+      "depth": 7,
+      "method": "spawnPopulateItem",
+      "args": [
+        7,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 508800323,
+            "b": 1821102901,
+            "c": 1923239427,
+            "d": 2443865265
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396287,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 508800323,
+            "b": 1821102901,
+            "c": 1923239427,
+            "d": 2443865265
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396287,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_life",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 7,
+      "method": "spawnPopulateItem",
+      "args": [
+        7,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4035786353,
+            "b": 72137396,
+            "c": 77183835,
+            "d": 1669104923
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396288,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3525200640,
+            "b": 3736374005,
+            "c": 3482577725,
+            "d": 904893806
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396292,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "staff_of_blinking",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 7,
+      "method": "spawnPopulateItem",
+      "args": [
+        7,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 147789266,
+            "b": 92504235,
+            "c": 1494760471,
+            "d": 737655931
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396293,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3919462823,
+            "b": 183165616,
+            "c": 399826751,
+            "d": 3542283390
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396295,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_protect_armor",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 7,
+      "method": "spawnPopulateItem",
+      "args": [
+        7,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3029650713,
+            "b": 3942110141,
+            "c": 1013571344,
+            "d": 500938667
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396296,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3591000202,
+            "b": 4247617553,
+            "c": 2484746403,
+            "d": 1343213379
+          },
+          {
+            "a": 2739730393,
+            "b": 2099167922,
+            "c": 4019122515,
+            "d": 1609228371
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 396298,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_enchantment",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 8,
+      "method": "spawnPopulateItem",
+      "args": [
+        8,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 683463297,
+            "b": 2787661000,
+            "c": 1828227675,
+            "d": 2615550944
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435838,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1873301720,
+            "b": 362533071,
+            "c": 1887548636,
+            "d": 1241508000
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435840,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_fire_immunity",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 8,
+      "method": "spawnPopulateItem",
+      "args": [
+        8,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2082681292,
+            "b": 3129056636,
+            "c": 1090214642,
+            "d": 1931387934
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435841,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 635956683,
+            "b": 2938243690,
+            "c": 796429821,
+            "d": 2947299933
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435843,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_descent",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 8,
+      "method": "spawnPopulateItem",
+      "args": [
+        8,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3034076315,
+            "b": 3743729754,
+            "c": 2149259221,
+            "d": 2236035603
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435844,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1750182550,
+            "b": 4109562531,
+            "c": 2991401644,
+            "d": 2759823233
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435847,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "axe",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 8,
+      "method": "spawnPopulateItem",
+      "args": [
+        8,
+        1
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2712376889,
+            "b": 1456257581,
+            "c": 3978928770,
+            "d": 3931482426
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435848,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1681590569,
+            "b": 1812556424,
+            "c": 2009855751,
+            "d": 2437443402
+          },
+          {
+            "a": 2822071527,
+            "b": 3775984340,
+            "c": 3827898267,
+            "d": 2946934057
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 435850,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_teleportation",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 9,
+      "method": "spawnPopulateItem",
+      "args": [
+        9,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3622916139,
+            "b": 1159240607,
+            "c": 403601023,
+            "d": 2299769820
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479966,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3748980707,
+            "b": 4002117117,
+            "c": 1418514691,
+            "d": 2891088404
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479968,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_detect_magic",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 9,
+      "method": "spawnPopulateItem",
+      "args": [
+        9,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1284365540,
+            "b": 14635799,
+            "c": 2622688840,
+            "d": 1015965976
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479969,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1311298890,
+            "b": 2179635553,
+            "c": 3327962611,
+            "d": 1672492352
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479971,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_fire_immunity",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 9,
+      "method": "spawnPopulateItem",
+      "args": [
+        9,
+        0
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3658290648,
+            "b": 705487667,
+            "c": 2781459903,
+            "d": 472290903
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479972,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1272772048,
+            "b": 3742604405,
+            "c": 227835295,
+            "d": 3611368464
+          },
+          {
+            "a": 2943393890,
+            "b": 2970976177,
+            "c": 1305623822,
+            "d": 2625383915
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 479974,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_confusion",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "SCROLL",
+        "scroll_of_enchantment",
+        6,
+        20,
+        10,
+        [],
+        []
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1575913236,
+            "b": 2629862082,
+            "c": 1556684842,
+            "d": 3853671959
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 611366,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3700702032,
+            "b": 1115389505,
+            "c": 783999253,
+            "d": 631029326
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 611367,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_enchantment",
+      "loc": {
+        "x": 6,
+        "y": 20
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnBlueprintItem",
+      "args": [
+        "KEY",
+        "iron_key",
+        8,
+        17,
+        10,
+        [],
+        []
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2873800630,
+            "b": 3888406191,
+            "c": 3605380352,
+            "d": 391279640
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 611474,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2873800630,
+            "b": 3888406191,
+            "c": 3605380352,
+            "d": 391279640
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 611474,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "Iron Key",
+      "loc": {
+        "x": 8,
+        "y": 17
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1142748220,
+            "b": 3841961600,
+            "c": 1745603920,
+            "d": 2942549399
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612709,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2120187543,
+            "b": 393186023,
+            "c": 3965236319,
+            "d": 3142874463
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612710,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "ration_of_food",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2607526669,
+            "b": 251582275,
+            "c": 3098169397,
+            "d": 888983802
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612730,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2607526669,
+            "b": 251582275,
+            "c": 3098169397,
+            "d": 888983802
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612730,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_life",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2929042967,
+            "b": 3987153199,
+            "c": 3085995341,
+            "d": 831087210
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612731,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2005479124,
+            "b": 2266401620,
+            "c": 1582644013,
+            "d": 2943987237
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612733,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "scroll_of_magic_mapping",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4048304126,
+            "b": 231663954,
+            "c": 2194286751,
+            "d": 3298603640
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612734,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2705232355,
+            "b": 3813286054,
+            "c": 1619420008,
+            "d": 1140148177
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612736,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_strength",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3039098634,
+            "b": 1037609783,
+            "c": 3895863001,
+            "d": 228326235
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612738,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2949264272,
+            "b": 1953749528,
+            "c": 878614358,
+            "d": 2022120922
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612740,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_telepathy",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1524609701,
+            "b": 2900735280,
+            "c": 1689105050,
+            "d": 1191593829
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612741,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 863092994,
+            "b": 3150499272,
+            "c": 1807605251,
+            "d": 4293238174
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612743,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_creeping_death",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "depth": 10,
+      "method": "spawnPopulateItem",
+      "args": [
+        10,
+        2
+      ],
+      "before": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 130947763,
+            "b": 1805876129,
+            "c": 3984136242,
+            "d": 4116813127
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612744,
+        "cosmeticNumbersGenerated": 158
+      },
+      "after": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3403763420,
+            "b": 1242182726,
+            "c": 3840371729,
+            "d": 1469127364
+          },
+          {
+            "a": 389552964,
+            "b": 2627955332,
+            "c": 2878368234,
+            "d": 457197083
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 612746,
+        "cosmeticNumbersGenerated": 158
+      },
+      "kind": "potion_of_invisibility",
+      "loc": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "layers": [
+    {
+      "depth": 1,
+      "fp": "7bcef084:5027",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1449522112,
+            "b": 53516163,
+            "c": 305114541,
+            "d": 30504618
+          },
+          {
+            "a": 1025469581,
+            "b": 1084731749,
+            "c": 3224045973,
+            "d": 1234964950
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 39281,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "wand_of_negation",
+          "x": 67,
+          "y": 21
+        },
+        {
+          "kind": "wand_of_plenty",
+          "x": 62,
+          "y": 24
+        },
+        {
+          "kind": "splint_mail",
+          "x": 68,
+          "y": 26
+        },
+        {
+          "kind": "war_pike",
+          "x": 65,
+          "y": 25
+        },
+        {
+          "kind": "charm_of_teleportation",
+          "x": 69,
+          "y": 23
+        },
+        {
+          "kind": "ring_of_reaping",
+          "x": 64,
+          "y": 21
+        },
+        {
+          "kind": "staff_of_fire",
+          "x": 63,
+          "y": 26
+        },
+        {
+          "kind": "scroll_of_enchantment",
+          "x": 45,
+          "y": 10
+        },
+        {
+          "kind": "scale_mail",
+          "x": 76,
+          "y": 13
+        },
+        {
+          "kind": "charm_of_negation",
+          "x": 15,
+          "y": 12
+        },
+        {
+          "kind": "scroll_of_remove_curse",
+          "x": 4,
+          "y": 22
+        },
+        {
+          "kind": "scroll_of_enchantment",
+          "x": 4,
+          "y": 4
+        },
+        {
+          "kind": "scroll_of_shattering",
+          "x": 8,
+          "y": 4
+        }
+      ],
+      "goldGenerated": 0
+    },
+    {
+      "depth": 2,
+      "fp": "774163fd:5017",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 4031088017,
+            "b": 3262463006,
+            "c": 3516968278,
+            "d": 2026381887
+          },
+          {
+            "a": 1311281804,
+            "b": 3116206807,
+            "c": 1999703234,
+            "d": 3040091867
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 132890,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "mango",
+          "x": 15,
+          "y": 18
+        },
+        {
+          "kind": "potion_of_life",
+          "x": 9,
+          "y": 10
+        },
+        {
+          "kind": "staff_of_discord",
+          "x": 38,
+          "y": 8
+        },
+        {
+          "kind": "flail",
+          "x": 9,
+          "y": 20
+        },
+        {
+          "kind": "sword",
+          "x": 11,
+          "y": 16
+        },
+        {
+          "kind": "mango",
+          "x": 47,
+          "y": 21
+        }
+      ],
+      "goldGenerated": 0
+    },
+    {
+      "depth": 3,
+      "fp": "0bef4796:5004",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1939292233,
+            "b": 4023204483,
+            "c": 3705041707,
+            "d": 3077125345
+          },
+          {
+            "a": 2861462711,
+            "b": 4201419355,
+            "c": 451423847,
+            "d": 1289200036
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 209387,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "ration_of_food",
+          "x": 72,
+          "y": 3
+        },
+        {
+          "kind": "staff_of_blinking",
+          "x": 69,
+          "y": 24
+        },
+        {
+          "kind": "scroll_of_protect_weapon",
+          "x": 50,
+          "y": 9
+        },
+        {
+          "kind": "potion_of_strength",
+          "x": 74,
+          "y": 26
+        },
+        {
+          "kind": "scroll_of_magic_mapping",
+          "x": 13,
+          "y": 21
+        },
+        {
+          "kind": "Gold",
+          "x": 2,
+          "y": 13
+        }
+      ],
+      "goldGenerated": 102
+    },
+    {
+      "depth": 4,
+      "fp": "7744e26f:5014",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3850324150,
+            "b": 1679993841,
+            "c": 2168558434,
+            "d": 804261836
+          },
+          {
+            "a": 79500615,
+            "b": 2513408997,
+            "c": 2541646170,
+            "d": 806590579
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 227364,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "scroll_of_enchantment",
+          "x": 7,
+          "y": 12
+        },
+        {
+          "kind": "potion_of_invisibility",
+          "x": 61,
+          "y": 20
+        },
+        {
+          "kind": "potion_of_invisibility",
+          "x": 54,
+          "y": 8
+        },
+        {
+          "kind": "potion_of_confusion",
+          "x": 5,
+          "y": 13
+        },
+        {
+          "kind": "scroll_of_identify",
+          "x": 73,
+          "y": 7
+        },
+        {
+          "kind": "war_pike",
+          "x": 47,
+          "y": 5
+        },
+        {
+          "kind": "war_axe",
+          "x": 55,
+          "y": 25
+        },
+        {
+          "kind": "charm_of_fire_immunity",
+          "x": 35,
+          "y": 23
+        },
+        {
+          "kind": "Gold",
+          "x": 23,
+          "y": 5
+        },
+        {
+          "kind": "Gold",
+          "x": 45,
+          "y": 18
+        },
+        {
+          "kind": "Gold",
+          "x": 11,
+          "y": 20
+        }
+      ],
+      "goldGenerated": 507
+    },
+    {
+      "depth": 5,
+      "fp": "1b94e98c:4951",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3725023713,
+            "b": 3255407595,
+            "c": 2884049447,
+            "d": 143559895
+          },
+          {
+            "a": 1514957729,
+            "b": 1844903592,
+            "c": 1003229282,
+            "d": 3369268286
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 314914,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "potion_of_strength",
+          "x": 8,
+          "y": 4
+        },
+        {
+          "kind": "incendiary_dart",
+          "x": 51,
+          "y": 20
+        },
+        {
+          "kind": "potion_of_haste",
+          "x": 34,
+          "y": 11
+        },
+        {
+          "kind": "Gold",
+          "x": 67,
+          "y": 8
+        },
+        {
+          "kind": "Gold",
+          "x": 68,
+          "y": 23
+        }
+      ],
+      "goldGenerated": 796
+    },
+    {
+      "depth": 6,
+      "fp": "719e429e:4811",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1179478275,
+            "b": 2659509914,
+            "c": 4127026330,
+            "d": 798645656
+          },
+          {
+            "a": 1954642188,
+            "b": 637841529,
+            "c": 1963762895,
+            "d": 972936018
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 356030,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "ration_of_food",
+          "x": 71,
+          "y": 7
+        },
+        {
+          "kind": "potion_of_detect_magic",
+          "x": 12,
+          "y": 15
+        },
+        {
+          "kind": "potion_of_detect_magic",
+          "x": 62,
+          "y": 3
+        },
+        {
+          "kind": "Gold",
+          "x": 20,
+          "y": 15
+        },
+        {
+          "kind": "Gold",
+          "x": 12,
+          "y": 9
+        },
+        {
+          "kind": "Gold",
+          "x": 39,
+          "y": 9
+        },
+        {
+          "kind": "Gold",
+          "x": 8,
+          "y": 16
+        }
+      ],
+      "goldGenerated": 1462
+    },
+    {
+      "depth": 7,
+      "fp": "f612fd93:5078",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3994487030,
+            "b": 1189413200,
+            "c": 2760681347,
+            "d": 814484534
+          },
+          {
+            "a": 3247189558,
+            "b": 797464282,
+            "c": 1645931766,
+            "d": 3885576011
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 416013,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "sword",
+          "x": 11,
+          "y": 25
+        },
+        {
+          "kind": "potion_of_life",
+          "x": 66,
+          "y": 26
+        },
+        {
+          "kind": "staff_of_blinking",
+          "x": 19,
+          "y": 4
+        },
+        {
+          "kind": "scroll_of_protect_armor",
+          "x": 69,
+          "y": 3
+        },
+        {
+          "kind": "scroll_of_enchantment",
+          "x": 76,
+          "y": 7
+        },
+        {
+          "kind": "Gold",
+          "x": 19,
+          "y": 7
+        },
+        {
+          "kind": "Gold",
+          "x": 74,
+          "y": 6
+        },
+        {
+          "kind": "Gold",
+          "x": 5,
+          "y": 8
+        }
+      ],
+      "goldGenerated": 1980
+    },
+    {
+      "depth": 8,
+      "fp": "6561a2ce:5041",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 91042664,
+            "b": 2893934053,
+            "c": 681288335,
+            "d": 1933858803
+          },
+          {
+            "a": 920346320,
+            "b": 2707330710,
+            "c": 4105910148,
+            "d": 2859773739
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 457318,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "potion_of_fire_immunity",
+          "x": 21,
+          "y": 10
+        },
+        {
+          "kind": "potion_of_descent",
+          "x": 23,
+          "y": 4
+        },
+        {
+          "kind": "axe",
+          "x": 67,
+          "y": 24
+        },
+        {
+          "kind": "scroll_of_teleportation",
+          "x": 31,
+          "y": 8
+        },
+        {
+          "kind": "Gold",
+          "x": 54,
+          "y": 6
+        },
+        {
+          "kind": "Gold",
+          "x": 15,
+          "y": 22
+        },
+        {
+          "kind": "Gold",
+          "x": 69,
+          "y": 9
+        },
+        {
+          "kind": "Gold",
+          "x": 9,
+          "y": 18
+        }
+      ],
+      "goldGenerated": 2742
+    },
+    {
+      "depth": 9,
+      "fp": "4c437b48:5174",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 3189438525,
+            "b": 1480606261,
+            "c": 2469028987,
+            "d": 787214955
+          },
+          {
+            "a": 1669035135,
+            "b": 4022901254,
+            "c": 50495358,
+            "d": 101934355
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 589731,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "potion_of_detect_magic",
+          "x": 61,
+          "y": 3
+        },
+        {
+          "kind": "potion_of_fire_immunity",
+          "x": 19,
+          "y": 19
+        },
+        {
+          "kind": "potion_of_confusion",
+          "x": 64,
+          "y": 2
+        },
+        {
+          "kind": "Gold",
+          "x": 7,
+          "y": 15
+        },
+        {
+          "kind": "Gold",
+          "x": 52,
+          "y": 8
+        },
+        {
+          "kind": "Gold",
+          "x": 56,
+          "y": 19
+        },
+        {
+          "kind": "Gold",
+          "x": 70,
+          "y": 2
+        }
+      ],
+      "goldGenerated": 3554
+    },
+    {
+      "depth": 10,
+      "fp": "22fed467:5231",
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2114788390,
+            "b": 4172855883,
+            "c": 1976835771,
+            "d": 2611001846
+          },
+          {
+            "a": 2900538030,
+            "b": 7654460,
+            "c": 1738792933,
+            "d": 3948965064
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 683804,
+        "cosmeticNumbersGenerated": 158
+      },
+      "items": [
+        {
+          "kind": "scroll_of_enchantment",
+          "x": 6,
+          "y": 20
+        },
+        {
+          "kind": "Iron Key",
+          "x": 23,
+          "y": 16
+        },
+        {
+          "kind": "ration_of_food",
+          "x": 9,
+          "y": 6
+        },
+        {
+          "kind": "potion_of_life",
+          "x": 27,
+          "y": 6
+        },
+        {
+          "kind": "scroll_of_magic_mapping",
+          "x": 62,
+          "y": 22
+        },
+        {
+          "kind": "potion_of_strength",
+          "x": 44,
+          "y": 1
+        },
+        {
+          "kind": "potion_of_telepathy",
+          "x": 33,
+          "y": 17
+        },
+        {
+          "kind": "potion_of_creeping_death",
+          "x": 73,
+          "y": 23
+        },
+        {
+          "kind": "potion_of_invisibility",
+          "x": 21,
+          "y": 22
+        },
+        {
+          "kind": "Gold",
+          "x": 50,
+          "y": 4
+        },
+        {
+          "kind": "Gold",
+          "x": 72,
+          "y": 5
+        },
+        {
+          "kind": "Gold",
+          "x": 47,
+          "y": 24
+        },
+        {
+          "kind": "Gold",
+          "x": 57,
+          "y": 9
+        }
+      ],
+      "goldGenerated": 4438
+    }
+  ]
+}

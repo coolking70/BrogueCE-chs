@@ -529,12 +529,11 @@ export class ItemLoader {
      * 不参与分组——补目录时须同时补本表（W-24～26 已补齐法器目录）。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
-     * 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均退池且
-     * 永不被识别，恶意药水类恒有未识别种 → 恶意药水的"最后升格"在 B-4 回池前
-     * 不可达；善意药水、卷轴、戒指、魔杖、法杖各类均可达。
+     * 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均为原生种类且
+     * 在 X2g 完成投掷和地衣链后回池，恶意药水的最后一种自动识别也可达。
      */
     private static readonly MAGIC_POLARITY: Readonly<Record<string, number>> = {
-        // 药水：darkness 已有饮用入口，投掷 DF 未齐而暂不入生成池。
+        // X2g: darkness and lichen include their native thrown DF sources.
         potion_of_life: 1,            // life
         potion_of_strength: 1,        // strength
         potion_of_telepathy: 1,       // telepathy
@@ -553,9 +552,9 @@ export class ItemLoader {
         potion_of_hallucination: -1,  // hallucination
         potion_of_confusion: -1,      // confusion
         potion_of_incineration: -1,   // incineration
-        potion_of_darkness: -1,       // darkness (thrown DF pending)
+        potion_of_darkness: -1,       // darkness (CE POTION_DARKNESS)
         potion_of_descent: -1,        // descent
-        potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN，退池）
+        potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN）
         potion_of_healing: 0,         // 自创（CE 无），退池
         // 卷轴（web 14 条，含 1 条自创；CE aggravate monsters web 缺）
         scroll_of_enchantment: 1,     // enchanting

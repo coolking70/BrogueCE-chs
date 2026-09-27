@@ -1,0 +1,614 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+ ❯ src/test/x2g_native_effects.test.ts (12 tests | 2 failed) 8142ms
+     × renders rot tint from the live gas layer before mirror refresh, preserving glyph and using CE density weight 16ms
+     × restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g rot gas and MB_SUBMERGED > renders rot tint from the live gas layer before mirror refresh, preserving glyph and using CE density weight
+AssertionError: expected ' ' to be '·' // Object.is equality
+
+Expected: "·"
+Received: " "
+
+ ❯ src/test/x2g_native_effects.test.ts:177:65
+    175|         const ctx={gas:undefined,lightChannels:{r:100,g:100,b:100},gro…
+    176|         const base=cellAppearance(c,ctx)!;grid.setTerrain(2,2,T.ROT_GA…
+    177|         const result=cellAppearance(c,ctx)!;expect(result.char).toBe(b…
+       |                                                                 ^
+    178|         // IO.c min(90,30+volume); independent integer-channel interpo…
+    179|         const mix=(a:number,b:number)=>Math.floor(a*.55+b*.45);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g rot gas and MB_SUBMERGED > restores both CE frequency-7 potions; save/load preserves the next turn including gas, lichen and surfaced state
+AssertionError: expected '/*\n *  Globals.c\n *  Brogue\n *\n *…' to match /\{"creeping death",[^\n]*?7,/
+
+- Expected:
+/\{"creeping death",[^\n]*?7,/
+
++ Received:
+"/*
+ *  Globals.c
+ *  Brogue
+ *
+ *  Created by Brian Walker on 1/10/09.
+ *  Copyright 2012. All rights reserved.
+ *
+ *  This file is part of Brogue.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*  This file contains constants associated with game objects,
+ *  including colors and material descriptions. The file also
+ *  contains large tables (e.g. tileCatalog) that consist of
+ *  constant data associated with game objects, including creation
+ *  probabilities, descriptions and in-game attributes.
+ *
+ *  Where possible the tables are defined as const arrays,
+ *  because the data typically is not dynamic. Some tables,
+ *  however, also store some mutable flags, so cannot be made
+ *  constant.  For tables that are
+ *  variant-specific (e.g. autoGeneratorCatalog), the tables are
+ *  declared as pointers (again typically const * since the data
+ *  contained is constant).
+ *
+ *  These tables are defined on a per-variant basis in
+ *  Globals{variant}.c. When a variant is selected, the pointers
+ *  declared in this file are set to the definitions in the chosen
+ *  Globals{variant}.c file.
+ */
+
+#include \"Rogue.h\"
+#include \"GlobalsBase.h\"
+#include \"Globals.h\"
+
+// Global tables, definitions are found in Globals_{variant}.c
+
+const autoGenerator *autoGeneratorCatalog;
+const short *lumenstoneDistribution;
+const bolt *boltCatalog;
+itemTable *potionTable;
+itemTable *scrollTable;
+itemTable *wandTable;
+itemTable *charmTable;
+const feat *featTable;
+const charmEffectTableEntry *charmEffectTable;
+const levelFeeling *levelFeelings;
+const hordeType *hordeCatalog;
+const blueprint *blueprintCatalog;
+const short *itemGenerationProbabilities;
+const meteredItemGenerationTable *meteredItemsGenerationTable;
+const char *mainMenuTitle;
+
+// bolt colors
+const color descentBoltColor =      {-40,   -40,    -40,    0,      0,          80,         80,     true};
+const color discordColor =          {25,    0,      25,     66,     0,          0,          0,      true};
+const color poisonColor =           {0,     0,      0,      10,     50,         10,         0,      true};
+const color beckonColor =           {10,    10,     10,     5,      5,          5,          50,     true};
+const color invulnerabilityColor =  {25,    0,      25,     0,      0,          66,         0,      true};
+const color fireBoltColor =         {500,   150,    0,      45,     30,         0,          0,      true};
+const color yendorLightColor =      {50,    -100,    30,     0,      0,          0,          0,      true};
+const color flamedancerCoronaColor ={500,   150,    100,    45,     30,         0,          0,      true};
+
+// tile colors
+const color undiscoveredColor =     {0,     0,      0,      0,      0,          0,          0,      false};
+
+const color wallForeColor =         {7,     7,      7,      3,      3,          3,          0,      false};
+const color wallBackColorStart =    {45,    40,     40,     15,     0,          5,          20,     false};
+const color wallBackColorEnd =      {40,    30,     35,     0,      20,         30,         20,     false};
+
+const color mudWallForeColor =      {55,    45,     0,      5,      5,          5,          1,      false};
+const color mudWallBackColor =      {20,    12,     3,      8,      4,          3,          0,      false};
+
+const color graniteBackColor =      {10,    10,     10,     0,      0,          0,          0,      false};
+
+const color floorForeColor =        {30,    30,     30,     0,      0,          0,          35,     false};
+
+const color floorBackColorStart =   {2,     2,      10,     2,      2,          0,          0,      false};
+const color floorBackColorEnd =     {5,     5,      5,      2,      2,          0,          0,      false};
+
+const color stairsBackColor =       {15,    15,     5,      0,      0,          0,          0,      false};
+const color firstStairsBackColor =  {10,    10,     25,     0,      0,          0,          0,      false};
+
+const color refuseBackColor =       {6,     5,      3,      2,      2,          0,          0,      false};
+const color rubbleBackColor =       {7,     7,      8,      2,      2,          1,          0,      false};
+const color bloodflowerForeColor =  {30,    5,      40,     5,      1,          3,          0,      false};
+const color bloodflowerPodForeColor = {50,  5,      25,     5,      1,          3,          0,      false};
+const color bloodflowerBackColor =  {15,    3,      10,     3,      1,          3,          0,      false};
+const color bedrollBackColor =      {10,    8,      5,      1,      1,          0,          0,      false};
+
+const color obsidianBackColor =     {6,     0,      8,      2,      0,          3,          0,      false};
+const color carpetForeColor =       {23,    30,     38,     0,      0,          0,          0,      false};
+const color carpetBackColor =       {15,    8,      5,      0,      0,          0,          0,      false};
+const color marbleForeColor =       {30,    23,     38,     0,      0,          0,          0,      false};
+const color marbleBackColor =       {6,     5,      13,     1,      0,          1,          0,      false};
+const color doorForeColor =         {70,    35,     15,     0,      0,          0,          0,      false};
+const color doorBackColor =         {30,    10,     5,      0,      0,          0,          0,      false};
+const color ironDoorForeColor =     {500,   500,    500,    0,      0,          0,          0,      false};
+const color ironDoorBackColor =     {15,    15,     30,     0,      0,          0,          0,      false};
+const color bridgeFrontColor =      {33,    12,     12,     12,     7,          2,          0,      false};
+const color bridgeBackColor =       {12,    3,      2,      3,      2,          1,          0,      false};
+const color statueBackColor =       {20,    20,     20,     0,      0,          0,          0,      false};
+const color glyphColor =            {20,    5,      5,      50,     0,          0,          0,      true};
+const color glyphLightColor =       {150,   0,      0,      150,    0,          0,          0,      true};
+const color sacredGlyphColor =      {5,     20,     5,      0,      50,         0,          0,      true};
+const color sacredGlyphLightColor = {45,    150,    60,     25,     80,         25,         0,      true};
+
+const color minersLightStartColor = {180,   180,    180,    0,      0,          0,          0,      false};
+const color minersLightEndColor =   {90,    90,     120,    0,      0,          0,          0,      false};
+const color torchColor =            {150,   75,     30,     0,      30,         20,         0,      true};
+
+const color deepWaterForeColor =    {5,     8,      20,     0,      4,          15,         10,     true};
+const color deepWaterBackColorStart = {5,   10,     31,     5,      5,          5,          6,      true};
+const color deepWaterBackColorEnd = {5,     8,      20,     2,      3,          5,          5,      true};
+const color shallowWaterForeColor = {28,    28,     60,     0,      0,          10,         10,     true};
+const color shallowWaterBackColorStart ={20,20,     60,     0,      0,          10,         10,     true};
+const color shallowWaterBackColorEnd ={12,  15,     40,     0,      0,          5,          5,      true};
+
+const color mudForeColor =          {18,    14,     5,      5,      5,          0,          0,      false};
+const color mudBackColor =          {23,    17,     7,      5,      5,          0,          0,      false};
+const color chasmForeColor =        {7,     7,      15,     4,      4,          8,          0,      false};
+const color chasmEdgeBackColorStart ={5,    5,      25,     2,      2,          2,          0,      false};
+const color chasmEdgeBackColorEnd = {8,     8,      20,     2,      2,          2,          0,      false};
+const color fireForeColor =         {70,    20,     0,      15,     10,         0,          0,      true};
+const color lavaForeColor =         {20,    20,     20,     100,    10,         0,          0,      true};
+const color brimstoneForeColor =    {100,   50,     10,     0,      50,         40,         0,      true};
+const color brimstoneBackColor =    {18,    12,     9,      0,      0,          5,          0,      false};
+
+const color lavaBackColor =         {70,    20,     0,      15,     10,         0,          0,      true};
+const color acidBackColor =         {15,    80,     25,     5,      15,         10,         0,      true};
+
+const color lightningColor =        {100,   150,    500,    50,     50,         0,          50,     true};
+const color fungusLightColor =      {2,     11,     11,     4,      3,          3,          0,      true};
+const color lavaLightColor =        {47,    13,     0,      10,     7,          0,          0,      true};
+const color deepWaterLightColor =   {10,    30,     100,    0,      30,         100,        0,      true};
+
+const color grassColor =            {15,    40,     15,     15,     50,         15,         10,     false};
+const color deadGrassColor =        {20,    13,     0,      20,     10,         5,          10,     false};
+const color fungusColor =           {15,    50,     50,     0,      25,         0,          30,     true};
+const color grayFungusColor =       {30,    30,     30,     5,      5,          5,          10,     false};
+const color foliageColor =          {25,    100,    25,     15,     0,          15,         0,      false};
+const color deadFoliageColor =      {20,    13,     0,      30,     15,         0,          20,     false};
+const color lichenColor =           {50,    5,      25,     10,     0,          5,          0,      true};
+const color hayColor =              {70,    55,     5,      0,      20,         20,         0,      false};
+const color ashForeColor =          {20,    20,     20,     0,      0,          0,          20,     false};
+const color bonesForeColor =        {80,    80,     30,     5,      5,          35,         5,      false};
+const color ectoplasmColor =        {45,    20,     55,     25,     0,          25,         5,      false};
+const color forceFieldColor =       {0,     25,     25,     0,      25,         25,         0,      true};
+const color wallCrystalColor =      {40,    40,     60,     20,     20,         40,         0,      true};
+const color altarForeColor =        {5,     7,      9,      0,      0,          0,          0,      false};
+const color altarBackColor =        {35,    18,     18,     0,      0,          0,          0,      false};
+const color greenAltarBackColor =   {18,    25,     18,     0,      0,          0,          0,      false};
+const color goldAltarBackColor =    {25,    24,     12,     0,      0,          0,          0,      false};
+const color pedestalBackColor =     {10,    5,      20,     0,      0,          0,          0,      false};
+
+// monster colors
+const color goblinColor =           {44,    33,     22,     0,      0,          0,          0,      false};
+const color jackalColor =           {60,    42,     27,     0,      0,          0,          0,      false};
+const color ogreColor =             {60,    25,     25,     0,      0,          0,          0,      false};
+const color eelColor =              {30,    12,     12,     0,      0,          0,          0,      false};
+const color goblinConjurerColor =   {67,    10,     100,    0,      0,          0,          0,      false};
+const color spectralBladeColor =    {15,    15,     60,     0,      0,          70,         50,     true};
+const color spectralImageColor =    {13,    0,      0,      25,     0,          0,          0,      true};
+const color toadColor =             {40,    65,     30,     0,      0,          0,          0,      false};
+const color trollColor =            {40,    60,     15,     0,      0,          0,          0,      false};
+const color centipedeColor =        {75,    25,     85,     0,      0,          0,          0,      false};
+const color dragonColor =           {20,    80,     15,     0,      0,          0,          0,      false};
+const color krakenColor =           {100,   55,     55,     0,      0,          0,          0,      false};
+const color salamanderColor =       {40,    10,     0,      8,      5,          0,          0,      true};
+const color pixieColor =            {60,    60,     60,     40,     40,         40,         0,      true};
+const color darPriestessColor =     {0,     50,     50,     0,      0,          0,          0,      false};
+const color darMageColor =          {50,    50,     0,      0,      0,          0,          0,      false};
+const color wraithColor =           {66,    66,     25,     0,      0,          0,          0,      false};
+const color pinkJellyColor =        {100,   40,     40,     5,      5,          5,          20,     true};
+const color wormColor =             {80,    60,     40,     0,      0,          0,          0,      false};
+const color sentinelColor =         {3,     3,      30,     0,      0,          10,         0,      true};
+const color goblinMysticColor =     {10,    67,     100,    0,      0,          0,          0,      false};
+const color ifritColor =            {50,    10,     100,    75,     0,          20,         0,      true};
+const color phoenixColor =          {100,   0,      0,      0,      100,        0,          0,      true};
+
+// light colors
+
+const color torchLightColor =       {75,    38,     15,     0,      15,         7,          0,      true};
+const color hauntedTorchColor =     {75,    20,     40,     30,     10,         0,          0,      true};
+const color hauntedTorchLightColor ={67,    10,     10,     20,     4,          0,          0,      true};
+const color ifritLightColor =       {0,     10,     150,    100,    0,          100,        0,      true};
+const color unicornLightColor =     {-50,   -50,    -50,    250,    250,        250,        0,      true};
+const color wispLightColor =        {75,    100,    250,    33,     10,         0,          0,      true};
+const color summonedImageLightColor ={200,  0,      75,     0,      0,          0,          0,      true};
+const color spectralBladeLightColor ={40,   0,      230,    0,      0,          0,          0,      true};
+const color ectoplasmLightColor =   {23,    10,     28,     13,     0,          13,         3,      false};
+const color explosionColor =        {10,    8,      2,      0,      2,          2,          0,      true};
+const color explosiveAuraColor =    {2000,  0,      -1000,  200,    200,        0,          0,      true};
+const color sacrificeTargetColor =  {100,   -100,   -300,   0,      100,        100,        0,      true};
+const color dartFlashColor =        {500,   500,    500,    0,      2,          2,          0,      true};
+const color lichLightColor =        {-50,   80,     30,     0,      0,          20,         0,      true};
+const color forceFieldLightColor =  {10,    10,     10,     0,      50,         50,         0,      true};
+const color crystalWallLightColor = {10,    10,     10,     0,      0,          50,         0,      true};
+const color sunLightColor =         {100,   100,    75,     0,      0,          0,          0,      false};
+const color fungusForestLightColor ={30,    40,     60,     0,      0,          0,          40,     true};
+const color fungusTrampledLightColor ={10,  10,     10,     0,      50,         50,         0,      true};
+const color redFlashColor =         {100,   10,     10,     0,      0,          0,          0,      false};
+const color darknessPatchColor =    {-10,   -10,    -10,    0,      0,          0,          0,      false};
+const color darknessCloudColor =    {-20,   -20,    -20,    0,      0,          0,          0,      false};
+const color magicMapFlashColor =    {60,    20,     60,     0,      0,          0,          0,      false};
+const color sentinelLightColor =    {20,    20,     120,    10,     10,         60,         0,      true};
+const color telepathyColor =        {30,    30,     130,    0,      0,          0,          0,      false};
+const color confusionLightColor =   {10,    10,     10,     10,     10,         10,         0,      true};
+const color portalActivateLightColor ={300, 400,    500,    0,      0,          0,          0,      true};
+const color descentLightColor =     {20,    20,     70,     0,      0,          0,          0,      false};
+const color algaeBlueLightColor =   {20,    15,     50,     0,      0,          0,          0,      false};
+const color algaeGreenLightColor =  {15,    50,     20,     0,      0,          0,          0,      false};
+
+// flare colors
+const color scrollProtectionColor = {375,   750,    0,      0,      0,          0,          0,      true};
+const color scrollEnchantmentColor ={250,   225,    300,    0,      0,          450,        0,      true};
+const color potionStrengthColor =   {1000,  0,      400,    600,    0,          0,          0,      true};
+const color empowermentFlashColor = {500,   1000,   600,    0,      500,        0,          0,      true};
+const color genericFlashColor =     {800,   800,    800,    0,      0,          0,          0,      false};
+const color summoningFlashColor =   {0,     0,      0,      600,    0,          1200,       0,      true};
+const color fireFlashColor =        {750,   225,    0,      100,    50,         0,          0,      true};
+const color explosionFlareColor =   {10000, 6000,   1000,   0,      0,          0,          0,      false};
+const color quietusFlashColor =     {0,     -1000,  -200,   0,      0,          0,          0,      true};
+const color slayingFlashColor =     {-1000, -200,   0,      0,      0,          0,          0,      true};
+
+// const color multipliers
+const color colorDim25 =            {25,    25,     25,     25,     25,         25,         25,     false};
+const color colorMultiplier100 =    {100,   100,    100,    100,    100,        100,        100,    false};
+const color memoryColor =           {25,    25,     50,     20,     20,         20,         0,      false};
+const color memoryOverlay =         {25,    25,     50,     0,      0,          0,          0,      false};
+const color magicMapColor =         {60,    20,     60,     60,     20,         60,         0,      false};
+const color clairvoyanceColor =     {50,    90,     50,     50,     90,         50,         66,     false};
+const color telepathyMultiplier =   {30,    30,     130,    30,     30,         130,        66,     false};
+const color omniscienceColor =      {140,   100,    60,     140,    100,        60,         90,     false};
+const color basicLightColor =       {180,   180,    180,    180,    180,        180,        180,    false};
+
+// blood colors
+const color humanBloodColor =       {60,    20,     10,     15,     0,          0,          15,     false};
+const color insectBloodColor =      {10,    60,     20,     0,      15,         0,          15,     false};
+const color vomitColor =            {60,    50,     5,      0,      15,         15,         0,      false};
+const color urineColor =            {70,    70,     40,     0,      0,          0,          10,     false};
+const color methaneColor =          {45,    60,     15,     0,      0,          0,          0,      false};
+
+// gas colors
+const color poisonGasColor =        {75,    25,     85,     0,      0,          0,          0,      false};
+const color confusionGasColor =     {60,    60,     60,     40,     40,         40,         0,      true};
+
+// interface colors
+const color itemColor =             {100,   95,     -30,    0,      0,          0,          0,      false};
+const color blueBar =               {15,    10,     50,     0,      0,          0,          0,      false};
+const color redBar =                {45,    10,     15,     0,      0,          0,          0,      false};
+const color hiliteColor =           {100,   100,    0,      0,      0,          0,          0,      false};
+const color interfaceBoxColor =     {7,     6,      15,     0,      0,          0,          0,      false};
+const color interfaceButtonColor =  {18,    15,     38,     0,      0,          0,          0,      false};
+const color buttonHoverColor =      {100,   70,     40,     0,      0,          0,          0,      false};
+const color titleButtonColor =      {23,    15,     30,     0,      0,          0,          0,      false};
+
+const color playerInvisibleColor =  {30,    30,     40,     0,      0,          80,         0,      true};
+const color playerInLightColor =    {100,   90,     30,     0,      0,          0,          0,      false};
+const color playerInShadowColor =   {60,    60,     100,    0,      0,          0,          0,      false};
+const color playerInDarknessColor = {40,    40,     65,     0,      0,          0,          0,      false};
+
+const color inLightMultiplierColor ={150,   150,    75,     150,    150,        75,         100,    true};
+const color inDarknessMultiplierColor={66,  66,     120,    66,     66,         120,        66,     true};
+
+const color goodMessageColor =      {60,    50,     100,    0,      0,          0,          0,      false};
+const color badMessageColor =       {100,   50,     60,     0,      0,          0,          0,      false};
+const color advancementMessageColor ={50,   100,    60,     0,      0,          0,          0,      false};
+const color itemMessageColor =      {100,   100,    50,     0,      0,          0,          0,      false};
+const color flavorTextColor =       {50,    40,     90,     0,      0,          0,          0,      false};
+const color backgroundMessageColor ={60,    20,     70,     0,      0,          0,          0,      false};
+
+const color superVictoryColor =     {150,   100,    300,    0,      0,          0,          0,      false};
+
+const color flameSourceColor = {20, 7, 7, 60, 40, 40, 0, true}; // 8
+const color flameSourceColorSecondary = {7, 2, 0, 10, 0, 0, 0, true};
+
+const color flameTitleColor = {0, 0, 0, 9, 9, 15, 0, true}; // *pale blue**
+
+// Constant bounds for dynamic colors
+const color *dynamicColorsBounds[NUMBER_DYNAMIC_COLORS][2] = {
+    // shallow color               deep color
+    {&minersLightStartColor,     &minersLightEndColor},
+    {&wallBackColorStart,        &wallBackColorEnd},
+    {&deepWaterBackColorStart,   &deepWaterBackColorEnd},
+    {&shallowWaterBackColorStart,&shallowWaterBackColorEnd},
+    {&floorBackColorStart,       &floorBackColorEnd},
+    {&chasmEdgeBackColorStart,   &chasmEdgeBackColorEnd}
+};
+
+// Dynamic colors (these change at runtime)
+color minersLightColor, wallBackColor, deepWaterBackColor, shallowWaterBackColor, floorBackColor, chasmEdgeBackColor;
+
+color *dynamicColors[NUMBER_DYNAMIC_COLORS] = {
+    &minersLightColor,
+    &wallBackColor,
+    &deepWaterBackColor,
+    &shallowWaterBackColor,
+    &floorBackColor,
+    &chasmEdgeBackColor
+};
+
+const floorTileType tileCatalog[NUMBER_TILETYPES] = {
+
+ // promoteChance is in hundredths of a percent per turn
+
+ // dungeon layer (this layer must have all of fore color, back color and char)
+ // tileType                    char            fore color          back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight       flags mechflags                                                                                     description             flavorText
+ /*NOTHING*/                    {' ',           &black,             &black,             100,0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, 0,                                                                                               \"a chilly void\",        \"\"},
+ /*GRANITE*/                    {G_GRANITE,     &wallBackColor,     &graniteBackColor,  0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                       \"a rough granite wall\", \"The granite is split open with splinters of rock jutting out at odd angles.\"},
+ /*FLOOR*/                      {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, 0,                                                                                               \"the ground\",           \"\"},
+ /*FLOOR_FLOODABLE*/            {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, 0,                                                                                               \"the ground\",           \"\"},
+ /*CARPET*/                     {G_CARPET,      &carpetForeColor,   &carpetBackColor,   85, 0,  DF_EMBERS,0,0,                              0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                                     \"the carpet\",           \"Ornate carpeting fills this room, a relic of ages past.\"},
+ /*MARBLE_FLOOR*/               {G_CARPET,      &marbleForeColor,   &marbleBackColor,   85, 0,  DF_EMBERS,0,0,                              0,  NO_LIGHT,       0, 0,                                                                                               \"the marble ground\",    \"Light from the nearby crystals catches the grain of the lavish marble floor.\"},
+ /*WALL*/                       {G_WALL,        &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                       \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*DOOR*/                       {G_CLOSED_DOOR, &doorForeColor,     &doorBackColor,     8,  50, DF_EMBERS,0,DF_OPEN_DOOR,                   0,  NO_LIGHT,       (T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_VISUALLY_DISTINCT), \"a wooden door\", \"you pass through the doorway.\"},
+ /*OPEN_DOOR*/                  {G_OPEN_DOOR,   &doorForeColor,     &doorBackColor,     25, 50, DF_EMBERS,0,DF_CLOSED_DOOR,             10000,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),           \"an open door\",         \"you pass through the doorway.\"},
+ /*SECRET_DOOR*/                {G_WALL,        &wallForeColor,     &wallBackColor,     0,  50, DF_EMBERS,DF_SHOW_DOOR,0,                   0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),  \"a stone wall\", \"The rough stone wall is firm and unyielding.\"},
+ /*LOCKED_DOOR*/            {G_CLOSED_IRON_DOOR,&ironDoorForeColor, &ironDoorBackColor, 15, 50, DF_EMBERS,0,DF_OPEN_IRON_DOOR_INERT,        0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED),  \"a locked iron door\",   \"you search your pack but do not have a matching key.\"},
+ /*OPEN_IRON_DOOR_INERT*/   {G_OPEN_IRON_DOOR,  &white,             &ironDoorBackColor, 90, 50, DF_EMBERS,0,0,                              0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT),                           \"an open iron door\",    \"you pass through the doorway.\"},
+ /*DOWN_STAIRS,*/               {G_DOWN_STAIRS, &itemColor,         &stairsBackColor,   30, 0,  DF_PLAIN_FIRE,0,DF_REPEL_CREATURES,         0,  NO_LIGHT,       (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), \"a downward staircase\",   \"stairs spiral downward into the depths.\"},
+ /*UP_STAIRS*/                  {G_UP_STAIRS,   &itemColor,         &stairsBackColor,   30, 0,  DF_PLAIN_FIRE,0,DF_REPEL_CREATURES,         0,  NO_LIGHT,       (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), \"an upward staircase\",    \"stairs spiral upward.\"},
+ /*DUNGEON_EXIT*/               {G_DOORWAY,     &lightBlue,       &firstStairsBackColor,30, 0,  DF_PLAIN_FIRE,0,DF_REPEL_CREATURES,         0,  NO_LIGHT,       (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), \"the dungeon exit\",       \"the gilded doors leading out of the dungeon are sealed by an invisible force.\"},
+ /*DUNGEON_PORTAL*/             {G_DOORWAY,     &wallCrystalColor,&firstStairsBackColor,30, 0,  DF_PLAIN_FIRE,0,DF_REPEL_CREATURES,         0,  INCENDIARY_DART_LIGHT, (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY | TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED), \"a crystal portal\",       \"dancing lights play across the plane of this sparkling crystal portal.\"},
+ /*TORCH_WALL*/                 {G_TORCH,       &torchColor,        &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                       \"a wall-mounted torch\", \"The torch is anchored firmly to the wall and sputters quietly in the gloom.\"},
+ /*CRYSTAL_WALL*/               {G_CRYSTAL,     &wallCrystalColor,  &wallCrystalColor,  0,  0,  DF_PLAIN_FIRE,0,0,                          0,  CRYSTAL_WALL_LIGHT,(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_DIAGONAL_MOVEMENT), (TM_STAND_IN_TILE | TM_REFLECTS_BOLTS),\"a crystal formation\", \"You feel the crystal's glossy surface and admire the dancing lights beneath.\"},
+ /*PORTCULLIS_CLOSED*/          {G_PORTCULLIS,  &gray,              &floorBackColor,    10, 0,  DF_PLAIN_FIRE,0,DF_OPEN_PORTCULLIS,         0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL), \"a heavy portcullis\", \"The iron bars rattle but will not budge; they are firmly locked in place.\"},
+ /*PORTCULLIS_DORMANT*/         {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_ACTIVATE_PORTCULLIS,     0,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),                                                    \"the ground\",           \"\"},
+ /*WOODEN_BARRICADE*/           {G_BARRICADE,   &doorForeColor,     &floorBackColor,    8,  100,DF_WOODEN_BARRICADE_BURN,0,0,               0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL),\"a dry wooden barricade\",\"The wooden barricade is firmly set but has dried over the years. Might it burn?\"},
+ /*PILOT_LIGHT_DORMANT*/        {G_TORCH,       &torchLightColor,   &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_PILOT_LIGHT,             0,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),            \"a wall-mounted torch\", \"The torch is anchored firmly to the wall, and sputters quietly in the gloom.\"},
+ /*PILOT_LIGHT*/                {G_FIRE,        &fireForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING | T_IS_FIRE), (TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR),                      \"a fallen torch\",       \"The torch lies at the foot of the wall, spouting gouts of flame haphazardly.\"},
+ /*HAUNTED_TORCH_DORMANT*/      {G_TORCH,       &torchColor,        &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_HAUNTED_TORCH_TRANSITION,0,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),            \"a wall-mounted torch\", \"The torch is anchored firmly to the wall and sputters quietly in the gloom.\"},
+ /*HAUNTED_TORCH_TRANSITIONING*/{G_TORCH,       &torchColor,        &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_HAUNTED_TORCH,        2000,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                          \"a wall-mounted torch\", \"The torch is anchored firmly to the wall and sputters quietly in the gloom.\"},
+ /*HAUNTED_TORCH*/              {G_TORCH,       &hauntedTorchColor, &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  HAUNTED_TORCH_LIGHT, (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                  \"a sputtering torch\",   \"A dim purple flame sputters and spits atop this wall-mounted torch.\"},
+ /*WALL_LEVER_HIDDEN*/          {G_WALL,        &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,DF_REVEAL_LEVER,0,            0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET),           \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*WALL_LEVER*/                 {G_LEVER,       &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_PULL_LEVER,              0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED),\"a lever\", \"The lever moves.\"},
+ /*WALL_LEVER_PULLED*/          {G_LEVER_PULLED,&wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                       \"an inactive lever\",    \"The lever won't budge.\"},
+ /*WALL_LEVER_HIDDEN_DORMANT*/  {G_WALL,        &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_CREATE_LEVER,            0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_IS_WIRED),                                         \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*STATUE_INERT*/               {G_STATUE,      &wallBackColor,     &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE), \"a marble statue\",  \"The cold marble statue has weathered the years with grace.\"},
+ /*STATUE_DORMANT*/             {G_STATUE,      &wallBackColor,     &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,DF_CRACKING_STATUE,         0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),\"a marble statue\", \"The cold marble statue has weathered the years with grace.\"},
+ /*STATUE_CRACKING*/        {G_CRACKED_STATUE,  &wallBackColor,     &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,DF_STATUE_SHATTER,       3500,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),\"a cracking statue\",    \"Deep cracks ramble down the side of the statue even as you watch.\"},
+ /*STATUE_INSTACRACK*/          {G_STATUE,      &wallBackColor,     &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,DF_STATUE_SHATTER,          0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),\"a marble statue\", \"The cold marble statue has weathered the years with grace.\"},
+ /*PORTAL*/                     {G_DOORWAY,     &wallBackColor,     &floorBackColor,    17, 0,  DF_PLAIN_FIRE,0,DF_PORTAL_ACTIVATE,         0,  NO_LIGHT,       (T_OBSTRUCTS_ITEMS), (TM_STAND_IN_TILE | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),  \"a stone archway\",      \"This ancient moss-covered stone archway radiates a strange, alien energy.\"},
+ /*TURRET_DORMANT*/             {G_WALL,        &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_TURRET_EMERGE,           0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),            \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*WALL_MONSTER_DORMANT*/       {G_WALL,        &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_WALL_SHATTER,            0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),            \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*DARK_FLOOR_DORMANT*/         {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_DARKENING_FLOOR,         0,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),                                                    \"the ground\",           \"\"},
+ /*DARK_FLOOR_DARKENING*/       {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_DARK_FLOOR,           1500,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"the ground\",           \"\"},
+ /*DARK_FLOOR*/                 {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  DARKNESS_CLOUD_LIGHT, 0, 0,                                                                                         \"the ground\",           \"\"},
+ /*MACHINE_TRIGGER_FLOOR*/      {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY),                      \"the ground\",           \"\"},
+ /*ALTAR_INERT*/                {G_ALTAR,       &altarForeColor,    &altarBackColor,    17, 0,  0,0,0,                                      0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                         \"a candle-lit altar\",   \"a gilded altar is adorned with candles that flicker in the breeze.\"},
+ /*ALTAR_KEYHOLE*/              {G_ORB_ALTAR,   &altarForeColor,    &altarBackColor,    17, 0,  0,0,0,                                      0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR),           \"a candle-lit altar\",   \"ornate gilding spirals around a spherical depression in the top of the altar.\"},
+ /*ALTAR_CAGE_OPEN*/            {G_ALTAR,       &altarForeColor,    &altarBackColor,    17, 0,  0,0,DF_ITEM_CAGE_CLOSE,                     0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_WITHOUT_KEY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"a candle-lit altar\",   \"a cage, open on the bottom, hangs over this altar on a retractable chain.\"},
+ /*ALTAR_CAGE_CLOSED*/          {G_CLOSED_CAGE, &altarBackColor,    &veryDarkGray,      17, 0,  0,0,DF_ITEM_CAGE_OPEN,                      0,  CANDLE_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"an iron cage\",\"the missing item must be replaced before you can access the remaining items.\"},
+ /*ALTAR_SWITCH*/               {G_SAC_ALTAR,   &altarForeColor,    &altarBackColor,    17, 0,  0,0,DF_ALTAR_INERT,                         0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"a candle-lit altar\",   \"a weathered stone altar is adorned with candles that flicker in the breeze.\"},
+ /*ALTAR_SWITCH_RETRACTING*/    {G_SAC_ALTAR,   &altarForeColor,    &altarBackColor,    17, 0,  0,0,DF_ALTAR_RETRACT,                       0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"a candle-lit altar\",   \"a weathered stone altar is adorned with candles that flicker in the breeze.\"},
+ /*ALTAR_CAGE_RETRACTABLE*/     {G_CLOSED_CAGE, &altarBackColor,    &veryDarkGray,      17, 0,  0,0,DF_CAGE_DISAPPEARS,                     0,  CANDLE_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"an iron cage\",\"the cage won't budge. Perhaps there is a way to raise it nearby...\"},
+ /*PEDESTAL*/                   {G_PEDESTAL,    &altarForeColor,    &pedestalBackColor, 17, 0,  0,0,0,                                      0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), 0,                                                                   \"a stone pedestal\",     \"elaborate carvings wind around this ancient pedestal.\"},
+ /*MONSTER_CAGE_OPEN*/          {G_OPEN_CAGE,   &floorBackColor,    &veryDarkGray,      17, 0,  0,0,0,                                      0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"an open cage\",         \"the interior of the cage is filthy and reeks of decay.\"},
+ /*MONSTER_CAGE_CLOSED*/        {G_CLOSED_CAGE, &gray,              &darkGray,          17, 0,  0,0,DF_MONSTER_CAGE_OPENS,                  0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_LIST_IN_SIDEBAR | TM_INTERRUPT_EXPLORATION_WHEN_SEEN),\"a locked iron cage\",\"the bars of the cage are firmly set and will not budge.\"},
+ /*COFFIN_CLOSED*/          {G_CLOSED_COFFIN,   &bridgeFrontColor,  &bridgeBackColor,   17, 20, DF_COFFIN_BURNS,0,DF_COFFIN_BURSTS,         0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_IS_WIRED | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),                  \"a sealed coffin\",      \"a coffin made from thick wooden planks rests in a bed of moss.\"},
+ /*COFFIN_OPEN*/                {G_OPEN_COFFIN, &black,             &bridgeBackColor,   17, 20, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),             \"an empty coffin\",      \"an open wooden coffin rests in a bed of moss.\"},
+
+ // traps (part of dungeon layer):
+ // tileType                    char            fore color          back color        prio ign% [fire,discover,promote]Type                         promoteChance   glowLight   flags mechflags                                                                     description             flavorText
+ /*GAS_TRAP_POISON_HIDDEN*/     {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_POISON_GAS_CLOUD,DF_SHOW_POISON_GAS_TRAP,0,                  0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*GAS_TRAP_POISON*/            {G_TRAP,        &poisonGasColor,    0,                  30, 0,  DF_POISON_GAS_CLOUD,0,0,                                        0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"a caustic gas trap\",   \"there is a hidden pressure plate in the floor above a reserve of caustic gas.\"},
+ /*TRAP_DOOR_HIDDEN*/           {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_POISON_GAS_CLOUD,DF_SHOW_TRAPDOOR,0,                         0,  NO_LIGHT,   (T_AUTO_DESCENT), (TM_IS_SECRET),                                                   \"the ground\",           \"you plunge through a hidden trap door!\"},
+ /*TRAP_DOOR*/                  {G_CHASM,       &chasmForeColor,    &black,             30, 0,  DF_POISON_GAS_CLOUD,0,0,                                        0,  NO_LIGHT,   (T_AUTO_DESCENT), 0,                                                                \"a hole\",               \"you plunge through a hole in the ground!\"},
+ /*GAS_TRAP_PARALYSIS_HIDDEN*/  {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  0,DF_SHOW_PARALYSIS_GAS_TRAP,0,                                 0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET | TM_IS_WIRED),                                       \"the ground\",           \"\"},
+ /*GAS_TRAP_PARALYSIS*/         {G_TRAP,        &pink,              0,                  30, 0,  0,0,0,                                                          0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),          \"a paralysis trigger\",  \"there is a hidden pressure plate in the floor.\"},
+ /*MACHINE_PARALYSIS_VENT_HIDDEN*/{G_FLOOR,     &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,DF_DISCOVER_PARALYSIS_VENT,DF_PARALYSIS_VENT_SPEW,0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED),                     \"the ground\",           \"\"},
+ /*MACHINE_PARALYSIS_VENT*/     {G_VENT,        &pink,              0,                  30, 0,  DF_PLAIN_FIRE,0,DF_PARALYSIS_VENT_SPEW,                         0,  NO_LIGHT,   (0), (TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                     \"an inactive gas vent\", \"A dormant gas vent is connected to a reserve of paralytic gas.\"},
+ /*GAS_TRAP_CONFUSION_HIDDEN*/  {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_CONFUSION_GAS_TRAP_CLOUD,DF_SHOW_CONFUSION_GAS_TRAP,0,       0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*GAS_TRAP_CONFUSION*/         {G_TRAP,        &confusionGasColor, 0,                  30, 0,  DF_CONFUSION_GAS_TRAP_CLOUD,0,0,                                0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"a confusion trap\",     \"A hidden pressure plate accompanies a reserve of psychotropic gas.\"},
+ /*FLAMETHROWER_HIDDEN*/        {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_FLAMETHROWER,DF_SHOW_FLAMETHROWER_TRAP,0,                    0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*FLAMETHROWER*/               {G_TRAP,        &red,               0,                  30, 0,  DF_FLAMETHROWER,0,0,                                            0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"a fire trap\",          \"A hidden pressure plate is connected to a crude flamethrower mechanism.\"},
+ /*FLOOD_TRAP_HIDDEN*/          {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_FLOOD,DF_SHOW_FLOOD_TRAP,0,                                  0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*FLOOD_TRAP*/                 {G_TRAP,        &blue,              0,                  58, 0,  DF_FLOOD,0,0,                                                   0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"a flood trap\",         \"A hidden pressure plate is connected to floodgates in the walls and ceiling.\"},
+ /*NET_TRAP_HIDDEN*/            {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_NET,DF_SHOW_NET_TRAP,0,                                      0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*NET_TRAP*/                   {G_TRAP,        &tanColor,          0,                  30, 0,  DF_NET,0,0,                                                     0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"a net trap\",           \"you see netting subtly concealed in the ceiling over a hidden pressure plate.\"},
+ /*ALARM_TRAP_HIDDEN*/          {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_AGGRAVATE_TRAP,DF_SHOW_ALARM_TRAP,0,                         0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_IS_SECRET),                                                     \"the ground\",           \"\"},
+ /*ALARM_TRAP*/                 {G_TRAP,        &gray,              0,                  30, 0,  DF_AGGRAVATE_TRAP,0,0,                                          0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                        \"an alarm trap\",        \"a hidden pressure plate is connected to a loud alarm mechanism.\"},
+ /*MACHINE_POISON_GAS_VENT_HIDDEN*/{G_FLOOR,    &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,DF_SHOW_POISON_GAS_VENT,DF_POISON_GAS_VENT_OPEN,  0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED),                     \"the ground\",           \"\"},
+ /*MACHINE_POISON_GAS_VENT_DORMANT*/{G_VENT,    &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_POISON_GAS_VENT_OPEN,                        0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"an inactive gas vent\", \"An inactive gas vent is hidden in a crevice in the ground.\"},
+ /*MACHINE_POISON_GAS_VENT*/    {G_VENT,        &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_VENT_SPEW_POISON_GAS,                    10000,  NO_LIGHT,   0, (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                                     \"a gas vent\",           \"Clouds of caustic gas are wafting out of a hidden vent in the floor.\"},
+ /*MACHINE_METHANE_VENT_HIDDEN*/{G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,DF_SHOW_METHANE_VENT,DF_METHANE_VENT_OPEN,        0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED),                     \"the ground\",           \"\"},
+ /*MACHINE_METHANE_VENT_DORMANT*/{G_VENT,       &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_METHANE_VENT_OPEN,                           0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"an inactive gas vent\", \"An inactive gas vent is hidden in a crevice in the ground.\"},
+ /*MACHINE_METHANE_VENT*/       {G_VENT,        &floorForeColor,    0,                  30, 15, DF_EMBERS,0,DF_VENT_SPEW_METHANE,                            5000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                      \"a gas vent\",           \"Clouds of explosive gas are wafting out of a hidden vent in the floor.\"},
+ /*STEAM_VENT*/                 {G_VENT,        &gray,              0,                  15, 15, DF_EMBERS,0,DF_STEAM_PUFF,                                    250,  NO_LIGHT,   T_OBSTRUCTS_ITEMS, (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                     \"a steam vent\",         \"A natural crevice in the floor periodically vents scalding gouts of steam.\"},
+ /*MACHINE_PRESSURE_PLATE*/     {G_TRAP,        &white,             &chasmEdgeBackColor,15, 0,  0,0,DF_MACHINE_PRESSURE_PLATE_USED,                             0,  NO_LIGHT,   (T_IS_DF_TRAP), (TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"a pressure plate\",        \"There is an exposed pressure plate here. A thrown item might trigger it.\"},
+ /*MACHINE_PRESSURE_PLATE_USED*/{G_TRAP,        &darkGray,          &chasmEdgeBackColor,15, 0,  0,0,0,                                                          0,  NO_LIGHT,   0, (TM_LIST_IN_SIDEBAR),                                                            \"an inactive pressure plate\", \"This pressure plate has already been depressed.\"},
+ /*MACHINE_GLYPH*/              {G_MAGIC_GLYPH, &glyphColor,        0,                  42, 0,  0,0,DF_INACTIVE_GLYPH,                                          0,  GLYPH_LIGHT_DIM,(0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT),\"a magical glyph\",      \"A strange glyph, engraved into the floor, flickers with magical light.\"},
+ /*MACHINE_GLYPH_INACTIVE*/     {G_MAGIC_GLYPH, &glyphColor,        0,                  42, 0,  0,0,DF_ACTIVE_GLYPH,                                        10000,  GLYPH_LIGHT_BRIGHT,(0), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                    \"a glowing glyph\",      \"A strange glyph, engraved into the floor, radiates magical light.\"},
+ /*DEWAR_CAUSTIC_GAS*/          {G_DEWAR,       &poisonGasColor,    &darkGray,          10, 20, DF_DEWAR_CAUSTIC,0,DF_DEWAR_CAUSTIC,                            0,  NO_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_LIST_IN_SIDEBAR | TM_PROMOTES_ON_PLAYER_ENTRY | TM_INVERT_WHEN_HIGHLIGHTED),\"a glass dewar of caustic gas\", \"\"},
+ /*DEWAR_CONFUSION_GAS*/        {G_DEWAR,       &confusionGasColor, &darkGray,          10, 20, DF_DEWAR_CONFUSION,0,DF_DEWAR_CONFUSION,                        0,  NO_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_LIST_IN_SIDEBAR | TM_PROMOTES_ON_PLAYER_ENTRY | TM_INVERT_WHEN_HIGHLIGHTED),\"a glass dewar of confusion gas\", \"\"},
+ /*DEWAR_PARALYSIS_GAS*/        {G_DEWAR,       &pink,              &darkGray,          10, 20, DF_DEWAR_PARALYSIS,0,DF_DEWAR_PARALYSIS,                        0,  NO_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_LIST_IN_SIDEBAR | TM_PROMOTES_ON_PLAYER_ENTRY | TM_INVERT_WHEN_HIGHLIGHTED),\"a glass dewar of paralytic gas\", \"\"},
+ /*DEWAR_METHANE_GAS*/          {G_DEWAR,       &methaneColor,      &darkGray,          10, 20, DF_DEWAR_METHANE,0,DF_DEWAR_METHANE,                            0,  NO_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_LIST_IN_SIDEBAR | TM_PROMOTES_ON_PLAYER_ENTRY | TM_INVERT_WHEN_HIGHLIGHTED),\"a glass dewar of methane gas\", \"\"},
+
+ // liquid layer
+ // tileType                    char        fore color              back color        prio ign% [fire,discover,promote]Type                         promoteChance   glowLight   flags mechflags                                                                     description             flavorText
+ /*DEEP_WATER*/                 {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,40, 100,DF_STEAM_ACCUMULATION,0,0,                                      0,  NO_LIGHT,   (T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE),\"the murky waters\", \"the current tugs you in all directions.\"},
+ /*SHALLOW_WATER*/              {0,     &shallowWaterForeColor, &shallowWaterBackColor, 55, 0,  DF_STEAM_ACCUMULATION,0,0,                                      0,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),              \"shallow water\",        \"the water is cold and reaches your knees.\"},
+ /*MUD*/                        {G_BOG,     &mudForeColor,          &mudBackColor,      55, 0,  DF_PLAIN_FIRE,0,DF_METHANE_GAS_PUFF,                          100,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING),                                     \"a bog\",                \"you are knee-deep in thick, foul-smelling mud.\"},
+ /*CHASM*/                      {G_CHASM,   &chasmForeColor,        &black,             40, 0,  DF_PLAIN_FIRE,0,0,                                              0,  NO_LIGHT,   (T_AUTO_DESCENT), (TM_STAND_IN_TILE),                                               \"a chasm\",              \"you plunge downward into the chasm!\"},
+ /*CHASM_EDGE*/                 {G_FLOOR,   &white,                 &chasmEdgeBackColor,80, 0,  DF_PLAIN_FIRE,0,0,                                              0,  NO_LIGHT,   0, 0,                                                                               \"the brink of a chasm\", \"chilly winds blow upward from the stygian depths.\"},
+ /*MACHINE_COLLAPSE_EDGE_DORMANT*/{G_FLOOR, &floorForeColor,        &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_SPREADABLE_COLLAPSE,                         0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),                                    \"the ground\",           \"\"},
+ /*MACHINE_COLLAPSE_EDGE_SPREADING*/{G_FLOOR,&white,                &chasmEdgeBackColor,45, 0,  DF_PLAIN_FIRE,0,DF_COLLAPSE_SPREADS,                         2500,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION),                                                  \"the crumbling ground\", \"cracks are appearing in the ground beneath your feet!\"},
+ /*LAVA*/                       {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,0,                                                0,  LAVA_LIGHT, (T_LAVA_INSTA_DEATH), (TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING),                    \"lava\",                 \"searing heat rises from the lava.\"},
+ /*LAVA_RETRACTABLE*/           {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,DF_RETRACTING_LAVA,                               0,  LAVA_LIGHT, (T_LAVA_INSTA_DEATH), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_ALLOWS_SUBMERGING),\"lava\",\"searing heat rises from the lava.\"},
+ /*LAVA_RETRACTING*/            {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,DF_OBSIDIAN_WITH_STEAM,                       -1500,  LAVA_LIGHT, (T_LAVA_INSTA_DEATH), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_ALLOWS_SUBMERGING), \"cooling lava\", \"searing heat rises from the lava.\"},
+ /*SUNLIGHT_POOL*/              {G_FLOOR,   &floorForeColor,        &floorBackColor,    90, 0,  DF_PLAIN_FIRE,0,0,                                              0,  SUN_LIGHT,  (0), (TM_STAND_IN_TILE),                                                            \"a patch of sunlight\",  \"sunlight streams through cracks in the ceiling.\"},
+ /*DARKNESS_PATCH*/             {G_FLOOR,   &floorForeColor,        &floorBackColor,    90, 0,  DF_PLAIN_FIRE,0,0,                                              0,  DARKNESS_PATCH_LIGHT,   (0), 0,                                                                 \"a patch of shadows\",   \"this area happens to be cloaked in shadows -- perhaps a safe place to hide.\"},
+ /*ACTIVE_BRIMSTONE*/           {G_ASHES,   &brimstoneForeColor,    &brimstoneBackColor,40, 100,DF_INERT_BRIMSTONE,0,DF_INERT_BRIMSTONE,                       10,  NO_LIGHT,   (T_IS_FLAMMABLE | T_SPONTANEOUSLY_IGNITES), 0,                                      \"hissing brimstone\",    \"the jagged brimstone hisses and spits ominously as it crunches under your feet.\"},
+ /*INERT_BRIMSTONE*/            {G_ASHES,   &brimstoneForeColor,    &brimstoneBackColor,40, 0,  DF_INERT_BRIMSTONE,0,DF_ACTIVE_BRIMSTONE,                     800,  NO_LIGHT,   (T_SPONTANEOUSLY_IGNITES), 0,                                                       \"hissing brimstone\",    \"the jagged brimstone hisses and spits ominously as it crunches under your feet.\"},
+ /*OBSIDIAN*/                   {G_FLOOR,   &darkGray,              &obsidianBackColor, 50, 0,  DF_PLAIN_FIRE,0,0,                                              0,  NO_LIGHT,   0, 0,                                                                               \"the obsidian ground\",  \"the ground has fused into obsidian.\"},
+ /*BRIDGE*/                     {G_BRIDGE,  &bridgeFrontColor,      &bridgeBackColor,   45, 50, DF_BRIDGE_FIRE,0,0,                                             0,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"a rickety rope bridge\",\"the rickety rope bridge creaks underfoot.\"},
+ /*BRIDGE_FALLING*/             {G_BRIDGE,  &bridgeFrontColor,      &bridgeBackColor,   45, 50, DF_BRIDGE_FALL,0,DF_BRIDGE_FALL,                            10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"a plummeting bridge\",  \"the bridge is plunging into the chasm before your eyes!\"},
+ /*BRIDGE_EDGE*/                {G_BRIDGE,  &bridgeFrontColor,      &bridgeBackColor,   45, 50, DF_PLAIN_FIRE,0,0,                                              0,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"a rickety rope bridge\",\"the rickety rope bridge is staked to the edge of the chasm.\"},
+ /*STONE_BRIDGE*/               {G_FLOOR,   &white,                 &chasmEdgeBackColor,20, 50, DF_BRIDGE_FIRE,0,0,                                             0,  NO_LIGHT,   0, 0,                                                                               \"a stone bridge\",       \"the narrow stone bridge winds precariously across the chasm.\"},
+ /*MACHINE_FLOOD_WATER_DORMANT*/{0,     &shallowWaterForeColor, &shallowWaterBackColor, 60, 0,  DF_STEAM_ACCUMULATION,0,DF_SPREADABLE_WATER,                    0,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"shallow water\", \"the water is cold and reaches your knees.\"},
+ /*MACHINE_FLOOD_WATER_SPREADING*/{0,   &shallowWaterForeColor, &shallowWaterBackColor, 60, 0,  DF_STEAM_ACCUMULATION,0,DF_WATER_SPREADS,                    2500,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"shallow water\", \"the water is cold and reaches your knees.\"},
+ /*MACHINE_MUD_DORMANT*/        {G_FLOOR,   &mudForeColor,          &mudBackColor,      55, 0,  DF_PLAIN_FIRE,0,DF_MUD_ACTIVATE,                                0,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_ALLOWS_SUBMERGING), \"a bog\",         \"you are knee-deep in thick, foul-smelling mud.\"},
+ /*ICE_DEEP*/                   {G_FLOOR,   &white,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_DEEP_WATER_MELTING,                  -100,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"ice\",                  \"a sheet of ice extends into the water, ripples frozen into its glossy surface.\"},
+ /*ICE_DEEP_MELT*/              {G_FLOOR,   &black,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_DEEP_WATER_THAW,                    10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"melting ice\",          \"cracks extend across the surface of the ice as it melts before your eyes.\"},
+ /*ICE_SHALLOW*/                {G_FLOOR,   &white,                 &lightBlue,         35, 100,DF_SHALLOW_WATER_THAW,0,DF_SHALLOW_WATER_MELTING,            -100,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"ice\",                  \"a sheet of ice extends into the water, ripples frozen into its glossy surface.\"},
+ /*ICE_SHALLOW_MELT*/           {G_FLOOR,   &black,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_SHALLOW_WATER_THAW,                 10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"melting ice\",          \"cracks extend across the surface of the ice as it melts before your eyes.\"},
+
+ // surface layer
+ // tileType                    char        fore color              back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight   flags mechflags                                                                                         description             flavorText
+ /*HOLE*/                       {G_CHASM,   &chasmForeColor,        &black,             9,  0,  DF_PLAIN_FIRE,0,DF_HOLE_DRAIN,          -1000,  NO_LIGHT,       (T_AUTO_DESCENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a hole\",               \"you plunge downward into the hole!\"},
+ /*HOLE_GLOW*/                  {G_CHASM,   &chasmForeColor,        &black,             9,  0,  DF_PLAIN_FIRE,0,DF_HOLE_DRAIN,          -1000,  DESCENT_LIGHT,  (T_AUTO_DESCENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a hole\",               \"you plunge downward into the hole!\"},
+ /*HOLE_EDGE*/                  {G_FLOOR,   &white,                 &chasmEdgeBackColor,50, 0,  DF_PLAIN_FIRE,0,0,                       -500,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"translucent ground\",   \"chilly gusts of air blow upward through the translucent floor.\"},
+ /*FLOOD_WATER_DEEP*/           {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,41, 100,DF_STEAM_ACCUMULATION,0,DF_FLOOD_DRAIN,  -200,  NO_LIGHT,       (T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"sloshing water\", \"roiling water floods the room.\"},
+ /*FLOOD_WATER_SHALLOW*/        {0,     &shallowWaterForeColor, &shallowWaterBackColor, 50, 0,  DF_STEAM_ACCUMULATION,0,DF_PUDDLE,       -100,  NO_LIGHT,       (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"shallow water\",        \"knee-deep water drains slowly into holes in the floor.\"},
+ /*GRASS*/                      {G_GRASS,   &grassColor,            0,                  60, 15, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"grass-like fungus\",    \"grass-like fungus crunches underfoot.\"},
+ /*DEAD_GRASS*/                 {G_GRASS,   &deadGrassColor,        0,                  60, 40, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"withered fungus\",      \"dead fungus covers the ground.\"},
+ /*GRAY_FUNGUS*/                {G_GRASS,   &grayFungusColor,       0,                  51, 10, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"withered fungus\",      \"groping tendrils of pale fungus rise from the muck.\"},
+ /*LUMINESCENT_FUNGUS*/         {G_GRASS,   &fungusColor,           0,                  60, 10, DF_PLAIN_FIRE,0,0,                          0,  FUNGUS_LIGHT,   (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"luminescent fungus\",   \"luminescent fungus casts a pale, eerie glow.\"},
+ /*LICHEN*/                     {G_LICHEN,  &lichenColor,           0,                  60, 50, DF_PLAIN_FIRE,0,DF_LICHEN_GROW,         10000,  NO_LIGHT,       (T_CAUSES_POISON | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                \"deadly lichen\",        \"venomous barbs cover the quivering tendrils of this fast-growing lichen.\"},
+ /*HAY*/                        {G_GRASS,   &hayColor,              &refuseBackColor,   57, 50, DF_STENCH_BURN,0,0,                         0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"filthy hay\",           \"a pile of hay, matted with filth, has been arranged here as a makeshift bed.\"},
+ /*RED_BLOOD*/                  {G_FLOOR_ALT,&humanBloodColor,      0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of blood\",      \"the floor is splattered with blood.\"},
+ /*GREEN_BLOOD*/                {G_FLOOR_ALT,&insectBloodColor,     0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of green blood\", \"the floor is splattered with green blood.\"},
+ /*PURPLE_BLOOD*/               {G_FLOOR_ALT,&poisonGasColor,       0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of purple blood\", \"the floor is splattered with purple blood.\"},
+ /*ACID_SPLATTER*/              {G_FLOOR_ALT,&acidBackColor,        0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, 0,                                                                                               \"a puddle of acid\",     \"the floor is splattered with acid.\"},
+ /*VOMIT*/                      {G_FLOOR_ALT,&vomitColor,           0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a puddle of vomit\",    \"the floor is caked with vomit.\"},
+ /*URINE*/                      {G_FLOOR_ALT,&urineColor,           0,                  80, 0,  DF_PLAIN_FIRE,0,0,                        100,  NO_LIGHT,       (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                               \"a puddle of urine\",    \"a puddle of urine covers the ground.\"},
+ /*UNICORN_POOP*/               {G_FLOOR_ALT,&white,                0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  UNICORN_POOP_LIGHT,(0), (TM_STAND_IN_TILE),                                                                         \"unicorn poop\",         \"a pile of lavender-scented unicorn poop sparkles with rainbow light.\"},
+ /*WORM_BLOOD*/                 {G_FLOOR_ALT,&wormColor,            0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of worm entrails\", \"worm viscera cover the ground.\"},
+ /*ASH*/                        {G_ASHES,   &ashForeColor,          0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pile of ashes\",      \"charcoal and ash crunch underfoot.\"},
+ /*BURNED_CARPET*/              {G_ASHES,   &ashForeColor,          0,                  87, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"burned carpet\",        \"the carpet has been scorched by an ancient fire.\"},
+ /*PUDDLE*/                     {G_FLOOR_ALT,&shallowWaterBackColor,0,                  80, 20, 0,0,0,                                    100,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a puddle of water\",    \"a puddle of water covers the ground.\"},
+ /*BONES*/                      {G_BONES,   &bonesForeColor,        0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pile of bones\",      \"unidentifiable bones, yellowed with age, litter the ground.\"},
+ /*RUBBLE*/                     {G_RUBBLE,  &gray,                  0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pile of rubble\",     \"rocky rubble covers the ground.\"},
+ /*JUNK*/                       {G_BONES,   &mudBackColor,          &refuseBackColor,   70, 20, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pile of filthy effects\",\"primitive tools, carvings and trinkets are strewn about the area.\"},
+ /*BROKEN_GLASS*/               {G_FLOOR_ALT,&white,                0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"shattered glass\",      \"jagged chunks of glass from the broken dewar litter the ground.\"},
+ /*ECTOPLASM*/                  {G_FLOOR_ALT,&ectoplasmColor,       0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  ECTOPLASM_LIGHT,(0), (TM_STAND_IN_TILE),                                                                            \"ectoplasmic residue\",  \"a thick, glowing substance has congealed on the ground.\"},
+ /*EMBERS*/                     {G_ASHES,   &fireForeColor,         0,                  70, 0,  DF_PLAIN_FIRE,0,DF_ASH,                   300,  EMBER_LIGHT,    (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                               \"sputtering embers\",    \"sputtering embers cover the ground.\"},
+ /*SPIDERWEB*/                  {G_WEB,     &white,                 0,                  19, 100,DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_ENTANGLES | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),\"a spiderweb\",       \"thick, sticky spiderwebs fill the area.\"},
+ /*NETTING*/                    {G_NET,     &brown,                 0,                  19, 40, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_ENTANGLES | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),\"a net\",             \"a dense tangle of netting fills the area.\"},
+ /*FOLIAGE*/                    {G_FOLIAGE, &foliageColor,          0,                  45, 15, DF_PLAIN_FIRE,0,DF_TRAMPLED_FOLIAGE,        0,  NO_LIGHT,       (T_OBSTRUCTS_VISION | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP), \"dense foliage\",   \"dense foliage fills the area, thriving on what sunlight trickles in.\"},
+ /*DEAD_FOLIAGE*/               {G_FOLIAGE, &deadFoliageColor,      0,                  45, 80, DF_PLAIN_FIRE,0,DF_SMALL_DEAD_GRASS,        0,  NO_LIGHT,       (T_OBSTRUCTS_VISION | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP), \"dead foliage\",    \"the decaying husk of a fungal growth fills the area.\"},
+ /*TRAMPLED_FOLIAGE*/           {G_GRASS,   &foliageColor,          0,                  60, 15, DF_PLAIN_FIRE,0,DF_FOLIAGE_REGROW,        100,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                                     \"trampled foliage\",     \"dense foliage fills the area, thriving on what sunlight trickles in.\"},
+ /*FUNGUS_FOREST*/              {G_FOLIAGE, &fungusForestLightColor,0,                  45, 15, DF_PLAIN_FIRE,0,DF_TRAMPLED_FUNGUS_FOREST,  0,  FUNGUS_FOREST_LIGHT,(T_OBSTRUCTS_VISION | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP),\"a luminescent fungal forest\", \"luminescent fungal growth fills the area, groping upward from the rich soil.\"},
+ /*TRAMPLED_FUNGUS_FOREST*/     {G_GRASS,   &fungusForestLightColor,0,                  60, 15, DF_PLAIN_FIRE,0,DF_FUNGUS_FOREST_REGROW,  100,  FUNGUS_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                                     \"trampled fungal foliage\", \"luminescent fungal growth fills the area, groping upward from the rich soil.\"},
+ /*FORCEFIELD*/                 {G_CRYSTAL, &forceFieldColor,       &forceFieldColor,   0,  0,  0,0,DF_FORCEFIELD_MELT,                  -200,  FORCEFIELD_LIGHT, (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE),       \"a green crystal\",      \"The translucent green crystal is melting away in front of your eyes.\"},
+ /*FORCEFIELD_MELT*/            {G_CRYSTAL, &black,                 &forceFieldColor,   0,  0,  0,0,0,                                 -10000,  FORCEFIELD_LIGHT, (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE),     \"a dissolving crystal\",     \"The translucent green crystal is melting away in front of your eyes.\"},
+ /*SACRED_GLYPH*/               {G_MAGIC_GLYPH, &sacredGlyphColor,  0,                  7,  0,  0,0,0,                                      0,  SACRED_GLYPH_LIGHT, (T_SACRED), 0,                                                                                  \"a sacred glyph\",       \"a sacred glyph adorns the floor, glowing with a powerful warding enchantment.\"},
+ /*MANACLE_TL*/                 {G_CHAIN_TOP_LEFT,      &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the ceiling.\"},
+ /*MANACLE_BR*/                 {G_CHAIN_BOTTOM_RIGHT,  &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the floor.\"},
+ /*MANACLE_TR*/                 {G_CHAIN_TOP_RIGHT,     &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the ceiling.\"},
+ /*MANACLE_BL*/                 {G_CHAIN_BOTTOM_LEFT,   &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the floor.\"},
+ /*MANACLE_T*/                  {G_CHAIN_TOP,           &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},
+ /*MANACLE_B*/                  {G_CHAIN_BOTTOM,        &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},
+ /*MANACLE_L*/                  {G_CHAIN_LEFT,          &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},
+ /*MANACLE_R*/                  {G_CHAIN_RIGHT,         &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},
+ /*PORTAL_LIGHT*/               {0,                     0,          0,                  1,  0,  0,0,0,                                  10000,  PORTAL_ACTIVATE_LIGHT,(0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                         \"blinding light\",       \"blinding light streams out of the archway.\"},
+ /*GUARDIAN_GLOW*/              {0,                     0,          0,                  100,0,  0,0,0,                                  10000,  GLYPH_LIGHT_BRIGHT,(0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                            \"a red glow\",           \"a red glow fills the area.\"},
+
+ // fire tiles                  char        fore color              back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight       flags mechflags                                                                                     description             flavorText
+ /*PLAIN_FIRE*/                 {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,DF_EMBERS,                            500,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"billowing flames\",     \"flames billow upward.\"},
+ /*BRIMSTONE_FIRE*/             {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,0,                                   2500,  BRIMSTONE_FIRE_LIGHT,(T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),           \"sulfurous flames\",     \"sulfurous flames leap from the unstable bed of brimstone.\"},
+ /*FLAMEDANCER_FIRE*/           {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,DF_OBSIDIAN,                         5000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"clouds of infernal flame\", \"billowing infernal flames eat at the floor.\"},
+ /*GAS_FIRE*/                   {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,0,                                   8000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"a cloud of burning gas\", \"burning gas fills the air with flame.\"},
+ /*GAS_EXPLOSION*/              {G_FIRE,    &yellow,                0,                  10, 0,  0,0,0,                                  10000,  EXPLOSION_LIGHT,(T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT), \"a violent explosion\", \"the force of the explosion slams into you.\"},
+ /*DART_EXPLOSION*/             {G_FIRE,    &white,                 0,                  10, 0,  0,0,0,                                  10000,  INCENDIARY_DART_LIGHT ,(T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),         \"a flash of fire\",      \"flames burst out of the incendiary dart.\"},
+ /*ITEM_FIRE*/                  {G_FIRE,    &white,                 0,                  10, 0,  0,0,DF_EMBERS,                           3000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"crackling flames\",     \"crackling flames rise from the blackened item.\"},
+ /*CREATURE_FIRE*/              {G_FIRE,    &white,                 0,                  10, 0,  0,0,DF_EMBERS,                           3000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"greasy flames\",        \"greasy flames rise from the corpse.\"},
+
+ // gas layer
+ /*POISON_GAS*/                 {' ',       0,                      &poisonGasColor,    35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_DAMAGE), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES),                         \"a cloud of caustic gas\", \"you can feel the purple gas eating at your flesh.\"},
+ /*CONFUSION_GAS*/              {' ',       0,                      &confusionGasColor, 35, 100,DF_GAS_FIRE,0,0,                            0,  CONFUSION_GAS_LIGHT,(T_IS_FLAMMABLE | T_CAUSES_CONFUSION), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),          \"a cloud of confusion gas\", \"the rainbow-colored gas tickles your brain.\"},
+ /*ROT_GAS*/                    {' ',       0,                      &vomitColor,        35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_NAUSEA), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                 \"a cloud of putrescence\", \"the stench of rotting flesh is overpowering.\"},
+ /*STENCH_SMOKE_GAS*/           {' ',       0,                      &vomitColor,        35, 0,  DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_CAUSES_NAUSEA), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                                  \"a cloud of putrid smoke\", \"you retch violently at the smell of the greasy smoke.\"},
+ /*PARALYSIS_GAS*/              {' ',       0,                      &pink,              35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_PARALYSIS), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),              \"a cloud of paralytic gas\", \"the pale gas causes your muscles to stiffen.\"},
+ /*METHANE_GAS*/                {' ',       0,                      &methaneColor,      35, 100,DF_GAS_FIRE,0,DF_EXPLOSION_FIRE,            0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE),                                        \"a cloud of explosive gas\", \"the smell of explosive swamp gas fills the air.\"},
+ /*STEAM*/                      {' ',       0,                      &white,             35, 0,  DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_CAUSES_DAMAGE), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                                  \"a cloud of scalding steam\", \"scalding steam fills the air!\"},
+ /*DARKNESS_CLOUD*/             {' ',       0,                      0,                  35, 0,  DF_GAS_FIRE,0,0,                            0,  DARKNESS_CLOUD_LIGHT,   (0), (TM_STAND_IN_TILE),                                                                    \"a cloud of supernatural darkness\", \"everything is obscured by an aura of supernatural darkness.\"},
+ /*HEALING_CLOUD*/              {' ',       0,                      &darkRed,           35, 0,  DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_CAUSES_HEALING), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                                 \"a cloud of healing spores\", \"bloodwort spores, renowned for their healing properties, fill the air.\"},
+
+ // bloodwort pods              char        fore color              back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight       flags mechflags                                                                                     description             flavorText
+ /*BLOODFLOWER_STALK*/  {G_BLOODWORT_STALK, &bloodflowerForeColor,&bloodflowerBackColor,10, 20, DF_PLAIN_FIRE,0,DF_BLOODFLOWER_PODS_GROW, 100,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"a bloodwort stalk\", \"this spindly plant grows seed pods famous for their healing properties.\"},
+ /*BLOODFLOWER_POD*/    {G_BLOODWORT_POD,   &bloodflowerPodForeColor,0,                 11, 20, DF_BLOODFLOWER_POD_BURST,0,DF_BLOODFLOWER_POD_BURST, 0,NO_LIGHT,(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED), \"a bloodwort pod\", \"the bloodwort seed pod bursts, releasing a cloud of healing spores.\"},
+
+ // shrine accoutrements
+ /*HAVEN_BEDROLL*/              {G_BEDROLL, &black,                 &bedrollBackColor,  57, 50, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                                     \"an abandoned bedroll\", \"a bedroll lies in the corner, disintegrating with age.\"},
+
+ // algae
+ /*DEEP_WATER_ALGAE_WELL*/      {G_FLOOR,   &floorForeColor,        &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_ALGAE_1,               100,  NO_LIGHT,       0, 0,                                                                                               \"the ground\",           \"\"},
+ /*DEEP_WATER_ALGAE_1*/         {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,40, 100,DF_STEAM_ACCUMULATION,0,DF_ALGAE_1,       500,  LUMINESCENT_ALGAE_BLUE_LIGHT,(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),  \"luminescent waters\",   \"blooming algae fills the waters with a swirling luminescence.\"},
+ /*DEEP_WATER_ALGAE_2*/         {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,39, 100,DF_STEAM_ACCUMULATION,0,DF_ALGAE_REVERT,  300,  LUMINESCENT_ALGAE_GREEN_LIGHT,(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"luminescent waters\",   \"blooming algae fills the waters with a swirling luminescence.\"},
+
+ // ancient spirit terrain
+ /*ANCIENT_SPIRIT_VINES*/       {G_VINE,    &lichenColor,           0,                  19, 100,DF_PLAIN_FIRE,0,DF_ANCIENT_SPIRIT_GRASS, 1000,  NO_LIGHT,       (T_ENTANGLES | T_CAUSES_DAMAGE | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_PLAYER_ENTRY),\"thorned vines\",       \"thorned vines make a rustling noise as they quiver restlessly.\"}, // +tile
+ /*ANCIENT_SPIRIT_GRASS*/       {G_GRASS,   &grassColor,            0,                  60, 15, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE),                                                               \"a tuft of grass\",      \"tufts of lush grass have improbably pushed upward through the stone ground.\"},
+
+ // Yendor amulet floor tile
+ /*AMULET_SWITCH*/              {G_FLOOR,   &floorForeColor,        &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP),                         \"the ground\",           \"\"},
+
+ // commutation device          char        fore color              back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight       flags mechflags                                                                                     description             flavorText
+ /*COMMUTATION_ALTAR*/         {G_ORB_ALTAR,&altarForeColor,       &greenAltarBackColor,17, 0,  0,0,DF_ALTAR_COMMUTE,                       0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_SWAP_ENCHANTS_ACTIVATION | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),    \"a commutation altar\",  \"crude diagrams on this altar and its twin invite you to place items upon them.\"},
+ /*COMMUTATION_ALTAR_INERT*/   {G_ORB_ALTAR,&black,                &greenAltarBackColor,17, 0,  0,0,0,                                      0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                         \"a scorched altar\",     \"scorch marks cover the surface of the altar, but it is cold to the touch.\"},
+ /*PIPE_GLOWING*/               {G_PIPES,   &veryDarkGray,          0,                  45, 0,  DF_PLAIN_FIRE,0,DF_INERT_PIPE,              0,  CONFUSION_GAS_LIGHT, (0), (TM_IS_WIRED | TM_VANISHES_UPON_PROMOTION),                                               \"glowing glass pipes\",  \"glass pipes are set into the floor and emit a soft glow of shifting color.\"},
+ /*PIPE_INERT*/                 {G_PIPES,   &black,                 0,                  45, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (0),                                                                                           \"charred glass pipes\",  \"the inside of the glass pipes are charred.\"},
+
+ // resurrection altar
+ /*RESURRECTION_ALTAR*/         {G_ALTAR,   &altarForeColor,        &goldAltarBackColor,17, 0,  0,0,DF_ALTAR_RESURRECT,                     0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),           \"a resurrection altar\", \"the souls of the dead surround you. A deceased ally might be called back.\"},
+ /*RESURRECTION_ALTAR_INERT*/   {G_ALTAR,   &black,                 &goldAltarBackColor,16, 0,  0,0,0,                                      0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                         \"a scorched altar\",     \"scorch marks cover the surface of the altar, but it is cold to the touch.\"},
+ /*MACHINE_TRIGGER_FLOOR_REPEATING*/{0,     0,                      0,                  95, 0,  0,0,0,                                      0,  NO_LIGHT,       (0), (TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY),                                                   \"the ground\",           \"\"},
+
+ // sacrifice altar
+ /*SACRIFICE_ALTAR_DORMANT*/  {G_SAC_ALTAR, &altarForeColor,        &altarBackColor,    17, 0,  0,0,DF_SACRIFICE_ALTAR,                     0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"a sacrificial altar\", \"demonological symbols decorate this altar.\"},
+ /*SACRIFICE_ALTAR*/          {G_SAC_ALTAR, &altarForeColor,        &altarBackColor,    17, 0,  0,0,DF_SACRIFICE_COMPLETE,                  0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_SACRIFICE_ENTRY), \"a sacrifice altar\",    \"demonological symbols decorate this altar.\"},
+ /*SACRIFICE_LAVA*/             {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,0,                            0,  LAVA_LIGHT,     (T_LAVA_INSTA_DEATH), (TM_ALLOWS_SUBMERGING | TM_LIST_IN_SIDEBAR),                                  \"a sacrificial pit\",      \"the smell of burnt flesh lingers over this pit of lava.\"},
+ /*SACRIFICE_CAGE_DORMANT*/     {G_WALL,    &altarBackColor,        &veryDarkGray,      17, 0,  0,0,DF_SACRIFICE_CAGE_ACTIVE,               0,  CANDLE_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"an iron cage\",\"the cage won't budge. Perhaps there is a way to raise it nearby...\"},
+ /*DEMONIC_STATUE*/             {G_STATUE,  &wallBackColor,         &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,0,                          0,  DEMONIC_STATUE_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE),  \"a demonic statue\", \"An obsidian statue of a leering demon looms over the room.\"},
+
+ // doorway statues
+ /*STATUE_INERT_DOORWAY*/{G_CRACKED_STATUE, &wallBackColor,         &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_CONNECTS_LEVEL),  \"a broken statue\",  \"Once magnificent, the statue has crumbled beyond recognition.\"},
+ /*STATUE_DORMANT_DOORWAY*/     {G_STATUE,  &wallBackColor,         &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,DF_CRACKING_STATUE,         0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_CONNECTS_LEVEL),\"a marble statue\", \"The cold marble statue has weathered the years with grace.\"},
+
+ // extensible stone bridge     char        fore color              back color        prio ign% [fire,discover,promote]Type     promoteChance   glowLight       flags mechflags                                                                                     description             flavorText
+ /*CHASM_WITH_HIDDEN_BRIDGE*/   {G_CHASM,   &chasmForeColor,        &black,             40, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_AUTO_DESCENT), (TM_STAND_IN_TILE),                                                               \"a chasm\",              \"you plunge downward into the chasm!\"},
+ /*CHASM_WITH_HIDDEN_BRIDGE_ACTIVE*/{G_FLOOR,&white,                &chasmEdgeBackColor,40, 0,  DF_PLAIN_FIRE,0,DF_BRIDGE_ACTIVATE,      6000,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"a stone bridge\",       \"the narrow stone bridge is extending across the chasm.\"},
+ /*MACHINE_CHASM_EDGE*/         {G_FLOOR,   &white,                 &chasmEdgeBackColor,80, 0,  DF_PLAIN_FIRE,0,DF_BRIDGE_ACTIVATE_ANNOUNCE,0,  NO_LIGHT,       (0), (TM_IS_WIRED),                                                                                 \"the brink of a chasm\", \"chilly winds blow upward from the stygian depths.\"},
+
+ // rat trap
+ /*RAT_TRAP_WALL_DORMANT*/      {G_WALL,    &wallForeColor,         &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_WALL_CRACK,              0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED),            \"a stone wall\",         \"The rough stone wall is firm and unyielding.\"},
+ /*RAT_TRAP_WALL_CRACKING*/     {G_WALL,    &wallForeColor,         &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_WALL_SHATTER,          500,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),     \"a cracking wall\",      \"Cracks are running ominously across the base of this rough stone wall.\"},
+
+ // electric crystals
+ /*ELECTRIC_CRYSTAL_OFF*/{G_ELECTRIC_CRYSTAL,&wallCrystalColor,     &graniteBackColor,  0,  0,  DF_PLAIN_FIRE,0,DF_ELECTRIC_CRYSTAL_ON,     0,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_PROMOTES_ON_ELECTRICITY | TM_IS_CIRCUIT_BREAKER | TM_IS_WIRED | TM_LIST_IN_SIDEBAR), \"a darkened crystal globe\", \"A slight electric shock startles you when you touch the inert crystal globe.\"},
+ /*ELECTRIC_CRYSTAL_ON*/{G_ELECTRIC_CRYSTAL,&white,                 &wallCrystalColor,  0,  0,  DF_PLAIN_FIRE,0,0,                          0,  CRYSTAL_WALL_LIGHT,(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR), \"a shining crystal globe\", \"Crackling light streams out of the crystal globe.\"},
+ /*TURRET_LEVER*/                {G_LEVER,  &wallForeColor,         &wallBackColor,     0,  0,  DF_...
+
+ ❯ src/test/x2g_native_effects.test.ts:187:24
+    185|         const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Global…
+    186|         for(const [id,name] of [['creeping_death','creeping death'],['…
+    187|             expect(ce).toMatch(new RegExp(`\\{"${name}",[^\\n]*?7,`));
+       |                        ^
+    188|             expect(ItemLoader.genPotions.find(p=>p.id===`potion_of_${i…
+    189|         }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 10 passed (12)
+   Start at  07:30:52
+   Duration  10.71s (transform 1000ms, setup 0ms, import 2.38s, tests 8.14s, environment 0ms)
+

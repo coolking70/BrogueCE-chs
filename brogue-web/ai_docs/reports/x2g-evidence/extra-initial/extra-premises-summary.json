@@ -1,0 +1,94 @@
+[
+  {
+    "label": "s0",
+    "exit": 0,
+    "passed": 4,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "B-2 药水：功能性细分与幻觉特例 登记钉子：POTION_DARKNESS 投掷 DF 未齐前不进入生成池",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "U17a actual Game consumers historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries DISTANCE_ATTACK never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries POISON_DART never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "passed",
+        "messages": []
+      }
+    ]
+  },
+  {
+    "label": "review",
+    "exit": 1,
+    "passed": 0,
+    "failed": 4,
+    "tests": [
+      {
+        "name": "B-2 药水：功能性细分与幻觉特例 登记钉子：POTION_DARKNESS 投掷 DF 未齐前不进入生成池",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected { id: 'potion_of_darkness', …(6) } to be undefined\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-extra-premises-yqY6sn/brogue-web/src/test/b_2_throwing.test.ts:235:80\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      },
+      {
+        "name": "U17a actual Game consumers historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected [ Array(146) ] to have a length of 140 but got 146\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-extra-premises-yqY6sn/brogue-web/src/test/u_17a_df_transaction.test.ts:262:260\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries DISTANCE_ATTACK never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected last \"attack\" call to have been called with [ …(3) ]\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-extra-premises-yqY6sn/brogue-web/src/test/w_4_bolt_reflection.test.ts:261:58\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries POISON_DART never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "failed",
+        "messages": [
+          "AssertionError: expected last \"attack\" call to have been called with [ …(3) ]\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x2g-extra-premises-yqY6sn/brogue-web/src/test/w_4_bolt_reflection.test.ts:261:58\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "label": "repaired",
+    "exit": 0,
+    "passed": 4,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "B-2 药水：功能性细分与幻觉特例 登记钉子：X2g POTION_DARKNESS 投掷 DF 闭环后按 CE 频率入池",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "U17a actual Game consumers historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries DISTANCE_ATTACK never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "passed",
+        "messages": []
+      },
+      {
+        "name": "W-4 recipient dispatch and boundaries POISON_DART never reflects from monster/armor/crystal and remains a physical attack",
+        "status": "passed",
+        "messages": []
+      }
+    ]
+  }
+]

@@ -30,13 +30,13 @@ export function arcanaTargetCandidates(player: Player, grid: Grid, monsters: rea
     const polarityKnown = item.magicDetected || item.identified === true || ItemLoader.isPolarityRevealed(id);
     const polarity = polarityKnown ? ItemLoader.itemMagicPolarity(item) : 0;
     return monsters.filter(m => {
-        if (m.hp <= 0 || !canObserveBoltCreature(player, grid, m)) return false;
+        if (m.hp <= 0 || m.submerged || !canObserveBoltCreature(player, grid, m)) return false;
         // CE openPathBetween also rejects creatures and terrain in intervening cells.
         const line = boltLine(grid, player.loc, m.loc);
         const aimIndex = line.findIndex(p => p.x === m.loc.x && p.y === m.loc.y);
         if (line.slice(0, aimIndex).some(p =>
             (cellTerrainFlags(grid, p.x, p.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))
-            || monsters.some(other => other !== m && other.hp > 0 && !other.isDormant
+            || monsters.some(other => other !== m && other.hp > 0 && !other.isDormant && !other.submerged
                 && (other.isAlly || (!other.isTrulyInvisible() && !other.hasStatus('invisible'))) && other.loc.x === p.x && other.loc.y === p.y))) return false;
         if (player.hasStatus('hallucinating') && !player.hasStatus('telepathy')
             && !m.hasBehavior('MONST_INANIMATE') && !m.isInvulnerable()) return false;

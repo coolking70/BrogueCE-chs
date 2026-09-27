@@ -63,7 +63,7 @@ describe('U15e CE potion semantics', () => {
         expect(game.player.maxStatus.darkness).toBe(400);
     });
 
-    it('fixed CE durations and lichen retirement leave generation entries stable', () => {
+    it('fixed CE durations and native potion generation frequencies stay correct', () => {
         const durations = [
             ['potion_of_hallucination', 'hallucinating', 300],
             ['potion_of_invisibility', 'invisible', 75],
@@ -77,7 +77,7 @@ describe('U15e CE potion semantics', () => {
             expect(game.player.getStatusDuration(status)).toBeGreaterThan(0);
             expect(game.player.maxStatus[status]).toBe(duration);
         }
-        expect(ItemLoader.genPotions.some(p => p.id === 'potion_of_darkness')).toBe(false);
+        expect(ItemLoader.genPotions.some(p => p.id === 'potion_of_darkness')).toBe(true);
         expect(ItemLoader.potions.find(p => p.id === 'potion_of_creeping_death')?.frequency).toBe(7);
     });
 });

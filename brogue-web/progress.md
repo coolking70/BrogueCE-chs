@@ -1486,3 +1486,23 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 - 六种护符完成；624 个原 C 黄金值、新专项 11/11、134 项定向、15 个隔离故障变体、真实 UI/保存刷新检查通过。UR3 的机器产物差异仅两处护符名称，全部 trace 变化已归因。浅层/深层各写一次（数值不变，只更新说明），UR3/4 按原入口各录一次，UR2 与三份 P2 未动。
 - 完整预检 6 条红灯均收口：UR3/4 黄金各一条；W-5 为 900 秒超时，未改测试，独立复核与最终全量均通过；itemFlavors 三条源于“护符需要未知外观”的旧前提。先证 HEAD 原守卫 5/5、扩目录后三条红；只保留 CE 五类未知外观资格，并新增无外观映射时护符出生已鉴定/中文检查，修后 6/6、反向破坏出生鉴定可检出。该一处旧前提修正及完整证据交验收方裁决，见 ai_docs/reports/x2e.report.md §5。
 - 报告已收口；本轮浏览器与开发服务器关闭，未暂存、未提交。
+
+## 2026-09-27 X2g
+
+- 执行 x2g.prompt.md；四族独立核 CE、分阶段留存生成及 trace，先记录浅/深基线，最后全量验证，不提交。
+
+X2g review: four native families wired through layered terrain, contact, targeting,
+rendering and the explicit U01 snapshot field list. Creeping death and darkness
+are restored separately at CE frequency 7. The original five premise guards were
+run against HEAD (65 pass) and the pool candidate (59 pass / 6 old-premise fail),
+with originals retained under x2g-evidence. Twelve dedicated behavior tests pass,
+including 9040 original-C oracle cases and full next-system-turn save equivalence;
+ten isolated incorrect implementations are all detected. Browser review found and
+fixed missing ROT_GAS tint; use full-page screenshots because the skill client's
+canvas export is black. Final drift/deep/trace attribution and full npm test pending.
+
+- X2g 完整发现轮206文件结束，3851通过/20失败：19个旧前提已反事实验证后修订，W-15真实重复死亡错误修实现、原守卫不动。所有16份旧前提原文件匹配HEAD并留验收提案；最终17项专项、41项定向、9040个C oracle组合、10个故障变体及14个浏览器场景通过。
+- X2g 于2026-09-27 09:10:26 CST启动最终冻结：959输入，build通过；完整npm test(4workers)运行中，W-5已在原900秒门限内通过。只修改报告与派生证据，不再修改源码/测试/脚本/基线；终验结果待收口。
+
+- X2g 最终完成：2026-09-27 09:10:26–09:47:23 CST，build / 完整npm test / 浅层drift / 独立深层 / diff-check全部退出0。206文件、3876通过、0失败、8既有跳过、5既有todo；R∪S199/199、65份源码读取守卫及点名清单零遗漏。959冻结输入前后变化0，两份清单SHA-256均91b0e84d…；最终111份生产文件与最后归因候选完全相同，基线无意外变化，代码CRLF为0。
+- X2g 报告 ai_docs/reports/x2g.report.md 已收口，16份旧前提修订及反事实证据留验收方裁决。浅/深基线各一次、UR3原入口一次；UR2/4及三份P2未动。最终17项专项、10个故障变体、14个浏览器场景通过；浏览器和开发服务器已关闭。终验后仅补文档与派生证据，未暂存、未提交。

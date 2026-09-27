@@ -1,0 +1,7 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/x2g_native_effects.test.ts(75,27): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.
+src/test/x2g_native_effects.test.ts(76,53): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.
+src/test/x2g_native_effects.test.ts(194,46): error TS2345: Argument of type '{ type: string; }' is not assignable to parameter of type 'string'.

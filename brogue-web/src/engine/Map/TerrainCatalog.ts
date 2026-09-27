@@ -180,6 +180,9 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: e(0, TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY, 0, '', '', '', 0),
 
     // CE NOTHING，Globals.c:321
+    [TerrainType.LICHEN]: e(T_CAUSES_POISON | T_IS_FLAMMABLE, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION, 50, 'DF_PLAIN_FIRE', '', 'DF_LICHEN_GROW', 10000),
+    [TerrainType.DARKNESS_CLOUD]: e(0, TM_STAND_IN_TILE, 0, 'DF_GAS_FIRE', '', '', 0, false, LightKind.DARKNESS_CLOUD_LIGHT),
+    [TerrainType.ROT_GAS]: e(T_IS_FLAMMABLE | T_CAUSES_NAUSEA, TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY, 100, 'DF_GAS_FIRE', '', '', 0),
     [TerrainType.NOTHING]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
 
     // CE GRANITE，Globals.c:322：T_OBSTRUCTS_EVERYTHING（Rogue.h:1954 六旗标并集）

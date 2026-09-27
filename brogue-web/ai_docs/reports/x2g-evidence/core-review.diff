@@ -1,0 +1,727 @@
+diff --git a/brogue-web/src/engine/Combat/Combat.ts b/brogue-web/src/engine/Combat/Combat.ts
+index 3ccb149a..44f39b35 100644
+--- a/brogue-web/src/engine/Combat/Combat.ts
++++ b/brogue-web/src/engine/Combat/Combat.ts
+@@ -5,6 +5,8 @@
+  */
+ 
+ import { monsterDamageAdjustmentAmount, monsterAccuracyAdjusted, monsterDefenseAdjusted } from './CombatFormulas';
++import { canSeeMonster } from '../UI/MonsterVisibility';
++import type { Grid } from '../Map/Grid';
+ import { Creature } from '../../entities/Creature';
+ import { Player } from '../../entities/Player';
+ import { Monster, MonsterState } from '../../entities/Monster';
+@@ -69,6 +71,7 @@ export class CombatSystem {
+          * （CE inflictDamage 本身只认 MONST_INVULNERABLE，不检查 IMMUNE_TO_WEAPONS）。
+          */
+         isWeaponAttack?: boolean;
++        grid?: Grid;
+         /** CE armor adjustment precedes contact poison and shield absorption. */
+         beforeDamage?: (damage: number) => number;
+         /**
+@@ -88,6 +91,8 @@ export class CombatSystem {
+         let backstab = false;
+         let clumping: number | undefined;
+ 
++        if (attacker instanceof Monster && opts?.isWeaponAttack !== false
++            && !(attacker.hasAbility('MA_SEIZES') && !attacker.seizing)) attacker.submerged = false;
+         // --- Determine attacker stats ---
+         if (attacker instanceof Player) {
+             if (!attacker.equippedWeapon) attackerAccuracy = monsterAccuracyAdjusted(100, attacker.weaknessAmount);
+@@ -195,6 +200,8 @@ export class CombatSystem {
+             (!attacker.seizing || !defender.seized)) {
+             attacker.seizing = true;
+             defender.seized = true;
++            if (defender instanceof Player && attacker.submerged && opts?.grid
++                && canSeeMonster(defender, opts.grid, attacker)) attacker.submerged = false;
+             return { damage: 0, weaponName, hit: false, backstab: false, seized: true };
+         }
+ 
+@@ -285,7 +292,7 @@ export class CombatSystem {
+         if (damage > 0) {
+             const hpDamage = applyTo.absorbShieldDamage(damage);
+             CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
+-            applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
++            applyTo.takeDamage(hpDamage, true, opts?.grid); // already passed through the shield exactly once
+             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
+         } else {
+             // CE inflictDamage still applies the ring's minimum ±1 on a hit
+@@ -398,7 +405,8 @@ export class CombatSystem {
+     public static resolveThrownWeapon(
+         thrower: Player,
+         defender: Monster,
+-        item: Item
++        item: Item,
++        grid?: Grid
+     ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
+         // CE Items.c:6790: a thrown weapon attempt releases even on a miss.
+         defender.setStatusDuration('entranced', 0);
+@@ -429,7 +437,7 @@ export class CombatSystem {
+ 
+         const hpDamage = defender.absorbShieldDamage(damage);
+         CombatSystem.transferMonsterHealth(thrower, defender, hpDamage);
+-        defender.takeDamage(hpDamage, true);
++        defender.takeDamage(hpDamage, true, grid);
+         const killed = defender.hp <= 0;
+         defender.enrageAfterAttack();
+ 
+diff --git a/brogue-web/src/engine/Core/Game.ts b/brogue-web/src/engine/Core/Game.ts
+index 90885fb8..4eef808f 100644
+--- a/brogue-web/src/engine/Core/Game.ts
++++ b/brogue-web/src/engine/Core/Game.ts
+@@ -19,7 +19,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
+  * Main game state and orchestration
+  */
+ import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
+-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH, T_SPONTANEOUSLY_IGNITES } from '../Map/TerrainCatalog';
++import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_POISON, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH, T_SPONTANEOUSLY_IGNITES } from '../Map/TerrainCatalog';
+ // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+ import { randomMatchingLocation, passableArcCount as terrainPassableArcCount } from '../Items/ItemSpawnHeatMap';
+ import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
+@@ -91,18 +91,6 @@ import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';
+ import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
+ import i18next from 'i18next';
+ 
+-/**
+- * D2（G-1 / P1-45）：从随机生成池排除的药水。
+- * potion_of_creeping_death：B-4a 复核更正——它是 **CE 原生**药水（=POTION_LICHEN，
+- * "creeping death"，potionTable_Brogue 末条 GlobalsBrogue.c:681，frequency=7），
+- * F-0 §5.2-5 "CE 无 creeping death 药水"的判语与 CE 源码不符。维持退池的真实
+- * 理由是：web 的效果分支是纯 stub（只打日志，无 lichen），且 DF_LICHEN_PLANTED
+- * 缺载体（THROWN_FUNCTIONAL_POTION_EFFECTS 注释同此口径）——生成"什么都不做
+- * 的药水"比不生成更糟。载体补齐轮回池（登记于 B-4a 报告）。
+- * 数据侧的收口（consumables.json excludeFromGeneration 标记）留给数据文件轮次。
+- */
+-const D2_EXCLUDED_POTIONS: ReadonlySet<string> = new Set(['potion_of_creeping_death']);
+-
+ import { EnvironmentManager, GasType } from '../Environment/Gas';
+ import { FOVSys } from '../Lighting/FOV';
+ import { LightMap } from '../Lighting/LightMap';
+@@ -129,6 +117,7 @@ import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from
+ import { blinkTargetPreview } from '../Combat/BlinkTargeting';
+ import { MONSTER_BLINK, monsterBlinkAvoids } from '../Combat/MonsterBlink';
+ import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
++import { isSubmerged, monsterCanSubmergeNow, surfaceOnDryLand, hiddenBySubmersion } from '../Movement/Submersion';
+ import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterHidden } from '../UI/MonsterVisibility';
+ 
+ export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
+@@ -734,11 +723,8 @@ export class Game {
+                 id = this.chooseKindFromPool(ItemLoader.genScrolls.map(s => s.id), ItemLoader.genScrolls.map(s => s.frequency), meteredFreq);
+                 break;
+             case ItemCategory.POTION: {
+-                // D2（G-1 / P1-45）：creeping_death 维持退池——CE 原生（=POTION_LICHEN，
+-                // GlobalsBrogue.c:681，先前"web 自创"的判语有误，见 B-4a 报告），
+-                // 但 web 的效果是纯 stub 且 DF_LICHEN_PLANTED 缺载体，生成"什么都不做
+-                // 的药水"比不生成更糟。载体补齐轮回池。
+-                const pool = ItemLoader.genPotions.filter(p => !D2_EXCLUDED_POTIONS.has(p.id));
++                // X2g: both native effect chains are complete; use the CE kind table.
++                const pool = ItemLoader.genPotions;
+                 id = this.chooseKindFromPool(pool.map(p => p.id), pool.map(p => p.frequency), meteredFreq);
+                 break;
+             }
+@@ -921,14 +907,7 @@ export class Game {
+                 return null;
+             }
+             case 'POTION': {
+-                // D2（B-4a 更正口径）：creeping_death 是 CE 原生 POTION_LICHEN
+-                // （GlobalsBrogue.c:681），但 web 效果为 stub 且 DF_LICHEN_PLANTED
+-                // 缺载体——真实理由与回池条件见 D2_EXCLUDED_POTIONS 处注释。
+-                // （登记偏差：CE 的 lichen 基频 7 参与加权；web 先剔除再在剩余
+-                // 池内归一化。）
+-                const potions = ItemLoader.genPotions.filter(
+-                    (p) => !D2_EXCLUDED_POTIONS.has(p.id)
+-                );
++                const potions = ItemLoader.genPotions;
+                 if (potions.length > 0) {
+                     const pick = ItemLoader.chooseKind(potions.map(p => p.frequency ?? 0));
+                     return ItemLoader.spawnPotion(potions[pick]!.id, x, y);
+@@ -1241,7 +1220,7 @@ export class Game {
+             const damage = rng.randClumpedRange(6, 12, 2);
+             if (!m.isInvulnerable()) {
+                 m.interruptCorpseAbsorption(damage);
+-                m.hp -= m.absorbShieldDamage(damage);
++                m.takeDamage(damage, false, this.grid);
+                 if (m.hp <= 0) (m as unknown as { die(): void }).die();
+             }
+         }
+@@ -1581,6 +1560,7 @@ export class Game {
+         }
+         this.applyRandomMutation(leaderMon, depth);
+         if (wandering) leaderMon.state = MonsterState.WANDERING;
++        leaderMon.submerged = monsterCanSubmergeNow(leaderMon, this.grid);
+         this.monsters.push(leaderMon);
+         collected?.push(leaderMon);
+ 
+@@ -1613,6 +1593,7 @@ export class Game {
+                 mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
+                 // CE Monsters.c:753: the flag applies to every member as well as the leader.
+                 if (h.flags.includes('HORDE_ALLIED_WITH_PLAYER')) this.becomeAllyWith(mon);
++                mon.submerged = monsterCanSubmergeNow(mon, this.grid);
+                 this.monsters.push(mon);
+                 collected?.push(mon);
+                 if (floorTiles) {
+@@ -1739,6 +1720,7 @@ export class Game {
+                 mon.isAlly = summoner.isAlly;
+                 mon.state = summoner.state;
+                 mon.ticksUntilTurn = 101; // CE Monsters.c:1034
++                mon.submerged = monsterCanSubmergeNow(mon, this.grid);
+                 this.monsters.push(mon);
+                 spawned.push(mon);
+             }
+@@ -2545,7 +2527,7 @@ export class Game {
+     public monsterDisplayName(monster: Creature): string {
+         if (monster === this.player) return monster.name;
+         const target = monster as Monster;
+-        const visibleAtDeath = target.hp <= 0 && !monsterHidden(this.grid, target)
++        const visibleAtDeath = target.hp <= 0 && !monsterHidden(this.grid, target, this.player)
+             && !!this.grid.getCell(target.loc.x, target.loc.y)?.isVisible;
+         return canSeeMonster(this.player, this.grid, target) || visibleAtDeath ? target.name : '某个生物';
+     }
+@@ -3718,8 +3700,8 @@ export class Game {
+                         logger.log(i18next.t('potion.hallucinate_burst', { defaultValue: 'The world transforms into a swirling kaleidoscope of colors!' }), '#cc99ff');
+                         break;
+                     case 'creeping_death':
+-                        // CE POTION_LICHEN 是地衣 DF，不是气体。U17 补齐
+-                        // DF_LICHEN_PLANTED 的扩散/接触副作用前维持退池。
++                        // CE Items.c:8133: surface lichen, not a volumetric gas.
++                        spawnDungeonFeature(this.grid, this.player.x, this.player.y, catalogFeature(DF.DF_LICHEN_PLANTED), false);
+                         logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A handful of tiny spores burst out of the open flask!' }), '#88ff88');
+                         break;
+                     case 'resist_fire':
+@@ -4438,7 +4420,7 @@ export class Game {
+         }).value, rng) : result.magnitude;
+         const hpDamage = target.absorbShieldDamage(damage);
+         if (result.caster) CombatSystem.transferMonsterHealth(result.caster, target, hpDamage);
+-        target.takeDamage(hpDamage, true);
++        target.takeDamage(hpDamage, true, this.grid);
+         if (target.hp > 0) {
+             if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
+                 && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
+@@ -4995,7 +4977,7 @@ export class Game {
+                 // CE inflictDamage transfers after shielding and before death,
+                 // including when reflection makes caster and victim identical.
+                 CombatSystem.transferMonsterHealth(caster, target, hpDamage);
+-                target.takeDamage(hpDamage, true); // shield already consumed once.
++                target.takeDamage(hpDamage, true, this.grid); // shield already consumed once.
+                 if (hpDamage > 0) {
+                     // CE monsterCastSpell: a reflected monster bolt still kills
+                     // in the original caster's name, never in the reflector's.
+@@ -5032,7 +5014,7 @@ export class Game {
+                 // Reflection already ran in travel and has no on-hit adjustment.
+                 // Only install the armor hook when there is a runic effect to apply.
+                 const armorRunic = isPlayer ? this.player.equippedArmor?.runicType : undefined;
+-                const result = CombatSystem.attack(caster, target, {
++                const result = CombatSystem.attack(caster, target, { grid: this.grid,
+                     isWeaponAttack: BOLT_EFFECT_CE_EFFECT[meta.effect] === CEBoltEffect.ATTACK,
+                     ...(armorRunic && armorRunic !== 'reflection'
+                         ? { beforeDamage: (damage: number) => this.tryTriggerArmorRunic(caster, damage, true) } : {}),
+@@ -5616,6 +5598,7 @@ export class Game {
+                 const mon = new Monster(x, y, mData);
+                 this.applyRandomMutation(mon, this.depth);
+                 mon.state = MonsterState.HUNTING; // Items.c:7987 wakeUp(monst)
++                mon.submerged = monsterCanSubmergeNow(mon, this.grid);
+                 this.monsters.push(mon);
+                 numberOfMonsters++;
+             }
+@@ -5700,13 +5683,12 @@ export class Game {
+      *   POTION_PARALYSIS   → paralyze_burst    addGas(PARALYSIS,1000)（G-3 同款）
+      *   POTION_INCINERATION→ fire_burst        igniteForced 3×3      （既有，F-2a）
+      *   POTION_DESCENT     → fall_down         DF_HOLE_POTION        （C-5 的 DF 已在目录）
+-     *   POTION_DARKNESS    → web 无该药水种类 —— 只登记不实现
+-     *   POTION_LICHEN      → potion_of_creeping_death 被 D2 退池且无
+-     *                        DF_LICHEN_PLANTED —— 只登记不实现
+-     * 载体在池的功能性药水才 autoIdentify（B-1a 的"全部亮"简化本轮反转）。
++     *   POTION_DARKNESS    → darkness          DF_DARKNESS_POTION
++     *   POTION_LICHEN      → creeping_death    DF_LICHEN_PLANTED
++     * 功能性药水碎裂时 autoIdentify（B-1a 的"全部亮"简化本轮反转）。
+      */
+     private static readonly THROWN_FUNCTIONAL_POTION_EFFECTS: ReadonlySet<string> =
+-        new Set(['poison_burst', 'confusion_burst', 'paralyze_burst', 'fire_burst', 'fall_down']);
++        new Set(['poison_burst', 'confusion_burst', 'paralyze_burst', 'fire_burst', 'fall_down', 'creeping_death', 'darkness']);
+ 
+     /**
+      * CE Items.c:7036-7046 幻觉药水投掷特例：碎裂无害不亮，除非
+@@ -5765,7 +5747,7 @@ export class Game {
+             y = path[i]!.y;
+ 
+             const monst = this.getMonsterAt(x, y);
+-            if (monst && monst.hp > 0) {
++            if (monst && monst.hp > 0 && !monst.submerged) {
+                 if (thrown.category === ItemCategory.WEAPON) {
+                     // CE Items.c:6906-6921：命中 → 结算后投掷物消失；
+                     // 未命中 → break，投掷物落在怪物所在格的合格邻格。
+@@ -5775,7 +5757,7 @@ export class Game {
+                     if (!monst.isAlly && monst.state !== MonsterState.FLEEING) {
+                         monst.state = MonsterState.HUNTING;
+                     }
+-                    const res = CombatSystem.resolveThrownWeapon(this.player, monst, thrown);
++                    const res = CombatSystem.resolveThrownWeapon(this.player, monst, thrown, this.grid);
+                     if (res.hit) {
+                         if (res.killed) {
+                             logger.log(i18next.t('throw.killed', {
+@@ -5869,6 +5851,11 @@ export class Game {
+                     // G-3 同款：DF_PARALYSIS_GAS_CLOUD_POTION → addGas 1000
+                     //（Items.c:6994-6997 投掷与喝同链）。
+                     this.environment.addGas(x, y, GasType.PARALYSIS, 1000);
++                } else if (effect === 'darkness') {
++                    spawnDungeonFeature(this.grid, x, y, catalogFeature(DF.DF_DARKNESS_POTION), false);
++                    this.environment.syncGasMirror();
++                } else if (effect === 'creeping_death') {
++                    spawnDungeonFeature(this.grid, x, y, catalogFeature(DF.DF_LICHEN_PLANTED), false);
+                 } else if (effect === 'fall_down') {
+                     // C-5：DF_HOLE_POTION（HOLE_EDGE 波前 + subsequentDF DF_HOLE_2
+                     // 落 HOLE）。CE 不对落点生物即时结算坠层（Items.c:7030-7033
+@@ -6300,8 +6287,8 @@ export class Game {
+                 // both the launched creature and the creature it strikes.
+                 if (traveled > 0 && traveled < dist && target.hp > 0) {
+                     const other = this.getMonsterAt(target.x + ndx, target.y + ndy);
+-                    if (!target.isImmuneToWeapons() && !target.isInvulnerable()) target.takeDamage(traveled);
+-                    if (other && !other.isImmuneToWeapons() && !other.isInvulnerable()) other.takeDamage(traveled);
++                    if (!target.isImmuneToWeapons() && !target.isInvulnerable()) target.takeDamage(traveled, false, this.grid);
++                    if (other && !other.isImmuneToWeapons() && !other.isInvulnerable()) other.takeDamage(traveled, false, this.grid);
+                 }
+                 break;
+             }
+@@ -6394,7 +6381,7 @@ export class Game {
+                 // CE distributes before the player's shield absorbs the remaining share.
+                 prevent(incomingDamage - share);
+                 for (const m of hitList) {
+-                    m.takeDamage(share, true);
++                    m.takeDamage(share, true, this.grid);
+                     this.spawnFloatingText(`-${share}`, m.loc.x, m.loc.y, 0xddaaff);
+                 }
+                 const wasKnown = armor.runicKnown;
+@@ -6456,7 +6443,7 @@ export class Game {
+             // 反弹 armorReprisalPercent(netEnchant)% 伤害（PowerTables.c:106）：
+             // max(1, percent * damage / 100)（C 整数除法）。
+             const reprisalDmg = Math.max(1, Math.trunc((armorReprisalPercent(netEnch) * incomingDamage) / 100));
+-            attacker.takeDamage(reprisalDmg, true);
++            attacker.takeDamage(reprisalDmg, true, this.grid);
+             if (canSeeMonster(this.player, this.grid, attacker)) {
+                 armor.runicKnown = true;
+                 logger.log(
+@@ -6515,7 +6502,7 @@ export class Game {
+         if (entity.hp <= 0 || !entity.hasStatus('poisoned')) return;
+         if (entity === this.player) this.poisonedDuringTurn = true;
+         if (!entity.canBePoisoned()) return;
+-        entity.takeDamage(Math.max(1, entity.poisonAmount), true);
++        entity.takeDamage(Math.max(1, entity.poisonAmount), true, this.grid);
+         if (entity === this.player) {
+             this.lastDamageSource = 'poison';
+         } else if (entity.hp <= 0) {
+@@ -6572,10 +6559,17 @@ export class Game {
+         for (const m of this.monsters) {
+             this.clearDisplacedEntanglement(m);
+             const expired = m.tickStatuses();
++            m.updateSubmersion(this.grid);
+             if (expired.includes('lifespan_remaining') && this.canObserveBoltTarget(m)) {
+                 logger.log(i18next.t('status.monster.lifespan_off', { name: this.monsterDisplayName(m), defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
+             }
+         }
++        // CE Time.c:2685–2692: zombie emits 15 volume each objective tick.
++        for (const m of this.monsters) {
++            if (m.hp > 0 && m.typeId === 'zombie' && !m.mutation?.abilityFlags.includes('MA_DF_ON_DEATH') && rng.randPercent(100)) {
++                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_ROT_GAS_PUFF), false);
++            }
++        }
+     }
+ 
+     /** CE Time.c:937-948 — one message per hunger-tier crossing, no repeat while it persists. */
+@@ -6742,7 +6736,7 @@ export class Game {
+             const cell = this.grid.getCell(tx, ty);
+             if (!cell) break; // CE isPosInMap：射线出图
+             const c = this.getMonsterAt(tx, ty);
+-            if (c && !c.hasStatus('invisible')) {
++            if (c && !c.hasStatus('invisible') && !hiddenBySubmersion(this.grid, c, this.player)) {
+                 // 未隐藏的活物挡弹（CE getImpactLoc 的 monster 分支，隐藏者被穿过）
+                 strike = c;
+                 break;
+@@ -6779,7 +6773,7 @@ export class Game {
+                 (cell.isPassable || defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) &&
+                 this.playerWillAttackTarget(defender)) {
+                 hitList.push(defender);
+-                if (i === 0 || !defender.hasStatus('invisible')) {
++                if (i === 0 || (!defender.hasStatus('invisible') && !hiddenBySubmersion(this.grid, defender, this.player))) {
+                     proceed = true;
+                 }
+             }
+@@ -6832,7 +6826,7 @@ export class Game {
+      * 命中文案——补专用文案需新增 zh_CN.json 键，在本轮文件边界外（见报告）。
+      */
+     private resolvePlayerMeleeAttackOn(target: Monster, lungeAttack = false): boolean {
+-        const res = CombatSystem.attack(this.player, target, lungeAttack ? { lungeAttack: true } : undefined);
++        const res = CombatSystem.attack(this.player, target, { grid: this.grid, lungeAttack });
+         if (this.player.hasStatus('invisible')) {
+             this.player.setStatusDuration('invisible', 0);
+             logger.log(
+@@ -7198,7 +7192,10 @@ export class Game {
+             if (!m.hasAbility('MA_DF_ON_DEATH')) continue;
+             m.deathEffectTriggered = true;
+ 
+-            if (m.typeId === 'bloat') {
++            if (m.mutation?.id === 'infested') {
++                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_MUTATION_LICHEN), false);
++                this.needsRender = true;
++            } else if (m.typeId === 'bloat') {
+                 // G-1 折算：100（旧 0-100 密度）→ 2000 = DF_BLOAT_DEATH 的
+                 // startProbability（Globals.c:653，CE 的 bloat 毒气体积）。
+                 this.environment.addGas(m.loc.x, m.loc.y, GasType.POISON, 2000);
+@@ -7420,7 +7417,7 @@ export class Game {
+                 // CE :1560 inflictDamage(..., false): existing immunity gate, then shield.
+                 let died = false;
+                 if (!m.isInvulnerable()) {
+-                    m.hp -= m.absorbShieldDamage(rng.randClumpedRange(6, 12, 2));
++                    m.takeDamage(rng.randClumpedRange(6, 12, 2), false, this.grid);
+                     if (m.hp <= 0) died = true;
+                 }
+                 if (!died) {
+@@ -8564,7 +8561,7 @@ export class Game {
+      * web 以格子可见度近似）。
+      */
+     private exposeCreatureToFire(entity: Player | Monster): void {
+-        if (entity.hp <= 0) return;
++        if (entity.hp <= 0 || isSubmerged(entity)) return;
+         if (entity.hasStatus('immune_fire')) return;
+         if (entity !== this.player && (entity as Monster).isInvulnerable()) return;
+         const cell = this.grid?.getCell(entity.loc.x, entity.loc.y);
+@@ -8601,7 +8598,8 @@ export class Game {
+         if (!entity.hasStatus('immune_fire')
+             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
+             if (entity instanceof Monster) entity.interruptCorpseAbsorption(damage);
+-            entity.hp -= damage; // CE Time.c:2584 / Monsters.c:1885: burning bypasses shields.
++            if (entity instanceof Monster) entity.takeDamage(damage, true, this.grid);
++            else entity.hp -= damage; // CE burning bypasses shields.
+             if (entity === this.player) {
+                 this.lastDamageSource = 'fire';
+                 if (entity.hp <= 0) {
+@@ -8665,7 +8663,7 @@ export class Game {
+      * 返回是否实际结算了一次伤害（测试与调用方判据）。
+      */
+     private resolveExplosionDamage(entity: Player | Monster): boolean {
+-        if (entity.hp <= 0) return false;
++        if (entity.hp <= 0 || isSubmerged(entity)) return false;
+         const x = entity.loc.x;
+         const y = entity.loc.y;
+         const cell = this.grid.getCell(x, y);
+@@ -8696,7 +8694,7 @@ export class Game {
+             monst.state = MonsterState.HUNTING;
+         }
+         const visible = cell.isVisible;
+-        monst.hp -= monst.isInvulnerable() ? 0 : monst.absorbShieldDamage(damage);
++        if (!monst.isInvulnerable()) monst.takeDamage(damage, false, this.grid);
+         if (monst.hp <= 0) {
+             if (visible) {
+                 logger.log(i18next.t('env.monster_dies_in_explosion', {
+@@ -8721,7 +8719,7 @@ export class Game {
+     /** CE Time.c:313-333: flying/inanimate creatures can still be caught.
+      * No refresh and no RNG when already stuck or web-immune. */
+     public applyEntanglementFromTerrain(entity: Creature): void {
+-        if (entity.hp <= 0 || entity.hasStatus('stuck')
++        if (entity.hp <= 0 || isSubmerged(entity) || entity.hasStatus('stuck')
+             || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_ENTANGLES)
+             || (entity instanceof Monster && (entity.hasCEBehavior('MONST_IMMUNE_TO_WEBS') || entity.isInvulnerable()))) return;
+         entity.applyStatus('stuck', rng.randRange(3, 7));
+@@ -8750,7 +8748,7 @@ export class Game {
+ 
+     /** CE Time.c:421-439; MB_SUBMERGED has no web carrier yet. */
+     private applyNauseaFromTerrain(entity: Creature): void {
+-        if (entity.hp <= 0 || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_CAUSES_NAUSEA)) return;
++        if (entity.hp <= 0 || isSubmerged(entity) || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_CAUSES_NAUSEA)) return;
+         if (entity instanceof Monster && (entity.hasBehavior('MONST_INANIMATE') || entity.isInvulnerable())) return;
+         if (entity === this.player && this.player.equippedArmor?.runicType === 'respiration') {
+             if (!this.player.equippedArmor.runicKnown) logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
+@@ -8764,6 +8762,19 @@ export class Game {
+         if (first && entity === this.player) logger.log(i18next.t('status.player.nauseous_on'), '#b7a26b');
+     }
+ 
++    /** CE Time.c:498–523: grounded contact refreshes five turns, without stacking doses. */
++    private applyLichenPoison(entity: Creature): void {
++        if (!(cellTerrainFlags(this.grid, entity.x, entity.y) & T_CAUSES_POISON)
++            || entity.hasStatus('levitating') || entity.hasStatus('flying')
++            || (entity instanceof Monster && (entity.hasBehavior('MONST_INANIMATE') || entity.isInvulnerable()))) return;
++        const first = !entity.hasStatus('poisoned');
++        entity.addPoison(Math.max(0, 5 - entity.getStatusDuration('poisoned')), 0);
++        if (first && entity.hasStatus('poisoned') && (entity === this.player || canDirectlySeeMonster(this.player, this.grid, entity as Monster))) {
++            if (entity instanceof Monster && entity.state === MonsterState.ASLEEP) entity.state = MonsterState.HUNTING;
++            logger.log(i18next.t('env.lichen_poison', { defaultValue: "The lichen's grasping tendrils poison {{name}}.", name: entity === this.player ? i18next.t('entity.you', { defaultValue: 'you' }) : this.monsterDisplayName(entity as Monster) }), '#88bb55');
++        }
++    }
++
+     private applyEnvironmentalEffects(instantTarget?: Creature, deferPlayerNausea = false) {
+         const checkEntity = (entity: any, name: string) => {
+             if (entity.hp <= 0) return;
+@@ -8772,6 +8783,7 @@ export class Game {
+ 
+             const cell = this.grid?.getCell(x, y);
+             if (!cell) return;
++            if (entity instanceof Monster) surfaceOnDryLand(entity, this.grid);
+ 
+             // C-5：CE applyInstantTileEffectsToCreature 坠落段（Time.c:168-176，
+             // 位于岩浆段之前）——渊上生物置坠落位。玩家置位后 CE 直接 return
+@@ -8856,7 +8868,7 @@ export class Game {
+                     // 豁免（MB_IS_DYING / IMMUNE_TO_FIRE / MONST_INVULNERABLE /
+                     // MB_SUBMERGED / 非悬浮+灭火层）全在 exposeCreatureToFire 内。
+                     this.exposeCreatureToFire(entity);
+-                } else if (this.burningDuration(entity) > 0) {
++                } else if (this.burningDuration(entity) > 0 && !isSubmerged(entity) && !(entity instanceof Monster && entity.falling)) {
+                     // CE Time.c:529-540（else if：已火格无需再点）：着火生物点燃
+                     // 所踩的可燃非火格——alwaysIgnite 直燃（Gas.ignite 即 CE :539
+                     // exposeTileToFire(x,y,true)，可燃性与 12 次暴露封顶由其自守）。
+@@ -8881,7 +8893,7 @@ export class Game {
+             // CE Time.c:592-640: all layers, once, in layer order. U08 vines
+             // share gradual damage with gas; contact itself does not deal it.
+             const damagingTile = cell.layers.find(tile => TERRAIN_FLAGS[tile].flags & T_CAUSES_DAMAGE);
+-            if (!instantTarget && damagingTile !== undefined) {
++            if (!instantTarget && damagingTile !== undefined && !isSubmerged(entity)) {
+                 const exempt = entity instanceof Monster && (entity.hasBehavior('MONST_INANIMATE') || entity.isInvulnerable());
+                 const armor = entity === this.player ? this.player.equippedArmor : null;
+                 if (!exempt && armor?.runicType === 'respiration') {
+@@ -8891,7 +8903,8 @@ export class Game {
+                     }
+                 } else if (!exempt) {
+                     if (entity instanceof Monster) entity.interruptCorpseAbsorption(Math.max(1, Math.floor(entity.maxHp / 15)));
+-                    entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
++                    if (entity instanceof Monster) entity.takeDamage(Math.max(1, Math.floor(entity.maxHp / 15)), true, this.grid);
++                    else entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
+                     if (entity === this.player) {
+                         const vines = damagingTile === TerrainType.ANCIENT_SPIRIT_VINES;
+                         this.lastDamageSource = vines ? 'thorned vines' : damagingTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
+@@ -8963,7 +8976,7 @@ export class Game {
+                     // 麻痹气体（T_CAUSES_PARALYSIS，Time.c:471-497）：
+                     // STATUS_PARALYZED = max(…, 20)，豁免同混乱 + 潜水
+                     // （web 无潜水簿记，登记退化）。CE 不惊醒睡眠怪。
+-                    if ((gasFlags & T_CAUSES_PARALYSIS) !== 0 && !respirationImmune) {
++                    if ((gasFlags & T_CAUSES_PARALYSIS) !== 0 && !respirationImmune && !isSubmerged(entity)) {
+                         const exempt = entity !== this.player
+                             && ((entity as Monster).hasBehavior('MONST_INANIMATE')
+                                 || (entity as Monster).isInvulnerable());
+@@ -8990,6 +9003,7 @@ export class Game {
+                     }
+                 }
+             }
++            this.applyLichenPoison(entity);
+             // CE instantaneous order: promotion -> entanglement/explosion ->
+             // gas statuses -> ignition. Dead creatures cannot be ignited.
+             if (instantTarget && entity.hp > 0) applyContactFire();
+@@ -9122,6 +9136,7 @@ export class Game {
+ 
+     private dungeonFeatureDescription(description: string): string {
+         switch (description) {
++            case "Poisonous spores burst from the corpse!": return i18next.t('df.lichen_corpse', { defaultValue: 'Poisonous spores burst from the corpse!' });
+             case "An old friend emerges from a bloom of sacred light!": return i18next.t('df.message_1', { defaultValue: "An old friend emerges from a bloom of sacred light!" });
+             case "a cloud of caustic gas sprays upward from the floor!": return i18next.t('df.message_2', { defaultValue: "a cloud of caustic gas sprays upward from the floor!" });
+             case "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"": return i18next.t('df.message_3', { defaultValue: "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"" });
+@@ -9838,6 +9853,7 @@ export class Game {
+     private finishBlink(result: BoltResult): boolean {
+         const caster = result.caster, landing = result.landingPos;
+         if (!caster || !landing || !this.canDisplaceCreature(caster, landing)) return false;
++        if (caster instanceof Monster) caster.submerged = false; // CE blink always surfaces.
+         caster.setStatusDuration('stuck', 0); // CE disentangle, before landing contact
+         return this.placeCreature(caster, landing, { pickupBeforeVision: true });
+     }
+@@ -9992,8 +10008,7 @@ export class Game {
+             if (cell.layers.includes(TerrainType.TRAP)) this.triggerTrap(x, y, cell, target);
+             else if (cell.layers.includes(TerrainType.PRESSURE_PLATE)) this.triggerPressurePlate(x, y, target);
+             else if ((cellTerrainFlags(this.grid, x, y) & T_IS_DF_TRAP)
+-                && !(target instanceof Monster && target.hasBehavior('MONST_SUBMERGES')
+-                    && (cellTerrainMechFlags(this.grid, x, y) & TM_ALLOWS_SUBMERGING))) {
++                && !isSubmerged(target)) {
+                 // CE Time.c:240-274: per-cell depression -> fire DF -> normal
+                 // promotion/wiring. Existing CE traps are not the legacy TRAP id.
+                 const byGrid = this.displacementTrapDepressions ??= new WeakMap();
+@@ -10042,6 +10057,9 @@ export class Game {
+             case TerrainType.FUNGUS_FOREST: return i18next.t('terrain.fungus_forest', { defaultValue: "a luminescent fungal forest" });
+             case TerrainType.TRAMPLED_FUNGUS_FOREST: return i18next.t('terrain.trampled_fungus_forest', { defaultValue: "trampled fungal foliage" });
+             case TerrainType.SUNLIGHT_POOL: return i18next.t('terrain.sunlight_pool', { defaultValue: "a patch of sunlight" });
++            case TerrainType.DARKNESS_CLOUD: return i18next.t('terrain.darkness_cloud', { defaultValue: 'a cloud of supernatural darkness' });
++            case TerrainType.ROT_GAS: return i18next.t('terrain.rot_gas', { defaultValue: 'a cloud of putrescence' });
++            case TerrainType.LICHEN: return i18next.t('terrain.lichen', { defaultValue: 'deadly lichen' });
+             case TerrainType.DARKNESS_PATCH: return i18next.t('terrain.darkness_patch', { defaultValue: "a patch of shadows" });
+             case TerrainType.DEEP_WATER_ALGAE_WELL: return i18next.t('terrain.deep_water_algae_well', { defaultValue: "the ground" });
+             case TerrainType.DEEP_WATER_ALGAE_1: return i18next.t('terrain.deep_water_algae_1', { defaultValue: "luminescent waters" });
+diff --git a/brogue-web/src/entities/Monster.ts b/brogue-web/src/entities/Monster.ts
+index 07a4ecb7..41dba4dd 100644
+--- a/brogue-web/src/entities/Monster.ts
++++ b/brogue-web/src/entities/Monster.ts
+@@ -3,6 +3,7 @@
+  * Base Monster class mirroring Brogue's monster initialization
+  */
+ 
++import { hiddenBySubmersion, surfaceOnDryLand, monsterCanSubmergeNow } from '../engine/Movement/Submersion';
+ import { Creature, allocateEntityId } from './Creature';
+ import type { Pos } from '../types';
+ import { knownPolymorphSpecies, polymorphHP, polymorphSpecies } from '../engine/Combat/Polymorph';
+@@ -21,7 +22,9 @@ import type { Item } from '../engine/Items/Item';
+ import type { StatusId } from './Creature';
+ import monsterCatalogData from '../data/monsters.json';
+ import { PERMANENT_STATUS_DURATION } from './Creature';
+-import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
++import { DF } from '../engine/Map/DungeonFeatureCatalog';
++import { catalogFeature, spawnDungeonFeature } from '../engine/Map/DungeonFeature';
++import { DungeonLayer, TerrainType, type Grid } from '../engine/Map/Grid';
+ import { breakEntanglingTerrain, discoverTerrain } from '../engine/Map/Promotion';
+ import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
+ import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
+@@ -137,7 +140,7 @@ export function generallyValidBoltTarget(caster: Monster, target: Creature, game
+     if (caster.hasStatus('discordant') && caster.state === MonsterState.WANDERING && target === game.player) {
+         return false;
+     }
+-    if (target instanceof Monster && target.isDormant) return false;
++    if (target instanceof Monster && (target.isDormant || target.submerged)) return false;
+     const targetCell = game.grid.getCell(target.x, target.y);
+     const outlinedByGas = !!targetCell && targetCell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING;
+     if (target.hasStatus('invisible') && !monstersAreTeammates(caster, target) && !outlinedByGas) return false;
+@@ -364,6 +367,8 @@ export class Monster extends Creature {
+     public absorptionBolt: CEBoltType = CEBoltType.NONE;
+     /** CE MB_ABSORBING, not a status duration or an AI state. */
+     public isAbsorbing = false;
++    /** CE MB_SUBMERGED: persisted independently of form and timed statuses. */
++    public submerged = false;
+ 
+     /** CE inflictDamage: zero input / invulnerability return before clearing
+      * MB_ABSORBING; a nonzero hit fully blocked by shielding still clears it.
+@@ -378,9 +383,16 @@ export class Monster extends Creature {
+         return damage;
+     }
+ 
+-    public override takeDamage(amount: number, ignoresProtectionShield = false): void {
++    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+         this.interruptCorpseAbsorption(amount);
+-        super.takeDamage(amount, ignoresProtectionShield);
++        const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
++        // CE Combat.c:1827–1837: truncate both C divisions BEFORE gas ×100.
++        if (grid && this.typeId === 'zombie' && damage > 0 && this.hp > 0 && !this.isInvulnerable()) {
++            const blood = catalogFeature(DF.DF_ROT_GAS_BLOOD);
++            const volume = Math.trunc(12 * (15 + Math.trunc(Math.min(damage, this.hp) * 3 / 2)) / 100) * 100;
++            spawnDungeonFeature(grid, this.x, this.y, { ...blood, startProbability: volume }, false);
++        }
++        super.takeDamage(damage, true);
+     }
+ 
+     /** Time.c monstersFall / monsterEntersLevel clear ONLY the old-level position. */
+@@ -754,6 +766,20 @@ export class Monster extends Creature {
+         return expired;
+     }
+ 
++    /** CE decrementMonsterStatus: only eligible, surfaced monsters draw the 20% roll. */
++    public updateSubmersion(grid: Grid): void {
++        if (this.hp <= 0 || this.submerged || !monsterCanSubmergeNow(this, grid)) return;
++        if (rng.randPercent(20)) {
++            this.submerged = true;
++            if (!this.hasStatus('magical_fear') && this.state === MonsterState.FLEEING
++                && (!this.hasBehavior('MONST_FLEES_NEAR_DEATH') || this.hp >= Math.trunc(this.maxHp * 3 / 4))) {
++                this.state = MonsterState.HUNTING;
++            }
++        } else if (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.isAlly) {
++            this.state = MonsterState.FLEEING;
++        }
++    }
++
+     public override refreshSpeeds(): void {
+         if (this.polymorphKeepsSpeed && !this.hasStatus('hasted') && !this.hasStatus('haste') && !this.hasStatus('slowed')) return;
+         this.polymorphKeepsSpeed = false;
+@@ -799,6 +825,7 @@ export class Monster extends Creature {
+                 // selection/installation/countdown here; U11 calls after install.
+                 this.behaviorFlags.delete('MONST_RESTRICTED_TO_LIQUID');
+                 this.behaviorFlags.delete('MONST_SUBMERGES');
++                this.submerged = false;
+             }
+         }
+         if (this.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
+@@ -1096,7 +1123,7 @@ export class Monster extends Creature {
+             const cell = game.grid.getCell(tx, ty);
+             if (!cell) break; // CE isPosInMap：射线出图
+             const c = creatureAtLoc(game, tx, ty);
+-            if (c && !c.hasStatus('invisible')) {
++            if (c && !c.hasStatus('invisible') && !hiddenBySubmersion(game.grid, c, this)) {
+                 // 未隐藏的活物挡弹（CE getImpactLoc 的 monster 分支，隐藏者被穿过）
+                 strike = c;
+                 break;
+@@ -1140,7 +1167,7 @@ export class Monster extends Creature {
+                     (defender instanceof Monster && defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))) &&
+                 this.willAttackTarget(defender)) {
+                 hitList.push(defender);
+-                if (i === 0 || !defender.hasStatus('invisible')) {
++                if (i === 0 || (!defender.hasStatus('invisible') && !hiddenBySubmersion(game.grid, defender, this))) {
+                     proceed = true;
+                 }
+             }
+@@ -1222,7 +1249,7 @@ export class Monster extends Creature {
+      * 文件边界内）。
+      */
+     private resolveGeometryAttackOn(game: Game, target: Creature, voice: 'ally' | 'discordant' | 'hostile'): void {
+-        const result = CombatSystem.attack(this, target, {
++        const result = CombatSystem.attack(this, target, { grid: game.grid,
+             beforeDamage: target === game.player ? damage => game.tryTriggerArmorRunic(this, damage, true) : undefined,
+         });
+         if (result.kamikazeSelfDestruct) {
+@@ -1410,6 +1437,7 @@ export class Monster extends Creature {
+         // CE monstersTurn runs this before its own status/AI gates. Time.c's
+         // outer scheduler separately withholds actions from disabled monsters.
+         if (this.corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(game, this)) return;
++        surfaceOnDryLand(this, game.grid);
+         game.applyEntanglementFromTerrain(this);
+         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
+         if (this.isCaged) return;
+@@ -1497,7 +1525,7 @@ export class Monster extends Creature {
+                     if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
+                         return;
+                     }
+-                    const result = CombatSystem.attack(this, target);
++                    const result = CombatSystem.attack(this, target, { grid: game.grid });
+                     if (result.kamikazeSelfDestruct) {
+                         // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替
+                         // 造成伤害而自毁，早于命中掷骰，不会走"miss"分支。
+@@ -1648,7 +1676,8 @@ export class Monster extends Creature {
+         }
+ 
+         if (this.state === MonsterState.FLEEING) {
+-            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
++            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75
++                && !(this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.submerged)) {
+                 this.state = MonsterState.HUNTING;
+             } else if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
+                 this.state = MonsterState.WANDERING;
+@@ -1695,7 +1724,7 @@ export class Monster extends Creature {
+                     if (this.tryGeometryMeleeAdjacent(game, game.player)) {
+                         return;
+                     }
+-                    const result = CombatSystem.attack(this, game.player);
++                    const result = CombatSystem.attack(this, game.player, { grid: game.grid });
+                     if (result.kamikazeSelfDestruct) {
+                         logger.log(i18next.t('combat.monster_kamikaze', {
+                             monster: game.monsterDisplayName(this),
+@@ -1774,14 +1803,14 @@ export class Monster extends Creature {
+                 const dirs8 = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
+                 for (const [dx, dy] of dirs8) {
+                     const other = game.getMonsterAt(this.loc.x + dx!, this.loc.y + dy!);
+-                    if (other && other !== this && other.hp > 0) {
++                    if (other && other !== this && other.hp > 0 && (!other.submerged || this.submerged)) {
+                         // P4-6：同 ally 分支——discordant 怪的近战同样先过几何分发
+                         // （CE 同一条 moveMonster 路径，不区分阵营来源）。
+                         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
+                         if (this.tryGeometryMeleeAdjacent(game, other, 'discordant')) {
+                             return;
+                         }
+-                        const result = CombatSystem.attack(this, other);
++                        const result = CombatSystem.attack(this, other, { grid: game.grid });
+                         if (result.kamikazeSelfDestruct) {
+                             logger.log(i18next.t('combat.discordant_kamikaze', {
+                                 attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(other),
+@@ -1842,7 +1871,7 @@ export class Monster extends Creature {
+                 if (this.tryGeometryMeleeAdjacent(game, game.player)) {
+                     return;
+                 }
+-                const result = CombatSystem.attack(this, game.player, {
++                const result = CombatSystem.attack(this, game.player, { grid: game.grid,
+                     beforeDamage: damage => game.tryTriggerArmorRunic(this, damage, true),
+                 });
+                 if (result.kamikazeSelfDestruct) {
+@@ -2139,6 +2168,7 @@ export class Monster extends Creature {
+         if (destination.isVisible && !destination.isPassable) discoverTerrain(game.grid, nx, ny);
+         this.loc.x = nx;
+         this.loc.y = ny;
++        surfaceOnDryLand(this, game.grid);
+         if (!(cellTerrainFlags(game.grid, nx, ny) & T_ENTANGLES)) this.setStatusDuration('stuck', 0);
+         game.applyEntanglementFromTerrain(this);
+ 

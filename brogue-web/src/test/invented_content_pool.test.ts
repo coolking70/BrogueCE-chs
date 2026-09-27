@@ -115,7 +115,10 @@ describe('D2 生成池排他：自创条目不在任何生成池中', () => {
         }
         expect(scrollsJson.find(s => s.id === 'scroll_of_amnesia')?.excludeFromGeneration).toBe(true);
         // U15e：CE 原生但执行链未齐、暂不入池的种类（非自创），显式列出并断言确已排除。
-        const CE_PENDING_POTIONS = ['potion_of_darkness']; // 投掷 DF 链待接（U15e 报告）
+        const CE_PENDING_POTIONS: string[] = []; // X2g: darkness/lichen native DF chains are complete.
+        for (const id of ['potion_of_darkness', 'potion_of_creeping_death']) {
+            expect(ItemLoader.genPotions.find(p => p.id === id)?.frequency).toBe(7);
+        }
         for (const id of CE_PENDING_POTIONS) {
             expect(potionsJson.find(p => p.id === id)?.excludeFromGeneration).toBe(true);
             expect(ItemLoader.genPotions.map(p => p.id)).not.toContain(id);

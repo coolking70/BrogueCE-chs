@@ -1,0 +1,2 @@
+src/engine/Core/Game.ts(7203,17): error TS2367: This comparison appears to be unintentional because the types 'MutationData | undefined' and 'string' have no overlap.
+src/test/c_7_lighting.test.ts(143,11): error TS2741: Property '[TerrainType.LICHEN]' is missing in type '{ 164: LightKind; 165: LightKind; 166: LightKind; 167: LightKind; 168: LightKind; 157: LightKind; 158: LightKind; ... 182 more ...; 189: LightKind; }' but required in type 'Record<TerrainType, number>'.

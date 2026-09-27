@@ -1,0 +1,132 @@
+[
+  {
+    "variant": "poison",
+    "title": "quaff, throw",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g native effects quaff, throw and infested death plant real terrain; contact caps duration without adding concentration",
+        "messages": [
+          "AssertionError: expected 2 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:54:89\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "growth",
+    "title": "uses CE surface",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g native effects uses CE surface lichen and all three DF sources, not a lichen monster or gas",
+        "messages": [
+          "AssertionError: expected { catalogId: 54, tile: 190, …(10) } to match object { startProbability: 2, …(2) }\n(9 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:48:51\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "darkness",
+    "title": "darkness throw",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g native effects darkness throw creates a negative light gas, drinking keeps its own status; terrain and statuses survive save",
+        "messages": [
+          "AssertionError: expected 514 to be less than 514\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:77:46\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "blood",
+    "title": "8000 damage",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED matches original C blood truncation for 8000 damage/HP pairs; fully shielded hits do not bleed",
+        "messages": [
+          "AssertionError: 1/1: expected 198 to be 100 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:96:65\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "puff",
+    "title": "zombies emit",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED zombies emit 15 volume per objective tick; living contact causes nausea, inanimate and respiration are immune; gas burns and saves",
+        "messages": [
+          "AssertionError: expected 14 to be 15 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:104:81\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "chance",
+    "title": "submerges at 20%",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED submerges at 20%, surfaces on attack/dry placement, retains seizure exception, and saves the actual runtime bit",
+        "messages": [
+          "AssertionError: expected \"randPercent\" to be called once with arguments: [ 20 ]\n\nReceived:\n\n  1st randPercent call:\n\n  [\n-   20,\n+   100,\n  ]\n\n\nNumber of calls: 1\n\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1504:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:134:92\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "visibility",
+    "title": "1024 CE",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED matches 1024 CE submerge eligibility cases and 16 observer cases",
+        "messages": [
+          "AssertionError: 1: expected false to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:128:85\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "bolt",
+    "title": "hides identity",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED hides identity above water, telepathy only marks location, underwater observers see; throws and bolts pass through even when seen",
+        "messages": [
+          "AssertionError: expected [ Monster{ id: 22, …(79) }, …(1) ] to not include Monster{ id: 22, …(79) }\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1319:15)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:155:52\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "save",
+    "title": "submerges at 20%",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED submerges at 20%, surfaces on attack/dry placement, retains seizure exception, and saves the actual runtime bit",
+        "messages": [
+          "AssertionError: expected undefined to be true // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:137:107\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "tint",
+    "title": "renders rot tint",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2g rot gas and MB_SUBMERGED renders rot tint from the live gas layer before mirror refresh, preserving glyph and using CE density weight",
+        "messages": [
+          "AssertionError: expected 1775380 to be 4668177 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/src/test/x2g_native_effects.test.ts:181:32\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  }
+]

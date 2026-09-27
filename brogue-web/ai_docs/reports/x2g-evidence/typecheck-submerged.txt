@@ -1,0 +1,5 @@
+src/entities/Monster.ts(6,30): error TS6133: 'isSubmerged' is declared but its value is never read.
+src/test/c_7_lighting.test.ts(143,11): error TS2739: Type '{ 164: LightKind; 165: LightKind; 166: LightKind; 167: LightKind; 168: LightKind; 157: LightKind; 158: LightKind; ... 182 more ...; 189: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 190, 191, 192
+src/test/x2g_native_effects.test.ts(9,26): error TS6133: 'spawnDungeonFeature' is declared but its value is never read.
+src/test/x2g_native_effects.test.ts(11,19): error TS6133: 'MonsterState' is declared but its value is never read.
+src/test/x2g_native_effects.test.ts(59,50): error TS2554: Expected 5 arguments, but got 6.

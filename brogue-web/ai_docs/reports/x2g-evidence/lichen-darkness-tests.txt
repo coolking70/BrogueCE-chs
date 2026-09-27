@@ -1,0 +1,80 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/75d9/brogue/brogue-web
+
+stdout | src/test/x2g_native_effects.test.ts > X2g native effects > quaff, throw and infested death plant real terrain; contact caps duration without adding concentration
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x2g_native_effects.test.ts (4 tests | 3 failed) 2696ms
+     × quaff, throw and infested death plant real terrain; contact caps duration without adding concentration 1130ms
+     × lichen regrows at the old cell, spreads at 2%, cannot cross lava, and respects flight/inanimate immunity 546ms
+     × darkness throw creates a negative light gas, drinking keeps its own status; terrain and statuses survive save 1015ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g native effects > quaff, throw and infested death plant real terrain; contact caps duration without adding concentration
+TypeError: m.applyMutation is not a function
+ ❯ src/test/x2g_native_effects.test.ts:53:38
+     51|         expect(h.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.LICHEN…
+     52|         expect(ItemLoader.identifiedItems.has('potion_of_creeping_deat…
+     53|         const m=add(h,'rat',30,10);m.applyMutation(mutations.find(m=>m…
+       |                                      ^
+     54|         (h as any).triggerDeathFeatures(m);expect(h.grid.getCell(30,10…
+     55|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g native effects > lichen regrows at the old cell, spreads at 2%, cannot cross lava, and respects flight/inanimate immunity
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x2g_native_effects.test.ts:63:133
+     61|         expect(g.grid.getCell(9,10)!.layers[L.SURFACE]).toBe(T.LICHEN);
+     62|         expect(g.grid.getCell(11,10)!.layers[L.SURFACE]).not.toBe(T.LI…
+     63|         g.player.applyStatus('levitating',30);(g as any).applyEnvironm…
+       |                                                                                                                                     ^
+     64|         const m=add(g,'rat',9,10);m.behaviorFlags.add('MONST_INANIMATE…
+     65|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/x2g_native_effects.test.ts > X2g native effects > darkness throw creates a negative light gas, drinking keeps its own status; terrain and statuses survive save
+AssertionError: expected { depth: 1, width: 79, …(41) } to deeply equal { depth: 1, width: 79, …(41) }
+
+- Expected
++ Received
+
+@@ -47611,11 +47611,11 @@
+    "playerExitedVia": [Object],
+    "purgatory": [Array],
+    "rewardRoomsGenerated": 0,
+    "rngState": [Object],
+    "run": [Object],
+-   "savedAt": 1790463990853,
++   "savedAt": 1790463990895,
+    "scent": [Object],
+    "schema": "brogue-web-whole-run-v2",
+    "seed": "20260927",
+    "staffFlavors": [Object],
+    "stats": [Object],
+
+ ❯ src/test/x2g_native_effects.test.ts:75:73
+     73|         g.quaffItem(potion(g,'darkness'),true);expect(g.player.hasStat…
+     74|         g.grid.setTerrain(25,25,T.LICHEN);g.player.addPoison(5,0);
+     75|         const s=g.toSnapshot();g.loadSnapshot(s);expect(g.toSnapshot()…
+       |                                                                         ^
+     76|     });
+     77| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed (4)
+   Start at  07:06:26
+   Duration  4.48s (transform 969ms, setup 0ms, import 1.59s, tests 2.70s, environment 0ms)
+

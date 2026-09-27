@@ -30,7 +30,7 @@ export const MONSTER_FIELDS = [
     'description', 'deathEffectTriggered', 'deathProcessed', 'doesNotResurrect', 'bolts', 'typeId', 'boundToPlayer',
     'doesNotTrackLeader', 'givenUpOnScent', 'safetySnapshot', 'falling', 'preplaced',
     'entersLevelIn', 'approaching', 'isDormant', 'machineHome', 'markedForSacrifice', 'targetWaypointIndex', 'waypointAlreadyVisited',
-    'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc',
+    'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc', 'submerged',
 ] as const satisfies readonly (keyof Monster)[];
 export const PLAYER_FIELDS = [
     ...CREATURE_FIELDS, 'strength', 'lastMoveDirection', 'nutrition', 'maxNutrition',

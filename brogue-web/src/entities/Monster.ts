@@ -3,6 +3,7 @@
  * Base Monster class mirroring Brogue's monster initialization
  */
 
+import { hiddenBySubmersion, surfaceOnDryLand, monsterCanSubmergeNow } from '../engine/Movement/Submersion';
 import { Creature, allocateEntityId } from './Creature';
 import type { Pos } from '../types';
 import { knownPolymorphSpecies, polymorphHP, polymorphSpecies } from '../engine/Combat/Polymorph';
@@ -21,7 +22,9 @@ import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import monsterCatalogData from '../data/monsters.json';
 import { PERMANENT_STATUS_DURATION } from './Creature';
-import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
+import { DF } from '../engine/Map/DungeonFeatureCatalog';
+import { catalogFeature, spawnDungeonFeature } from '../engine/Map/DungeonFeature';
+import { DungeonLayer, TerrainType, type Grid } from '../engine/Map/Grid';
 import { breakEntanglingTerrain, discoverTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
 import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
@@ -137,7 +140,7 @@ export function generallyValidBoltTarget(caster: Monster, target: Creature, game
     if (caster.hasStatus('discordant') && caster.state === MonsterState.WANDERING && target === game.player) {
         return false;
     }
-    if (target instanceof Monster && target.isDormant) return false;
+    if (target instanceof Monster && (target.isDormant || target.submerged)) return false;
     const targetCell = game.grid.getCell(target.x, target.y);
     const outlinedByGas = !!targetCell && targetCell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING;
     if (target.hasStatus('invisible') && !monstersAreTeammates(caster, target) && !outlinedByGas) return false;
@@ -364,6 +367,8 @@ export class Monster extends Creature {
     public absorptionBolt: CEBoltType = CEBoltType.NONE;
     /** CE MB_ABSORBING, not a status duration or an AI state. */
     public isAbsorbing = false;
+    /** CE MB_SUBMERGED: persisted independently of form and timed statuses. */
+    public submerged = false;
 
     /** CE inflictDamage: zero input / invulnerability return before clearing
      * MB_ABSORBING; a nonzero hit fully blocked by shielding still clears it.
@@ -378,9 +383,16 @@ export class Monster extends Creature {
         return damage;
     }
 
-    public override takeDamage(amount: number, ignoresProtectionShield = false): void {
+    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
         this.interruptCorpseAbsorption(amount);
-        super.takeDamage(amount, ignoresProtectionShield);
+        const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
+        // CE Combat.c:1827–1837: truncate both C divisions BEFORE gas ×100.
+        if (grid && this.typeId === 'zombie' && damage > 0 && this.hp > 0 && !this.isInvulnerable()) {
+            const blood = catalogFeature(DF.DF_ROT_GAS_BLOOD);
+            const volume = Math.trunc(12 * (15 + Math.trunc(Math.min(damage, this.hp) * 3 / 2)) / 100) * 100;
+            spawnDungeonFeature(grid, this.x, this.y, { ...blood, startProbability: volume }, false);
+        }
+        super.takeDamage(damage, true);
     }
 
     /** Time.c monstersFall / monsterEntersLevel clear ONLY the old-level position. */
@@ -754,6 +766,20 @@ export class Monster extends Creature {
         return expired;
     }
 
+    /** CE decrementMonsterStatus: only eligible, surfaced monsters draw the 20% roll. */
+    public updateSubmersion(grid: Grid): void {
+        if (this.hp <= 0 || this.submerged || !monsterCanSubmergeNow(this, grid)) return;
+        if (rng.randPercent(20)) {
+            this.submerged = true;
+            if (!this.hasStatus('magical_fear') && this.state === MonsterState.FLEEING
+                && (!this.hasBehavior('MONST_FLEES_NEAR_DEATH') || this.hp >= Math.trunc(this.maxHp * 3 / 4))) {
+                this.state = MonsterState.HUNTING;
+            }
+        } else if (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.isAlly) {
+            this.state = MonsterState.FLEEING;
+        }
+    }
+
     public override refreshSpeeds(): void {
         if (this.polymorphKeepsSpeed && !this.hasStatus('hasted') && !this.hasStatus('haste') && !this.hasStatus('slowed')) return;
         this.polymorphKeepsSpeed = false;
@@ -799,6 +825,7 @@ export class Monster extends Creature {
                 // selection/installation/countdown here; U11 calls after install.
                 this.behaviorFlags.delete('MONST_RESTRICTED_TO_LIQUID');
                 this.behaviorFlags.delete('MONST_SUBMERGES');
+                this.submerged = false;
             }
         }
         if (this.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
@@ -1096,7 +1123,7 @@ export class Monster extends Creature {
             const cell = game.grid.getCell(tx, ty);
             if (!cell) break; // CE isPosInMap：射线出图
             const c = creatureAtLoc(game, tx, ty);
-            if (c && !c.hasStatus('invisible')) {
+            if (c && !c.hasStatus('invisible') && !hiddenBySubmersion(game.grid, c, this)) {
                 // 未隐藏的活物挡弹（CE getImpactLoc 的 monster 分支，隐藏者被穿过）
                 strike = c;
                 break;
@@ -1140,7 +1167,7 @@ export class Monster extends Creature {
                     (defender instanceof Monster && defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))) &&
                 this.willAttackTarget(defender)) {
                 hitList.push(defender);
-                if (i === 0 || !defender.hasStatus('invisible')) {
+                if (i === 0 || (!defender.hasStatus('invisible') && !hiddenBySubmersion(game.grid, defender, this))) {
                     proceed = true;
                 }
             }
@@ -1222,7 +1249,7 @@ export class Monster extends Creature {
      * 文件边界内）。
      */
     private resolveGeometryAttackOn(game: Game, target: Creature, voice: 'ally' | 'discordant' | 'hostile'): void {
-        const result = CombatSystem.attack(this, target, {
+        const result = CombatSystem.attack(this, target, { grid: game.grid,
             beforeDamage: target === game.player ? damage => game.tryTriggerArmorRunic(this, damage, true) : undefined,
         });
         if (result.kamikazeSelfDestruct) {
@@ -1410,6 +1437,7 @@ export class Monster extends Creature {
         // CE monstersTurn runs this before its own status/AI gates. Time.c's
         // outer scheduler separately withholds actions from disabled monsters.
         if (this.corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(game, this)) return;
+        surfaceOnDryLand(this, game.grid);
         game.applyEntanglementFromTerrain(this);
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
@@ -1497,7 +1525,7 @@ export class Monster extends Creature {
                     if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
                         return;
                     }
-                    const result = CombatSystem.attack(this, target);
+                    const result = CombatSystem.attack(this, target, { grid: game.grid });
                     if (result.kamikazeSelfDestruct) {
                         // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替
                         // 造成伤害而自毁，早于命中掷骰，不会走"miss"分支。
@@ -1648,7 +1676,8 @@ export class Monster extends Creature {
         }
 
         if (this.state === MonsterState.FLEEING) {
-            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
+            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75
+                && !(this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.submerged)) {
                 this.state = MonsterState.HUNTING;
             } else if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
                 this.state = MonsterState.WANDERING;
@@ -1695,7 +1724,7 @@ export class Monster extends Creature {
                     if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                         return;
                     }
-                    const result = CombatSystem.attack(this, game.player);
+                    const result = CombatSystem.attack(this, game.player, { grid: game.grid });
                     if (result.kamikazeSelfDestruct) {
                         logger.log(i18next.t('combat.monster_kamikaze', {
                             monster: game.monsterDisplayName(this),
@@ -1774,14 +1803,14 @@ export class Monster extends Creature {
                 const dirs8 = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
                 for (const [dx, dy] of dirs8) {
                     const other = game.getMonsterAt(this.loc.x + dx!, this.loc.y + dy!);
-                    if (other && other !== this && other.hp > 0) {
+                    if (other && other !== this && other.hp > 0 && (!other.submerged || this.submerged)) {
                         // P4-6：同 ally 分支——discordant 怪的近战同样先过几何分发
                         // （CE 同一条 moveMonster 路径，不区分阵营来源）。
                         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                         if (this.tryGeometryMeleeAdjacent(game, other, 'discordant')) {
                             return;
                         }
-                        const result = CombatSystem.attack(this, other);
+                        const result = CombatSystem.attack(this, other, { grid: game.grid });
                         if (result.kamikazeSelfDestruct) {
                             logger.log(i18next.t('combat.discordant_kamikaze', {
                                 attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(other),
@@ -1842,7 +1871,7 @@ export class Monster extends Creature {
                 if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                     return;
                 }
-                const result = CombatSystem.attack(this, game.player, {
+                const result = CombatSystem.attack(this, game.player, { grid: game.grid,
                     beforeDamage: damage => game.tryTriggerArmorRunic(this, damage, true),
                 });
                 if (result.kamikazeSelfDestruct) {
@@ -2139,6 +2168,7 @@ export class Monster extends Creature {
         if (destination.isVisible && !destination.isPassable) discoverTerrain(game.grid, nx, ny);
         this.loc.x = nx;
         this.loc.y = ny;
+        surfaceOnDryLand(this, game.grid);
         if (!(cellTerrainFlags(game.grid, nx, ny) & T_ENTANGLES)) this.setStatusDuration('stuck', 0);
         game.applyEntanglementFromTerrain(this);
 

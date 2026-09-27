@@ -1,0 +1,170 @@
+--- review/src/engine/Combat/BoltTrajectory.ts
++++ final/src/engine/Combat/BoltTrajectory.ts
+@@ -67,7 +67,7 @@
+             // creatures; teammates can see one another, including the player.
+             const hidden = !!occupant && (!world.caster || !monstersAreTeammates(world.caster, occupant))
+                 && ((invisible && !cell.layers[DungeonLayer.GAS]) || hiddenBySubmersion(grid, occupant, world.caster));
+-            const creature = hidden ? undefined : occupant;
++            const creature = hidden || isSubmerged(occupant) ? undefined : occupant; // CE Items.c:4221
+             const enemy = !!occupant && !!world.caster && monstersAreEnemies(world.caster, occupant);
+             const ally = !!occupant && !!world.caster && monstersAreTeammates(world.caster, occupant);
+             const burning = !!(flags & F.FIERY) && !!(terrain & T_IS_FLAMMABLE);
+--- review/src/engine/Combat/MonsterBlink.ts
++++ final/src/engine/Combat/MonsterBlink.ts
+@@ -1,4 +1,4 @@
+-import { hiddenBySubmersion } from '../Movement/Submersion';
++import { hiddenBySubmersion, isSubmerged } from '../Movement/Submersion';
+ /** U07: monster-only decisions. CE Monsters.c:1313,2098,2299,3049,3430.
+  * No player targeting, item resource, generation or learning policy lives here.
+  */
+@@ -136,7 +136,7 @@
+         const hidden = !!occupant && !monstersAreTeammates(m, occupant)
+             && ((occupant.hasStatus('invisible') && !g.grid.getCell(p.x, p.y)!.layers[DungeonLayer.GAS])
+                 || hiddenBySubmersion(g.grid, occupant, m));
+-        if ((occupant && !hidden) || (flags(g, p) & (T.T_OBSTRUCTS_PASSABILITY | T.T_OBSTRUCTS_VISION))) break;
++        if ((occupant && !hidden && !isSubmerged(occupant)) || (flags(g, p) & (T.T_OBSTRUCTS_PASSABILITY | T.T_OBSTRUCTS_VISION))) break;
+         last = p;
+     }
+     return last;
+--- review/src/engine/Core/Game.ts
++++ final/src/engine/Core/Game.ts
+@@ -1219,9 +1219,7 @@
+         if (pit && !m.hasStatus('levitating')) {
+             const damage = rng.randClumpedRange(6, 12, 2);
+             if (!m.isInvulnerable()) {
+-                m.interruptCorpseAbsorption(damage);
+                 m.takeDamage(damage, false, this.grid);
+-                if (m.hp <= 0) (m as unknown as { die(): void }).die();
+             }
+         }
+         this.needsRender = true;
+@@ -4236,7 +4234,7 @@
+             afterOpen: p => {
+                 const monster = this.getMonsterAt(p.x, p.y);
+                 // MONST_TURRET is an unexpanded CE composite in web data (Rogue.h:2093).
+-                if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp, true);
++                if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp, true, this.grid);
+             },
+         });
+         if (changed) this.updateVision();
+@@ -5519,7 +5517,7 @@
+                 if (monst) {
+                     // MONST_TURRET is an unexpanded CE composite in web data.
+                     if (monst.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monst.hasBehavior('MONST_TURRET')) {
+-                        monst.takeDamage(monst.hp, true); // CE inflictLethalDamage bypasses shields.
++                        monst.takeDamage(monst.hp, true, this.grid); // CE inflictLethalDamage bypasses shields.
+                     } else if (monst.isCaged && (cellTerrainFlags(this.grid, i, j) & T_OBSTRUCTS_PASSABILITY)) {
+                         // Movement.c:760 freeCaptivesEmbeddedAt, after the DF as in CE.
+                         this.freeCaptive(monst);
+@@ -6183,13 +6181,13 @@
+                 break;
+             }
+             case 'quietus': {
+-                target.takeDamage(9999, true);
++                target.takeDamage(9999, true, this.grid);
+                 weapon.runicKnown = true;
+                 logger.log(i18next.t('runic.weapon.quietus', { target: this.monsterDisplayName(target), defaultValue: `Runic magic instantly slays the ${this.monsterDisplayName(target)}!` }), '#ccaaff');
+                 break;
+             }
+             case 'slaying': {
+-                target.takeDamage(9999, true);
++                target.takeDamage(9999, true, this.grid);
+                 weapon.runicKnown = true;
+                 logger.log(i18next.t('runic.weapon.slaying', { target: this.monsterDisplayName(target), defaultValue: `Your weapon of slaying destroys the ${this.monsterDisplayName(target)}!` }), '#ff6666');
+                 break;
+@@ -8597,7 +8595,6 @@
+         const damage = rng.randRange(1, 3); // CE rand_range(1,3)，免疫者照掷
+         if (!entity.hasStatus('immune_fire')
+             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
+-            if (entity instanceof Monster) entity.interruptCorpseAbsorption(damage);
+             if (entity instanceof Monster) entity.takeDamage(damage, true, this.grid);
+             else entity.hp -= damage; // CE burning bypasses shields.
+             if (entity === this.player) {
+@@ -8609,7 +8606,6 @@
+                 }
+             } else if (entity.hp <= 0) {
+                 logger.log(i18next.t('env.burns_to_death', { name: entity.name, defaultValue: `The ${entity.name} burns to death.` }), '#888888');
+-                (entity as unknown as { die(): void }).die();
+             }
+         }
+     }
+@@ -8702,7 +8698,6 @@
+                     defaultValue: `The ${monst.name} dies in a violent explosion.`
+                 }), '#ff8844');
+             }
+-            (monst as unknown as { die(): void }).die();
+         } else if (visible) {
+             logger.log(i18next.t('env.monster_engulfed_explosion', {
+                 name: monst.name,
+@@ -8901,7 +8896,6 @@
+                         logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
+                     }
+                 } else if (!exempt) {
+-                    if (entity instanceof Monster) entity.interruptCorpseAbsorption(Math.max(1, Math.floor(entity.maxHp / 15)));
+                     if (entity instanceof Monster) entity.takeDamage(Math.max(1, Math.floor(entity.maxHp / 15)), true, this.grid);
+                     else entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
+                     if (entity === this.player) {
+@@ -8911,7 +8905,6 @@
+                         else if (damagingTile === TerrainType.STEAM) logger.log(i18next.t('env.player_scalded', { defaultValue: 'The steam scalds you!' }), '#cccccc');
+                         else logger.log(i18next.t('env.player_poison_gas', { defaultValue: 'You breathe in toxic fumes!' }), '#aaeeaa');
+                     }
+-                    if (entity.hp <= 0 && entity !== this.player) entity.die();
+                 }
+             }
+ 
+@@ -9851,7 +9844,41 @@
+      */
+     private finishBlink(result: BoltResult): boolean {
+         const caster = result.caster, landing = result.landingPos;
+-        if (!caster || !landing || !this.canDisplaceCreature(caster, landing)) return false;
++        if (!caster || !landing || caster.hp <= 0
++            || (caster.x === landing.x && caster.y === landing.y)) return false;
++        const occupant = this.getMonsterAt(landing.x, landing.y);
++        if (occupant && occupant !== caster && occupant.submerged) {
++            // CE Items.c:5516-5535: blink displaces a submerged occupant first.
++            if (!canPlaceCreature({ grid: this.grid, player: this.player, monsters: this.monsters.filter(m => m !== occupant), dormantMonsters: this.dormantMonsters }, caster, landing)) return false;
++            const origin = { ...caster.loc };
++            caster.loc = { x: -1, y: -1 }; // CE temporarily removes the caster from occupancy.
++            let home: Pos | null = null;
++            try {
++                // CE Monsters.c:3927-3954: shuffle columns, then rows, once;
++                // first acceptable cell in expanding Manhattan distance.
++                const columns = Array.from({ length: this.grid.width }, (_, i) => i);
++                const rows = Array.from({ length: this.grid.height }, (_, i) => i);
++                rng.shuffleList(columns); rng.shuffleList(rows);
++                search: for (let distance = 1; distance < Math.max(this.grid.width, this.grid.height); distance++) {
++                    for (const x of columns) for (const y of rows) {
++                        const d = Math.abs(x - occupant.x) + Math.abs(y - occupant.y);
++                        if (d > 0 && d <= distance && !this.getMonsterAt(x, y)
++                            && !(this.player.x === x && this.player.y === y)
++                            && !monsterBlinkAvoids(this, occupant, { x, y })) {
++                            home = { x, y }; break search;
++                        }
++                    }
++                }
++            } finally { caster.loc = origin; }
++            if (home) occupant.loc = home; // CE relocation has no terrain-entry callback.
++            else {
++                // CE administrative death: no blood, death DF, loot or passenger.
++                occupant.hp = 0; occupant.deathProcessed = true; occupant.deathEffectTriggered = true;
++                occupant.carriedItem = null; occupant.carriedMonster = null;
++                this.demoteMonsterFromLeadership(occupant);
++            }
++        }
++        if (!this.canDisplaceCreature(caster, landing)) return false;
+         if (caster instanceof Monster) caster.submerged = false; // CE blink always surfaces.
+         caster.setStatusDuration('stuck', 0); // CE disentangle, before landing contact
+         return this.placeCreature(caster, landing, { pickupBeforeVision: true });
+@@ -10003,7 +10030,11 @@
+     private applyDisplacementTileEntry(target: Creature): void {
+         const { x, y } = target.loc;
+         const cell = this.grid.getCell(x, y)!;
+-        if (!target.hasStatus('levitating')) {
++        // CE Time.c:241-245: even a surfaced aquatic creature does not press
++        // a plate in terrain where its form can submerge.
++        if (!target.hasStatus('levitating') && !isSubmerged(target)
++            && !(target instanceof Monster && target.hasBehavior('MONST_SUBMERGES')
++                && (cellTerrainMechFlags(this.grid, x, y) & TM_ALLOWS_SUBMERGING))) {
+             if (cell.layers.includes(TerrainType.TRAP)) this.triggerTrap(x, y, cell, target);
+             else if (cell.layers.includes(TerrainType.PRESSURE_PLATE)) this.triggerPressurePlate(x, y, target);
+             else if ((cellTerrainFlags(this.grid, x, y) & T_IS_DF_TRAP)
