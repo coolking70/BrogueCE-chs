@@ -1,0 +1,163 @@
+{
+  "death": {
+    "file": "RogueMain.c",
+    "lines": [
+      {
+        "line": 1169,
+        "text": "    // Count gems as 500 gold each"
+      },
+      {
+        "line": 1170,
+        "text": "    short numGems = numberOfMatchingPackItems(GEM, 0, 0, false);"
+      },
+      {
+        "line": 1171,
+        "text": "    rogue.gold += 500 * numGems;"
+      },
+      {
+        "line": 1172,
+        "text": "    theEntry.score = rogue.gold;"
+      },
+      {
+        "line": 1173,
+        "text": ""
+      },
+      {
+        "line": 1174,
+        "text": "    if (rogue.mode == GAME_MODE_EASY) {"
+      },
+      {
+        "line": 1175,
+        "text": "        theEntry.score /= 10;"
+      }
+    ]
+  },
+  "victoryQuantity": {
+    "file": "RogueMain.c",
+    "lines": [
+      {
+        "line": 1311,
+        "text": "    for (i = 4, theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {"
+      },
+      {
+        "line": 1312,
+        "text": "        if (theItem->category & GEM) {"
+      },
+      {
+        "line": 1313,
+        "text": "            gemCount += theItem->quantity;"
+      },
+      {
+        "line": 1314,
+        "text": "        }"
+      }
+    ]
+  },
+  "victoryDescription": {
+    "file": "RogueMain.c",
+    "lines": [
+      {
+        "line": 1364,
+        "text": "    strcpy(victoryVerb, superVictory ? \"Mastered\" : \"Escaped\");"
+      },
+      {
+        "line": 1365,
+        "text": "    if (gemCount == 0) {"
+      },
+      {
+        "line": 1366,
+        "text": "        sprintf(theEntry.description, \"%s the Dungeons of Doom!\", victoryVerb);"
+      },
+      {
+        "line": 1367,
+        "text": "    } else if (gemCount == 1) {"
+      },
+      {
+        "line": 1368,
+        "text": "        sprintf(theEntry.description, \"%s the Dungeons of Doom with a lumenstone!\", victoryVerb);"
+      },
+      {
+        "line": 1369,
+        "text": "    } else {"
+      },
+      {
+        "line": 1370,
+        "text": "        sprintf(theEntry.description, \"%s the Dungeons of Doom with %i lumenstones!\", victoryVerb, gemCount);"
+      }
+    ]
+  },
+  "deathCount": {
+    "file": "Items.c",
+    "lines": [
+      {
+        "line": 3868,
+        "text": "    for (theItem = packItems->nextItem; theItem != NULL; theItem = theItem->nextItem) {"
+      },
+      {
+        "line": 3869,
+        "text": ""
+      },
+      {
+        "line": 3870,
+        "text": "        if (theItem->category & categoryMask &&"
+      },
+      {
+        "line": 3871,
+        "text": "            !(~(theItem->flags) & requiredFlags) &&"
+      },
+      {
+        "line": 3872,
+        "text": "            !(theItem->flags & forbiddenFlags)) {"
+      },
+      {
+        "line": 3873,
+        "text": ""
+      },
+      {
+        "line": 3874,
+        "text": "            matchingItemCount++;"
+      },
+      {
+        "line": 3875,
+        "text": "        }"
+      },
+      {
+        "line": 3876,
+        "text": "    }"
+      }
+    ]
+  },
+  "itemValue": {
+    "file": "Items.c",
+    "lines": [
+      {
+        "line": 8861,
+        "text": "unsigned long itemValue(item *theItem) {"
+      },
+      {
+        "line": 8862,
+        "text": "    switch (theItem->category) {"
+      },
+      {
+        "line": 8863,
+        "text": "        case AMULET:"
+      },
+      {
+        "line": 8864,
+        "text": "            return 35000;"
+      },
+      {
+        "line": 8865,
+        "text": "            break;"
+      },
+      {
+        "line": 8866,
+        "text": "        case GEM:"
+      },
+      {
+        "line": 8867,
+        "text": "            return 5000 * theItem->quantity;"
+      }
+    ]
+  }
+}

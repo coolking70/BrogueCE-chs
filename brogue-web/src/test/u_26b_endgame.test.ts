@@ -19,7 +19,8 @@ describe('U26b CE endgame settlement', () => {
         expect(itemValue(pack[1]!)).toBe(10000);
         expect(itemValue(pack[2]!)).toBe(0);
         // 验收修订：CE 死亡按宝石"件数"计 500（numberOfMatchingPackItems 计条目，RogueMain.c:1170），
-        // 同层宝石叠放为一件（Items.c:988-992）；胜利 itemValue 才乘 quantity（Items.c:8867）
+        // 同层宝石叠放为一件（Items.c:988-992）；胜利 itemValue 乘 quantity（Items.c:8867），
+        // 胜利描述也求 quantity 和（RogueMain.c:1312-1313,1364-1370），不能推广死亡计数规则。
         expect(endgameScore(1234, pack, false, false, false)).toBe(1734);
         expect(endgameScore(1234, [{ category: ItemCategory.GEM, quantity: 1 }, { category: ItemCategory.GEM, quantity: 1 }], false, false, false)).toBe(2234);
         expect(endgameScore(1234, pack, true, false, false)).toBe(46234);
@@ -28,6 +29,11 @@ describe('U26b CE endgame settlement', () => {
     });
 
     it('Game settles death, escape and carried gem super victory fixtures', () => {
+        const store = new Map<string, string>();
+        vi.stubGlobal('localStorage', {
+            getItem: (key: string) => store.get(key) ?? null,
+            setItem: (key: string, value: string) => { store.set(key, value); }
+        });
         for (const [index, won, superVictory, expected] of [
             [0, false, false, 1734], [1, true, false, 46234], [2, true, true, 81234]
         ] as const) {
@@ -43,6 +49,11 @@ describe('U26b CE endgame settlement', () => {
             game.triggerGameOver(won, undefined, superVictory);
             expect(game.gameOverSuperVictory).toBe(superVictory);
             expect(game.gameOverScore).toBe(expected);
+            if (won) {
+                expect(readHighScores()[0]!.description).toBe(
+                    `${superVictory ? 'Mastered' : 'Escaped'} the Dungeons of Doom with 2 lumenstones!`
+                );
+            }
         }
     });
 

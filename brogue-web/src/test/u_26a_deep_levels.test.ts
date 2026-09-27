@@ -5,7 +5,7 @@ import { Item, ItemCategory } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { Inventory } from '../engine/Items/Inventory';
 import { Game } from '../engine/Core/Game';
-import { endgameScore, lumenstoneCount } from '../engine/Core/Endgame';
+import { endgameScore, deathLumenstoneEntryCount } from '../engine/Core/Endgame';
 import { readHighScores } from '../engine/Core/HighScores';
 import { rng } from '../engine/Random';
 import { TerrainType as T, Grid } from '../engine/Map/Grid';
@@ -113,7 +113,7 @@ describe('U26a CE deep-level contracts', () => {
         expect(pack.packCount()).toBe(26);
         pack.removeItem(pack.items[1]!);
         expect(pack.addItem(ItemLoader.spawnGem(28, 0, 0))).toBe(true);
-        expect(lumenstoneCount(pack.items)).toBe(2);
+        expect(deathLumenstoneEntryCount(pack.items)).toBe(2);
         expect(endgameScore(0, pack.items, false, false, false)).toBe(1000);
         expect(endgameScore(0, pack.items, true, false, false)).toBe(15000);
     });
@@ -234,11 +234,11 @@ describe('U26a natural maps and real player commands', () => {
                 expect(g.depth).toBe(27); expect(gems(g)).toHaveLength(0);
                 g.player.loc = terminal(g, T.STAIRS_DOWN); g.handlePlayerAction('stairs_down');
                 expect(g.depth).toBe(28); expect(gems(g)).toHaveLength(0);
-                expect(lumenstoneCount(g.player.inventory.items)).toBe(2);
+                expect(deathLumenstoneEntryCount(g.player.inventory.items)).toBe(2);
             }
         }
         expect(total).toBe(25);
-        expect(lumenstoneCount(g.player.inventory.items)).toBe(14);
+        expect(deathLumenstoneEntryCount(g.player.inventory.items)).toBe(14);
         expect(g.monsters).toHaveLength(0);
         g.player.loc = terminal(g, T.DUNGEON_PORTAL);
         g.handlePlayerAction('wait_or_stairs_down');
@@ -246,7 +246,8 @@ describe('U26a natural maps and real player commands', () => {
         expect(g.gameOverWon).toBe(true);
         expect(g.gameOverSuperVictory).toBe(true);
         expect(g.gameOverScore).toBe(g.stats.gold + 70000 + 25 * 5000);
-        expect(readHighScores()[0]!.description).toBe('Mastered the Dungeons of Doom with 14 lumenstones!');
+        // CE RogueMain.c:1312-1313,1364-1370: victory descriptions sum quantity, not pack entries.
+        expect(readHighScores()[0]!.description).toBe('Mastered the Dungeons of Doom with 25 lumenstones!');
     });
 
     it.each([0, 1, 2])('D40 portal rejects an empty pack, then settles %i gem stacks and description', count => {

@@ -21,13 +21,17 @@ export function endgameScore(gold: number, items: ScoredItem[], won: boolean, su
             score += Math.max(0, superVictory && item.category === ItemCategory.AMULET ? value * 2 : value);
         }
     } else {
-        score += 500 * lumenstoneCount(items);
+        score += 500 * deathLumenstoneEntryCount(items);
     }
     return easy ? Math.trunc(score / 10) : score;
 }
 
-/** CE numberOfMatchingPackItems(GEM, ...) counts pack entries, not quantity
- * (Items.c; RogueMain.c:1170). Victory's itemValue does multiply quantity. */
-export function lumenstoneCount(items: ScoredItem[]): number {
+/** CE RogueMain.c:1169-1175: death redeems each matching pack entry for 500 gold. */
+export function deathLumenstoneEntryCount(items: ScoredItem[]): number {
     return items.filter(item => item.category === ItemCategory.GEM).length;
+}
+
+/** CE RogueMain.c:1312-1313,1364-1370: victory descriptions count every gem. */
+export function victoryLumenstoneQuantity(items: ScoredItem[]): number {
+    return items.reduce((quantity, item) => quantity + (item.category === ItemCategory.GEM ? item.quantity : 0), 0);
 }

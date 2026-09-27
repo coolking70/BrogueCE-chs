@@ -51,7 +51,7 @@ import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, w
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
 import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, enchantingAutoIdentifiesTarget, invokeCharm } from '../Items/ItemUseCoordinator';
-import { endgameScore, lumenstoneCount } from './Endgame';
+import { endgameScore, victoryLumenstoneQuantity } from './Endgame';
 import { saveHighScore } from './HighScores';
 import { ItemLoader } from '../Items/ItemLoader';
 import { charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
@@ -10550,7 +10550,7 @@ export class Game {
 
         const items = this.player.inventory.items;
         this.gameOverScore = endgameScore(this.stats.gold, items, won, this.gameOverSuperVictory, this.mode === 'easy');
-        const gems = lumenstoneCount(items);
+        const gems = victoryLumenstoneQuantity(items);
         const description = won
             ? i18next.t(gems === 0 ? 'endgame.score_escaped' : gems === 1 ? 'endgame.score_one_gem' : 'endgame.score_many_gems', {
                 verb: superVictory ? i18next.t('endgame.mastered_verb', { defaultValue: 'Mastered' })
