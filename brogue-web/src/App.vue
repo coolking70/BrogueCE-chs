@@ -410,8 +410,8 @@ const handleReturnToTitle = async () => {
   left: 12px;
   z-index: 1200;
   height: 30px;
-  border: 1px solid #4b5563;
-  background: #111827cc;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
   color: #e5e7eb;
   border-radius: 6px;
   padding: 0 10px;
