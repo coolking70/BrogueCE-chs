@@ -20,6 +20,7 @@
 
 import { Grid } from '../Map/Grid';
 import { ColorUtils } from '../Map/Color';
+import { sampleLight, displayRandom } from './CosmeticLight';
 import type { RGBA } from '../Map/Color';
 import {
     FP_FACTOR,
@@ -62,7 +63,24 @@ export interface PaintLightParams {
     hasCreatureAt?: (x: number, y: number) => boolean;
 }
 
+// Render-only source replay can contain creature-query callbacks. Keep it out
+// of the simulation object graph; replacing the owning LightMap on new run or
+// travel also replaces this cache, without retaining a previous game's wiring.
+const renderSources = new WeakMap<LightMap, PaintLightParams[]>();
+
 export class LightMap {
+    private visualMap: LightMap | null = null;
+
+    /** Base light stays deterministic. Only the renderer requests color/radius noise. */
+    public dance(): void {
+        const visual = new LightMap(this.grid);
+        for (const source of renderSources.get(this) ?? []) visual.paintLight({ ...source, light: sampleLight(source.light, 100000, displayRandom(this.grid)) });
+        this.visualMap = visual;
+    }
+
+    public renderLightAt(x: number, y: number): LightChannels | null {
+        return this.visualMap?.lightAt(x, y) ?? this.lightAt(x, y);
+    }
     private grid: Grid;
     private lightCells: LightCell[][];
 
@@ -121,6 +139,8 @@ export class LightMap {
      * 之后按 CE 顺序泼光：全部发光地形 → 生物光 → 矿灯（Game.updateVision）。
      */
     public clearLighting() {
+        renderSources.set(this, []);
+        this.visualMap = null;
         for (let x = 0; x < this.grid.width; x++) {
             for (let y = 0; y < this.grid.height; y++) {
                 const ch = this.lightGrid[x]![y]!;
@@ -154,6 +174,9 @@ export class LightMap {
      * 的 CE 语义在 web 无消费者，省略返回值。
      */
     public paintLight(params: PaintLightParams): void {
+        let sources = renderSources.get(this);
+        if (!sources) renderSources.set(this, sources = []);
+        sources.push(params);
         const { light, x, y } = params;
         const isMinersLight = params.isMinersLight ?? false;
         const maintainShadows = params.maintainShadows ?? false;

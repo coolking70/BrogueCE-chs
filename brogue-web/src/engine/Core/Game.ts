@@ -57,6 +57,7 @@ import { charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { ringBonus, ringLightMultiplier } from '../Items/RingBonuses';
 import { rng, Random, RNGType } from '../Random';
+import { prepareFlare, flareState, type Flare } from '../Lighting/CosmeticLight';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -1773,6 +1774,7 @@ export class Game {
             }
         }
 
+        this.createFlare(summoner.loc.x, summoner.loc.y, LightKind.SUMMONING_FLASH_LIGHT);
         return atLeastOneMinion;
     }
 
@@ -2387,13 +2389,6 @@ export class Game {
     private updateVision(): void {
         this.refreshMinersLight();
 
-        // Time.c:873：FOV 掩码半径 (DCOLS+DROWS)*FP_FACTOR ≈ 无界；
-        // 遮挡 T_OBSTRUCTS_VISION = cell.isOpaque。
-        const mask = this.fov.computeFOVMask(
-            this.player.loc.x, this.player.loc.y, DCOLS + DROWS,
-            (cell) => cell.isOpaque
-        );
-
         const lm = this.lightMap;
         lm.clearLighting(); // Light.c:216-226：清零 + 全图 IS_IN_SHADOW
 
@@ -2458,6 +2453,18 @@ export class Game {
             maintainShadows: true,
         });
 
+        this.updateFieldOfViewDisplay((x, y) => lm.lightSumAt(x, y));
+
+        // 5. 渲染馈送（GameCanvas 消费 getLight 接口不变——引擎数据升级，
+        //    渲染层零改动）
+        lm.fillRenderFromLighting();
+    }
+
+    /** Movement.c:2572: temporary light shares the FOV/lit/clairvoyance gates.
+     * Knowledge commits in simulation order; playback only changes visibility. */
+    private updateFieldOfViewDisplay(lightSumAt: (x: number, y: number) => number, remember = true): void {
+        const mask = this.fov.computeFOVMask(this.player.loc.x, this.player.loc.y,
+            DCOLS + DROWS, cell => cell.isOpaque);
         // CE Time.c:660-704: positive clairvoyance reveals nearby cells through
         // walls; a cursed ring darkens the same radius even inside ordinary FOV.
         const clairvoyance = ringBonus(this.player.rings(), 'ring_of_clairvoyance');
@@ -2473,11 +2480,11 @@ export class Game {
                     && (cell.layers[DungeonLayer.DUNGEON] !== TerrainType.GRANITE || cell.isExplored);
                 const darkened = clairvoyance < 0 && inClairvoyance
                     && (dx !== 0 || dy !== 0);
-                const directlyVisible = mask[x]![y]! && lm.lightSumAt(x, y) > VISIBILITY_THRESHOLD && !darkened;
+                const directlyVisible = mask[x]![y]! && lightSumAt(x, y) > VISIBILITY_THRESHOLD && !darkened;
                 cell.isClairvoyantVisible = clairvoyance > 0 && inClairvoyance && !directlyVisible;
                 const visible = directlyVisible || cell.isClairvoyantVisible;
                 cell.isVisible = visible;
-                if (visible) {
+                if (visible && remember) {
                     cell.isExplored = true;
                     cell.hasMemory = true;
                     cell.rememberedTerrain = cell.terrain;
@@ -2494,9 +2501,6 @@ export class Game {
             }
         }
 
-        // 5. 渲染馈送（GameCanvas 消费 getLight 接口不变——引擎数据升级，
-        //    渲染层零改动）
-        lm.fillRenderFromLighting();
     }
 
     public update() {
@@ -2599,6 +2603,7 @@ export class Game {
     /** Every user command, including inventory and modal choices, crosses this boundary. */
     public executeCommand(action: string, data?: unknown, perform?: () => void): void {
         if (this.replayRecording || this.isAdvancing || this.isInputLocked()) return;
+        this.finishTransientDisplay();
         const decisions: boolean[] = [];
         this.commandDecisions = decisions;
         try {
@@ -2881,6 +2886,7 @@ export class Game {
     }
 
     private performPlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'system') {
+        if (!this.isAdvancing) this.finishTransientDisplay();
         if (action === 'discoveries' || action === 'help') {
             this.referenceScreen = this.referenceScreen === action ? null : action;
             return;
@@ -4268,9 +4274,9 @@ export class Game {
         return changed;
     }
 
-    // CE Light.c:291-403. Flares are transient display light. Keeping their
-    // channels separate prevents render cadence from changing gameplay FOV/RNG.
-    private activeFlares: Array<{ x: number; y: number; kind: LightKind; coeff: number; change: number }> = [];
+    // CE Light.c:291-403. Preserve base light/shadows and restore visibility
+    // after playback. Samples and animation are transient, never serialized.
+    private activeFlares: Flare[] = [];
     private flareLightMap: LightMap | null = null;
     private flareElapsedMs = 0;
 
@@ -4325,7 +4331,9 @@ export class Game {
         if (!LIGHT_CATALOG[kind] || !this.grid.isValidPos(x, y)) return;
         this.activeFlares ??= []; // legacy headless fixtures construct via Object.create(Game.prototype)
         this.flareElapsedMs ??= 0;
-        this.activeFlares.push({ x, y, kind, coeff: 100000, change: -15 });
+        const flare = { x, y, kind, coeff: 100000, change: -15 };
+        flareState(flare, this.absoluteTurnNumber ?? 0);
+        this.activeFlares.push(flare);
         this.needsRender = true;
     }
 
@@ -4340,6 +4348,51 @@ export class Game {
         return this.flareLightMap?.lightAt(x, y) ?? null;
     }
 
+    /** Sample every CE frame once, then commit discoveries before gameplay
+     * resumes. Fast-forward and 10ms playback know exactly the same cells. */
+    private prepareFlareKnowledge(): void {
+        if (!this.activeFlares?.some(flare => !flareState(flare).samples)) return;
+        this.activeFlares = this.activeFlares.filter(f => !(flareState(f).turn > 0 && flareState(f).turn < this.absoluteTurnNumber - 1));
+        for (const flare of this.activeFlares) prepareFlare(flare, LIGHT_CATALOG[flare.kind]!);
+        const count = Math.max(0, ...this.activeFlares.map(f => flareState(f).samples!.length));
+        for (let frame = 0; frame < count; frame++) {
+            this.updateTransientVisibility(this.paintFlareFrame(frame), true);
+        }
+        this.updateFieldOfViewDisplay((x, y) => this.lightMap.lightSumAt(x, y), false);
+    }
+
+    private paintFlareFrame(frame?: number): LightMap {
+        const overlay = new LightMap(this.grid);
+        for (const flare of this.activeFlares) {
+            const light = flareState(flare).samples?.[frame ?? flareState(flare).frame];
+            if (light) overlay.paintLight({ light, x: flare.x, y: flare.y, maintainShadows: true,
+                hasCreatureAt: (x, y) => this.hasCreatureAtForLight(x, y) });
+        }
+        return overlay;
+    }
+
+    private updateTransientVisibility(overlay: LightMap | null, remember: boolean): void {
+        this.updateFieldOfViewDisplay((x, y) => {
+            const base = this.lightMap.lightAt(x, y)!;
+            const extra = overlay?.lightAt(x, y);
+            return Math.max(0, base.r + (extra?.r ?? 0))
+                + Math.max(0, base.g + (extra?.g ?? 0)) + Math.max(0, base.b + (extra?.b ?? 0));
+        }, remember);
+    }
+
+    /** Do not expose frame-dependent visibility to AI, targeting or snapshots. */
+    private finishTransientDisplay(discardQueued = false): void {
+        if (!this.activeFlares?.length && !this.flareLightMap) return;
+        this.prepareFlareKnowledge();
+        // Commands cancel the displayed frame, but a not-yet-presented event
+        // remains queued for the animation pump (which checks turn expiry).
+        // Headless callers can inspect emitted DF effects without rendering.
+        this.activeFlares = discardQueued ? [] : this.activeFlares.filter(flare => flareState(flare).frame < 0);
+        this.flareLightMap = null;
+        this.flareElapsedMs = 0;
+        this.updateTransientVisibility(null, false);
+    }
+
     /** One CE flare step per 10ms; the final step requests a clean redraw. */
     public tickFlareAnimation(deltaMs: number): boolean {
         const flashChanged = !!this.terrainFlashes?.length;
@@ -4347,39 +4400,20 @@ export class Game {
             flash.elapsed += Math.max(0, deltaMs);
             return flash.elapsed < flash.frames * 50;
         });
-        if (!this.activeFlares.length) return flashChanged;
+        if (!this.activeFlares?.length) return flashChanged;
+        if (this.isAdvancing) return flashChanged;
+        this.prepareFlareKnowledge();
         this.flareElapsedMs += Math.max(0, deltaMs);
         if (this.flareElapsedMs < 10) return flashChanged;
-        const steps = Math.min(100, Math.floor(this.flareElapsedMs / 10));
+        const steps = Math.floor(this.flareElapsedMs / 10);
         this.flareElapsedMs %= 10;
-        for (let step = 0; step < steps; step++) {
-            this.activeFlares = this.activeFlares.filter(flare => {
-                flare.coeff += Math.trunc(flare.change * 100);
-                flare.change = Math.trunc(flare.change * 12 / 10);
-                return flare.coeff >= 0;
-            });
-        }
-        if (!this.activeFlares.length) {
-            this.flareLightMap = null;
-            return true;
-        }
-        const overlay = new LightMap(this.grid);
-        overlay.clearLighting();
-        for (const flare of this.activeFlares) {
-            const source = LIGHT_CATALOG[flare.kind]!;
-            const scale = flare.coeff / 100000;
-            overlay.paintLight({
-                light: { ...source, color: {
-                    ...source.color,
-                    red: Math.trunc(source.color.red * scale),
-                    green: Math.trunc(source.color.green * scale),
-                    blue: Math.trunc(source.color.blue * scale),
-                } },
-                x: flare.x, y: flare.y,
-                radiusHundredths: Math.trunc(source.radius.lowerBound * scale),
-            });
-        }
-        this.flareLightMap = overlay;
+        this.activeFlares = this.activeFlares.filter(flare => {
+            flareState(flare).frame += steps;
+            return flareState(flare).frame < flareState(flare).samples!.length
+                && !(flareState(flare).turn > 0 && flareState(flare).turn < this.absoluteTurnNumber - 1);
+        });
+        this.flareLightMap = this.activeFlares.length ? this.paintFlareFrame() : null;
+        this.updateTransientVisibility(this.flareLightMap, false);
         return true;
     }
 
@@ -4866,8 +4900,8 @@ export class Game {
                 // Enemy and ally recipients use the same repeatable operation.
                 if (target instanceof Monster && target.empower()) {
                     autoID = this.canObserveBoltTarget(target);
+                    this.createFlare(target.x, target.y, LightKind.EMPOWERMENT_LIGHT);
                     if (autoID) {
-                        this.createFlare(target.x, target.y, LightKind.EMPOWERMENT_LIGHT);
                         logger.log(i18next.t('bolt.empowerment_hit', {
                             name: item.displayName, target: this.monsterDisplayName(target),
                             defaultValue: `${item.displayName} empowers the ${this.monsterDisplayName(target)}!`
@@ -6199,6 +6233,11 @@ export class Game {
         // effect; submerged targets identify only through an observable effect.
         const visible = this.canObserveBoltTarget(target);
         if (visible) weapon.runicKnown = true;
+        if (!isSubmerged(target)) {
+            if (runicType === 'speed') this.createFlare(this.player.x, this.player.y, LightKind.SCROLL_ENCHANTMENT_LIGHT);
+            else if (runicType === 'quietus') this.createFlare(target.x, target.y, LightKind.QUIETUS_FLARE_LIGHT);
+            else if (runicType === 'slaying') this.createFlare(target.x, target.y, LightKind.SLAYING_FLARE_LIGHT);
+        }
         const enchant = netEnchant(weapon.enchantment, this.player.effectiveStrength, weapon.strengthRequired ?? 0);
 
         switch (runicType) {
@@ -7417,6 +7456,8 @@ export class Game {
                 if (this.player.hp <= 0) {
                     // CE :1161-1163 killCreature + gameOver("Killed by a fall")
                     this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }));
+                    this.createFlare(this.player.x, this.player.y, LightKind.GENERIC_FLASH_LIGHT);
+                    this.prepareFlareKnowledge();
                     return;
                 }
             }
@@ -7425,6 +7466,8 @@ export class Game {
             logger.log(i18next.t('fall.strange_force', { defaultValue: 'A strange force seizes you as you fall.' }), '#cc99ff');
             this.teleportPlayerRandom();
         }
+        this.createFlare(this.player.x, this.player.y, LightKind.GENERIC_FLASH_LIGHT);
+        this.prepareFlareKnowledge();
         this.needsRender = true;
     }
 
@@ -8124,7 +8167,8 @@ export class Game {
      * 饥饿伤害与回血（recoverPerTurn）、回合数、死亡结算。
      */
     private finishTurnEpilogue() {
-        return finishTurnEpilogue(this.timePorts());
+        finishTurnEpilogue(this.timePorts());
+        this.prepareFlareKnowledge();
     }
 
     // ---- P2-4 CE 口径动画（决策 E1-修订）+ 输入锁 ----
@@ -8400,6 +8444,7 @@ export class Game {
      * encoded; callers may retry once its existing animation has completed. */
     public toSnapshot(): GameSnapshot {
         if (this.isAdvancing) throw new Error('Cannot save during turn advancement');
+        this.finishTransientDisplay(true);
         return toWholeRunSnapshot({
             depth: this.depth, currentLevelDepth: this.currentLevelDepth,
             active: this.activeLevelState(), levels: this.levels,

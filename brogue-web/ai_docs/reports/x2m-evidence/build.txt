@@ -1,0 +1,33 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 860 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.76 kB │ gzip:   0.44 kB
+dist/assets/index-AneNzWyR.css                 21.74 kB │ gzip:   5.12 kB
+dist/assets/Filter-lepsY04M.js                  0.90 kB │ gzip:   0.48 kB
+dist/assets/BufferResource-CKyC3qwI.js         10.60 kB │ gzip:   2.80 kB
+dist/assets/webworkerAll-VbVrigPr.js           11.88 kB │ gzip:   3.92 kB
+dist/assets/CanvasRenderer-CAn36lXd.js         22.67 kB │ gzip:   7.08 kB
+dist/assets/WebGPURenderer-BkgsjF3s.js         38.19 kB │ gzip:  10.65 kB
+dist/assets/browserAll-C9G0GU6P.js             41.30 kB │ gzip:  10.81 kB
+dist/assets/RenderTargetSystem-B3czih9G.js     45.60 kB │ gzip:  12.57 kB
+dist/assets/WebGLRenderer-BKl54lkQ.js          68.42 kB │ gzip:  18.75 kB
+dist/assets/index-DjSTEYSA.js               1,353.83 kB │ gzip: 392.56 kB
+node.exe : 
+At line:1 char:1
++ & "D:\Program Files\nodejs/node.exe" "D:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualc
+hunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.18s

@@ -1,0 +1,759 @@
+{
+  "errors": [],
+  "cast": {
+    "charges": 0,
+    "powers": 1,
+    "turns": 1
+  },
+  "replay": {
+    "count": 2,
+    "cursor": 2,
+    "error": null
+  },
+  "rows": [
+    {
+      "label": "before",
+      "visible": false,
+      "explored": false,
+      "flare": null,
+      "monsterRows": 0,
+      "flares": [],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "darkness": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "empowerment",
+      "visible": true,
+      "explored": true,
+      "flare": {
+        "r": 430,
+        "g": 922,
+        "b": 516
+      },
+      "monsterRows": 1,
+      "flares": [
+        {
+          "x": 39,
+          "y": 16,
+          "kind": 25,
+          "coeff": 100000,
+          "change": -15
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "darkness": 99
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 39,
+            "y": 16,
+            "hp": 18,
+            "maxHp": 18,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 90,
+            "defense": 10,
+            "damage": "2-4",
+            "newPowerCount": 1,
+            "totalPowerCount": 1,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "after",
+      "visible": false,
+      "explored": true,
+      "flare": null,
+      "monsterRows": 0,
+      "flares": [],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "darkness": 99
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "explosion-df",
+      "visible": true,
+      "explored": true,
+      "flare": {
+        "r": 12400,
+        "g": 7440,
+        "b": 1240
+      },
+      "monsterRows": 0,
+      "flares": [
+        {
+          "x": 39,
+          "y": 16,
+          "kind": 29,
+          "coeff": 100000,
+          "change": -15
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "darkness": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "summoning",
+      "visible": true,
+      "explored": true,
+      "flare": {
+        "r": 700,
+        "g": 0,
+        "b": 556
+      },
+      "monsterRows": 5,
+      "flares": [
+        {
+          "x": 39,
+          "y": 16,
+          "kind": 28,
+          "coeff": 100000,
+          "change": -15
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "darkness": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林召唤师",
+            "x": 39,
+            "y": 16,
+            "hp": 10,
+            "maxHp": 10,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d3+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_MAINTAINS_DISTANCE",
+              "MONST_CAST_SPELLS_SLOWLY",
+              "MONST_CARRY_ITEM_25"
+            ],
+            "abilityFlags": [
+              "MA_CAST_SUMMON",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin_conjurer",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "幽灵刀刃",
+            "x": 38,
+            "y": 16,
+            "hp": 1,
+            "maxHp": 1,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 150,
+            "defense": 0,
+            "damage": "1d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_INANIMATE",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FLIES",
+              "MONST_WILL_NOT_USE_STAIRS",
+              "MONST_DIES_IF_NEGATED",
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NOT_LISTED_IN_SIDEBAR"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "spectral_blade",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 21,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 101,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "幽灵刀刃",
+            "x": 40,
+            "y": 16,
+            "hp": 1,
+            "maxHp": 1,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 150,
+            "defense": 0,
+            "damage": "1d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_INANIMATE",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FLIES",
+              "MONST_WILL_NOT_USE_STAIRS",
+              "MONST_DIES_IF_NEGATED",
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NOT_LISTED_IN_SIDEBAR"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "spectral_blade",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 21,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 101,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "幽灵刀刃",
+            "x": 39,
+            "y": 17,
+            "hp": 1,
+            "maxHp": 1,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 150,
+            "defense": 0,
+            "damage": "1d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_INANIMATE",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FLIES",
+              "MONST_WILL_NOT_USE_STAIRS",
+              "MONST_DIES_IF_NEGATED",
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NOT_LISTED_IN_SIDEBAR"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "spectral_blade",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 21,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 101,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "幽灵刀刃",
+            "x": 38,
+            "y": 17,
+            "hp": 1,
+            "maxHp": 1,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 150,
+            "defense": 0,
+            "damage": "1d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_INANIMATE",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FLIES",
+              "MONST_WILL_NOT_USE_STAIRS",
+              "MONST_DIES_IF_NEGATED",
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NOT_LISTED_IN_SIDEBAR"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "spectral_blade",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 21,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 101,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "dynamic-a",
+      "visible": true,
+      "explored": true,
+      "flare": null,
+      "monsterRows": 1,
+      "flares": [],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "幽火",
+            "x": 40,
+            "y": 16,
+            "hp": 10,
+            "maxHp": 10,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 90,
+            "damage": "0d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_FIRE",
+              "MONST_FLIES",
+              "MONST_FLITS",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FIERY",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [
+              "MA_HIT_BURN"
+            ],
+            "bolts": [],
+            "typeId": "wisp",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "dynamic-b",
+      "visible": true,
+      "explored": true,
+      "flare": null,
+      "monsterRows": 1,
+      "flares": [],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "darkness": 100
+          },
+          "x": 35,
+          "y": 16,
+          "hp": 500,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "幽火",
+            "x": 40,
+            "y": 16,
+            "hp": 10,
+            "maxHp": 10,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 90,
+            "damage": "0d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_FIRE",
+              "MONST_FLIES",
+              "MONST_FLITS",
+              "MONST_NEVER_SLEEPS",
+              "MONST_FIERY",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [
+              "MA_HIT_BURN"
+            ],
+            "bolts": [],
+            "typeId": "wisp",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ],
+  "scope": "Real menu, item use/target/charge/turn, DF transaction, summoning, Pixi and sidebar; controlled geometry and frame timing."
+}

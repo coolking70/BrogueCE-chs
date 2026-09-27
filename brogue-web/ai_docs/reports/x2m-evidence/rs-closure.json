@@ -1,0 +1,523 @@
+[
+  {
+    "file": "src/engine/Combat/BoltCatalog.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/c_4c_promotion.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/p1_30_i18n_gate.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/p1_42_secret_door_search.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_0_seeded_rng.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_3_objective_time.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_4_animation_cadence.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p2_6_display_settings.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/p4_3_special_monster_flags.test.ts",
+    "reason": [
+      "R: U21a shared visibility/identity consumers under legacy test names"
+    ]
+  },
+  {
+    "file": "src/test/r_1_appearance.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/repo_hygiene.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/scroll_effects.test.ts",
+    "reason": [
+      "R: U21a shared visibility/identity consumers under legacy test names"
+    ]
+  },
+  {
+    "file": "src/test/u21c_flare_sidebar.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u21c_terrain_appearance.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u24_hardcoded_text.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_00_new_run.test.ts",
+    "reason": [
+      "R: complete new-run graph and RNG lifecycle"
+    ]
+  },
+  {
+    "file": "src/test/u_01_instance_snapshot.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_03_whole_run_snapshot.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_05_machine_items.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_05a_item_ownership.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_06_monster_damage.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_09_learning_consumers.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_13_combat_math.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_14a_status_gaps.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_14b_status_gaps.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_15b2_ring_birth.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_15d3_runic_generation.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_17a_df_transaction.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u_17b_carriers.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_17c_triggers.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_17d_vents.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_17e_altars.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_17f_carriers.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_19a_machine_view.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_19d_machine_families.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_19e_machine_families.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_19f_autogen.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_23_memory_mapping.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u_26a_deep_baseline.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u_26a_deep_levels.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_27_recording.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u_r1_codec.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/u_r2_trace.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_r3_trace.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/u_r4_trace.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/ui_1_rendering.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_4_altars.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_9b_environment.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "reason": [
+      "R: U21a shared visibility/identity consumers under legacy test names"
+    ]
+  },
+  {
+    "file": "src/test/w_7_arcana_enchantment.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "reason": [
+      "R: U21a shared visibility/identity consumers under legacy test names"
+    ]
+  },
+  {
+    "file": "src/test/x2a_recording_checkpoint.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/x2b_terrain_derivation.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/x2c_hit_status_owner.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer"
+    ]
+  },
+  {
+    "file": "src/test/x2e_charms.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/x2f_thrown_math.test.ts",
+    "reason": [
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/x2g_native_effects.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  },
+  {
+    "file": "src/test/x2m_lighting.test.ts",
+    "reason": [
+      "R: lighting/knowledge/cosmetic/recording/DF/deep/consumer",
+      "S: source/fixture reader (conservative superset)"
+    ]
+  }
+]

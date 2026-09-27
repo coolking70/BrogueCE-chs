@@ -101,6 +101,7 @@ export function computeMapOffset(viewportWidth: number, viewportHeight: number):
 </script>
 
 <script setup lang="ts">
+import { terrainRandomValues, tickTerrainColors } from '../engine/UI/DancingColors';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import * as PIXI from 'pixi.js';
 import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
@@ -333,6 +334,8 @@ onMounted(async () => {
                     ? cellAppearance(cell, {
                         gas: game.environment.gasGrid[x]?.[y],
                         lightChannels: game.lightMap.lightAt(x, y),
+                        dancingLightChannels: game.lightMap.renderLightAt(x, y),
+                        terrainRandomValues: terrainRandomValues(cell, game.grid),
                         flareChannels: game.flareLightAt(x, y),
                         flashChannels: game.terrainFlashAt(x, y),
                         depth: game.depth,
@@ -643,6 +646,7 @@ onMounted(async () => {
     });
 
     let pathingTimer = 0;
+    let colorTimer = 0;
     // Floating text animation ticker
     pixiApp.ticker.add((ticker) => {
         game.tickReplay();
@@ -664,7 +668,11 @@ onMounted(async () => {
         // Bolt animation tick
         const boltChanged = game.tickBoltAnimation();
         const flareChanged = game.tickFlareAnimation(ticker.deltaMS);
-        if (boltChanged || flareChanged) render();
+        const terrainChanged = tickTerrainColors(game.grid, ticker.deltaMS, game.depth);
+        colorTimer += ticker.deltaMS;
+        const lightChanged = colorTimer >= 50;
+        if (lightChanged) { colorTimer %= 50; game.lightMap.dance(); }
+        if (boltChanged || flareChanged || terrainChanged || lightChanged) render();
 
         if (!game.replayRecording && game.autoPath.length > 0) {
             pathingTimer++;

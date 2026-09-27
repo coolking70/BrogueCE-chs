@@ -26,6 +26,8 @@ import { Item, ItemCategory } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { TERRAIN_APPEARANCES } from './TerrainAppearanceCatalog';
 import { CE_AMULET_LEVEL } from '../Map/LightCatalog';
+import { TERRAIN_COLOR_NAMES } from './TerrainColorCatalog';
+import { bakeTerrainColor } from './DancingColors';
 
 /** W-25: selection trajectory styling belongs to the appearance layer; the
  * canvas only draws the geometry supplied by the read-only targeting preview. */
@@ -137,6 +139,8 @@ export interface EntityVisual {
  * 纯函数自身不持有任何地图/游戏引用。
  */
 export interface CellAppearanceContext {
+    /** Cached CE terrainRandomValues; omitted for unbaked catalog previews. */
+    terrainRandomValues?: readonly number[];
     /** Current depth for CE's dynamic tile colors. */
     depth?: number;
     /** 该格气体镜像条目（无气体或越界时 undefined）。 */
@@ -147,6 +151,8 @@ export interface CellAppearanceContext {
      * applyColorMultiplier 逐通道乘法消费它，不再用旧 {color,intensity} 混合。
      */
     lightChannels: LightChannels | null;
+    /** Cosmetic sample of steady light; simulation retains lightChannels. */
+    dancingLightChannels?: LightChannels | null;
     /** Temporary CE flare light, added for drawing only. */
     flareChannels?: LightChannels | null;
     /** CE hiliteCell adds color after lighting/memory, without revealing tiles. */
@@ -211,12 +217,17 @@ function depthColor(name: string, depth: number): string {
     }).join('');
 }
 
-export function terrainAppearance(terrain: TerrainType, isVisible: boolean, depth = 1): TerrainVisual {
+export function terrainAppearance(terrain: TerrainType, isVisible: boolean, depth = 1, randomValues?: readonly number[]): TerrainVisual {
     const base = TERRAIN_APPEARANCES[terrain];
     if (!base) throw new Error(`Missing CE appearance for TerrainType ${terrain}`);
     let { char, color, bgColor } = base;
     if (base.foreDynamic) color = depthColor(base.foreDynamic, depth);
     if (base.backDynamic) bgColor = Number.parseInt(depthColor(base.backDynamic, depth).slice(1), 16);
+    if (randomValues) {
+        const [fore, back] = TERRAIN_COLOR_NAMES[terrain];
+        if (fore) color = bakeTerrainColor(fore, depth, randomValues, false);
+        if (back) bgColor = Number.parseInt(bakeTerrainColor(back, depth, randomValues, true).slice(1), 16);
+    }
 
     // Dim explored but not currently visible tiles
     if (!isVisible) {
@@ -228,7 +239,7 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean, dept
 }
 
 /** IO.c:1160-1188 selects glyph, foreground and background independently by priority. */
-function layeredTerrainAppearance(cell: Cell, depth: number, layers = cell.layers): TerrainVisual {
+function layeredTerrainAppearance(cell: Cell, depth: number, layers = cell.layers, randomValues?: readonly number[]): TerrainVisual {
     let char = ' ';
     let color = '#000000';
     let bgColor: number | null = null;
@@ -239,7 +250,7 @@ function layeredTerrainAppearance(cell: Cell, depth: number, layers = cell.layer
         if (terrain === TerrainType.NOTHING) continue;
         const base = TERRAIN_APPEARANCES[terrain];
         if (!base) throw new Error(`Missing CE appearance for TerrainType ${terrain}`);
-        const visual = terrainAppearance(terrain, true, depth);
+        const visual = terrainAppearance(terrain, true, depth, randomValues);
         const priority = DRAW_PRIORITY[terrain];
         if (visual.char && priority < charPriority) { char = visual.char; charPriority = priority; }
         if (!base.transparentFore && priority < forePriority) { color = visual.color; forePriority = priority; }
@@ -295,13 +306,22 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
     const remembered = !cell.isVisible && cell.rememberedLayers.length === DungeonLayer.COUNT;
     let { char, color, bgColor } = !cell.isVisible && cell.rememberedAppearance
         ? cell.rememberedAppearance
-        : layeredTerrainAppearance(cell, ctx.depth ?? 1, remembered ? cell.rememberedLayers : cell.layers);
+        : layeredTerrainAppearance(cell, ctx.depth ?? 1, remembered ? cell.rememberedLayers : cell.layers, cell.isVisible ? ctx.terrainRandomValues : undefined);
 
     // Apply Environmental Overrides (Gas) —— 燃烧覆盖层已移除（UI-1 第 1 条：
     // 火视觉 = 地形本体；Grid.isBurning 仍供气体的 !isBurning 守卫使用）。
     if (cell.isVisible) {
         const gas = ctx.gas;
-        if (cell.layers[DungeonLayer.GAS] === TerrainType.ROT_GAS && cell.volume > 0) {
+        const gasColorName = TERRAIN_COLOR_NAMES[cell.layers[DungeonLayer.GAS]!]![1];
+        if (ctx.terrainRandomValues && cell.volume > 0 && gasColorName) {
+            // CE IO.c:1196-1204,1316-1334: a gas is a tint of the
+            // independently selected terrain colors; its random components
+            // participate too (notably confusion gas), without replacing glyphs.
+            const tint = ColorUtils.hexToRGB(bakeTerrainColor(gasColorName, ctx.depth ?? 1, ctx.terrainRandomValues, true));
+            const weight = Math.min(90, 30 + cell.volume);
+            color = ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(color), tint, weight));
+            bgColor = parseInt(ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(bgColor ?? 0), tint, weight)).slice(1), 16);
+        } else if (cell.layers[DungeonLayer.GAS] === TerrainType.ROT_GAS && cell.volume > 0) {
             // CE IO.c:1196–1204,1316–1334: gas tints both colors and keeps
             // the underlying glyph. Read the authoritative layer, including
             // blood/puffs created before the next legacy gas mirror refresh.
@@ -351,7 +371,7 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
         if (bgColor !== null) bgColor = parseInt(
             multiplyByLightChannels(bgColor, clairvoyantLight).slice(1), 16);
     } else if (cell.isVisible) {
-        const base = ctx.lightChannels;
+        const base = ctx.dancingLightChannels ?? ctx.lightChannels;
         const flare = ctx.flareChannels;
         const light = base && flare
             ? { r: base.r + flare.r, g: base.g + flare.g, b: base.b + flare.b }

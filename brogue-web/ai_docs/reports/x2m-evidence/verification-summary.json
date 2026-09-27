@@ -1,0 +1,115 @@
+{
+  "checkedAt": "2026-09-27T14:11:55.756412+08:00",
+  "finalExitCode": 0,
+  "checks": {
+    "preflight-all": {
+      "success": true,
+      "numTotalTests": 3906,
+      "numPassedTests": 3893,
+      "numFailedTests": 0,
+      "numPendingTests": 8,
+      "numTodoTests": 5,
+      "files": 211
+    },
+    "interim-all": {
+      "success": false,
+      "numTotalTests": 3923,
+      "numPassedTests": 3891,
+      "numFailedTests": 19,
+      "numPendingTests": 8,
+      "numTodoTests": 5,
+      "files": 212
+    },
+    "final-rerun": {
+      "success": true,
+      "numTotalTests": 3924,
+      "numPassedTests": 3911,
+      "numFailedTests": 0,
+      "numPendingTests": 8,
+      "numTodoTests": 5,
+      "files": 212
+    },
+    "x2m-final": {
+      "success": true,
+      "numTotalTests": 18,
+      "numPassedTests": 18,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 1
+    },
+    "premise-final": {
+      "success": true,
+      "numTotalTests": 75,
+      "numPassedTests": 75,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 3
+    },
+    "lifecycle-final": {
+      "success": true,
+      "numTotalTests": 108,
+      "numPassedTests": 108,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 5
+    },
+    "critical-final": {
+      "success": true,
+      "numTotalTests": 106,
+      "numPassedTests": 106,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 5
+    },
+    "final-drift": {
+      "success": true,
+      "numTotalTests": 1,
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 1
+    },
+    "negative-missing-sources": {
+      "success": false,
+      "numTotalTests": 46,
+      "numPassedTests": 41,
+      "numFailedTests": 5,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 2
+    },
+    "negative-hidden-empowerment": {
+      "success": false,
+      "numTotalTests": 47,
+      "numPassedTests": 45,
+      "numFailedTests": 2,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "files": 2
+    },
+    "build": {
+      "exitCode": 0,
+      "log": "build.txt"
+    },
+    "browser": {
+      "exitCode": 0,
+      "record": "browser.json",
+      "screenshots": 7
+    }
+  },
+  "unchangedPending": 8,
+  "unchangedTodo": 5,
+  "rUnionS": {
+    "files": 83,
+    "passedAssertions": 1882,
+    "failedAssertions": 0
+  },
+  "sourceHashesUnchangedSinceFinalFreeze": true,
+  "headUnchanged": "05cbe2dca14faf7f5794074252f13c2d2cd5d409",
+  "baselinesEqualHEAD": true
+}

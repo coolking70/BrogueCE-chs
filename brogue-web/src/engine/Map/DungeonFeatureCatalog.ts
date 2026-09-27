@@ -1179,7 +1179,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null,
         description: 'with a heavy mechanical sound, an iron portcullis falls from the ceiling!',
-        lightFlare: '', flashColor: '', effectRadius: 0,
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
     },
 
     // {RED_BLOOD, SURFACE, 75, 25, 0}（:869）——10 号 Kennel 的血渍装饰。

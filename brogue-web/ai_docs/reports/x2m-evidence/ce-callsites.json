@@ -1,0 +1,72 @@
+[
+  {
+    "file": "BrogueCE-master/src/brogue/Architect.c",
+    "line": 3450,
+    "code": "createFlare(x, y, feat->lightFlare);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Combat.c",
+    "line": 682,
+    "code": "createFlare(player.loc.x, player.loc.y, SCROLL_ENCHANTMENT_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Combat.c",
+    "line": 685,
+    "code": "createFlare(defender->loc.x, defender->loc.y, QUIETUS_FLARE_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Combat.c",
+    "line": 688,
+    "code": "createFlare(defender->loc.x, defender->loc.y, SLAYING_FLARE_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Items.c",
+    "line": 5316,
+    "code": "createFlare(monst->loc.x, monst->loc.y, EMPOWERMENT_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Items.c",
+    "line": 7901,
+    "code": "createFlare(player.loc.x, player.loc.y, SCROLL_ENCHANTMENT_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Items.c",
+    "line": 7920,
+    "code": "createFlare(player.loc.x, player.loc.y, SCROLL_PROTECTION_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Items.c",
+    "line": 7939,
+    "code": "createFlare(player.loc.x, player.loc.y, SCROLL_PROTECTION_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Items.c",
+    "line": 8111,
+    "code": "createFlare(player.loc.x, player.loc.y, POTION_STRENGTH_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Light.c",
+    "line": 291,
+    "code": "flare *newFlare(const lightSource *light, short x, short y, short changePerFrame, short limit) {"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Light.c",
+    "line": 308,
+    "code": "void createFlare(short x, short y, enum lightType lightIndex) {"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Light.c",
+    "line": 311,
+    "code": "theFlare = newFlare(&(lightCatalog[lightIndex]), x, y, -15, 0);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Monsters.c",
+    "line": 1070,
+    "code": "createFlare(summoner->loc.x, summoner->loc.y, SUMMONING_FLASH_LIGHT);"
+  },
+  {
+    "file": "BrogueCE-master/src/brogue/Time.c",
+    "line": 1168,
+    "code": "createFlare(player.loc.x, player.loc.y, GENERIC_FLASH_LIGHT);"
+  }
+]

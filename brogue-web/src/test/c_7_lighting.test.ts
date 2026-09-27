@@ -858,6 +858,11 @@ describe('C-7 载体边界留痕', () => {
         // U21c: CE Items.c:7901/7920/7939/8111 now creates these display flares.
         'SCROLL_PROTECTION_LIGHT', 'SCROLL_ENCHANTMENT_LIGHT', 'POTION_STRENGTH_LIGHT',
         'EMPOWERMENT_LIGHT',
+        // X2m: real CE Combat.c:682-688, Monsters.c:1070 and Time.c:1168
+        // carriers. Removing these call sites makes this old premise pass but
+        // breaks the real-source tests; see x2m.report.md counterfactual evidence.
+        'GENERIC_FLASH_LIGHT', 'SUMMONING_FLASH_LIGHT',
+        'QUIETUS_FLARE_LIGHT', 'SLAYING_FLARE_LIGHT',
         'BRIMSTONE_FIRE_LIGHT', // U17b: CE Globals.c:493, real sulfur fire glow.
         'INCENDIARY_DART_LIGHT', // U04: CE Globals.c:336 DUNGEON_PORTAL actual tile.
     ]);

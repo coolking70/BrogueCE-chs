@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_00_new_run.test.ts src/test/u_17c_triggers.test.ts src/test/u_17d_vents.test.ts src/test/u_17e_altars.test.ts src/test/x2m_lighting.test.ts --maxWorkers=4 --reporter=json --outputFile=ai_docs/reports/x2m-evidence/lifecycle-final.json
+
+JSON report written to E:/bench/work/x2m2/brogue-web/ai_docs/reports/x2m-evidence/lifecycle-final.json

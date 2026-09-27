@@ -95,12 +95,15 @@ describe('W-21 contact gates, autoID and impact flash',()=>{
   const g=scene(),m=mob(g,'stone_guardian');g.player.hp=1;g.player.statusDurations={poisoned:9,confused:9};g.player.poisonAmount=3;const before=dump(g.player),original=dump(m),r=cast(g,m);
   expect(r.reflections.length).toBeGreaterThan(0);expect(r.hits.some(h=>h.creature===g.player)).toBe(true);expect(dump(g.player)).toBe(before);expect(dump(m)).toBe(original);expect(r.outcome?.autoID).toBe(false);
  });
- it.each(['visible','invisible','hidden','telepathic','entranced','ally-invisible'])('autoID observes %s and flash only exposes observable recipients',mode=>{
+ it.each(['visible','invisible','hidden','telepathic','entranced','ally-invisible'])('autoID observes %s while successful empowerment always creates CE light',mode=>{
   const g=scene(),m=mob(g);if(mode.includes('invisible'))m.setStatusDuration('invisible',8);if(['hidden','telepathic','entranced'].includes(mode))g.grid.getCell(m.x,m.y)!.isVisible=false;
   if(mode==='telepathic')g.player.setStatusDuration('telepathy',8);if(mode==='entranced')m.setStatusDuration('entranced',8);if(mode==='ally-invisible')m.isAlly=true;
   const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);
   expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(false);
-  expect((g as any).activeFlares ?? []).toEqual(seen ? [{ x:m.x, y:m.y, kind:LightKind.EMPOWERMENT_LIGHT, coeff:100000, change:-15 }] : []);
+   // X2m: Items.c:5316 creates light outside canSeeMonster/autoID. Identity
+   // visibility remains guarded above and in x2m_lighting.test.ts; negative
+   // restoration of the old gate is recorded in x2m.report.md.
+   expect((g as any).activeFlares ?? []).toEqual([{ x:m.x, y:m.y, kind:LightKind.EMPOWERMENT_LIGHT, coeff:100000, change:-15 }]);
  });
  it('empty shot and dead helper recipient have no effect',()=>{const g=scene();expect(g.zapBoltFromPlayer(bolt(),wand(),{x:9,y:5}).outcome?.autoID).toBe(false);const m=mob(g);m.hp=0;const before=dump(m);expect(m.empower()).toBe(false);expect(dump(m)).toBe(before);});
  it('actual inventory selection/cancel/submit spends one charge, identifies singleton wand and schedules one turn',()=>{
