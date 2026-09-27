@@ -16,7 +16,7 @@ import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { creatureStatusRows } from '../Status/statusConfig';
 import { monsterAccuracyAdjusted, monsterDefenseAdjusted, monsterDamageAdjustmentAmount } from '../Combat/CombatFormulas';
-import { hitProbability, netEnchant, damageFraction, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
+import { hitProbability, netEnchant, damageFraction, enchantedDamage, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
 import { CombatSystem } from '../Combat/Combat';
 import i18next from 'i18next';
 
@@ -353,19 +353,19 @@ export function generateItemDetail(
             statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
 
             // B-1a 反泄露（CE Items.c:1488-1493）：附魔修正只在实例已鉴定后显示。
-            if (knowledge.instanceKnown && item.enchantment !== 0) {
-                const strReq = item.strengthRequired || 12;
+            if (knowledge.instanceKnown) {
+                // Zero is a valid requirement; absent fields use combat's fallback.
+                const strReq = item.strengthRequired ?? 0;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
-                const frac = damageFraction(ne);
-                const eLo = Math.max(1, Math.trunc(lo * frac));
-                const eHi = Math.max(1, Math.trunc(hi * frac));
+                const eLo = Math.max(1, enchantedDamage(lo, ne));
+                const eHi = Math.max(1, enchantedDamage(hi, ne));
                 statsLines.push({
                     text: `实际伤害: ${eLo}~${eHi} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
-                    color: item.enchantment > 0 ? '#44ff44' : '#ff4444'
+                    color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
                 });
             }
         }
-        if (item.strengthRequired) {
+        if (item.strengthRequired !== undefined) {
             const mod = strengthModifier(playerStrength, item.strengthRequired);
             statsLines.push({
                 text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
@@ -393,7 +393,7 @@ export function generateItemDetail(
             // 装备只给类型已知信息与力量需求）。
             statsLines.push({ text: `基础防御值: ${item.armor}` });
             if (knowledge.instanceKnown) {
-                const strReq = item.strengthRequired || 12;
+                const strReq = item.strengthRequired ?? 0;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
                 if (ne !== 0 || item.enchantment !== 0) {
                     const effectiveArmor = item.armor + ne;
@@ -405,7 +405,7 @@ export function generateItemDetail(
                 }
             }
         }
-        if (item.strengthRequired) {
+        if (item.strengthRequired !== undefined) {
             const mod = strengthModifier(playerStrength, item.strengthRequired);
             statsLines.push({
                 text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,

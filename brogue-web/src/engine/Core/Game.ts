@@ -2612,11 +2612,10 @@ export class Game {
     /** Every user command, including inventory and modal choices, crosses this boundary. */
     public executeCommand(action: string, data?: unknown, perform?: () => void): void {
         if (this.replayRecording || this.isAdvancing || this.isInputLocked()) return;
-        this.finishTransientDisplay();
         const decisions: boolean[] = [];
         this.commandDecisions = decisions;
         try {
-            if (perform) perform(); else this.applyCommand(action, data);
+            this.applyCommand(action, data, perform);
             if (this.recordingFromNewGame) {
                 const event = this.recordInputEvent(action, data, [...decisions]);
                 if (this.isAdvancing) recordingState(this).pendingCommand = { kind: 'record', event };
@@ -2626,7 +2625,13 @@ export class Game {
         }
     }
 
-    private applyCommand(action: string, data?: unknown): void {
+    /** Shared by live input, replay/seek and autonomous steps, before any dispatch. */
+    private applyCommand(action: string, data?: unknown, perform?: () => void): void {
+        if (!this.isAdvancing) this.finishTransientDisplay();
+        if (perform) {
+            perform();
+            return;
+        }
         if (action.startsWith('item:')) {
             const [operation, letter, ...rest] = String(data ?? '').split('|');
             const item = this.player.inventory.items.find(i => i.inventoryLetter === letter);
@@ -2651,7 +2656,7 @@ export class Game {
             const pos = data as Pos;
             this.handleMouseTravel(pos.x, pos.y);
         } else if (action === 'auto_step') {
-            this.stepAutoPath();
+            this.performAutoPathStep();
         } else {
             this.performPlayerAction(action, data, 'system');
         }
@@ -2891,11 +2896,10 @@ export class Game {
 
     public handlePlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'player') {
         if (source === 'player') this.executeCommand(action, data);
-        else this.performPlayerAction(action, data, source);
+        else this.applyCommand(action, data);
     }
 
     private performPlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'system') {
-        if (!this.isAdvancing) this.finishTransientDisplay();
         if (action === 'discoveries' || action === 'help') {
             this.referenceScreen = this.referenceScreen === action ? null : action;
             return;
@@ -10399,14 +10403,14 @@ export class Game {
 
     public stepAutoPath() {
         if (this.autoPath.length === 0 || this.isInventoryOpen) return;
+        this.executeCommand('auto_step');
+    }
+
+    private performAutoPathStep() {
+        if (this.autoPath.length === 0 || this.isInventoryOpen) return;
         // P2-2 输入锁：怪物行动动画播完之前，自动探索/寻路不得推进下一步
         // （GameCanvas 的 ticker 会持续重试，解锁后自然继续）
         if (this.isInputLocked()) return;
-        const logStep = this.recordingFromNewGame && !this.replayRecording;
-        const previousDecisions = this.commandDecisions;
-        const decisions: boolean[] = [];
-        if (logStep) this.commandDecisions = decisions;
-
         // P2-4：本步连同其触发的攻击/拾取/回合结算一律按自动行进口径处理
         // （playerTurnEnded 同步推进、不暂停、不加锁）。try/finally 保证
         // 异常路径也复位。
@@ -10415,8 +10419,6 @@ export class Game {
             this.stepAutoPathInner();
         } finally {
             this.inAutoTravelStep = false;
-            this.commandDecisions = previousDecisions;
-            if (logStep) this.recordInputEvent('auto_step', undefined, decisions);
         }
     }
 
