@@ -1,3 +1,4 @@
+import { stealFromPlayer } from './MonsterTheft';
 /**
  * src/engine/Combat/Combat.ts
  * Translates Brogue CE's Combat.c hit probabilities, damage math,
@@ -9,7 +10,7 @@ import { canSeeMonster } from '../UI/MonsterVisibility';
 import type { Grid } from '../Map/Grid';
 import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
-import { Monster, MonsterState } from '../../entities/Monster';
+import { Monster, MonsterMode, MonsterState } from '../../entities/Monster';
 import type { Item } from '../Items/Item';
 import { ringBonus } from '../Items/RingBonuses';
 import { equippedWisdomBonus, rechargeItemsIncrementally } from '../Items/ArcanaRecharge';
@@ -72,6 +73,7 @@ export class CombatSystem {
          */
         isWeaponAttack?: boolean;
         grid?: Grid;
+        itemGenerationDepth?: number;
         /** CE armor adjustment precedes contact poison and shield absorption. */
         beforeDamage?: (damage: number) => number;
         /**
@@ -331,6 +333,10 @@ export class CombatSystem {
             defender.weaken(300); // GlobalsBrogue.c:onHitWeakenDuration, survivor gate; damage is the pre-shield roll.
         }
 
+        if (isWeaponAttack && defender instanceof Player && defender.hp > 0 && attacker instanceof Monster) {
+            stealFromPlayer(attacker, defender, () => defender.hasStatus('stuck') || defender.hasStatus('paralyzed')
+                || rng.randPercent(defender.seized && attacker.seizing ? 100 : hitProbability(attackerAccuracy, defenderDefense)), opts?.itemGenerationDepth ?? 1);
+        }
         if (defender instanceof Monster) defender.enrageAfterAttack();
         return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
     }
@@ -409,7 +415,7 @@ export class CombatSystem {
     ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
         // CE Items.c:6790: a thrown weapon attempt releases even on a miss.
         defender.setStatusDuration('entranced', 0);
-        if (!defender.isCaged && (!defender.isAlly || defender.hasStatus('magical_fear'))
+        if (defender.creatureMode !== MonsterMode.PERM_FLEEING && !defender.isCaged && (!defender.isAlly || defender.hasStatus('magical_fear'))
             && (defender.state !== MonsterState.FLEEING || defender.hasStatus('magical_fear'))) {
             defender.state = MonsterState.HUNTING;
             defender.shortenMagicalFear();
@@ -443,6 +449,9 @@ export class CombatSystem {
         CombatSystem.transferMonsterHealth(thrower, defender, hpDamage);
         defender.takeDamage(hpDamage, true, grid);
         const killed = defender.hp <= 0;
+        // CE thrown hit calls moralAttack after the separate pre-hit aggro gate.
+        // A permanent thief keeps its mode, but a surviving hit still shortens fear.
+        if (!killed) defender.shortenMagicalFear();
         defender.enrageAfterAttack();
 
         // CE Items.c:6845-6849：magicWeaponHit 只在非击杀分支调用。

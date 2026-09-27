@@ -1,0 +1,31 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "src/test/blueprint_center.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "--maxWorkers=2",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2j-evidence/timeout-retry.json"
+  ],
+  "start": "2026-09-27T04:03:51.803039+00:00",
+  "seconds": 426.4227168560028,
+  "exit": 0,
+  "inputs": 906,
+  "changedFromFull": [],
+  "changedInputs": [],
+  "files": 2,
+  "passed": 25,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "classificationEvidence": "second-complete-full-final.txt default reporter: Error: Test timed out in 900000ms. (JSON failureMessages contain only STACK_TRACE_ERROR; this log was named full-final.txt at retry start.)",
+  "retriedFullFailures": [
+    "蓝图宝藏落点（machine center）可通行性 b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）",
+    "W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values"
+  ],
+  "nonTimeoutFullFailures": [],
+  "failures": []
+}

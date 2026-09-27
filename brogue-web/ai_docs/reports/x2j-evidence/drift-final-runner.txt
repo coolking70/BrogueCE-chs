@@ -1,0 +1,23 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "test:drift",
+    "--",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2j-evidence/drift-final.json"
+  ],
+  "start": "2026-09-27T03:13:58.066Z",
+  "seconds": 113.554,
+  "exit": 0,
+  "inputs": 906,
+  "changedInputs": [],
+  "files": 1,
+  "passed": 1,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "failures": []
+}

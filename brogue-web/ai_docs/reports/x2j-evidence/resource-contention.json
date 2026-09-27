@@ -1,0 +1,42 @@
+{
+  "observation": "2026-09-27 03:38 UTC (approximately)",
+  "source": "ps -Ao pid,ppid,etime,%cpu,command",
+  "ownVitestParentPID": 3433,
+  "ownWorkers": 6,
+  "ownWorkerCPUPercent": [
+    64.6,
+    66.0,
+    65.8,
+    66.6,
+    64.8,
+    68.1
+  ],
+  "otherWorkspaceVitestWorkers": 9,
+  "otherWorkerCPUPercent": [
+    67.2,
+    65.8,
+    63.9,
+    65.7,
+    65.5,
+    64.6,
+    65.1,
+    68.3,
+    68.0
+  ],
+  "action": "No other-workspace process was stopped or changed. Retry waits for the current full run to finish, then uses maxWorkers=2 with unchanged assertions and timeouts.",
+  "interpretation": "Concurrent CPU contention is a possible cause of long wall time; timeout failure messages and isolated retry are required before final attribution.",
+  "laterObservation": {
+    "time": "2026-09-27 03:54 UTC (approximately)",
+    "ownWorkers": 6,
+    "ownWorkerCPUPercent": [
+      99.6,
+      101.8,
+      99.5,
+      99.8,
+      99.9,
+      100.4
+    ],
+    "otherWorkspaceVitestWorkers": 0,
+    "interpretation": "The competing Vitest workload has ended; current own workers are using approximately one CPU each."
+  }
+}

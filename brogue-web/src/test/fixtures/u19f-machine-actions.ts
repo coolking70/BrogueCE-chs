@@ -64,6 +64,19 @@ export function runCrystalWormActions(game:Game,trace:MachineTrace,origin:Pos){
    if(crystal.layers.includes(T.ELECTRIC_CRYSTAL_OFF))throw Error(`globe stayed dark at ${crystal.x},${crystal.y}; ${targets.length} firing lanes`);
   }state('charged');
  }else throw Error(`unknown CE ${ce}`);
- walk(reward.loc);act('pickup');state('reward');walk(entry);state('final');
+ walk(reward.loc);act('pickup');state('reward');walk(entry);
+ if(ce===55){
+  // X2j: finishing the old route does not imply every wandering worm noticed
+  // the player. Fulfil the existing cleared-residents premise using real actions.
+  const residents=()=>g.monsters.filter((m:any)=>m.machineHome===machine&&m.hp>0);
+  for(let n=0;n<600&&residents().length;n++){
+   const routes=residents().map((m:any)=>route(g,g.player.loc,m.loc,true))
+    .filter((p:any)=>p?.length).sort((a:any,b:any)=>a.length-b.length);
+   const next=routes[0]?.[0];
+   if(next)act('move',{x:next.x-g.player.x,y:next.y-g.player.y});else act('wait');
+  }
+  state('cleared');walk(entry);
+ }
+ state('final');
  return {ce,machine,entry,rewardId:reward.id,initial,commands,phases};
 }

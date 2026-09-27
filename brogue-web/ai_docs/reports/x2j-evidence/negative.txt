@@ -1,0 +1,24 @@
+theft 6
+equipped 1
+quantity 2
+accuracy 1
+mode 6
+recovery 1
+memory 1
+targetCache 1
+safetyCache 1
+boltMode 1
+throwMode 1
+awareness 1
+scent 0
+file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/scripts/x2j-negative.mjs:25
+    if (!row.failed) throw new Error(`Mutation survived: ${name}`);
+                           ^
+
+Error: Mutation survived: scent
+    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/scripts/x2j-negative.mjs:25:28
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v25.2.1

@@ -53,6 +53,8 @@ export function ensureEntityIdAbove(maxInUseId: number): void {
 }
 
 export class Creature implements Entity {
+    /** CE target-owned path cache; refreshed only when target moves beyond value 3. */
+    public mapToMe: number[][] | null = null;
     public id: number;
     public loc: Pos;
     public hp: number;

@@ -89,6 +89,8 @@ function spawnFleeingRat(game: Game, x: number, y: number): Monster {
     const mon = new Monster(x, y, monsterDataById('rat'));
     mon.state = MonsterState.FLEEING;
     mon.regenTurns = 0;
+    // X2j: CE ordinary rats do not retain fleeing because of low HP alone.
+    mon.behaviorFlags.add('MONST_FLEES_NEAR_DEATH');
     mon.hp = Math.max(1, Math.floor(mon.maxHp * 0.5)); // >25% 进入线下、<=75% 退出线上
     game.monsters.push(mon);
     return mon;

@@ -1,0 +1,91 @@
+{
+  "changedSinceFull": [],
+  "baselineChanges": [],
+  "missingClosure": [],
+  "closureFiles": 202,
+  "sourceReadingTests": 66,
+  "crlf": [],
+  "diffCheck": true,
+  "gates": {
+    "full-final": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2j-evidence/full-clean.json"
+      ],
+      "start": "2026-09-27T04:06:16.432Z",
+      "seconds": 1710.199,
+      "exit": 0,
+      "inputs": 906,
+      "changedInputs": [],
+      "files": 209,
+      "passed": 3924,
+      "failed": 0,
+      "pending": 8,
+      "todo": 5,
+      "failures": []
+    },
+    "build-final": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-27T03:13:30.564Z",
+      "seconds": 18.551,
+      "exit": 0,
+      "inputs": 906,
+      "changedInputs": []
+    },
+    "drift-final": {
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2j-evidence/drift-final.json"
+      ],
+      "start": "2026-09-27T03:13:58.066Z",
+      "seconds": 113.554,
+      "exit": 0,
+      "inputs": 906,
+      "changedInputs": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failures": []
+    },
+    "deep-final": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/test/u_26a_deep_baseline.test.ts",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2j-evidence/deep-final.json"
+      ],
+      "start": "2026-09-27T03:13:58.060Z",
+      "seconds": 174.262,
+      "exit": 0,
+      "inputs": 906,
+      "changedInputs": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failures": []
+    }
+  }
+}

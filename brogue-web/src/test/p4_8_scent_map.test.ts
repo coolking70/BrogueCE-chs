@@ -217,7 +217,7 @@ describe('P4-8 B: 怪物顺气味追踪', () => {
     //      丢目标后不游荡（纯追踪第 6 步截断 → 0%，破下限）。原"单 seed
     //      钉 20330368 + 全程 HUNTING"断言已删除——它过的方式是游荡撞运，
     //      不是追踪正确，构成"挑 seed 的假保证"。
-    it('T5 追踪怪顺梯度上坡、把门当气味跳板；结局按 CE 实带断言成功率（AI-1 改写）', () => {
+    it('T5 追踪怪顺梯度上坡、把门当气味跳板；无记忆目标的气味导航概率（X2j 隔离前提）', () => {
         const N = 40;
         let caughtCount = 0;
         for (let s = 0; s < N; s++) {
@@ -232,6 +232,9 @@ describe('P4-8 B: 怪物顺气味追踪', () => {
             expect(game.player.loc.x).toBe(54);
             waitOnce(game);
 
+            // X2j: isolate the existing scent/wandering probability sample from
+            // remembered-waypoint routing: this destination has no nearby waypoint.
+            for (const map of game.waypoints.distanceMaps) map[54]![15] = 30000;
             const rat = spawnRat(game, 46, 15); // 站在玩家来时的轨迹上
             expect(rat.state).toBe(MonsterState.HUNTING);
             expect(game.scent.get(46, 15)).toBeGreaterThan(0);

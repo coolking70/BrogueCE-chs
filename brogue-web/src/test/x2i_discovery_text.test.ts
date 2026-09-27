@@ -56,11 +56,11 @@ describe('X2i generated kinds and capability claims', () => {
         expect((game.player.statusDurations as Record<string, number>).burning ?? 0).toBe(0);
     });
 
-    it('does not claim missing theft; submersion claimed once implemented (X2g MB_SUBMERGED)', () => {
+    it('claims theft and submersion only with execution paths (X2j theft, X2g MB_SUBMERGED)', () => {
         const monkey = new Monster(1, 1, (rows as MonsterData[]).find(r => r.id === 'monkey')!);
         const claims = detailLines(monkey).join(' ');
-        expect(claims).toContain('攻击造成伤害后会逃跑');
-        expect(claims).not.toContain('偷取物品');
+        // 验收合并：X2j 已实现 CE specialHit 盗窃（Combat.c:456–524），描述恢复声称
+        expect(claims).toContain('攻击会偷取物品并逃跑');
         const eel = new Monster(1, 1, (rows as MonsterData[]).find(r => r.id === 'eel')!);
         // 验收合并：X2g 已实现 CE MB_SUBMERGED 运行态，描述声称有执行出口
         expect(detailLines(eel).join(' ')).toContain('可以潜入水中');

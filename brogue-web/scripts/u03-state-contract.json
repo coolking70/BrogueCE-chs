@@ -414,5 +414,9 @@
   "terrainFlashes": {
     "kind": "reset",
     "contract": "U17a：CE colorFlash 是瞬时显示状态；新局、换层、读档清空，不写入世界快照、不推进模拟。"
+  },
+  "monsterPathCache": {
+    "kind": "run",
+    "contract": "X2j: CE 玩家行动内共享的逃险/盟友安全图，null 表示尚未计算；逐玩家行动清空，新层重置，存档保持。"
   }
 }

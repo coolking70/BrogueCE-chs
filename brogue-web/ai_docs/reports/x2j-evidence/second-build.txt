@@ -1,0 +1,8 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/engine/Combat/MonsterTheft.ts(42,81): error TS18048: 'item.flags' is possibly 'undefined'.
+src/engine/Combat/MonsterTheft.ts(52,18): error TS18048: 'item.flags' is possibly 'undefined'.
+src/entities/Monster.ts(1455,46): error TS2367: This comparison appears to be unintentional because the types 'MonsterState.WANDERING | MonsterState.HUNTING | MonsterState.FLEEING' and 'MonsterState.ASLEEP' have no overlap.
+src/entities/Monster.ts(1479,13): error TS2367: This comparison appears to be unintentional because the types 'MonsterState.WANDERING | MonsterState.HUNTING | MonsterState.FLEEING' and 'MonsterState.ASLEEP' have no overlap.

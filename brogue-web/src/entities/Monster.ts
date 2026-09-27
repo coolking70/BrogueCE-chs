@@ -1,3 +1,4 @@
+import { updateMonsterState, wanderTowardLastSeen } from '../engine/Combat/MonsterAI';
 /**
  * src/entities/Monster.ts
  * Base Monster class mirroring Brogue's monster initialization
@@ -446,6 +447,8 @@ export class Monster extends Creature {
      * 用全局实时图；察觉不到 → 只拍一次，此后一直用这张旧图继续逃。
      */
     public safetySnapshot: number[][] | null = null;
+    /** CE lastSeenPlayerAt: remembered destination when scent is lost. */
+    public lastSeenPlayerAt: Pos | null = null;
     /**
      * C-5：CE bookkeepingFlags & MB_IS_FALLING（Rogue.h:2160"在回合末下坠"）。
      * 由 Game.applyEnvironmentalEffects（CE Time.c:168-176 同位）置位；
@@ -601,6 +604,7 @@ export class Monster extends Creature {
         clone.waypointAlreadyVisited = this.waypointAlreadyVisited ? [...this.waypointAlreadyVisited] : null;
         clone.mutation = this.mutation ? structuredClone(this.mutation) : undefined;
         clone.safetySnapshot = null;
+        clone.mapToMe = null;
         clone.carriedItem = null;
         // CE recursively creates then detaches a carried clone, but never assigns
         // it back to newMonst->carriedMonster. Do not invent a retained payload.
@@ -1249,7 +1253,7 @@ export class Monster extends Creature {
      * 文件边界内）。
      */
     private resolveGeometryAttackOn(game: Game, target: Creature, voice: 'ally' | 'discordant' | 'hostile'): void {
-        const result = CombatSystem.attack(this, target, { grid: game.grid,
+        const result = CombatSystem.attack(this, target, { grid: game.grid, itemGenerationDepth: game.depth,
             beforeDamage: target === game.player ? damage => game.tryTriggerArmorRunic(this, damage, true) : undefined,
         });
         if (result.hit && !result.kamikazeSelfDestruct && !result.seized && target.hp > 0
@@ -1295,9 +1299,6 @@ export class Monster extends Creature {
                         game.player.equippedArmor.enchantment -= 1;
                         logger.log(i18next.t('combat.armor_degraded', { defaultValue: 'Your armor is corroded by acid!' }), '#ffaaaa');
                     }
-                }
-                if (this.hasAbility('MA_HIT_STEAL_FLEE')) {
-                    this.state = MonsterState.FLEEING;
                 }
                 if (game.player.hp <= 0) {
                     logger.log(i18next.t('combat.you_have_been_slain', {
@@ -1441,16 +1442,20 @@ export class Monster extends Creature {
         surfaceOnDryLand(this, game.grid);
         game.applyEntanglementFromTerrain(this);
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
-        if (this.isCaged) return;
+        if (this.isCaged) { game.makeMonsterDropItem(this); return; }
 
-        if (this.creatureMode === MonsterMode.PERM_FLEEING
-            && (this.state === MonsterState.WANDERING || this.state === MonsterState.HUNTING)) {
-            this.state = MonsterState.FLEEING;
+        const wasAsleep = !this.isAlly && this.state === MonsterState.ASLEEP;
+        if (wasAsleep) this.ticksUntilTurn = this.movementSpeed;
+        updateMonsterState(game, this, stealthRange);
+        // CE awakening consumes this action, even for ALWAYS_HUNTING sleepers.
+        if (wasAsleep || (!this.isAlly && this.state === MonsterState.ASLEEP)) {
+            if (this.ticksUntilTurn <= 0) this.ticksUntilTurn = this.movementSpeed;
+            return;
         }
 
         // U07: CE ally escape and fleeing blink precede ordinary magic. Only
         // blink-capable, awake, mobile monsters enter this dedicated schedule.
-        const blinkReady = hasBlink(this) && this.state !== MonsterState.ASLEEP && !this.isDormant
+        const blinkReady = hasBlink(this) && !this.isDormant
             && !this.hasBehavior('MONST_IMMOBILE') && !this.hasBehavior('MONST_TURRET');
         let fleeingBlinkTried = false;
         const normalAlly = this.isAlly && this.state !== MonsterState.FLEEING
@@ -1474,7 +1479,7 @@ export class Monster extends Creature {
         // 根本不进 monstersTurn）；ALLY 与 HUNTING/WANDERING 共用同一个出口，
         // 与 CE 一致（generallyValidBoltTarget 只在 discordant+WANDERING 时
         // 排斥玩家目标，不整体禁止 WANDERING 施法）。
-        if (this.state !== MonsterState.ASLEEP) {
+        {
             // P4-2：CE monstUseMagic = monsterSummons(monst, always) || monstUseBolt(monst)——
             // 召唤先于 bolt 判定，命中即用掉本回合，同一入口不再试 bolt。
             if (this.trySummon(game)) {
@@ -1526,7 +1531,7 @@ export class Monster extends Creature {
                     if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
                         return;
                     }
-                    const result = CombatSystem.attack(this, target, { grid: game.grid });
+                    const result = CombatSystem.attack(this, target, { grid: game.grid, itemGenerationDepth: game.depth });
                     if (result.hit && !result.kamikazeSelfDestruct && !result.seized && target.hp > 0
                         && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(target);
                     if (result.kamikazeSelfDestruct) {
@@ -1628,37 +1633,6 @@ export class Monster extends Creature {
 
         const distToPlayer = Math.max(Math.abs(this.loc.x - game.player.loc.x), Math.abs(this.loc.y - game.player.loc.y));
         const canSeePlayer = game.hasLineOfSight(this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y);
-        const playerDetectRange = game.player.hasStatus('invisible') ? 1 : stealthRange;
-
-        // Wake up / Notice player logic
-        if (this.state === MonsterState.ASLEEP || this.state === MonsterState.WANDERING) {
-            if (canSeePlayer && distToPlayer <= playerDetectRange) {
-                // Wake up and hunt!
-                this.state = MonsterState.HUNTING;
-                game.spawnFloatingText('!', this.loc.x, this.loc.y, 0xff0000);
-            }
-        }
-
-        // P4-8 返工：CE updateMonsterState（Monsters.c:1718 起）每回合用
-        // awareOfTarget 重算感知，追踪态丢失感知 → 回 WANDERING（Monsters.c:
-        // 1776-1779；wanderToward(lastSeenPlayerAt) 因 web 无 lastSeen 记账
-        // 退化为普通 WANDERING，见报告）。ALWAYS_HUNTING 在 CE 里是
-        // updateMonsterState 的首分支（1725-1731）：强制保持 TRACKING 并直接
-        // return，awareOfTarget 根本不被调用——这里同样短路，既豁免硬截断
-        // 也不消耗 RNG 流。IMMOBILE 怪在上方 862 行已早退（web 炮塔无
-        // 沉睡/唤醒状态机，CE 的 IMMOBILE 感知分支本轮不接线，见报告取舍）。
-        // 不 return：CE 里 updateMonsterState 只改状态，怪物本回合继续以
-        // 新状态行动（Web 落入下方 WANDERING 分支，同构）。
-        if (this.state === MonsterState.HUNTING && !this.hasBehavior('MONST_ALWAYS_HUNTING')) {
-            const awareOfPlayer = game.scent.awareOfTarget(
-                game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y,
-                { alwaysHunting: false, immobile: isImmobile, tracking: true, stealthRange }
-            );
-            if (!awareOfPlayer) {
-                this.state = MonsterState.WANDERING;
-            }
-        }
-
         if (this.hasStatus('confused')) {
             if (rng.randPercent(70)) {
                 const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
@@ -1673,19 +1647,7 @@ export class Monster extends Creature {
             }
         }
 
-        if (this.hasBehavior('MONST_FLEES_NEAR_DEATH') && this.hp < this.maxHp * 0.25 && this.state !== MonsterState.FLEEING) {
-            this.state = MonsterState.FLEEING;
-            game.spawnFloatingText('?', this.loc.x, this.loc.y, 0xaaaa00);
-        }
-
         if (this.state === MonsterState.FLEEING) {
-            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75
-                && !(this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !this.submerged)) {
-                this.state = MonsterState.HUNTING;
-            } else if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
-                this.state = MonsterState.WANDERING;
-                return;
-            } else {
                 if (blinkReady && !fleeingBlinkTried && blinkChance(this) && monsterBlinkToSafety(game, this)) return;
                 // P4-9：顺 safety map 下坡逃（CE Monsters.c:3503
                 // `dir = nextStep(getSafetyMap(monst), monst->loc, NULL, true)`）。
@@ -1727,7 +1689,7 @@ export class Monster extends Creature {
                     if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                         return;
                     }
-                    const result = CombatSystem.attack(this, game.player, { grid: game.grid });
+                    const result = CombatSystem.attack(this, game.player, { grid: game.grid, itemGenerationDepth: game.depth });
                     if (result.hit && !result.kamikazeSelfDestruct && !result.seized && game.player.hp > 0
                         && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(game.player);
                     if (result.kamikazeSelfDestruct) {
@@ -1757,7 +1719,6 @@ export class Monster extends Creature {
                     this.endTurnWithAttack();
                 }
                 return;
-            }
         }
 
         // CE :3434: ordinary magic has priority, then 30%/ALWAYS scent blink.
@@ -1815,7 +1776,7 @@ export class Monster extends Creature {
                         if (this.tryGeometryMeleeAdjacent(game, other, 'discordant')) {
                             return;
                         }
-                        const result = CombatSystem.attack(this, other, { grid: game.grid });
+                        const result = CombatSystem.attack(this, other, { grid: game.grid, itemGenerationDepth: game.depth });
                         if (result.hit && !result.kamikazeSelfDestruct && !result.seized && other.hp > 0
                             && this.hasAbility('MA_HIT_BURN')) game.exposeCreatureToFire(other);
                         if (result.kamikazeSelfDestruct) {
@@ -1878,7 +1839,7 @@ export class Monster extends Creature {
                 if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                     return;
                 }
-                const result = CombatSystem.attack(this, game.player, { grid: game.grid,
+                const result = CombatSystem.attack(this, game.player, { grid: game.grid, itemGenerationDepth: game.depth,
                     beforeDamage: damage => game.tryTriggerArmorRunic(this, damage, true),
                 });
                 if (result.hit && !result.kamikazeSelfDestruct && !result.seized && game.player.hp > 0
@@ -1926,9 +1887,6 @@ export class Monster extends Creature {
                             game.player.equippedArmor.enchantment -= 1;
                             logger.log(i18next.t('combat.armor_degraded', { defaultValue: 'Your armor is corroded by acid!' }), '#ffaaaa');
                         }
-                    }
-                    if (this.hasAbility('MA_HIT_STEAL_FLEE')) {
-                        this.state = MonsterState.FLEEING;
                     }
                     if (game.player.hp <= 0) {
                         logger.log(i18next.t('combat.you_have_been_slain', {
@@ -2027,6 +1985,7 @@ export class Monster extends Creature {
                         // 在玩家视野内的死路：原地保持追踪（CE：不做任何移动）。
                         if (!game.grid.getCell(this.loc.x, this.loc.y)?.isVisible) {
                             this.state = MonsterState.WANDERING;
+                            wanderTowardLastSeen(game, this);
                         }
                         return;
                     }
@@ -2058,6 +2017,12 @@ export class Monster extends Creature {
             // 取代旧的"20% 概率随机走"占位实现——CE 的游荡怪沿 waypoint 有
             // 目的地巡逻，不是布朗运动。
             const wp = game.waypoints as WaypointSystem;
+            if (!this.waypointAlreadyVisited && this.targetWaypointIndex >= 0 && this.targetWaypointIndex < wp.count) {
+                // A remembered destination can precede the existing lazy
+                // initialization. Apply its unvisited mark after those rolls.
+                wp.ensureVisitedInitialized(this);
+                this.waypointAlreadyVisited![this.targetWaypointIndex] = false;
+            }
             let dir: readonly [number, number] | null = null;
             if (wp.count > 0 && wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
                 dir = wp.nextStep(this.targetWaypointIndex, this, game.wpContext());

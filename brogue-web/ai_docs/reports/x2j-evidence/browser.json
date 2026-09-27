@@ -1,0 +1,1577 @@
+{
+  "seed": 20260927,
+  "steps": 117,
+  "errors": [],
+  "rows": [
+    {
+      "label": "before-theft",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 15,
+          "y": 21
+        },
+        "hp": 23,
+        "monkey": {
+          "id": 45,
+          "loc": {
+            "x": 14,
+            "y": 22
+          },
+          "hp": 12,
+          "state": 2,
+          "mode": 0
+        },
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 15
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 15,
+          "y": 21,
+          "hp": 23,
+          "nutrition": 2044,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 106,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 14,
+            "y": 22,
+            "hp": 12,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          }
+        ]
+      }
+    },
+    {
+      "label": "stolen",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 15,
+          "y": 21
+        },
+        "hp": 21,
+        "monkey": {
+          "id": 45,
+          "loc": {
+            "x": 14,
+            "y": 22
+          },
+          "hp": 12,
+          "state": 3,
+          "mode": 1,
+          "carried": {
+            "id": 54,
+            "quantity": 8,
+            "flags": []
+          }
+        },
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 7
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 15,
+          "y": 21,
+          "hp": 21,
+          "nutrition": 2042,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 108,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 14,
+            "y": 22,
+            "hp": 12,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          }
+        ]
+      }
+    },
+    {
+      "label": "fleeing",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 15,
+          "y": 21
+        },
+        "hp": 22,
+        "monkey": {
+          "id": 45,
+          "loc": {
+            "x": 17,
+            "y": 21
+          },
+          "hp": 5,
+          "state": 3,
+          "mode": 1,
+          "carried": {
+            "id": 54,
+            "quantity": 8,
+            "flags": []
+          }
+        },
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 7
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 15,
+          "y": 21,
+          "hp": 22,
+          "nutrition": 2039,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 111,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 17,
+            "y": 21,
+            "hp": 5,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          }
+        ]
+      }
+    },
+    {
+      "label": "restored",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 15,
+          "y": 21
+        },
+        "hp": 22,
+        "monkey": {
+          "id": 45,
+          "loc": {
+            "x": 17,
+            "y": 21
+          },
+          "hp": 5,
+          "state": 3,
+          "mode": 1,
+          "carried": {
+            "id": 54,
+            "quantity": 8,
+            "flags": []
+          }
+        },
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 7
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 15,
+          "y": 21,
+          "hp": 22,
+          "nutrition": 2039,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 111,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 17,
+            "y": 21,
+            "hp": 5,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          }
+        ]
+      }
+    },
+    {
+      "label": "dropped",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 15,
+          "y": 21
+        },
+        "hp": 22,
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 5
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          },
+          {
+            "id": 54,
+            "kind": "dart",
+            "quantity": 8,
+            "loc": {
+              "x": 18,
+              "y": 21
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 15,
+          "y": 21,
+          "hp": 22,
+          "nutrition": 2037,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 111,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          },
+          {
+            "name": "飞镖",
+            "x": 18,
+            "y": 21
+          }
+        ]
+      }
+    },
+    {
+      "label": "recovered",
+      "state": {
+        "depth": 2,
+        "player": {
+          "x": 18,
+          "y": 21
+        },
+        "hp": 22,
+        "pack": [
+          {
+            "id": 2,
+            "kind": "ration_of_food",
+            "quantity": 1
+          },
+          {
+            "id": 3,
+            "kind": "dagger",
+            "quantity": 1
+          },
+          {
+            "id": 4,
+            "kind": "dart",
+            "quantity": 13
+          },
+          {
+            "id": 5,
+            "kind": "leather_armor",
+            "quantity": 1
+          }
+        ],
+        "floor": [
+          {
+            "id": 21,
+            "quantity": 1,
+            "loc": {
+              "x": 4,
+              "y": 1
+            }
+          },
+          {
+            "id": 34,
+            "kind": "wand_of_polymorphism",
+            "quantity": 1,
+            "loc": {
+              "x": 62,
+              "y": 26
+            }
+          },
+          {
+            "id": 35,
+            "kind": "war_pike",
+            "quantity": 1,
+            "loc": {
+              "x": 58,
+              "y": 27
+            }
+          },
+          {
+            "id": 37,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 52,
+              "y": 26
+            }
+          },
+          {
+            "id": 39,
+            "kind": "war_hammer",
+            "quantity": 1,
+            "loc": {
+              "x": 57,
+              "y": 24
+            }
+          },
+          {
+            "id": 40,
+            "kind": "ring_of_awareness",
+            "quantity": 1,
+            "loc": {
+              "x": 55,
+              "y": 27
+            }
+          },
+          {
+            "id": 41,
+            "kind": "charm_of_teleportation",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 25
+            }
+          },
+          {
+            "id": 48,
+            "kind": "scale_mail",
+            "quantity": 1,
+            "loc": {
+              "x": 59,
+              "y": 5
+            }
+          },
+          {
+            "id": 49,
+            "kind": "ration_of_food",
+            "quantity": 1,
+            "loc": {
+              "x": 17,
+              "y": 19
+            }
+          },
+          {
+            "id": 50,
+            "kind": "staff_of_obstruction",
+            "quantity": 1,
+            "loc": {
+              "x": 34,
+              "y": 2
+            }
+          },
+          {
+            "id": 51,
+            "kind": "potion_of_poison",
+            "quantity": 1,
+            "loc": {
+              "x": 29,
+              "y": 12
+            }
+          },
+          {
+            "id": 52,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 12,
+              "y": 17
+            }
+          },
+          {
+            "id": 53,
+            "kind": "potion_of_fire_immunity",
+            "quantity": 1,
+            "loc": {
+              "x": 73,
+              "y": 4
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "20260927",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 18,
+          "y": 21,
+          "hp": 22,
+          "nutrition": 2033,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 111,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "口粮",
+            "x": 17,
+            "y": 19
+          },
+          {
+            "name": "深红色药水",
+            "x": 12,
+            "y": 17
+          }
+        ]
+      }
+    }
+  ],
+  "final": {
+    "depth": 2,
+    "player": {
+      "x": 18,
+      "y": 21
+    },
+    "hp": 22,
+    "pack": [
+      {
+        "id": 2,
+        "kind": "ration_of_food",
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "kind": "dagger",
+        "quantity": 1
+      },
+      {
+        "id": 4,
+        "kind": "dart",
+        "quantity": 13
+      },
+      {
+        "id": 5,
+        "kind": "leather_armor",
+        "quantity": 1
+      }
+    ],
+    "floor": [
+      {
+        "id": 21,
+        "quantity": 1,
+        "loc": {
+          "x": 4,
+          "y": 1
+        }
+      },
+      {
+        "id": 34,
+        "kind": "wand_of_polymorphism",
+        "quantity": 1,
+        "loc": {
+          "x": 62,
+          "y": 26
+        }
+      },
+      {
+        "id": 35,
+        "kind": "war_pike",
+        "quantity": 1,
+        "loc": {
+          "x": 58,
+          "y": 27
+        }
+      },
+      {
+        "id": 37,
+        "kind": "scale_mail",
+        "quantity": 1,
+        "loc": {
+          "x": 52,
+          "y": 26
+        }
+      },
+      {
+        "id": 39,
+        "kind": "war_hammer",
+        "quantity": 1,
+        "loc": {
+          "x": 57,
+          "y": 24
+        }
+      },
+      {
+        "id": 40,
+        "kind": "ring_of_awareness",
+        "quantity": 1,
+        "loc": {
+          "x": 55,
+          "y": 27
+        }
+      },
+      {
+        "id": 41,
+        "kind": "charm_of_teleportation",
+        "quantity": 1,
+        "loc": {
+          "x": 59,
+          "y": 25
+        }
+      },
+      {
+        "id": 48,
+        "kind": "scale_mail",
+        "quantity": 1,
+        "loc": {
+          "x": 59,
+          "y": 5
+        }
+      },
+      {
+        "id": 49,
+        "kind": "ration_of_food",
+        "quantity": 1,
+        "loc": {
+          "x": 17,
+          "y": 19
+        }
+      },
+      {
+        "id": 50,
+        "kind": "staff_of_obstruction",
+        "quantity": 1,
+        "loc": {
+          "x": 34,
+          "y": 2
+        }
+      },
+      {
+        "id": 51,
+        "kind": "potion_of_poison",
+        "quantity": 1,
+        "loc": {
+          "x": 29,
+          "y": 12
+        }
+      },
+      {
+        "id": 52,
+        "kind": "potion_of_fire_immunity",
+        "quantity": 1,
+        "loc": {
+          "x": 12,
+          "y": 17
+        }
+      },
+      {
+        "id": 53,
+        "kind": "potion_of_fire_immunity",
+        "quantity": 1,
+        "loc": {
+          "x": 73,
+          "y": 4
+        }
+      }
+    ]
+  },
+  "setup": "Normal new-game menu; natural D1→D2 movement/combat through keyboard; two throws through the same inventory/target entry points as UI; real menu save/reload/continue. No entity, map, inventory, HP or RNG mutation."
+}

@@ -5,7 +5,7 @@ import { MonsterState, type Monster } from '../../entities/Monster';
 import type { Pos } from '../../types';
 import { rng } from '../Random';
 import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from './BoltCatalog';
-import { monsterBlinkAvoids, scanBlinkMap, buildBlinkSafeTerrainMap, buildBlinkAllySafetyMap, blinkAllyFlees } from './MonsterBlink';
+import { monsterBlinkAvoids, scanBlinkMap, getBlinkSafeTerrainMap, getBlinkAllySafetyMap, blinkAllyFlees } from './MonsterBlink';
 import { teleportForbiddenFlags } from '../Movement/CreaturePlacement';
 import { terrainPassableOrSecretDoor } from '../Map/TerrainRules';
 import { cellTerrainFlags } from '../Map/DungeonFeature';
@@ -179,8 +179,8 @@ export function corpseAllyBeforeMagic(g: Game, m: Monster, enemy: Monster | null
         const step = safetyNextStep(map, g.grid, m.x, m.y);
         return !!step && passiveCorpseStep(g, m, { x: m.x + step[0], y: m.y + step[1] }, move);
     };
-    if (harmful && walkDown(buildBlinkSafeTerrainMap(g))) return true;
-    return blinkAllyFlees(g, m, enemy) && walkDown(buildBlinkAllySafetyMap(g));
+    if (harmful && walkDown(getBlinkSafeTerrainMap(g))) return true;
+    return blinkAllyFlees(g, m, enemy) && walkDown(getBlinkAllySafetyMap(g));
 }
 
 /** The corpse branch's CE passive approach; no pathfinder detour or extra bolt.

@@ -157,11 +157,13 @@ describe('U07 rays, destination policy, ticks and resources',()=>{
 describe('U07 AI call sites',()=>{
     it('fleeing blink increases distance using the existing safety map before summon/bolt',()=>{
         const g=scene(),m=monster(g);g.player.loc={x:12,y:15};m.state=MonsterState.FLEEING;m.hp=1;
+        m.behaviorFlags.delete('MONST_ALWAYS_HUNTING');m.applyStatus('magical_fear',10);
         const summon=vi.spyOn(m,'trySummon');const before=manhattan(m.loc,g.player.loc);
         m.takeTurn(g,20);expect(manhattan(m.loc,g.player.loc)).toBeGreaterThan(before+1);expect(summon).not.toHaveBeenCalled();
     });
     it('30% rejection consumes exactly the gate RNG; ALWAYS bypasses it',()=>{
         const g=scene(),m=monster(g);m.state=MonsterState.FLEEING;m.hp=1;m.behaviorFlags.delete('MONST_ALWAYS_USE_ABILITY');
+        m.behaviorFlags.delete('MONST_ALWAYS_HUNTING');m.applyStatus('magical_fear',10);g.grid.getCell(m.x,m.y)!.isVisible=false;
         const chance=vi.spyOn(rng,'randPercent').mockReturnValue(false),cast=vi.spyOn(g,'castMonsterBlink');
         m.takeTurn(g,20);expect(chance).toHaveBeenCalledExactlyOnceWith(30);expect(cast).not.toHaveBeenCalled();
     });
@@ -237,7 +239,7 @@ describe('U07 AI call sites',()=>{
     });
     it.each([false,true])('wandering follower reaches its own leader across a blocked straight path, captive=%s',captive=>{
         const g=scene(),m=monster(g),leader=monster(g,28,15,'rat');
-        m.state=MonsterState.WANDERING;m.leader=leader;leader.isCaged=captive;leader.hp=100;leader.regenTurns=10;
+        m.state=MonsterState.WANDERING;m.behaviorFlags.delete('MONST_ALWAYS_HUNTING');m.leader=leader;leader.isCaged=captive;leader.hp=100;leader.regenTurns=10;
         g.player.loc={x:2,y:2};vi.spyOn(g,'hasLineOfSight').mockReturnValue(false);g.grid.setTerrain(22,15,T.WALL);
         if(captive){const ally=monster(g,14,15,'rat');ally.isAlly=true;ally.dominated=true;}
         const origin={...m.loc};m.takeTurn(g,1);

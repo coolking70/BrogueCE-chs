@@ -1,0 +1,64 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=6",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2j-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T02:36:58.295Z",
+  "seconds": 1784.019,
+  "exit": 1,
+  "inputs": 905,
+  "changedInputs": [],
+  "files": 209,
+  "passed": 3917,
+  "failed": 6,
+  "pending": 8,
+  "todo": 5,
+  "failures": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/ai_1_scent_tracking.test.ts",
+      "name": "AI-1 B: 两条放弃路径判别式（同一几何、不同感知新旧） B1 路径①气味死路：感知仍在（perceived ≤ awareness，零骰）但局部最大且不可见 → WANDERING 且当回合零位移",
+      "messages": [
+        "AssertionError: expected 40 to be +0 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/ai_1_scent_tracking.test.ts:157:53\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/p1_30_i18n_gate.test.ts",
+      "name": "P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json zh_CN.json 没有从未被引用的死键（发现死键应移入 zh_CN.legacy.json 归档）",
+      "messages": [
+        "AssertionError: 未被引用的键 1 个，应归档到 zh_CN.legacy.json（前 20 个）：\n  combat.monkey_steals: expected [ 'combat.monkey_steals' ] to deeply equal []\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/p1_30_i18n_gate.test.ts:86:14\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/u_19f_machines.test.ts",
+      "name": "U19f natural CE55: generation → player activation → original reward → exit",
+      "messages": [
+        "AssertionError: expected [ Array(1) ] to deeply equal []\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/u_19f_machines.test.ts:34:86\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts",
+      "name": "W-16 player binding, AI, first action, and real death actively pursues enemies outside player FOV, then hits for 1 and spends attackSpeed",
+      "messages": [
+        "TypeError: Cannot read properties of undefined (reading 'awareOfTarget')\n    at updateMonsterState (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/engine/Combat/MonsterAI.ts:71:27)\n    at Monster.takeTurn (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/entities/Monster.ts:1447:9)\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts:124:5\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts",
+      "name": "W-16 player binding, AI, first action, and real death does not track player when idle; mills only on the 30% check",
+      "messages": [
+        "TypeError: Cannot read properties of undefined (reading 'awareOfTarget')\n    at updateMonsterState (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/engine/Combat/MonsterAI.ts:71:27)\n    at Monster.takeTurn (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/entities/Monster.ts:1447:9)\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts:130:69\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts",
+      "name": "W-16 player binding, AI, first action, and real death walls/forcefield/diagonal corners block pursuit and melee; web immunity lets it move",
+      "messages": [
+        "TypeError: Cannot read properties of undefined (reading 'awareOfTarget')\n    at updateMonsterState (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/engine/Combat/MonsterAI.ts:71:27)\n    at Monster.takeTurn (/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/entities/Monster.ts:1447:9)\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/w_16_conjuration.test.ts:135:5\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+      ]
+    }
+  ]
+}

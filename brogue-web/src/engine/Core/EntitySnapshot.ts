@@ -18,7 +18,7 @@ export const ITEM_FIELDS = [
 export const CREATURE_FIELDS = [
     'id', 'loc', 'hp', 'maxHp', 'name', 'color', 'char', 'statusDurations',
     'poisonAmount', 'weaknessAmount', 'maxStatus', 'maxShield', 'ticksUntilTurn', 'seized', 'seizing',
-    'movementSpeed', 'attackSpeed',
+    'movementSpeed', 'attackSpeed', 'mapToMe',
 ] as const satisfies readonly (keyof Creature)[];
 export const MONSTER_FIELDS = [
     ...CREATURE_FIELDS, 'state', 'creatureMode', 'damageString', 'damageClumping', 'goldDropChance', 'itemDropChance',
@@ -28,7 +28,7 @@ export const MONSTER_FIELDS = [
     'targetCorpseLoc', 'targetCorpseName', 'corpseAbsorptionCounter',
     'absorptionFlags', 'absorbBehavior', 'absorptionBolt', 'isAbsorbing',
     'description', 'deathEffectTriggered', 'deathProcessed', 'doesNotResurrect', 'bolts', 'typeId', 'boundToPlayer',
-    'doesNotTrackLeader', 'givenUpOnScent', 'safetySnapshot', 'falling', 'preplaced',
+    'doesNotTrackLeader', 'givenUpOnScent', 'lastSeenPlayerAt', 'safetySnapshot', 'falling', 'preplaced',
     'entersLevelIn', 'approaching', 'isDormant', 'machineHome', 'markedForSacrifice', 'targetWaypointIndex', 'waypointAlreadyVisited',
     'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc', 'submerged',
 ] as const satisfies readonly (keyof Monster)[];

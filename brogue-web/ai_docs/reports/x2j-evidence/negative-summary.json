@@ -1,0 +1,228 @@
+[
+  {
+    "name": "theft",
+    "filter": "steals category",
+    "exit": 1,
+    "failed": 6,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 1 -> 1 with one owner",
+        "message": "AssertionError: expected undefined to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 3 -> 3 with one owner",
+        "message": "AssertionError: expected undefined to be 3 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 4 -> 2 with one owner",
+        "message": "AssertionError: expected undefined to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 5 -> 3 with one owner",
+        "message": "AssertionError: expected undefined to be 3 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 2 stack 5 -> 1 with one owner",
+        "message": "AssertionError: expected undefined to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 12 stack 8 -> 1 with one owner",
+        "message": "AssertionError: expected undefined to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      }
+    ]
+  },
+  {
+    "name": "equipped",
+    "filter": "excludes every",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft excludes every equipped slot but samples unequipped stacks equally, not individual quantities",
+        "message": "AssertionError: expected Item{ spawnTurnNumber: +0, …(40) } to be Item{ spawnTurnNumber: +0, …(40) } // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:62:31\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "quantity",
+    "filter": "steals category",
+    "exit": 1,
+    "failed": 2,
+    "passed": 4,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 4 -> 2 with one owner",
+        "message": "AssertionError: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 5 -> 3 with one owner",
+        "message": "AssertionError: expected 1 to be 3 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:46:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      }
+    ]
+  },
+  {
+    "name": "waypointRng",
+    "filter": "remembering a waypoint",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries remembering a waypoint consumes no RNG and survives until lazy initialization on actual wandering",
+        "message": "AssertionError: expected 2624 to be 2584 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:154:44\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "accuracy",
+    "filter": "second attackHit",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft requires a second attackHit and permits a zero-damage hit to steal",
+        "message": "AssertionError: expected Item{ spawnTurnNumber: +0, …(40) } to be falsy\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:69:65\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "mode",
+    "filter": "steals category",
+    "exit": 1,
+    "failed": 6,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 1 -> 1 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 3 -> 3 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 4 -> 2 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 0 stack 5 -> 3 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 2 stack 5 -> 1 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      },
+      {
+        "name": "X2j CE specialHit theft steals category 12 stack 8 -> 1 with one owner",
+        "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:48:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+      }
+    ]
+  },
+  {
+    "name": "recovery",
+    "filter": "thief keeps fleeing",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries thief keeps fleeing out of sight; loss of the item resets mode only after magical fear expires",
+        "message": "AssertionError: expected 2 to be 3 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:188:50\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "memory",
+    "filter": "save/reload during flight",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE specialHit theft save/reload during flight preserves split identity, private maps and exact next action",
+        "message": "AssertionError: expected undefined to deeply equal { x: 10, y: 10 }\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:96:41\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "targetCache",
+    "filter": "target-owned map",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries target-owned map reuses stale terrain / traveler costs until current target distance exceeds 3",
+        "message": "AssertionError: expected [ …(79) ] to be [ …(79) ] // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:201:51\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "safetyCache",
+    "filter": "safe terrain and ally maps",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries safe terrain and ally maps persist through a player action and reset on the next action",
+        "message": "AssertionError: expected [ …(79) ] to be [ …(79) ] // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:206:84\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "boltMode",
+    "filter": "PERM_FLEEING survives",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries PERM_FLEEING survives thrown attempts and both damage bolt paths, with thrown miss retaining fear and bolt damage shortening it",
+        "message": "AssertionError: expected 2 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:219:25\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "throwMode",
+    "filter": "PERM_FLEEING survives",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "X2j CE updateMonsterState and cache boundaries PERM_FLEEING survives thrown attempts and both damage bolt paths, with thrown miss retaining fear and bolt damage shortening it",
+        "message": "AssertionError: expected 2 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/x2j_monster_ai.test.ts:213:25\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "awareness",
+    "filter": "T5 ",
+    "exit": 1,
+    "failed": 1,
+    "passed": 0,
+    "assertions": [
+      {
+        "name": "P4-8 B: 怪物顺气味追踪 T5 追踪怪顺梯度上坡、把门当气味跳板；无记忆目标的气味导航概率（X2j 隔离前提）",
+        "message": "AssertionError: expected 40 to be less than or equal to 16\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/p4_8_scent_map.test.ts:268:29\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  },
+  {
+    "name": "scent",
+    "filter": "T5 |T6 ",
+    "exit": 1,
+    "failed": 1,
+    "passed": 1,
+    "assertions": [
+      {
+        "name": "P4-8 B: 怪物顺气味追踪 T6 绕拐角：L 形墙隔断视线，怪物顺气味锥钻过拐角、绕过横臂东端贴脸玩家",
+        "message": "AssertionError: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/src/test/p4_8_scent_map.test.ts:276:32\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      }
+    ]
+  }
+]

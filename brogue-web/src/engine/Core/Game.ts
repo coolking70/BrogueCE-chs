@@ -1,3 +1,4 @@
+import { alertMonster, wakeMonster } from '../Combat/MonsterAI';
 import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
 import { createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';
 import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
@@ -405,6 +406,7 @@ export class Game {
     //（Time.c:2618-2626），其余由 getSafetyMap 惰性触发（Monsters.c:2386/2392）。
     public safetyMap: number[][] = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
     public updatedSafetyMapThisTurn: boolean = false;
+    public monsterPathCache: { safeTerrain: number[][] | null; allySafety: number[][] | null } = { safeTerrain: null, allySafety: null };
 
     // C-0：当前层的环路图（CE pmap 的 IN_LOOP 标志，Architect.c:192-244
     // analyzeMap 前三步）。进层时随地形确定性重算（生成完成 + 缓存恢复都算，
@@ -552,6 +554,7 @@ export class Game {
         this.pendingCaughtFireCells = [];
         this.machineCells = new Set();
         this.waypoints = new WaypointSystem();
+        this.monsterPathCache = { safeTerrain: null, allySafety: null };
         this.safetyMap = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
         this.updatedSafetyMapThisTurn = false;
         this.isGameOver = false;
@@ -1154,6 +1157,8 @@ export class Game {
     }
 
     private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false, fell: boolean = false) {
+        this.monsterPathCache = { safeTerrain: null, allySafety: null };
+        for (const m of this.monsters) m.mapToMe = null;
         return generateDepth(this.makeGenerationPorts(), isGoingUp, isFirstLevel, fell);
     }
 
@@ -4444,7 +4449,7 @@ export class Game {
         if (this.finishLethalBoltHit(target, result.caster,
             result.bolt.ceType === null ? result.bolt.name : CE_BOLT_CATALOG[result.bolt.ceType].name)) return damage;
         if (target.hp > 0) {
-            if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
+            if (target instanceof Monster && target.creatureMode !== MonsterMode.PERM_FLEEING && (!target.isAlly || target.hasStatus('magical_fear'))
                 && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
                 target.state = MonsterState.HUNTING;
                 target.setStatusDuration('magical_fear', 0);
@@ -4534,16 +4539,7 @@ export class Game {
                     autoID = true;
                 } else if (accepted && target instanceof Monster) {
                     target.setStatusDuration('entranced', staffEntrancementDuration(magnitude));
-                    // CE wakeUp: target budget is reset to 100 even when already awake.
-                    if (!target.isAlly) target.state = MonsterState.HUNTING;
-                    target.ticksUntilTurn = 100;
-                    for (const teammate of this.monsters) {
-                        if (teammate === target || teammate.hp <= 0 || teammate.isDormant || !monstersAreTeammates(target, teammate)) continue;
-                        if (teammate.state === MonsterState.ASLEEP || teammate.state === MonsterState.WANDERING) {
-                            teammate.ticksUntilTurn = Math.max(100, teammate.ticksUntilTurn);
-                        }
-                        if (!target.isAlly) teammate.state = MonsterState.HUNTING;
-                    }
+                    wakeMonster(this, target, this.calculateStealthRange());
                     // CE canSeeMonster after status write: entrancement reveals its recipient.
                     autoID = this.canObserveBoltTarget(target);
                 }
@@ -5034,7 +5030,7 @@ export class Game {
                 if (target.hp > 0) {
                     // CE survivor/moralAttack effects, also on a fully shielded
                     // hit and on monster-origin reflected hits (Items.c:5195-5213).
-                    if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
+                    if (target instanceof Monster && target.creatureMode !== MonsterMode.PERM_FLEEING && (!target.isAlly || target.hasStatus('magical_fear'))
                         && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
                         target.state = MonsterState.HUNTING;
                         target.setStatusDuration('magical_fear', 0);
@@ -5796,10 +5792,9 @@ export class Game {
                 if (thrown.category === ItemCategory.WEAPON) {
                     // CE Items.c:6906-6921：命中 → 结算后投掷物消失；
                     // 未命中 → break，投掷物落在怪物所在格的合格邻格。
-                    // CE 的 aggro（TRACKING_SCENT，Items.c:6791-6801）在掷骰前
-                    // 置位——miss 也激怒。W-18 在 Combat 清 ENTRANCED；web 无魔法恐惧
-                    // 豁免分支，仅保留盟友与逃跑怪不激怒的近似（登记）。
-                    if (!monst.isAlly && monst.state !== MonsterState.FLEEING) {
+                    // CE pre-hit aggression preserves permanent flight; Combat
+                    // owns the fear exception and release even on a missed throw.
+                    if (monst.creatureMode !== MonsterMode.PERM_FLEEING && !monst.isAlly && monst.state !== MonsterState.FLEEING) {
                         monst.state = MonsterState.HUNTING;
                     }
                     const res = CombatSystem.resolveThrownWeapon(this.player, monst, thrown, this.grid);
@@ -6604,6 +6599,10 @@ export class Game {
         for (const m of this.monsters) {
             this.clearDisplacedEntanglement(m);
             const expired = m.tickStatuses();
+            if (expired.includes('discordant') && m.isAlly && m.state === MonsterState.FLEEING && !m.hasStatus('magical_fear')) {
+                m.state = MonsterState.WANDERING;
+                this.makeMonsterDropItem(m);
+            }
             m.updateSubmersion(this.grid);
             if (expired.includes('lifespan_remaining') && this.canObserveBoltTarget(m)) {
                 logger.log(i18next.t('status.monster.lifespan_off', { name: this.monsterDisplayName(m), defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
@@ -7691,14 +7690,7 @@ export class Game {
         const processDeath = (m: Monster): void => {
             if (m.hp > 0 || m.deathProcessed) return;
             m.deathProcessed = true; // before callbacks/released creatures
-            if (m.carriedItem) {
-                const candidates = captiveItemDropCandidates(this, m.loc, this.items);
-                if (candidates.length > 0) {
-                    m.carriedItem.loc = { ...candidates[rng.randRange(0, candidates.length - 1)]! };
-                    if (!this.items.includes(m.carriedItem)) this.items.push(m.carriedItem);
-                }
-                m.carriedItem = null;
-            }
+            this.makeMonsterDropItem(m);
             this.triggerDeathFeatures(m);
             if (!m.isDormant) {
                 // Combat.c killCreature releases the passenger BEFORE learning.
@@ -7950,6 +7942,7 @@ export class Game {
                 get poisonedDuringTurn() { return game.poisonedDuringTurn; },
                 set poisonedDuringTurn(value) { game.poisonedDuringTurn = value; },
                 get currentLevelDepth() { return game.currentLevelDepth; },
+                get monsterPathCache() { return game.monsterPathCache; },
                 get updatedSafetyMapThisTurn() { return game.updatedSafetyMapThisTurn; },
                 set updatedSafetyMapThisTurn(value) { game.updatedSafetyMapThisTurn = value; },
                 get searchingCharge() { return game.searchingCharge; },
@@ -7965,7 +7958,14 @@ export class Game {
                 playerFalls: () => game.playerFalls(),
                 isAutoTraveling: () => game.isAutoTraveling(),
                 sweepDeepWaterItem: (creature, ticks) => game.sweepDeepWaterItem(creature, ticks),
-                monsterTakeTurn: (monster, stealthRange) => monster.takeTurn(game, stealthRange),
+                monsterDropItem: (monster) => game.makeMonsterDropItem(monster),
+                monsterTakeTurn: (monster, stealthRange) => {
+                    const carried = monster.carriedItem;
+                    monster.takeTurn(game, stealthRange);
+                    if (!carried && monster.carriedItem && monster.hasAbility('MA_HIT_STEAL_FLEE')) {
+                        game.autoPath = []; game.isMouseTraveling = false;
+                    }
+                },
                 updateEnvironment: () => game.updateEnvironment(),
                 tickArcanaResources: () => game.tickArcanaResources(),
                 processIncrementalAutoID: () => game.processIncrementalAutoID(),
@@ -8366,6 +8366,7 @@ export class Game {
             justSearched: this.justSearched, justRested: this.justRested, searchingCharge: this.searchingCharge,
             secretScanDepth: this.secretScanDepth, levelHasSecrets: this.levelHasSecrets,
             poisonedDuringTurn: this.poisonedDuringTurn,
+            monsterPathCache: this.monsterPathCache,
             safetyMap: this.safetyMap, updatedSafetyMapThisTurn: this.updatedSafetyMapThisTurn,
             loopMap: this.loopMap,
             isGameOver: this.isGameOver, gameOverWon: this.gameOverWon, gameOverReason: this.gameOverReason,
@@ -8490,6 +8491,7 @@ export class Game {
         this.justSearched = run.justSearched; this.justRested = run.justRested; this.searchingCharge = run.searchingCharge;
         this.secretScanDepth = run.secretScanDepth; this.levelHasSecrets = run.levelHasSecrets;
         this.poisonedDuringTurn = run.poisonedDuringTurn;
+        this.monsterPathCache = run.monsterPathCache ?? { safeTerrain: null, allySafety: null };
         this.safetyMap = run.safetyMap; this.updatedSafetyMapThisTurn = run.updatedSafetyMapThisTurn; this.loopMap = run.loopMap;
         this.stats = { ...snapshot.stats }; this.isGameOver = run.isGameOver; this.gameOverWon = run.gameOverWon;
         this.gameOverReason = run.gameOverReason; this.gameOverInventory = run.gameOverInventory;
@@ -9251,18 +9253,9 @@ export class Game {
         const distances = generationDistances(this, origin, T_PATHING_BLOCKER, false);
         for (const m of this.monsters) {
             if (m.hp <= 0 || m.isDormant || distances[m.x]![m.y]! > radius) continue;
-            if (m.state === MonsterState.ASLEEP) {
-                m.state = m.creatureMode === MonsterMode.PERM_FLEEING ? MonsterState.FLEEING : MonsterState.HUNTING;
-                m.ticksUntilTurn = 100;
-                for (const mate of this.monsters) {
-                    if (mate !== m && monstersAreTeammates(m, mate) && mate.creatureMode === MonsterMode.NORMAL) {
-                        if (mate.state === MonsterState.ASLEEP || mate.state === MonsterState.WANDERING) mate.ticksUntilTurn = Math.max(100, mate.ticksUntilTurn);
-                        if (!m.isAlly) mate.state = MonsterState.HUNTING;
-                    }
-                }
-            }
+            if (m.state === MonsterState.ASLEEP) wakeMonster(this, m, this.calculateStealthRange());
             if (!m.isAlly && (m.leader as Creature | null) !== this.player) {
-                m.state = m.creatureMode === MonsterMode.PERM_FLEEING ? MonsterState.FLEEING : MonsterState.HUNTING;
+                alertMonster(this, m);
                 m.behaviorFlags.delete('MONST_MAINTAINS_DISTANCE');
                 m.abilityFlags.delete('MA_AVOID_CORRIDORS');
             }
@@ -10028,10 +10021,8 @@ export class Game {
         for (const follower of dormant) if (follower !== monster && follower.leader === monster) follower.leader = null;
     }
 
-    /** CE Movement.c:728-742. Shared by domination and W-11 magical rescue;
-     * ordinary key/cage rescue keeps its existing V-2b-5 entry point. */
-    public becomeAllyWith(monster: Monster): void {
-        this.demoteMonsterFromLeadership(monster);
+    /** CE makeMonsterDropItem: one item has exactly one owner. */
+    public makeMonsterDropItem(monster: Monster): void {
         if (monster.carriedItem) {
             const candidates = captiveItemDropCandidates(this, monster.loc, this.items);
             // CE placeItemAt(INVALID_POS) uses randomMatchingLocation as a final
@@ -10054,6 +10045,13 @@ export class Game {
                 promoteOnItemPlaced(this.grid, drop.x, drop.y);
             }
         }
+    }
+
+    /** CE Movement.c:728-742. Shared by domination and W-11 magical rescue;
+     * ordinary key/cage rescue keeps its existing V-2b-5 entry point. */
+    public becomeAllyWith(monster: Monster): void {
+        this.demoteMonsterFromLeadership(monster);
+        this.makeMonsterDropItem(monster);
 
         monster.isCaged = false;
         monster.isAlly = true;

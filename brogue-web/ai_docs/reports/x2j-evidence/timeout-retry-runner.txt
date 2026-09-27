@@ -1,0 +1,50 @@
+Waiting for full-final to complete before retrying timeout files.
+No timeout failures; no retry.
+Waiting for full-final to complete before retrying timeout files.
+No timeout failures; no retry.
+Waiting for full-final to complete before retrying timeout files.
+Retrying src/test/blueprint_center.test.ts, src/test/w_5_arcana_instance.test.ts with original assertion timeouts.
+Traceback (most recent call last):
+  File "/private/tmp/x2j-timeout-retry.py", line 31, in <module>
+    r=json.loads((out/'timeout-retry.json').read_text())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/miniforge/base/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/miniforge/base/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/coolking70/.codex/worktrees/4c55/brogue/brogue-web/ai_docs/reports/x2j-evidence/timeout-retry.json'
+Waiting for full-final to complete before retrying timeout files.
+Retrying src/test/blueprint_center.test.ts, src/test/w_5_arcana_instance.test.ts with original assertion timeouts.
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "src/test/blueprint_center.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "--maxWorkers=2",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2j-evidence/timeout-retry.json"
+  ],
+  "start": "2026-09-27T04:03:51.803039+00:00",
+  "seconds": 426.4227168560028,
+  "exit": 0,
+  "inputs": 906,
+  "changedFromFull": [],
+  "changedInputs": [],
+  "files": 2,
+  "passed": 25,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "classificationEvidence": "full-final.txt default reporter: Error: Test timed out in 900000ms. (JSON failureMessages contain only STACK_TRACE_ERROR)",
+  "retriedFullFailures": [
+    "蓝图宝藏落点（machine center）可通行性 b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）",
+    "W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values"
+  ],
+  "nonTimeoutFullFailures": [],
+  "failures": []
+}

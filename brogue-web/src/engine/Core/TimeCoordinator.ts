@@ -47,6 +47,7 @@ export interface ClockPort {
     readonly animationPauseMs: number;
     poisonedDuringTurn: boolean;
     readonly currentLevelDepth: number | null;
+    readonly monsterPathCache: Game['monsterPathCache'];
     updatedSafetyMapThisTurn: boolean;
     searchingCharge: number;
     justSearched: boolean;
@@ -59,6 +60,7 @@ export interface EffectsPort {
     playerFalls(): void;
     isAutoTraveling(): boolean;
     sweepDeepWaterItem(creature: Game['player'] | Monster, ticks: number): void;
+    monsterDropItem(monster: Monster): void;
     monsterTakeTurn(monster: Monster, stealthRange: number): void;
     updateEnvironment(): void;
     tickArcanaResources(): void;
@@ -156,6 +158,7 @@ export function* advancementLoop(ports: TimePorts, stealthRange: number): Genera
                     // CE Time.c:2725-2733 withholds the action BEFORE
                     // monstersTurn/absorption, even though that inner function
                     // updates absorption before its own status checks.
+                    if (m.isCaged && m.carriedItem) ports.effects.monsterDropItem(m);
                     if (!m.hasStatus('entranced') && !m.hasStatus('paralyzed') && !m.isCaged
                         && !m.hasBehavior('MONST_GETS_TURN_ON_ACTIVATION')) ports.effects.monsterTakeTurn(m, stealthRange);
                     if (m.ticksUntilTurn <= 0) {
@@ -417,6 +420,8 @@ export function playerTurnEnded(ports: TimePorts): void {
         // 在玩家 FOV 内的逃跑怪则主动预更新一次并停（break）——本回合内其余
         // 逃跑怪（含看不见玩家的）都复用这张图，getSafetyMap 不再重算。
         ports.clock.updatedSafetyMapThisTurn = false;
+        ports.clock.monsterPathCache.safeTerrain = null;
+        ports.clock.monsterPathCache.allySafety = null;
         for (const m of ports.world.monsters) {
             if (m.hp > 0 && m.state === MonsterState.FLEEING &&
                 ports.world.grid.getCell(m.loc.x, m.loc.y)?.isVisible) {

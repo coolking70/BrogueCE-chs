@@ -82,7 +82,7 @@ const armorRunicDescriptions: Record<string, string> = {
 
 const abilityFlagDescriptions: Record<string, string> = {
     MA_HIT_HALLUCINATE: '攻击会导致产生幻觉',
-    MA_HIT_STEAL_FLEE: '攻击造成伤害后会逃跑',
+    MA_HIT_STEAL_FLEE: '攻击会偷取物品并逃跑',
     MA_HIT_BURN: '命中会点燃目标',
     MA_TRANSFERENCE: '攻击会吸取生命',
     MA_CAUSES_WEAKNESS: '攻击会削弱力量',

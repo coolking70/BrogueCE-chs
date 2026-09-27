@@ -1,0 +1,14 @@
+[
+  {
+    "file": "ai_docs/reports/u-r3-trace.json.gz",
+    "command": "UR3_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r3_trace.test.ts --maxWorkers=1",
+    "before": "8a081c57d5ef8639f94ec3e74cb70f837205313a1c0c09bc955c53de7e5f184e",
+    "after": "7560d9aa5ebd8eb96dd06dbc411ad354196fb37830b35031b55cf83246f33ffb"
+  },
+  {
+    "file": "ai_docs/reports/u-r4-trace.json.gz",
+    "command": "UR4_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r4_trace.test.ts --maxWorkers=1",
+    "before": "06f44e788c9d91ba51a8ecbce632921a9a8b93fd4490a87c4930052aa663b06f",
+    "after": "9b2232aee7c97a9945fc32d62442f465d98408407a471ae708f93b8c0bb44e8c"
+  }
+]

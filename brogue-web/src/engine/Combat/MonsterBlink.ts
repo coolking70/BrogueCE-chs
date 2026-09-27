@@ -1,3 +1,5 @@
+import { playerTravelTerrainAllowed } from '../Movement/PlayerTravel';
+import type { Player } from '../../entities/Player';
 import { hiddenBySubmersion, isSubmerged } from '../Movement/Submersion';
 /** U07: monster-only decisions. CE Monsters.c:1313,2098,2299,3049,3430.
  * No player targeting, item resource, generation or learning policy lives here.
@@ -223,8 +225,21 @@ export function buildBlinkAllySafetyMap(g: Game): number[][] {
     }
     scanBlinkMap(g,map,allyCosts); return map;
 }
+/** CE Time.c:2616–2618 resets these caches once per PLAYER action. */
+export function getBlinkSafeTerrainMap(g: Game): number[][] {
+    g.monsterPathCache ??= { safeTerrain: null, allySafety: null };
+    return g.monsterPathCache.safeTerrain ??= buildBlinkSafeTerrainMap(g);
+}
+export function getBlinkAllySafetyMap(g: Game): number[][] {
+    g.monsterPathCache ??= { safeTerrain: null, allySafety: null };
+    return g.monsterPathCache.allySafety ??= buildBlinkAllySafetyMap(g);
+}
+export function getBlinkTargetMap(g: Game, m: Monster, target: Creature): number[][] {
+    if (!target.mapToMe || (target.mapToMe[target.x]?.[target.y] ?? 30000) > 3) target.mapToMe = buildBlinkTargetMap(g, m, target);
+    return target.mapToMe;
+}
 export function monsterBlinkToSafety(g: Game, m: Monster): boolean {
-    return monsterBlinkToPreferenceMap(g,m,alliedState(m) ? buildBlinkAllySafetyMap(g) : getSafetyMapForMonster(g,m),false);
+    return monsterBlinkToPreferenceMap(g,m,alliedState(m) ? getBlinkAllySafetyMap(g) : getSafetyMapForMonster(g,m),false);
 }
 export function blinkFromHarmfulTerrain(g: Game, m: Monster): boolean {
     if (!hasBlink(m)) return false;
@@ -233,13 +248,35 @@ export function blinkFromHarmfulTerrain(g: Game, m: Monster): boolean {
         ? (f & T.T_HARMFUL_TERRAIN & ~(T.T_IS_FIRE | gas)) || ((f & T.T_IS_FIRE) && !m.hasStatus('immune_fire'))
             || ((f & gas) && !m.hasBehavior('MONST_INANIMATE') && !m.isInvulnerable())
         : (f & T.T_HARMFUL_TERRAIN & ~T.T_IS_FIRE) || ((f & T.T_IS_FIRE) && !m.hasStatus('immune_fire') && !m.isInvulnerable());
-    return !!harmful && monsterBlinkToPreferenceMap(g,m,buildBlinkSafeTerrainMap(g),false);
+    return !!harmful && monsterBlinkToPreferenceMap(g,m,getBlinkSafeTerrainMap(g),false);
 }
 export function blinkTraversiblePath(g: Game, m: Monster, target: Pos): boolean {
     if (distance(m.loc,target) === 0) return true;
     for (const p of boltLine(g.grid,m.loc,target,sight,world(g,m))) {
         if (distance(p,target) === 0) return true;
         if (monsterBlinkAvoids(g,m,p)) return false;
+    }
+    return false;
+}
+/** CE openPathBetween/getImpactLoc(BOLT_NONE,false): opaque OR physical
+ * blockers and visible intervening creatures stop the probe at that cell. */
+export function openCreaturePath(g: Game, observer: Creature, target: Pos): boolean {
+    for (const p of boltLine(g.grid, observer.loc, target, sight, { caster: observer, creatureAt: p => at(g, p) })) {
+        if (distance(p, target) === 0) return true;
+        const occupant = at(g, p);
+        const hidden = occupant && !monstersAreTeammates(observer, occupant)
+            && ((occupant.hasStatus('invisible') && !g.grid.getCell(p.x, p.y)!.layers[DungeonLayer.GAS])
+                || hiddenBySubmersion(g.grid, occupant, observer));
+        if ((occupant && !hidden && !isSubmerged(occupant))
+            || (flags(g, p) & (T.T_OBSTRUCTS_VISION | T.T_OBSTRUCTS_PASSABILITY))) return false;
+    }
+    return false;
+}
+export function playerTraversiblePath(g: Game, player: Player, target: Pos): boolean {
+    const here = g.grid.getCell(player.x, player.y)!;
+    for (const p of boltLine(g.grid, player.loc, target, sight, { caster: player, creatureAt: p => at(g, p) })) {
+        if (distance(p, target) === 0) return true;
+        if (!playerTravelTerrainAllowed(g.grid.getCell(p.x, p.y)!, here, player)) return false;
     }
     return false;
 }
@@ -280,8 +317,7 @@ export function buildBlinkEnemyMap(g: Game, m: Monster, shortest: number): numbe
     }
     scanBlinkMap(g,map,costs,true); return map;
 }
-/** CE calculateDistances(target,0,traveler,true,false). Rebuilt on demand in
- * web (no mapToMe cache carrier); no saved/hidden map is fabricated. */
+/** CE calculateDistances(target,0,traveler,true,false), the pure cache builder. */
 export function buildBlinkTargetMap(g: Game, m: Monster, target: Creature): number[][] {
     const map = allocShortGrid(g.grid.width,g.grid.height,30000), costs = allocShortGrid(g.grid.width,g.grid.height,1);
     for (let x=0;x<g.grid.width;x++) for (let y=0;y<g.grid.height;y++) {
@@ -303,7 +339,7 @@ export function buildBlinkTargetMap(g: Game, m: Monster, target: Creature): numb
 export function blinkTowardCreature(g: Game, m: Monster, target: Creature): boolean {
     return hasBlink(m) && !blinkTraversiblePath(g,m,target.loc)
         && (distance(m.loc,target.loc) > 10 || monstersAreEnemies(m,target))
-        && monsterBlinkToPreferenceMap(g,m,buildBlinkTargetMap(g,m,target),false);
+        && monsterBlinkToPreferenceMap(g,m,getBlinkTargetMap(g,m,target),false);
 }
 export function allyShouldPursue(g: Game, m: Monster, closest: Monster | null): boolean {
     let leash = m.seized ? Math.max(g.grid.width,g.grid.height) : g.allyBlinkLeashLength();
