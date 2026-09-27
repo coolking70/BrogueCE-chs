@@ -1,0 +1,308 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web
+
+ ❯ src/data/hordes.test.ts (25 tests | 7 failed) 39ms
+     ✓ 总条数 = 175（CE hordeCatalog_Brogue L746-948） 2ms
+     ✓ 常规池条数 >= 55（实际 58，锚点 58） 0ms
+     ✓ HORDE_LEADER_CAPTIVE 条数 = 56（锚点 56） 0ms
+     ✓ 常规池（领袖+全部成员）可产出物种数 >= 40（实际 41；修复前旧表仅 9） 0ms
+     ✓ 陆生主力物种（goblin/ogre/troll/wraith/kobra 系等）已进入常规池 0ms
+     ✓ D1 可用常规 horde >= 3（CE 真值 3：RAT/KOBOLD/JACKAL） 0ms
+     ✓ D3/D5/D8/D12/D17/D22/D26 各深度可用常规 horde >= 8 0ms
+     ✓ 上述深度实际数量（防回归快照）: D3=10 D5=12 D8=18 D12=23 D17=22 D22=16 D26=11 1ms
+     ✓ 每条：leader 字符串、members 数组、min/maxLevel 数字、frequency 数字 11ms
+     ✓ 每条：flags 必为数组（省略 flags 的条目序列化为 []，不是 null） 2ms
+     ✓ 每条：machine 必为数字（省略 machine 的条目序列化为 0） 2ms
+     ✓ 每条：spawnsIn 为字符串或 null（CE 为 0 时 = null） 2ms
+     ✓ 每条 member：type 字符串、0 <= minCount <= maxCount 2ms
+     ✓ #0 RAT：L746 {MK_RAT,0,{0},{{0}},1,5,150}，尾部字段省略 0ms
+     ✓ #4 EEL：L750 {MK_EEL,…,2,17,100,DEEP_WATER}，省略 machine/flags 0ms
+     × #19 VAMPIRE_BAT：L765 成员{1,2,1}，6/13/70，HORDE_NEVER_OOD 8ms
+     × #21 GOBLIN 三成员：L767 {GOBLIN{2,3}, GOBLIN_MYSTIC{1,2}, JACKAL{1,2}}，6/12/40 1ms
+     × #32 GOBLIN_TOTEM 四成员：L778 machine=MT_CAMP_AREA(62)，10/17/80，NO_PERIODIC 1ms
+     ✓ #56 TENTACLE_HORROR：L802 maxLevel=DEEPEST_LEVEL-1=39，22/39/100 0ms
+     × #62 KRAKEN 深水群：L808 30/39/100 DEEP_WATER，成员{5,10,2} 1ms
+     × #65 GOBLIN_CONJURER 召唤：L813 0/0/100，SUMMONED|DIES_ON_LEADER_DEATH 1ms
+     × #75 MONKEY 俘虏：L825 1/5/10，LEADER_CAPTIVE|NEVER_OOD，成员 KOBOLD{1,2} 1ms
+     ✓ #111 TENTACLE_HORROR 地牢俘虏：L867 maxLevel=AMULET_LEVEL=26 0ms
+     ✓ #113 GOBLIN 雕像：L871 spawnsIn=STATUE_DORMANT，1/6/100 0ms
+     × #174 末条 GOBLIN 兵营俘虏：L948 3/7/10，MACHINE_GOBLIN_WARREN|LEADER_CAPTIVE 1ms
+ ❯ src/test/x2o_horde_clump.test.ts (8 tests | 2 failed) 1718ms
+     ✓ pins CE source provenance and every member triple in all 175 rows 11ms
+     × all CE-mapped blueprints match both depth endpoints; unmapped rows remain explicitly retired 7ms
+     ✓ exhausts every C branch, value and rand_range call sequence, including constant and oversized clumps 4ms
+     ✓ same initial real RNG has the C-oracle result, logical draw count and complete final state on both streams 18ms
+     ✓ every ordinary/captive/machine horde consumes each member triple exactly once before placement  512ms
+     × STONE_GOLEM clumped D30 horde places exactly the rolled members on real terrain 1ms
+     ✓ KRAKEN clumped D30 horde places exactly the rolled members on real terrain  512ms
+     ✓ all summon rows use their complete CE triple through the actual summon consumer  652ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #19 VAMPIRE_BAT：L765 成员{1,2,1}，6/13/70，HORDE_NEVER_OOD
+AssertionError: expected { leader: 'VAMPIRE_BAT', …(7) } to deeply equal { leader: 'VAMPIRE_BAT', …(7) }
+
+- Expected
++ Received
+
+@@ -6,10 +6,11 @@
+    "leader": "VAMPIRE_BAT",
+    "machine": 0,
+    "maxLevel": 13,
+    "members": [
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "VAMPIRE_BAT",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:178:27
+    176|
+    177|     it('#19 VAMPIRE_BAT：L765 成员{1,2,1}，6/13/70，HORDE_NEVER_OOD', () =>…
+    178|         expect(horde(19)).toEqual({
+       |                           ^
+    179|             leader: 'VAMPIRE_BAT',
+    180|             members: [{ type: 'VAMPIRE_BAT', minCount: 1, maxCount: 2 …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #21 GOBLIN 三成员：L767 {GOBLIN{2,3}, GOBLIN_MYSTIC{1,2}, JACKAL{1,2}}，6/12/40
+AssertionError: expected [ { type: 'GOBLIN', …(3) }, …(2) ] to deeply equal [ { type: 'GOBLIN', …(2) }, …(2) ]
+
+- Expected
++ Received
+
+  [
+    {
++     "clumpFactor": 1,
+      "maxCount": 3,
+      "minCount": 2,
+      "type": "GOBLIN",
+    },
+    {
++     "clumpFactor": 1,
+      "maxCount": 2,
+      "minCount": 1,
+      "type": "GOBLIN_MYSTIC",
+    },
+    {
++     "clumpFactor": 1,
+      "maxCount": 2,
+      "minCount": 1,
+      "type": "JACKAL",
+    },
+  ]
+
+ ❯ src/data/hordes.test.ts:188:35
+    186|     it('#21 GOBLIN 三成员：L767 {GOBLIN{2,3}, GOBLIN_MYSTIC{1,2}, JACKAL{1…
+    187|         expect(horde(21).leader).toBe('GOBLIN');
+    188|         expect(horde(21).members).toEqual([
+       |                                   ^
+    189|             { type: 'GOBLIN', minCount: 2, maxCount: 3 },
+    190|             { type: 'GOBLIN_MYSTIC', minCount: 1, maxCount: 2 },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #32 GOBLIN_TOTEM 四成员：L778 machine=MT_CAMP_AREA(62)，10/17/80，NO_PERIODIC
+AssertionError: expected { leader: 'GOBLIN_TOTEM', …(7) } to deeply equal { leader: 'GOBLIN_TOTEM', …(7) }
+
+- Expected
++ Received
+
+@@ -6,25 +6,29 @@
+    "leader": "GOBLIN_TOTEM",
+    "machine": 62,
+    "maxLevel": 17,
+    "members": [
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "GOBLIN_TOTEM",
+      },
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "GOBLIN_CONJURER",
+      },
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "GOBLIN_MYSTIC",
+      },
+      {
++       "clumpFactor": 1,
+        "maxCount": 5,
+        "minCount": 3,
+        "type": "GOBLIN",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:199:27
+    197|
+    198|     it('#32 GOBLIN_TOTEM 四成员：L778 machine=MT_CAMP_AREA(62)，10/17/80，NO…
+    199|         expect(horde(32)).toEqual({
+       |                           ^
+    200|             leader: 'GOBLIN_TOTEM',
+    201|             members: [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #62 KRAKEN 深水群：L808 30/39/100 DEEP_WATER，成员{5,10,2}
+AssertionError: expected { leader: 'KRAKEN', …(7) } to deeply equal { leader: 'KRAKEN', …(7) }
+
+- Expected
++ Received
+
+@@ -4,10 +4,11 @@
+    "leader": "KRAKEN",
+    "machine": 0,
+    "maxLevel": 39,
+    "members": [
+      {
++       "clumpFactor": 2,
+        "maxCount": 10,
+        "minCount": 5,
+        "type": "KRAKEN",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:220:27
+    218|
+    219|     it('#62 KRAKEN 深水群：L808 30/39/100 DEEP_WATER，成员{5,10,2}', () => {
+    220|         expect(horde(62)).toEqual({
+       |                           ^
+    221|             leader: 'KRAKEN',
+    222|             members: [{ type: 'KRAKEN', minCount: 5, maxCount: 10 }],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #65 GOBLIN_CONJURER 召唤：L813 0/0/100，SUMMONED|DIES_ON_LEADER_DEATH
+AssertionError: expected { leader: 'GOBLIN_CONJURER', …(7) } to deeply equal { leader: 'GOBLIN_CONJURER', …(7) }
+
+- Expected
++ Received
+
+@@ -7,10 +7,11 @@
+    "leader": "GOBLIN_CONJURER",
+    "machine": 0,
+    "maxLevel": 0,
+    "members": [
+      {
++       "clumpFactor": 1,
+        "maxCount": 5,
+        "minCount": 3,
+        "type": "SPECTRAL_BLADE",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:229:27
+    227|
+    228|     it('#65 GOBLIN_CONJURER 召唤：L813 0/0/100，SUMMONED|DIES_ON_LEADER_DE…
+    229|         expect(horde(65)).toEqual({
+       |                           ^
+    230|             leader: 'GOBLIN_CONJURER',
+    231|             members: [{ type: 'SPECTRAL_BLADE', minCount: 3, maxCount:…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #75 MONKEY 俘虏：L825 1/5/10，LEADER_CAPTIVE|NEVER_OOD，成员 KOBOLD{1,2}
+AssertionError: expected { leader: 'MONKEY', …(7) } to deeply equal { leader: 'MONKEY', …(7) }
+
+- Expected
++ Received
+
+@@ -7,10 +7,11 @@
+    "leader": "MONKEY",
+    "machine": 0,
+    "maxLevel": 5,
+    "members": [
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "KOBOLD",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:239:27
+    237|
+    238|     it('#75 MONKEY 俘虏：L825 1/5/10，LEADER_CAPTIVE|NEVER_OOD，成员 KOBOLD{1…
+    239|         expect(horde(75)).toEqual({
+       |                           ^
+    240|             leader: 'MONKEY',
+    241|             members: [{ type: 'KOBOLD', minCount: 1, maxCount: 2 }],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/data/hordes.test.ts > hordes.json — 与 CE 逐字段抽查（行号 = GlobalsBrogue.c） > #174 末条 GOBLIN 兵营俘虏：L948 3/7/10，MACHINE_GOBLIN_WARREN|LEADER_CAPTIVE
+AssertionError: expected { leader: 'GOBLIN', …(7) } to deeply equal { leader: 'GOBLIN', …(7) }
+
+- Expected
++ Received
+
+@@ -7,10 +7,11 @@
+    "leader": "GOBLIN",
+    "machine": 0,
+    "maxLevel": 7,
+    "members": [
+      {
++       "clumpFactor": 1,
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "GOBLIN",
+      },
+    ],
+
+ ❯ src/data/hordes.test.ts:267:28
+    265|
+    266|     it('#174 末条 GOBLIN 兵营俘虏：L948 3/7/10，MACHINE_GOBLIN_WARREN|LEADER_C…
+    267|         expect(horde(174)).toEqual({
+       |                            ^
+    268|             leader: 'GOBLIN',
+    269|             members: [{ type: 'GOBLIN', minCount: 1, maxCount: 2 }],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  src/test/x2o_horde_clump.test.ts > X2o independent CE catalog and exhaustive original-C randClump > all CE-mapped blueprints match both depth endpoints; unmapped rows remain explicitly retired
+AssertionError: key_poison_gas D4: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/x2o_horde_clump.test.ts:48:90
+     46|             const flags = b.flags.filter(f => f === 'BP_ADOPT_ITEM' ||…
+     47|             for (const d of [ce.depthRange[0]! - 1, ce.depthRange[0]!,…
+     48|                 expect(blueprintQualifies(b as BlueprintDef, d, flags)…
+       |                                                                                          ^
+     49|         }
+     50|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  src/test/x2o_horde_clump.test.ts > X2o horde consumers > STONE_GOLEM clumped D30 horde places exactly the rolled members on real terrain
+AssertionError: expected undefined to be defined
+ ❯ src/test/x2o_horde_clump.test.ts:93:19
+     91|     it.each(['STONE_GOLEM', 'KRAKEN'])('%s clumped D30 horde places ex…
+     92|         const h = hordes.find(h => h.leader === type && h.minLevel ===…
+     93|         expect(h).toBeDefined();
+       |                   ^
+     94|         const g = arena(type === 'KRAKEN' ? T.WATER_DEEP : T.FLOOR);
+     95|         const roll = vi.spyOn(rng, 'randClumpedRange');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  9 failed | 24 passed (33)
+   Start at  16:14:48
+   Duration  3.87s (transform 1.10s, setup 0ms, import 2.02s, tests 1.76s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web/ai_docs/reports/x2o-evidence/first.json

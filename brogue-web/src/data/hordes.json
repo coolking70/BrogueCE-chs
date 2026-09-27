@@ -35,7 +35,8 @@
       {
         "type": "JACKAL",
         "minCount": 1,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 3,
@@ -91,7 +92,8 @@
       {
         "type": "BLOAT",
         "minCount": 0,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -107,7 +109,8 @@
       {
         "type": "PIT_BLOAT",
         "minCount": 0,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -173,7 +176,8 @@
       {
         "type": "GOBLIN",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 5,
@@ -203,7 +207,8 @@
       {
         "type": "MONKEY",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 5,
@@ -229,7 +234,8 @@
       {
         "type": "VAMPIRE_BAT",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 6,
@@ -257,17 +263,20 @@
       {
         "type": "GOBLIN",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "JACKAL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 6,
@@ -283,12 +292,14 @@
       {
         "type": "GOBLIN_CONJURER",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 7,
@@ -336,7 +347,8 @@
       {
         "type": "EEL",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 8,
@@ -352,7 +364,8 @@
       {
         "type": "ACID_MOUND",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 9,
@@ -378,7 +391,8 @@
       {
         "type": "DAR_BLADEMASTER",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 10,
@@ -414,22 +428,26 @@
       {
         "type": "GOBLIN_TOTEM",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_CONJURER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN",
         "minCount": 3,
-        "maxCount": 5
+        "maxCount": 5,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 10,
@@ -479,7 +497,8 @@
       {
         "type": "OGRE",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 12,
@@ -497,7 +516,8 @@
       {
         "type": "BOG_MONSTER",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 12,
@@ -533,7 +553,8 @@
       {
         "type": "OGRE",
         "minCount": 1,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -549,7 +570,8 @@
       {
         "type": "CENTAUR",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -609,12 +631,14 @@
       {
         "type": "DAR_BLADEMASTER",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 15,
@@ -630,12 +654,14 @@
       {
         "type": "PINK_JELLY",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 17,
@@ -671,7 +697,8 @@
       {
         "type": "WRAITH",
         "minCount": 1,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 16,
@@ -697,17 +724,20 @@
       {
         "type": "DAR_BLADEMASTER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_BATTLEMAGE",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -723,7 +753,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -789,7 +820,8 @@
       {
         "type": "DRAGON",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 27,
@@ -805,17 +837,20 @@
       {
         "type": "GOLEM",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_BATTLEMAGE",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 27,
@@ -831,7 +866,8 @@
       {
         "type": "GOLEM",
         "minCount": 5,
-        "maxCount": 10
+        "maxCount": 10,
+        "clumpFactor": 2
       }
     ],
     "minLevel": 30,
@@ -847,7 +883,8 @@
       {
         "type": "KRAKEN",
         "minCount": 5,
-        "maxCount": 10
+        "maxCount": 10,
+        "clumpFactor": 2
       }
     ],
     "minLevel": 30,
@@ -863,12 +900,14 @@
       {
         "type": "TENTACLE_HORROR",
         "minCount": 1,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       },
       {
         "type": "REVENANT",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 32,
@@ -884,7 +923,8 @@
       {
         "type": "DRAGON",
         "minCount": 3,
-        "maxCount": 5
+        "maxCount": 5,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 34,
@@ -900,7 +940,8 @@
       {
         "type": "SPECTRAL_BLADE",
         "minCount": 3,
-        "maxCount": 5
+        "maxCount": 5,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -919,7 +960,8 @@
       {
         "type": "OGRE",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -937,7 +979,8 @@
       {
         "type": "VAMPIRE_BAT",
         "minCount": 3,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -955,7 +998,8 @@
       {
         "type": "PHANTOM",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -973,7 +1017,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -991,7 +1036,8 @@
       {
         "type": "LICH",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -1009,12 +1055,14 @@
       {
         "type": "GOBLIN_CONJURER",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN",
         "minCount": 3,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -1033,7 +1081,8 @@
       {
         "type": "PHOENIX",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -1051,7 +1100,8 @@
       {
         "type": "SPECTRAL_BLADE",
         "minCount": 4,
-        "maxCount": 7
+        "maxCount": 7,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -1070,7 +1120,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 0,
@@ -1089,7 +1140,8 @@
       {
         "type": "KOBOLD",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 1,
@@ -1108,7 +1160,8 @@
       {
         "type": "GOBLIN",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 3,
@@ -1127,7 +1180,8 @@
       {
         "type": "GOBLIN",
         "minCount": 3,
-        "maxCount": 5
+        "maxCount": 5,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 4,
@@ -1146,7 +1200,8 @@
       {
         "type": "KOBOLD",
         "minCount": 3,
-        "maxCount": 7
+        "maxCount": 7,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 5,
@@ -1165,7 +1220,8 @@
       {
         "type": "OGRE",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 8,
@@ -1184,7 +1240,8 @@
       {
         "type": "TROLL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -1203,7 +1260,8 @@
       {
         "type": "TROLL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 12,
@@ -1222,12 +1280,14 @@
       {
         "type": "OGRE",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       },
       {
         "type": "OGRE_SHAMAN",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 17,
@@ -1246,7 +1306,8 @@
       {
         "type": "TROLL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 12,
@@ -1265,7 +1326,8 @@
       {
         "type": "SALAMANDER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -1284,7 +1346,8 @@
       {
         "type": "NAGA",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 13,
@@ -1303,7 +1366,8 @@
       {
         "type": "SALAMANDER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 13,
@@ -1322,7 +1386,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1341,7 +1406,8 @@
       {
         "type": "IMP",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 14,
@@ -1360,7 +1426,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1379,7 +1446,8 @@
       {
         "type": "IMP",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1398,7 +1466,8 @@
       {
         "type": "FURY",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1417,7 +1486,8 @@
       {
         "type": "IMP",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1436,17 +1506,20 @@
       {
         "type": "DAR_BLADEMASTER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_BATTLEMAGE",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 20,
@@ -1465,17 +1538,20 @@
       {
         "type": "DAR_BLADEMASTER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_PRIESTESS",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "DAR_BATTLEMAGE",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 18,
@@ -1494,12 +1570,14 @@
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 2,
@@ -1565,7 +1643,8 @@
       {
         "type": "EEL",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 5,
@@ -1595,7 +1674,8 @@
       {
         "type": "EEL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 12,
@@ -2456,7 +2536,8 @@
       {
         "type": "GOBLIN",
         "minCount": 2,
-        "maxCount": 4
+        "maxCount": 4,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 5,
@@ -2474,17 +2555,20 @@
       {
         "type": "GOBLIN",
         "minCount": 2,
-        "maxCount": 3
+        "maxCount": 3,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "JACKAL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 6,
@@ -2502,12 +2586,14 @@
       {
         "type": "GOBLIN_CONJURER",
         "minCount": 0,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 1,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 7,
@@ -2525,22 +2611,26 @@
       {
         "type": "GOBLIN_TOTEM",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_CONJURER",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN_MYSTIC",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       },
       {
         "type": "GOBLIN",
         "minCount": 3,
-        "maxCount": 5
+        "maxCount": 5,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 10,
@@ -2558,7 +2648,8 @@
       {
         "type": "GOBLIN",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 2,
+        "clumpFactor": 1
       }
     ],
     "minLevel": 3,

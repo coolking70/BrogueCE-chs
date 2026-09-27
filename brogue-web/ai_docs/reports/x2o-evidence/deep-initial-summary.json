@@ -1,0 +1,31 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "src/test/u_26a_deep_baseline.test.ts",
+    "--maxWorkers=6",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2o-evidence/deep-initial.json"
+  ],
+  "start": "2026-09-27T08:11:17.814Z",
+  "seconds": 137.504,
+  "exit": 0,
+  "inputs": 958,
+  "changedInputs": [
+    "scripts/x2o-ce-oracle.py",
+    "scripts/x2o-attribution.mjs",
+    "src/test/fixtures/x2o-ce-catalog.json",
+    "src/test/fixtures/x2o-clump-oracle.json"
+  ],
+  "discoveredFiles": 215,
+  "changedDiscovery": [],
+  "files": 1,
+  "passed": 1,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "failedSuites": [],
+  "failures": []
+}

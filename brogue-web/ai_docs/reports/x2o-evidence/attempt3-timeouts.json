@@ -1,0 +1,11 @@
+{
+  "time": "2026-09-27T09:24:47.464445+00:00",
+  "classification": "All three failure messages are Test timed out in 900000ms; no assertion mismatch. Full command completed.",
+  "failures": [
+    "B2 production census observes committed CE71 machines and their actual occupants on 34 seed \u00d7 D1\u2013D26",
+    "\u84dd\u56fe\u5b9d\u85cf\u843d\u70b9\uff08machine center\uff09\u53ef\u901a\u884c\u6027 b) \u5168\u5c40\u626b\u63cf\uff0844 seeds \u00d7 D1..D26\uff09\uff1a\u623f\u95f4 center \u53ef\u901a\u884c\u3001\u533a\u57df origin \u5c5e\u4e8e interior\uff08CE8 \u7a7a\u57df\u5355\u72ec\u9a8c\u8bc1\uff09",
+    "W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) \u00d7 D1\u201326 retain category coverage and obey initial per-kind values"
+  ],
+  "inputsUnchanged": true,
+  "policy": "Preserve code, samples, assertions and timeouts; wait for other tests to finish before complete retry."
+}

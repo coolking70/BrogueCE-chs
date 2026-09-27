@@ -1,0 +1,2241 @@
+{
+  "sources": {
+    "BrogueCE-master/src/variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+    "BrogueCE-master/src/brogue/Globals.c": "0b104f15c5ef78e93b5142747c41ff82e82d027bd73f7633c6b430baebf45cff",
+    "BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "BrogueCE-master/src/brogue/Math.c": "810481af6641841064f2dc1f051cfdaa9372e0de61dd0786d9b294c35adcaa69"
+  },
+  "hordes": [
+    {
+      "index": 0,
+      "leader": "RAT",
+      "members": [],
+      "literal": "{MK_RAT,            0,      {0},                                    {{0}},                          1,      5,      150}"
+    },
+    {
+      "index": 1,
+      "leader": "KOBOLD",
+      "members": [],
+      "literal": "{MK_KOBOLD,         0,      {0},                                    {{0}},                          1,      6,      150}"
+    },
+    {
+      "index": 2,
+      "leader": "JACKAL",
+      "members": [],
+      "literal": "{MK_JACKAL,         0,      {0},                                    {{0}},                          1,      3,      100}"
+    },
+    {
+      "index": 3,
+      "leader": "JACKAL",
+      "members": [
+        {
+          "type": "JACKAL",
+          "lower": 1,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_JACKAL,         1,      {MK_JACKAL},                            {{1, 3, 1}},                    3,      7,      50}"
+    },
+    {
+      "index": 4,
+      "leader": "EEL",
+      "members": [],
+      "literal": "{MK_EEL,            0,      {0},                                    {{0}},                          2,      17,     100,        DEEP_WATER}"
+    },
+    {
+      "index": 5,
+      "leader": "MONKEY",
+      "members": [],
+      "literal": "{MK_MONKEY,         0,      {0},                                    {{0}},                          2,      9,      50}"
+    },
+    {
+      "index": 6,
+      "leader": "BLOAT",
+      "members": [],
+      "literal": "{MK_BLOAT,          0,      {0},                                    {{0}},                          2,      13,     30}"
+    },
+    {
+      "index": 7,
+      "leader": "PIT_BLOAT",
+      "members": [],
+      "literal": "{MK_PIT_BLOAT,      0,      {0},                                    {{0}},                          2,      13,     10}"
+    },
+    {
+      "index": 8,
+      "leader": "BLOAT",
+      "members": [
+        {
+          "type": "BLOAT",
+          "lower": 0,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_BLOAT,          1,      {MK_BLOAT},                             {{0, 2, 1}},                    14,     26,     30}"
+    },
+    {
+      "index": 9,
+      "leader": "PIT_BLOAT",
+      "members": [
+        {
+          "type": "PIT_BLOAT",
+          "lower": 0,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_PIT_BLOAT,      1,      {MK_PIT_BLOAT},                         {{0, 2, 1}},                    14,     26,     10}"
+    },
+    {
+      "index": 10,
+      "leader": "EXPLOSIVE_BLOAT",
+      "members": [],
+      "literal": "{MK_EXPLOSIVE_BLOAT,0,      {0},                                    {{0}},                          10,     26,     10}"
+    },
+    {
+      "index": 11,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          3,      10,     100}"
+    },
+    {
+      "index": 12,
+      "leader": "GOBLIN_CONJURER",
+      "members": [],
+      "literal": "{MK_GOBLIN_CONJURER,0,      {0},                                    {{0}},                          3,      10,     60}"
+    },
+    {
+      "index": 13,
+      "leader": "TOAD",
+      "members": [],
+      "literal": "{MK_TOAD,           0,      {0},                                    {{0}},                          4,      11,     100}"
+    },
+    {
+      "index": 14,
+      "leader": "PINK_JELLY",
+      "members": [],
+      "literal": "{MK_PINK_JELLY,     0,      {0},                                    {{0}},                          4,      13,     100}"
+    },
+    {
+      "index": 15,
+      "leader": "GOBLIN_TOTEM",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_TOTEM,   1,      {MK_GOBLIN},                            {{2,4,1}},                      5,      13,     100,        0,              MT_CAMP_AREA,   HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 16,
+      "leader": "ARROW_TURRET",
+      "members": [],
+      "literal": "{MK_ARROW_TURRET,   0,      {0},                                    {{0}},                          5,      13,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 17,
+      "leader": "MONKEY",
+      "members": [
+        {
+          "type": "MONKEY",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_MONKEY,         1,      {MK_MONKEY},                            {{2,4,1}},                      5,      13,     20}"
+    },
+    {
+      "index": 18,
+      "leader": "VAMPIRE_BAT",
+      "members": [],
+      "literal": "{MK_VAMPIRE_BAT,    0,      {0},                                    {{0}},                          6,      13,     30}"
+    },
+    {
+      "index": 19,
+      "leader": "VAMPIRE_BAT",
+      "members": [
+        {
+          "type": "VAMPIRE_BAT",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_VAMPIRE_BAT,    1,      {MK_VAMPIRE_BAT},                       {{1,2,1}},                      6,      13,     70,      0,              0,              HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 20,
+      "leader": "ACID_MOUND",
+      "members": [],
+      "literal": "{MK_ACID_MOUND,     0,      {0},                                    {{0}},                          6,      13,     100}"
+    },
+    {
+      "index": 21,
+      "leader": "GOBLIN",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "JACKAL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN,         3,      {MK_GOBLIN, MK_GOBLIN_MYSTIC, MK_JACKAL},{{2, 3, 1}, {1,2,1}, {1,2,1}}, 6,      12,     40}"
+    },
+    {
+      "index": 22,
+      "leader": "GOBLIN_CONJURER",
+      "members": [
+        {
+          "type": "GOBLIN_CONJURER",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_CONJURER,2,      {MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC}, {{0,1,1}, {1,1,1}},             7,      15,     40}"
+    },
+    {
+      "index": 23,
+      "leader": "CENTIPEDE",
+      "members": [],
+      "literal": "{MK_CENTIPEDE,      0,      {0},                                    {{0}},                          7,      14,     100}"
+    },
+    {
+      "index": 24,
+      "leader": "BOG_MONSTER",
+      "members": [],
+      "literal": "{MK_BOG_MONSTER,    0,      {0},                                    {{0}},                          7,      14,     80,     MUD,            0,              HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 25,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          7,      13,     100}"
+    },
+    {
+      "index": 26,
+      "leader": "EEL",
+      "members": [
+        {
+          "type": "EEL",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_EEL,            1,      {MK_EEL},                               {{2, 4, 1}},                    8,      22,     70,     DEEP_WATER}"
+    },
+    {
+      "index": 27,
+      "leader": "ACID_MOUND",
+      "members": [
+        {
+          "type": "ACID_MOUND",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_ACID_MOUND,     1,      {MK_ACID_MOUND},                        {{2, 4, 1}},                    9,      13,     30}"
+    },
+    {
+      "index": 28,
+      "leader": "SPIDER",
+      "members": [],
+      "literal": "{MK_SPIDER,         0,      {0},                                    {{0}},                          9,      16,     100}"
+    },
+    {
+      "index": 29,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "DAR_BLADEMASTER",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,1,      {MK_DAR_BLADEMASTER},                   {{0, 1, 1}},                    10,     14,     100}"
+    },
+    {
+      "index": 30,
+      "leader": "WISP",
+      "members": [],
+      "literal": "{MK_WILL_O_THE_WISP,0,      {0},                                    {{0}},                          10,     17,     100}"
+    },
+    {
+      "index": 31,
+      "leader": "WRAITH",
+      "members": [],
+      "literal": "{MK_WRAITH,         0,      {0},                                    {{0}},                          10,     17,     100}"
+    },
+    {
+      "index": 32,
+      "leader": "GOBLIN_TOTEM",
+      "members": [
+        {
+          "type": "GOBLIN_TOTEM",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_CONJURER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN",
+          "lower": 3,
+          "upper": 5,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_TOTEM,   4,      {MK_GOBLIN_TOTEM, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN}, {{1,2,1},{1,2,1},{1,2,1},{3,5,1}},10,17,80,0,MT_CAMP_AREA,  HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 33,
+      "leader": "SPARK_TURRET",
+      "members": [],
+      "literal": "{MK_SPARK_TURRET,   0,      {0},                                    {{0}},                          11,     18,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 34,
+      "leader": "ZOMBIE",
+      "members": [],
+      "literal": "{MK_ZOMBIE,         0,      {0},                                    {{0}},                          11,     18,     100}"
+    },
+    {
+      "index": 35,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          12,     19,     100}"
+    },
+    {
+      "index": 36,
+      "leader": "OGRE_TOTEM",
+      "members": [
+        {
+          "type": "OGRE",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_OGRE_TOTEM,     1,      {MK_OGRE},                              {{2,4,1}},                      12,     19,     60,     0,          0,                  HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 37,
+      "leader": "BOG_MONSTER",
+      "members": [
+        {
+          "type": "BOG_MONSTER",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_BOG_MONSTER,    1,      {MK_BOG_MONSTER},                       {{2,4,1}},                      12,     26,     100,        MUD}"
+    },
+    {
+      "index": 38,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          13,     20,     100,        DEEP_WATER}"
+    },
+    {
+      "index": 39,
+      "leader": "SALAMANDER",
+      "members": [],
+      "literal": "{MK_SALAMANDER,     0,      {0},                                    {{0}},                          13,     20,     100,        LAVA}"
+    },
+    {
+      "index": 40,
+      "leader": "OGRE_SHAMAN",
+      "members": [
+        {
+          "type": "OGRE",
+          "lower": 1,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_OGRE_SHAMAN,    1,      {MK_OGRE},                              {{1, 3, 1}},                    14,     20,     100}"
+    },
+    {
+      "index": 41,
+      "leader": "CENTAUR",
+      "members": [
+        {
+          "type": "CENTAUR",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_CENTAUR,        1,      {MK_CENTAUR},                           {{1, 1, 1}},                    14,     21,     100}"
+    },
+    {
+      "index": 42,
+      "leader": "ACIDIC_JELLY",
+      "members": [],
+      "literal": "{MK_ACID_JELLY,     0,      {0},                                    {{0}},                          14,     21,     100}"
+    },
+    {
+      "index": 43,
+      "leader": "DART_TURRET",
+      "members": [],
+      "literal": "{MK_DART_TURRET,    0,      {0},                                    {{0}},                          15,     22,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 44,
+      "leader": "PIXIE",
+      "members": [],
+      "literal": "{MK_PIXIE,          0,      {0},                                    {{0}},                          14,     21,     80}"
+    },
+    {
+      "index": 45,
+      "leader": "FLAME_TURRET",
+      "members": [],
+      "literal": "{MK_FLAME_TURRET,   0,      {0},                                    {{0}},                          14,     24,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN}"
+    },
+    {
+      "index": 46,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "DAR_BLADEMASTER",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,2,      {MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS}, {{0, 1, 1}, {0, 1, 1}},         15,     17,     100}"
+    },
+    {
+      "index": 47,
+      "leader": "PINK_JELLY",
+      "members": [
+        {
+          "type": "PINK_JELLY",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_PINK_JELLY,     2,      {MK_PINK_JELLY, MK_DAR_PRIESTESS},      {{0, 1, 1}, {1, 2, 1}},         17,     23,     70}"
+    },
+    {
+      "index": 48,
+      "leader": "KRAKEN",
+      "members": [],
+      "literal": "{MK_KRAKEN,         0,      {0},                                    {{0}},                          15,     30,     100,        DEEP_WATER}"
+    },
+    {
+      "index": 49,
+      "leader": "PHANTOM",
+      "members": [],
+      "literal": "{MK_PHANTOM,        0,      {0},                                    {{0}},                          16,     23,     100}"
+    },
+    {
+      "index": 50,
+      "leader": "WRAITH",
+      "members": [
+        {
+          "type": "WRAITH",
+          "lower": 1,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_WRAITH,         1,      {MK_WRAITH},                            {{1, 4, 1}},                    16,     23,     80}"
+    },
+    {
+      "index": 51,
+      "leader": "IMP",
+      "members": [],
+      "literal": "{MK_IMP,            0,      {0},                                    {{0}},                          17,     24,     100}"
+    },
+    {
+      "index": 52,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "DAR_BLADEMASTER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_BATTLEMAGE",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,3,      {MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,100}"
+    },
+    {
+      "index": 53,
+      "leader": "FURY",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_FURY,           1,      {MK_FURY},                              {{2, 4, 1}},                    18,     26,     80}"
+    },
+    {
+      "index": 54,
+      "leader": "REVENANT",
+      "members": [],
+      "literal": "{MK_REVENANT,       0,      {0},                                    {{0}},                          19,     27,     100}"
+    },
+    {
+      "index": 55,
+      "leader": "GOLEM",
+      "members": [],
+      "literal": "{MK_GOLEM,          0,      {0},                                    {{0}},                          21,     30,     100}"
+    },
+    {
+      "index": 56,
+      "leader": "TENTACLE_HORROR",
+      "members": [],
+      "literal": "{MK_TENTACLE_HORROR,0,      {0},                                    {{0}},                          22,     DEEPEST_LEVEL-1,        100}"
+    },
+    {
+      "index": 57,
+      "leader": "PHYLACTERY",
+      "members": [],
+      "literal": "{MK_PHYLACTERY,     0,      {0},                                    {{0}},                          22,     DEEPEST_LEVEL-1,        100}"
+    },
+    {
+      "index": 58,
+      "leader": "DRAGON",
+      "members": [],
+      "literal": "{MK_DRAGON,         0,      {0},                                    {{0}},                          24,     DEEPEST_LEVEL-1,        70}"
+    },
+    {
+      "index": 59,
+      "leader": "DRAGON",
+      "members": [
+        {
+          "type": "DRAGON",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DRAGON,         1,      {MK_DRAGON},                            {{1,1,1}},                      27,     DEEPEST_LEVEL-1,        30}"
+    },
+    {
+      "index": 60,
+      "leader": "GOLEM",
+      "members": [
+        {
+          "type": "GOLEM",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_BATTLEMAGE",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOLEM,          3,      {MK_GOLEM, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE}, {{1, 2, 1}, {0,1,1},{0,1,1}},27,DEEPEST_LEVEL-1,   80}"
+    },
+    {
+      "index": 61,
+      "leader": "GOLEM",
+      "members": [
+        {
+          "type": "GOLEM",
+          "lower": 5,
+          "upper": 10,
+          "clumpFactor": 2
+        }
+      ],
+      "literal": "{MK_GOLEM,          1,      {MK_GOLEM},                             {{5, 10, 2}},                   30,     DEEPEST_LEVEL-1,    20}"
+    },
+    {
+      "index": 62,
+      "leader": "KRAKEN",
+      "members": [
+        {
+          "type": "KRAKEN",
+          "lower": 5,
+          "upper": 10,
+          "clumpFactor": 2
+        }
+      ],
+      "literal": "{MK_KRAKEN,         1,      {MK_KRAKEN},                            {{5, 10, 2}},                   30,     DEEPEST_LEVEL-1,    100,        DEEP_WATER}"
+    },
+    {
+      "index": 63,
+      "leader": "TENTACLE_HORROR",
+      "members": [
+        {
+          "type": "TENTACLE_HORROR",
+          "lower": 1,
+          "upper": 3,
+          "clumpFactor": 1
+        },
+        {
+          "type": "REVENANT",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_TENTACLE_HORROR,2,      {MK_TENTACLE_HORROR, MK_REVENANT},      {{1, 3, 1}, {2, 4, 1}},         32,     DEEPEST_LEVEL-1,    20}"
+    },
+    {
+      "index": 64,
+      "leader": "DRAGON",
+      "members": [
+        {
+          "type": "DRAGON",
+          "lower": 3,
+          "upper": 5,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DRAGON,         1,      {MK_DRAGON},                            {{3, 5, 1}},                    34,     DEEPEST_LEVEL-1,    20}"
+    },
+    {
+      "index": 65,
+      "leader": "GOBLIN_CONJURER",
+      "members": [
+        {
+          "type": "SPECTRAL_BLADE",
+          "lower": 3,
+          "upper": 5,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_CONJURER,1,      {MK_SPECTRAL_BLADE},                    {{3, 5, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH}"
+    },
+    {
+      "index": 66,
+      "leader": "OGRE_SHAMAN",
+      "members": [
+        {
+          "type": "OGRE",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_OGRE_SHAMAN,    1,      {MK_OGRE},                              {{1, 1, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 67,
+      "leader": "VAMPIRE",
+      "members": [
+        {
+          "type": "VAMPIRE_BAT",
+          "lower": 3,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_VAMPIRE,        1,      {MK_VAMPIRE_BAT},                       {{3, 3, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 68,
+      "leader": "LICH",
+      "members": [
+        {
+          "type": "PHANTOM",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_LICH,           1,      {MK_PHANTOM},                           {{2, 3, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 69,
+      "leader": "LICH",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_LICH,           1,      {MK_FURY},                              {{2, 3, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 70,
+      "leader": "PHYLACTERY",
+      "members": [
+        {
+          "type": "LICH",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_PHYLACTERY,     1,      {MK_LICH},                              {{1,1,1}},                      0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 71,
+      "leader": "GOBLIN_WARLORD",
+      "members": [
+        {
+          "type": "GOBLIN_CONJURER",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN",
+          "lower": 3,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_CHIEFTAN,2,      {MK_GOBLIN_CONJURER, MK_GOBLIN},        {{1,1,1}, {3,4,1}},             0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED | HORDE_SUMMONED_AT_DISTANCE}"
+    },
+    {
+      "index": 72,
+      "leader": "PHOENIX_EGG",
+      "members": [
+        {
+          "type": "PHOENIX",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_PHOENIX_EGG,    1,      {MK_PHOENIX},                           {{1,1,1}},                      0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED}"
+    },
+    {
+      "index": 73,
+      "leader": "ELDRITCH_TOTEM",
+      "members": [
+        {
+          "type": "SPECTRAL_BLADE",
+          "lower": 4,
+          "upper": 7,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_ELDRITCH_TOTEM, 1,      {MK_SPECTRAL_BLADE},                    {{4, 7, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH}"
+    },
+    {
+      "index": 74,
+      "leader": "ELDRITCH_TOTEM",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_ELDRITCH_TOTEM, 1,      {MK_FURY},                              {{2, 3, 1}},                    0,      0,      100,    0,          0,                  HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH}"
+    },
+    {
+      "index": 75,
+      "leader": "MONKEY",
+      "members": [
+        {
+          "type": "KOBOLD",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_MONKEY,         1,      {MK_KOBOLD},                            {{1, 2, 1}},                    1,      5,      10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 76,
+      "leader": "GOBLIN",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN,         1,      {MK_GOBLIN},                            {{1, 2, 1}},                    3,      7,      10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 77,
+      "leader": "OGRE",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 3,
+          "upper": 5,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_OGRE,           1,      {MK_GOBLIN},                            {{3, 5, 1}},                    4,      10,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 78,
+      "leader": "GOBLIN_MYSTIC",
+      "members": [
+        {
+          "type": "KOBOLD",
+          "lower": 3,
+          "upper": 7,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_MYSTIC,  1,      {MK_KOBOLD},                            {{3, 7, 1}},                    5,      11,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 79,
+      "leader": "OGRE",
+      "members": [
+        {
+          "type": "OGRE",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_OGRE,           1,      {MK_OGRE},                              {{1, 2, 1}},                    8,      15,     20,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 80,
+      "leader": "TROLL",
+      "members": [
+        {
+          "type": "TROLL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_TROLL,          1,      {MK_TROLL},                             {{1, 2, 1}},                    14,     19,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 81,
+      "leader": "CENTAUR",
+      "members": [
+        {
+          "type": "TROLL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_CENTAUR,        1,      {MK_TROLL},                             {{1, 2, 1}},                    12,     19,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 82,
+      "leader": "TROLL",
+      "members": [
+        {
+          "type": "OGRE",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        },
+        {
+          "type": "OGRE_SHAMAN",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_TROLL,          2,      {MK_OGRE, MK_OGRE_SHAMAN},              {{2, 3, 1}, {0, 1, 1}},         17,     19,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 83,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "TROLL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,1,      {MK_TROLL},                             {{1, 2, 1}},                    12,     19,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 84,
+      "leader": "NAGA",
+      "members": [
+        {
+          "type": "SALAMANDER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_NAGA,           1,      {MK_SALAMANDER},                        {{1, 2, 1}},                    14,     20,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 85,
+      "leader": "SALAMANDER",
+      "members": [
+        {
+          "type": "NAGA",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_SALAMANDER,     1,      {MK_NAGA},                              {{1, 2, 1}},                    13,     20,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 86,
+      "leader": "TROLL",
+      "members": [
+        {
+          "type": "SALAMANDER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_TROLL,          1,      {MK_SALAMANDER},                        {{1, 2, 1}},                    13,     19,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 87,
+      "leader": "IMP",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_IMP,            1,      {MK_FURY},                              {{2, 4, 1}},                    18,     26,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 88,
+      "leader": "PIXIE",
+      "members": [
+        {
+          "type": "IMP",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_PIXIE,          1,      {MK_IMP},                               {{1, 2, 1}},                    14,     21,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 89,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,1,      {MK_FURY},                              {{2, 4, 1}},                    18,     26,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 90,
+      "leader": "DAR_BLADEMASTER",
+      "members": [
+        {
+          "type": "IMP",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BLADEMASTER,1,      {MK_IMP},                               {{2, 3, 1}},                    18,     26,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 91,
+      "leader": "DAR_PRIESTESS",
+      "members": [
+        {
+          "type": "FURY",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_PRIESTESS,  1,      {MK_FURY},                              {{2, 4, 1}},                    18,     26,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 92,
+      "leader": "DAR_BATTLEMAGE",
+      "members": [
+        {
+          "type": "IMP",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_DAR_BATTLEMAGE, 1,      {MK_IMP},                               {{2, 3, 1}},                    18,     26,     10,     0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 93,
+      "leader": "TENTACLE_HORROR",
+      "members": [
+        {
+          "type": "DAR_BLADEMASTER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_BATTLEMAGE",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_TENTACLE_HORROR,3,      {MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},20,26,10,   0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 94,
+      "leader": "GOLEM",
+      "members": [
+        {
+          "type": "DAR_BLADEMASTER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "DAR_BATTLEMAGE",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOLEM,          3,      {MK_DAR_BLADEMASTER, MK_DAR_PRIESTESS, MK_DAR_BATTLEMAGE},{{1,2,1},{1,1,1},{1,1,1}},18,25,10,   0,          0,                  HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD}"
+    },
+    {
+      "index": 95,
+      "leader": "GOBLIN_WARLORD",
+      "members": [
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_CHIEFTAN,2,      {MK_GOBLIN_MYSTIC, MK_GOBLIN},          {{1,1,1}, {2,3,1}},             2,      10,     50,     0,          0,                  HORDE_MACHINE_BOSS}"
+    },
+    {
+      "index": 96,
+      "leader": "BLACK_JELLY",
+      "members": [],
+      "literal": "{MK_BLACK_JELLY,    0,      {0},                                    {{0}},                          5,      15,     50,     0,          0,                  HORDE_MACHINE_BOSS}"
+    },
+    {
+      "index": 97,
+      "leader": "VAMPIRE",
+      "members": [],
+      "literal": "{MK_VAMPIRE,        0,      {0},                                    {{0}},                          10,     DEEPEST_LEVEL,  50,  0,     0,                  HORDE_MACHINE_BOSS}"
+    },
+    {
+      "index": 98,
+      "leader": "FLAMEDANCER",
+      "members": [],
+      "literal": "{MK_FLAMEDANCER,    0,      {0},                                    {{0}},                          10,     DEEPEST_LEVEL,  50,  0,     0,                  HORDE_MACHINE_BOSS}"
+    },
+    {
+      "index": 99,
+      "leader": "EEL",
+      "members": [],
+      "literal": "{MK_EEL,            0,      {0},                                    {{0}},                          2,      7,      100,        DEEP_WATER, 0,                  HORDE_MACHINE_WATER_MONSTER}"
+    },
+    {
+      "index": 100,
+      "leader": "EEL",
+      "members": [
+        {
+          "type": "EEL",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_EEL,            1,      {MK_EEL},                               {{2, 4, 1}},                    5,      15,     100,        DEEP_WATER, 0,                  HORDE_MACHINE_WATER_MONSTER}"
+    },
+    {
+      "index": 101,
+      "leader": "KRAKEN",
+      "members": [],
+      "literal": "{MK_KRAKEN,         0,      {0},                                    {{0}},                          12,     DEEPEST_LEVEL,  100,    DEEP_WATER, 0,              HORDE_MACHINE_WATER_MONSTER}"
+    },
+    {
+      "index": 102,
+      "leader": "KRAKEN",
+      "members": [
+        {
+          "type": "EEL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_KRAKEN,         1,      {MK_EEL},                               {{1, 2, 1}},                    12,     DEEPEST_LEVEL,  80, DEEP_WATER, 0,              HORDE_MACHINE_WATER_MONSTER}"
+    },
+    {
+      "index": 103,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          4,      13,     100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 104,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          12,     20,     50,     0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 105,
+      "leader": "GOBLIN_MYSTIC",
+      "members": [],
+      "literal": "{MK_GOBLIN_MYSTIC,  0,      {0},                                    {{0}},                          2,      8,      100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 106,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          10,     20,     50,     0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 107,
+      "leader": "DAR_BLADEMASTER",
+      "members": [],
+      "literal": "{MK_DAR_BLADEMASTER,0,      {0},                                    {{0}},                          8,      16,     100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 108,
+      "leader": "DAR_PRIESTESS",
+      "members": [],
+      "literal": "{MK_DAR_PRIESTESS,  0,      {0},                                    {{0}},                          8,      14,     100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 109,
+      "leader": "WRAITH",
+      "members": [],
+      "literal": "{MK_WRAITH,         0,      {0},                                    {{0}},                          11,     20,     100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 110,
+      "leader": "GOLEM",
+      "members": [],
+      "literal": "{MK_GOLEM,          0,      {0},                                    {{0}},                          17,     23,     100,        0,          0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 111,
+      "leader": "TENTACLE_HORROR",
+      "members": [],
+      "literal": "{MK_TENTACLE_HORROR,0,      {0},                                    {{0}},                          20,     AMULET_LEVEL,100,0,         0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 112,
+      "leader": "DRAGON",
+      "members": [],
+      "literal": "{MK_DRAGON,         0,      {0},                                    {{0}},                          23,     AMULET_LEVEL,100,0,         0,                  HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 113,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          1,      6,      100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 114,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          6,      12,     100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 115,
+      "leader": "WRAITH",
+      "members": [],
+      "literal": "{MK_WRAITH,         0,      {0},                                    {{0}},                          10,     17,     100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 116,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          12,     19,     100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 117,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          14,     21,     100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 118,
+      "leader": "GOLEM",
+      "members": [],
+      "literal": "{MK_GOLEM,          0,      {0},                                    {{0}},                          21,     30,     100,        STATUE_DORMANT, 0,              HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 119,
+      "leader": "DRAGON",
+      "members": [],
+      "literal": "{MK_DRAGON,         0,      {0},                                    {{0}},                          29,     DEEPEST_LEVEL,  100,    STATUE_DORMANT, 0,          HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 120,
+      "leader": "TENTACLE_HORROR",
+      "members": [],
+      "literal": "{MK_TENTACLE_HORROR,0,      {0},                                    {{0}},                          29,     DEEPEST_LEVEL,  100,    STATUE_DORMANT, 0,          HORDE_MACHINE_STATUE}"
+    },
+    {
+      "index": 121,
+      "leader": "ARROW_TURRET",
+      "members": [],
+      "literal": "{MK_ARROW_TURRET,   0,      {0},                                    {{0}},                          5,      13,     100,        TURRET_DORMANT, 0,              HORDE_MACHINE_TURRET}"
+    },
+    {
+      "index": 122,
+      "leader": "SPARK_TURRET",
+      "members": [],
+      "literal": "{MK_SPARK_TURRET,   0,      {0},                                    {{0}},                          11,     18,     100,        TURRET_DORMANT, 0,              HORDE_MACHINE_TURRET}"
+    },
+    {
+      "index": 123,
+      "leader": "DART_TURRET",
+      "members": [],
+      "literal": "{MK_DART_TURRET,    0,      {0},                                    {{0}},                          15,     22,     100,        TURRET_DORMANT, 0,              HORDE_MACHINE_TURRET}"
+    },
+    {
+      "index": 124,
+      "leader": "FLAME_TURRET",
+      "members": [],
+      "literal": "{MK_FLAME_TURRET,   0,      {0},                                    {{0}},                          17,     24,     100,        TURRET_DORMANT, 0,              HORDE_MACHINE_TURRET}"
+    },
+    {
+      "index": 125,
+      "leader": "BOG_MONSTER",
+      "members": [],
+      "literal": "{MK_BOG_MONSTER,    0,      {0},                                    {{0}},                          12,     26,     100,        MACHINE_MUD_DORMANT, 0,         HORDE_MACHINE_MUD}"
+    },
+    {
+      "index": 126,
+      "leader": "KRAKEN",
+      "members": [],
+      "literal": "{MK_KRAKEN,         0,      {0},                                    {{0}},                          17,     26,     30,     MACHINE_MUD_DORMANT, 0,         HORDE_MACHINE_MUD}"
+    },
+    {
+      "index": 127,
+      "leader": "MONKEY",
+      "members": [],
+      "literal": "{MK_MONKEY,         0,      {0},                                    {{0}},                          1,      5,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 128,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          1,      8,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 129,
+      "leader": "GOBLIN_CONJURER",
+      "members": [],
+      "literal": "{MK_GOBLIN_CONJURER,0,      {0},                                    {{0}},                          2,      9,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 130,
+      "leader": "GOBLIN_MYSTIC",
+      "members": [],
+      "literal": "{MK_GOBLIN_MYSTIC,  0,      {0},                                    {{0}},                          2,      9,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 131,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          7,      17,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 132,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          12,     21,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 133,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          13,     23,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 134,
+      "leader": "SALAMANDER",
+      "members": [],
+      "literal": "{MK_SALAMANDER,     0,      {0},                                    {{0}},                          9,      20,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 135,
+      "leader": "IMP",
+      "members": [],
+      "literal": "{MK_IMP,            0,      {0},                                    {{0}},                          15,     26,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 136,
+      "leader": "PIXIE",
+      "members": [],
+      "literal": "{MK_PIXIE,          0,      {0},                                    {{0}},                          11,     21,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 137,
+      "leader": "DAR_BLADEMASTER",
+      "members": [],
+      "literal": "{MK_DAR_BLADEMASTER,0,      {0},                                    {{0}},                          9,      AMULET_LEVEL, 100, MONSTER_CAGE_CLOSED, 0,      HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 138,
+      "leader": "DAR_PRIESTESS",
+      "members": [],
+      "literal": "{MK_DAR_PRIESTESS,  0,      {0},                                    {{0}},                          12,     AMULET_LEVEL, 100, MONSTER_CAGE_CLOSED, 0,      HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 139,
+      "leader": "DAR_BATTLEMAGE",
+      "members": [],
+      "literal": "{MK_DAR_BATTLEMAGE, 0,      {0},                                    {{0}},                          13,     AMULET_LEVEL, 100, MONSTER_CAGE_CLOSED, 0,      HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 140,
+      "leader": "MONKEY",
+      "members": [],
+      "literal": "{MK_MONKEY,         0,      {0},                                    {{0}},                          1,      5,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 141,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          1,      8,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 142,
+      "leader": "GOBLIN_CONJURER",
+      "members": [],
+      "literal": "{MK_GOBLIN_CONJURER,0,      {0},                                    {{0}},                          2,      9,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 143,
+      "leader": "GOBLIN_MYSTIC",
+      "members": [],
+      "literal": "{MK_GOBLIN_MYSTIC,  0,      {0},                                    {{0}},                          2,      9,      100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 144,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          5,      15,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 145,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          10,     19,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 146,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          9,      20,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 147,
+      "leader": "IMP",
+      "members": [],
+      "literal": "{MK_IMP,            0,      {0},                                    {{0}},                          15,     AMULET_LEVEL,100,MONSTER_CAGE_CLOSED, 0,            HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 148,
+      "leader": "PIXIE",
+      "members": [],
+      "literal": "{MK_PIXIE,          0,      {0},                                    {{0}},                          11,     21,     100,        MONSTER_CAGE_CLOSED, 0,         HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 149,
+      "leader": "DAR_BLADEMASTER",
+      "members": [],
+      "literal": "{MK_DAR_BLADEMASTER,0,      {0},                                    {{0}},                          9,      AMULET_LEVEL,100,MONSTER_CAGE_CLOSED, 0,            HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 150,
+      "leader": "DAR_PRIESTESS",
+      "members": [],
+      "literal": "{MK_DAR_PRIESTESS,  0,      {0},                                    {{0}},                          12,     AMULET_LEVEL,100,MONSTER_CAGE_CLOSED, 0,            HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 151,
+      "leader": "DAR_BATTLEMAGE",
+      "members": [],
+      "literal": "{MK_DAR_BATTLEMAGE, 0,      {0},                                    {{0}},                          13,     AMULET_LEVEL,100,MONSTER_CAGE_CLOSED, 0,            HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE}"
+    },
+    {
+      "index": 152,
+      "leader": "MONKEY",
+      "members": [],
+      "literal": "{MK_MONKEY,         0,      {0},                                    {{0}},                          1,      14,     100,     0,          0,                  HORDE_MACHINE_THIEF}"
+    },
+    {
+      "index": 153,
+      "leader": "IMP",
+      "members": [],
+      "literal": "{MK_IMP,            0,      {0},                                    {{0}},                          15,     DEEPEST_LEVEL,  100, 0,      0,                  HORDE_MACHINE_THIEF}"
+    },
+    {
+      "index": 154,
+      "leader": "MONKEY",
+      "members": [],
+      "literal": "{MK_MONKEY,         0,      {0},                                    {{0}},                          1,      5,      100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 155,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          3,      10,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 156,
+      "leader": "OGRE",
+      "members": [],
+      "literal": "{MK_OGRE,           0,      {0},                                    {{0}},                          7,      13,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 157,
+      "leader": "TROLL",
+      "members": [],
+      "literal": "{MK_TROLL,          0,      {0},                                    {{0}},                          12,     19,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 158,
+      "leader": "WRAITH",
+      "members": [],
+      "literal": "{MK_WRAITH,         0,      {0},                                    {{0}},                          10,     17,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 159,
+      "leader": "NAGA",
+      "members": [],
+      "literal": "{MK_NAGA,           0,      {0},                                    {{0}},                          13,     20,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 160,
+      "leader": "DAR_BLADEMASTER",
+      "members": [],
+      "literal": "{MK_DAR_BLADEMASTER,0,      {0},                                    {{0}},                          10,     20,     100,        STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 161,
+      "leader": "GOLEM",
+      "members": [],
+      "literal": "{MK_GOLEM,          0,      {0},                                    {{0}},                          21,     DEEPEST_LEVEL,100,  STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 162,
+      "leader": "REVENANT",
+      "members": [],
+      "literal": "{MK_REVENANT,       0,      {0},                                    {{0}},                          21,     DEEPEST_LEVEL,100,  STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 163,
+      "leader": "TENTACLE_HORROR",
+      "members": [],
+      "literal": "{MK_TENTACLE_HORROR,0,      {0},                                    {{0}},                          21,     DEEPEST_LEVEL,100,  STATUE_INSTACRACK, 0,           HORDE_SACRIFICE_TARGET}"
+    },
+    {
+      "index": 164,
+      "leader": "UNICORN",
+      "members": [],
+      "literal": "{MK_UNICORN,        0,      {0},                                    {{0}},                          1,      DEEPEST_LEVEL,  100, 0,     0,                  HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER}"
+    },
+    {
+      "index": 165,
+      "leader": "IFRIT",
+      "members": [],
+      "literal": "{MK_IFRIT,          0,      {0},                                    {{0}},                          1,      DEEPEST_LEVEL,  100,    0,      0,                  HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER}"
+    },
+    {
+      "index": 166,
+      "leader": "PHOENIX_EGG",
+      "members": [],
+      "literal": "{MK_PHOENIX_EGG,    0,      {0},                                    {{0}},                          1,      DEEPEST_LEVEL,  100,    0,      0,                  HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER}"
+    },
+    {
+      "index": 167,
+      "leader": "MANGROVE_DRYAD",
+      "members": [],
+      "literal": "{MK_ANCIENT_SPIRIT, 0,      {0},                                    {{0}},                          1,      DEEPEST_LEVEL,  100,    0,      0,                  HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER}"
+    },
+    {
+      "index": 168,
+      "leader": "GOBLIN",
+      "members": [],
+      "literal": "{MK_GOBLIN,         0,      {0},                                    {{0}},                          1,      10,     100,     0,              0,              HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 169,
+      "leader": "GOBLIN_CONJURER",
+      "members": [],
+      "literal": "{MK_GOBLIN_CONJURER,0,      {0},                                    {{0}},                          1,      10,     60,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 170,
+      "leader": "GOBLIN_TOTEM",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 2,
+          "upper": 4,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_TOTEM,   1,      {MK_GOBLIN},                            {{2,4,1}},                      5,      13,     100,        0,              MT_CAMP_AREA,   HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 171,
+      "leader": "GOBLIN",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 2,
+          "upper": 3,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "JACKAL",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN,         3,      {MK_GOBLIN, MK_GOBLIN_MYSTIC, MK_JACKAL},{{2, 3, 1}, {1,2,1}, {1,2,1}}, 6,      12,     40,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 172,
+      "leader": "GOBLIN_CONJURER",
+      "members": [
+        {
+          "type": "GOBLIN_CONJURER",
+          "lower": 0,
+          "upper": 1,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 1,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_CONJURER,2,      {MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC}, {{0,1,1}, {1,1,1}},             7,      15,     40,      0,              0,              HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 173,
+      "leader": "GOBLIN_TOTEM",
+      "members": [
+        {
+          "type": "GOBLIN_TOTEM",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_CONJURER",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN_MYSTIC",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        },
+        {
+          "type": "GOBLIN",
+          "lower": 3,
+          "upper": 5,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN_TOTEM,   4,      {MK_GOBLIN_TOTEM, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN}, {{1,2,1},{1,2,1},{1,2,1},{3,5,1}},10,17,80,0,MT_CAMP_AREA,  HORDE_MACHINE_GOBLIN_WARREN}"
+    },
+    {
+      "index": 174,
+      "leader": "GOBLIN",
+      "members": [
+        {
+          "type": "GOBLIN",
+          "lower": 1,
+          "upper": 2,
+          "clumpFactor": 1
+        }
+      ],
+      "literal": "{MK_GOBLIN,         1,      {MK_GOBLIN},                            {{1, 2, 1}},                    3,      7,      10,     0,              0,              HORDE_MACHINE_GOBLIN_WARREN | HORDE_LEADER_CAPTIVE}"
+    }
+  ],
+  "blueprints": [
+    {
+      "ceBlueprintId": 1,
+      "name": "Mixed item library -- can check one item out at a time",
+      "depthRange": [
+        1,
+        12
+      ]
+    },
+    {
+      "ceBlueprintId": 2,
+      "name": "Single item category library -- can check one item out at a time",
+      "depthRange": [
+        1,
+        12
+      ]
+    },
+    {
+      "ceBlueprintId": 3,
+      "name": "Treasure room -- apothecary or archive (potions or scrolls)",
+      "depthRange": [
+        8,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 4,
+      "name": "Guaranteed good permanent item on a glowing pedestal (runic weapon/armor or 2 staffs)",
+      "depthRange": [
+        5,
+        16
+      ]
+    },
+    {
+      "ceBlueprintId": 5,
+      "name": "Guaranteed good consumable item on glowing pedestals (scrolls of enchanting, potion of life)",
+      "depthRange": [
+        10,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 6,
+      "name": "Commutation altars",
+      "depthRange": [
+        13,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 7,
+      "name": "Resurrection altar",
+      "depthRange": [
+        13,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 8,
+      "name": "Outsourced item -- same item possibilities as in the good permanent item reward room (plus charms), but directly adopted by 1-2 key machines.",
+      "depthRange": [
+        5,
+        17
+      ]
+    },
+    {
+      "ceBlueprintId": 9,
+      "name": "Dungeon -- two allies chained up for the taking",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 10,
+      "name": "Kennel -- allies locked in cages in an open room; choose one or two to unlock and take with you.",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 11,
+      "name": "Vampire lair -- allies locked in cages and chained in a hidden room with a vampire in a coffin; vampire has one cage key.",
+      "depthRange": [
+        10,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 12,
+      "name": "Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.",
+      "depthRange": [
+        8,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 13,
+      "name": "Goblin warren",
+      "depthRange": [
+        5,
+        15
+      ]
+    },
+    {
+      "ceBlueprintId": 14,
+      "name": "Sentinel sanctuary",
+      "depthRange": [
+        10,
+        23
+      ]
+    },
+    {
+      "ceBlueprintId": 15,
+      "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+      "depthRange": [
+        10,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 16,
+      "name": "Plain locked door, key guarded by an adoptive room",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 17,
+      "name": "Plain secret door",
+      "depthRange": [
+        2,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 18,
+      "name": "Lever and either an exploding wall or a portcullis",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 19,
+      "name": "Flammable barricade in the doorway -- burn the wooden barricade to enter",
+      "depthRange": [
+        1,
+        6
+      ]
+    },
+    {
+      "ceBlueprintId": 20,
+      "name": "Statue in the doorway -- use a scroll of shattering to enter",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 21,
+      "name": "Statue in the doorway -- bursts to reveal monster",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 22,
+      "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the portcullis",
+      "depthRange": [
+        1,
+        4
+      ]
+    },
+    {
+      "ceBlueprintId": 23,
+      "name": "Pit traps -- area outside entrance is full of pit traps",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 24,
+      "name": "Beckoning obstacle -- a mirrored totem guards the door, and glyph are around the doorway.",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 25,
+      "name": "Guardian obstacle -- a guardian is in the door on a glyph, with other glyphs scattered around.",
+      "depthRange": [
+        6,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 26,
+      "name": "Nested item library -- can check one item out at a time, and one is a disposable key to another reward room",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 27,
+      "name": "Secret room -- key on an altar in a secret room",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 28,
+      "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key",
+      "depthRange": [
+        1,
+        4
+      ]
+    },
+    {
+      "ceBlueprintId": 29,
+      "name": "Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls",
+      "depthRange": [
+        1,
+        8
+      ]
+    },
+    {
+      "ceBlueprintId": 30,
+      "name": "Fun with fire -- trigger the fire trap and coax the fire over to the wooden barricade surrounding the altar and key",
+      "depthRange": [
+        3,
+        10
+      ]
+    },
+    {
+      "ceBlueprintId": 31,
+      "name": "Flood room -- key on an altar in a room with pools of eel-infested waters; take key to flood room with shallow water",
+      "depthRange": [
+        3,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 32,
+      "name": "Fire trap room -- key on an altar, pools of water, fire traps all over the place.",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 33,
+      "name": "Thief area -- empty altar, monster with item, permanently fleeing.",
+      "depthRange": [
+        3,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 34,
+      "name": "Collapsing floor area -- key on an altar in an area; take key to cause the floor of the area to collapse",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 35,
+      "name": "Pit traps -- key on an altar, room full of pit traps",
+      "depthRange": [
+        1,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 36,
+      "name": "Levitation challenge -- key on an altar, room filled with pit, levitation or lever elsewhere on level, bridge appears when you grab the key/lever.",
+      "depthRange": [
+        1,
+        13
+      ]
+    },
+    {
+      "ceBlueprintId": 37,
+      "name": "Web climbing -- key on an altar, room filled with pit, spider at altar to shoot webs, bridge appears when you grab the key",
+      "depthRange": [
+        7,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 38,
+      "name": "Lava moat room -- key on an altar, room filled with lava, levitation/fire immunity/lever elsewhere on level, lava retracts when you grab the key/lever",
+      "depthRange": [
+        3,
+        13
+      ]
+    },
+    {
+      "ceBlueprintId": 39,
+      "name": "Lava moat area -- key on an altar, surrounded with lava, levitation/fire immunity elsewhere on level, lava retracts when you grab the key",
+      "depthRange": [
+        3,
+        13
+      ]
+    },
+    {
+      "ceBlueprintId": 40,
+      "name": "Poison gas -- key on an altar; take key to cause a caustic gas vent to appear and the door to be blocked; there is a hidden trapdoor or an escape item somewhere inside",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 41,
+      "name": "Explosive situation -- key on an altar; take key to cause a methane gas vent to appear and a pilot light to ignite",
+      "depthRange": [
+        7,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 42,
+      "name": "Burning grass -- key on an altar; take key to cause pilot light to ignite grass in room",
+      "depthRange": [
+        1,
+        7
+      ]
+    },
+    {
+      "ceBlueprintId": 43,
+      "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+      "depthRange": [
+        10,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 44,
+      "name": "Guardian water puzzle -- key held by a guardian, flood trap in the room, glyphs scattered. Lure the guardian into the water to have him drop the key.",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 45,
+      "name": "Guardian gauntlet -- key in a room full of guardians, glyphs scattered and unavoidable.",
+      "depthRange": [
+        6,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 46,
+      "name": "Guardian corridor -- key in a small room, with a connecting corridor full of glyphs, one guardian blocking the corridor.",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 47,
+      "name": "Sacrifice altar -- lure the chosen monster from elsewhere on the level onto the altar to release the key.",
+      "depthRange": [
+        4,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 48,
+      "name": "Summoning circle -- key in a room with an eldritch totem, glyphs unavoidable. // DISABLED. (Not fun enough.)",
+      "depthRange": [
+        12,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 49,
+      "name": "Beckoning obstacle -- key surrounded by glyphs in a room with a mirrored totem.",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 50,
+      "name": "Worms in the walls -- key on altar; take key to cause underworms to burst out of the walls",
+      "depthRange": [
+        12,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 51,
+      "name": "Mud pit -- key on an altar, room full of mud, take key to cause bog monsters to spawn in the mud",
+      "depthRange": [
+        12,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 52,
+      "name": "Electric crystals -- key caged on an altar, darkened crystal globes around the room, lightning the globes to release the key.",
+      "depthRange": [
+        6,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 53,
+      "name": "Zombie crypt -- key on an altar; coffins scattered around; brazier in the room; take key to cause zombies to burst out of all of the coffins",
+      "depthRange": [
+        12,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 54,
+      "name": "Haunted house -- key on an altar; take key to cause the room to darken, ectoplasm to cover everything and phantoms to appear",
+      "depthRange": [
+        16,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 55,
+      "name": "Worm tunnels -- hidden lever causes tunnels to open up revealing worm areas and a key",
+      "depthRange": [
+        8,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 56,
+      "name": "Gauntlet -- key on an altar; take key to cause turrets to emerge",
+      "depthRange": [
+        5,
+        24
+      ]
+    },
+    {
+      "ceBlueprintId": 57,
+      "name": "Boss -- key is held by a boss atop a pile of bones in a secret room. A few fungus patches light up the area.",
+      "depthRange": [
+        5,
+        26
+      ]
+    },
+    {
+      "ceBlueprintId": 58,
+      "name": "Bloodwort -- bloodwort stalk, some pods, and surrounding grass",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 59,
+      "name": "Shrine -- safe haven constructed and abandoned by a past adventurer",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 60,
+      "name": "Idyll -- ponds and some grass and forest",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 61,
+      "name": "Swamp -- mud, grass and some shallow water",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 62,
+      "name": "Camp -- hay, junk, urine, vomit",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 63,
+      "name": "Remnant -- carpet surrounded by ash and with some statues",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 64,
+      "name": "Dismal -- blood, bones, charcoal, some rubble",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 65,
+      "name": "Chasm catwalk -- narrow bridge over a chasm, possibly under fire from a turret or two",
+      "depthRange": [
+        1,
+        39
+      ]
+    },
+    {
+      "ceBlueprintId": 66,
+      "name": "Lake walk -- narrow bridge of shallow water through a lake, possibly under fire from a turret or two",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 67,
+      "name": "Paralysis trap -- already-revealed pressure plate with a few hidden vents nearby.",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 68,
+      "name": "Paralysis trap -- hidden pressure plate with a few vents nearby.",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 69,
+      "name": "Statue comes alive -- innocent-looking statue that bursts to reveal a monster when the player approaches",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 70,
+      "name": "Worms in the walls -- step on trigger region to cause underworms to burst out of the walls",
+      "depthRange": [
+        1,
+        40
+      ]
+    },
+    {
+      "ceBlueprintId": 71,
+      "name": "Sentinels",
+      "depthRange": [
+        1,
+        40
+      ]
+    }
+  ]
+}

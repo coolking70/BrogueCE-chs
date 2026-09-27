@@ -1,0 +1,19 @@
+--- 提取自检 ---
+CE 源: /Users/coolking70/.codex/worktrees/8218/brogue/BrogueCE-master
+hordeCatalog_Brogue 起始行: 744
+总条数: 175（锚点 175）
+开局铺怪池条数: 85（锚点 85）
+周期刷怪池条数: 58（锚点 58）
+HORDE_LEADER_CAPTIVE 条数: 56（锚点 56）
+开局池中 LEADER_CAPTIVE 条数: 20
+枚举名 -> 目录名 改写条目: MK_WILL_O_THE_WISP -> WISP, MK_ACID_JELLY -> ACIDIC_JELLY, MK_GOBLIN_CHIEFTAN -> GOBLIN_WARLORD, MK_SPECTRAL_IMAGE -> SPECTRAL_SWORD, MK_GUARDIAN -> STONE_GUARDIAN, MK_CHARM_GUARDIAN -> GUARDIAN_SPIRIT, MK_ANCIENT_SPIRIT -> MANGROVE_DRYAD
+开局池物种数: 47
+AMULET_LEVEL=26  DEEPEST_LEVEL=40
+各深度开局 horde 数: {"1":4,"2":8,"3":12,"4":14,"5":18,"6":20,"7":23,"8":23,"9":25,"10":29,"11":28,"12":31,"13":34,"14":33,"15":33,"16":33,"17":35,"18":38,"19":37,"20":31,"21":27,"22":25,"23":23,"24":21,"25":19,"26":17,"27":8,"28":7,"29":7,"30":9,"31":7,"32":8,"33":8,"34":9,"35":9,"36":9,"37":9,"38":9,"39":9,"40":0}
+clumpFactor != 1: [
+  'L807 GOLEM member[0] clumpFactor=2',
+  'L808 KRAKEN member[0] clumpFactor=2'
+]
+全表物种中 web monsters.json 缺失（映射后）: （无，零失配）
+
+已写出 175 条 -> src/data/hordes.json

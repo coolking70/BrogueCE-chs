@@ -1,0 +1,11 @@
+{
+  "sources": {
+    "BrogueCE-master/src/variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+    "BrogueCE-master/src/brogue/Globals.c": "0b104f15c5ef78e93b5142747c41ff82e82d027bd73f7633c6b430baebf45cff",
+    "BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "BrogueCE-master/src/brogue/Math.c": "810481af6641841064f2dc1f051cfdaa9372e0de61dd0786d9b294c35adcaa69"
+  },
+  "functions": "short randClump(randomRange theRange) {\n    return randClumpedRange(theRange.lowerBound, theRange.upperBound, theRange.clumpFactor);\n}\n\n// Get a random int between lowerBound and upperBound, inclusive, with probability distribution\n// affected by clumpFactor.\nshort randClumpedRange(short lowerBound, short upperBound, short clumpFactor) {\n    if (upperBound <= lowerBound) {\n        return lowerBound;\n    }\n    if (clumpFactor <= 1) {\n        return rand_range(lowerBound, upperBound);\n    }\n\n    short i, total = 0, numSides = (upperBound - lowerBound) / clumpFactor;\n\n    for(i=0; i < (upperBound - lowerBound) % clumpFactor; i++) {\n        total += rand_range(0, numSides + 1);\n    }\n\n    for(; i< clumpFactor; i++) {\n        total += rand_range(0, numSides);\n    }\n\n    return (total + lowerBound);\n}\n\n",
+  "ranges": 17,
+  "cases": 54
+}

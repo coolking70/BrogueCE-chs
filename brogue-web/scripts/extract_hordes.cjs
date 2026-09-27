@@ -340,6 +340,7 @@ function parseHordeEntry(entry, ctx) {
             type: memberNames[i],
             minCount: countGroups[i].min,
             maxCount: countGroups[i].max,
+            clumpFactor: countGroups[i].clump,
         });
     }
 
@@ -539,7 +540,7 @@ function main() {
     // ---- 写 JSON（字段顺序与旧文件一致，spawnsIn/machine 插在 frequency 之后）----
     const out = hordes.map((h) => ({
         leader: h.leader,
-        members: h.members.map((m) => ({ type: m.type, minCount: m.minCount, maxCount: m.maxCount })),
+        members: h.members.map((m) => ({ type: m.type, minCount: m.minCount, maxCount: m.maxCount, clumpFactor: m.clumpFactor })),
         minLevel: h.minLevel,
         maxLevel: h.maxLevel,
         frequency: h.frequency,

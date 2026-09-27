@@ -1,0 +1,1063 @@
+{
+  "errors": [],
+  "rows": [
+    {
+      "type": "GOLEM",
+      "counts": [
+        {
+          "args": [
+            5,
+            10,
+            2
+          ],
+          "value": 6,
+          "draws": 2
+        }
+      ],
+      "monsters": [
+        {
+          "id": 71,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 14
+          },
+          "leader": null
+        },
+        {
+          "id": 72,
+          "type": "golem",
+          "loc": {
+            "x": 37,
+            "y": 13
+          },
+          "leader": 71
+        },
+        {
+          "id": 73,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 13
+          },
+          "leader": 71
+        },
+        {
+          "id": 74,
+          "type": "golem",
+          "loc": {
+            "x": 37,
+            "y": 15
+          },
+          "leader": 71
+        },
+        {
+          "id": 75,
+          "type": "golem",
+          "loc": {
+            "x": 35,
+            "y": 14
+          },
+          "leader": 71
+        },
+        {
+          "id": 76,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 15
+          },
+          "leader": 71
+        },
+        {
+          "id": 77,
+          "type": "golem",
+          "loc": {
+            "x": 35,
+            "y": 15
+          },
+          "leader": 71
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 13,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "levitating": 100,
+            "telepathy": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "魔像",
+            "x": 36,
+            "y": 14,
+            "hp": 400,
+            "maxHp": 400,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "魔像",
+            "x": 37,
+            "y": 13,
+            "hp": 400,
+            "maxHp": 400,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "魔像",
+            "x": 36,
+            "y": 13,
+            "hp": 400,
+            "maxHp": 400,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "缠缚的魔像",
+            "x": 37,
+            "y": 15,
+            "hp": 600,
+            "maxHp": 600,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": "grappling",
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [
+              "MA_SEIZES"
+            ],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "魔像",
+            "x": 35,
+            "y": 14,
+            "hp": 400,
+            "maxHp": 400,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "感染的魔像",
+            "x": 36,
+            "y": 15,
+            "hp": 200,
+            "maxHp": 200,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": "infested",
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [
+              "MA_DF_ON_DEATH"
+            ],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "魔像",
+            "x": 35,
+            "y": 15,
+            "hp": 400,
+            "maxHp": 400,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 70,
+            "damage": "1d5+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_REFLECT_50",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "golem",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": 71,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "type": "GOLEM",
+      "afterWaitAndReload": {
+        "ok": true,
+        "equal": true,
+        "differences": [],
+        "text": {
+          "seed": "424242",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 35,
+            "y": 13,
+            "hp": 10000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "levitating": 99,
+              "telepathy": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "魔像",
+              "x": 36,
+              "y": 14,
+              "hp": 400,
+              "maxHp": 400,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "魔像",
+              "x": 37,
+              "y": 14,
+              "hp": 400,
+              "maxHp": 400,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "魔像",
+              "x": 36,
+              "y": 13,
+              "hp": 400,
+              "maxHp": 400,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "缠缚的魔像",
+              "x": 36,
+              "y": 16,
+              "hp": 600,
+              "maxHp": 600,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": "grappling",
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_SEIZES"
+              ],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "魔像",
+              "x": 35,
+              "y": 14,
+              "hp": 400,
+              "maxHp": 400,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "感染的魔像",
+              "x": 35,
+              "y": 16,
+              "hp": 200,
+              "maxHp": 200,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": "infested",
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [
+                "MA_DF_ON_DEATH"
+              ],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "魔像",
+              "x": 34,
+              "y": 15,
+              "hp": 400,
+              "maxHp": 400,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 70,
+              "damage": "1d5+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_REFLECT_50",
+                "MONST_DIES_IF_NEGATED"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "golem",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 71,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "type": "KRAKEN",
+      "counts": [
+        {
+          "args": [
+            5,
+            10,
+            2
+          ],
+          "value": 8,
+          "draws": 2
+        }
+      ],
+      "monsters": [
+        {
+          "id": 78,
+          "type": "kraken",
+          "loc": {
+            "x": 36,
+            "y": 14
+          },
+          "leader": null
+        },
+        {
+          "id": 79,
+          "type": "kraken",
+          "loc": {
+            "x": 37,
+            "y": 13
+          },
+          "leader": 78
+        },
+        {
+          "id": 80,
+          "type": "kraken",
+          "loc": {
+            "x": 35,
+            "y": 14
+          },
+          "leader": 78
+        },
+        {
+          "id": 81,
+          "type": "kraken",
+          "loc": {
+            "x": 37,
+            "y": 14
+          },
+          "leader": 78
+        },
+        {
+          "id": 82,
+          "type": "kraken",
+          "loc": {
+            "x": 37,
+            "y": 15
+          },
+          "leader": 78
+        },
+        {
+          "id": 83,
+          "type": "kraken",
+          "loc": {
+            "x": 35,
+            "y": 15
+          },
+          "leader": 78
+        },
+        {
+          "id": 84,
+          "type": "kraken",
+          "loc": {
+            "x": 36,
+            "y": 13
+          },
+          "leader": 78
+        },
+        {
+          "id": 85,
+          "type": "kraken",
+          "loc": {
+            "x": 36,
+            "y": 15
+          },
+          "leader": 78
+        },
+        {
+          "id": 86,
+          "type": "kraken",
+          "loc": {
+            "x": 34,
+            "y": 14
+          },
+          "leader": 78
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 35,
+          "y": 13,
+          "hp": 10000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "levitating": 100,
+            "telepathy": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [
+          {
+            "x": 36,
+            "y": 14,
+            "marker": "x"
+          },
+          {
+            "x": 37,
+            "y": 13,
+            "marker": "x"
+          },
+          {
+            "x": 35,
+            "y": 14,
+            "marker": "x"
+          },
+          {
+            "x": 37,
+            "y": 14,
+            "marker": "x"
+          },
+          {
+            "x": 37,
+            "y": 15,
+            "marker": "x"
+          },
+          {
+            "x": 35,
+            "y": 15,
+            "marker": "x"
+          },
+          {
+            "x": 36,
+            "y": 13,
+            "marker": "x"
+          },
+          {
+            "x": 36,
+            "y": 15,
+            "marker": "x"
+          },
+          {
+            "x": 34,
+            "y": 14,
+            "marker": "x"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "type": "KRAKEN",
+      "afterWaitAndReload": {
+        "ok": true,
+        "equal": true,
+        "differences": [],
+        "text": {
+          "seed": "424242",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 35,
+            "y": 13,
+            "hp": 10000,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "levitating": 99,
+              "telepathy": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [
+            {
+              "x": 37,
+              "y": 13,
+              "marker": "x"
+            },
+            {
+              "x": 36,
+              "y": 12,
+              "marker": "x"
+            },
+            {
+              "x": 35,
+              "y": 14,
+              "marker": "x"
+            },
+            {
+              "x": 38,
+              "y": 16,
+              "marker": "x"
+            },
+            {
+              "x": 36,
+              "y": 14,
+              "marker": "x"
+            },
+            {
+              "x": 35,
+              "y": 17,
+              "marker": "x"
+            },
+            {
+              "x": 36,
+              "y": 13,
+              "marker": "x"
+            },
+            {
+              "x": 36,
+              "y": 17,
+              "marker": "x"
+            },
+            {
+              "x": 34,
+              "y": 13,
+              "marker": "x"
+            }
+          ],
+          "items": []
+        }
+      }
+    }
+  ]
+}

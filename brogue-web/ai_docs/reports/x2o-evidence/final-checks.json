@@ -1,0 +1,120 @@
+{
+  "time": "2026-09-27T10:09:20.920Z",
+  "summaries": {
+    "build": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-27T09:38:10.582Z",
+      "seconds": 6.141,
+      "exit": 0,
+      "inputs": 966,
+      "changedInputs": [],
+      "discoveredFiles": 216,
+      "changedDiscovery": []
+    },
+    "full": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2o-evidence/full-final.json"
+      ],
+      "start": "2026-09-27T09:38:16.789Z",
+      "seconds": 1696.043,
+      "exit": 0,
+      "inputs": 966,
+      "changedInputs": [],
+      "discoveredFiles": 216,
+      "changedDiscovery": [],
+      "files": 215,
+      "passed": 3973,
+      "failed": 0,
+      "pending": 8,
+      "todo": 5,
+      "failedSuites": [],
+      "failures": []
+    },
+    "drift": {
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2o-evidence/drift-final.json"
+      ],
+      "start": "2026-09-27T10:06:32.908Z",
+      "seconds": 25.339,
+      "exit": 0,
+      "inputs": 966,
+      "changedInputs": [],
+      "discoveredFiles": 216,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    },
+    "deep": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/test/u_26a_deep_baseline.test.ts",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2o-evidence/deep-final.json"
+      ],
+      "start": "2026-09-27T10:06:58.311Z",
+      "seconds": 40.567,
+      "exit": 0,
+      "inputs": 966,
+      "changedInputs": [],
+      "discoveredFiles": 216,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    }
+  },
+  "inputs": 966,
+  "changedFrozen": [],
+  "discovered": 216,
+  "uniquePassedFiles": 216,
+  "R": 205,
+  "union": 212,
+  "named": 57,
+  "sourceReaders": 69,
+  "missing": [],
+  "discoveredMiss": [],
+  "protectedChanges": [
+    "src/test/fixtures/deep_generation_baseline.json"
+  ],
+  "ceSourcesMatch": true,
+  "crlf": [],
+  "full": {
+    "files": 215,
+    "passed": 3973,
+    "failed": 0,
+    "pending": 8,
+    "todo": 5
+  },
+  "drift": 1,
+  "deep": 1
+}

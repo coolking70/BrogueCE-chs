@@ -1,0 +1,715 @@
+[
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "sha256": "1a311c884d2d22ea09009b2052c2036abe94e9a235279724cd0e86740b55c68f",
+    "matches": [
+      {
+        "line": 82,
+        "text": "            mutationAttempt = rand_range(0, NUMBER_MUTATORS - 1);"
+      },
+      {
+        "line": 129,
+        "text": "        monst->waypointAlreadyVisited[i] = rand_range(0, 1);"
+      },
+      {
+        "line": 270,
+        "text": "                sprintf(buf, \"%s\", tr(monsterCatalog[rand_range(1, NUMBER_MONSTER_KINDS - 1)].monsterName));"
+      },
+      {
+        "line": 273,
+        "text": "                        monsterCatalog[rand_range(1, NUMBER_MONSTER_KINDS - 1)].monsterName);"
+      },
+      {
+        "line": 531,
+        "text": "    index = rand_range(1, possCount);"
+      },
+      {
+        "line": 624,
+        "text": "        newMonst->info.damage.clumpFactor = 1;"
+      },
+      {
+        "line": 718,
+        "text": "        count = randClump(theHorde->memberCount[iSpecies]);"
+      },
+      {
+        "line": 798,
+        "text": "        depth = rogue.depthLevel + rand_range(1, min(5, rogue.depthLevel / 2));"
+      },
+      {
+        "line": 1237,
+        "text": "    monst->waypointAlreadyVisited[rand_range(0, rogue.wpCount - 1)] = false;"
+      },
+      {
+        "line": 1238,
+        "text": "    monst->waypointAlreadyVisited[rand_range(0, rogue.wpCount - 1)] = false;"
+      },
+      {
+        "line": 1543,
+        "text": "        if (abs(targetLoc.x - x) > abs(targetLoc.y - y) && rand_range(0, abs(targetLoc.x - x)) > abs(targetLoc.y - y)) {"
+      },
+      {
+        "line": 1547,
+        "text": "        } else if (abs(targetLoc.x - x) < abs(targetLoc.y - y) && rand_range(0, abs(targetLoc.y - y)) > abs(targetLoc.x - x)) {"
+      },
+      {
+        "line": 1882,
+        "text": "                    damage = rand_range(1, 3);"
+      },
+      {
+        "line": 2455,
+        "text": "            if (!rand_range(0, 7)) {"
+      },
+      {
+        "line": 2460,
+        "text": "                   && !rand_range(0, minionCount * minionCount * 3 + 1)) {"
+      },
+      {
+        "line": 3996,
+        "text": "        randIndex = rand_range(1, candidateLocs);"
+      },
+      {
+        "line": 4051,
+        "text": "        randIndex = rand_range(1, candidateLocs);"
+      }
+    ]
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Math.c",
+    "sha256": "810481af6641841064f2dc1f051cfdaa9372e0de61dd0786d9b294c35adcaa69",
+    "matches": [
+      {
+        "line": 34,
+        "text": "short randClump(randomRange theRange) {"
+      },
+      {
+        "line": 35,
+        "text": "    return randClumpedRange(theRange.lowerBound, theRange.upperBound, theRange.clumpFactor);"
+      },
+      {
+        "line": 39,
+        "text": "// affected by clumpFactor."
+      },
+      {
+        "line": 40,
+        "text": "short randClumpedRange(short lowerBound, short upperBound, short clumpFactor) {"
+      },
+      {
+        "line": 44,
+        "text": "    if (clumpFactor <= 1) {"
+      },
+      {
+        "line": 45,
+        "text": "        return rand_range(lowerBound, upperBound);"
+      },
+      {
+        "line": 48,
+        "text": "    short i, total = 0, numSides = (upperBound - lowerBound) / clumpFactor;"
+      },
+      {
+        "line": 50,
+        "text": "    for(i=0; i < (upperBound - lowerBound) % clumpFactor; i++) {"
+      },
+      {
+        "line": 51,
+        "text": "        total += rand_range(0, numSides + 1);"
+      },
+      {
+        "line": 54,
+        "text": "    for(; i< clumpFactor; i++) {"
+      },
+      {
+        "line": 55,
+        "text": "        total += rand_range(0, numSides);"
+      },
+      {
+        "line": 63,
+        "text": "    return (rand_range(0, 99) < clamp(percent, 0, 100));"
+      },
+      {
+        "line": 74,
+        "text": "        int r = rand_range(i, listLength - 1);"
+      },
+      {
+        "line": 141,
+        "text": "long rand_range(long lowerBound, long upperBound) {"
+      },
+      {
+        "line": 160,
+        "text": "long rand_range(long lowerBound, long upperBound) {"
+      }
+    ]
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "sha256": "102add30e7bdf3964e173efa1c84befd8b46fa04c8a2d0d73e651c2e78da6912",
+    "matches": [
+      {
+        "line": 698,
+        "text": "    totalFreq = rand_range(blueprintCatalog[bp].roomSize[0], blueprintCatalog[bp].roomSize[1]); // Keeps track of the goal size."
+      },
+      {
+        "line": 1058,
+        "text": "            int randIndex = rand_range(1, totalFreq);"
+      },
+      {
+        "line": 1099,
+        "text": "                    const int randIndex = rand_range(0, totalFreq - 1);"
+      },
+      {
+        "line": 1171,
+        "text": "                totalFreq = rand_range(blueprintCatalog[bp].roomSize[0], blueprintCatalog[bp].roomSize[1]); // Keeps track of the goal size."
+      },
+      {
+        "line": 1306,
+        "text": "            int randIndex = rand_range(1, totalFreq);"
+      },
+      {
+        "line": 1393,
+        "text": "                instanceCount = rand_range(feature->instanceCountRange[0], feature->instanceCountRange[1]);"
+      },
+      {
+        "line": 1413,
+        "text": "                    int randIndex = rand_range(1, qualifyingTileCount);"
+      },
+      {
+        "line": 2028,
+        "text": "    roomWidth = rand_range(3, 12);"
+      },
+      {
+        "line": 2029,
+        "text": "    roomX = rand_range(max(0, DCOLS/2 - (roomWidth - 1)), min(DCOLS, DCOLS/2));"
+      },
+      {
+        "line": 2030,
+        "text": "    roomWidth2 = rand_range(4, 20);"
+      },
+      {
+        "line": 2031,
+        "text": "    roomX2 = (roomX + (roomWidth / 2) + rand_range(0, 2) + rand_range(0, 2) - 3) - (roomWidth2 / 2);"
+      },
+      {
+        "line": 2033,
+        "text": "    roomHeight = rand_range(3, 7);"
+      },
+      {
+        "line": 2036,
+        "text": "    roomHeight2 = rand_range(2, 5);"
+      },
+      {
+        "line": 2037,
+        "text": "    roomY2 = (DROWS/2 - roomHeight2 - (rand_range(0, 2) + rand_range(0, 1)));"
+      },
+      {
+        "line": 2048,
+        "text": "    majorWidth = rand_range(4, 8);"
+      },
+      {
+        "line": 2049,
+        "text": "    majorHeight = rand_range(4, 5);"
+      },
+      {
+        "line": 2051,
+        "text": "    minorWidth = rand_range(3, 4);"
+      },
+      {
+        "line": 2055,
+        "text": "    minorHeight = 3;//rand_range(2, 3);"
+      },
+      {
+        "line": 2068,
+        "text": "    width = rand_range(3, 6);"
+      },
+      {
+        "line": 2069,
+        "text": "    height = rand_range(2, 4);"
+      },
+      {
+        "line": 2077,
+        "text": "        radius = rand_range(4, 10);"
+      },
+      {
+        "line": 2079,
+        "text": "        radius = rand_range(2, 4);"
+      },
+      {
+        "line": 2087,
+        "text": "        drawCircleOnGrid(grid, DCOLS/2, DROWS/2, rand_range(3, radius - 3), 0);"
+      },
+      {
+        "line": 2094,
+        "text": "    short chunkCount = rand_range(2, 8);"
+      },
+      {
+        "line": 2104,
+        "text": "        x = rand_range(minX, maxX);"
+      },
+      {
+        "line": 2105,
+        "text": "        y = rand_range(minY, maxY);"
+      },
+      {
+        "line": 2228,
+        "text": "        length = rand_range(VERTICAL_CORRIDOR_MIN_LENGTH, VERTICAL_CORRIDOR_MAX_LENGTH);"
+      },
+      {
+        "line": 2230,
+        "text": "        length = rand_range(HORIZONTAL_CORRIDOR_MIN_LENGTH, HORIZONTAL_CORRIDOR_MAX_LENGTH);"
+      },
+      {
+        "line": 2283,
+        "text": "    randIndex = rand_range(0, sum - 1);"
+      },
+      {
+        "line": 2308,
+        "text": "            switch (rand_range(0, 2)) {"
+      },
+      {
+        "line": 2335,
+        "text": "            dir = rand_range(0, 3);"
+      },
+      {
+        "line": 2523,
+        "text": "    rand = rand_range(randMin, randMax);"
+      },
+      {
+        "line": 2661,
+        "text": "            x = rand_range(1 - lakeX, DCOLS - lakeWidth - lakeX - 2);"
+      },
+      {
+        "line": 2662,
+        "text": "            y = rand_range(1 - lakeY, DROWS - lakeHeight - lakeY - 2);"
+      },
+      {
+        "line": 2791,
+        "text": "    bridgeRatioX = (short) (100 + (100 + 100 * rogue.depthLevel * gameConst->depthAccelerator / 9) * rand_range(10, 20) / 10);"
+      },
+      {
+        "line": 2792,
+        "text": "    bridgeRatioY = (short) (100 + (400 + 100 * rogue.depthLevel * gameConst->depthAccelerator / 18) * rand_range(10, 20) / 10);"
+      },
+      {
+        "line": 3826,
+        "text": "        loc->x = rand_range(0, DCOLS - 1);"
+      },
+      {
+        "line": 3827,
+        "text": "        loc->y = rand_range(0, DROWS - 1);"
+      }
+    ]
+  },
+  {
+    "file": "../BrogueCE-master/src/variants/GlobalsBrogue.c",
+    "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+    "matches": []
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "sha256": "9974326551089c93f721fd51556ccae3a19c012837a05b16acd86f3b02cdb426",
+    "matches": [
+      {
+        "line": 131,
+        "text": "    minCount: number;"
+      },
+      {
+        "line": 132,
+        "text": "    maxCount: number;"
+      },
+      {
+        "line": 133,
+        "text": "    /** CE randomRange.clumpFactor; minCount/maxCount are its lower/upper bounds. */"
+      },
+      {
+        "line": 134,
+        "text": "    clumpFactor: number;"
+      },
+      {
+        "line": 154,
+        "text": "/** RogueMain.c:403 / Time.c:2324 monsterSpawnFuse = rand_range(125, 175) */"
+      },
+      {
+        "line": 623,
+        "text": "        this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);"
+      },
+      {
+        "line": 847,
+        "text": "        if (rng.randPercent(mutationChance)) {"
+      },
+      {
+        "line": 854,
+        "text": "                const mut = validMutations[rng.randRange(0, validMutations.length - 1)];"
+      },
+      {
+        "line": 888,
+        "text": "            let roll = sum > 0 ? rng.randRange(1, sum) : 0;"
+      },
+      {
+        "line": 1119,
+        "text": "                const amuletPosIdx = rng.randRange(0, amuletTiles.length - 1);"
+      },
+      {
+        "line": 1141,
+        "text": "            return depthMonsters[rng.randRange(0, depthMonsters.length - 1)]!;"
+      },
+      {
+        "line": 1154,
+        "text": "            return depthMonsters[rng.randRange(0, depthMonsters.length - 1)]!;"
+      },
+      {
+        "line": 1160,
+        "text": "            return sorted[rng.randRange(0, Math.min(2, sorted.length - 1))]!;"
+      },
+      {
+        "line": 1249,
+        "text": "            const damage = rng.randClumpedRange(6, 12, 2);"
+      },
+      {
+        "line": 1331,
+        "text": "     * \"路径距离最小\"的合格格；并列时 CE 用 rand_range 随机取一，web 同"
+      },
+      {
+        "line": 1372,
+        "text": "            return ties[rng.randRange(0, ties.length - 1)]!;"
+      },
+      {
+        "line": 1389,
+        "text": "                return ring[rng.randRange(1, ring.length) - 1]!;"
+      },
+      {
+        "line": 1410,
+        "text": "     * index = rand_range(1, Σfrequency)，遍历候选命中 index <= frequency 者即为选中。"
+      },
+      {
+        "line": 1415,
+        "text": "        let index = rng.randRange(1, possCount);"
+      },
+      {
+        "line": 1425,
+        "text": "     * 10% 概率（深度 1 不触发）从 depthLevel + rand_range(1, min(5, depthLevel/2))"
+      },
+      {
+        "line": 1429,
+        "text": "        if (depthLevel > 1 && rng.randPercent(MONSTER_OUT_OF_DEPTH_CHANCE)) {"
+      },
+      {
+        "line": 1430,
+        "text": "            let depth = depthLevel + rng.randRange(1, Math.min(5, Math.floor(depthLevel / 2)));"
+      },
+      {
+        "line": 1544,
+        "text": "        return pool[rng.randRange(0, pool.length - 1)]!;"
+      },
+      {
+        "line": 1597,
+        "text": "            const count = rng.randClumpedRange(member.minCount, member.maxCount, member.clumpFactor);"
+      },
+      {
+        "line": 1740,
+        "text": "            const count = rng.randClumpedRange(member.minCount, member.maxCount, member.clumpFactor);"
+      },
+      {
+        "line": 1764,
+        "text": "                const idx = rng.randRange(0, pool.length - 1);"
+      },
+      {
+        "line": 1824,
+        "text": "        return pool[rng.randRange(0, pool.length - 1)]!;"
+      },
+      {
+        "line": 2319,
+        "text": "            if (rng.randPercent(60)) {"
+      },
+      {
+        "line": 2369,
+        "text": "            radius: { lowerBound: st.radiusHundredths, upperBound: st.radiusHundredths, clumpFactor: 1 },"
+      },
+      {
+        "line": 3108,
+        "text": "                [dx,dy] = choices[rng.randRange(0, choices.length-1)]!;"
+      },
+      {
+        "line": 3111,
+        "text": "            if ((dx !== 0 || dy !== 0) && !this.player.hasStatus('confused') && this.player.hasStatus('hallucinating') && rng.randPercent(35)) {"
+      },
+      {
+        "line": 3116,
+        "text": "                const dir = dirs[rng.randRange(0, dirs.length - 1)]!;"
+      },
+      {
+        "line": 3747,
+        "text": "                        // status[IMMUNE_TO_FIRE] = magnitude（randClump(range)，"
+      },
+      {
+        "line": 4626,
+        "text": "        const success = rng.randPercent(wandDominate(target));"
+      },
+      {
+        "line": 5121,
+        "text": "                    if (caster.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(caster.onHitChance * 100))) {"
+      },
+      {
+        "line": 5232,
+        "text": "     * 零掷骰：目标是玩家决定——B-1a 旧 identifyRandomItem 的 randRange 抽取"
+      },
+      {
+        "line": 5670,
+        "text": "                if (!rng.randPercent(10)) continue;"
+      },
+      {
+        "line": 5725,
+        "text": "     * 目标格自身）计合格格数，rand_range(1, candidateLocs) 抽第 N 个。"
+      },
+      {
+        "line": 5726,
+        "text": "     * 与 CE 的偏差：web randRange(1,1) 因上界≤下界短路**不消耗**掷骰"
+      },
+      {
+        "line": 5748,
+        "text": "        let randIndex = rng.randRange(1, candidateLocs);"
+      },
+      {
+        "line": 6078,
+        "text": "        if (!entity.hasStatus('nauseous') || !rng.randPercent(25)) return false;"
+      },
+      {
+        "line": 6177,
+        "text": "        if (resistance.nullifyChance > 0 && rng.randPercent(Math.floor(resistance.nullifyChance * 100))) {"
+      },
+      {
+        "line": 6426,
+        "text": "            rng.randPercent(33)) {"
+      },
+      {
+        "line": 6489,
+        "text": "        if (armor.runicType === 'vitality' && rng.randPercent(15)) {"
+      },
+      {
+        "line": 6504,
+        "text": "            // damage -= rand_range(1, armorAbsorptionMax(netEnchant))（PowerTables.c:107）；"
+      },
+      {
+        "line": 6507,
+        "text": "            const absorbRoll = rng.randRange(1, armorAbsorptionMax(netEnch));"
+      },
+      {
+        "line": 6561,
+        "text": "        if (armor.runicType === 'burden' && rng.randPercent(10)) {"
+      },
+      {
+        "line": 6575,
+        "text": "        if (armor.runicType === 'immolation' && rng.randPercent(10)) {"
+      },
+      {
+        "line": 6662,
+        "text": "            if (m.hp > 0 && m.typeId === 'zombie' && !m.mutation?.abilityFlags.includes('MA_DF_ON_DEATH') && rng.randPercent(100)) {"
+      },
+      {
+        "line": 6888,
+        "text": "        if (rng.randPercent(Math.floor(target.goldDropChance * 100))) {"
+      },
+      {
+        "line": 6894,
+        "text": "        if (rng.randPercent(Math.floor(target.itemDropChance * 100))) {"
+      },
+      {
+        "line": 6895,
+        "text": "            const isWeapon = rng.randPercent(50);"
+      },
+      {
+        "line": 6898,
+        "text": "                droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y, this.depth);"
+      },
+      {
+        "line": 6900,
+        "text": "                droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y, this.depth);"
+      },
+      {
+        "line": 6976,
+        "text": "                    weapon.quiverNumber = rng.randRange(1, 60000);"
+      },
+      {
+        "line": 7225,
+        "text": "        const idx = rng.randRange(1, eligibleList.length) - 1; // CE: rand_range(1, eligibleLocationCount)"
+      },
+      {
+        "line": 7382,
+        "text": "     *      为心的落位（RogueMain.c:820-841）→ randClumpedRange(8,10,2)"
+      },
+      {
+        "line": 7429,
+        "text": "            let damage = rng.randClumpedRange(Game.FALL_DAMAGE_MIN, Game.FALL_DAMAGE_MAX, 2);"
+      },
+      {
+        "line": 7463,
+        "text": "     *   - 其余 randClumpedRange(6, 12, 2)（:1558，注意与玩家的 8-10 是两张表）；"
+      },
+      {
+        "line": 7490,
+        "text": "                    m.takeDamage(rng.randClumpedRange(6, 12, 2), false, this.grid);"
+      },
+      {
+        "line": 7569,
+        "text": "                    return ring.length === 1 ? ring[0]! : ring[rng.randRange(0, ring.length - 1)]!;"
+      },
+      {
+        "line": 7794,
+        "text": "        if (!rng.randPercent(Math.floor(ticks * 50 / 100))) return;"
+      },
+      {
+        "line": 7799,
+        "text": "            const dest = candidates[rng.randRange(0, candidates.length - 1)]!;"
+      },
+      {
+        "line": 7809,
+        "text": "            const chosen = pack[rng.randRange(0, pack.length - 1)]!;"
+      },
+      {
+        "line": 7875,
+        "text": "            item.loc = candidates[rng.randRange(1, candidates.length) - 1]!;"
+      },
+      {
+        "line": 7942,
+        "text": "            const dest = candidates[rng.randRange(0, candidates.length - 1)]!;"
+      },
+      {
+        "line": 8682,
+        "text": "     * 均先 rand_range 后查 IMMUNE/INVULNERABLE），RNG 消耗顺序据此保持。"
+      },
+      {
+        "line": 8689,
+        "text": "        const damage = rng.randRange(1, 3); // CE rand_range(1,3)，免疫者照掷"
+      },
+      {
+        "line": 8745,
+        "text": "     *   伤害——rand_range(15,20) 后取 max(·, maxHP/2)（CE :345-346："
+      },
+      {
+        "line": 8764,
+        "text": "        let damage = rng.randRange(15, 20);"
+      },
+      {
+        "line": 8814,
+        "text": "        entity.applyStatus('stuck', rng.randRange(3, 7));"
+      },
+      {
+        "line": 9337,
+        "text": "        const loc = ties.length ? ties[rng.randRange(0, ties.length - 1)]! : null;"
+      },
+      {
+        "line": 9740,
+        "text": "     *   - rand_percent 语义与 web randPercent 逐位一致（先抽"
+      },
+      {
+        "line": 9741,
+        "text": "     *     rand_range(0,99) 再 clamp 比较，CE Math.c:62-65）——**percent ≤ 0"
+      },
+      {
+        "line": 9801,
+        "text": "            if (rng.randPercent(percent)) {"
+      },
+      {
+        "line": 9996,
+        "text": "        const destination = candidates[rng.randRange(0, candidates.length - 1)]!;"
+      },
+      {
+        "line": 10040,
+        "text": "            const drop = candidates.length ? candidates[rng.randRange(0, candidates.length - 1)]!"
+      }
+    ]
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "sha256": "5c9a672e1656ba5b231cbffeefacbf7a1eadcfe7a06c5ea6255d25bde2143729",
+    "matches": [
+      {
+        "line": 647,
+        "text": "        while (rng.randPercent(60)) numHordes++;"
+      },
+      {
+        "line": 676,
+        "text": "                    const idx = rng.randRange(0, floorTiles.length - 1);"
+      },
+      {
+        "line": 706,
+        "text": "            while (rng.randPercent(60)) numItems++;"
+      },
+      {
+        "line": 717,
+        "text": "                 rng.randPercent(goldBonusProbability) && numGoldPiles <= 10;"
+      },
+      {
+        "line": 739,
+        "text": "        // 两次独立 rand_range(-1,1)，三角分布；不是一次 rand_range(-2,2)）。"
+      },
+      {
+        "line": 742,
+        "text": "            randomDepthOffset = rng.randRange(-1, 1) + rng.randRange(-1, 1);"
+      },
+      {
+        "line": 800,
+        "text": "        // rand_range(50 + depth*10*accel, 100 + depth*15*accel)（Items.c:377），"
+      },
+      {
+        "line": 803,
+        "text": "            const quantity = rng.randRange(50 + ports.depth * 10 * 1, 100 + ports.depth * 15 * 1);"
+      }
+    ]
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "sha256": "a67ebd2803ef1b645240d67049c799942f49a2681b1029dc9ba812e28495b6c6",
+    "matches": [
+      {
+        "line": 738,
+        "text": "     * randRange 照常掷骰），失效时机与 gateAnalysisCache 一致。"
+      },
+      {
+        "line": 805,
+        "text": "        while (rng.randPercent(Math.max(randomMachineFactor, 15 * MACHINES_PER_LEVEL_INCREASE_FACTOR))"
+      },
+      {
+        "line": 878,
+        "text": "                let roll = rng.randRange(1, totalFreq);"
+      },
+      {
+        "line": 1032,
+        "text": "        const gate = candidates[rng.randRange(0, candidates.length - 1)]!;"
+      },
+      {
+        "line": 1423,
+        "text": "        // 非空时掷**一次** rand_range(1, totalFreq)，按顺序数到第 randIndex"
+      },
+      {
+        "line": 1443,
+        "text": "                let randIndex = rng.randRange(1, totalFreq);"
+      },
+      {
+        "line": 1501,
+        "text": "            // **不掷 instanceCount**（CE 的 rand_range 只在非 EVERYWHERE 分支，"
+      },
+      {
+        "line": 1544,
+        "text": "                    : rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);"
+      },
+      {
+        "line": 1975,
+        "text": "     * 4 向——CE dijkstraScan(..., false)），目标尺寸 rand_range(roomSize)，"
+      },
+      {
+        "line": 1987,
+        "text": "        const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);"
+      },
+      {
+        "line": 2060,
+        "text": "        const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);"
+      },
+      {
+        "line": 2252,
+        "text": "     *     rand_range(1, qualifyingTileCount) 的 web 等价）；"
+      },
+      {
+        "line": 2298,
+        "text": "            return candidates[rng.randRange(0, candidates.length - 1)]!;"
+      }
+    ]
+  }
+]

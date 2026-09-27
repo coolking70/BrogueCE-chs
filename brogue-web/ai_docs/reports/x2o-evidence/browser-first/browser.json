@@ -1,0 +1,120 @@
+{
+  "errors": [],
+  "rows": [
+    {
+      "type": "GOLEM",
+      "counts": [
+        {
+          "args": [
+            5,
+            10,
+            2
+          ],
+          "value": 6,
+          "draws": 2
+        }
+      ],
+      "monsters": [
+        {
+          "id": 22,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 14
+          },
+          "leader": null
+        },
+        {
+          "id": 23,
+          "type": "golem",
+          "loc": {
+            "x": 35,
+            "y": 14
+          },
+          "leader": 22
+        },
+        {
+          "id": 24,
+          "type": "golem",
+          "loc": {
+            "x": 35,
+            "y": 13
+          },
+          "leader": 22
+        },
+        {
+          "id": 25,
+          "type": "golem",
+          "loc": {
+            "x": 35,
+            "y": 15
+          },
+          "leader": 22
+        },
+        {
+          "id": 26,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 15
+          },
+          "leader": 22
+        },
+        {
+          "id": 27,
+          "type": "golem",
+          "loc": {
+            "x": 36,
+            "y": 13
+          },
+          "leader": 22
+        },
+        {
+          "id": 28,
+          "type": "golem",
+          "loc": {
+            "x": 37,
+            "y": 13
+          },
+          "leader": 22
+        }
+      ],
+      "text": {
+        "seed": "424242",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 32,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "levitating": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "file": "src/data/hordes.test.ts",
+  "headSha": "a8689eccabdc08015ebfb277dfebd794f282ffa83163d839e74b2762b924f6a7",
+  "headPassed": 28,
+  "failures": [
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #19 VAMPIRE_BAT\uff1aL765 \u6210\u5458{1,2,1}\uff0c6/13/70\uff0cHORDE_NEVER_OOD",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #21 GOBLIN \u4e09\u6210\u5458\uff1aL767 {GOBLIN{2,3}, GOBLIN_MYSTIC{1,2}, JACKAL{1,2}}\uff0c6/12/40",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #32 GOBLIN_TOTEM \u56db\u6210\u5458\uff1aL778 machine=MT_CAMP_AREA(62)\uff0c10/17/80\uff0cNO_PERIODIC",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #62 KRAKEN \u6df1\u6c34\u7fa4\uff1aL808 30/39/100 DEEP_WATER\uff0c\u6210\u5458{5,10,2}",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #65 GOBLIN_CONJURER \u53ec\u5524\uff1aL813 0/0/100\uff0cSUMMONED|DIES_ON_LEADER_DEATH",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #75 MONKEY \u4fd8\u864f\uff1aL825 1/5/10\uff0cLEADER_CAPTIVE|NEVER_OOD\uff0c\u6210\u5458 KOBOLD{1,2}",
+    "hordes.json \u2014 \u4e0e CE \u9010\u5b57\u6bb5\u62bd\u67e5\uff08\u884c\u53f7 = GlobalsBrogue.c\uff09 #174 \u672b\u6761 GOBLIN \u5175\u8425\u4fd8\u864f\uff1aL948 3/7/10\uff0cMACHINE_GOBLIN_WARREN|LEADER_CAPTIVE"
+  ],
+  "change": "Only add independently verified CE clumpFactor to exact member object expectations; preserve all existing fields and equality assertions."
+}

@@ -1,0 +1,12 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=6 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2o-evidence/full-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web
+
+ ✓ src/test/x2o_horde_clump.test.ts (8 tests) 3874ms
+     ✓ every ordinary/captive/machine horde consumes each member triple exactly once before placement  821ms
+     ✓ GOLEM clumped D30 horde places exactly the rolled members on real terrain  1211ms
+     ✓ KRAKEN clumped D30 horde places exactly the rolled members on real terrain  976ms
+     ✓ all summon rows use their complete CE triple through the actual summon consumer  764ms

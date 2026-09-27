@@ -1537,3 +1537,17 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 - X2k 第四轮完整结束：213文件、3946通过/1个900秒超时（blueprint_center实测951.868秒）、8 skip/5 todo；942输入和214测试发现清单零变化，源码与第三轮3947断言全过版本相同。保留全部原记录与SHA对照，不改原门限/样本/断言。同机其他Vitest结束后于07:25 UTC后启动第五轮6 workers完整门禁；结束后仍需drift、独立深层与报告汇总。
 
 - X2k 最终完成：2026-09-27 15:26:05–15:59:41 CST。第五轮完整 npm test 213文件、3947通过、0失败、8既有skip/5todo，退出0；构建、drift、独立深层均通过。942输入与214文件发现清单一致且零变化，R∪S209/209、点名49、源码/文件读取67均无遗漏，12个保护文件SHA不变。此前蓝图900秒超时按原门限复验通过（620.309秒），未改样本/断言/门限。报告 ai_docs/reports/x2k.report.md 收口，五处旧前提修订留反事实待验收；未暂存、未提交。
+
+## 2026-09-27 X2o
+
+- 执行 x2o.prompt.md，不提交；先记录原浅/深基线与 trace SHA，再独立解析 CE horde/蓝图及编译 randClump oracle，按单变量归因后一次重捕获。
+
+- X2o：175 条 horde / 91 个成员补 clump，普通和召唤入口消费三元组；10 个风味蓝图深度对齐 CE。独立解析、54 条原 C 分支/544 个双流有种子比对、新旧专项33/33、5个故障变体检出。单变量证明浅层全零，深层仅 horde clump 漂移；蓝图深度全零。浅/深各重捕获一次（浅层SHA不变、深层73字段），UR2/3/4原黄金不变。旧horde对象形状7处前提修订有原件/反事实，待验收裁决。浏览器两种群落、2耗骰、真实wait/存档结构往返通过，整页截图已看。两个探索门禁因修浏览器夹具而中止并归档；最终966输入完整build/npm test/drift/deep从2026-09-27 16:24 CST起重跑，未提交。
+
+- X2o 最终全量仍在运行（session 52078，启动16:24 CST，966冻结输入）。截至16:59 CST完成15文件，B2普查961s、blueprint_center约1009s、W5约906s各1项失败，疑似原900s超时，完整错误需等最终JSON；其余已完成通过。只读进程检查同机另有9个Vitest workers，各约65%CPU。必须让本轮完整退出，归档为full-attempt3后按原代码/原门限重跑完整全量；不得提高超时或拼接绿灯。最终后续仍需drift/deep及ai_docs/reports/x2o-evidence/final-check.mjs，更新x2o.report.md第6节和开头pending文字。生产/测试/配置未再修改，浏览器已完成且截图已检查，开发服务session50182尚需关闭。
+
+- X2o 首次完整全量(归档attempt3)17:23 CST结束：215文件、3970通过/3失败、8既有skip/5todo，3545.648秒；三个错误原始日志均为900000ms超时(B2/blueprint_center/W5)，966输入与216发现清单零变化。无断言内容错配。接下来等待同机其他Vitest结束后完整复跑，保持源码/样本/门限不变；预览服务50182已关闭。
+
+- X2o 最终复跑已17:38:10 CST在其他worker连续三次为0后启动，父session86708。build退出0/6.141秒；完整npm test进行中，随后脚本自动drift/deep。与attempt3的966输入逐项完全相同（retry-input-equivalence.json）。报告第6节最后pending段需在最终结束后改为实际表格/复跑声明；然后node ai_docs/reports/x2o-evidence/final-check.mjs核对覆盖/SHA/LF，git diff --check与未暂存确认，不提交。
+
+- X2o 最终完成：2026-09-27 17:38:10–18:07:39 CST，同一966冻结输入及216发现文件零变化。完整npm test 215文件/3973通过/0失败，8既有skip/5todo；构建、浅层drift、独立深层全部退出0。R∪S212/212、点名57、源码/文件读取69、全部发现216/216覆盖；12保护文件仅已归因深层基线变化，CE来源SHA一致，无CRLF，diff检查通过。上轮3项900秒超时原样复跑均通过，未改样本/断言/门限。报告ai_docs/reports/x2o.report.md已收口，旧horde形状前提7处修订有反事实待验收；浏览器和预览服务已关闭，未暂存、未提交。

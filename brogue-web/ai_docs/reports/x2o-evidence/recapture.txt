@@ -1,0 +1,37 @@
+[
+  {
+    file: 'src/test/fixtures/generation_baseline.json',
+    before: '8de4bb7a4f3fa40f72bd2f5b511699dff771b846131c65d72f4c3e6788ec8580',
+    after: '8de4bb7a4f3fa40f72bd2f5b511699dff771b846131c65d72f4c3e6788ec8580',
+    writes: 1,
+    changes: 0
+  },
+  {
+    file: 'src/test/fixtures/deep_generation_baseline.json',
+    before: '88292abc0246369d5f4fcf5291a3e102ab44c40ed19accf1f28032de87716155',
+    after: '1360215b7bb2ab69528831f9b9b8f989ef9fa334af127b037598fbbed36b4a60',
+    writes: 1,
+    changes: 73
+  },
+  {
+    file: 'ai_docs/reports/u-r2-trace.json',
+    before: 'd4a298b2230d974688d8c23b9a6f01d7666b87898ffedb1f1dabcc1125f6e838',
+    after: 'd4a298b2230d974688d8c23b9a6f01d7666b87898ffedb1f1dabcc1125f6e838',
+    writes: 0,
+    changes: undefined
+  },
+  {
+    file: 'ai_docs/reports/u-r3-trace.json.gz',
+    before: '7560d9aa5ebd8eb96dd06dbc411ad354196fb37830b35031b55cf83246f33ffb',
+    after: '7560d9aa5ebd8eb96dd06dbc411ad354196fb37830b35031b55cf83246f33ffb',
+    writes: 0,
+    changes: undefined
+  },
+  {
+    file: 'ai_docs/reports/u-r4-trace.json.gz',
+    before: '9b2232aee7c97a9945fc32d62442f465d98408407a471ae708f93b8c0bb44e8c',
+    after: '9b2232aee7c97a9945fc32d62442f465d98408407a471ae708f93b8c0bb44e8c',
+    writes: 0,
+    changes: undefined
+  }
+]

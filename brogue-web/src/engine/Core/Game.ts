@@ -130,6 +130,8 @@ export interface HordeMemberEntry {
     type: string;
     minCount: number;
     maxCount: number;
+    /** CE randomRange.clumpFactor; minCount/maxCount are its lower/upper bounds. */
+    clumpFactor: number;
 }
 
 export interface HordeEntry {
@@ -1591,7 +1593,8 @@ export class Game {
 
         // Spawn members nearby
         for (const member of h.members) {
-            const count = rng.randRange(member.minCount, member.maxCount);
+            // CE Monsters.c:718: shared spawnMinions count rule, including summons.
+            const count = rng.randClumpedRange(member.minCount, member.maxCount, member.clumpFactor);
             const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
             if (!memberMData) continue;
 
@@ -1733,7 +1736,8 @@ export class Game {
 
         const spawned: Monster[] = [];
         for (const member of horde.members) {
-            const count = rng.randRange(member.minCount, member.maxCount);
+            // CE Monsters.c:718: shared spawnMinions count rule, including summons.
+            const count = rng.randClumpedRange(member.minCount, member.maxCount, member.clumpFactor);
             const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
             if (!memberMData) continue;
             for (let c = 0; c < count; c++) {

@@ -1,0 +1,24 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=6 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2o-evidence/full-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web
+
+ ✓ src/test/x2o_horde_clump.test.ts (8 tests) 3738ms
+     ✓ every ordinary/captive/machine horde consumes each member triple exactly once before placement  898ms
+     ✓ GOLEM clumped D30 horde places exactly the rolled members on real terrain  1217ms
+     ✓ KRAKEN clumped D30 horde places exactly the rolled members on real terrain  696ms
+     ✓ all summon rows use their complete CE triple through the actual summon consumer  863ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_8_connectivity.test.ts > C-8 生成期 DF 放置否决：web 移动图口径 > T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=452，含新环门层=127/130
+

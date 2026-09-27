@@ -1,0 +1,42 @@
+[
+  {
+    "variant": "ordinary-uniform",
+    "exit": 1,
+    "failures": [
+      "X2o horde consumers every ordinary/captive/machine horde consumes each member triple exactly once before placement",
+      "X2o horde consumers GOLEM clumped D30 horde places exactly the rolled members on real terrain",
+      "X2o horde consumers KRAKEN clumped D30 horde places exactly the rolled members on real terrain"
+    ]
+  },
+  {
+    "variant": "summon-uniform",
+    "exit": 1,
+    "failures": [
+      "X2o horde consumers all summon rows use their complete CE triple through the actual summon consumer"
+    ]
+  },
+  {
+    "variant": "lost-clump",
+    "exit": 1,
+    "failures": [
+      "X2o independent CE catalog and exhaustive original-C randClump pins CE source provenance and every member triple in all 175 rows",
+      "X2o horde consumers GOLEM clumped D30 horde places exactly the rolled members on real terrain",
+      "X2o horde consumers KRAKEN clumped D30 horde places exactly the rolled members on real terrain"
+    ]
+  },
+  {
+    "variant": "wrong-depth",
+    "exit": 1,
+    "failures": [
+      "X2o independent CE catalog and exhaustive original-C randClump all CE-mapped blueprints match both depth endpoints; unmapped rows remain explicitly retired"
+    ]
+  },
+  {
+    "variant": "wrong-remainder",
+    "exit": 1,
+    "failures": [
+      "X2o independent CE catalog and exhaustive original-C randClump exhausts every C branch, value and rand_range call sequence, including constant and oversized clumps",
+      "X2o independent CE catalog and exhaustive original-C randClump same initial real RNG has the C-oracle result, logical draw count and complete final state on both streams"
+    ]
+  }
+]

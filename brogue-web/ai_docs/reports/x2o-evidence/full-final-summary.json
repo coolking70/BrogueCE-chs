@@ -1,0 +1,25 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=6",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2o-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T09:38:16.789Z",
+  "seconds": 1696.043,
+  "exit": 0,
+  "inputs": 966,
+  "changedInputs": [],
+  "discoveredFiles": 216,
+  "changedDiscovery": [],
+  "files": 215,
+  "passed": 3973,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "failedSuites": [],
+  "failures": []
+}

@@ -1,0 +1,19 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_26a_deep_baseline.test.ts --maxWorkers=6 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2o-evidence/deep-initial.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web
+
+stdout | src/test/u_26a_deep_baseline.test.ts > U26a independent D27–40 generation baseline > four full-run seeds retain deep terrain, population, gem quantity, origins and positions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_26a_deep_baseline.test.ts (1 test) 133606ms
+     ✓ four full-run seeds retain deep terrain, population, gem quantity, origins and positions  133604ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  16:11:19
+   Duration  135.60s (transform 1.11s, setup 0ms, import 1.80s, tests 133.61s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8218/brogue/brogue-web/ai_docs/reports/x2o-evidence/deep-initial.json
