@@ -62,7 +62,7 @@ function colorToCSS(color: number): string {
                 <div class="detail-header">
                     <span class="detail-char" :style="{ color: colorToCSS(detail.color) }">{{ detail.char }}</span>
                     <span class="detail-name">{{ detail.name }}</span>
-                    <button class="detail-close" @click="close" title="关闭 (Esc)">✕</button>
+                    <button class="detail-close" @click="close" :title="$t('detail.close_title')">✕</button>
                 </div>
 
                 <!-- Sections -->

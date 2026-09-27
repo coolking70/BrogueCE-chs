@@ -35,6 +35,9 @@ import MobileHud from './components/MobileHud.vue';
 import MessageStrip from './components/MessageStrip.vue';
 import MapZoomControls from './components/MapZoomControls.vue';
 import SideDrawer from './components/SideDrawer.vue';
+import CommandBar from './components/CommandBar.vue';
+import DPad from './components/DPad.vue';
+import TargetBar from './components/TargetBar.vue';
 import { activeGame, type GameMode } from './engine/Core/Game';
 import { logger } from './engine/Systems/Logger';
 import { viewport, startViewportTracking } from './ui/layout';
@@ -51,6 +54,8 @@ const panelOpen = ref(false);
 const replayTick = ref(0);
 const replayActive = computed(() => { replayTick.value; return !!activeGame.replayRecording; });
 onMounted(() => { window.setInterval(() => { replayTick.value++; }, 250); });
+/** 触控命令栏 + 方向键：紧凑模式或粗指针设备显示；回放期间让位给录像控制条。 */
+const showTouch = computed(() => (compact.value || touchUi.value) && !replayActive.value);
 
 // UI-1 第 6 条：把引擎确认钩子接到本组件（headless/测试环境不挂载 App，
 // 钩子保持 null → requestConfirm 按"确认"处理，与 C-5 申报一致）。
@@ -256,6 +261,9 @@ const handleReturnToTitle = async () => {
         <GameCanvas class="game-view" />
         <MapZoomControls v-if="compact" />
       </div>
+      <TargetBar class="area-target" />
+      <CommandBar v-if="showTouch" class="area-cmd" :mode="viewport.mode" />
+      <DPad v-if="showTouch" class="area-pad" :mode="viewport.mode" />
       <MessageStrip v-if="compact" class="area-strip" :lines="viewport.mode === 'landscape' ? 2 : 3" @open-panel="panelOpen = true" />
       <Sidebar v-if="!compact" />
       <SideDrawer v-if="compact" :open="panelOpen" @close="panelOpen = false">
@@ -362,6 +370,31 @@ const handleReturnToTitle = async () => {
   z-index: 12;
   border-top-right-radius: 10px;
   pointer-events: auto;
+}
+
+/* 触控命令栏 / 方向键 / 目标选择条的网格落位 */
+.area-cmd { grid-area: cmd; min-width: 0; }
+.area-pad { grid-area: pad; }
+.area-target {
+  grid-area: map;
+  align-self: end;
+  justify-self: center;
+}
+.layout-landscape .area-target { align-self: start; }
+.layout-landscape .area-pad {
+  grid-area: map;
+  align-self: end;
+  justify-self: end;
+}
+.layout-desktop .area-cmd {
+  grid-area: map;
+  align-self: end;
+  justify-self: start;
+}
+.layout-desktop .area-pad {
+  grid-area: map;
+  align-self: end;
+  justify-self: end;
 }
 
 /* AgentControls 根节点不占网格单元（子元素本就绝对定位） */

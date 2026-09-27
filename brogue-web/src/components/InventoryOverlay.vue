@@ -38,7 +38,7 @@ const updateInventoryState = () => {
 
 onMounted(() => {
     // We'll set up a simple tick or event listener to sync state
-    const interval = setInterval(updateInventoryState, 100);
+    const interval = setInterval(() => { flushDeferredClose(); updateInventoryState(); }, 100);
     
     // Cleanup
     onUnmounted(() => {
@@ -46,9 +46,27 @@ onMounted(() => {
     });
 });
 
+// FE-1：喝药/吃东西等动作会开启 P2-4 分步推进（isAdvancing），期间
+// executeCommand 丢弃一切新输入——紧随其后的关闭命令被吞掉，背包就一直开着
+// （v0.1.0 桌面同样复现，审查截图 C-*-05-after-quaff）。这里记下"待关闭"，
+// 等推进结束后再经同一录制边界补发一次 escape（录像按实际发出时刻记录，回放一致）。
+let closeDeferred = false;
+const flushDeferredClose = () => {
+    if (!closeDeferred) return;
+    if (!activeGame.isInventoryOpen || activeGame.pendingEnchantment || activeGame.pendingIdentify
+        || activeGame.pendingUseConfirm || activeGame.replayRecording) {
+        closeDeferred = false;
+        return;
+    }
+    if (activeGame.isAdvancing) return;
+    closeDeferred = false;
+    activeGame.handlePlayerAction('escape');
+};
+
 const closeInventory = () => {
     if (activeGame.pendingEnchantment) return; // CE mandatory target after reading.
     activeGame.handlePlayerAction('escape');
+    if (activeGame.isInventoryOpen && activeGame.isAdvancing) closeDeferred = true;
     selectedItem.value = null;
     updateInventoryState();
 };

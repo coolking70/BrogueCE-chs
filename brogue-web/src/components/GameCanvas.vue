@@ -118,7 +118,11 @@ import { inputManager } from '../engine/Input';
 import i18next from 'i18next';
 import { displaySettings } from '../engine/Settings';
 // FE-1：小屏跟随相机（纯显示状态，不进存档/录像）
-import { computeMapCamera, cameraState } from '../ui/mapCamera';
+import { computeMapCamera, cameraState, zoomBy } from '../ui/mapCamera';
+// FE-1：触屏手势与目标选择（改状态的输出只经 ui/commands 的录制边界）
+import { GestureTracker, type GestureEvent } from '../ui/touchGestures';
+import { targetingState, clearAim, targetingTapCommand, type TapCommand, THROW_AIM_FILL, THROW_AIM_STROKE } from '../ui/targeting';
+import { dispatch as dispatchCommand, travelTo } from '../ui/commands';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
 let pixiApp: Application | null = null;
@@ -128,6 +132,8 @@ let resizeObserver: ResizeObserver | null = null;
 // P2-6：地图缩放模式切换的 watch 停止器（onMounted 内创建，onUnmounted 内停止）
 let stopScaleModeWatch: (() => void) | null = null;
 let stopCameraWatch: (() => void) | null = null;
+// FE-1：触屏手势监听的卸载函数
+let removeTouchListeners: (() => void) | null = null;
 
 onMounted(async () => {
   if (canvasContainer.value) {
@@ -158,6 +164,8 @@ onMounted(async () => {
     let lastFocusX = -1;
     let lastFocusY = -1;
     let textResolution = window.devicePixelRatio || 1;
+    let layoutScaleX = 1;
+    let layoutScaleY = 1;
 
     // ---------- Pre-allocated tile layer ----------
     // One Graphics for bg rectangles (batch-drawn every frame)
@@ -266,6 +274,8 @@ onMounted(async () => {
         lastFocusX = focus.x;
         lastFocusY = focus.y;
         const { scaleX, scaleY } = cam;
+        layoutScaleX = scaleX;
+        layoutScaleY = scaleY;
         offsetX = cam.offsetX;
         offsetY = cam.offsetY;
         // 放大（scale > 1）时按比例提高文字纹理分辨率，避免字形被拉糊。
@@ -339,6 +349,14 @@ onMounted(async () => {
             }
             arcanaCursor.rect(selection.cursor.x * TILE_SIZE, selection.cursor.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                 .stroke({ width: 2, color: 0xdddddd });
+        }
+        // FE-1：触屏投掷的 UI 瞄准格（纯绘制；投掷模式结束即清除）
+        const aim = targetingState.aim;
+        if (aim && !game.isThrowing) clearAim();
+        else if (aim && !selection) {
+            arcanaCursor.rect(aim.x * TILE_SIZE, aim.y * TILE_SIZE, TILE_SIZE, TILE_SIZE).fill(THROW_AIM_FILL);
+            arcanaCursor.rect(aim.x * TILE_SIZE, aim.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+                .stroke({ width: 2, color: THROW_AIM_STROKE });
         }
         const hallucinating = !!game.player.statusDurations.hallucinating;
         const telepathyRevealed = !!game.player.statusDurations.telepathy;
@@ -592,6 +610,21 @@ onMounted(async () => {
                 total: game.replayEvents.length
             },
             recordedInputEvents: game.recordedInputEvents.length,
+            // FE-1：自动化验收用的只读补充——已知（见过/记得）的楼梯位置与背包清单
+            depth: game.depth,
+            knownStairs: (() => {
+                const s = game.levelSeeds[game.depth - 1];
+                const known = (p?: { x: number; y: number }) => {
+                    const c = p ? game.grid.getCell(p.x, p.y) : undefined;
+                    return p && c && (c.isVisible || c.hasMemory) ? { x: p.x, y: p.y } : null;
+                };
+                return { down: known(s?.downStairsLoc), up: known(s?.upStairsLoc) };
+            })(),
+            inventory: game.player.inventory.items.map((i) => ({ letter: i.inventoryLetter, name: i.displayName, category: i.category })),
+            isThrowing: game.isThrowing,
+            referenceScreen: game.referenceScreen,
+            // 画布内格子 → CSS 像素：x = offsetX + (cell + 0.5) * tile * scaleX
+            mapLayout: { offsetX, offsetY, scaleX: layoutScaleX, scaleY: layoutScaleY, tile: TILE_SIZE, follow: cameraState.follow },
             autoPathLength: game.autoPath.length,
             monsters: visibleMonsters,
             revealedLocations,
@@ -627,6 +660,8 @@ onMounted(async () => {
     // hitArea 初值已在 applyLayout 中按容器尺寸设置（含 ResizeObserver 跟随）
 
     pixiApp.stage.on('pointermove', (e) => {
+        // FE-1：触屏拖动是平移相机，不应让悬停提示跟着手指闪；触屏查看走长按。
+        if (e.pointerType !== 'mouse') return;
         const localPt = tileLayer.toLocal(e.global);
         const mapX = Math.floor(localPt.x / TILE_SIZE);
         const mapY = Math.floor(localPt.y / TILE_SIZE);
@@ -635,50 +670,160 @@ onMounted(async () => {
         }
     });
 
-    pixiApp.stage.on('pointerup', (e) => {
-        const localPt = tileLayer.toLocal(e.global);
-        const mapX = Math.floor(localPt.x / TILE_SIZE);
-        const mapY = Math.floor(localPt.y / TILE_SIZE);
-
-        if (mapX >= 0 && mapX < DCOLS && mapY >= 0 && mapY < DROWS) {
-           if (game.pendingArcana) {
-               if (e.button === 2) inputManager.triggerAction('escape');
-               else if (e.button === 0) {
-                    game.executeCommand('mouse_travel', { x: mapX, y: mapY });
-                   game.update();
-               }
-               return; // Adjacent/origin clicks also belong to spell selection.
-           }
-           if (e.button === 2) {
-               game.handleInspectAt(mapX, mapY);
-               return;
-           }
-
-           const dx = mapX - game.player.loc.x;
-           const dy = mapY - game.player.loc.y;
-
-           if (dx === 0 && dy === 0) {
-               inputManager.triggerAction('move');
-           } else if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
-               let dir = Direction.NO_DIRECTION;
-               if (dx === 0 && dy === -1)       dir = Direction.UP;
-               else if (dx === 0 && dy === 1)   dir = Direction.DOWN;
-               else if (dx === -1 && dy === 0)  dir = Direction.LEFT;
-               else if (dx === 1 && dy === 0)   dir = Direction.RIGHT;
-               else if (dx === -1 && dy === -1) dir = Direction.UPLEFT;
-               else if (dx === 1 && dy === -1)  dir = Direction.UPRIGHT;
-               else if (dx === -1 && dy === 1)  dir = Direction.DOWNLEFT;
-               else if (dx === 1 && dy === 1)   dir = Direction.DOWNRIGHT;
-
-               if (dir !== Direction.NO_DIRECTION) {
-                   inputManager.triggerAction('move', dir);
-               }
-           } else {
-                game.executeCommand('mouse_travel', { x: mapX, y: mapY });
-               game.update();
-           }
+    // FE-1：触屏目标选择的命令落地（全部经 ui/commands 的录制边界）。
+    const runTapCommand = (cmd: TapCommand) => {
+        if (cmd.kind === 'none') return;
+        if (cmd.kind === 'aim') {
+            targetingState.aim = { x: cmd.x, y: cmd.y };
+            render(); // 纯显示：立即画出瞄准格
+            return;
         }
+        if (cmd.kind === 'execute') {
+            clearAim();
+            travelTo(cmd.data.x, cmd.data.y);
+            return;
+        }
+        if (cmd.action === 'move') dispatchCommand('move', cmd.data);
+        else dispatchCommand(cmd.action);
+    };
+
+    /**
+     * 一次"点选地图格"的完整语义（鼠标左/右键与触屏单击共用）。
+     * 鼠标路径与 v0.1.0 完全一致，仅一处修正：投掷模式下点相邻格原先会被当成
+     * "移动"（审查 P-18），现在与点远处格一样经 mouse_travel 投掷。
+     * 触屏在投掷/法杖瞄准时改为"先瞄准、再确认"（ui/targeting.ts）。
+     */
+    const activateCell = (mapX: number, mapY: number, button: number, pointer: 'mouse' | 'touch') => {
+        if (mapX < 0 || mapX >= DCOLS || mapY < 0 || mapY >= DROWS) return;
+        if (game.pendingArcana) {
+            if (pointer === 'touch') {
+                runTapCommand(targetingTapCommand('arcana', { x: mapX, y: mapY }, null, game.pendingArcana.cursor, game.player.loc));
+                return;
+            }
+            if (button === 2) inputManager.triggerAction('escape');
+            else if (button === 0) {
+                game.executeCommand('mouse_travel', { x: mapX, y: mapY });
+                game.update();
+            }
+            return; // Adjacent/origin clicks also belong to spell selection.
+        }
+        if (button === 2) {
+            game.handleInspectAt(mapX, mapY);
+            return;
+        }
+
+        if (game.isThrowing && game.throwItemTarget && !game.isInventoryOpen) {
+            if (pointer === 'touch') {
+                runTapCommand(targetingTapCommand('throw', { x: mapX, y: mapY }, targetingState.aim, null, game.player.loc));
+                return;
+            }
+            if (mapX !== game.player.loc.x || mapY !== game.player.loc.y) {
+                game.executeCommand('mouse_travel', { x: mapX, y: mapY });
+                game.update();
+            }
+            return;
+        }
+
+        const dx = mapX - game.player.loc.x;
+        const dy = mapY - game.player.loc.y;
+
+        if (dx === 0 && dy === 0) {
+            inputManager.triggerAction('move');
+        } else if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
+            let dir = Direction.NO_DIRECTION;
+            if (dx === 0 && dy === -1)       dir = Direction.UP;
+            else if (dx === 0 && dy === 1)   dir = Direction.DOWN;
+            else if (dx === -1 && dy === 0)  dir = Direction.LEFT;
+            else if (dx === 1 && dy === 0)   dir = Direction.RIGHT;
+            else if (dx === -1 && dy === -1) dir = Direction.UPLEFT;
+            else if (dx === 1 && dy === -1)  dir = Direction.UPRIGHT;
+            else if (dx === -1 && dy === 1)  dir = Direction.DOWNLEFT;
+            else if (dx === 1 && dy === 1)   dir = Direction.DOWNRIGHT;
+
+            if (dir !== Direction.NO_DIRECTION) {
+                inputManager.triggerAction('move', dir);
+            }
+        } else {
+            game.executeCommand('mouse_travel', { x: mapX, y: mapY });
+            game.update();
+        }
+    };
+
+    pixiApp.stage.on('pointerup', (e) => {
+        // FE-1：触屏/触控笔由下方手势识别器处理（区分单击/长按/拖动/捏合）
+        if (e.pointerType !== 'mouse') return;
+        const localPt = tileLayer.toLocal(e.global);
+        activateCell(Math.floor(localPt.x / TILE_SIZE), Math.floor(localPt.y / TILE_SIZE), e.button, 'mouse');
     });
+
+    // ---------- FE-1：触屏手势（单击 / 长按查看 / 单指平移 / 双指缩放） ----------
+    const gestures = new GestureTracker();
+    const canvasEl = pixiApp.canvas;
+    const cellAtClient = (clientX: number, clientY: number) => {
+        const rect = canvasEl.getBoundingClientRect();
+        const localPt = tileLayer.toLocal(new PIXI.Point(clientX - rect.left, clientY - rect.top));
+        return { x: Math.floor(localPt.x / TILE_SIZE), y: Math.floor(localPt.y / TILE_SIZE) };
+    };
+    const handleGestures = (events: GestureEvent[]) => {
+        for (const ev of events) {
+            if (ev.type === 'tap') {
+                const cell = cellAtClient(ev.x, ev.y);
+                activateCell(cell.x, cell.y, 0, 'touch');
+            } else if (ev.type === 'longpress') {
+                // 与桌面右键同一条只读路径：悬停描述 + 详情面板（不产生命令）
+                const cell = cellAtClient(ev.x, ev.y);
+                if (cell.x >= 0 && cell.x < DCOLS && cell.y >= 0 && cell.y < DROWS) {
+                    game.updateHover(cell.x, cell.y);
+                    game.handleInspectAt(cell.x, cell.y);
+                    navigator.vibrate?.(15);
+                }
+            } else if (ev.type === 'pan') {
+                if (cameraState.follow) {
+                    cameraState.panX += ev.dx;
+                    cameraState.panY += ev.dy;
+                }
+            } else if (ev.type === 'pinch') {
+                zoomBy(ev.factor);
+            }
+        }
+    };
+    let longPressTimer = 0;
+    const isTouchLike = (e: PointerEvent) => e.pointerType === 'touch' || e.pointerType === 'pen';
+    const onTouchDown = (e: PointerEvent) => {
+        if (!isTouchLike(e)) return;
+        e.preventDefault();
+        try { canvasEl.setPointerCapture?.(e.pointerId); } catch { /* 合成事件无活动指针 */ }
+        handleGestures(gestures.down(e.pointerId, e.clientX, e.clientY, performance.now()));
+        if (!longPressTimer) {
+            longPressTimer = window.setInterval(() => {
+                handleGestures(gestures.poll(performance.now()));
+                if (!gestures.active) { window.clearInterval(longPressTimer); longPressTimer = 0; }
+            }, 50);
+        }
+    };
+    const onTouchMove = (e: PointerEvent) => {
+        if (!isTouchLike(e)) return;
+        handleGestures(gestures.move(e.pointerId, e.clientX, e.clientY));
+    };
+    const onTouchUp = (e: PointerEvent) => {
+        if (!isTouchLike(e)) return;
+        handleGestures(gestures.up(e.pointerId, performance.now()));
+    };
+    const onTouchCancel = (e: PointerEvent) => {
+        if (!isTouchLike(e)) return;
+        gestures.cancel(e.pointerId);
+    };
+    canvasEl.addEventListener('pointerdown', onTouchDown);
+    canvasEl.addEventListener('pointermove', onTouchMove);
+    canvasEl.addEventListener('pointerup', onTouchUp);
+    canvasEl.addEventListener('pointercancel', onTouchCancel);
+    removeTouchListeners = () => {
+        window.clearInterval(longPressTimer);
+        canvasEl.removeEventListener('pointerdown', onTouchDown);
+        canvasEl.removeEventListener('pointermove', onTouchMove);
+        canvasEl.removeEventListener('pointerup', onTouchUp);
+        canvasEl.removeEventListener('pointercancel', onTouchCancel);
+    };
 
     let pathingTimer = 0;
     let colorTimer = 0;
@@ -740,6 +885,9 @@ onUnmounted(() => {
   stopScaleModeWatch = null;
   stopCameraWatch?.();
   stopCameraWatch = null;
+  removeTouchListeners?.();
+  removeTouchListeners = null;
+  clearAim();
 
   delete (window as Window & { advanceTime?: (ms: number) => void }).advanceTime;
   delete (window as Window & { render_game_to_text?: () => string }).render_game_to_text;
@@ -773,6 +921,10 @@ onUnmounted(() => {
   color: #ddd;
   background: #181818e8;
   pointer-events: none;
+}
+/* FE-1：紧凑模式下由 TargetBar 显示触屏版提示与确认/取消按钮 */
+@media (max-width: 1023px), (max-height: 599px) {
+  .arcana-prompt { display: none; }
 }
 .game-container {
   position: relative;
