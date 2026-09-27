@@ -1,0 +1,149 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=4",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2k-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T05:14:08.270Z",
+  "seconds": 2079.845,
+  "exit": 1,
+  "inputs": 942,
+  "changedInputs": [],
+  "files": 213,
+  "passed": 3927,
+  "failed": 18,
+  "pending": 8,
+  "todo": 5,
+  "failures": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence title → normal: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence death → normal: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence restart → normal: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence seek → normal: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence title → easy: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence death → easy: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence restart → easy: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence seek → easy: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence title → wizard: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence death → wizard: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence restart → wizard: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence seek → wizard: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence title → test: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence death → test: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence restart → test: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts",
+      "name": "U00 full new-run equivalence seek → test: reused A→B equals fresh B, whole graph and both RNG streams",
+      "messages": [
+        "Error: Opaque weak collection in new run\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:23:69)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:28:13\n    at Array.map (<anonymous>)\n    at graph (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:27:101)\n    at state (/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:53:12)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_00_new_run.test.ts:166:32\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_03_whole_run_snapshot.test.ts",
+      "name": "U03 whole-run persistence every Game instance field has an explicit U00 lifecycle/persistence decision",
+      "messages": [
+        "AssertionError: expected [ 'absoluteTurnNumber', …(104) ] to deeply equal [ 'absoluteTurnNumber', …(106) ]\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_03_whole_run_snapshot.test.ts:44:46\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_08_terrain_bolts.test.ts",
+      "name": "U08 CE catalog and runtime qualification new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+      "messages": [
+        "AssertionError: expected [ Array(141) ] to have a length of 139 but got 141\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/u_08_terrain_bolts.test.ts:51:269\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+      ]
+    }
+  ]
+}

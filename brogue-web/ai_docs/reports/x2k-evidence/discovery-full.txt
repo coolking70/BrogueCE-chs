@@ -1,0 +1,152 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/discovery-full.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/p1_24_death_sink.test.ts > P1-24 验收 1：die() 归零 hp，怪物真的被移出列表 > 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_19_polymorph.test.ts (53 tests | 1 failed) 4759ms
+     ✓ existing 67-row projection has the exact CE order and eligible set, including composite turrets and special exclusions 13ms
+     ✓ matches every compiled CE HP/old haste+slow combination through the actual in-place operation 98ms
+     ✓ rejects the same species and each invalid roll without spawn/depth RNG 9ms
+     ✓ does not exclude eel for depth, habitat, machineOnly, or boss role 4ms
+     ✓ does not exclude goblin_warlord for depth, habitat, machineOnly, or boss role 8ms
+     ✓ does not exclude black_jelly for depth, habitat, machineOnly, or boss role 2ms
+     ✓ does not exclude vampire for depth, habitat, machineOnly, or boss role 5ms
+     ✓ does not exclude unicorn for depth, habitat, machineOnly, or boss role 2ms
+     ✓ does not exclude ifrit for depth, habitat, machineOnly, or boss role 7ms
+     ✓ does not exclude dragon for depth, habitat, machineOnly, or boss role 2ms
+     ✓ MONST_INANIMATE rejects before mutation/status/relationship writes or draws 2ms
+     ✓ MONST_INVULNERABLE rejects before mutation/status/relationship writes or draws 2ms
+     ✓ MONST_TURRET rejects before mutation/status/relationship writes or draws 5ms
+     ✓ lich is a valid SOURCE despite output restrictions/weapon immunity 2ms
+     ✓ phoenix is a valid SOURCE despite output restrictions/weapon immunity 2ms
+     ✓ mangrove_dryad is a valid SOURCE despite output restrictions/weapon immunity 2ms
+     ✓ revenant is a valid SOURCE despite output restrictions/weapon immunity 2ms
+     ✓ living immobile targets may transform 10ms
+     ✓ empty has no target, no roll, no autoID 2ms
+     ✓ wall has no target, no roll, no autoID 2ms
+     ✓ origin has no target, no roll, no autoID 1ms
+     ✓ reflection into player does not polymorph the player or the reflector 2ms
+     ✓ random reflection transforms only its bystander contact 2ms
+     ✓ autoID uses NEW invisible status only, regardless of visibility=true 7ms
+     ✓ autoID uses NEW invisible status only, regardless of visibility=false 2ms
+     ✓ unAlly/mutation/carried creature reset occurs BEFORE the first species roll 2ms
+     ✓ old rat state 0 becomes 0 (including C precedence) 13ms
+     ✓ old rat state 3 becomes 3 (including C precedence) 2ms
+     ✓ old wraith state 3 becomes 2 (including C precedence) 1ms
+     ✓ old goblin_conjurer state 3 becomes 2 (including C precedence) 1ms
+     ✓ old goblin_conjurer state 1 becomes 1 (including C precedence) 1ms
+     ✓ old monkey state 0 becomes 2 (including C precedence) 1ms
+     ✓ resets every projected info field but preserves creature identity, counters, bookkeeping, item and followers 8ms
+     ✓ normal ally loses only its own leader; its followers, including bound/dormant, keep their pointers 3ms
+     ✓ captive demotes after info/status reset, elects ordinary followers, detaches bound/dormant, keeps own hostile leader and item 4ms
+     ✓ bound ally unAlly preserves the bound bit; orphan death happens on the ordinary next-turn sink 22ms
+     ✓ initializeStatus derives exactly the new wisp flags, permanent for 1001 ticks 3ms
+     ✓ initializeStatus derives exactly the new phantom flags, permanent for 1001 ticks 2ms
+     ✓ initializeStatus derives exactly the new rat flags, permanent for 1001 ticks 2ms
+     ✓ cleared haste leaves new cached speed, survives unrelated expiration, then a new slow/expiry restores normal behavior 2ms
+     ✓ negation resets polymorph cached speed even without a haste status 16ms
+     ✓ ticksUntilTurn 0 is max(old,101) 2ms
+     ✓ ticksUntilTurn 100 is max(old,101) 2ms
+     ✓ ticksUntilTurn 101 is max(old,101) 2ms
+     ✓ ticksUntilTurn 333 is max(old,101) 9ms
+     ✓ does not invoke immediate terrain entry or kill on losing flight; next environment pass owns lava death 2ms
+     ✓ bloat -> rat death uses new ability/type, exactly once 2ms
+     ✓ rat -> bloat death uses new ability/type, exactly once 2ms
+     ✓ ordinary save BEFORE any polymorph keeps species identity and actual traits despite a translated display name 4ms
+     × JSON round-trip retains current species, speed, item identity, hostile relation, and later death 1921ms
+     ✓ tagged dormant list and test-room reconstruction preserve form and references  1081ms
+     ✓ cancel is zero cost; actual confirm spends one charge/turn and transforms in place  705ms
+     ✓ 101 wait protects the cast action; the transformed creature acts on the next objective advance  749ms
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (11 tests) 9093ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  687ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  1529ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  585ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  872ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  622ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  856ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  1069ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  608ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  517ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  883ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  862ms
+(node:7773) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/p1_24_death_sink.test.ts (13 tests | 2 failed) 18514ms
+     ✓ 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）  1277ms
+     ✓ 对抗性①（续）：熔岩烧死的怪物必须在下一次回合清扫中被移出 this.monsters。捕获的错误实现：同上——旧实现 hp>0，filter(m => m.hp > 0) 永远清不掉，怪物赖在列表里。（P1-27 补做：载体由淹死换成熔岩，清扫路径同一。）  1246ms
+     ✓ 对抗性①（续）：熔岩烧死的尸体不再苏醒/不再行动——沉睡老鼠被烧死后 takeTurn 必须是空转。捕获的错误实现：die() 不归零（旧版）时，takeTurn 会照常走"沉睡→惊醒"分支，在玩家头顶弹 '!' 漂浮字并进入追击。（P1-27 补做：载体由淹死换成熔岩。）  2043ms
+     ✓ 对抗性②（P1-27 重写为断言新事实）：移除自创淹死后，深水里的怪物不产生任何死亡消息——连续两轮环境结算，"drown" 必须零出现，Logger 里必须根本不存在这条合并条目。捕获的错误实现：①WEB_ONLY_DEEP_WATER_DROWNING 被改回 true（或任何深水致死实现复活）——第一轮就冒出 "drowns"；②只删致死逻辑、却把消息日志留在标志之外的"半吊子移除"重排。与 p1_27 文件对抗性①（seed 71）的区别：那条从 hp/在场通道断言"活着"，本条专门盯消息通道（Logger 合并条目本身必须不存在——原"count===1"断言在新事实下的对应物）。  1561ms
+     ✓ 对抗性②（续）：熔岩烧死同理，"incinerated" 只播一次。  1258ms
+     ✓ 对抗性③：hp -= N 之后才调用 die() 的既有路径不得被改成重复结算——火焰致死的尸体 hp 必须精确停在 0（CE 口径），不能是负数。捕获的错误实现：把 die() 写成"再补一刀"（如 hp -= maxHp 确保死亡），受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。【F-2b 翻正】原断言"2 HP 恰好一烧即死"（环境分支平扣 2）随燃烧状态机到期：环境首过只上 STATUS_BURNING（Time.c:527→:59-60），伤害来自燃烧结算段的 rand_range(1,3)（Time.c:2582/Monsters.c:1882）——故先挂状态、再以 1 HP 走一回合结算（任意掷骰必死）。die() 归零守卫原样保留。  1933ms
+     ✓ 对抗性③（续）：蒸汽致死同样精确归零——1 HP 受害者被蒸汽扣 1 后死透，不残留负 hp（重复结算实现会把它扣成 -1 或更低）。  1497ms
+     × 留痕（P1-28 验收打回后重写，原前提不可达）：岩浆致死的死亡 DF 闸门不被抑制，载体为"带 MA_DF_ON_DEATH 且不飞"的怪。原载体"岩浆里的 explosive bloat 烧死后照样爆燃"考的机制是「岩浆致死走 killCreature(monst, false)（Time.c:218），死亡地形不被抑制」；P1-28 的 initializeStatus 翻译层使该前提不可达——deathDF 内容已在 web 实现的只有 bloat / explosive_bloat（Globals.c:1037-1038 / 1084-1085），二者全带 MONST_FLIES，经翻译层（Monsters.c:3904-3928）派生永久悬浮，CE 里永远不可能死于岩浆；CE 唯一不飞的 MA_DF_ON_DEATH 怪 vampire (Globals.c:1131-1132) 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层（P4-4 登记未实现），"照样爆燃"式的 DF 内容断言无载体。本条改为三段：①数据层锁死不可达的全部前提（旗标来源、翻译层派生、catalog 不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动即在此翻红，提示前提可能恢复可达；②可达半边继续锁原机制：explosive 变异 troll（D11-15 可自然出现、不飞、可走入岩浆——CE 完全可达的状态）与 vampire 被岩浆烧死后 deathEffectTriggered 必须翻 true——"岩浆里就不用触发死亡 DF"的错误实现在此挂掉；③现状留痕：二者的 DF 内容（DF_MUTATION_EXPLOSION / DF_BLOOD_EXPLOSION）web 尚无实现分支（triggerDeathFeatures 仅按 typeId 认 bloat/explosive_bloat 两分支），故无毒气、无点燃——此负向断言在内容实现之日翻红，届时应改回真实内容断言。"死亡地形不被地形抑制"的 DF 内容半边由下一条深水爆燃继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。 1112ms
+     ✓ 对抗性④（续，P1-27 载体重写）：深水里的 explosive bloat 被玩家砍死后照样爆燃——"水里燃起大火"是 CE 行为：GAS_EXPLOSION 火格铺在表层、覆盖在水上；killCreature 的死亡 DF 分支只认 MB_IS_FALLING（Combat.c:1963-1965），爆炸伤害只豁免爆炸免疫与 MB_SUBMERGED（Time.c:343-345），站水里的生物没有豁免。原载体"淹死后触发 DF"已随淹死移除；本条同时接管原"深水毒气"条的深水角——上一轮还是 web 自创即死地形的深水，不抑制死亡地形。捕获的错误实现：①"水中死亡抑制死亡地形"被实现成水中跳过 DF——isBurning 恒 false；②给深水补 CE 的 TM_EXTINGUISHES_FIRE 语义时把死亡点燃一并掐掉——同样在此失败。  1020ms
+     × 玩家近战击杀 bloat：仍被清扫、仍掉落、死亡地形照常触发、hp 精确归零。捕获的错误实现：die() 归零被写成"在 die() 里额外扣一次伤害/改动 takeDamage语义"——hp 会偏离 0，或掉落/清扫路径被误伤。 2029ms
+     ✓ 对照组：战斗致死与水淹致死走同一条收口——被玩家砍死在水里的 bloat 一样放毒气（CE：killCreature 不区分伤害来源，只看 administrativeDeath/MB_IS_FALLING）。  1199ms
+     ✓ 玩家泡在深水里（P1-27 重写为断言新事实）：不 game over，hp 与外观都不受影响——连续两轮环境结算也是同样结果。CE 深水零伤害（Time.c:1146-1150 "You fall into deep water, unharmed."），web 自创的玩家淹死分支已被 WEB_ONLY_DEEP_WATER_DROWNING=false 退出生效路径。捕获的错误实现：①标志被改回 true（或玩家分支被复活）——第一轮 isGameOver 就翻 true；②"半吊子移除"——不 game over 了却把玩家 hp 清 0 或 char 变 %（误走了 die()）。任一都在本条失败。  1215ms
+     ✓ 玩家在熔岩中：同样走 triggerGameOver，hp 与外观不被 die() 触碰。  1119ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b2_transcription.test.ts > B2 production census > observes committed CE71 machines and their actual occupants on 34 seed × D1–D26
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b2_transcription.test.ts (21 tests) 873534ms
+     ✓ observes committed CE71 machines and their actual occupants on 34 seed × D1–D26  870872ms
+     ✓ the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id  2637ms
+stdout | src/test/armor_model_effect.test.ts > 护甲模型改造前后配对对照（5 档 × 20 seed × 400 回合） > 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[armor_model_effect] 无护甲
+[armor_model_effect]   legacy(防御值=0): attacks=107 hits=83 rate=77.6% dmg=252 (dmg/atk=2.36) died=3/20 turns=7425 maxDepth=2
+[armor_model_effect]   wired (防御值=0): attacks=92 hits=69 rate=75.0% dmg=196 (dmg/atk=2.13) died=2/20 turns=7542 maxDepth=2
+[armor_model_effect] 皮甲+0（显示3）
+[armor_model_effect]   legacy(防御值=3): attacks=205 hits=148 rate=72.2% dmg=165 (dmg/atk=0.80) died=1/20 turns=7629 maxDepth=2
+[armor_model_effect]   wired (防御值=30): attacks=255 hits=129 rate=50.6% dmg=333 (dmg/atk=1.31) died=2/20 turns=7364 maxDepth=2
+[armor_model_effect] 皮甲+3（显示6）
+[armor_model_effect]   legacy(防御值=4): attacks=212 hits=154 rate=72.6% dmg=163 (dmg/atk=0.77) died=1/20 turns=7891 maxDepth=2
+[armor_model_effect]   wired (防御值=60): attacks=248 hits=89 rate=35.9% dmg=245 (dmg/atk=0.99) died=2/20 turns=7581 maxDepth=2
+[armor_model_effect] 板甲+0（显示11）
+[armor_model_effect]   legacy(防御值=11): attacks=106 hits=71 rate=67.0% dmg=71 (dmg/atk=0.67) died=0/20 turns=8000 maxDepth=2
+[armor_model_effect]   wired (防御值=110): attacks=128 hits=21 rate=16.4% dmg=71 (dmg/atk=0.55) died=0/20 turns=8000 maxDepth=2
+[armor_model_effect] 板甲+3（显示14）
+[armor_model_effect]   legacy(防御值=13): attacks=109 hits=72 rate=66.1% dmg=72 (dmg/atk=0.66) died=0/20 turns=8000 maxDepth=2
+[armor_model_effect]   wired (防御值=140): attacks=125 hits=16 rate=12.8% dmg=54 (dmg/atk=0.43) died=0/20 turns=8000 maxDepth=2
+
+stdout | src/test/armor_model_effect.test.ts > 定向验证：真实怪物(acc=100)攻击穿甲玩家，防御值进入命中掷骰 > 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）
+[armor_model_effect] 定向: monkey(acc=100) 60 挥击 → 无护甲 wired=60/60 板甲+3 legacy=48/60 板甲+3 wired=9/60
+
+(node:7780) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/armor_model_effect.test.ts (2 tests) 898726ms
+     ✓ 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数  894953ms
+     ✓ 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）  3772ms
+stdout | src/test/c_8_connectivity.test.ts > C-8 生成期 DF 放置否决：web 移动图口径 > T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=452，含新环门层=127/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=68964 违例=66976
+[c_0] diagonal：门位=1085 违例=432
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=716 漏同步=935（52 层合计）
+

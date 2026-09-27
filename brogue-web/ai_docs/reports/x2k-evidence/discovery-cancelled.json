@@ -1,0 +1,38 @@
+{
+  "time": "2026-09-27T05:13:49.946639+00:00",
+  "reason": "Exploratory run used changing inputs; superseded by frozen final full npm test. Not counted as a completed gate.",
+  "processes": [
+    {
+      "pid": 7745,
+      "command": "node scripts/x2k-validate.mjs discovery-full"
+    },
+    {
+      "pid": 7756,
+      "command": "npm test --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/discovery-full.json"
+    },
+    {
+      "pid": 7771,
+      "command": "node /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/.bin/vitest run --exclude **/generation_baseline.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/discovery-full.json"
+    },
+    {
+      "pid": 7772,
+      "command": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.3 --ping"
+    },
+    {
+      "pid": 7776,
+      "command": "/opt/homebrew/Cellar/node/25.2.1/bin/node --experimental-import-meta-resolve --require /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/suppress-warnings.cjs --conditions node --conditions development /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/dist/workers/forks.js"
+    },
+    {
+      "pid": 7777,
+      "command": "/opt/homebrew/Cellar/node/25.2.1/bin/node --experimental-import-meta-resolve --require /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/suppress-warnings.cjs --conditions node --conditions development /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/dist/workers/forks.js"
+    },
+    {
+      "pid": 8762,
+      "command": "/opt/homebrew/Cellar/node/25.2.1/bin/node --experimental-import-meta-resolve --require /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/suppress-warnings.cjs --conditions node --conditions development /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/dist/workers/forks.js"
+    },
+    {
+      "pid": 8774,
+      "command": "/opt/homebrew/Cellar/node/25.2.1/bin/node --experimental-import-meta-resolve --require /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/suppress-warnings.cjs --conditions node --conditions development /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/vitest/dist/workers/forks.js"
+    }
+  ]
+}

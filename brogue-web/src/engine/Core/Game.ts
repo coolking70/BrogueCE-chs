@@ -1,3 +1,4 @@
+import { ownedMonsterList, dyingMonsters } from './MonsterLifecycle';
 import { alertMonster, wakeMonster } from '../Combat/MonsterAI';
 import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
 import { createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';
@@ -115,13 +116,13 @@ import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult
 import { traceBolt, type BoltWorld } from '../Combat/BoltTrajectory';
 import { CE_BOLT_CATALOG, CEBoltEffect, CEBoltType, resolveCEBoltMagnitude } from '../Combat/BoltCatalog';
 import { rollStaffDamage } from '../Combat/StaffDamage';
-import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';
+import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates, qualifyingPathCandidates } from '../Movement/CreaturePlacement';
 
 import { blinkTargetPreview } from '../Combat/BlinkTargeting';
 import { MONSTER_BLINK, monsterBlinkAvoids } from '../Combat/MonsterBlink';
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 import { isSubmerged, monsterCanSubmergeNow, surfaceOnDryLand, hiddenBySubmersion } from '../Movement/Submersion';
-import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterHidden } from '../UI/MonsterVisibility';
+import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterHidden, monsterRevealed } from '../UI/MonsterVisibility';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
@@ -283,7 +284,9 @@ export class Game {
     public minersLight: MinersLightState = { radiusHundredths: 0, radialFadeToPercent: 35 };
     private minersLightBaseFixpt: number = 0;
     public autoPath: Pos[] = [];
-    public monsters: Monster[] = [];
+    private activeMonsterList = ownedMonsterList([], this);
+    public get monsters(): Monster[] { return this.activeMonsterList; }
+    public set monsters(value: Monster[]) { this.activeMonsterList = ownedMonsterList(value, this); }
     /**
      * V-2b-5：CE 全局 `dormantMonsters`（Monsters.c:4156-4210 的第二条链表）。
      * 休眠怪**不在 `this.monsters` 里**——CE 摘链换表让「不占格、不获回合、
@@ -291,7 +294,9 @@ export class Game {
      * 本表里的怪被回合推进、视野、寻路占用、落位资格等所有
      * `this.monsters` 读取者天然忽略，无需逐点加判断。
      */
-    public dormantMonsters: Monster[] = [];
+    private dormantMonsterList = ownedMonsterList([], this);
+    public get dormantMonsters(): Monster[] { return this.dormantMonsterList; }
+    public set dormantMonsters(value: Monster[]) { this.dormantMonsterList = ownedMonsterList(value, this); }
     /** CE purgatory: eligible dead allies awaiting a resurrection altar. */
     public purgatory: Monster[] = [];
     public items: Item[] = [];
@@ -5478,7 +5483,7 @@ export class Game {
 
         const px = this.player.loc.x;
         const py = this.player.loc.y;
-        for (const m of this.monsters) {
+        for (const m of [...this.monsters]) {
             if (m.hp <= 0) continue;
             if (!this.hasLineOfSight(px, py, m.loc.x, m.loc.y)) continue;
             const distSq = (px - m.loc.x) * (px - m.loc.x) + (py - m.loc.y) * (py - m.loc.y);
@@ -6598,7 +6603,7 @@ export class Game {
         // 怪 Monsters.c:1877-1901）在状态递减之前结算（CE 玩家序）。
         this.resolveBurningDamage(this.player);
         this.resolvePoisonDamage(this.player);
-        for (const m of this.monsters) {
+        for (const m of [...this.monsters]) {
             m.recoverPerTick();
             this.resolveBurningDamage(m);
             // CE lifespan precedes poison; expiration is death, not shieldable damage.
@@ -6635,7 +6640,8 @@ export class Game {
             if ((status as string) === 'burning') logger.log(i18next.t('status.player.burning_off', { defaultValue: 'You are no longer on fire.' }), '#cccccc');
         }
 
-        for (const m of this.monsters) {
+        for (const m of [...this.monsters]) {
+            if (m.hp <= 0) continue;
             this.clearDisplacedEntanglement(m);
             const expired = m.tickStatuses();
             if (expired.includes('discordant') && m.isAlly && m.state === MonsterState.FLEEING && !m.hasStatus('magical_fear')) {
@@ -7064,7 +7070,7 @@ export class Game {
     private alliedCloneCount(monst: Monster): number {
         let count = 0;
         for (const m of this.monsters) {
-            if (m !== monst && m.typeId === monst.typeId && monstersAreTeammates(m, monst)) {
+            if (m.hp > 0 && m !== monst && m.typeId === monst.typeId && monstersAreTeammates(m, monst)) {
                 count++;
             }
         }
@@ -7238,74 +7244,47 @@ export class Game {
         this.needsRender = true;
     }
 
-    /**
-     * CE Combat.c:1963-1990（MA_DF_ON_DEATH 分支）。P4-4：为 hp<=0 且未处理过
-     * 的怪物触发一次死亡地形效果，deathEffectTriggered 保证只触发一次。
-     * 从两处调用（playerTurnEnded 顶部、finishTurnEpilogue 开头）覆盖
-     * "玩家行动本身杀死目标"与"推进循环内怪物互殴/环境效果杀死目标"两种
-     * 时序，尽量做到同回合触发，而不是拖到下一次 playerTurnEnded 才生效。
-     *
-     * 本轮只接了两种：
-     *   - bloat → DF_BLOAT_DEATH（毒气，Globals.c:653 GAS 层，startprob 当
-     *     体积单点喷发；原注释的 654 为行号漂移，本轮实测翻正）。G-1 起
-     *     量纲即 CE 体积：注入 2000 = DF_BLOAT_DEATH 的 startProbability，
-     *     旧 0-100 密度口径（满值 100）已随量纲退役。
-     *   - explosive_bloat → DF_BLOAT_EXPLOSION（F-2c 翻正：CE 原链是
-     *     killCreature 的 MA_DF_ON_DEATH 分支 Combat.c:1965-1967 以
-     *     refreshCell=true 播 deathDF，Globals.c:1084 的 DFType =
-     *     DF_BLOAT_EXPLOSION（Globals.c:654，GAS_EXPLOSION tile，start 350 /
-     *     decr 100）。web 此前用 igniteForced×5 近似（F-2b §十.2 登记），
-     *     现改走 DF 铺设 + 落格瞬时爆炸伤害（fillSpawnMap refresh 分支的
-     *     web 等价，共享 DF refresh 事务）——伤害是 max(15-20, maxHP/2)
-     *     的瞬时结算，与后续燃烧（火点燃生物）是两笔，不合并。
-     *     新落爆炸格的起火登记并入 pendingCaughtFireCells（CE 旗标即时生效，
-     *     下一晋升趟跳过其衰老掷骰）。
-     * 未接（报告已登记，均为已知缺口，非本轮范围）：
-     *   - vampire 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层。
-     * C-5 接线 pit_bloat：CE monsterCatalog Globals.c:1039 的死亡 DFType =
-     * DF_HOLE_POTION（与 killCreature 的 MA_DF_ON_DEATH 分支同款链路，
-     * Combat.c:1965-1967，refreshCell=true / abortIfBlocking=false）——尸体
-     * 脚下炸出 HOLE_EDGE 波前 + 原点 HOLE（T_AUTO_DESCENT），站在上面的
-     * 生物由回合末的坠落结算收走。
-     */
-    private triggerDeathFeatures(target?: Monster): void {
-        for (const m of target ? [target] : this.monsters) {
-            if (m.hp > 0) continue;
-            if (m.deathEffectTriggered) continue;
-            if (!m.hasAbility('MA_DF_ON_DEATH')) continue;
-            m.deathEffectTriggered = true;
+    /** Combat.c:1963-1990: item placement precedes the death DF. Falling
+     * and administrative death suppress it; mutation DF overrides species. */
+    private canSeeMonsterAtDeath(m: Monster): boolean {
+        return !monsterHidden(this.grid, m, this.player)
+            && (!!this.grid.getCell(m.x, m.y)?.isVisible || monsterRevealed(this.player, m));
+    }
 
-            if (m.mutation?.id === 'infested') {
+    private triggerDeathFeatures(target?: Monster): void {
+        for (const m of target ? [target] : [...this.monsters]) {
+            if (m.hp > 0 || m.falling || m.administrativeDeath) continue;
+            if (m.deathEffectTriggered || !m.hasAbility('MA_DF_ON_DEATH')) continue;
+            m.deathEffectTriggered = true;
+            if (m.deathDFType !== undefined) {
+                if (m.deathDFType > 0) spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(m.deathDFType as DF), false);
+            } else if (m.mutation?.id === 'infested') {
                 spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_MUTATION_LICHEN), false);
-                this.needsRender = true;
+            } else if (m.mutation?.id === 'explosive') {
+                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_MUTATION_EXPLOSION), false);
             } else if (m.typeId === 'bloat') {
-                // G-1 折算：100（旧 0-100 密度）→ 2000 = DF_BLOAT_DEATH 的
-                // startProbability（Globals.c:653，CE 的 bloat 毒气体积）。
-                this.environment.addGas(m.loc.x, m.loc.y, GasType.POISON, 2000);
-                logger.log(i18next.t('death.bloat_gas', {
-                    name: this.monsterDisplayName(m),
-                    defaultValue: `The ${this.monsterDisplayName(m)} releases a cloud of caustic gas!`
-                }), '#88ff88');
-                this.needsRender = true;
+                // DF_BLOAT_DEATH is a single-cell GAS DF with 2000 volume.
+                this.environment.addGas(m.x, m.y, GasType.POISON, 2000);
             } else if (m.typeId === 'explosive_bloat') {
-                // F-2c：CE 原链（Combat.c:1965-1967）——死亡 DF 经 DF 管线
-                // 铺设，爆炸 tile 落到生物脚下当场结算瞬时伤害。石地板照铺
-                // （fillSpawnMap 的 drawPriority 判据），与旧 igniteForced
-                // 近似的"四方向火焰"形态一并退役。
-                const feat = catalogFeature(DF.DF_BLOAT_EXPLOSION);
-                spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, feat, false);
-                logger.log(i18next.t('death.bloat_explosion', {
-                    name: this.monsterDisplayName(m),
-                    defaultValue: `The ${this.monsterDisplayName(m)} explodes in a burst of flame!`
-                }), '#ff8800');
-                this.needsRender = true;
+                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_BLOAT_EXPLOSION), false);
             } else if (m.typeId === 'pit_bloat') {
-                // C-5：DF_HOLE_POTION 链（见函数注释）。abortIfBlocking=false
-                // 与 CE :1965 的第四参一致——洞允许切断关卡。
-                spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, catalogFeature(DF.DF_HOLE_POTION), false);
-                this.needsRender = true;
+                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_HOLE_POTION), false);
+            } else if (m.typeId === 'vampire') {
+                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_BLOOD_EXPLOSION), false);
             }
-            // vampire：本轮不接，见函数注释（DF_BLOOD_EXPLOSION 无血迹层）。
+            // CE uses species DFMessage even when a mutation replaced the DF.
+            if (this.canSeeMonsterAtDeath(m)) {
+                if (m.typeId === 'bloat') logger.log(i18next.t('death.bloat_gas', {
+                    name: this.monsterDisplayName(m), defaultValue: `The ${this.monsterDisplayName(m)} releases a cloud of caustic gas!`,
+                }), '#88ff88');
+                else if (m.typeId === 'explosive_bloat') logger.log(i18next.t('death.bloat_explosion', {
+                    name: this.monsterDisplayName(m), defaultValue: `The ${this.monsterDisplayName(m)} explodes in a burst of flame!`,
+                }), '#ff8800');
+                else if (m.typeId === 'pit_bloat') logger.log(i18next.t('death.pit_bloat', {
+                    name: this.monsterDisplayName(m), defaultValue: 'The {{name}} bursts, causing the floor underneath it to disappear!',
+                }), '#88ccff');
+            }
+            this.needsRender = true;
         }
     }
 
@@ -7727,50 +7706,66 @@ export class Game {
 
     private poisonedDuringTurn = false;
 
-    private removeDeadMonsters(): void {
-        // CE killCreature drops carried items before its death DF, then
-        // releases a carried creature before corpse learning and demotion.
-        const processDeath = (m: Monster): void => {
-            if (m.hp > 0 || m.deathProcessed) return;
-            m.deathProcessed = true; // before callbacks/released creatures
+    /** Combat.c:1934. Effects are synchronous; RogueMain.c's later sweep owns
+     * physical removal and purgatory. Reentrant death DFs cannot kill twice. */
+    public killMonster(m: Monster, administrative = false): void {
+        if (m.deathProcessed || dyingMonsters.has(m)) return;
+        dyingMonsters.add(m); // MB_IS_DYING, before item placement/DF callbacks
+        m.hp = 0;
+        if (administrative) {
+            m.administrativeDeath = true;
+            m.carriedItem = null;
+            m.carriedMonster = null;
+        } else {
             this.makeMonsterDropItem(m);
             this.triggerDeathFeatures(m);
-            if (!m.isDormant) {
-                // Combat.c killCreature releases the passenger BEFORE learning.
-                // Summon withdrawal, polymorph disposal, dormancy and room reset
-                // remove live/detached entities directly and never enter here.
-                if (m.carriedMonster) {
-                    const passenger = m.carriedMonster;
-                    m.carriedMonster = null;
-                    if (passenger !== m && !passenger.deathProcessed && !this.monsters.includes(passenger)) {
-                        passenger.loc = { ...m.loc };
-                        passenger.ticksUntilTurn = 200;
-                        this.monsters.unshift(passenger);
-                        this.needsRender = true;
-                        if (this.grid.getCell(passenger.loc.x, passenger.loc.y)?.isVisible) {
-                            logger.log(i18next.t('monster.carried_appears', {
-                                name: this.monsterDisplayName(passenger),
-                                defaultValue: '{{name}} appears',
-                            }), '#ffffff');
-                        }
-                        this.applyDisplacementTileEntry(passenger);
-                        this.applyEnvironmentalEffects(passenger);
-                        if (passenger.hp <= 0) {
-                            processDeath(passenger); // nested kill finishes before the host's bite
-                        }
-                    }
+        }
+        if (!administrative && m.isAlly && !this.canSeeMonsterAtDeath(m)
+            && (!m.hasBehavior('MONST_INANIMATE') || (monsterData as MonsterData[])
+                .find(data => data.id === m.typeId)?.abilityFlags?.includes('MA_ENTER_SUMMONS'))
+            && !m.boundToLeader && !m.carriedMonster) {
+            logger.log(i18next.t('death.ally_loss', { defaultValue: 'You feel a sense of loss.' }), '#ff8888');
+        }
+        m.deathProcessed = true; // MB_HAS_DIED / occupancy removal
+        if (m.isDormant) {
+            const cell = this.grid.getCell(m.x, m.y);
+            if (cell) cell.hasDormantMonster = false;
+        }
+        if (!administrative && !m.isDormant) {
+            const passenger = m.carriedMonster;
+            m.carriedMonster = null;
+            if (passenger && passenger !== m && !passenger.deathProcessed && !this.monsters.includes(passenger)) {
+                passenger.loc = { ...m.loc };
+                passenger.ticksUntilTurn = 200;
+                this.monsters.unshift(passenger);
+                this.needsRender = true;
+                if (this.grid.getCell(passenger.x, passenger.y)?.isVisible) {
+                    logger.log(i18next.t('monster.carried_appears', {
+                        name: this.monsterDisplayName(passenger), defaultValue: '{{name}} appears',
+                    }), '#ffffff');
                 }
-                anyoneWantABite(this, m);
+                this.applyDisplacementTileEntry(passenger);
+                // CE applies instant contact, not a second gradual gas tick.
+                this.applyEnvironmentalEffects(passenger, true);
+                if (passenger.hp <= 0) this.killMonster(passenger);
             }
-            this.demoteMonsterFromLeadership(m);
-            // CE RogueMain.c:960-969: a dead player ally enters purgatory
-            // only when its weapon auto-ID entitlement and resurrection flags allow it.
-            if (m.isAlly && !m.leader && !m.leaderlessAfterDemotion && !m.doesNotResurrect
-                && !m.isClone && (!m.hasBehavior('MONST_INANIMATE') || m.hasAbility('MA_ENTER_SUMMONS'))
+            anyoneWantABite(this, m);
+        }
+        this.demoteMonsterFromLeadership(m);
+        this.needsRender = true;
+    }
+
+    private removeDeadMonsters(sweep = true): void {
+        // Raw HP assignments from restored/legacy fixtures still converge here.
+        for (const m of [...this.monsters, ...this.dormantMonsters]) if (m.hp <= 0) this.killMonster(m);
+        if (!sweep) return;
+        for (const m of [...this.monsters, ...this.dormantMonsters]) {
+            if (m.hp > 0) continue;
+            if (!m.administrativeDeath && m.isAlly && !m.leader && !m.leaderlessAfterDemotion && !m.doesNotResurrect
+                && !m.isClone && (!m.hasBehavior('MONST_INANIMATE') || (monsterData as MonsterData[])
+                    .find(data => data.id === m.typeId)?.abilityFlags?.includes('MA_ENTER_SUMMONS'))
                 && !this.purgatory.includes(m)) this.purgatory.unshift(m);
-        };
-        for (const m of [...this.monsters]) processDeath(m);
-        for (const m of [...this.dormantMonsters]) processDeath(m);
+        }
         this.monsters = this.monsters.filter(m => m.hp > 0);
         this.dormantMonsters = this.dormantMonsters.filter(m => m.hp > 0);
     }
@@ -7778,7 +7773,7 @@ export class Game {
     /** CE Time.c:2561-2564: demotion detaches bound followers; they die
      * at the next player turn, with ordinary death effects. ALLY is exempt. */
     private killOrphanedBoundFollowers(): void {
-        for (const m of this.monsters) {
+        for (const m of [...this.monsters]) {
             if (m.hp > 0 && m.boundToLeader && !m.leader && !m.isAlly) m.takeDamage(m.hp, true);
         }
     }
@@ -8030,7 +8025,7 @@ export class Game {
                 driftFloorItems: () => game.driftFloorItems(),
                 commuteFloorItems: () => game.commuteFloorItems(),
                 killOrphanedBoundFollowers: () => game.killOrphanedBoundFollowers(),
-                removeDeadMonsters: () => game.removeDeadMonsters(),
+                removeDeadMonsters: (sweep) => game.removeDeadMonsters(sweep),
                 syncEquipmentStatuses: () => game.syncEquipmentStatuses(),
                 updateVision: () => game.updateVision(),
                 calculateStealthRange: () => game.calculateStealthRange(),
@@ -8975,7 +8970,7 @@ export class Game {
             this.applyEntanglementFromTerrain(entity);
             this.resolveExplosionDamage(entity);
             // CE Time.c:370/392 returns on lethal contact before gas statuses.
-            if (instantTarget && entity.hp <= 0) return;
+            if (entity.hp <= 0) return;
 
             if (entity !== this.player || !deferPlayerNausea) this.applyNauseaFromTerrain(entity);
 
@@ -9002,6 +8997,8 @@ export class Game {
                     }
                 }
             }
+
+            if (entity.hp <= 0) return;
 
             // Gas —— G-3 重裁（F-0 §5.3-10/11）：
             // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的
@@ -9102,7 +9099,7 @@ export class Game {
             return;
         }
         checkEntity(this.player, 'Player');
-        for (const m of this.monsters) {
+        for (const m of [...this.monsters]) {
             checkEntity(m, m.name);
         }
 
@@ -9127,7 +9124,9 @@ export class Game {
     }
 
     public getMonsterAt(x: number, y: number): Monster | undefined {
-        return this.monsters.find(m => m.loc.x === x && m.loc.y === y && m.hp > 0);
+        // CE clears HAS_MONSTER only after item placement and the death DF.
+        return this.monsters.find(m => m.loc.x === x && m.loc.y === y
+            && (m.hp > 0 || (dyingMonsters.has(m) && !m.deathProcessed)));
     }
 
     // ══ V-2b-5：休眠子系统（CE Monsters.c:4156-4210 + Architect.c:1655-1661/
@@ -9223,6 +9222,7 @@ export class Game {
 
     private dungeonFeatureDescription(description: string): string {
         switch (description) {
+            case "The corpse detonates with terrifying force!": return i18next.t('df.mutation_explosion', { defaultValue: 'The corpse detonates with terrifying force!' });
             case "Poisonous spores burst from the corpse!": return i18next.t('df.lichen_corpse', { defaultValue: 'Poisonous spores burst from the corpse!' });
             case "An old friend emerges from a bloom of sacred light!": return i18next.t('df.message_1', { defaultValue: "An old friend emerges from a bloom of sacred light!" });
             case "a cloud of caustic gas sprays upward from the floor!": return i18next.t('df.message_2', { defaultValue: "a cloud of caustic gas sprays upward from the floor!" });
@@ -9328,60 +9328,23 @@ export class Game {
         const candidate = [...this.purgatory].sort((a, b) =>
             b.totalPowerCount - a.totalPowerCount || speciesOrder(b) - speciesOrder(a))[0];
         if (!candidate) return false;
-        const valid = (x: number, y: number): boolean => {
-            const cell = this.grid.getCell(x, y);
-            return !!cell && cell.isPassable && !(cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))
-                && !this.getMonsterAt(x, y) && (this.player.loc.x !== x || this.player.loc.y !== y);
-        };
-        if (!this.grid.getCell(origin.x, origin.y)) return false;
-        // CE getQualifyingPathLocNear: shortest walk through non-blocking,
-        // non-harmful terrain; choose uniformly among equally near cells.
-        const cost = allocShortGrid(this.grid.width, this.grid.height, 1);
-        const dist = allocShortGrid(this.grid.width, this.grid.height, MAX_DISTANCE);
-        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
-            if (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN)) cost[x]![y] = -1;
-        }
-        cost[origin.x]![origin.y] = 1;
-        dist[origin.x]![origin.y] = 1;
-        new DijkstraMap(this.grid.width, this.grid.height).batchScan(dist, cost, true);
-        let best = MAX_DISTANCE;
-        const ties: Pos[] = [];
-        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
-            const d = dist[x]![y]!;
-            if (d >= MAX_DISTANCE || d > best || !valid(x, y)) continue;
-            if (d < best) { best = d; ties.length = 0; }
-            ties.push({ x, y });
-        }
-        let loc: Pos | null = ties.length ? ties[rng.randRange(0, ties.length - 1)]! : null;
-        // CE's path search falls back to a distance-only search when no
-        // reachable qualifying tile exists.
-        for (let radius = 0; radius < Math.max(this.grid.width, this.grid.height) && !loc; radius++) {
-            const ring: Pos[] = [];
-            for (let dx = -radius; dx <= radius; dx++) for (let dy = -radius; dy <= radius; dy++) {
-                if (Math.max(Math.abs(dx), Math.abs(dy)) !== radius) continue;
-                const x = origin.x + dx, y = origin.y + dy;
-                if (valid(x, y)) ring.push({ x, y });
-            }
-            if (ring.length) loc = ring[rng.randRange(0, ring.length - 1)]!;
-        }
+        const ties = qualifyingPathCandidates(this.grid, origin, T_PATHING_BLOCKER | T_HARMFUL_TERRAIN, 0,
+            (x, y) => !!this.getMonsterAt(x, y) || (this.player.x === x && this.player.y === y));
+        const loc = ties.length ? ties[rng.randRange(0, ties.length - 1)]! : null;
         if (!loc) return false;
         this.purgatory.splice(this.purgatory.indexOf(candidate), 1);
         candidate.loc = loc;
+        dyingMonsters.delete(candidate);
+        delete candidate.administrativeDeath;
+        candidate.restoreDeathAppearance();
         candidate.deathProcessed = false;
         candidate.deathEffectTriggered = false;
         candidate.falling = false;
         if (!candidate.hasBehavior('MONST_FIERY')) (candidate.statusDurations as Record<string, number>).burning = 0;
         candidate.setStatusDuration('discordant', 0);
         candidate.heal(100, true);
-        if (candidate.hasAbility('MA_ENTER_SUMMONS')) {
-            const form = (monsterData as MonsterData[]).find(data => data.id === candidate.typeId);
-            if (form) {
-                candidate.abilityFlags = new Set(form.abilityFlags ?? []);
-                candidate.behaviorFlags = new Set(form.behaviorFlags ?? []);
-                candidate.syncFlagDerivedStatuses();
-            }
-            candidate.wasNegated = false;
-        }
+        const form = (monsterData as MonsterData[]).find(data => data.id === candidate.typeId);
+        if (form?.abilityFlags?.includes('MA_ENTER_SUMMONS')) candidate.restoreSummonerForm(form);
         this.monsters.unshift(candidate);
         this.needsRender = true;
         return true;
@@ -9959,9 +9922,7 @@ export class Game {
             if (home) occupant.loc = home; // CE relocation has no terrain-entry callback.
             else {
                 // CE administrative death: no blood, death DF, loot or passenger.
-                occupant.hp = 0; occupant.deathProcessed = true; occupant.deathEffectTriggered = true;
-                occupant.carriedItem = null; occupant.carriedMonster = null;
-                this.demoteMonsterFromLeadership(occupant);
+                this.killMonster(occupant, true);
             }
         }
         if (!this.canDisplaceCreature(caster, landing)) return false;

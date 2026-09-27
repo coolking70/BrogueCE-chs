@@ -1,0 +1,30 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/u_24_i18n.test.ts --testNamePattern X2k|original C|pins CE|目录|catalog|i18n --maxWorkers=2 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/catalog-repaired.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests | 26 skipped) 51ms
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (13 tests) 8208ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  613ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  624ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  586ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  1095ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  881ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  581ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  750ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  561ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  823ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  785ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  873ms
+
+ Test Files  2 passed (2)
+      Tests  18 passed | 26 skipped (44)
+   Start at  13:07:11
+   Duration  10.18s (transform 1.82s, setup 0ms, import 3.59s, tests 8.26s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/catalog-repaired.json

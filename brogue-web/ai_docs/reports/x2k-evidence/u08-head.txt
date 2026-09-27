@@ -1,0 +1,15 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_08_terrain_bolts.test.ts -t new closed terrain set --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/u08-head.json
+
+
+ RUN  v4.1.11 /private/tmp/x2k-head/brogue-web
+
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests | 31 skipped) 4ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 31 skipped (32)
+   Start at  13:47:04
+   Duration  1.57s (transform 815ms, setup 0ms, import 1.42s, tests 4ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/u08-head.json

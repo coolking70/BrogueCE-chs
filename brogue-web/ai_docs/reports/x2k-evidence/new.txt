@@ -1,0 +1,263 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/new.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x2k_lifecycle.test.ts (11 tests | 2 failed) 5145ms
+     × drops before the DF; dying reentry is inert; list/purgatory move only at sweep 533ms
+     × nested explosive deaths finish before the outer leadership demotion 422ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  410ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  429ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  423ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  544ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  689ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  426ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  390ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  442ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  434ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > drops before the DF; dying reentry is inert; list/purgatory move only at sweep
+RangeError: Maximum call stack size exceeded
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > nested explosive deaths finish before the outer leadership demotion
+AssertionError: expected [ …(3) ] to deeply equal [ …(2) ]
+
+- Expected
++ Received
+
+@@ -204,6 +204,209 @@
+      "typeId": "bloat",
+      "wasNegated": false,
+      "waypointAlreadyVisited": null,
+      "weaknessAmount": 0,
+    },
++   Monster {
++     "abilities": Set {},
++     "abilityFlags": Set {},
++     "absorbBehavior": false,
++     "absorptionBolt": 0,
++     "absorptionFlags": null,
++     "accuracy": 80,
++     "administrativeDeath": undefined,
++     "approaching": 0,
++     "attackSpeed": 100,
++     "baseAttackSpeed": 100,
++     "baseMoveSpeed": 100,
++     "behaviorFlags": Set {},
++     "bolts": [],
++     "boundToLeader": false,
++     "boundToPlayer": false,
++     "carriedItem": undefined,
++     "carriedMonster": null,
++     "char": "%",
++     "color": 8912896,
++     "corpseAbsorptionCounter": 0,
++     "creatureMode": 0,
++     "damageClumping": 1,
++     "damageString": "1d3",
++     "deathAppearance": {
++       "char": "r",
++       "color": 11163187,
++     },
++     "deathEffectTriggered": false,
++     "deathProcessed": true,
++     "defense": 0,
++     "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
++     "doesNotResurrect": false,
++     "doesNotTrackLeader": false,
++     "dominated": false,
++     "entersLevelIn": 0,
++     "falling": false,
++     "givenUpOnScent": false,
++     "goldDropChance": 0,
++     "hp": 0,
++     "id": 23,
++     "isAbsorbing": false,
++     "isAlly": false,
++     "isCaged": false,
++     "isClone": false,
++     "isDormant": false,
++     "itemDropChance": 0,
++     "lastSeenPlayerAt": null,
++     "leader": Monster {
++       "abilities": Set {},
++       "abilityFlags": Set {
++         "MA_KAMIKAZE",
++         "MA_DF_ON_DEATH",
++       },
++       "absorbBehavior": false,
++       "absorptionBolt": 0,
++       "absorptionFlags": null,
++       "accuracy": 100,
++       "administrativeDeath": undefined,
++       "approaching": 0,
++       "attackSpeed": 100,
++       "baseAttackSpeed": 100,
++       "baseMoveSpeed": 100,
++       "behaviorFlags": Set {
++         "MONST_FLIES",
++         "MONST_FLITS",
++       },
++       "bolts": [],
++       "boundToLeader": false,
++       "boundToPlayer": false,
++       "carriedItem": undefined,
++       "carriedMonster": null,
++       "char": "%",
++       "color": 8912896,
++       "corpseAbsorptionCounter": 0,
++       "creatureMode": 0,
++       "damageClumping": 0,
++       "damageString": "0d1",
++       "deathAppearance": {
++         "char": "b",
++         "color": 13421772,
++       },
++       "deathEffectTriggered": true,
++       "deathProcessed": true,
++       "defense": 0,
++       "description": "这种罕见的浮球亚种只不过是一层薄膜包裹着一个充满高爆气体的囊泡。最轻微的刺激都会导致它以壮观而致命的方式破裂。",
++       "doesNotResurrect": false,
++       "doesNotTrackLeader": false,
++       "dominated": false,
++       "entersLevelIn": 0,
++       "falling": false,
++       "givenUpOnScent": false,
++       "goldDropChance": 0,
++       "hp": 0,
++       "id": 21,
++       "isAbsorbing": false,
++       "isAlly": false,
++       "isCaged": false,
++       "isClone": false,
++       "isDormant": false,
++       "itemDropChance": 0,
++       "lastSeenPlayerAt": null,
++       "leader": null,
++       "leaderlessAfterDemotion": false,
++       "loc": {
++         "x": 7,
++         "y": 7,
++       },
++       "machineHome": 0,
++       "mapToMe": null,
++       "markedForSacrifice": false,
++       "maxHp": 10,
++       "maxShield": 0,
++       "maxStatus": {},
++       "movementSpeed": 100,
++       "mutation": undefined,
++       "name": undefined,
++       "newPowerCount": 0,
++       "onHitChance": 0,
++       "onHitDuration": 0,
++       "onHitStatus": undefined,
++       "poisonAmount": 0,
++       "polymorphKeepsSpeed": false,
++       "polymorphed": false,
++       "preplaced": false,
++       "regenCounter": 0,
++       "regenTurns": 5,
++       "safetySnapshot": null,
++       "seized": false,
++       "seizing": false,
++       "spawnLoc": {
++         "x": 0,
++         "y": 0,
++       },
++       "state": 1,
++       "statusDurations": {
++         "levitating": 1000,
++       },
++       "statusImmunities": Set {},
++       "statusResistTurns": {},
++       "submerged": false,
++       "targetCorpseLoc": null,
++       "targetCorpseName": "",
++       "targetWaypointIndex": -1,
++       "ticksUntilTurn": 100,
++       "totalPowerCount": 0,
++       "typeId": "explosive_bloat",
++       "wasNegated": false,
++       "waypointAlreadyVisited": null,
++       "weaknessAmount": 0,
++     },
++     "leaderlessAfterDemotion": false,
++     "loc": {
++       "x": 10,
++       "y": 7,
++     },
++     "machineHome": 0,
++     "mapToMe": null,
++     "markedForSacrifice": false,
++     "maxHp": 6,
++     "maxShield": 0,
++     "maxStatus": {},
++     "movementSpeed": 100,
++     "mutation": undefined,
++     "name": undefined,
++     "newPowerCount": 0,
++     "onHitChance": 0,
++     "onHitDuration": 0,
++     "onHitStatus": undefined,
++     "poisonAmount": 0,
++     "polymorphKeepsSpeed": false,
++     "polymorphed": false,
++     "preplaced": false,
++     "regenCounter": 0,
++     "regenTurns": 20,
++     "safetySnapshot": null,
++     "seized": false,
++     "seizing": false,
++     "spawnLoc": {
++       "x": 0,
++       "y": 0,
++     },
++     "state": 1,
++     "statusDurations": {
++       "explosion_immunity": 5,
++     },
++     "statusImmunities": Set {
++       "confused",
++     },
++     "statusResistTurns": {
++       "paralyzed": 1,
++     },
++     "submerged": false,
++     "targetCorpseLoc": null,
++     "targetCorpseName": "",
++     "targetWaypointIndex": -1,
++     "ticksUntilTurn": 100,
++     "totalPowerCount": 0,
++     "typeId": "rat",
++     "wasNegated": false,
++     "waypointAlreadyVisited": null,
++     "weaknessAmount": 0,
++   },
+  ]
+
+ ❯ src/test/x2k_lifecycle.test.ts:54:49
+     52|         a.takeDamage(a.hp, true);
+     53|         expect(b.hp).toBe(0); expect(b.deathProcessed).toBe(true);
+     54|         expect(drops.mock.calls.map(c => c[0])).toEqual([a, b]); expec…
+       |                                                 ^
+     55|         expect(g.environment.gasGrid[8]![7]!.type).toBe(GasType.POISON…
+     56|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 9 passed (11)
+   Start at  12:55:50
+   Duration  6.90s (transform 911ms, setup 0ms, import 1.59s, tests 5.14s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/new.json

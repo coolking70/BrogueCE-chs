@@ -19,7 +19,7 @@ export function wakeMonster(g: Game, m: Monster, stealthRange: number): void {
     if (!allyState(m)) alertMonster(g, m);
     m.ticksUntilTurn = 100;
     for (const mate of g.monsters) {
-        if (mate === m || !monstersAreTeammates(m, mate) || mate.creatureMode !== MonsterMode.NORMAL) continue;
+        if (mate.hp <= 0 || mate === m || !monstersAreTeammates(m, mate) || mate.creatureMode !== MonsterMode.NORMAL) continue;
         if (!allyState(mate) && (mate.state === MonsterState.ASLEEP || mate.state === MonsterState.WANDERING)) {
             mate.ticksUntilTurn = Math.max(100, mate.ticksUntilTurn);
         }

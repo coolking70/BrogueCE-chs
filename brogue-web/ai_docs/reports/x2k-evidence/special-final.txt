@@ -1,0 +1,30 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/special-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (14 tests) 7366ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  492ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  488ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  797ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  530ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  546ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  601ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  766ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  568ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  736ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  675ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  565ms
+   ✓ reports loss immediately only for an unseen, unbound ally without a passenger  570ms
+
+ Test Files  1 passed (1)
+      Tests  14 passed (14)
+   Start at  13:12:11
+   Duration  9.46s (transform 955ms, setup 0ms, import 1.92s, tests 7.37s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/special-final.json

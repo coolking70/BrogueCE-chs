@@ -282,25 +282,7 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
 // 继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。
 // ---------------------------------------------------------------------------
 describe('P1-24 验收 2：水中死亡的死亡地形照常触发（DF 内容）；岩浆死亡不抑制死亡 DF 闸门（P1-28 后留痕）', () => {
-    it('留痕（P1-28 验收打回后重写，原前提不可达）：岩浆致死的死亡 DF 闸门不被抑制，' +
-        '载体为"带 MA_DF_ON_DEATH 且不飞"的怪。原载体"岩浆里的 explosive bloat 烧死后' +
-        '照样爆燃"考的机制是「岩浆致死走 killCreature(monst, false)（Time.c:218），' +
-        '死亡地形不被抑制」；P1-28 的 initializeStatus 翻译层使该前提不可达——deathDF ' +
-        '内容已在 web 实现的只有 bloat / explosive_bloat（Globals.c:1037-1038 / ' +
-        '1084-1085），二者全带 MONST_FLIES，经翻译层（Monsters.c:3904-3928）派生永久' +
-        '悬浮，CE 里永远不可能死于岩浆；CE 唯一不飞的 MA_DF_ON_DEATH 怪 vampire ' +
-        '(Globals.c:1131-1132) 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层' +
-        '（P4-4 登记未实现），"照样爆燃"式的 DF 内容断言无载体。' +
-        '本条改为三段：①数据层锁死不可达的全部前提（旗标来源、翻译层派生、catalog ' +
-        '不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动' +
-        '即在此翻红，提示前提可能恢复可达；②可达半边继续锁原机制：explosive 变异 ' +
-        'troll（D11-15 可自然出现、不飞、可走入岩浆——CE 完全可达的状态）与 vampire ' +
-        '被岩浆烧死后 deathEffectTriggered 必须翻 true——"岩浆里就不用触发死亡 DF"的' +
-        '错误实现在此挂掉；③现状留痕：二者的 DF 内容（DF_MUTATION_EXPLOSION / ' +
-        'DF_BLOOD_EXPLOSION）web 尚无实现分支（triggerDeathFeatures 仅按 typeId 认 ' +
-        'bloat/explosive_bloat 两分支），故无毒气、无点燃——此负向断言在内容实现之日' +
-        '翻红，届时应改回真实内容断言。"死亡地形不被地形抑制"的 DF 内容半边由下一条' +
-        '深水爆燃继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。', () => {
+    it('P1-28 可达载体：岩浆致死照常触发爆炸变异/吸血鬼死亡 DF；飞行原种仍不受岩浆致死', () => {
         // ---- ① 数据层：不可达前提的完整锁死 ----
         // A1：deathDF 内容已实现的两只怪全带 MONST_FLIES，且构造即得永久悬浮
         //     （旗标来源与翻译层派生，各锁一半）
@@ -340,11 +322,11 @@ describe('P1-24 验收 2：水中死亡的死亡地形照常触发（DF 内容�
         priv(game).triggerDeathFeatures();
         expect(carrier.deathEffectTriggered).toBe(true); // 岩浆致死不抑制死亡 DF 闸门
 
-        // ---- ③ 现状留痕：DF_MUTATION_EXPLOSION web 无实现——无毒气、无点燃。
-        //         负向断言：内容实现之日翻红，届时改回真实内容断言。----
-        expect(game.grid.getCell(7, 6)?.isBurning).toBe(false);
+        // X2k: CE Globals.c:659 DF_MUTATION_EXPLOSION is now implemented.
+        // Keep the same reachable lava fixture; replace only the old absence premise.
+        expect(game.grid.getCell(7, 6)?.isBurning).toBe(true);
         for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]] as Array<[number, number]>) {
-            expect(game.grid.getCell(7 + dx, 6 + dy)?.isBurning).toBe(false);
+            expect(game.grid.getCell(7 + dx, 6 + dy)?.isBurning).toBe(true);
         }
         // gasGrid 是预分配网格：空位 = density 0（GasType.NONE），不缺席
         expect(game.environment.gasGrid[6]?.[7]?.density ?? 0).toBe(0);
@@ -362,7 +344,7 @@ describe('P1-24 验收 2：水中死亡的死亡地形照常触发（DF 内容�
         expect(vampire.hp).toBe(0);
         priv(game2).triggerDeathFeatures();
         expect(vampire.deathEffectTriggered).toBe(true);     // 闸门同样不被岩浆抑制
-        expect(game2.grid.getCell(7, 6)?.isBurning).toBe(false); // 血迹 DF 同样未实现
+        expect(game2.grid.getCell(7, 6)?.isBurning).toBe(false); // 血迹 DF 不产生火焰
     });
 
     it('对抗性④（续，P1-27 载体重写）：深水里的 explosive bloat 被玩家砍死后照样爆燃——' +
@@ -417,6 +399,9 @@ describe('P1-24 验收 3：对照组——正常战斗致死不受影响', () =>
         const player = game.player;
         player.loc.x = 4; player.loc.y = 5;
 
+        // X2k: observe the killing action before the next gas-diffusion block.
+        // Death is now immediate, so a full environmental tick may empty this cell.
+        priv(game).ticksTillUpdateEnvironment = 200;
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
 
         // 击杀落账

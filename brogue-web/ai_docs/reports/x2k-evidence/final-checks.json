@@ -1,0 +1,146 @@
+{
+  "checkedAt": "2026-09-27T08:03:18.648315+00:00",
+  "head": "ffc750bc3d40b2a340fee1f57cd05a7c5063f4c3",
+  "commands": {
+    "build": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-27T07:26:05.534Z",
+      "seconds": 6.326,
+      "exit": 0,
+      "inputs": 942,
+      "changedInputs": [],
+      "discoveredFiles": 214,
+      "changedDiscovery": []
+    },
+    "full": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2k-evidence/full-final.json"
+      ],
+      "start": "2026-09-27T07:26:11.926Z",
+      "seconds": 1941.146,
+      "exit": 0,
+      "inputs": 942,
+      "changedInputs": [],
+      "discoveredFiles": 214,
+      "changedDiscovery": [],
+      "files": 213,
+      "passed": 3947,
+      "failed": 0,
+      "pending": 8,
+      "todo": 5,
+      "failedSuites": [],
+      "failures": []
+    },
+    "drift": {
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2k-evidence/drift-final.json"
+      ],
+      "start": "2026-09-27T07:58:33.151Z",
+      "seconds": 26.218,
+      "exit": 0,
+      "inputs": 942,
+      "changedInputs": [],
+      "discoveredFiles": 214,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    },
+    "deep": {
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/test/u_26a_deep_baseline.test.ts",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x2k-evidence/deep-final.json"
+      ],
+      "start": "2026-09-27T07:58:59.435Z",
+      "seconds": 41.942,
+      "exit": 0,
+      "inputs": 942,
+      "changedInputs": [],
+      "discoveredFiles": 214,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    }
+  },
+  "identicalFinalInputs": true,
+  "frozenInputs": 942,
+  "currentChanges": [],
+  "identicalDiscovery": true,
+  "discoveredFiles": 214,
+  "coveredFiles": 214,
+  "coverage": {
+    "R": {
+      "files": 203,
+      "missing": []
+    },
+    "union": {
+      "files": 209,
+      "missing": []
+    },
+    "sourceReaders": {
+      "files": 67,
+      "missing": []
+    },
+    "aiLifecycle": {
+      "files": 85,
+      "missing": []
+    },
+    "required": {
+      "files": 49,
+      "missing": []
+    }
+  },
+  "protectedFiles": 12,
+  "changedProtected": [],
+  "unmodifiedGuards": {
+    "src/test/u_00_new_run.test.ts": true,
+    "src/test/u_03_whole_run_snapshot.test.ts": true
+  },
+  "negativeVariants": 10,
+  "allNegativeVariantsDetected": true,
+  "diffCheckPassed": true,
+  "indexEmpty": true,
+  "lineEndings": {
+    "textFilesChecked": 167,
+    "filesContainingCRLF": []
+  },
+  "brokenReportLinks": [],
+  "emptyAuditDirectoriesRemoved": [
+    "ai_docs/reports/x2k-evidence",
+    "ai_docs/reports",
+    "ai_docs"
+  ],
+  "finalSourceStillFrozen": true
+}

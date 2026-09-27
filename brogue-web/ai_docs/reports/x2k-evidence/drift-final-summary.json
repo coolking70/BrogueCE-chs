@@ -1,0 +1,26 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "test:drift",
+    "--",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2k-evidence/drift-final.json"
+  ],
+  "start": "2026-09-27T07:58:33.151Z",
+  "seconds": 26.218,
+  "exit": 0,
+  "inputs": 942,
+  "changedInputs": [],
+  "discoveredFiles": 214,
+  "changedDiscovery": [],
+  "files": 1,
+  "passed": 1,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "failedSuites": [],
+  "failures": []
+}

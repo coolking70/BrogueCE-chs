@@ -1,0 +1,69 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_00_new_run.test.ts src/test/u_03_whole_run_snapshot.test.ts src/test/u_01_entity_snapshot.test.ts src/test/w_19_polymorph.test.ts src/test/w_20_cloning.test.ts src/test/x2k_lifecycle.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/restoration-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2k_lifecycle.test.ts > restored vampire info replaces explosive death DF across JSON, retaining mutation bookkeeping
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_00_new_run.test.ts > U00 full new-run equivalence > title → normal: reused A→B equals fresh B, whole graph and both RNG streams
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_20_cloning.test.ts (57 tests) 2282ms
+     ✓ JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id  348ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (16 tests) 3564ms
+   ✓ restored vampire info replaces explosive death DF across JSON, retaining mutation bookkeeping  573ms
+   ✓ restored vampire info replaces infested death DF across JSON, retaining mutation bookkeeping  533ms
+ ✓ src/test/w_19_polymorph.test.ts (53 tests) 1127ms
+     ✓ JSON round-trip retains current species, speed, item identity, hostile relation, and later death  301ms
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 14114ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2459ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2257ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1826ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1063ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  1061ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  1073ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  671ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  690ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  492ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1191ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  364ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  903ms
+(node:11118) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_00_new_run.test.ts (17 tests) 16950ms
+     ✓ title → normal: reused A→B equals fresh B, whole graph and both RNG streams  1494ms
+     ✓ death → normal: reused A→B equals fresh B, whole graph and both RNG streams  1374ms
+     ✓ restart → normal: reused A→B equals fresh B, whole graph and both RNG streams  1248ms
+     ✓ seek → normal: reused A→B equals fresh B, whole graph and both RNG streams  1007ms
+     ✓ title → easy: reused A→B equals fresh B, whole graph and both RNG streams  988ms
+     ✓ death → easy: reused A→B equals fresh B, whole graph and both RNG streams  973ms
+     ✓ restart → easy: reused A→B equals fresh B, whole graph and both RNG streams  990ms
+     ✓ seek → easy: reused A→B equals fresh B, whole graph and both RNG streams  1068ms
+     ✓ title → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1069ms
+     ✓ death → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1009ms
+     ✓ restart → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1149ms
+     ✓ seek → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1050ms
+     ✓ title → test: reused A→B equals fresh B, whole graph and both RNG streams  852ms
+     ✓ death → test: reused A→B equals fresh B, whole graph and both RNG streams  741ms
+     ✓ restart → test: reused A→B equals fresh B, whole graph and both RNG streams  712ms
+     ✓ seek → test: reused A→B equals fresh B, whole graph and both RNG streams  722ms
+     ✓ old grid cannot wake B; current grid wakes exactly once after repeated starts  504ms
+
+ Test Files  5 passed (5)
+      Tests  157 passed (157)
+   Start at  13:57:20
+   Duration  17.93s (transform 1.42s, setup 0ms, import 3.97s, tests 38.04s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/restoration-final.json

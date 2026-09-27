@@ -1,0 +1,72 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_00_new_run.test.ts src/test/u_03_whole_run_snapshot.test.ts src/test/u_08_terrain_bolts.test.ts src/test/x2k_lifecycle.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/lifecycle-repaired.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_00_new_run.test.ts > U00 full new-run equivalence > title → normal: reused A→B equals fresh B, whole graph and both RNG streams
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (14 tests) 2909ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  357ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  363ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  373ms
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests) 7641ms
+     ✓ real spider and dryad always cast, pay 400/100 ticks, and reject sleeping/hidden/blocked targets  752ms
+     ✓ no target => no ticks/RNG; repeated web does not recast while occupied terrain holds  371ms
+     ✓ SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG  607ms
+     ✓ ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG  449ms
+     ✓ vines immediately promote under player during fill, levitating=true  333ms
+     ✓ refresh occurs during fill, not after it; nested grass fill cannot overwrite stronger vines  329ms
+     ✓ player walking and magical placement promote vines, monsters keep them  316ms
+     ✓ current snapshot retains new terrain/occupancy, next contact promotes and no learning is installed  540ms
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 15318ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2452ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2319ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2225ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1370ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  1171ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  1070ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  774ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  781ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  592ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1226ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  373ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  889ms
+(node:10607) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_00_new_run.test.ts (17 tests) 18668ms
+     ✓ title → normal: reused A→B equals fresh B, whole graph and both RNG streams  1564ms
+     ✓ death → normal: reused A→B equals fresh B, whole graph and both RNG streams  1425ms
+     ✓ restart → normal: reused A→B equals fresh B, whole graph and both RNG streams  1191ms
+     ✓ seek → normal: reused A→B equals fresh B, whole graph and both RNG streams  1364ms
+     ✓ title → easy: reused A→B equals fresh B, whole graph and both RNG streams  1208ms
+     ✓ death → easy: reused A→B equals fresh B, whole graph and both RNG streams  1225ms
+     ✓ restart → easy: reused A→B equals fresh B, whole graph and both RNG streams  1209ms
+     ✓ seek → easy: reused A→B equals fresh B, whole graph and both RNG streams  1140ms
+     ✓ title → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1124ms
+     ✓ death → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1177ms
+     ✓ restart → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1133ms
+     ✓ seek → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1041ms
+     ✓ title → test: reused A→B equals fresh B, whole graph and both RNG streams  811ms
+     ✓ death → test: reused A→B equals fresh B, whole graph and both RNG streams  830ms
+     ✓ restart → test: reused A→B equals fresh B, whole graph and both RNG streams  895ms
+     ✓ seek → test: reused A→B equals fresh B, whole graph and both RNG streams  830ms
+     ✓ old grid cannot wake B; current grid wakes exactly once after repeated starts  501ms
+
+ Test Files  4 passed (4)
+      Tests  77 passed (77)
+   Start at  13:50:01
+   Duration  19.76s (transform 1.50s, setup 0ms, import 4.05s, tests 44.54s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/lifecycle-repaired.json

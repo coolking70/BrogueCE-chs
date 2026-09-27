@@ -1,0 +1,591 @@
+{
+  "errors": [],
+  "rows": [
+    {
+      "label": "before",
+      "hp": 100,
+      "monsters": [
+        {
+          "id": 27,
+          "type": "bloat",
+          "hp": 4,
+          "loc": {
+            "x": 10,
+            "y": 8
+          },
+          "ticks": 10000,
+          "processed": false
+        }
+      ],
+      "purgatory": [],
+      "items": [],
+      "gas": {
+        "type": 0,
+        "density": 0
+      },
+      "text": {
+        "seed": "2160",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "膨胀怪",
+            "x": 10,
+            "y": 8,
+            "hp": 4,
+            "maxHp": 4,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 0,
+            "damage": "0d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLIES",
+              "MONST_FLITS"
+            ],
+            "abilityFlags": [
+              "MA_KAMIKAZE",
+              "MA_DF_ON_DEATH"
+            ],
+            "bolts": [],
+            "typeId": "bloat",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "label": "immediate",
+      "hp": 100,
+      "monsters": [
+        {
+          "id": 29,
+          "type": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 10,
+            "y": 8
+          },
+          "ticks": 200,
+          "processed": false
+        },
+        {
+          "id": 27,
+          "type": "bloat",
+          "hp": 0,
+          "loc": {
+            "x": 10,
+            "y": 8
+          },
+          "ticks": 10000,
+          "processed": true
+        }
+      ],
+      "purgatory": [],
+      "items": [
+        {
+          "id": 28,
+          "loc": {
+            "x": 10,
+            "y": 8
+          }
+        }
+      ],
+      "gas": {
+        "type": 34,
+        "density": 2000
+      },
+      "text": {
+        "seed": "2160",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 10,
+            "y": 8,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 200,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 10,
+            "y": 8
+          }
+        ]
+      }
+    },
+    {
+      "label": "swept",
+      "hp": 100,
+      "monsters": [
+        {
+          "id": 29,
+          "type": "rat",
+          "hp": 5,
+          "loc": {
+            "x": 10,
+            "y": 8
+          },
+          "ticks": 100,
+          "processed": false
+        }
+      ],
+      "purgatory": [
+        {
+          "id": 27,
+          "type": "bloat",
+          "char": "%"
+        }
+      ],
+      "items": [
+        {
+          "id": 28,
+          "loc": {
+            "x": 10,
+            "y": 8
+          }
+        }
+      ],
+      "gas": {
+        "type": 34,
+        "density": 222
+      },
+      "text": {
+        "seed": "2160",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 10,
+            "y": 8,
+            "hp": 5,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 10,
+            "y": 8
+          }
+        ]
+      }
+    },
+    {
+      "label": "restored",
+      "hp": 100,
+      "monsters": [
+        {
+          "id": 29,
+          "type": "rat",
+          "hp": 5,
+          "loc": {
+            "x": 10,
+            "y": 8
+          },
+          "ticks": 100,
+          "processed": false
+        }
+      ],
+      "purgatory": [
+        {
+          "id": 27,
+          "type": "bloat",
+          "char": "%"
+        }
+      ],
+      "items": [
+        {
+          "id": 28,
+          "loc": {
+            "x": 10,
+            "y": 8
+          }
+        }
+      ],
+      "gas": {
+        "type": 34,
+        "density": 222
+      },
+      "text": {
+        "seed": "2160",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 10,
+            "y": 8,
+            "hp": 5,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 10,
+            "y": 8
+          }
+        ]
+      }
+    },
+    {
+      "label": "resurrected",
+      "hp": 100,
+      "monsters": [
+        {
+          "id": 29,
+          "type": "rat",
+          "hp": 4,
+          "loc": {
+            "x": 11,
+            "y": 9
+          },
+          "ticks": 100,
+          "processed": false
+        }
+      ],
+      "purgatory": [
+        {
+          "id": 27,
+          "type": "bloat",
+          "char": "%"
+        }
+      ],
+      "items": [
+        {
+          "id": 28,
+          "loc": {
+            "x": 10,
+            "y": 8
+          }
+        }
+      ],
+      "gas": {
+        "type": 34,
+        "density": 110
+      },
+      "text": {
+        "seed": "2160",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 9,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 11,
+            "y": 9,
+            "hp": 4,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 10,
+            "y": 8
+          }
+        ]
+      }
+    }
+  ]
+}

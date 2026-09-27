@@ -169,7 +169,7 @@ describe('W-19 save and actual submission',()=>{
   const g=live(),m=mob(g),leader=mob(g,'rat',15,7),child=mob(g,'rat',16,7);m.leader=leader;child.leader=m;m.statusDurations={hasted:8};m.poisonAmount=4;m.carriedItem=ItemLoader.spawnKey('iron_key',9,5)!;m.carriedItem.id=900000;m.machineHome=72;m.targetWaypointIndex=2;m.deathEffectTriggered=false;
   cast(g,m,'bloat');const saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);const restored=g.monsters.find(x=>x.id===m.id)!;
   expect(restored).toMatchObject({typeId:'bloat',polymorphed:true,moveSpeed:50,attackSpeed:50,ticksUntilTurn:101,poisonAmount:4,machineHome:72});expect(restored.leader?.id).toBe(leader.id);expect(g.monsters.find(x=>x.id===child.id)!.leader).toBe(restored);expect(restored.carriedItem!.id).toBe(900000);expect(new Monster(0,0,data('rat')).id).toBeGreaterThan(900000);
-  restored.tickStatuses();expect(restored.moveSpeed).toBe(50);restored.takeDamage(restored.hp,true);const gas=vi.spyOn(g.environment,'addGas');(g as any).triggerDeathFeatures();(g as any).removeDeadMonsters();expect(gas).toHaveBeenCalledOnce();expect(g.items[0]!.id).toBe(900000);
+  restored.tickStatuses();expect(restored.moveSpeed).toBe(50);const gas=vi.spyOn(g.environment,'addGas');restored.takeDamage(restored.hp,true);(g as any).triggerDeathFeatures();(g as any).removeDeadMonsters();expect(gas).toHaveBeenCalledOnce();expect(g.items[0]!.id).toBe(900000);
 
  });
  it('tagged dormant list and test-room reconstruction preserve form and references',()=>{

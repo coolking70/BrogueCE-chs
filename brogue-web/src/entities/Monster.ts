@@ -1,3 +1,4 @@
+import { notifyMonsterDeath } from '../engine/Core/MonsterLifecycle';
 import { updateMonsterState, wanderTowardLastSeen } from '../engine/Combat/MonsterAI';
 /**
  * src/entities/Monster.ts
@@ -119,9 +120,9 @@ function eligibleForCombatBuff(caster: Monster, target: Creature, game: Game): b
  */
 export function countMinions(caster: Monster, allMonsters: readonly Monster[]): number {
     if (caster.isAlly) {
-        return allMonsters.filter(m => m.isAlly).length;
+        return allMonsters.filter(m => m.hp > 0 && m.isAlly).length;
     }
-    return allMonsters.filter(m => m.leader === caster).length;
+    return allMonsters.filter(m => m.hp > 0 && m.leader === caster).length;
 }
 
 /** W-15: retain the P4-1b public helpers; the value now means tenths of HP. */
@@ -396,6 +397,62 @@ export class Monster extends Creature {
         super.takeDamage(damage, true);
     }
 
+    public administrativeDeath?: boolean;
+    public deathAppearance?: { char: string; color: number };
+    /** Explicit CE info.DFType after a catalog info reset. Mutation bookkeeping
+     * survives resurrection, but must not reapply its old DF to restored info. */
+    public deathDFType?: number;
+
+    protected override die(): void {
+        if (!this.deathAppearance) this.deathAppearance = { char: this.char, color: this.color };
+        super.die();
+        notifyMonsterDeath(this);
+    }
+
+    public restoreDeathAppearance(): void {
+        if (this.deathAppearance) {
+            this.char = this.deathAppearance.char;
+            this.color = this.deathAppearance.color;
+            delete this.deathAppearance;
+        }
+    }
+
+    /** Monsters.c:2937: use the catalog's ENTER_SUMMONS bit even when negation
+     * stripped the instance. Restore info and initializeStatus without generating
+     * an entity, consuming RNG, or discarding learned creature bookkeeping. */
+    public restoreSummonerForm(form: MonsterData): void {
+        // The three ENTER_SUMMONS forms are vampire, phoenix egg and phylactery.
+        this.deathDFType = form.id === 'vampire' ? 36 /* DF_BLOOD_EXPLOSION */ : 0;
+        this.name = ItemLoader.translateName(form.name);
+        this.char = form.char;
+        this.color = form.color;
+        this.maxHp = form.hp;
+        this.damageString = form.damage;
+        this.damageClumping = form.clumping ?? CombatSystem.parseDamageString(form.damage ?? '1d3').clumping;
+        this.accuracy = form.accuracy ?? 100;
+        this.defense = form.defense ?? 0;
+        this.regenTurns = form.regen ?? 0;
+        this.baseMoveSpeed = form.moveSpeed ?? 100;
+        this.baseAttackSpeed = form.attackSpeed ?? 100;
+        this.behaviorFlags = new Set(form.behaviorFlags ?? []);
+        this.abilityFlags = new Set(form.abilityFlags ?? []);
+        this.bolts = [...(form.bolts ?? [])];
+        this.abilities = new Set(form.abilities ?? []);
+        this.statusImmunities = new Set(form.statusImmunities ?? []);
+        this.statusResistTurns = { ...form.statusResistTurns };
+        this.onHitStatus = form.onHitStatus;
+        this.onHitChance = form.onHitChance ?? 0;
+        this.onHitDuration = form.onHitDuration ?? 0;
+        this.statusDurations = {};
+        this.maxStatus = {};
+        this.maxShield = 0;
+        this.syncFlagDerivedStatuses();
+        if (this.hasBehavior('MONST_FIERY')) this.setStatusDuration('burning' as StatusId, PERMANENT_STATUS_DURATION);
+        if (this.hasBehavior('MONST_INVISIBLE')) this.setStatusDuration('invisible', PERMANENT_STATUS_DURATION);
+        this.maxStatus = { ...this.statusDurations };
+        this.wasNegated = false;
+    }
+
     /** Time.c monstersFall / monsterEntersLevel clear ONLY the old-level position. */
     public clearCorpseTargetOnLevelChange(): void {
         this.targetCorpseLoc = null;
@@ -406,12 +463,7 @@ export class Monster extends Creature {
     /** CE computes current speed BEFORE initializeStatus clears haste/slow. */
     public polymorphKeepsSpeed = false;
     public description: string = '';
-    /**
-     * P4-4：CE MA_DF_ON_DEATH（Combat.c:1963-1990）的一次性触发闸门。
-     * Game.triggerDeathFeatures 在 playerTurnEnded/finishTurnEpilogue 两处
-     * 都会扫描 hp<=0 的怪物（覆盖"玩家行动内击杀"与"推进循环内击杀"两种
-     * 时序），靠这个字段保证同一只怪物只触发一次死亡地形效果。
-     */
+    /** CE death DF idempotence, independent of corpse processing/learning. */
     public deathEffectTriggered: boolean = false;
     /** U11: ordinary death processing/learning broadcast, independent of DF.
      * Persisted so a captured dead instance cannot distribute the corpse twice. */
@@ -685,6 +737,7 @@ export class Monster extends Creature {
         }
         this.dominated = false;
         this.mutation = undefined;
+        delete this.deathDFType;
         this.carriedMonster = null; // CE freeCreature, not killCreature.
         const data = polymorphSpecies(this.typeId, rng);
         const hp = polymorphHP(this.hp, this.maxHp, data.hp);
@@ -871,6 +924,7 @@ export class Monster extends Creature {
     }
 
     public mutate(m: MutationData) {
+        delete this.deathDFType;
         this.mutation = m;
         // P1-30：变异名经 i18n 组装，语序与连接符收在资源键里（zh_CN
         // "mutation.<id>" 为"爆裂的{{name}}"式插值；harness 空资源回退英文

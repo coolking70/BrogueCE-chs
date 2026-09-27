@@ -1,0 +1,192 @@
+import { logger } from '../engine/Systems/Logger';
+import { DF, DUNGEON_FEATURE_CATALOG } from '../engine/Map/DungeonFeatureCatalog';
+import { readFileSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
+import { Game } from '../engine/Core/Game';
+import { Grid, TerrainType as T, DungeonLayer as L } from '../engine/Map/Grid';
+import { EnvironmentManager, GasType } from '../engine/Environment/Gas';
+import { Player } from '../entities/Player';
+import { Monster, type MonsterData } from '../entities/Monster';
+import monsters from '../data/monsters.json';
+import mutations from '../data/mutations.json';
+import { ItemLoader } from '../engine/Items/ItemLoader';
+import { captiveItemDropCandidates, qualifyingPathCandidates } from '../engine/Movement/CreaturePlacement';
+import { T_DIVIDES_LEVEL, T_OBSTRUCTS_ITEMS, T_HARMFUL_TERRAIN, T_PATHING_BLOCKER } from '../engine/Map/TerrainCatalog';
+import { rng } from '../engine/Random';
+import { createHeadlessGame } from './harness';
+
+const data = (id: string) => (monsters as MonsterData[]).find(m => m.id === id)!;
+function scene() {
+    const g = new Game();
+    g.grid = new Grid(15, 15);
+    for (let x = 0; x < 15; x++) for (let y = 0; y < 15; y++)
+        g.grid.setTerrain(x, y, x && y && x < 14 && y < 14 ? T.FLOOR : T.WALL);
+    g.player = new Player(2, 2); g.monsters = []; g.dormantMonsters = []; g.items = []; g.purgatory = [];
+    g.environment = new EnvironmentManager(g.grid);
+    (g as any).bindDormantAwakener();
+    return g;
+}
+function mob(g: Game, id = 'rat', x = 7, y = 7) {
+    const m = new Monster(x, y, data(id)); g.monsters.push(m); return m;
+}
+const sweep = (g: Game) => (g as any).removeDeadMonsters();
+
+it.each(['explosive', 'infested'])('restored vampire info replaces %s death DF across JSON, retaining mutation bookkeeping', id => {
+    const g = createHeadlessGame(2160, 'test');
+    g.monsters = []; g.dormantMonsters = []; g.purgatory = []; g.player.loc = { x: 2, y: 2 };
+    g.grid.setTerrain(7, 7, T.FLOOR);
+    const m = mob(g, 'vampire'); m.mutate(mutations.find(mutation => mutation.id === id)!);
+    m.isAlly = true; m.hp = 0; m.deathProcessed = true;
+    g.monsters = []; g.purgatory = [m];
+    expect(g.resurrectAlly({ x: 7, y: 7 })).toBe(true);
+    expect(m.mutation?.id).toBe(id); expect(m.deathDFType).toBe(DF.DF_BLOOD_EXPLOSION);
+    const loaded = createHeadlessGame(1, 'test'); loaded.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));
+    const raised = loaded.monsters.find(monster => monster.id === m.id)!;
+    expect(raised.mutation?.id).toBe(id); expect(raised.deathDFType).toBe(DF.DF_BLOOD_EXPLOSION);
+    raised.takeDamage(raised.hp, true);
+    expect(loaded.grid.getCell(7, 7)!.layers[L.SURFACE]).toBe(T.BLOOD);
+});
+
+describe('X2k immediate CE death transaction', () => {
+    it('drops before the DF; dying reentry is inert; list/purgatory move only at sweep', () => {
+        const g = scene(), m = mob(g, 'bloat'); m.isAlly = true;
+        m.carriedItem = ItemLoader.spawnKey('iron_key', m.x, m.y)!;
+        const key = m.carriedItem, original = g.environment.addGas.bind(g.environment);
+        const gas = vi.spyOn(g.environment, 'addGas');
+        gas.mockImplementation((...args) => {
+            expect(g.items).toContain(key); expect(m.carriedItem).toBeNull();
+            expect(m.deathProcessed).toBe(false); expect(g.getMonsterAt(m.x, m.y)).toBe(m);
+            g.killMonster(m); return original(...args);
+        });
+        m.takeDamage(m.hp, true);
+        expect(gas).toHaveBeenCalledOnce(); expect(m.deathProcessed).toBe(true);
+        expect(g.getMonsterAt(m.x, m.y)).toBeUndefined(); expect(g.monsters).toContain(m);
+        expect(g.purgatory).toEqual([]); sweep(g);
+        expect(g.monsters).not.toContain(m); expect(g.purgatory).toEqual([m]);
+        m.takeDamage(1, true); sweep(g); expect(gas).toHaveBeenCalledOnce();
+    });
+    it('nested explosive deaths finish before the outer leadership demotion', () => {
+        const g = scene(), a = mob(g, 'explosive_bloat', 7, 7), b = mob(g, 'bloat', 8, 7);
+        const f = mob(g, 'rat', 12, 7); f.leader = a;
+        const drops = vi.spyOn(g, 'makeMonsterDropItem');
+        a.takeDamage(a.hp, true);
+        expect(b.hp).toBe(0); expect(b.deathProcessed).toBe(true);
+        expect(drops.mock.calls.map(c => c[0])).toEqual([a, b]); expect(f.leader).toBeNull();
+        expect(g.environment.gasGrid[8]![7]!.type).toBe(GasType.POISON);
+    });
+    it('releases a passenger immediately, applies lethal contact, and does not repeat either death', () => {
+        const g = scene(), host = mob(g), child = new Monster(0, 0, data('rat'));
+        host.carriedMonster = child; g.grid.setTerrain(7, 7, T.LAVA);
+        const drops = vi.spyOn(g, 'makeMonsterDropItem'); host.takeDamage(host.hp, true);
+        expect(child.loc).toEqual(host.loc); expect(child.ticksUntilTurn).toBe(200);
+        expect(child.hp).toBe(0); expect(child.deathProcessed).toBe(true);
+        expect(host.carriedMonster).toBeNull(); expect(drops.mock.calls.map(c => c[0])).toEqual([host, child]);
+        sweep(g); expect(g.monsters).toEqual([]); expect(drops).toHaveBeenCalledTimes(2);
+    });
+    it('silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers', () => {
+        const g = scene(), m = mob(g, 'bloat'), f = mob(g, 'rat', 8, 7);
+        m.isAlly = true; f.leader = m; m.carriedMonster = new Monster(0, 0, data('rat'));
+        m.carriedItem = ItemLoader.spawnKey('iron_key', 7, 7)!;
+        const gas = vi.spyOn(g.environment, 'addGas'); g.killMonster(m, true); (g as any).triggerDeathFeatures(m); sweep(g);
+        expect(gas).not.toHaveBeenCalled(); expect(g.items).toEqual([]); expect(g.purgatory).toEqual([]);
+        expect(m.carriedMonster).toBeNull(); expect(f.leader).toBeNull();
+    });
+    it('falling suppresses DF, dormant death suppresses release and clears dormant occupancy', () => {
+        const g = scene(), m = mob(g, 'bloat'); m.falling = true;
+        const gas = vi.spyOn(g.environment, 'addGas'); m.takeDamage(m.hp, true);
+        expect(gas).not.toHaveBeenCalled();
+        const d = new Monster(9, 7, data('rat')); d.isDormant = true;
+        d.carriedMonster = new Monster(0, 0, data('rat')); g.dormantMonsters.push(d);
+        g.grid.getCell(9, 7)!.hasDormantMonster = true; d.takeDamage(d.hp, true);
+        expect(g.monsters).not.toContain(d.carriedMonster); expect(g.grid.getCell(9, 7)!.hasDormantMonster).toBe(false);
+    });
+    it('vampire death uses the CE blood explosion on the existing surface layer', () => {
+        const g = scene(), m = mob(g, 'vampire'); m.takeDamage(m.hp, true);
+        expect(g.grid.getCell(7, 7)!.layers[L.SURFACE]).toBe(T.BLOOD);
+    });
+    it('binds restored monsters and preserves appearance through purgatory save/raise', () => {
+        const g = createHeadlessGame(2160, 'test'); g.monsters = []; g.items = [];
+        const m = mob(g, 'bloat', 12, 8); m.isAlly = true;
+        const glyph = m.char, color = m.color;
+        expect(g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())))).toBe(true);
+        const restored = g.monsters[0]!; restored.takeDamage(restored.hp, true);
+        expect(restored.deathProcessed).toBe(true); sweep(g);
+        expect(g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())))).toBe(true);
+        expect(g.resurrectAlly({x: 20, y: 10})).toBe(true);
+        const raised = g.monsters[0]!; expect(raised.char).toBe(glyph); expect(raised.color).toBe(color);
+        raised.takeDamage(raised.hp, true); expect(raised.deathProcessed).toBe(true);
+    });
+});
+
+describe('X2k path distance and resurrection', () => {
+    it('uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls', () => {
+        const g = scene(), origin = {x: 7, y: 7};
+        g.grid.setTerrain(6, 7, T.WALL); g.grid.setTerrain(7, 6, T.WALL);
+        const cells = qualifyingPathCandidates(g.grid, origin, T_PATHING_BLOCKER | T_HARMFUL_TERRAIN, 0, (x, y) => x === 7 && y === 7);
+        expect(cells).toEqual([{x: 7, y: 8}, {x: 8, y: 7}, {x: 8, y: 8}]);
+        for (const [x,y] of [[6,8],[7,8],[8,8],[8,7],[8,6],[6,6]]) g.grid.setTerrain(x!, y!, T.WALL);
+        const fallback = qualifyingPathCandidates(g.grid, origin, T_PATHING_BLOCKER | T_HARMFUL_TERRAIN, 0, (x, y) => x === 7 && y === 7);
+        expect(fallback).toHaveLength(16); expect(fallback[0]).toEqual({x:5,y:5});
+    });
+    it('drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG', () => {
+        const g = scene(), m = mob(g); m.carriedItem = ItemLoader.spawnKey('iron_key', 7, 7)!;
+        const n = rng.randomNumbersGenerated; g.makeMonsterDropItem(m);
+        expect(g.items[0]!.loc).toEqual(m.loc); expect(rng.randomNumbersGenerated).toBe(n);
+        expect(captiveItemDropCandidates(g, m.loc, g.items)).toHaveLength(8);
+    });
+    it('selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion', () => {
+        const g = scene(), rat = mob(g), goblin = mob(g, 'goblin', 8, 7), troll = mob(g, 'troll', 9, 7);
+        for (const m of [rat,goblin,troll]) {m.isAlly=true;m.takeDamage(m.hp,true);}
+        rat.totalPowerCount = goblin.totalPowerCount = 3; troll.totalPowerCount = 2; sweep(g);
+        const dormant = new Monster(10, 10, data('rat')); dormant.isDormant = true; g.dormantMonsters.push(dormant);
+        const n = rng.randomNumbersGenerated; expect(g.resurrectAlly({x:10,y:10})).toBe(true);
+        expect(g.monsters[0]).toBe(goblin); expect(goblin.loc).toEqual({x:10,y:10}); expect(rng.randomNumbersGenerated).toBe(n);
+    });
+    it('catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG', () => {
+        const g = scene(), m = mob(g, 'vampire'); m.isAlly = true;
+        m.abilityFlags.clear(); m.behaviorFlags.add('MONST_INANIMATE'); m.wasNegated = true;
+        m.bolts = []; m.statusDurations = {slowed: 8, paralyzed: 5}; m.takeDamage(m.hp, true); sweep(g);
+        expect(g.purgatory).toContain(m); const n = rng.randomNumbersGenerated;
+        expect(g.resurrectAlly({x:10,y:10})).toBe(true);
+        expect(m.wasNegated).toBe(false); expect(m.hasAbility('MA_ENTER_SUMMONS')).toBe(true);
+        expect(m.hasStatus('paralyzed')).toBe(false); expect(m.bolts).toEqual(data('vampire').bolts);
+        expect(rng.randomNumbersGenerated).toBe(n);
+    });
+});
+
+
+it('matches original C Grid.c + Dijkstra.c + getQualifyingLocNear on 256 terrain/occupancy maps', () => {
+    const rows = JSON.parse(readFileSync(new URL('../../ai_docs/reports/x2k-evidence/ce-path.json', import.meta.url), 'utf8')) as {
+        seed: number; mode: number; cells: number[]; origin: number[]; candidates: number[][];
+    }[];
+    expect(rows).toHaveLength(256);
+    for (const row of rows) {
+        const grid = new Grid(9, 9);
+        for (let x = 0; x < 9; x++) for (let y = 0; y < 9; y++) {
+            const kind = row.cells[x * 9 + y];
+            grid.setTerrain(x, y, kind === 1 ? T.WALL : kind === 2 ? T.LAVA : kind === 3 ? T.PLAIN_FIRE : T.FLOOR);
+        }
+        const cells = qualifyingPathCandidates(grid, {x:row.origin[0]!,y:row.origin[1]!},
+            row.mode ? T_PATHING_BLOCKER | T_HARMFUL_TERRAIN : T_DIVIDES_LEVEL,
+            row.mode ? 0 : T_OBSTRUCTS_ITEMS, (x,y) => row.cells[x*9+y] === 4);
+        expect(cells.map(p => [p.x,p.y]), `CE seed=${row.seed} mode=${row.mode}`).toEqual(row.candidates);
+    }
+});
+
+it('pins CE death DF rows and the explosive mutation override', () => {
+    expect(DUNGEON_FEATURE_CATALOG[DF.DF_BLOOD_EXPLOSION]).toMatchObject({id:36,tile:T.BLOOD,layer:L.SURFACE,startProbability:150,probabilityDecrement:30});
+    expect(DUNGEON_FEATURE_CATALOG[DF.DF_MUTATION_EXPLOSION]).toMatchObject({id:38,tile:T.GAS_EXPLOSION,layer:L.SURFACE,startProbability:350,probabilityDecrement:100,lightFlare:'EXPLOSION_FLARE_LIGHT'});
+});
+
+it('reports loss immediately only for an unseen, unbound ally without a passenger', () => {
+    const g = createHeadlessGame(2161, 'test'); g.monsters = []; g.items = [];
+    const m = mob(g, 'rat', 12, 8); m.isAlly = true;
+    g.grid.getCell(12, 8)!.isVisible = false;
+    const messages = vi.spyOn(logger, 'log'); m.takeDamage(m.hp, true);
+    expect(messages).toHaveBeenCalledWith('You feel a sense of loss.', '#ff8888');
+    const count = messages.mock.calls.length; sweep(g); m.takeDamage(1, true);
+    expect(messages).toHaveBeenCalledTimes(count);
+    const bound = mob(g, 'rat', 13, 8); bound.isAlly = true; bound.boundToLeader = true;
+    g.grid.getCell(13, 8)!.isVisible = false; bound.takeDamage(bound.hp, true);
+    expect(messages).toHaveBeenCalledTimes(count); messages.mockRestore();
+});

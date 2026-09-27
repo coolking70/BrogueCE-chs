@@ -1,0 +1,46 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts src/test/u_r2_trace.test.ts src/test/u_r3_trace.test.ts src/test/u_r4_trace.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/traces.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/u_r4_trace.test.ts > UR4 objective block trace > matches HEAD for complete snapshots, events, tick, both RNG streams and command log
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:8117) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_r4_trace.test.ts (1 test) 10956ms
+     ✓ matches HEAD for complete snapshots, events, tick, both RNG streams and command log  10954ms
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (12 tests) 8600ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  790ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  1132ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  650ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  702ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  691ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  853ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  829ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  696ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  576ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  990ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  636ms
+stdout | src/test/u_r2_trace.test.ts > UR2 fixed command traces > matches the pre-refactor state after each item command
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r2_trace.test.ts (1 test) 7766ms
+     ✓ matches the pre-refactor state after each item command  7765ms
+stdout | src/test/u_r3_trace.test.ts > UR3 complete generation and revisit trace > matches HEAD for four drift seeds through D26 and cached/save return
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r3_trace.test.ts (1 test) 148296ms
+     ✓ matches HEAD for four drift seeds through D26 and cached/save return  148287ms
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  13:01:29
+   Duration  150.30s (transform 1.91s, setup 0ms, import 7.10s, tests 175.62s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/traces.json

@@ -1,0 +1,15 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/c_4b_dungeon_feature.test.ts --testNamePattern 目录|catalog --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/catalog-head.json
+
+
+ RUN  v4.1.11 /private/tmp/x2k-head/brogue-web
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests | 26 skipped) 19ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed | 26 skipped (31)
+   Start at  13:05:24
+   Duration  2.58s (transform 1.11s, setup 0ms, import 2.37s, tests 19ms, environment 0ms)
+
+JSON report written to /private/tmp/x2k-head/brogue-web/ai_docs/reports/x2k-evidence/catalog-head.json

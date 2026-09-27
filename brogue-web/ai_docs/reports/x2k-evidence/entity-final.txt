@@ -1,0 +1,23 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_01_instance_snapshot.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/entity-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_01_instance_snapshot.test.ts (17 tests) 3960ms
+   ✓ ordinary uses the complete graph contract, including private base speeds  331ms
+   ✓ naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog  860ms
+   ✓ rapier next attack keeps penetration/lunge, damage and action cost  325ms
+   ✓ next unlock preserves disposableHere=false and origin-depth rejection  330ms
+   ✓ next unlock preserves disposableHere=true and origin-depth rejection  343ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  13:58:10
+   Duration  4.97s (transform 438ms, setup 0ms, import 935ms, tests 3.96s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/entity-final.json

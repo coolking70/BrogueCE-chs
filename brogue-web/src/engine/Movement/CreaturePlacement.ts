@@ -1,3 +1,4 @@
+import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 /** W-11: destination policy is separate from the displacement commit.
  * CE Monsters.c:650-670,1155-1204; Dijkstra.c:209-255; Grid.c:224-244.
  * No mutation, generation hooks, or player-visibility writes in these queries.
@@ -114,35 +115,41 @@ export function captiveItemDropCandidates(world: Pick<PlacementWorld, 'grid' | '
             && !cell.layers.includes(TerrainType.STAIRS_UP) && !cell.layers.includes(TerrainType.STAIRS_DOWN) && !cell.layers.includes(TerrainType.DUNGEON_PORTAL)
             && !items.some(item => item.loc.x === x && item.loc.y === y);
     };
-    if (!(flags(origin.x, origin.y) & T_DIVIDES_LEVEL) && qualifies(origin.x, origin.y)) return [{ ...origin }];
-    const distances = Array.from({ length: grid.width }, () => new Array<number>(grid.height).fill(30000));
-    distances[origin.x]![origin.y] = 1;
-    const queue = [{ ...origin }];
-    for (let i = 0; i < queue.length; i++) {
-        const p = queue[i]!;
-        for (const [dx, dy] of [[0,-1],[0,1],[-1,0],[1,0],[-1,-1],[-1,1],[1,-1],[1,1]] as const) {
-            const x = p.x + dx, y = p.y + dy;
-            if (x <= 0 || y <= 0 || x >= grid.width - 1 || y >= grid.height - 1
-                || distances[x]![y] !== 30000 || (flags(x, y) & T_DIVIDES_LEVEL)) continue;
-            if (dx && dy && ((flags(p.x + dx, p.y) | flags(p.x, p.y + dy)) & T_OBSTRUCTS_DIAGONAL_MOVEMENT)) continue;
-            distances[x]![y] = distances[p.x]![p.y]! + 1;
-            queue.push({ x, y });
-        }
+    return qualifyingPathCandidates(grid, origin, T_DIVIDES_LEVEL, T_OBSTRUCTS_ITEMS,
+        (x, y) => !qualifies(x, y));
+}
+
+/** Grid.c:287, hallwaysAllowed=true. Origin gets cost 1 even if blocked;
+ * destination restrictions do not block traversal. Only OBSTRUCTION blocks
+ * diagonal corners. A pathless result falls back to the nearest square ring. */
+export function qualifyingPathCandidates(grid: Grid, origin: Pos, blocking: number,
+    forbidden: number, forbiddenMap: (x: number, y: number) => boolean): Pos[] {
+    if (!grid.isValidPos(origin.x, origin.y)) return [];
+    const flags = (x: number, y: number) => cellTerrainFlags(grid, x, y);
+    const valid = (x: number, y: number) => !(flags(x, y) & forbidden) && !forbiddenMap(x, y);
+    if (!(flags(origin.x, origin.y) & blocking) && valid(origin.x, origin.y)) return [{ ...origin }];
+    const distances = Array.from({ length: grid.width }, () => new Array<number>(grid.height).fill(MAX_DISTANCE));
+    const costs = Array.from({ length: grid.width }, () => new Array<number>(grid.height).fill(1));
+    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
+        if (flags(x, y) & blocking) costs[x]![y] = -1;
+        if ((blocking & (T_OBSTRUCTS_DIAGONAL_MOVEMENT | T_OBSTRUCTS_PASSABILITY))
+            && (flags(x, y) & T_OBSTRUCTS_DIAGONAL_MOVEMENT)) costs[x]![y] = -2;
     }
-    let best = 30000;
+    distances[origin.x]![origin.y] = costs[origin.x]![origin.y] = 1;
+    new DijkstraMap(grid.width, grid.height).batchScan(distances, costs, true);
+    let best = MAX_DISTANCE;
     let result: Pos[] = [];
     for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
-        const d = distances[x]![y]!;
-        if (d >= 30000 || d > best || !qualifies(x, y)) continue;
-        if (d < best) { best = d; result = []; }
+        const distance = distances[x]![y]!;
+        if (distance <= 0 || distance >= MAX_DISTANCE || distance > best || !valid(x, y)) continue;
+        if (distance < best) { best = distance; result = []; }
         result.push({ x, y });
     }
     if (result.length) return result;
-    // CE getQualifyingLocNear fallback: first nonempty Chebyshev ring.
-    for (let r = 0; r < Math.max(grid.width, grid.height); r++) {
-        for (let x = origin.x - r; x <= origin.x + r; x++) for (let y = origin.y - r; y <= origin.y + r; y++) {
-            if (Math.max(Math.abs(x - origin.x), Math.abs(y - origin.y)) !== r
-                || !grid.isValidPos(x, y) || (flags(x, y) & T_DIVIDES_LEVEL) || !qualifies(x, y)) continue;
+    for (let radius = 0; radius < Math.max(grid.width, grid.height); radius++) {
+        for (let x = origin.x - radius; x <= origin.x + radius; x++) for (let y = origin.y - radius; y <= origin.y + radius; y++) {
+            if (Math.max(Math.abs(x - origin.x), Math.abs(y - origin.y)) !== radius
+                || !grid.isValidPos(x, y) || (flags(x, y) & blocking) || !valid(x, y)) continue;
             result.push({ x, y });
         }
         if (result.length) return result;

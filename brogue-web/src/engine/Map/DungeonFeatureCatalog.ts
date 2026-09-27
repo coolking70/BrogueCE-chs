@@ -52,6 +52,8 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 export enum DF {
     DF_ROT_GAS_PUFF = 41,
     DF_ROT_GAS_BLOOD = 32,
+    DF_BLOOD_EXPLOSION = 36,
+    DF_MUTATION_EXPLOSION = 38,
     DF_DARKNESS_POTION = 134,
     DF_MUTATION_LICHEN = 39,
     DF_LICHEN_PLANTED = 136,
@@ -379,6 +381,8 @@ const df = (
  */
 export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeatureEntry>>> = {
     [DF.DF_ROT_GAS_PUFF]: df(41, 664, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 15, 0, 0, '', null, null, ''),
+    [DF.DF_MUTATION_EXPLOSION]: { ...df(38, 659, 'GAS_EXPLOSION', TerrainType.GAS_EXPLOSION, DungeonLayer.SURFACE, 350, 100, 0, '', null, null, 'The corpse detonates with terrifying force!'), lightFlare: 'EXPLOSION_FLARE_LIGHT' },
+    [DF.DF_BLOOD_EXPLOSION]: df(36, 655, 'RED_BLOOD', TerrainType.BLOOD, DungeonLayer.SURFACE, 150, 30, 0, '', null, null, ''),
     [DF.DF_ROT_GAS_BLOOD]: df(32, 649, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 12, 0, 0, '', null, null, ''),
     [DF.DF_DARKNESS_POTION]: df(134, 781, 'DARKNESS_CLOUD', TerrainType.DARKNESS_CLOUD, DungeonLayer.GAS, 200, 0, 0, '', null, null, ''),
     [DF.DF_MUTATION_LICHEN]: df(39, 660, 'LICHEN', TerrainType.LICHEN, DungeonLayer.SURFACE, 70, 60, 0, '', null, null, 'Poisonous spores burst from the corpse!'),

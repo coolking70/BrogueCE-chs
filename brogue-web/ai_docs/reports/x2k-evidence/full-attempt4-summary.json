@@ -1,0 +1,38 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=4",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2k-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T06:38:14.779Z",
+  "seconds": 2812.959,
+  "exit": 1,
+  "inputs": 942,
+  "changedInputs": [],
+  "discoveredFiles": 214,
+  "changedDiscovery": [],
+  "files": 213,
+  "passed": 3946,
+  "failed": 1,
+  "pending": 8,
+  "todo": 5,
+  "failedSuites": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/blueprint_center.test.ts",
+      "message": ""
+    }
+  ],
+  "failures": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/blueprint_center.test.ts",
+      "name": "蓝图宝藏落点（machine center）可通行性 b) 全局扫描（44 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）",
+      "messages": [
+        "Error: STACK_TRACE_ERROR\n    at task (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1784:27)\n    at Object.<anonymous> (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1817:16)\n    at Object.<anonymous> (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1563:28)\n    at chain (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:599:14)\n    at /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/src/test/blueprint_center.test.ts:489:5\n    at file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:40\n    at runWithSuite (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2258:8)\n    at Object.collect (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:10)\n    at Object.collect (file:///Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:54)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+      ]
+    }
+  ]
+}

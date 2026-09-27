@@ -1,0 +1,15 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts --testNamePattern historical U17a projection --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/u17-head.json
+
+
+ RUN  v4.1.11 /private/tmp/x2k-head/brogue-web
+
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests | 26 skipped) 5ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 26 skipped (27)
+   Start at  13:09:03
+   Duration  2.59s (transform 893ms, setup 0ms, import 2.40s, tests 5ms, environment 0ms)
+
+JSON report written to /private/tmp/x2k-head/brogue-web/ai_docs/reports/x2k-evidence/u17-head.json

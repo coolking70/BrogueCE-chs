@@ -83,7 +83,7 @@ export interface EffectsPort {
     driftFloorItems(): void;
     commuteFloorItems(): void;
     killOrphanedBoundFollowers(): void;
-    removeDeadMonsters(): void;
+    removeDeadMonsters(sweep?: boolean): void;
     syncEquipmentStatuses(): void;
     updateVision(): void;
     calculateStealthRange(): number;
@@ -152,7 +152,7 @@ export function* advancementLoop(ports: TimePorts, stealthRange: number): Genera
             // 依赖此语义），重算反而会覆盖外部写入。
             // E1-修订：怪物行动不 yield——常规动作一次性跑完后统一渲染
             // （CE 连"豺狼 50 tick 走两步"也不单独成帧）。
-            for (const m of ports.world.monsters) {
+            for (const m of [...ports.world.monsters]) {
                 if (ports.clock.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
                     // CE Time.c:2725-2733 withholds the action BEFORE
@@ -354,7 +354,7 @@ export function playerTurnEnded(ports: TimePorts): void {
         resetDFMessageEligibility(ports.world.grid);
         ports.clock.poisonedDuringTurn = ports.world.player.hasStatus('poisoned');
         ports.effects.killOrphanedBoundFollowers();
-        ports.effects.removeDeadMonsters();
+        ports.effects.removeDeadMonsters(false);
 
         // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
         //（handleXPXP 之后、monstersFall 与推进循环之前）。playerFalls 内部
@@ -462,8 +462,7 @@ export function playerTurnEnded(ports: TimePorts): void {
     }
 
 export function finishTurnEpilogue(ports: TimePorts): void {
-        // Deaths from monster combat/environment resolve at this turn boundary;
-        // removeDeadMonsters handles item, DF, passenger and leadership in order.
+        // CE RogueMain.c: effects already resolved; unlink corpses and populate purgatory.
         ports.effects.removeDeadMonsters();
 
         // 主观饥饿结算：饥饿伤害 / 回血（CE Time.c:2523-2541，每玩家动作一次）

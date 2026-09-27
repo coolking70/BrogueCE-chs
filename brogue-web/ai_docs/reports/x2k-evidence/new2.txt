@@ -1,0 +1,74 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts src/test/p1_30_i18n_gate.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/new2.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (11 tests) 8559ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  587ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  535ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  799ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  649ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  1520ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  573ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  1093ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  660ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  914ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  611ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  612ms
+ ❯ src/test/p1_30_i18n_gate.test.ts (16 tests | 1 failed) 14909ms
+     ✓ 扫描覆盖了引擎、实体与界面（不含测试文件自身） 2ms
+     × 每个静态字面量键都存在（缺失即红） 13ms
+     ✓ 每个动态键前缀下至少有一个真实键（防前缀打错字整组落空） 0ms
+     ✓ 所有 t() 调用的首参都可静态解析（新调用点必须写成可扫描形式） 0ms
+     ✓ zh_CN.json 没有从未被引用的死键（发现死键应移入 zh_CN.legacy.json 归档） 0ms
+     ✓ 英文形式的名字必须有 name.* 键且译文含中文（中文名原样返回，无需键） 0ms
+     ✓ 8 个变异 × rat：拼接结果 = 资源键插值，无英文/无空格 3ms
+     ✓ 8 个变异 × kobold：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × jackal：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × goblin：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × pink_jelly：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × troll：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × wraith：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异 × dragon：拼接结果 = 资源键插值，无英文/无空格 1ms
+     ✓ 8 个变异名资源键全部存在（缺失时拼接会回退英文） 0ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  14880ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 每个静态字面量键都存在（缺失即红）
+AssertionError: 缺失翻译键 1 个（缺键会静默渲染英文defaultValue）：
+  df.mutation_explosion  ←  engine/Core/Game.ts:9183: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "  df.mutation_explosion  ←  engine/Core/Game.ts:9183",
++ ]
+
+ ❯ src/test/p1_30_i18n_gate.test.ts:68:14
+     66|         });
+     67|         expect(missing, `缺失翻译键 ${missing.length} 个（缺键会静默渲染英文defaultVal…
+     68|             .toEqual([]);
+       |              ^
+     69|     });
+     70|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 26 passed (27)
+   Start at  12:56:49
+   Duration  17.20s (transform 1.44s, setup 0ms, import 3.67s, tests 23.47s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/new2.json

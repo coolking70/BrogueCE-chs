@@ -1,0 +1,79 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts src/test/u_17a_df_transaction.test.ts src/test/p1_30_i18n_gate.test.ts src/test/p4_4_split_kamikaze.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/review.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling without inventing an immediate floor-item update
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_4_split_kamikaze.test.ts > P4-4 验收 1：分裂 — pink/acidic/black jelly > 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:8750) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests) 17492ms
+     ✓ recursive hole marks player falling without inventing an immediate floor-item update  774ms
+     ✓ instant fire burns only scrolls, ignites and damages through recursive DF before returning  1426ms
+     ✓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants  1101ms
+     ✓ direct and descendant fires register the current-turn skip without callers draining results  661ms
+     ✓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status  596ms
+     ✓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status  577ms
+     ✓ two Game/grid owners cannot redirect each others contact or messages  1606ms
+     ✓ actual stair movement changes level before REPEL_CREATURES can evict the player  1951ms
+     ✓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING  2757ms
+     ✓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract  1478ms
+     ✓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream  946ms
+     ✓ transient flashes are discarded by load and new-run lifecycle without entering snapshots  1026ms
+     ✓ retired grid cannot mutate the replacement world after load  918ms
+     ✓ retired grid cannot mutate the replacement world after new-run  912ms
+     ✓ retired grid cannot mutate the replacement world after test-depth  738ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_4_split_kamikaze.test.ts (20 tests) 30260ms
+     ✓ 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。  1642ms
+     ✓ 对抗性②：走廊里攻击者所在格必须并入连通群，克隆体才可能出现在玩家身后。漏掉这一步的实现里，1 格宽走廊中克隆体永远只会出现在果冻远离玩家的那一侧，玩家这一侧（(4,5)）永远选不中——多次不同种子重复分裂应能观察到两侧都被选中过。  1458ms
+     ✓ 对抗性③：连通群与合格格子的搜索必须是四方向，不能是八方向（含对角）。果冻与玩家之间只留一条正交走廊，唯一开放的对角格 (7,4) 不应被选中——八方向实现会偶尔选中它，四方向实现永远不会。  1969ms
+     ✓ acidic jelly 与 black jelly 也能分裂（同一套算法，覆盖三只果冻的名单要求）  2760ms
+     ✓ 分裂条件：defender.hp<=0（已死）时不分裂，也不额外扣血  2068ms
+     ✓ 无合格格子时不分裂：果冻被完全堵死（四邻全是墙或已占用），血量不变  1274ms
+     ✓ 端到端：玩家近战攻击真的会经由 handlePlayerAction 触发分裂（不是只有单元测试里手调）  1416ms
+     ✓ 对抗性④：kamikaze 检查必须在命中掷骰之前。把 defender 的防御力拉到"正常情况下命中率≈0%"，kamikaze 攻击者仍必定"命中"（自毁），伤害恒为 0。若实现把该检查放在命中判定之后，本用例会因为大量 miss 而在统计上偏离"每次都自毁"。  1307ms
+     ✓ 自爆怪物攻击玩家：玩家血量不变，攻击者死亡  1669ms
+     ✓ 对照组：vampire 有 MA_DF_ON_DEATH 但没有 MA_KAMIKAZE，攻击不应自爆  1172ms
+     ✓ 对照组：goblin 没有任何特殊旗标，正常战斗不受影响  1674ms
+     ✓ bloat 死亡在原地释放毒气（GasType.POISON，G-1 起注入 CE 体积 2000）  1444ms
+     ✓ F-2c 翻转：explosive bloat 死亡铺 GAS_EXPLOSION 爆炸圈——死亡格与四邻必中（第一波 350%≥100），爆炸地形是火  1073ms
+     ✓ F-2c 翻转：explosive bloat 死亡在默认（不可燃）石地板上也铺开 GAS_EXPLOSION 爆炸圈（DF 管线不看可燃性）  1328ms
+     ✓ F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）  1138ms
+     ✓ 对抗性⑤：同一只怪物的死亡地形效果只能触发一次。若实现没有 deathEffectTriggered 兜底且被多次调用（例如某条路径在同一回合内重复扫描），毒气密度会被反复叠加，超过单次触发应有的量——这里直接调用两次断言密度不变。  1613ms
+     ✓ 对照组：vampire 死亡不产生毒气/火焰（DF_BLOOD_EXPLOSION 是血迹装饰，web 无血迹层，本轮不接）  1299ms
+     ✓ 对照组：goblin（无 MA_DF_ON_DEATH）死亡不触发也不被标记  1341ms
+     ✓ pit_bloat 只自爆、不产生毒气/火焰/洞（web 无坠落子系统，登记为已知缺口）  1334ms
+     ✓ 盟友在有其它可选目标时，不会把尚未贴脸的 bloat 选为追击目标  1276ms
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 14448ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  14432ms
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (13 tests) 9540ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  898ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  1001ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  917ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  744ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  776ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  505ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  1558ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  633ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  921ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  750ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  775ms
+
+ Test Files  4 passed (4)
+      Tests  76 passed (76)
+   Start at  13:10:43
+   Duration  42.93s (transform 2.02s, setup 0ms, import 6.19s, tests 71.74s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/review.json

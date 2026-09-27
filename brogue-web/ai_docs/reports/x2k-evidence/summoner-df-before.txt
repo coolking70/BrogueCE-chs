@@ -1,0 +1,52 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts -t restored vampire info --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/summoner-df-before.json
+
+
+ RUN  v4.1.11 /private/tmp/x2k-negative
+
+ ❯ src/test/x2k_lifecycle.test.ts (15 tests | 1 failed | 14 skipped) 307ms
+     ↓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep
+     ↓ nested explosive deaths finish before the outer leadership demotion
+     ↓ releases a passenger immediately, applies lethal contact, and does not repeat either death
+     ↓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers
+     ↓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy
+     ↓ vampire death uses the CE blood explosion on the existing surface layer
+     ↓ binds restored monsters and preserves appearance through purgatory save/raise
+     ↓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls
+     ↓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG
+     ↓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion
+     ↓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG
+   ↓ matches original C Grid.c + Dijkstra.c + getQualifyingLocNear on 256 terrain/occupancy maps
+   ↓ pins CE death DF rows and the explosive mutation override
+   ↓ reports loss immediately only for an unseen, unbound ally without a passenger
+   × restored vampire info clears its mutation death DF but keeps mutation bookkeeping 306ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2k_lifecycle.test.ts > restored vampire info clears its mutation death DF but keeps mutation bookkeeping
+AssertionError: expected 40 to be 24 // Object.is equality
+
+- Expected
++ Received
+
+- 24
++ 40
+
+ ❯ src/test/x2k_lifecycle.test.ts:184:53
+    182|     expect(m.mutation?.id).toBe('explosive');
+    183|     m.takeDamage(m.hp, true);
+    184|     expect(g.grid.getCell(7, 7)!.layers[L.SURFACE]).toBe(T.BLOOD);
+       |                                                     ^
+    185| });
+    186|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  13:56:14
+   Duration  1.86s (transform 863ms, setup 0ms, import 1.39s, tests 307ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/summoner-df-before.json

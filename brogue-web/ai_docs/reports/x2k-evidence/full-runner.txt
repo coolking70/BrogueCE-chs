@@ -1,0 +1,25 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=6",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x2k-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T07:26:11.926Z",
+  "seconds": 1941.146,
+  "exit": 0,
+  "inputs": 942,
+  "changedInputs": [],
+  "discoveredFiles": 214,
+  "changedDiscovery": [],
+  "files": 213,
+  "passed": 3947,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "failedSuites": [],
+  "failures": []
+}

@@ -63,9 +63,9 @@
     "kind": "level",
     "contract": "每个 Grid 的 WeakMap 条目保存到各层 trapDepressions，读档重建。"
   },
-  "dormantMonsters": {
+  "dormantMonsterList": {
     "kind": "level",
-    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+    "contract": "X2k：dormantMonsters 访问器的实际数组字段；当前层及缓存层通过原 dormantMonsters 快照键保存。新局/读档替换数组并重新绑定运行期所有者，绑定及 DYING 关联仅在 MonsterLifecycle 模块的弱集合中。"
   },
   "environment": {
     "kind": "level",
@@ -235,9 +235,9 @@
     "kind": "run",
     "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
   },
-  "monsters": {
+  "activeMonsterList": {
     "kind": "level",
-    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+    "contract": "X2k：monsters 访问器的实际数组字段；当前层及缓存层通过原 monsters 快照键保存。新局/读档替换数组并重新绑定运行期所有者，绑定及 DYING 关联仅在 MonsterLifecycle 模块的弱集合中。"
   },
   "needsRender": {
     "kind": "derive",

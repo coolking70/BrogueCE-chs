@@ -1,0 +1,61 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x2k_lifecycle.test.ts src/test/p1_24_death_sink.test.ts src/test/w_19_polymorph.test.ts src/test/p1_30_i18n_gate.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile=ai_docs/reports/x2k-evidence/premises-repaired.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web
+
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p1_24_death_sink.test.ts > P1-24 验收 1：die() 归零 hp，怪物真的被移出列表 > 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 14381ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  14356ms
+(node:7918) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/p1_24_death_sink.test.ts (13 tests) 18559ms
+     ✓ 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）  1322ms
+     ✓ 对抗性①（续）：熔岩烧死的怪物必须在下一次回合清扫中被移出 this.monsters。捕获的错误实现：同上——旧实现 hp>0，filter(m => m.hp > 0) 永远清不掉，怪物赖在列表里。（P1-27 补做：载体由淹死换成熔岩，清扫路径同一。）  1075ms
+     ✓ 对抗性①（续）：熔岩烧死的尸体不再苏醒/不再行动——沉睡老鼠被烧死后 takeTurn 必须是空转。捕获的错误实现：die() 不归零（旧版）时，takeTurn 会照常走"沉睡→惊醒"分支，在玩家头顶弹 '!' 漂浮字并进入追击。（P1-27 补做：载体由淹死换成熔岩。）  1563ms
+     ✓ 对抗性②（P1-27 重写为断言新事实）：移除自创淹死后，深水里的怪物不产生任何死亡消息——连续两轮环境结算，"drown" 必须零出现，Logger 里必须根本不存在这条合并条目。捕获的错误实现：①WEB_ONLY_DEEP_WATER_DROWNING 被改回 true（或任何深水致死实现复活）——第一轮就冒出 "drowns"；②只删致死逻辑、却把消息日志留在标志之外的"半吊子移除"重排。与 p1_27 文件对抗性①（seed 71）的区别：那条从 hp/在场通道断言"活着"，本条专门盯消息通道（Logger 合并条目本身必须不存在——原"count===1"断言在新事实下的对应物）。  1127ms
+     ✓ 对抗性②（续）：熔岩烧死同理，"incinerated" 只播一次。  1507ms
+     ✓ 对抗性③：hp -= N 之后才调用 die() 的既有路径不得被改成重复结算——火焰致死的尸体 hp 必须精确停在 0（CE 口径），不能是负数。捕获的错误实现：把 die() 写成"再补一刀"（如 hp -= maxHp 确保死亡），受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。【F-2b 翻正】原断言"2 HP 恰好一烧即死"（环境分支平扣 2）随燃烧状态机到期：环境首过只上 STATUS_BURNING（Time.c:527→:59-60），伤害来自燃烧结算段的 rand_range(1,3)（Time.c:2582/Monsters.c:1882）——故先挂状态、再以 1 HP 走一回合结算（任意掷骰必死）。die() 归零守卫原样保留。  1475ms
+     ✓ 对抗性③（续）：蒸汽致死同样精确归零——1 HP 受害者被蒸汽扣 1 后死透，不残留负 hp（重复结算实现会把它扣成 -1 或更低）。  1315ms
+     ✓ P1-28 可达载体：岩浆致死照常触发爆炸变异/吸血鬼死亡 DF；飞行原种仍不受岩浆致死  2423ms
+     ✓ 对抗性④（续，P1-27 载体重写）：深水里的 explosive bloat 被玩家砍死后照样爆燃——"水里燃起大火"是 CE 行为：GAS_EXPLOSION 火格铺在表层、覆盖在水上；killCreature 的死亡 DF 分支只认 MB_IS_FALLING（Combat.c:1963-1965），爆炸伤害只豁免爆炸免疫与 MB_SUBMERGED（Time.c:343-345），站水里的生物没有豁免。原载体"淹死后触发 DF"已随淹死移除；本条同时接管原"深水毒气"条的深水角——上一轮还是 web 自创即死地形的深水，不抑制死亡地形。捕获的错误实现：①"水中死亡抑制死亡地形"被实现成水中跳过 DF——isBurning 恒 false；②给深水补 CE 的 TM_EXTINGUISHES_FIRE 语义时把死亡点燃一并掐掉——同样在此失败。  1065ms
+     ✓ 玩家近战击杀 bloat：仍被清扫、仍掉落、死亡地形照常触发、hp 精确归零。捕获的错误实现：die() 归零被写成"在 die() 里额外扣一次伤害/改动 takeDamage语义"——hp 会偏离 0，或掉落/清扫路径被误伤。  1692ms
+     ✓ 对照组：战斗致死与水淹致死走同一条收口——被玩家砍死在水里的 bloat 一样放毒气（CE：killCreature 不区分伤害来源，只看 administrativeDeath/MB_IS_FALLING）。  1481ms
+     ✓ 玩家泡在深水里（P1-27 重写为断言新事实）：不 game over，hp 与外观都不受影响——连续两轮环境结算也是同样结果。CE 深水零伤害（Time.c:1146-1150 "You fall into deep water, unharmed."），web 自创的玩家淹死分支已被 WEB_ONLY_DEEP_WATER_DROWNING=false 退出生效路径。捕获的错误实现：①标志被改回 true（或玩家分支被复活）——第一轮 isGameOver 就翻 true；②"半吊子移除"——不 game over 了却把玩家 hp 清 0 或 char 变 %（误走了 die()）。任一都在本条失败。  1367ms
+     ✓ 玩家在熔岩中：同样走 triggerGameOver，hp 与外观不被 die() 触碰。  1141ms
+stdout | src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2k_lifecycle.test.ts > X2k immediate CE death transaction > binds restored monsters and preserves appearance through purgatory save/raise
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_19_polymorph.test.ts (53 tests) 4667ms
+     ✓ JSON round-trip retains current species, speed, item identity, hostile relation, and later death  994ms
+     ✓ tagged dormant list and test-room reconstruction preserve form and references  1610ms
+     ✓ cancel is zero cost; actual confirm spends one charge/turn and transforms in place  1030ms
+     ✓ 101 wait protects the cast action; the transformed creature acts on the next objective advance  754ms
+ ✓ src/test/x2k_lifecycle.test.ts (11 tests) 8142ms
+     ✓ drops before the DF; dying reentry is inert; list/purgatory move only at sweep  867ms
+     ✓ nested explosive deaths finish before the outer leadership demotion  667ms
+     ✓ releases a passenger immediately, applies lethal contact, and does not repeat either death  498ms
+     ✓ silent administrative death suppresses DF/drop/passenger/resurrection but demotes followers  521ms
+     ✓ falling suppresses DF, dormant death suppresses release and clears dormant occupancy  586ms
+     ✓ vampire death uses the CE blood explosion on the existing surface layer  587ms
+     ✓ binds restored monsters and preserves appearance through purgatory save/raise  937ms
+     ✓ uses x-major nearest path ties, rejects corner cutting and falls back across sealed walls  1351ms
+     ✓ drops on an occupied monster cell; item restrictions do not block paths; valid origin consumes no RNG  918ms
+     ✓ selects highest power, then CE monsterID; no RNG for a valid origin and no dormant occupancy exclusion  647ms
+     ✓ catalog ENTER_SUMMONS survives negation, restores info/statuses and consumes no construction RNG  560ms
+
+ Test Files  4 passed (4)
+      Tests  93 passed (93)
+   Start at  13:00:04
+   Duration  26.58s (transform 1.70s, setup 0ms, import 6.45s, tests 45.75s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3e31/brogue/brogue-web/ai_docs/reports/x2k-evidence/premises-repaired.json
