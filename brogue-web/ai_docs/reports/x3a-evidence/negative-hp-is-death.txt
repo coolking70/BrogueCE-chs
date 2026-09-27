@@ -1,0 +1,88 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts --testNamePattern original CE iterator|dying DF --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-hp-is-death.json
+
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x3a-negative-kn1m6ef7/brogue-web
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > dying DF retains occupancy and iteration; reentry cannot duplicate its effects
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3a_live_iteration.test.ts (23 tests | 2 failed | 21 skipped) 318ms
+     × matches original CE iterator for every death mask; HP zero alone is not HAS_DIED 7ms
+     ↓ checks later members at visit time; a stable cohort does not admit a released passenger twice
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 0
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 1
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 2
+     × dying DF retains occupancy and iteration; reentry cannot duplicate its effects 310ms
+     ↓ released passenger participates only if contact survives (lethal=false)
+     ↓ released passenger participates only if contact survives (lethal=true)
+     ↓ explosion chain removes completed victims from live queries before sweeping
+     ↓ purgatory remains a raw resurrection payload; a restored ally is live again and can die again
+     ↓ DF activation leaves completed dormant corpses linked and inert until the sweep
+     ↓ stale visible corpse at x=11 cannot divert or stop the next auto step
+     ↓ stale visible corpse at x=15 cannot divert or stop the next auto step
+     ↓ auto-explore does not auto-attack or mark a stale visible corpse as seen
+     ↓ opening a cage cannot recruit a listed corpse or make it eligible for resurrection
+     ↓ monster spell selection neither heals a corpse nor consumes a target roll for it
+     ↓ scent following uses the same direction and RNG through a completed death cell
+     ↓ invisible dead enemies do not affect ally selection/maps or draw target RNG
+     ↓ dead allies/followers do not count toward summoning or wake with the horde
+     ↓ a dead final follower cannot keep a leader avoiding corridors
+     ↓ demotion skips completed dormant followers but detaches living dormant followers
+     ↓ group discord/negation leave corpses untouched and still affect living targets
+     ↓ light, visible identity, telepathy markers, sidebar and auto-targets ignore listed corpses
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > matches original CE iterator for every death mask; HP zero alone is not HAS_DIED
+AssertionError: CE mask 0: expected [ 1, 3, 5, 7 ] to deeply equal [ +0, 1, 2, 3, 4, 5, 6, 7 ]
+
+- Expected
++ Received
+
+  [
+-   0,
+    1,
+-   2,
+    3,
+-   4,
+    5,
+-   6,
+    7,
+  ]
+
+ ❯ src/test/x3a_live_iteration.test.ts:42:87
+     40|         for (const row of rows) {
+     41|             const list = Array.from({ length: 8 }, (_, id) => ({ id, h…
+     42|             expect([...iterateCreatures(list)].map(m => m.id), `CE mas…
+       |                                                                                       ^
+     43|             expect(list).toHaveLength(8);
+     44|         }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > dying DF retains occupancy and iteration; reentry cannot duplicate its effects
+AssertionError: expected [] to include Monster{ mapToMe: null, id: 21, …(83) }
+ ❯ EnvironmentManager.<anonymous> src/test/x3a_live_iteration.test.ts:82:55
+     80|         const add = vi.spyOn(g.environment, 'addGas').mockImplementati…
+     81|             expect(host.hp).toBe(0); expect(host.deathProcessed).toBe(…
+     82|             expect([...iterateCreatures(g.monsters)]).toContain(host);
+       |                                                       ^
+     83|             expect(g.getMonsterAt(host.x, host.y)).toBe(host); expect(…
+     84|             g.killMonster(host); return original(...args);
+ ❯ Game.triggerDeathFeatures src/engine/Core/Game.ts:7271:34
+ ❯ Game.killMonster src/engine/Core/Game.ts:7725:18
+ ❯ notifyMonsterDeath src/engine/Core/MonsterLifecycle.ts:47:15
+ ❯ Monster.die src/entities/Monster.ts:409:9
+ ❯ Monster.takeDamage src/entities/Creature.ts:313:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 21 skipped (23)
+   Start at  19:05:31
+   Duration  1.66s (transform 758ms, setup 0ms, import 1.19s, tests 318ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-hp-is-death.json

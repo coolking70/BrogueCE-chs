@@ -1,0 +1,506 @@
+[
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "line": 1628,
+    "scope": "buildAMachine",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "line": 3019,
+    "scope": "refreshWaypoint",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "line": 3489,
+    "scope": "spawnDungeonFeature",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "line": 3558,
+    "scope": "restoreMonster",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Architect.c",
+    "line": 3810,
+    "scope": "initializeLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Combat.c",
+    "line": 182,
+    "scope": "alliedCloneCount",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Combat.c",
+    "line": 192,
+    "scope": "alliedCloneCount",
+    "code": "iterateCreatures(&levels[rogue.depthLevel - 2].monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Combat.c",
+    "line": 204,
+    "scope": "alliedCloneCount",
+    "code": "iterateCreatures(&levels[rogue.depthLevel].monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Combat.c",
+    "line": 1687,
+    "scope": "anyoneWantABite",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Combat.c",
+    "line": 1702,
+    "scope": "anyoneWantABite",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/IO.c",
+    "line": 2995,
+    "scope": "displayMonsterFlashes",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/IO.c",
+    "line": 3824,
+    "scope": "refreshSideBar",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 914,
+    "scope": "pickUpItemAt",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 4099,
+    "scope": "aggravateMonsters",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 4709,
+    "scope": "makePlayerTelepathic",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 4713,
+    "scope": "makePlayerTelepathic",
+    "code": "if (!hasNextCreature(iterateCreatures(monsters))) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 4836,
+    "scope": "negationBlast",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 4889,
+    "scope": "discordBlast",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Items.c",
+    "line": 8150,
+    "scope": "drinkPotion",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Light.c",
+    "line": 240,
+    "scope": "updateLighting",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Light.c",
+    "line": 260,
+    "scope": "updateLighting",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 635,
+    "scope": "empowerMonster",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 925,
+    "scope": "iterateCreatures",
+    "code": "creatureIterator iterateCreatures(creatureList *list) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 977,
+    "scope": "freeCreatureList",
+    "code": "for (creatureListNode *monstNode = list->head; monstNode != NULL; monstNode = nextMonst) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 1019,
+    "scope": "summonMinions",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 1136,
+    "scope": "spawnPeriodicHorde",
+    "code": "for (creatureIterator it2 = iterateCreatures(monsters); hasNextCreature(it2);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 1601,
+    "scope": "wakeUp",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 1754,
+    "scope": "updateMonsterState",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2059,
+    "scope": "openPathBetween",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2076,
+    "scope": "openPathBetween",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2209,
+    "scope": "monsterSwarmDirection",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2242,
+    "scope": "monsterSwarmDirection",
+    "code": "for (creatureIterator it2 = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it2);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2423,
+    "scope": "monsterSummons",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2435,
+    "scope": "monsterSummons",
+    "code": "for (creatureIterator it = iterateCreatures(&levels[rogue.depthLevel - 2].monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2443,
+    "scope": "monsterSummons",
+    "code": "for (creatureIterator it = iterateCreatures(&levels[rogue.depthLevel].monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2576,
+    "scope": "targetEligibleForCombatBuff",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2794,
+    "scope": "monstUseBolt",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 2899,
+    "scope": "resurrectAlly",
+    "code": "creatureIterator allyIterator = iterateCreatures(&purgatory);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3093,
+    "scope": "moveAlly",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3189,
+    "scope": "moveAlly",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3400,
+    "scope": "monstersTurn",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3446,
+    "scope": "monstersTurn",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3512,
+    "scope": "monstersTurn",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3576,
+    "scope": "monstersTurn",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 3790,
+    "scope": "moveMonster",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 4090,
+    "scope": "checkForContinuedLeadership",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 4116,
+    "scope": "demoteMonsterFromLeadership",
+    "code": "for (creatureIterator it = iterateCreatures(nearbyList); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Monsters.c",
+    "line": 4146,
+    "scope": "demoteMonsterFromLeadership",
+    "code": "for (creatureIterator it = iterateCreatures(candidateList); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Movement.c",
+    "line": 717,
+    "scope": "moveEntrancedMonsters",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Movement.c",
+    "line": 1030,
+    "scope": "buildFlailHitList",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Movement.c",
+    "line": 1268,
+    "scope": "playerMoves",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Movement.c",
+    "line": 1851,
+    "scope": "travelRoute",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Movement.c",
+    "line": 2278,
+    "scope": "explore",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 593,
+    "scope": "startLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 630,
+    "scope": "startLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 723,
+    "scope": "startLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 899,
+    "scope": "startLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 912,
+    "scope": "startLevel",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/RogueMain.c",
+    "line": 954,
+    "scope": "removeDeadMonstersFromList",
+    "code": "creatureListNode *next = list->head;"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/SeedCatalog.c",
+    "line": 145,
+    "scope": "printSeedCatalogMonsters",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/SeedCatalog.c",
+    "line": 152,
+    "scope": "printSeedCatalogMonsters",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/SeedCatalog.c",
+    "line": 161,
+    "scope": "printSeedCatalogMonsterItems",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/SeedCatalog.c",
+    "line": 168,
+    "scope": "printSeedCatalogMonsterItems",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 727,
+    "scope": "updateTelepathy",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 736,
+    "scope": "updateTelepathy",
+    "code": "for (creatureIterator it = iterateCreatures(dormantMonsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 917,
+    "scope": "updateVision",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 1091,
+    "scope": "handleXPXP",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 1097,
+    "scope": "handleXPXP",
+    "code": "iterateCreatures(&levels[rogue.depthLevel - 2].monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 1105,
+    "scope": "handleXPXP",
+    "code": "iterateCreatures(&levels[rogue.depthLevel].monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 1203,
+    "scope": "activateMachine",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 1535,
+    "scope": "monstersFall",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2192,
+    "scope": "monstersApproachStairs",
+    "code": "for (creatureIterator it = iterateCreatures(&levels[n].monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2346,
+    "scope": "autoRest",
+    "code": "for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2456,
+    "scope": "recordCurrentCreatureHealths",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2558,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2620,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2645,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2652,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2668,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2674,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2681,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2717,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2736,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it2 = iterateCreatures(monsters);"
+  },
+  {
+    "file": "../BrogueCE-master/src/brogue/Time.c",
+    "line": 2762,
+    "scope": "playerTurnEnded",
+    "code": "for (creatureIterator it = iterateCreatures(monsters);"
+  }
+]

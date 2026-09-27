@@ -1,0 +1,31 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_r2_trace.test.ts src/test/u_r3_trace.test.ts src/test/u_r4_trace.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x3a-evidence/traces-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web
+
+stdout | src/test/u_r2_trace.test.ts > UR2 fixed command traces > matches the pre-refactor state after each item command
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r2_trace.test.ts (1 test) 3033ms
+     ✓ matches the pre-refactor state after each item command  3031ms
+stdout | src/test/u_r4_trace.test.ts > UR4 objective block trace > matches HEAD for complete snapshots, events, tick, both RNG streams and command log
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:25505) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_r4_trace.test.ts (1 test) 5357ms
+     ✓ matches HEAD for complete snapshots, events, tick, both RNG streams and command log  5356ms
+stdout | src/test/u_r3_trace.test.ts > UR3 complete generation and revisit trace > matches HEAD for four drift seeds through D26 and cached/save return
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r3_trace.test.ts (1 test) 91433ms
+     ✓ matches HEAD for four drift seeds through D26 and cached/save return  91431ms
+
+ Test Files  3 passed (3)
+      Tests  3 passed (3)
+   Start at  19:09:37
+   Duration  103.32s (transform 869ms, setup 0ms, import 3.02s, tests 99.82s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/traces-final.json

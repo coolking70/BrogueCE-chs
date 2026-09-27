@@ -5,6 +5,7 @@ import { hiddenBySubmersion, isSubmerged } from '../Movement/Submersion';
  * No player targeting, item resource, generation or learning policy lives here.
  */
 import type { Game } from '../Core/Game';
+import { iterateCreatures } from '../Core/MonsterLifecycle';
 import { Monster, MonsterState, monstersAreEnemies, monstersAreTeammates } from '../../entities/Monster';
 import type { Creature } from '../../entities/Creature';
 import type { Pos } from '../../types';
@@ -123,7 +124,7 @@ export function monsterAvoidsCorridor(g: Game, m: Monster, p: Pos, immune?: numb
     }
     const here = flags(g, m.loc);
     if (m.hasAbility('MA_AVOID_CORRIDORS') && !(m.hasStatus('enraged') && m.hp <= Math.floor(m.maxHp / 2)) && !alliedState(m) && m.state === MonsterState.HUNTING
-        && (m.leader || g.monsters.some(other => other.leader === m)) && arcs(g, p) >= 2 && arcs(g, m.loc) < 2
+        && (m.leader || [...iterateCreatures(g.monsters)].some(other => other.leader === m)) && arcs(g, p) >= 2 && arcs(g, m.loc) < 2
         && !(here & T.T_HARMFUL_TERRAIN & ~immune)) return true;
     return false;
 }
@@ -282,7 +283,7 @@ export function playerTraversiblePath(g: Game, player: Player, target: Pos): boo
 }
 export function closestBlinkEnemy(g: Game, m: Monster): Monster | null {
     let closest: Monster | null = null, shortest = Math.max(g.grid.width,g.grid.height);
-    for (const target of g.monsters) {
+    for (const target of iterateCreatures(g.monsters)) {
         const d = distance(m.loc,target.loc);
         if ((target.submerged && !m.submerged) || !attacks(m,target) || d >= shortest || !blinkTraversiblePath(g,m,target.loc)
             || ((flags(g,target.loc) & T.T_OBSTRUCTS_PASSABILITY) && !target.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))
@@ -308,7 +309,7 @@ export function buildBlinkEnemyMap(g: Game, m: Monster, shortest: number): numbe
         else if (monsterBlinkAvoids(g,m,p)) costs[x]![y] = -1;
         else map[x]![y] = 10000;
     }
-    for (const target of g.monsters) {
+    for (const target of iterateCreatures(g.monsters)) {
         // CE :3194 is deliberately strict < shortestDistance, NOT <=.
         if (!attacks(m,target) || distance(m.loc,target.loc) >= shortest || !blinkTraversiblePath(g,m,target.loc)
             || (monsterBlinkAvoids(g,m,target.loc) && !target.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))

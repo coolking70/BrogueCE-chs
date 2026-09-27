@@ -1,0 +1,26 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "test:drift",
+    "--",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x3a-evidence/drift-final.json"
+  ],
+  "start": "2026-09-27T11:05:46.634Z",
+  "seconds": 48.089,
+  "exit": 0,
+  "inputs": 987,
+  "changedInputs": [],
+  "discoveredFiles": 218,
+  "changedDiscovery": [],
+  "files": 1,
+  "passed": 1,
+  "failed": 0,
+  "pending": 0,
+  "todo": 0,
+  "failedSuites": [],
+  "failures": []
+}

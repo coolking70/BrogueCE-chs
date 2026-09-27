@@ -1,0 +1,8 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/x3a_live_iteration.test.ts(24,40): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.
+src/test/x3a_live_iteration.test.ts(62,15): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.
+src/test/x3a_live_iteration.test.ts(179,65): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.
+src/test/x3a_live_iteration.test.ts(187,21): error TS2341: Property 'updateVision' is private and only accessible within class 'Game'.

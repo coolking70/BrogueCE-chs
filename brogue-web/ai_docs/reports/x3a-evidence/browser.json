@@ -1,0 +1,505 @@
+{
+  "scope": "Synthetic seed22013 scene; real death, keyboard wait, render and DOM consumers. Does not establish natural frequency.",
+  "errors": [],
+  "rows": [
+    {
+      "label": "alive",
+      "text": {
+        "seed": "22013",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 30,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 10,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 0,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "复仇亡灵",
+            "x": 13,
+            "y": 10,
+            "hp": 30,
+            "maxHp": 30,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 200,
+            "defense": 0,
+            "damage": "1d6+14",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_WEAPONS"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "revenant",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      },
+      "rat": {
+        "loc": {
+          "x": 12,
+          "y": 10
+        },
+        "state": 2,
+        "hp": 6
+      },
+      "corpse": {
+        "listed": true,
+        "hp": 30,
+        "processed": false,
+        "occupies": true
+      },
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2814651817,
+            "b": 268214699,
+            "c": 2097546673,
+            "d": 3228384120
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2570,
+        "cosmeticNumbersGenerated": 158
+      }
+    },
+    {
+      "label": "dead-listed",
+      "text": {
+        "seed": "22013",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 30,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 10,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 0,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      },
+      "rat": {
+        "loc": {
+          "x": 12,
+          "y": 10
+        },
+        "state": 2,
+        "hp": 6
+      },
+      "corpse": {
+        "listed": true,
+        "hp": 0,
+        "processed": true,
+        "occupies": false
+      },
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 2814651817,
+            "b": 268214699,
+            "c": 2097546673,
+            "d": 3228384120
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2570,
+        "cosmeticNumbersGenerated": 158
+      }
+    },
+    {
+      "label": "turn",
+      "text": {
+        "seed": "22013",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 27,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 11,
+            "y": 10,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      },
+      "rat": {
+        "loc": {
+          "x": 11,
+          "y": 10
+        },
+        "state": 2,
+        "hp": 6
+      },
+      "corpse": {
+        "listed": false,
+        "hp": 0,
+        "processed": true,
+        "occupies": false
+      },
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1195594064,
+            "b": 2363608949,
+            "c": 2062945236,
+            "d": 2678352543
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2574,
+        "cosmeticNumbersGenerated": 158
+      }
+    },
+    {
+      "label": "control",
+      "text": {
+        "seed": "22013",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 27,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 11,
+            "y": 10,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      },
+      "rat": {
+        "loc": {
+          "x": 11,
+          "y": 10
+        },
+        "state": 2,
+        "hp": 6
+      },
+      "corpse": {
+        "listed": false,
+        "hp": 0,
+        "processed": true,
+        "occupies": false
+      },
+      "rng": {
+        "version": 2,
+        "algorithm": "brogue-web-ranval32-uint64-level-v2",
+        "streams": [
+          {
+            "a": 1195594064,
+            "b": 2363608949,
+            "c": 2062945236,
+            "d": 2678352543
+          },
+          {
+            "a": 2022299240,
+            "b": 3502187893,
+            "c": 1448217981,
+            "d": 2667181354
+          }
+        ],
+        "currentRNG": 0,
+        "randomNumbersGenerated": 2574,
+        "cosmeticNumbersGenerated": 158
+      }
+    }
+  ]
+}

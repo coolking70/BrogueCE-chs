@@ -1551,3 +1551,13 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 - X2o 最终复跑已17:38:10 CST在其他worker连续三次为0后启动，父session86708。build退出0/6.141秒；完整npm test进行中，随后脚本自动drift/deep。与attempt3的966输入逐项完全相同（retry-input-equivalence.json）。报告第6节最后pending段需在最终结束后改为实际表格/复跑声明；然后node ai_docs/reports/x2o-evidence/final-check.mjs核对覆盖/SHA/LF，git diff --check与未暂存确认，不提交。
 
 - X2o 最终完成：2026-09-27 17:38:10–18:07:39 CST，同一966冻结输入及216发现文件零变化。完整npm test 215文件/3973通过/0失败，8既有skip/5todo；构建、浅层drift、独立深层全部退出0。R∪S212/212、点名57、源码/文件读取69、全部发现216/216覆盖；12保护文件仅已归因深层基线变化，CE来源SHA一致，无CRLF，diff检查通过。上轮3项900秒超时原样复跑均通过，未改样本/断言/门限。报告ai_docs/reports/x2o.report.md已收口，旧horde形状前提7处修订有反事实待验收；浏览器和预览服务已关闭，未暂存、未提交。
+
+## 2026-09-27 X3a：活体迭代与延迟摘链
+
+- 按 `ai_docs/tasks/x3a.prompt.md` 核对 CE 迭代器和全部怪物名单消费者；保留 X2k 的同步死亡事务、事务内占用、回合尾摘链及 purgatory 载体。
+- 新增 `iterateCreatures`，恐惧、走廊随从存在性、降职、开笼及 AgentControls 过滤完成死亡事务者；已有 HP/可见性/占用守卫的消费者保留。
+- 新增 19 项交叉守卫，原 CE 迭代器 256 种标记组合。X2j/X2k 与首轮专项 70/70；补齐后专项 19/19。首轮构建仅新测试调用 private 方法的类型错误，已修测试装配。
+- 最终门禁、反向验证、浏览器与闭包证据见 `ai_docs/reports/x3a.report.md`；本轮不提交。
+
+- X3a 最终完成：补齐休眠激活及旧可见缓存，共 23 项新增守卫；256 组原 C oracle、11 个故障变体、seed22013 实际浏览器等待对照通过，0 页面错误。D1–40 生成探针 165 次楼梯事务无完成死亡对象，原基线不变。
+- 2026-09-27 19:05:11–19:38:12 CST，构建、完整 npm test、浅层 drift、独立深层均退出 0。全量 217 文件、4006 passed、0 failed、8 既有 skip、5 既有 todo；R∪S 212/212、全部 218 发现文件覆盖。987 冻结输入及发现清单零变化，12 个保护文件 SHA 不变，既有测试未改，CRLF=0、diff 检查通过。UR2/3/4 原黄金通过且未重录；报告 `ai_docs/reports/x3a.report.md` 已收口，预览服务关闭，未暂存、未提交。

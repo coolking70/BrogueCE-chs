@@ -1,4 +1,4 @@
-import { ownedMonsterList, dyingMonsters } from './MonsterLifecycle';
+import { ownedMonsterList, dyingMonsters, iterateCreatures } from './MonsterLifecycle';
 import { alertMonster, wakeMonster } from '../Combat/MonsterAI';
 import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
 import { createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';
@@ -3239,7 +3239,7 @@ export class Game {
 
                         // The cage promotion releases its captive through the same
                         // relation transition used by magical rescue.
-                        if (isCage) for (const m of this.monsters) {
+                        if (isCage) for (const m of iterateCreatures(this.monsters)) {
                             if (m.isCaged) {
                                 // Cage interior is 1 step away from the door
                                 const dist = Math.max(Math.abs(m.loc.x - newX), Math.abs(m.loc.y - newY));
@@ -9363,7 +9363,7 @@ export class Game {
      */
     private awakenDormantMonstersAt(origin: Pos, builtCells: readonly Pos[]): void {
         const built = new Set(builtCells.map(p => p.y * DCOLS + p.x));
-        for (const monst of [...this.dormantMonsters]) {
+        for (const monst of iterateCreatures([...this.dormantMonsters])) {
             const atOrigin = monst.loc.x === origin.x && monst.loc.y === origin.y;
             if (!atOrigin && !built.has(monst.loc.y * DCOLS + monst.loc.x)) continue;
             this.toggleMonsterDormancy(monst);
@@ -9498,7 +9498,7 @@ export class Game {
         if (this.isInventoryOpen) return;
 
         // 1. Auto-Attack check
-        const adjacentMonsters = Array.from(this.visibleMonsters).filter(m =>
+        const adjacentMonsters = Array.from(iterateCreatures(this.visibleMonsters)).filter(m =>
             Math.abs(m.loc.x - this.player.loc.x) <= 1 && Math.abs(m.loc.y - this.player.loc.y) <= 1
         );
 
@@ -9516,7 +9516,7 @@ export class Game {
 
         // 2. User explicitly pressed 'x', ignore currently visible monsters & items for pathing purposes
         this.isMouseTraveling = false;
-        for (const m of this.visibleMonsters) {
+        for (const m of iterateCreatures(this.visibleMonsters)) {
             this.everSeenMonsters.add(m);
         }
         for (const i of this.visibleItems) {
@@ -10016,7 +10016,7 @@ export class Game {
         // followers are detached in a separate pass, never elected/reparented.
         const active = new Set([...(this.monsters ?? []), ...levels.flatMap(level => level.monsters)]);
         const dormant = new Set([...(this.dormantMonsters ?? []), ...levels.flatMap(level => level.dormantMonsters ?? [])]);
-        for (const follower of active) {
+        for (const follower of iterateCreatures(active)) {
             if (follower === monster || follower.hp <= 0 || follower.leader !== monster) continue;
             if (follower.boundToLeader || follower.isDormant || dormant.has(follower)) follower.leader = null;
             else if (!replacement) { replacement = follower; follower.leader = null; follower.leaderlessAfterDemotion = true; }
@@ -10028,7 +10028,7 @@ export class Game {
                 }
             }
         }
-        for (const follower of dormant) if (follower !== monster && follower.leader === monster) follower.leader = null;
+        for (const follower of iterateCreatures(dormant)) if (follower !== monster && follower.leader === monster) follower.leader = null;
     }
 
     /** CE makeMonsterDropItem: one item has exactly one owner. */
@@ -10451,7 +10451,7 @@ export class Game {
             // Explore 'x' logic:
             // 1. Check adjacent monsters. Attack and clear path if any.
             let adjacentMonster = null;
-            for (const m of this.visibleMonsters) {
+            for (const m of iterateCreatures(this.visibleMonsters)) {
                 if (Math.abs(m.loc.x - this.player.loc.x) <= 1 && Math.abs(m.loc.y - this.player.loc.y) <= 1) {
                     adjacentMonster = m;
                     break;

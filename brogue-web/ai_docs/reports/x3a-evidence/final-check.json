@@ -1,0 +1,112 @@
+{
+  "gates": [
+    {
+      "mode": "build-final",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-27T11:05:11.335Z",
+      "seconds": 6.324,
+      "exit": 0,
+      "inputs": 987,
+      "changedInputs": [],
+      "discoveredFiles": 218,
+      "changedDiscovery": []
+    },
+    {
+      "mode": "full-final",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x3a-evidence/full-final.json"
+      ],
+      "start": "2026-09-27T11:05:17.729Z",
+      "seconds": 1974.956,
+      "exit": 0,
+      "inputs": 987,
+      "changedInputs": [],
+      "discoveredFiles": 218,
+      "changedDiscovery": [],
+      "files": 217,
+      "passed": 4006,
+      "failed": 0,
+      "pending": 8,
+      "todo": 5,
+      "failedSuites": [],
+      "failures": []
+    },
+    {
+      "mode": "drift-final",
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x3a-evidence/drift-final.json"
+      ],
+      "start": "2026-09-27T11:05:46.634Z",
+      "seconds": 48.089,
+      "exit": 0,
+      "inputs": 987,
+      "changedInputs": [],
+      "discoveredFiles": 218,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    },
+    {
+      "mode": "deep-final",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "src/test/u_26a_deep_baseline.test.ts",
+        "--maxWorkers=6",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=ai_docs/reports/x3a-evidence/deep-final.json"
+      ],
+      "start": "2026-09-27T11:06:34.832Z",
+      "seconds": 80.665,
+      "exit": 0,
+      "inputs": 987,
+      "changedInputs": [],
+      "discoveredFiles": 218,
+      "changedDiscovery": [],
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "failedSuites": [],
+      "failures": []
+    }
+  ],
+  "R": 205,
+  "S": {
+    "sourceReaders": 70,
+    "aiLifecycle": 89,
+    "required": 44
+  },
+  "closure": 212,
+  "missing": [],
+  "protectedUnchanged": true,
+  "crlf": [],
+  "diffCheck": 0,
+  "staged": "",
+  "finalInputFiles": 987
+}

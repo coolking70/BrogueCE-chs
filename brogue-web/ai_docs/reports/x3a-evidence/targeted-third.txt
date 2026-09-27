@@ -1,0 +1,22 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x3a-evidence/targeted-third.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 0
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3a_live_iteration.test.ts (23 tests) 4675ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 0  368ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 1  309ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 2  306ms
+     ✓ scent following uses the same direction and RNG through a completed death cell  305ms
+
+ Test Files  1 passed (1)
+      Tests  23 passed (23)
+   Start at  19:04:30
+   Duration  5.44s (transform 405ms, setup 0ms, import 684ms, tests 4.67s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/targeted-third.json

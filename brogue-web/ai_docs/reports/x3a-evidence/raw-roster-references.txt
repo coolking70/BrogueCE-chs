@@ -1,0 +1,305 @@
+brogue-web/src/entities/Creature.ts:96:    // monsterCatalog（web 侧 monsters.json 的 moveSpeed/attackSpeed）。
+brogue-web/src/entities/Creature.ts:102:    /** info 基准移动速度；Player 的 info 恒 100，Monster 取 monsters.json。 */
+brogue-web/src/entities/Monster.ts:25:import monsterCatalogData from '../data/monsters.json';
+brogue-web/src/entities/Monster.ts:103:    return game.monsters.some(enemy => enemy.hp > 0 && boltEnemies(game.player, enemy, game)
+brogue-web/src/entities/Monster.ts:121:export function countMinions(caster: Monster, allMonsters: readonly Monster[]): number {
+brogue-web/src/entities/Monster.ts:123:        return allMonsters.filter(m => m.hp > 0 && m.isAlly).length;
+brogue-web/src/entities/Monster.ts:125:    return allMonsters.filter(m => m.hp > 0 && m.leader === caster).length;
+brogue-web/src/entities/Monster.ts:460:    /** Carried creatures are detached payloads, never active occupants.
+brogue-web/src/entities/Monster.ts:473:    /** P4-2：monsters.json 的怪物种类 id（如 'goblin_conjurer'），对应 CE
+brogue-web/src/entities/Monster.ts:525:     * 置/清）——"已休眠，不在 `monsters` 表里"的位。CE 的休眠是**换表**：
+brogue-web/src/entities/Monster.ts:526:     * 睡下的怪从 `monsters` 摘链、挂到 `dormantMonsters`，于是「不占格
+brogue-web/src/entities/Monster.ts:530:     * `Game.monsters`；位本身只作断言/调试的可查询事实（见
+brogue-web/src/entities/Monster.ts:568:    // 来自 monsters.json）。基准必须存私有字段：公有的 moveSpeed/attackSpeed
+brogue-web/src/entities/Monster.ts:619:        // 环境/目标判定只读 status 通道，web 此前缺这一层，monsters.json 写在
+brogue-web/src/entities/Monster.ts:731:        // unAlly is NOT demoteMonsterFromLeadership. Other monsters' pointers
+brogue-web/src/entities/Monster.ts:826:    /** CE decrementMonsterStatus: only eligible, surfaced monsters draw the 20% roll. */
+brogue-web/src/entities/Monster.ts:1043:        const minionCount = countMinions(this, game.monsters);
+brogue-web/src/entities/Monster.ts:1066:     *   for target in [player, ...monsters]:                      → candidates 遍历（player 优先，同 CE）
+brogue-web/src/entities/Monster.ts:1068:     *       for bolt in caster.bolts:                              → 按 monsters.json 原始顺序（P4-1a 已核实）
+brogue-web/src/entities/Monster.ts:1079:        const candidates: Creature[] = [game.player, ...game.monsters.filter(m => m !== this && m.hp > 0)];
+brogue-web/src/entities/Monster.ts:1140:            if (this.seized && game.monsters.some(m => m !== this && m.hp > 0 && m.seizing
+brogue-web/src/entities/Monster.ts:1211:     *   force can send both monsters flying."——照实现，测试锁死。
+brogue-web/src/entities/Monster.ts:1494:        // outer scheduler separately withholds actions from disabled monsters.
+brogue-web/src/entities/Monster.ts:1511:        // blink-capable, awake, mobile monsters enter this dedicated schedule.
+brogue-web/src/entities/Monster.ts:1798:            const blade = game.monsters.find(m => ((m.typeId === 'spectral_blade' && m.boundToPlayer) || (m.dominated && m.isAlly))
+brogue-web/src/entities/Monster.ts:2205:        // In Game.ts we use `timeSystem.currentTick += 200` for player, but monsters just run once per logic loop.
+brogue-web/src/entities/Monster.ts:2206:        // For monsters, maybe we can just randomly skip moves in MUD?
+brogue-web/src/engine/Items/ItemUseCoordinator.ts:176:export function boltWorldFor(caster: Creature | null, player: Player, monsters: readonly Monster[], hideDetails = false): BoltWorld {
+brogue-web/src/engine/Items/ItemUseCoordinator.ts:181:            return monsters.find(m => m.hp > 0 && !m.isDormant && m.loc.x === pos.x && m.loc.y === pos.y);
+brogue-web/src/engine/Items/ItemLoader.ts:559:        // 卷轴（web 14 条，含 1 条自创；CE aggravate monsters web 缺）
+brogue-web/src/engine/Items/ItemLoader.ts:572:        scroll_of_summon_monsters: -1,// summon monsters
+brogue-web/src/engine/Combat/MonsterAbsorption.ts:77:    const roster = g.monsters.filter(m => m.hp > 0 && !m.deathProcessed && !m.isDormant && m !== decedent);
+brogue-web/src/engine/Movement/LevelTravel.ts:20: * hazards and damage-immune stationary monsters do not. Secret doors cost 1. */
+brogue-web/src/engine/Movement/LevelTravel.ts:21:export function travelDistanceMap(grid: Grid, monsters: readonly Monster[], origin: Pos, blocking: number,
+brogue-web/src/engine/Movement/LevelTravel.ts:27:        else if (!placement && monsters.some(m=>m.hp>0 && m.x===x && m.y===y
+brogue-web/src/engine/Movement/LevelTravel.ts:50:export function scheduleLevelFollowers(grid: Grid, monsters: readonly Monster[], exit: Pos, direction: -1|0|1): void {
+brogue-web/src/engine/Movement/LevelTravel.ts:58:        const map=travelDistanceMap(grid,monsters,origin,(flying?T_OBSTRUCTS_PASSABILITY:T_PATHING_BLOCKER)|T_SACRED);
+brogue-web/src/engine/Movement/LevelTravel.ts:59:        for (const m of monsters) {
+brogue-web/src/engine/Movement/LevelTravel.ts:95:            && (!occupied || ![world.player,...world.monsters].some(c=>c!==target && c.hp>0 && c.x===p.x && c.y===p.y));
+brogue-web/src/engine/Combat/BlinkTargeting.ts:17:export function blinkTargetPreview(grid: Grid, player: Player, monsters: readonly Monster[], item: Item, aim: Pos) {
+brogue-web/src/engine/Combat/BlinkTargeting.ts:23:        monsters.find(m => m.hp > 0 && !m.isDormant && m.x === p.x && m.y === p.y
+brogue-web/src/engine/Combat/Conjuration.ts:31: * Dormant monsters do not carry CE HAS_MONSTER and intentionally do not occupy.
+brogue-web/src/engine/Combat/Conjuration.ts:33:export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, origin: Pos, avoidedFlags = SPAWN_FORBIDDEN): Pos | null {
+brogue-web/src/engine/Combat/Conjuration.ts:38:        && !same(world.player.loc, p) && !world.monsters.some(m => m.hp > 0 && !m.isDormant && same(m.loc, p));
+brogue-web/src/engine/Movement/Submersion.ts:22:/** CE Monsters.c:179–192. Gas does not outline submerged creatures. */
+brogue-web/src/engine/Combat/Polymorph.ts:1:import monsters from '../../data/monsters.json';
+brogue-web/src/engine/Combat/Polymorph.ts:6:    return monsters.some(row => row.id === id);
+brogue-web/src/engine/Combat/Polymorph.ts:15:        next = monsters[random.randRange(1, monsters.length) - 1] as MonsterData;
+brogue-web/src/engine/Combat/BoltCatalog.ts:106:    [T.TELEPORT]: { type: T.TELEPORT, name: "teleportation spell", description: "casts a teleport spell", abilityDescription: "can teleport other creatures",
+brogue-web/src/engine/Combat/BoltCatalog.ts:114:    [T.POLYMORPH]: { type: T.POLYMORPH, name: "polymorph spell", description: "casts a polymorphism spell", abilityDescription: "can polymorph other creatures",
+brogue-web/src/engine/Combat/BoltCatalog.ts:122:    [T.DOMINATION]: { type: T.DOMINATION, name: "domination spell", description: "casts a domination spell", abilityDescription: "can dominate other creatures",
+brogue-web/src/engine/Combat/BoltCatalog.ts:130:    [T.PLENTY]: { type: T.PLENTY, name: "spell of plenty", description: "casts a spell of plenty", abilityDescription: "can duplicate other creatures",
+brogue-web/src/engine/Combat/BoltCatalog.ts:134:    [T.INVISIBILITY]: { type: T.INVISIBILITY, name: "invisibility magic", description: "casts invisibility magic", abilityDescription: "can turn creatures invisible",
+brogue-web/src/engine/Combat/MonsterBlink.ts:127:        && (m.leader || [...iterateCreatures(g.monsters)].some(other => other.leader === m)) && arcs(g, p) >= 2 && arcs(g, m.loc) < 2
+brogue-web/src/engine/Combat/MonsterBlink.ts:132:/** CE getImpactLoc ignores hidden creatures; actual zap does not. Thus a cast
+brogue-web/src/engine/Combat/MonsterBlink.ts:263: * blockers and visible intervening creatures stop the probe at that cell. */
+brogue-web/src/engine/Combat/MonsterBlink.ts:286:    for (const target of iterateCreatures(g.monsters)) {
+brogue-web/src/engine/Combat/MonsterBlink.ts:312:    for (const target of iterateCreatures(g.monsters)) {
+brogue-web/src/engine/Movement/CreaturePlacement.ts:22:    monsters: readonly Monster[];
+brogue-web/src/engine/Movement/CreaturePlacement.ts:28: * Dormant living creatures count as occupied too (stronger than CE HAS_MONSTER).
+brogue-web/src/engine/Movement/CreaturePlacement.ts:30:export function canPlaceCreature(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, target: Creature, at: Pos, walkingSecretDoor = false): boolean {
+brogue-web/src/engine/Movement/CreaturePlacement.ts:34:    return ![world.player, ...world.monsters, ...(world.dormantMonsters ?? [])].some(c => c !== target && c.hp > 0
+brogue-web/src/engine/Movement/CreaturePlacement.ts:65:        const stationary = world.monsters.some(m => !m.isDormant && m.hp > 0 && m.loc.x === x && m.loc.y === y
+brogue-web/src/engine/Movement/CreaturePlacement.ts:106: * Does not reject other monsters or machines: neither is a forbidden map flag.
+brogue-web/src/engine/Movement/CreaturePlacement.ts:108:export function captiveItemDropCandidates(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters'>, origin: Pos, items: readonly { loc: Pos }[]): Pos[] {
+brogue-web/src/engine/Combat/BoltTargeting.ts:25:export function arcanaTargetCandidates(player: Player, grid: Grid, monsters: readonly Monster[], item: Item): Monster[] {
+brogue-web/src/engine/Combat/BoltTargeting.ts:32:    return monsters.filter(m => {
+brogue-web/src/engine/Combat/BoltTargeting.ts:34:        // CE openPathBetween also rejects creatures and terrain in intervening cells.
+brogue-web/src/engine/Combat/BoltTargeting.ts:39:            || monsters.some(other => other !== m && other.hp > 0 && !other.isDormant && !other.submerged
+brogue-web/src/engine/Combat/Bolt.ts:53:    SPARK,           // electrical bolt used by spark turrets and other monsters
+brogue-web/src/engine/Combat/MonsterAI.ts:22:    for (const mate of iterateCreatures(g.monsters)) {
+brogue-web/src/engine/Combat/MonsterAI.ts:87:    for (const target of [g.player, ...iterateCreatures(g.monsters)]) {
+brogue-web/src/engine/Combat/BoltTrajectory.ts:21:    /** Live occupancy, excluding dead/dormant creatures, never auto-target eligibility. */
+brogue-web/src/engine/Combat/BoltTrajectory.ts:67:            // creatures; teammates can see one another, including the player.
+brogue-web/src/engine/Combat/Cloning.ts:29:export function cloneLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters'>, source: Creature): Pos | null {
+brogue-web/src/engine/Combat/Cloning.ts:36:        && !playerAt(p) && !world.monsters.some(m => !m.isDormant && m.hp > 0 && m.x === p.x && m.y === p.y)
+brogue-web/src/engine/Map/DungeonFeature.ts:108:    creatures?(): readonly { loc: Pos; forbiddenTerrain: number }[];
+brogue-web/src/engine/Map/DungeonFeature.ts:142:    // creatures are absent from HAS_MONSTER in CE and from this port's list.
+brogue-web/src/engine/Map/DungeonFeature.ts:145:        const creatures = effects.creatures?.() ?? [];
+brogue-web/src/engine/Map/DungeonFeature.ts:146:        const creature = creatures.find(c => c.loc.x === x && c.loc.y === y);
+brogue-web/src/engine/Map/DungeonFeature.ts:151:            && !creatures.some(c => c.loc.x === nx && c.loc.y === ny));
+brogue-web/src/engine/Map/DungeonFeature.ts:809: * 与 `toggleMonsterDormancy` 都住在 `Game`（怪物列表 `Game.monsters` /
+brogue-web/src/engine/Map/DungeonFeature.ts:1080:    // CE :3487-3496「awaken dormant creatures?」——**在 subsequentDF 链之后**
+brogue-web/src/engine/Map/DungeonFeature.ts:1095:    // web 侧没有 `dormantMonsters` 链表（它归 Game：怪物状态与 monsters 链表
+brogue-web/src/components/AgentControls.vue:35:        monsters: [...iterateCreatures(activeGame.monsters)].map(m => ({
+brogue-web/src/components/AgentControls.vue:42:        })).filter(m => m.dist <= 15) // Only nearby monsters
+brogue-web/src/components/AgentControls.vue:62:        <div id="ai-agent-monsters">
+brogue-web/src/components/AgentControls.vue:63:            <div v-for="(m, i) in agentState.monsters" :key="i" class="ai-monster"
+brogue-web/src/engine/Map/Grid.ts:879:     * 语义：**休眠怪不占格**——CE 把休眠怪从 `monsters` 链表摘到
+brogue-web/src/engine/Map/Grid.ts:883:     * web 的 HAS_MONSTER 等价物是 `Game.getMonsterAt`（按 this.monsters 现场
+brogue-web/src/engine/Map/Grid.ts:886:     * 允许按格问）。真正的排斥由 `Game.dormantMonsters` 与 `this.monsters`
+brogue-web/src/engine/Map/TerrainRules.ts:1:/** U18a: caller-specific terrain contracts. These queries neither move creatures
+brogue-web/src/engine/Generator/GenerationPlacement.ts:46:    const occupied=(x:number,y:number)=>[...world.monsters,...(world.dormantMonsters??[])].some(m=>m.hp>0&&m.x===x&&m.y===y);
+brogue-web/src/engine/Generator/GenerationPlacement.ts:73:        if(world.monsters.some(m=>m.hp>0&&m.x===x&&m.y===y
+brogue-web/src/engine/Generator/BlueprintEngine.ts:185:     * 休眠（从 monsters 摘到 dormantMonsters）。
+brogue-web/src/engine/Generator/BlueprintEngine.ts:624:    monsters: number[];
+brogue-web/src/engine/Generator/BlueprintEngine.ts:718:    // Dormant monsters and carried/outsourced items have no active/floor bit.
+brogue-web/src/engine/Generator/BlueprintEngine.ts:764:     * Dormant monsters and carried/outsourced source items do not occupy floor.
+brogue-web/src/engine/Generator/BlueprintEngine.ts:780:     * Returns an array of MachineResult for Game.ts to populate with items/monsters.
+brogue-web/src/engine/Generator/BlueprintEngine.ts:2215:            items: [...this.pendingItems], monsters: [...this.pendingMonsters] };
+brogue-web/src/engine/Generator/BlueprintEngine.ts:2235:        this.pendingMonsters = new Set(snap.monsters);
+brogue-web/src/engine/Core/Game.ts:63:import monsterData from '../../data/monsters.json';
+brogue-web/src/engine/Core/Game.ts:290:    public get monsters(): Monster[] { return this.activeMonsterList; }
+brogue-web/src/engine/Core/Game.ts:291:    public set monsters(value: Monster[]) { this.activeMonsterList = ownedMonsterList(value, this); }
+brogue-web/src/engine/Core/Game.ts:294:     * 休眠怪**不在 `this.monsters` 里**——CE 摘链换表让「不占格、不获回合、
+brogue-web/src/engine/Core/Game.ts:297:     * `this.monsters` 读取者天然忽略，无需逐点加判断。
+brogue-web/src/engine/Core/Game.ts:337:     * levels[rogue.depthLevel].monsters，Time.c:1567-1570——目标层此时可能
+brogue-web/src/engine/Core/Game.ts:339:     * 之后取走（restoreMonster-lite 重定位后并入 this.monsters）；
+brogue-web/src/engine/Core/Game.ts:541:        this.monsters = [];
+brogue-web/src/engine/Core/Game.ts:1004:     * checkpoint without restoring RNG or resurrecting quietly replaced monsters. */
+brogue-web/src/engine/Core/Game.ts:1052:            get monsters() { return thisGame.monsters; },
+brogue-web/src/engine/Core/Game.ts:1053:            set monsters(value: Game["monsters"]) { thisGame.monsters = value; },
+brogue-web/src/engine/Core/Game.ts:1136:        const allMonsters = monsterData as MonsterData[];
+brogue-web/src/engine/Core/Game.ts:1137:        const depthMonsters = allMonsters.filter(m => !m.machineOnly && depth >= m.minDepth && depth <= m.maxDepth);
+brogue-web/src/engine/Core/Game.ts:1151:            const spider = allMonsters.find(m => m.id === 'spider');
+brogue-web/src/engine/Core/Game.ts:1164:        return allMonsters.find(m => m.id === monsterId) ?? null;
+brogue-web/src/engine/Core/Game.ts:1169:        for (const m of this.monsters) m.mapToMe = null;
+brogue-web/src/engine/Core/Game.ts:1198:        if (m.leader && !this.monsters.includes(m.leader)) m.leader = null;
+brogue-web/src/engine/Core/Game.ts:1202:        const stairs = travelDistanceMap(this.grid, this.monsters, this.player.loc, T_PATHING_BLOCKER);
+brogue-web/src/engine/Core/Game.ts:1203:        const pit = travelDistanceMap(this.grid, this.monsters, this.currentLevelExitedVia, T_PATHING_BLOCKER);
+brogue-web/src/engine/Core/Game.ts:1204:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:1216:            for (const m of [...level.monsters]) {
+brogue-web/src/engine/Core/Game.ts:1234:            const occupant = [this.player, ...this.monsters].find(c => c.hp > 0 && c.x === m.x && c.y === m.y);
+brogue-web/src/engine/Core/Game.ts:1240:        source.monsters.splice(source.monsters.indexOf(m), 1);
+brogue-web/src/engine/Core/Game.ts:1242:        this.monsters.unshift(m);
+brogue-web/src/engine/Core/Game.ts:1591:        this.monsters.push(leaderMon);
+brogue-web/src/engine/Core/Game.ts:1625:                this.monsters.push(mon);
+brogue-web/src/engine/Core/Game.ts:1644:            pos = minionPlacement(machine ? {grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: []} : this, origin, species, summoned, target);
+brogue-web/src/engine/Core/Game.ts:1705:     *   MA_ENTER_SUMMONS：先把召唤者从 this.monsters 移除（用重新赋值而非
+brogue-web/src/engine/Core/Game.ts:1732:            // 进行中的 for (const m of this.monsters) 迭代（splice 当前元素
+brogue-web/src/engine/Core/Game.ts:1734:            this.monsters = this.monsters.filter(m => m !== summoner);
+brogue-web/src/engine/Core/Game.ts:1753:                this.monsters.push(mon);
+brogue-web/src/engine/Core/Game.ts:1782:                this.monsters.unshift(summoner);
+brogue-web/src/engine/Core/Game.ts:1878:        const visibleMonsters = this.monsters.filter(m => {
+brogue-web/src/engine/Core/Game.ts:1913:        // If no monsters, find nearest visible item
+brogue-web/src/engine/Core/Game.ts:1979:        this.monsters = [];
+brogue-web/src/engine/Core/Game.ts:2271:                    this.monsters.push(spawned.monster);
+brogue-web/src/engine/Core/Game.ts:2378:        return this.monsters.some((m) => m.hp > 0 && m.loc.x === x && m.loc.y === y);
+brogue-web/src/engine/Core/Game.ts:2425:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:2453:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:2528:            for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:3134:                // 不在相邻处（多半是被杀死后从 this.monsters 里被 playerTurnEnded
+brogue-web/src/engine/Core/Game.ts:3242:                        if (isCage) for (const m of iterateCreatures(this.monsters)) {
+brogue-web/src/engine/Core/Game.ts:4052:        return arcanaTargetCandidates(this.player, this.grid, this.monsters, item);
+brogue-web/src/engine/Core/Game.ts:4057:        return pending ? blinkTargetPreview(this.grid, this.player, this.monsters, pending.item, pending.cursor) : null;
+brogue-web/src/engine/Core/Game.ts:4172:        return boltWorldFor(caster, this.player, this.monsters, hideDetails);
+brogue-web/src/engine/Core/Game.ts:4547:     * magnitude is instance E for STAFF, catalog magnitude for WAND/monsters.
+brogue-web/src/engine/Core/Game.ts:4658:            this.monsters.push(blade);
+brogue-web/src/engine/Core/Game.ts:4681:        this.monsters.push(guardian);
+brogue-web/src/engine/Core/Game.ts:4730:                // Lightning pierces through all creatures along the path and deals damage
+brogue-web/src/engine/Core/Game.ts:4980:            || meta.effect === BoltEffect.OBSTRUCTION) return; // CE monsters never cast these.
+brogue-web/src/engine/Core/Game.ts:5490:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:5580:     * DF_SHATTERING_SPELL lays rubble and activates dormant monsters before
+brogue-web/src/engine/Core/Game.ts:5599:                // CE :4917: RUBBLE on SURFACE, start=0; also wakes dormant monsters.
+brogue-web/src/engine/Core/Game.ts:5636:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:5686:                this.monsters.push(mon);
+brogue-web/src/engine/Core/Game.ts:5693:                defaultValue: 'The fabric of space ripples, and monsters appear!'
+brogue-web/src/engine/Core/Game.ts:6335:                    this.monsters.push(blade);
+brogue-web/src/engine/Core/Game.ts:6457:            const hitList = this.monsters.filter(m =>
+brogue-web/src/engine/Core/Game.ts:6610:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:6647:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:6661:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:6752:            for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:6854:     *   force can send both monsters flying."——照实现，测试锁死。
+brogue-web/src/engine/Core/Game.ts:6962:        //     monsterID 逐一比对，Monsters.c:293-301；monsters.json 无 MK_/名册
+brogue-web/src/engine/Core/Game.ts:7071:     * this.monsters——web 不像 CE 那样同时把相邻楼层的怪物列表留在内存里，
+brogue-web/src/engine/Core/Game.ts:7076:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:7102:     * P4-5：CE Movement.c:1267-1297 的搜索循环——在 this.monsters（已死怪物
+brogue-web/src/engine/Core/Game.ts:7104:     * `this.monsters = this.monsters.filter(m => m.hp > 0)`）里找一个仍然
+brogue-web/src/engine/Core/Game.ts:7111:     * Iterate a stable action cohort; attacks/traps can kill or create monsters.
+brogue-web/src/engine/Core/Game.ts:7114:        for (const monster of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:7121:        return this.monsters.find(m =>
+brogue-web/src/engine/Core/Game.ts:7158:        else this.monsters.push(clone);
+brogue-web/src/engine/Core/Game.ts:7259:        for (const m of target ? [target] : [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:7466:     * this.monsters 快照后过滤——结果集相同）。
+brogue-web/src/engine/Core/Game.ts:7470:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:7504:                        cached.monsters.push(m);
+brogue-web/src/engine/Core/Game.ts:7518:            this.monsters = this.monsters.filter((m) => !fellOut.has(m));
+brogue-web/src/engine/Core/Game.ts:7741:            if (passenger && passenger !== m && !passenger.deathProcessed && !this.monsters.includes(passenger)) {
+brogue-web/src/engine/Core/Game.ts:7744:                this.monsters.unshift(passenger);
+brogue-web/src/engine/Core/Game.ts:7764:        for (const m of [...this.monsters, ...this.dormantMonsters]) if (m.hp <= 0) this.killMonster(m);
+brogue-web/src/engine/Core/Game.ts:7766:        for (const m of [...this.monsters, ...this.dormantMonsters]) {
+brogue-web/src/engine/Core/Game.ts:7773:        this.monsters = this.monsters.filter(m => m.hp > 0);
+brogue-web/src/engine/Core/Game.ts:7780:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:7957:                get monsters() { return game.monsters; },
+brogue-web/src/engine/Core/Game.ts:8080:            monsters: this.monsters,
+brogue-web/src/engine/Core/Game.ts:8431:            monsters: this.monsters, dormantMonsters: this.dormantMonsters, items: this.items,
+brogue-web/src/engine/Core/Game.ts:8453:            purgatory: this.purgatory, monsters: this.monsters, dormantMonsters: this.dormantMonsters,
+brogue-web/src/engine/Core/Game.ts:8477:        entityCodecDeps.ensureIdAbove(Math.max(0, ...graph.monsters.keys(), ...graph.items.keys()));
+brogue-web/src/engine/Core/Game.ts:8478:        return graph.monsters.get(m.id)!;
+brogue-web/src/engine/Core/Game.ts:8481:    private restoreMonsterLeaders(snapshots: readonly GameSnapshotMonster[], monsters: readonly Monster[]): void {
+brogue-web/src/engine/Core/Game.ts:8483:        restoreEntityGraph(snapshots, [], monsters, [...this.items, ...this.player.inventory.items], entityCodecDeps);
+brogue-web/src/engine/Core/Game.ts:8509:        this.monsters = active.monsters; this.dormantMonsters = active.dormantMonsters!; this.items = active.items;
+brogue-web/src/engine/Core/Game.ts:8520:            [q.depth, q.monsters.map(m => entityGraph.monsters.get(m.id)!)]));
+brogue-web/src/engine/Core/Game.ts:8521:        this.purgatory = (snapshot.purgatory ?? []).map(m => entityGraph.monsters.get(m.id)!);
+brogue-web/src/engine/Core/Game.ts:8533:        ensureEntityIdAbove(Math.max(snapshot.player.id, 0, ...entityGraph.monsters.keys(), ...entityGraph.items.keys()));
+brogue-web/src/engine/Core/Game.ts:8544:        this.everSeenMonsters = new Set(run.everSeenMonsterIds.map(id => entityGraph.monsters.get(id)!));
+brogue-web/src/engine/Core/Game.ts:8808:    /** CE Time.c:313-333: flying/inanimate creatures can still be caught.
+brogue-web/src/engine/Core/Game.ts:8838:    /** CE Time.c:421-439: submerged, inanimate and invulnerable creatures are immune. */
+brogue-web/src/engine/Core/Game.ts:8918:            // CE Time.c:240: grounded creatures also depress CE traps during
+brogue-web/src/engine/Core/Game.ts:9096:            // gas statuses -> ignition. Dead creatures cannot be ignited.
+brogue-web/src/engine/Core/Game.ts:9106:        for (const m of [...this.monsters]) {
+brogue-web/src/engine/Core/Game.ts:9132:        return this.monsters.find(m => m.loc.x === x && m.loc.y === y
+brogue-web/src/engine/Core/Game.ts:9154:            creatures: () => [this.player, ...this.monsters.filter(m => !m.isDormant)]
+brogue-web/src/engine/Core/Game.ts:9166:                    ? this.player : this.monsters.find(m => m.hp > 0 && !m.isDormant && m.x === pos.x && m.y === pos.y);
+brogue-web/src/engine/Core/Game.ts:9303:        for (const m of this.monsters) {
+brogue-web/src/engine/Core/Game.ts:9352:        this.monsters.unshift(candidate);
+brogue-web/src/engine/Core/Game.ts:9375:     * 在 dormantMonsters 里 → 醒来；在 monsters 里 → 睡下；两表皆无 → 无操作
+brogue-web/src/engine/Core/Game.ts:9389:     * 睡下方向（:4200-4209）：从 monsters 摘到 dormantMonsters、清 HAS_MONSTER
+brogue-web/src/engine/Core/Game.ts:9390:     * （web 的 getMonsterAt 派生自 this.monsters，摘表即生效）、置
+brogue-web/src/engine/Core/Game.ts:9435:            this.monsters.unshift(monst); // CE :4163 prependCreature
+brogue-web/src/engine/Core/Game.ts:9440:        const activeIdx = this.monsters.indexOf(monst);
+brogue-web/src/engine/Core/Game.ts:9443:            this.monsters.splice(activeIdx, 1);
+brogue-web/src/engine/Core/Game.ts:9448:            this.visibleMonsters.delete(monst); // 不再可见（CE 不在 monsters 表 ⇒ 画不到）
+brogue-web/src/engine/Core/Game.ts:9456:     * this.monsters 里**（单只路径由调用方 push、horde 路径由 spawnHordeAt
+brogue-web/src/engine/Core/Game.ts:9517:        // 2. User explicitly pressed 'x', ignore currently visible monsters & items for pathing purposes
+brogue-web/src/engine/Core/Game.ts:9650:        this.monsters = this.monsters.filter((m) => !this.isInsideTestRoom(room, m.loc.x, m.loc.y));
+brogue-web/src/engine/Core/Game.ts:9672:            this.monsters.push(this.createMonsterFromSnapshot(monsterSnapshot));
+brogue-web/src/engine/Core/Game.ts:9674:        this.restoreMonsterLeaders(room.baselineMonsters, this.monsters);
+brogue-web/src/engine/Core/Game.ts:9905:            if (!canPlaceCreature({ grid: this.grid, player: this.player, monsters: this.monsters.filter(m => m !== occupant), dormantMonsters: this.dormantMonsters }, caster, landing)) return false;
+brogue-web/src/engine/Core/Game.ts:9994:        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target, respectTerrainAvoidancePreferences);
+brogue-web/src/engine/Core/Game.ts:10017:        const active = new Set([...(this.monsters ?? []), ...levels.flatMap(level => level.monsters)]);
+brogue-web/src/engine/Core/Game.ts:10452:            // 1. Check adjacent monsters. Attack and clear path if any.
+brogue-web/src/engine/Map/TerrainCatalog.ts:361:    // CE Globals.c:525-526: terrain, not creatures. Player contact promotes
+brogue-web/src/engine/Map/TerrainCatalog.ts:362:    // vines even while levitating; other creatures take gradual terrain damage.
+brogue-web/src/engine/Core/MonsterLifecycle.ts:7:    monsters: Monster[];
+brogue-web/src/engine/Core/MonsterLifecycle.ts:23:export function* iterateCreatures<T extends Pick<Monster, 'deathProcessed'>>(creatures: Iterable<T>): Generator<T> {
+brogue-web/src/engine/Core/MonsterLifecycle.ts:24:    for (const creature of creatures) {
+brogue-web/src/engine/Core/MonsterLifecycle.ts:46:    if (owner && (owner.monsters.includes(monster) || owner.dormantMonsters.includes(monster))) {
+brogue-web/src/engine/Core/LevelState.ts:17:    monsters: Monster[];
+brogue-web/src/engine/Core/TimeCoordinator.ts:26:    readonly monsters: Game['monsters'];
+brogue-web/src/engine/Core/TimeCoordinator.ts:107:            for (const m of ports.world.monsters) {
+brogue-web/src/engine/Core/TimeCoordinator.ts:117:            for (const m of ports.world.monsters) {
+brogue-web/src/engine/Core/TimeCoordinator.ts:155:            for (const m of [...ports.world.monsters]) {
+brogue-web/src/engine/Core/TimeCoordinator.ts:425:        for (const m of ports.world.monsters) {
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:42:    monsters: GameSnapshotMonster[];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:70:    pendingFallenByDepth: Array<{ depth: number; monsters: GameSnapshotMonster[] }>;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:93:        monsters: level.monsters.map(serializeMonsterRow),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:117:    monsters: Monster[];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:150:    const levelRoots = levels.flatMap(([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]);
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:152:        .map(([depth, monsters]) => ({ depth, monsters: monsters.map(serializeMonsterRow) }));
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:153:    const roots = [...source.monsters, ...source.dormantMonsters, ...source.purgatory, ...levelRoots, ...[...source.pendingFallenByDepth.values()].flat()];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:179:            monsters: graph.monsters.filter(m => !roots.includes(m)).map(serializeMonsterRow),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:210:        [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:211:             ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...(snapshot.purgatory ?? []), ...snapshot.entityGraph.monsters],
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:226:            monsters: saved.monsters.map(m => resolve(entityGraph.monsters, m.id)),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:227:            dormantMonsters: saved.dormantMonsters.map(m => resolve(entityGraph.monsters, m.id)),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:229:            visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:270:            || !level.waypoints || !level.environmentState || !Array.isArray(level.monsters)
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:276:    if (!Array.isArray(s.entityGraph.monsters) || !Array.isArray(s.entityGraph.items)
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:277:        || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:280:    const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:281:        ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
+brogue-web/src/engine/Core/EntitySnapshot.ts:66:    monsters: GameSnapshotMonster[];
+brogue-web/src/engine/Core/EntitySnapshot.ts:110:export function collectEntityGraph(roots: readonly Monster[], items: readonly Item[] = []): { monsters: Monster[]; items: Item[] } {
+brogue-web/src/engine/Core/EntitySnapshot.ts:111:    const monsters = new Set<Monster>(), allItems = new Set(items);
+brogue-web/src/engine/Core/EntitySnapshot.ts:113:        if (monsters.has(m)) return;
+brogue-web/src/engine/Core/EntitySnapshot.ts:114:        monsters.add(m);
+brogue-web/src/engine/Core/EntitySnapshot.ts:120:    return { monsters: [...monsters], items: [...allItems] };
+brogue-web/src/engine/Core/EntitySnapshot.ts:125:        monsters: graph.monsters.filter(v => v !== m).map(serializeMonsterRow),
+brogue-web/src/engine/Core/EntitySnapshot.ts:133:    deps: EntityCodecDeps = entityCodecDeps): { monsters: Map<number, Monster>; items: Map<number, Item> } {
+brogue-web/src/engine/Core/EntitySnapshot.ts:140:        row.graph?.monsters.forEach(read);
+brogue-web/src/engine/Core/EntitySnapshot.ts:144:    const monsters = new Map(existingMonsters.map(m => [m.id, m]));
+brogue-web/src/engine/Core/EntitySnapshot.ts:146:        if (monsters.has(s.id)) continue;
+brogue-web/src/engine/Core/EntitySnapshot.ts:154:        monsters.set(m.id, m);
+brogue-web/src/engine/Core/EntitySnapshot.ts:162:        const m = monsters.get(s.id)!;
+brogue-web/src/engine/Core/EntitySnapshot.ts:163:        m.leader = s.leaderId === null ? null : resolve(monsters, s.leaderId);
+brogue-web/src/engine/Core/EntitySnapshot.ts:164:        m.carriedMonster = s.carriedMonsterId === null ? null : resolve(monsters, s.carriedMonsterId);
+brogue-web/src/engine/Core/EntitySnapshot.ts:167:    return { monsters, items };
+brogue-web/src/components/GameCanvas.vue:432:        for (const m of game.monsters) {
+brogue-web/src/components/GameCanvas.vue:513:        const visibleMonsters = game.monsters
+brogue-web/src/components/GameCanvas.vue:529:        const revealedLocations = game.monsters
+brogue-web/src/components/GameCanvas.vue:561:            monsters: visibleMonsters,
+brogue-web/src/components/Sidebar.vue:61:      monsterRows.value = visibleMonsterRows(activeGame.player, activeGame.grid, activeGame.monsters);
+brogue-web/src/components/Sidebar.vue:121:      <div class="monster-heading">{{ $t('sidebar.monsters') }}</div>
+brogue-web/src/engine/Map/WaypointMap.ts:86:    monsters: ReadonlyArray<WaypointMonster>;
+brogue-web/src/engine/Map/WaypointMap.ts:228:        for (const m of ctx.monsters) {
+brogue-web/src/engine/Core/GenerationCoordinator.ts:47:            ports.monsters = ports.monsters.filter(m => m !== mon);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:94:                const carriers = new Map([...ports.monsters, ...ports.dormantMonsters].map(m => [m, m.carriedItem]));
+brogue-web/src/engine/Core/GenerationCoordinator.ts:101:                    for (const mon of [...ports.monsters, ...ports.dormantMonsters]) {
+brogue-web/src/engine/Core/GenerationCoordinator.ts:109:                    for (const [mon, item] of carriers) if (mon.hp > 0 && (ports.monsters.includes(mon) || ports.dormantMonsters.includes(mon))) mon.carriedItem = item;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:115:            hasMonster: (x, y) => ports.monsters.some(m => m.hp > 0 && m.x === x && m.y === y),
+brogue-web/src/engine/Core/GenerationCoordinator.ts:120:                const old = ports.monsters.find(m => m.hp > 0 && m.x === spawn.pos.x && m.y === spawn.pos.y);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:133:                        ports.monsters.push(mon);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:167:            scheduleLevelFollowers(ports.grid, ports.monsters, exit, fell ? 0 : isGoingUp ? -1 : 1);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:180:                monsters: ports.monsters,
+brogue-web/src/engine/Core/GenerationCoordinator.ts:209:            ports.monsters = cached.monsters;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:228:                ports.monsters = [];
+brogue-web/src/engine/Core/GenerationCoordinator.ts:234:                    ports.monsters = [];
+brogue-web/src/engine/Core/GenerationCoordinator.ts:264:                // 2. Populate the successfully stair-equipped level with monsters and items
+brogue-web/src/engine/Core/GenerationCoordinator.ts:273:                // CE initializeLevel restores fallen items before monsters, in the level RNG stream.
+brogue-web/src/engine/Core/GenerationCoordinator.ts:277:                // level's monsters and items, since one might have fallen from
+brogue-web/src/engine/Core/GenerationCoordinator.ts:291:                        ports.monsters.push(m);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:340:            ...ports.items.map(i => i.loc), ...ports.monsters.map(m => m.loc), ...ports.dormantMonsters.map(m => m.loc),
+brogue-web/src/engine/Core/GenerationCoordinator.ts:589:            // Spawn monsters
+brogue-web/src/engine/Core/GenerationCoordinator.ts:598:                        product.owner = ports.dormantMonsters.includes(mon) ? 'dormant' : ports.monsters.includes(mon) ? 'floor' : undefined;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:602:                    if (leader && (ports.monsters.includes(leader) || ports.dormantMonsters.includes(leader))) handOff(leader, spawn, mr);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:609:                    const beforeIds = trace ? new Set([...ports.monsters, ...ports.dormantMonsters].map(m => m.id)) : null;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:612:                    if (trace && beforeIds) for (const mon of [...ports.monsters, ...ports.dormantMonsters]) {
+brogue-web/src/engine/Core/GenerationCoordinator.ts:629:                    ports.monsters.push(mon);
+brogue-web/src/engine/UI/MonsterSidebar.ts:8:export function visibleMonsterRows(player: Player, grid: Grid, monsters: readonly Monster[]) {
+brogue-web/src/engine/UI/MonsterSidebar.ts:9:    return monsters.filter(monster => canSeeMonster(player, grid, monster))
+brogue-web/src/engine/UI/DetailGenerator.ts:3: * Generates detail description text for monsters and items,
+brogue-web/src/engine/UI/DetailGenerator.ts:483:                    case 'charm_of_negation': return i18next.t('detail.charm.negation', { radius: charmNegationRadius(enchant), defaultValue: 'Negate yourself and visible creatures and floor items up to {{radius}} spaces away' });
+brogue-web/src/engine/UI/Appearance.ts:525:        // Dim sleeping monsters slightly, or maybe draw them normally

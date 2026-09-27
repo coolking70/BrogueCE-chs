@@ -1,0 +1,90 @@
+[
+  {
+    "name": "dead-activation",
+    "file": "src/engine/Core/Game.ts",
+    "old": "for (const monst of iterateCreatures([...this.dormantMonsters]))",
+    "new": "for (const monst of [...this.dormantMonsters])",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "cached-visible",
+    "file": "src/engine/Core/Game.ts",
+    "old": "for (const m of iterateCreatures(this.visibleMonsters))",
+    "new": "for (const m of this.visibleMonsters)",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "cached-step",
+    "file": "src/engine/Core/Game.ts",
+    "old": "            for (const m of iterateCreatures(this.visibleMonsters))",
+    "new": "            for (const m of this.visibleMonsters)",
+    "exit": 1,
+    "failed": 2
+  },
+  {
+    "name": "cached-attack",
+    "file": "src/engine/Core/Game.ts",
+    "old": "Array.from(iterateCreatures(this.visibleMonsters))",
+    "new": "Array.from(this.visibleMonsters)",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "fear-roster",
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "old": "[g.player, ...iterateCreatures(g.monsters)]",
+    "new": "[g.player, ...g.monsters]",
+    "exit": 1,
+    "failed": 3
+  },
+  {
+    "name": "no-death-filter",
+    "file": "src/engine/Core/MonsterLifecycle.ts",
+    "old": "if (!creature.deathProcessed) yield creature;",
+    "new": "yield creature;",
+    "exit": 1,
+    "failed": 5
+  },
+  {
+    "name": "hp-is-death",
+    "file": "src/engine/Core/MonsterLifecycle.ts",
+    "old": "if (!creature.deathProcessed) yield creature;",
+    "new": "if (creature.hp > 0) yield creature;",
+    "exit": 1,
+    "failed": 2
+  },
+  {
+    "name": "eager-filter",
+    "file": "src/engine/Core/MonsterLifecycle.ts",
+    "old": "for (const creature of creatures) {\n        if (!creature.deathProcessed) yield creature;",
+    "new": "for (const creature of [...creatures].filter(c => !c.deathProcessed)) {\n        yield creature;",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "dead-follower",
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "old": "[...iterateCreatures(g.monsters)].some(other => other.leader === m)",
+    "new": "g.monsters.some(other => other.leader === m)",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "dead-dormant",
+    "file": "src/engine/Core/Game.ts",
+    "old": "for (const follower of iterateCreatures(dormant))",
+    "new": "for (const follower of dormant)",
+    "exit": 1,
+    "failed": 1
+  },
+  {
+    "name": "dead-captive",
+    "file": "src/engine/Core/Game.ts",
+    "old": "if (isCage) for (const m of iterateCreatures(this.monsters))",
+    "new": "if (isCage) for (const m of this.monsters)",
+    "exit": 1,
+    "failed": 1
+  }
+]

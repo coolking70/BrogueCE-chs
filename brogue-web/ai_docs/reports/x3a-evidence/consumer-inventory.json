@@ -1,0 +1,1717 @@
+[
+  {
+    "file": "src/components/AgentControls.vue",
+    "line": 25,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "() => {\n    aiTick.value; // Force reactivity\n    if (!activeGame || !activeGame.player || activeGame.isGameOver) return null;\n    return {\n        depth: activeGame.depth,\n        hp: activeGame.player.hp,\n        maxHp: activeGame.player.maxHp,\n        x: activeGame.player.loc.x,\n        y: activeGame.player.loc.y,\n        statuses: Object.keys(activeGame.player.statusDurations || {}).join(', '),\n        monsters: [...iterateCreatures(activeGame.monsters)].map(m => ({\n            name: m.name,\n            hp: m.hp,\n            maxHp: m.maxHp,\n            x: m.loc.x,\n            y: m.loc.y,\n            dist: Math.max(Math.abs(m.loc.x - activeGame.player.loc.x), Math.abs(m.loc.y - activeGame.player.loc.y))\n        })).filter(m => m.dist <= 15) // Only nearby monsters\n    };\n}"
+  },
+  {
+    "file": "src/components/AgentControls.vue",
+    "line": 35,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "[...iterateCreatures(activeGame.monsters)].map(m => ({\n            name: m.name,\n            hp: m.hp,\n            maxHp: m.maxHp,\n            x: m.loc.x,\n            y: m.loc.y,\n            dist: Math.max(Math.abs(m.loc.x - activeGame.player.loc.x), Math.abs(m.loc.y - activeGame.player.loc.y))\n        }))"
+  },
+  {
+    "file": "src/components/AgentControls.vue",
+    "line": 35,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "[...iterateCreatures(activeGame.monsters)]"
+  },
+  {
+    "file": "src/components/AgentControls.vue",
+    "line": 35,
+    "scope": "(module)",
+    "kind": "SpreadElement",
+    "expression": "iterateCreatures(activeGame.monsters)"
+  },
+  {
+    "file": "src/components/AgentControls.vue",
+    "line": 35,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "activeGame.monsters"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 129,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "async () => {\n  if (canvasContainer.value) {\n    pixiApp = new Application();\n\n    await pixiApp.init({\n      resizeTo: canvasContainer.value,\n      backgroundColor: 0x111111,\n      resolution: window.devicePixelRatio || 1,\n      autoDensity: true,\n    });\n\n    canvasContainer.value.appendChild(pixiApp.canvas);\n\n    const baseStyleOptions = {\n      fontFamily: 'Courier New',\n      fontSize: TILE_SIZE,\n      fill: '#ffffff',\n    } as const;\n\n    // P2-4 居中修复：地图居中与鼠标命中区一律基于**画布容器**的实际尺寸。\n    // 旧实现用窗口视口尺寸（innerWidth/innerHeight）——把 340px 侧栏算进居中，\n    // 地图整体右移约 170px 被侧栏遮挡。offset 在 resize 时由 ResizeObserver\n    // 重算（observe 建立于图层创建之后），四个图层与 hitArea 同步更新。\n    let offsetX = 0;\n    let offsetY = 0;\n\n    // ---------- Pre-allocated tile layer ----------\n    // One Graphics for bg rectangles (batch-drawn every frame)\n    const bgGraphics = new Graphics();\n    bgGraphics.position.set(offsetX, offsetY);\n\n    // One Text sprite per cell, reused every frame\n    const tileLayer = new Container();\n    tileLayer.position.set(offsetX, offsetY);\n\n    // Pre-allocated cells: tileSprites[x][y]\n    const tileSprites: Text[][] = [];\n    for (let x = 0; x < DCOLS; x++) {\n        tileSprites[x] = [];\n        for (let y = 0; y < DROWS; y++) {\n            const t = new Text({ text: ' ', style: new TextStyle(baseStyleOptions) });\n            t.x = x * TILE_SIZE;\n            t.y = y * TILE_SIZE;\n            t.visible = false;\n            tileLayer.addChild(t);\n            tileSprites[x]![y] = t;\n        }\n    }\n\n    // ---------- Entity layer ----------\n    // Fixed number of entity Text sprites (player + max ~30 entities)\n    const MAX_ENTITY_SPRITES = 64;\n    const entityLayer = new Container();\n    entityLayer.position.set(offsetX, offsetY);\n\n    const entitySprites: Text[] = [];\n    for (let i = 0; i < MAX_ENTITY_SPRITES; i++) {\n        const t = new Text({ text: ' ', style: new TextStyle(baseStyleOptions) });\n        t.visible = false;\n        entityLayer.addChild(t);\n        entitySprites.push(t);\n    }\n\n    // ---------- Bolt sprite (for projectile animation) ----------\n    const boltSprite = new Text({\n        text: '*',\n        style: new TextStyle({\n            fontFamily: 'Courier New',\n            fontSize: 14,\n            fontWeight: 'bold',\n            fill: '#ffff00',\n            dropShadow: { color: '#ffff00', blur: 12, distance: 0, angle: 0, alpha: 0.9 }\n        })\n    });\n    boltSprite.visible = false;\n    entityLayer.addChild(boltSprite);\n    const arcanaCursor = new Graphics();\n    entityLayer.addChild(arcanaCursor);\n\n    // Floating text layer (max 8 floaters)\n    const MAX_FLOAT_SPRITES = 8;\n    const floatLayer = new Container();\n    floatLayer.position.set(offsetX, offsetY);\n\n    const floatSprites: Text[] = [];\n    for (let i = 0; i < MAX_FLOAT_SPRITES; i++) {\n        const ft = new Text({\n            text: ' ',\n            style: new TextStyle({\n                fontFamily: 'Courier New',\n                fontSize: 14,\n                fontWeight: 'bold',\n                fill: '#ffffff',\n                stroke: { color: '#000000', width: 2 }\n            })\n        });\n        ft.visible = false;\n        floatLayer.addChild(ft);\n        floatSprites.push(ft);\n    }\n\n    // Add layers in order\n    pixiApp.stage.addChild(bgGraphics);\n    pixiApp.stage.addChild(tileLayer);\n    pixiApp.stage.addChild(entityLayer);\n    pixiApp.stage.addChild(floatLayer);\n\n    // 居中偏移与命中区的一次性落地：以容器实际尺寸重算并同步到\n    // 四个图层与 stage.hitArea。挂载时调用一次；此后由 ResizeObserver 驱动。\n    const applyLayout = () => {\n        const el = canvasContainer.value;\n        if (!el || !pixiApp) return;\n        // 用容器 clientWidth/Height 而非 pixiApp.screen：resizeTo 的渲染器\n        // 尺寸要等 Pixi 下一个渲染帧才跟上（queueResize），clientWidth 是\n        // 布局完成后的即时真值，且能覆盖非 window 尺寸变化（如侧栏增减）。\n        const { scaleX, scaleY, offsetX: ox, offsetY: oy } = computeMapLayout(\n            el.clientWidth,\n            el.clientHeight,\n            displaySettings.mapScaleMode,\n        );\n        offsetX = ox;\n        offsetY = oy;\n        // 四个图层同步缩放 + 居中。toLocal 走完整的仿射逆矩阵，x/y 缩放不同\n        // （stretch 模式）也会被正确换算，因此指针→格子的映射\n        // （pointermove / pointerup）无需另外处理。\n        for (const layer of [bgGraphics, tileLayer, entityLayer, floatLayer]) {\n            layer.position.set(offsetX, offsetY);\n            layer.scale.set(scaleX, scaleY);\n        }\n        // 命中区 = 画布容器区域（stage 坐标即 CSS 像素，autoDensity）。\n        // 旧实现用 window 尺寸，侧栏右侧的点击会被映射到错误的格子。\n        pixiApp.stage.hitArea = new PIXI.Rectangle(0, 0, el.clientWidth, el.clientHeight);\n    };\n\n    applyLayout();\n    // 窗口 resize（容器随之变宽变高）与任何布局变化都会触发 ResizeObserver；\n    // 比起 window resize 事件，它还覆盖\"窗口不变但布局变\"的场景\n    // （如侧栏在固定/按比例间切换导致容器宽度变化）。\n    resizeObserver = new ResizeObserver(() => applyLayout());\n    resizeObserver.observe(canvasContainer.value);\n\n    // P2-6：地图缩放模式切换不改变容器尺寸（ResizeObserver 不会触发），\n    // 需显式走同一条 applyLayout 重算路径，设置变更即时生效、无需刷新页面。\n    stopScaleModeWatch = watch(() => displaySettings.mapScaleMode, () => applyLayout());\n\n    const game = activeGame;\n    // P2-4 动画节奏（决策 E1-修订，CE Time.c:2704 口径）：UI 挂载后启用分步\n    // 推进——常规动作（≤100 tick）零插帧、下一渲染帧即完成；慢回合（>100\n    // tick）在 100-tick 客观块处暂停 25ms 各一次；自动寻路/探索在引擎侧直接\n    // 同步推进（isAutoTraveling），不再每步吃动画。推进进行中输入锁生效。\n    // headless（无渲染）环境不挂载本组件，animationEnabled 保持 false，同步推进。\n    game.animationEnabled = true;\n    inputManager.setCallback((action, data) => {\n        game.handlePlayerAction(action, data);\n        game.update();\n    });\n\n    const render = () => {\n        // ---- Background rectangles (batch draw) ----\n        bgGraphics.clear();\n        arcanaCursor.clear();\n        const selection = game.pendingArcana;\n        arcanaPrompt.value = selection ? i18next.t('arcana.target_prompt', {\n            interpolation: { escapeValue: false }, // Vue renders text; keep charge slash readable.\n            name: selection.item.displayName,\n            defaultValue: '{{name}} — hjklyubn / arrows: aim · Tab: next · Enter / click: cast · Esc: cancel'\n        }) : '';\n        if (selection) {\n            const preview = game.getArcanaPreview();\n            if (preview?.maxDistance !== null && preview?.maxDistance !== undefined) {\n                arcanaPrompt.value += i18next.t('arcana.blink_range', { distance: preview.maxDistance });\n            }\n            for (const p of preview?.path ?? []) {\n                arcanaCursor.rect(p.x * TILE_SIZE, p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)\n                    .fill(ARCANA_TRAJECTORY_FILL);\n            }\n            arcanaCursor.rect(selection.cursor.x * TILE_SIZE, selection.cursor.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)\n                .stroke({ width: 2, color: 0xdddddd });\n        }\n        const hallucinating = !!game.player.statusDurations.hallucinating;\n        const telepathyRevealed = !!game.player.statusDurations.telepathy;\n        // 幻觉等纯视觉随机走 COSMETIC 流（见模块块 cosmeticPercent/cosmeticPick），\n        // 以 ctx 注入外观纯函数——本组件不再做任何\"画什么\"的决策。\n        const cosmetic: CosmeticRng = { percent: cosmeticPercent, pick: cosmeticPick };\n\n        // ---- Tiles ----\n        // UI-1 第 3 条接线：地面物品索引（探测魔法符号需要知道格子上有什么）。\n        // 每帧建一次 O(items)，避免 3713 格 × 线性扫描。\n        const itemAtCell = new Map<string, (typeof game.items)[number]>();\n        const gasBackgrounds = new Map<string, number>();\n        for (const item of game.items) {\n            itemAtCell.set(`${item.loc.x},${item.loc.y}`, item);\n        }\n\n        for (let x = 0; x < DCOLS; x++) {\n            for (let y = 0; y < DROWS; y++) {\n                const cell = game.grid.getCell(x, y);\n                const sprite = tileSprites[x]![y]!;\n\n                // 该格画什么（字形/颜色/气体/光照/记忆/幻觉/探测符号）全部由\n                // 纯函数决定；null = 未探索且不可见，什么都不画。\n                // lightChannels = CE tmap.light 三通道（LightMap.lightAt），\n                // UI-1 第 7 条起渲染按 CE 乘法消费；groundItem/carriedItem =\n                // 探测魔法符号的 ctx 取值（web Monster 无载物载体，恒 null 留形）。\n                const visual = cell\n                    ? cellAppearance(cell, {\n                        gas: game.environment.gasGrid[x]?.[y],\n                        lightChannels: game.lightMap.lightAt(x, y),\n                        dancingLightChannels: game.lightMap.renderLightAt(x, y),\n                        terrainRandomValues: terrainRandomValues(cell, game.grid),\n                        flareChannels: game.flareLightAt(x, y),\n                        flashChannels: game.terrainFlashAt(x, y),\n                        depth: game.depth,\n                        groundItem: itemAtCell.get(`${x},${y}`) ?? null,\n                        carriedItem: null,\n                        hallucinating,\n                        cosmetic,\n                    })\n                    : null;\n\n                if (!visual) {\n                    sprite.visible = false;\n                    continue;\n                }\n\n                const { char, color, bgColor } = visual;\n                if (bgColor !== null) {\n                    gasBackgrounds.set(`${x},${y}`, bgColor);\n                }\n\n                // Update background rect\n                if (bgColor !== null) {\n                    bgGraphics.rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);\n                    bgGraphics.fill({ color: bgColor });\n                }\n\n                // Update tile text (avoid unnecessary style object allocation)\n                sprite.visible = char !== ' ';\n                if (char !== ' ') {\n                    if (sprite.text !== char)     sprite.text = char;\n                    // @ts-ignore: fill is a standard style property\n                    if ((sprite.style as TextStyle).fill !== color) (sprite.style as TextStyle).fill = color;\n                }\n            }\n        }\n\n        // ---- Entities ----\n        let entityIdx = 0;\n\n        // Helper to place an entity sprite\n        const placeEntity = (\n            text: string,\n            color: string | number,\n            ex: number,\n            ey: number,\n            isInteractive: boolean = false\n        ) => {\n            if (entityIdx >= MAX_ENTITY_SPRITES) return;\n            const s = entitySprites[entityIdx]!;\n            s.text = text;\n            (s.style as TextStyle).fill = color as never;\n            s.x = ex * TILE_SIZE;\n            s.y = ey * TILE_SIZE;\n\n            if (isInteractive) {\n                (s.style as TextStyle).dropShadow = {\n                    color: color as never,\n                    blur: 8,\n                    distance: 0,\n                    angle: 0,\n                    alpha: 0.8,\n                };\n            } else {\n                (s.style as TextStyle).dropShadow = false;\n            }\n\n            s.visible = true;\n            entityIdx++;\n        };\n\n        // Items\n        for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {\n            const cell = game.grid.getCell(x, y);\n            if (cell) {\n                const visual = rememberedItemAppearance(cell);\n                if (visual) placeEntity(visual.char, visual.color, x, y, visual.interactive);\n            }\n        }\n        for (const item of game.items) {\n            const cell = game.grid.getCell(item.loc.x, item.loc.y);\n            const visual = itemAppearance(item, {\n                cellVisible: !!cell?.isVisible,\n                cellHasMemory: !!cell?.hasMemory,\n                telepathy: telepathyRevealed,\n                hallucinating,\n                cosmetic,\n            });\n            if (visual && cell?.isVisible) {\n                placeEntity(visual.char, visual.color, item.loc.x, item.loc.y, visual.interactive);\n            }\n        }\n\n        // Monsters\n        for (const m of game.monsters) {\n            const cell = game.grid.getCell(m.loc.x, m.loc.y);\n            const direct = canDirectlySeeMonster(game.player, game.grid, m);\n            const known = canSeeMonster(game.player, game.grid, m);\n            const visual = monsterAppearance(m, {\n                cellVisible: !!cell?.isVisible,\n                cellHasMemory: !!cell?.hasMemory,\n                telepathy: telepathyRevealed || m.hasStatus('entranced'),\n                hallucinating,\n                cosmetic,\n                monsterVisibility: direct ? 'direct' : known ? 'known' : canDisplayMonster(game.player, game.grid, m) ? 'marker' : 'hidden',\n                gasBackground: monsterInGas(game.grid, m)\n                    ? gasBackgrounds.get(`${m.loc.x},${m.loc.y}`) : undefined,\n            });\n            if (visual) {\n                placeEntity(visual.char, visual.color, m.loc.x, m.loc.y, visual.interactive);\n            }\n        }\n\n        // Player (always visible)\n        const playerVisual = playerAppearance(game.player);\n        placeEntity(playerVisual.char, playerVisual.color, game.player.loc.x, game.player.loc.y, playerVisual.interactive);\n\n        // Hide unused entity sprites\n        for (let i = entityIdx; i < MAX_ENTITY_SPRITES; i++) {\n            entitySprites[i]!.visible = false;\n        }\n\n        // ---- Bolt projectile ----\n        const boltFrame = game.getCurrentBoltFrame();\n        if (boltFrame) {\n            boltSprite.text = boltFrame.char;\n            const hexColor = '#' + boltFrame.color.toString(16).padStart(6, '0');\n            (boltSprite.style as TextStyle).fill = hexColor as never;\n            (boltSprite.style as TextStyle).dropShadow = {\n                color: hexColor as never,\n                blur: 14,\n                distance: 0,\n                angle: 0,\n                alpha: 0.95\n            };\n            boltSprite.x = boltFrame.x * TILE_SIZE;\n            boltSprite.y = boltFrame.y * TILE_SIZE;\n            boltSprite.visible = true;\n        } else {\n            boltSprite.visible = false;\n        }\n\n        // ---- Floating texts ----\n        let floatIdx = 0;\n        for (const ft of game.floatingTexts) {\n            if (floatIdx >= MAX_FLOAT_SPRITES) break;\n            const s = floatSprites[floatIdx]!;\n            s.text = ft.text;\n            (s.style as TextStyle).fill = ft.color;\n            s.x = (ft.x + 0.5) * TILE_SIZE - s.width / 2;\n            s.y = ft.y * TILE_SIZE;\n            s.alpha = Math.max(0, ft.life / 30);\n            s.visible = true;\n            floatIdx++;\n        }\n        for (let i = floatIdx; i < MAX_FLOAT_SPRITES; i++) {\n            floatSprites[i]!.visible = false;\n        }\n    };\n\n    game.onRenderRequested = render;\n\n    // Deterministic hooks for automation checks.\n    (window as Window & { advanceTime?: (ms: number) => void }).advanceTime = (ms: number) => {\n        const steps = Math.max(1, Math.round(ms / 100));\n        for (let i = 0; i < steps; i++) {\n            game.tickReplay();\n            if (!game.replayRecording && !game.isTimePaused() && game.autoPath.length > 0) {\n                game.stepAutoPath();\n            }\n            game.update();\n        }\n    };\n\n    (window as Window & { render_game_to_text?: () => string }).render_game_to_text = () => {\n        const visibleMonsters = game.monsters\n            .filter((m) => canSeeMonster(game.player, game.grid, m))\n            .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,\n                maxHp: m.maxHp, weaknessAmount: m.weaknessAmount, maxStatus: { ...m.maxStatus }, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,\n                newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,\n                targetCorpseLoc: m.targetCorpseLoc && { ...m.targetCorpseLoc }, targetCorpseName: m.targetCorpseName,\n                corpseAbsorptionCounter: m.corpseAbsorptionCounter, isAbsorbing: m.isAbsorbing,\n                absorptionFlags: m.absorptionFlags, absorbBehavior: m.absorbBehavior, absorptionBolt: m.absorptionBolt,\n                wasNegated: m.wasNegated, negated: m.displaysNegation, mutation: m.mutation?.id ?? null,\n                behaviorFlags: [...m.behaviorFlags], abilityFlags: [...m.abilityFlags], bolts: [...m.bolts],\n                typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,\n                dominated: m.dominated, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,\n                discordant: m.getStatusDuration('discordant'), entranced: m.getStatusDuration('entranced'),\n                doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,\n                poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned'),\n                shield: m.getStatusDuration('shielded'), maxShield: m.maxShield }));\n        const revealedLocations = game.monsters\n            .filter((m) => !canSeeMonster(game.player, game.grid, m) && canDisplayMonster(game.player, game.grid, m))\n            .map((m) => ({ x: m.loc.x, y: m.loc.y, marker: 'x' }));\n        const visibleItems = game.items\n            .filter((i) => game.grid.getCell(i.loc.x, i.loc.y)?.isVisible)\n            .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));\n\n        return JSON.stringify({\n            seed: game.currentSeed,\n            mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),\n            enchantmentTargets: game.pendingEnchantment\n                ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],\n            arcanaPreview: game.getArcanaPreview(),\n            arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,\n            coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },\n            player: {\n                weaknessAmount: game.player.weaknessAmount, effectiveStrength: game.player.effectiveStrength, maxStatus: { ...game.player.maxStatus },\n                x: game.player.loc.x,\n                y: game.player.loc.y,\n                hp: game.player.hp,\n                nutrition: game.player.nutrition,\n                poisonAmount: game.player.poisonAmount,\n                maxShield: game.player.maxShield,\n                statuses: { ...game.player.statusDurations }\n            },\n            replay: {\n                status: game.replayStatus,\n                cursor: game.replayCursor,\n                total: game.replayEvents.length\n            },\n            recordedInputEvents: game.recordedInputEvents.length,\n            autoPathLength: game.autoPath.length,\n            monsters: visibleMonsters,\n            revealedLocations,\n            items: visibleItems\n        });\n    };\n\n    (window as Window & { export_game_recording?: () => string }).export_game_recording = () =>\n        JSON.stringify(game.exportRecording());\n\n    (window as Window & { import_game_recording?: (json: string) => void }).import_game_recording = (json: string) => {\n        game.loadReplay(JSON.parse(json));\n    };\n\n    (window as Window & { run_game_turn?: () => void }).run_game_turn = () => {\n        game.update();\n    };\n\n    (window as Window & { tick_replay?: () => void }).tick_replay = () => {\n        game.tickReplay();\n    };\n\n    (window as Window & { force_replay_step?: () => void }).force_replay_step = () => {\n        game.replayStep(true);\n    };\n\n    pixiApp.canvas.addEventListener('contextmenu', (e) => {\n        e.preventDefault();\n    });\n\n    // Mouse interactions\n    pixiApp.stage.eventMode = 'static';\n    // hitArea 初值已在 applyLayout 中按容器尺寸设置（含 ResizeObserver 跟随）\n\n    pixiApp.stage.on('pointermove', (e) => {\n        const localPt = tileLayer.toLocal(e.global);\n        const mapX = Math.floor(localPt.x / TILE_SIZE);\n        const mapY = Math.floor(localPt.y / TILE_SIZE);\n        if (mapX >= 0 && mapX < DCOLS && mapY >= 0 && mapY < DROWS) {\n           game.updateHover(mapX, mapY);\n        }\n    });\n\n    pixiApp.stage.on('pointerup', (e) => {\n        const localPt = tileLayer.toLocal(e.global);\n        const mapX = Math.floor(localPt.x / TILE_SIZE);\n        const mapY = Math.floor(localPt.y / TILE_SIZE);\n\n        if (mapX >= 0 && mapX < DCOLS && mapY >= 0 && mapY < DROWS) {\n           if (game.pendingArcana) {\n               if (e.button === 2) inputManager.triggerAction('escape');\n               else if (e.button === 0) {\n                    game.executeCommand('mouse_travel', { x: mapX, y: mapY });\n                   game.update();\n               }\n               return; // Adjacent/origin clicks also belong to spell selection.\n           }\n           if (e.button === 2) {\n               game.handleInspectAt(mapX, mapY);\n               return;\n           }\n\n           const dx = mapX - game.player.loc.x;\n           const dy = mapY - game.player.loc.y;\n\n           if (dx === 0 && dy === 0) {\n               inputManager.triggerAction('move');\n           } else if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {\n               let dir = Direction.NO_DIRECTION;\n               if (dx === 0 && dy === -1)       dir = Direction.UP;\n               else if (dx === 0 && dy === 1)   dir = Direction.DOWN;\n               else if (dx === -1 && dy === 0)  dir = Direction.LEFT;\n               else if (dx === 1 && dy === 0)   dir = Direction.RIGHT;\n               else if (dx === -1 && dy === -1) dir = Direction.UPLEFT;\n               else if (dx === 1 && dy === -1)  dir = Direction.UPRIGHT;\n               else if (dx === -1 && dy === 1)  dir = Direction.DOWNLEFT;\n               else if (dx === 1 && dy === 1)   dir = Direction.DOWNRIGHT;\n\n               if (dir !== Direction.NO_DIRECTION) {\n                   inputManager.triggerAction('move', dir);\n               }\n           } else {\n                game.executeCommand('mouse_travel', { x: mapX, y: mapY });\n               game.update();\n           }\n        }\n    });\n\n    let pathingTimer = 0;\n    let colorTimer = 0;\n    // Floating text animation ticker\n    pixiApp.ticker.add((ticker) => {\n        game.tickReplay();\n\n        // P2-4：驱动分步推进（常规回合一步跑完；慢回合停在暂停点时按\n        // pendingPauseMs 节流；推进进行中输入锁生效）\n        game.tickAdvancement(ticker.deltaMS);\n\n        if (game.isTimePaused()) {\n            return;\n        }\n\n        if (game.floatingTexts.length > 0) {\n            game.floatingTexts.forEach(ft => ft.update());\n            game.floatingTexts = game.floatingTexts.filter(ft => ft.life > 0);\n            render();\n        }\n\n        // Bolt animation tick\n        const boltChanged = game.tickBoltAnimation();\n        const flareChanged = game.tickFlareAnimation(ticker.deltaMS);\n        const terrainChanged = tickTerrainColors(game.grid, ticker.deltaMS, game.depth);\n        colorTimer += ticker.deltaMS;\n        const lightChanged = colorTimer >= 50;\n        if (lightChanged) { colorTimer %= 50; game.lightMap.dance(); }\n        if (boltChanged || flareChanged || terrainChanged || lightChanged) render();\n\n        if (!game.replayRecording && game.autoPath.length > 0) {\n            pathingTimer++;\n            if (pathingTimer > 4) { // 60/4 = 15 moves per second\n                game.stepAutoPath();\n                pathingTimer = 0;\n                game.update();\n            }\n        } else {\n            pathingTimer = 0;\n        }\n    });\n\n    game.update(); // Compute initial FOV and trigger first render\n  }\n}"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 432,
+    "scope": "render",
+    "kind": "ForOfStatement",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 513,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "game.monsters\n            .filter((m) => canSeeMonster(game.player, game.grid, m))"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 513,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 529,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "game.monsters\n            .filter((m) => !canSeeMonster(game.player, game.grid, m) && canDisplayMonster(game.player, game.grid, m))"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 529,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/components/GameCanvas.vue",
+    "line": 536,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "{\n            seed: game.currentSeed,\n            mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),\n            enchantmentTargets: game.pendingEnchantment\n                ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],\n            arcanaPreview: game.getArcanaPreview(),\n            arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,\n            coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },\n            player: {\n                weaknessAmount: game.player.weaknessAmount, effectiveStrength: game.player.effectiveStrength, maxStatus: { ...game.player.maxStatus },\n                x: game.player.loc.x,\n                y: game.player.loc.y,\n                hp: game.player.hp,\n                nutrition: game.player.nutrition,\n                poisonAmount: game.player.poisonAmount,\n                maxShield: game.player.maxShield,\n                statuses: { ...game.player.statusDurations }\n            },\n            replay: {\n                status: game.replayStatus,\n                cursor: game.replayCursor,\n                total: game.replayEvents.length\n            },\n            recordedInputEvents: game.recordedInputEvents.length,\n            autoPathLength: game.autoPath.length,\n            monsters: visibleMonsters,\n            revealedLocations,\n            items: visibleItems\n        }"
+  },
+  {
+    "file": "src/components/Sidebar.vue",
+    "line": 48,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "() => {\n  window.addEventListener('resize', onWindowResize);\n  // Poll state because the engine is pure TS\n  pollInterval = window.setInterval(() => {\n    if (activeGame && activeGame.player) {\n      playerHp.value = activeGame.player.hp;\n      playerMaxHp.value = activeGame.player.maxHp;\n      playerDepth.value = activeGame.depth;\n      playerNutrition.value = activeGame.player.nutrition;\n      hoverText.value = activeGame.hoveredText;\n      // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见\n      // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。\n      playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);\n      monsterRows.value = visibleMonsterRows(activeGame.player, activeGame.grid, activeGame.monsters);\n    }\n    // Clone array for Vue reactivity\n    logs.value = [...logger.messages].reverse(); \n  }, 100);\n}"
+  },
+  {
+    "file": "src/components/Sidebar.vue",
+    "line": 51,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "() => {\n    if (activeGame && activeGame.player) {\n      playerHp.value = activeGame.player.hp;\n      playerMaxHp.value = activeGame.player.maxHp;\n      playerDepth.value = activeGame.depth;\n      playerNutrition.value = activeGame.player.nutrition;\n      hoverText.value = activeGame.hoveredText;\n      // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见\n      // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。\n      playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);\n      monsterRows.value = visibleMonsterRows(activeGame.player, activeGame.grid, activeGame.monsters);\n    }\n    // Clone array for Vue reactivity\n    logs.value = [...logger.messages].reverse(); \n  }"
+  },
+  {
+    "file": "src/components/Sidebar.vue",
+    "line": 61,
+    "scope": "(module)",
+    "kind": "CallExpression",
+    "expression": "activeGame.monsters"
+  },
+  {
+    "file": "src/engine/Combat/BlinkTargeting.ts",
+    "line": 23,
+    "scope": "blinkTargetPreview",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Combat/BoltTargeting.ts",
+    "line": 32,
+    "scope": "arcanaTargetCandidates",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Combat/BoltTargeting.ts",
+    "line": 39,
+    "scope": "arcanaTargetCandidates",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Combat/Cloning.ts",
+    "line": 36,
+    "scope": "qualifies",
+    "kind": "CallExpression",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "line": 38,
+    "scope": "qualifies",
+    "kind": "CallExpression",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "line": 22,
+    "scope": "wakeMonster",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(g.monsters)"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "line": 22,
+    "scope": "wakeMonster",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "line": 87,
+    "scope": "updateMonsterState",
+    "kind": "ForOfStatement",
+    "expression": "[g.player, ...iterateCreatures(g.monsters)]"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "line": 87,
+    "scope": "updateMonsterState",
+    "kind": "SpreadElement",
+    "expression": "iterateCreatures(g.monsters)"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAI.ts",
+    "line": 87,
+    "scope": "updateMonsterState",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "line": 77,
+    "scope": "anyoneWantABite",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 127,
+    "scope": "monsterAvoidsCorridor",
+    "kind": "CallExpression",
+    "expression": "[...iterateCreatures(g.monsters)]"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 127,
+    "scope": "monsterAvoidsCorridor",
+    "kind": "SpreadElement",
+    "expression": "iterateCreatures(g.monsters)"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 127,
+    "scope": "monsterAvoidsCorridor",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 286,
+    "scope": "closestBlinkEnemy",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(g.monsters)"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 286,
+    "scope": "closestBlinkEnemy",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 312,
+    "scope": "buildBlinkEnemyMap",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(g.monsters)"
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "line": 312,
+    "scope": "buildBlinkEnemyMap",
+    "kind": "CallExpression",
+    "expression": "g.monsters"
+  },
+  {
+    "file": "src/engine/Combat/Polymorph.ts",
+    "line": 6,
+    "scope": "knownPolymorphSpecies",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Combat/Polymorph.ts",
+    "line": 15,
+    "scope": "polymorphSpecies",
+    "kind": "CallExpression",
+    "expression": "monsters.length"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 120,
+    "scope": "collectEntityGraph",
+    "kind": "SpreadElement",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 125,
+    "scope": "serializeMonster",
+    "kind": "CallExpression",
+    "expression": "graph.monsters.filter(v => v !== m)"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 125,
+    "scope": "serializeMonster",
+    "kind": "CallExpression",
+    "expression": "graph.monsters"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 140,
+    "scope": "read",
+    "kind": "CallExpression",
+    "expression": "row.graph?.monsters"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 163,
+    "scope": "restoreEntityGraph",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "line": 164,
+    "scope": "restoreEntityGraph",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1137,
+    "scope": "resolveBlueprintMonster",
+    "kind": "CallExpression",
+    "expression": "allMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1151,
+    "scope": "resolveBlueprintMonster",
+    "kind": "CallExpression",
+    "expression": "allMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1164,
+    "scope": "resolveBlueprintMonster",
+    "kind": "CallExpression",
+    "expression": "allMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1169,
+    "scope": "generateDepth",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1202,
+    "scope": "restoreLevelResidents",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1203,
+    "scope": "restoreLevelResidents",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1204,
+    "scope": "restoreLevelResidents",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1216,
+    "scope": "monstersApproachStairs",
+    "kind": "ForOfStatement",
+    "expression": "[...level.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1216,
+    "scope": "monstersApproachStairs",
+    "kind": "SpreadElement",
+    "expression": "level.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1234,
+    "scope": "monsterEntersLevel",
+    "kind": "CallExpression",
+    "expression": "[this.player, ...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1234,
+    "scope": "monsterEntersLevel",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1240,
+    "scope": "monsterEntersLevel",
+    "kind": "CallExpression",
+    "expression": "source.monsters.indexOf(m)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1533,
+    "scope": "findTerrainSpawnLocation",
+    "kind": "CallExpression",
+    "expression": "this.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1644,
+    "scope": "findMinionSpawnSpot",
+    "kind": "CallExpression",
+    "expression": "machine ? {grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: []} : this"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1734,
+    "scope": "summonMinionsFor",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1878,
+    "scope": "handleExamineNearest",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1889,
+    "scope": "handleExamineNearest",
+    "kind": "CallExpression",
+    "expression": "visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2378,
+    "scope": "hasCreatureAtForLight",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2425,
+    "scope": "updateVision",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2453,
+    "scope": "updateVision",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2528,
+    "scope": "update",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 3242,
+    "scope": "performPlayerAction",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(this.monsters)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 3242,
+    "scope": "performPlayerAction",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 4052,
+    "scope": "getArcanaCandidates",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 4057,
+    "scope": "getArcanaPreview",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 4172,
+    "scope": "boltWorld",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5490,
+    "scope": "negationBlastFromPlayer",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5490,
+    "scope": "negationBlastFromPlayer",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5636,
+    "scope": "discordBlastFromPlayer",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5692,
+    "scope": "summonMonstersAroundPlayer",
+    "kind": "CallExpression",
+    "expression": "i18next.t('scroll.summon_many', {\n                defaultValue: 'The fabric of space ripples, and monsters appear!'\n            })"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5692,
+    "scope": "summonMonstersAroundPlayer",
+    "kind": "CallExpression",
+    "expression": "{\n                defaultValue: 'The fabric of space ripples, and monsters appear!'\n            }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6457,
+    "scope": "tryTriggerArmorRunic",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6610,
+    "scope": "tickCreatureStatuses",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6610,
+    "scope": "tickCreatureStatuses",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6647,
+    "scope": "tickCreatureStatuses",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6647,
+    "scope": "tickCreatureStatuses",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6661,
+    "scope": "tickCreatureStatuses",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6752,
+    "scope": "buildLungeFlailHitList",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7076,
+    "scope": "alliedCloneCount",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7114,
+    "scope": "moveEntrancedMonsters",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7114,
+    "scope": "moveEntrancedMonsters",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7121,
+    "scope": "findLiveSeizer",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7259,
+    "scope": "triggerDeathFeatures",
+    "kind": "ForOfStatement",
+    "expression": "target ? [target] : [...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7259,
+    "scope": "triggerDeathFeatures",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7470,
+    "scope": "monstersFall",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7470,
+    "scope": "monstersFall",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7518,
+    "scope": "monstersFall",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7764,
+    "scope": "removeDeadMonsters",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters, ...this.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7764,
+    "scope": "removeDeadMonsters",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7764,
+    "scope": "removeDeadMonsters",
+    "kind": "SpreadElement",
+    "expression": "this.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7766,
+    "scope": "removeDeadMonsters",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters, ...this.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7766,
+    "scope": "removeDeadMonsters",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7766,
+    "scope": "removeDeadMonsters",
+    "kind": "SpreadElement",
+    "expression": "this.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7773,
+    "scope": "removeDeadMonsters",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7774,
+    "scope": "removeDeadMonsters",
+    "kind": "CallExpression",
+    "expression": "this.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7780,
+    "scope": "killOrphanedBoundFollowers",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7780,
+    "scope": "killOrphanedBoundFollowers",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8402,
+    "scope": "snapshotRunState",
+    "kind": "CallExpression",
+    "expression": "{\n            meteredItems: this.meteredItems, foodSpawned: this.foodSpawned, goldGenerated: this.goldGenerated,\n            monsterSpawnFuse: this.monsterSpawnFuse, absoluteTurnNumber: this.absoluteTurnNumber,\n            currentTick: timeSystem.currentTick, nextEntityId: getNextEntityId(), nextMachineNumber: getNextMachineNumber(),\n            playerFalling: this.playerFalling, pendingIdentify: this.pendingIdentify,\n            // Omit settled transaction metadata: ordinary world/trace payloads stay unchanged.\n            enchantmentScrollWasKnown: this.pendingEnchantment ? this.pendingEnchantmentScrollWasKnown : undefined,\n            justSearched: this.justSearched, justRested: this.justRested, searchingCharge: this.searchingCharge,\n            secretScanDepth: this.secretScanDepth, levelHasSecrets: this.levelHasSecrets,\n            poisonedDuringTurn: this.poisonedDuringTurn,\n            monsterPathCache: this.monsterPathCache,\n            safetyMap: this.safetyMap, updatedSafetyMapThisTurn: this.updatedSafetyMapThisTurn,\n            loopMap: this.loopMap,\n            isGameOver: this.isGameOver, gameOverWon: this.gameOverWon, gameOverReason: this.gameOverReason,\n            gameOverInventory: this.gameOverInventory, gameOverScore: this.gameOverScore, lastDamageSource: this.lastDamageSource,\n            everSeenItemIds: [...this.everSeenItems].map(i => i.id),\n            everSeenMonsterIds: [...this.everSeenMonsters].map(m => m.id),\n            examinedEntityIds: [...this.examinedEntityIds],\n            autoPath: this.autoPath, isMouseTraveling: this.isMouseTraveling, travelTargetItemId: this.travelTargetItem?.id ?? null,\n            recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,\n            signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],\n            testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,\n            logger: logger.getState(),\n        }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8418,
+    "scope": "snapshotRunState",
+    "kind": "CallExpression",
+    "expression": "[...this.everSeenMonsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8418,
+    "scope": "snapshotRunState",
+    "kind": "SpreadElement",
+    "expression": "this.everSeenMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8447,
+    "scope": "toSnapshot",
+    "kind": "CallExpression",
+    "expression": "{\n            depth: this.depth, currentLevelDepth: this.currentLevelDepth,\n            active: this.activeLevelState(), levels: this.levels,\n            snapshotLevel: (depth, level) => this.snapshotLevel(depth, level),\n            pendingFallenByDepth: this.pendingFallenByDepth,\n            pendingFallenItemsByDepth: this.pendingFallenItemsByDepth,\n            purgatory: this.purgatory, monsters: this.monsters, dormantMonsters: this.dormantMonsters,\n            items: this.items, player: this.player, everSeenMonsters: this.everSeenMonsters,\n            everSeenItems: this.everSeenItems, visibleMonsters: this.visibleMonsters,\n            visibleItems: this.visibleItems, travelTargetItem: this.travelTargetItem,\n            isAdvancing: this.isAdvancing, currentSeed: this.currentSeed, levelSeeds: this.levelSeeds,\n            mode: this.mode, ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,\n            pendingEnchantment: this.pendingEnchantment, stats: this.stats, run: this.snapshotRunState(),\n            services: {\n                rngState: () => rng.getState(),\n                identifiedItems: () => [...ItemLoader.identifiedItems],\n                callTitles: () => Object.fromEntries(ItemLoader.callTitles),\n                magicPolarityRevealed: () => [...ItemLoader.magicPolarityRevealed],\n                flavors: () => ItemLoader.snapshotFlavors(),\n                staffFlavors: () => Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),\n                wandFlavors: () => Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),\n                rewardRoomsGenerated: () => getRewardRoomsGenerated(),\n            },\n        }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8477,
+    "scope": "deserializeMonster",
+    "kind": "CallExpression",
+    "expression": "Math.max(0, ...graph.monsters.keys(), ...graph.items.keys())"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8477,
+    "scope": "deserializeMonster",
+    "kind": "CallExpression",
+    "expression": "...graph.monsters.keys()"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8477,
+    "scope": "deserializeMonster",
+    "kind": "SpreadElement",
+    "expression": "graph.monsters.keys()"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8483,
+    "scope": "restoreMonsterLeaders",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8520,
+    "scope": "loadSnapshot",
+    "kind": "CallExpression",
+    "expression": "q.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8533,
+    "scope": "loadSnapshot",
+    "kind": "CallExpression",
+    "expression": "Math.max(snapshot.player.id, 0, ...entityGraph.monsters.keys(), ...entityGraph.items.keys())"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8533,
+    "scope": "loadSnapshot",
+    "kind": "CallExpression",
+    "expression": "...entityGraph.monsters.keys()"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 8533,
+    "scope": "loadSnapshot",
+    "kind": "SpreadElement",
+    "expression": "entityGraph.monsters.keys()"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9106,
+    "scope": "applyEnvironmentalEffects",
+    "kind": "ForOfStatement",
+    "expression": "[...this.monsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9106,
+    "scope": "applyEnvironmentalEffects",
+    "kind": "SpreadElement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9132,
+    "scope": "getMonsterAt",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9153,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "CallExpression",
+    "expression": "{\n            creatures: () => [this.player, ...this.monsters.filter(m => !m.isDormant)]\n                .filter(c => c.hp > 0).map(c => ({ loc: c.loc, forbiddenTerrain:\n                    c instanceof Monster ? speciesForbiddenFlags({ behaviorFlags: [...c.behaviorFlags] }) : T_PATHING_BLOCKER })),\n            refreshCell: pos => this.refreshDungeonFeatureCell(pos),\n            flavor: pos => {\n                if (this.player.x === pos.x && this.player.y === pos.y && !this.player.hasStatus('levitating')) {\n                    logger.log(i18next.t('df.flavor', { terrain: this.getTerrainName(this.grid.getCell(pos.x, pos.y)!.terrain),\n                        defaultValue: 'You are standing on {{terrain}}.' }), '#aaaaaa');\n                }\n            },\n            instantEffects: pos => {\n                const creature = this.player.hp > 0 && this.player.x === pos.x && this.player.y === pos.y\n                    ? this.player : this.monsters.find(m => m.hp > 0 && !m.isDormant && m.x === pos.x && m.y === pos.y);\n                if (creature) this.applyDungeonFeatureContact(creature);\n            },\n            burnItems: pos => this.burnFloorItemsAt(pos),\n            caughtFire: pos => {\n                this.pendingCaughtFireCells ??= [];\n                if (!this.pendingCaughtFireCells.some(p => p.x === pos.x && p.y === pos.y)) this.pendingCaughtFireCells.push(pos);\n            },\n            playerFireOrDescent: () => {\n                if (cellTerrainFlags(this.grid, this.player.x, this.player.y) & (T_IS_FIRE | T_AUTO_DESCENT)) {\n                    this.applyDungeonFeatureContact(this.player);\n                }\n            },\n            describe: (feat, pos) => {\n                if ((this.player.x === 0 && this.player.y === 0) || !this.grid.getCell(pos.x, pos.y)?.isVisible) return false;\n                logger.log(this.dungeonFeatureDescription(feat.description));\n                return true;\n            },\n            aggravate: (radius, origin) => this.aggravateMonsters(radius, origin),\n            flash: (color, radius, pos) => this.colorFlash(color, radius, pos),\n            flare: (kind, pos) => this.createFlare(pos.x, pos.y, LightKind[kind as keyof typeof LightKind]),\n            invalidatePathing: () => {\n                this.loopMap = analyzeLoopMap(this.grid);\n                this.updatedSafetyMapThisTurn = false;\n                this.autoPath = []; this.isMouseTraveling = false;\n            },\n            invalidateShore: () => { this.updatedSafetyMapThisTurn = false; },\n            gameHasEnded: () => this.isGameOver === true,\n        }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9154,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "CallExpression",
+    "expression": "[this.player, ...this.monsters.filter(m => !m.isDormant)]\n                .filter(c => c.hp > 0)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9154,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "CallExpression",
+    "expression": "[this.player, ...this.monsters.filter(m => !m.isDormant)]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9154,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "SpreadElement",
+    "expression": "this.monsters.filter(m => !m.isDormant)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9154,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9166,
+    "scope": "bindDungeonFeatureEffects",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9303,
+    "scope": "aggravateMonsters",
+    "kind": "ForOfStatement",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9366,
+    "scope": "awakenDormantMonstersAt",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures([...this.dormantMonsters])"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9366,
+    "scope": "awakenDormantMonstersAt",
+    "kind": "CallExpression",
+    "expression": "[...this.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9366,
+    "scope": "awakenDormantMonstersAt",
+    "kind": "SpreadElement",
+    "expression": "this.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9501,
+    "scope": "handleAutoExplore",
+    "kind": "CallExpression",
+    "expression": "Array.from(iterateCreatures(this.visibleMonsters))"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9501,
+    "scope": "handleAutoExplore",
+    "kind": "CallExpression",
+    "expression": "iterateCreatures(this.visibleMonsters)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9501,
+    "scope": "handleAutoExplore",
+    "kind": "CallExpression",
+    "expression": "this.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9519,
+    "scope": "handleAutoExplore",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(this.visibleMonsters)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9519,
+    "scope": "handleAutoExplore",
+    "kind": "CallExpression",
+    "expression": "this.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9650,
+    "scope": "resetTestRoom",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9674,
+    "scope": "resetTestRoom",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9905,
+    "scope": "finishBlink",
+    "kind": "CallExpression",
+    "expression": "{ grid: this.grid, player: this.player, monsters: this.monsters.filter(m => m !== occupant), dormantMonsters: this.dormantMonsters }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9905,
+    "scope": "finishBlink",
+    "kind": "CallExpression",
+    "expression": "this.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9994,
+    "scope": "teleportCreature",
+    "kind": "CallExpression",
+    "expression": "{ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10017,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "SpreadElement",
+    "expression": "(this.monsters ?? [])"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10017,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "SpreadElement",
+    "expression": "levels.flatMap(level => level.monsters)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10017,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "CallExpression",
+    "expression": "level => level.monsters"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10018,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "SpreadElement",
+    "expression": "(this.dormantMonsters ?? [])"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10018,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "SpreadElement",
+    "expression": "levels.flatMap(level => level.dormantMonsters ?? [])"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10018,
+    "scope": "demoteMonsterFromLeadership",
+    "kind": "CallExpression",
+    "expression": "level => level.dormantMonsters ?? []"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10454,
+    "scope": "stepAutoPathInner",
+    "kind": "ForOfStatement",
+    "expression": "iterateCreatures(this.visibleMonsters)"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10454,
+    "scope": "stepAutoPathInner",
+    "kind": "CallExpression",
+    "expression": "this.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 47,
+    "scope": "remove",
+    "kind": "CallExpression",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 48,
+    "scope": "remove",
+    "kind": "CallExpression",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 94,
+    "scope": "createMachineRuntime",
+    "kind": "CallExpression",
+    "expression": "[...ports.monsters, ...ports.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 94,
+    "scope": "createMachineRuntime",
+    "kind": "SpreadElement",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 94,
+    "scope": "createMachineRuntime",
+    "kind": "SpreadElement",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 101,
+    "scope": "createMachineRuntime",
+    "kind": "ForOfStatement",
+    "expression": "[...ports.monsters, ...ports.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 101,
+    "scope": "createMachineRuntime",
+    "kind": "SpreadElement",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 101,
+    "scope": "createMachineRuntime",
+    "kind": "SpreadElement",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 111,
+    "scope": "createMachineRuntime",
+    "kind": "ForOfStatement",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 115,
+    "scope": "createMachineRuntime",
+    "kind": "CallExpression",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 120,
+    "scope": "createMachineRuntime",
+    "kind": "CallExpression",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 167,
+    "scope": "generateDepth",
+    "kind": "CallExpression",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 175,
+    "scope": "generateDepth",
+    "kind": "CallExpression",
+    "expression": "{\n                grid: ports.grid,\n                environment: ports.environment,\n                fov: ports.fov,\n                lightMap: ports.lightMap,\n                monsters: ports.monsters,\n                dormantMonsters: ports.dormantMonsters,\n                items: ports.items,\n                visibleMonsters: ports.visibleMonsters,\n                visibleItems: ports.visibleItems,\n                machineCells: ports.machineCells,\n                scent: ports.scent,\n                waypoints: ports.waypoints,\n                awaySince: ports.currentLevelDepth === ports.depth ? ports.currentLevelAwaySince : ports.absoluteTurnNumber,\n                playerExitedVia: { ...ports.currentLevelExitedVia },\n                pendingCaughtFireCells: ports.pendingCaughtFireCells,\n            }"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 337,
+    "scope": "placeStairs",
+    "kind": "CallExpression",
+    "expression": "[\n            ...machineResults.flatMap(m => [...m.itemSpawns.filter(s => !s.entity),\n                ...m.monsterSpawns.filter(s => !s.entities)]).map(s => s.pos),\n            ...ports.items.map(i => i.loc), ...ports.monsters.map(m => m.loc), ...ports.dormantMonsters.map(m => m.loc),\n        ]"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 340,
+    "scope": "placeStairs",
+    "kind": "SpreadElement",
+    "expression": "ports.monsters.map(m => m.loc)"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 340,
+    "scope": "placeStairs",
+    "kind": "CallExpression",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 340,
+    "scope": "placeStairs",
+    "kind": "SpreadElement",
+    "expression": "ports.dormantMonsters.map(m => m.loc)"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 340,
+    "scope": "placeStairs",
+    "kind": "CallExpression",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 609,
+    "scope": "populateLevel",
+    "kind": "CallExpression",
+    "expression": "[...ports.monsters, ...ports.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 609,
+    "scope": "populateLevel",
+    "kind": "SpreadElement",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 609,
+    "scope": "populateLevel",
+    "kind": "SpreadElement",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 612,
+    "scope": "populateLevel",
+    "kind": "ForOfStatement",
+    "expression": "[...ports.monsters, ...ports.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 612,
+    "scope": "populateLevel",
+    "kind": "SpreadElement",
+    "expression": "ports.monsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 612,
+    "scope": "populateLevel",
+    "kind": "SpreadElement",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "line": 684,
+    "scope": "populateLevel",
+    "kind": "CallExpression",
+    "expression": "ports.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/MonsterLifecycle.ts",
+    "line": 24,
+    "scope": "iterateCreatures",
+    "kind": "ForOfStatement",
+    "expression": "creatures"
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "line": 107,
+    "scope": "advancementLoop",
+    "kind": "ForOfStatement",
+    "expression": "ports.world.monsters"
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "line": 117,
+    "scope": "advancementLoop",
+    "kind": "ForOfStatement",
+    "expression": "ports.world.monsters"
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "line": 155,
+    "scope": "advancementLoop",
+    "kind": "ForOfStatement",
+    "expression": "[...ports.world.monsters]"
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "line": 155,
+    "scope": "advancementLoop",
+    "kind": "SpreadElement",
+    "expression": "ports.world.monsters"
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "line": 425,
+    "scope": "playerTurnEnded",
+    "kind": "ForOfStatement",
+    "expression": "ports.world.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 93,
+    "scope": "snapshotLevel",
+    "kind": "CallExpression",
+    "expression": "level.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 94,
+    "scope": "snapshotLevel",
+    "kind": "CallExpression",
+    "expression": "(level.dormantMonsters ?? [])"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 101,
+    "scope": "snapshotLevel",
+    "kind": "CallExpression",
+    "expression": "[...level.visibleMonsters]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 101,
+    "scope": "snapshotLevel",
+    "kind": "SpreadElement",
+    "expression": "level.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 150,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 150,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "l.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 150,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "(l.dormantMonsters ?? [])"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 152,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 153,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "source.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 153,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "source.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 157,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "[...roots, ...source.everSeenMonsters,\n        ...source.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 157,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "source.everSeenMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 158,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "source.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 158,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "levels.flatMap(([, l]) => [...l.visibleMonsters])"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 158,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "([, l]) => [...l.visibleMonsters]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 158,
+    "scope": "toWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "l.visibleMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 179,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "graph.monsters.filter(m => !roots.includes(m))"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 179,
+    "scope": "toWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "graph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 209,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "[...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),\n             ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...(snapshot.purgatory ?? []), ...snapshot.entityGraph.monsters]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 210,
+    "scope": "decodeWholeRunWorld",
+    "kind": "SpreadElement",
+    "expression": "levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters])"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 210,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "l => [...l.monsters, ...l.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 210,
+    "scope": "decodeWholeRunWorld",
+    "kind": "SpreadElement",
+    "expression": "l.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 210,
+    "scope": "decodeWholeRunWorld",
+    "kind": "SpreadElement",
+    "expression": "l.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 211,
+    "scope": "decodeWholeRunWorld",
+    "kind": "SpreadElement",
+    "expression": "snapshot.pendingFallenByDepth.flatMap(q => q.monsters)"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 211,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "q => q.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 211,
+    "scope": "decodeWholeRunWorld",
+    "kind": "SpreadElement",
+    "expression": "snapshot.entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 226,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "saved.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 226,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 227,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "saved.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 227,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 229,
+    "scope": "decodeWholeRunWorld",
+    "kind": "CallExpression",
+    "expression": "entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 270,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "level.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 273,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "level.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 276,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "s.entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 277,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "level.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 280,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "s.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 280,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "s.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 280,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "s.entityGraph.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters])"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "l => [...l.monsters, ...l.dormantMonsters]"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "l.monsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "l.dormantMonsters"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "SpreadElement",
+    "expression": "s.pendingFallenByDepth.flatMap(l => l.monsters)"
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "line": 281,
+    "scope": "isWholeRunSnapshot",
+    "kind": "CallExpression",
+    "expression": "l => l.monsters"
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "line": 46,
+    "scope": "occupied",
+    "kind": "CallExpression",
+    "expression": "[...world.monsters,...(world.dormantMonsters??[])]"
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "line": 46,
+    "scope": "occupied",
+    "kind": "SpreadElement",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "line": 46,
+    "scope": "occupied",
+    "kind": "SpreadElement",
+    "expression": "(world.dormantMonsters??[])"
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "line": 73,
+    "scope": "generationDistances",
+    "kind": "CallExpression",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "line": 181,
+    "scope": "boltWorldFor",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "line": 146,
+    "scope": "evacuateCreatures",
+    "kind": "CallExpression",
+    "expression": "creatures"
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "line": 148,
+    "scope": "evacuateCreatures",
+    "kind": "CallExpression",
+    "expression": "(nx, ny) =>\n            !map[ny * grid.width + nx]\n            && !(cellTerrainFlags(grid, nx, ny) & creature.forbiddenTerrain)\n            && !creatures.some(c => c.loc.x === nx && c.loc.y === ny)"
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "line": 151,
+    "scope": "evacuateCreatures",
+    "kind": "CallExpression",
+    "expression": "creatures"
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "line": 228,
+    "scope": "refreshWaypoint",
+    "kind": "ForOfStatement",
+    "expression": "ctx.monsters"
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "line": 34,
+    "scope": "canPlaceCreature",
+    "kind": "CallExpression",
+    "expression": "[world.player, ...world.monsters, ...(world.dormantMonsters ?? [])]"
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "line": 34,
+    "scope": "canPlaceCreature",
+    "kind": "SpreadElement",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "line": 34,
+    "scope": "canPlaceCreature",
+    "kind": "SpreadElement",
+    "expression": "(world.dormantMonsters ?? [])"
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "line": 65,
+    "scope": "teleportCandidates",
+    "kind": "CallExpression",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "line": 27,
+    "scope": "travelDistanceMap",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "line": 58,
+    "scope": "scheduleLevelFollowers",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "line": 59,
+    "scope": "scheduleLevelFollowers",
+    "kind": "ForOfStatement",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "line": 95,
+    "scope": "qualifies",
+    "kind": "CallExpression",
+    "expression": "[world.player,...world.monsters]"
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "line": 95,
+    "scope": "qualifies",
+    "kind": "SpreadElement",
+    "expression": "world.monsters"
+  },
+  {
+    "file": "src/engine/UI/DetailGenerator.ts",
+    "line": 483,
+    "scope": "effectAt",
+    "kind": "CallExpression",
+    "expression": "{ radius: charmNegationRadius(enchant), defaultValue: 'Negate yourself and visible creatures and floor items up to {{radius}} spaces away' }"
+  },
+  {
+    "file": "src/engine/UI/MonsterSidebar.ts",
+    "line": 9,
+    "scope": "visibleMonsterRows",
+    "kind": "CallExpression",
+    "expression": "monsters.filter(monster => canSeeMonster(player, grid, monster))\n        .sort((a, b) =>\n            Math.max(Math.abs(a.loc.x - player.loc.x), Math.abs(a.loc.y - player.loc.y))\n            - Math.max(Math.abs(b.loc.x - player.loc.x), Math.abs(b.loc.y - player.loc.y)))"
+  },
+  {
+    "file": "src/engine/UI/MonsterSidebar.ts",
+    "line": 9,
+    "scope": "visibleMonsterRows",
+    "kind": "CallExpression",
+    "expression": "monsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 103,
+    "scope": "eligibleForCombatBuff",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 123,
+    "scope": "countMinions",
+    "kind": "CallExpression",
+    "expression": "allMonsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 125,
+    "scope": "countMinions",
+    "kind": "CallExpression",
+    "expression": "allMonsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1043,
+    "scope": "trySummon",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1079,
+    "scope": "tryUseBolt",
+    "kind": "SpreadElement",
+    "expression": "game.monsters.filter(m => m !== this && m.hp > 0)"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1079,
+    "scope": "tryUseBolt",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1140,
+    "scope": "moveEntranced",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1798,
+    "scope": "takeTurn",
+    "kind": "CallExpression",
+    "expression": "game.monsters"
+  }
+]

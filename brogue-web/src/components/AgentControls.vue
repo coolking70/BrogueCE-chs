@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { inputManager } from '../engine/Input';
 import { activeGame } from '../engine/Core/Game';
+import { iterateCreatures } from '../engine/Core/MonsterLifecycle';
 import { logger } from '../engine/Systems/Logger';
 import { Direction } from '../types';
 
@@ -31,7 +32,7 @@ const agentState = computed(() => {
         x: activeGame.player.loc.x,
         y: activeGame.player.loc.y,
         statuses: Object.keys(activeGame.player.statusDurations || {}).join(', '),
-        monsters: activeGame.monsters.map(m => ({
+        monsters: [...iterateCreatures(activeGame.monsters)].map(m => ({
             name: m.name,
             hp: m.hp,
             maxHp: m.maxHp,

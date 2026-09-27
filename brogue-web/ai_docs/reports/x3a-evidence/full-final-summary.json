@@ -1,0 +1,25 @@
+{
+  "command": [
+    "npm",
+    "test",
+    "--",
+    "--maxWorkers=6",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=ai_docs/reports/x3a-evidence/full-final.json"
+  ],
+  "start": "2026-09-27T11:05:17.729Z",
+  "seconds": 1974.956,
+  "exit": 0,
+  "inputs": 987,
+  "changedInputs": [],
+  "discoveredFiles": 218,
+  "changedDiscovery": [],
+  "files": 217,
+  "passed": 4006,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "failedSuites": [],
+  "failures": []
+}

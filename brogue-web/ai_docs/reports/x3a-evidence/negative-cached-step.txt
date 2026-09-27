@@ -1,0 +1,88 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts --testNamePattern stale visible corpse --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-cached-step.json
+
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x3a-negative-kn1m6ef7/brogue-web
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a audited live consumers > stale visible corpse at x=11 cannot divert or stop the next auto step
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3a_live_iteration.test.ts (23 tests | 2 failed | 20 skipped) 1030ms
+     ↓ matches original CE iterator for every death mask; HP zero alone is not HAS_DIED
+     ↓ checks later members at visit time; a stable cohort does not admit a released passenger twice
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 0
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 1
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 2
+     ↓ dying DF retains occupancy and iteration; reentry cannot duplicate its effects
+     ↓ released passenger participates only if contact survives (lethal=false)
+     ↓ released passenger participates only if contact survives (lethal=true)
+     ↓ explosion chain removes completed victims from live queries before sweeping
+     ↓ purgatory remains a raw resurrection payload; a restored ally is live again and can die again
+     ↓ DF activation leaves completed dormant corpses linked and inert until the sweep
+     × stale visible corpse at x=11 cannot divert or stop the next auto step 394ms
+     × stale visible corpse at x=15 cannot divert or stop the next auto step 283ms
+     ✓ auto-explore does not auto-attack or mark a stale visible corpse as seen  353ms
+     ↓ opening a cage cannot recruit a listed corpse or make it eligible for resurrection
+     ↓ monster spell selection neither heals a corpse nor consumes a target roll for it
+     ↓ scent following uses the same direction and RNG through a completed death cell
+     ↓ invisible dead enemies do not affect ally selection/maps or draw target RNG
+     ↓ dead allies/followers do not count toward summoning or wake with the horde
+     ↓ a dead final follower cannot keep a leader avoiding corridors
+     ↓ demotion skips completed dormant followers but detaches living dormant followers
+     ↓ group discord/negation leave corpses untouched and still affect living targets
+     ↓ light, visible identity, telepathy markers, sidebar and auto-targets ignore listed corpses
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a audited live consumers > stale visible corpse at x=11 cannot divert or stop the next auto step
+AssertionError: expected { x: 11, y: 10 } to deeply equal { x: 9, y: 10 }
+
+- Expected
++ Received
+
+  {
+-   "x": 9,
++   "x": 11,
+    "y": 10,
+  }
+
+ ❯ src/test/x3a_live_iteration.test.ts:149:30
+    147|         g.autoPath = [{ x: 9, y: 10 }]; g.isMouseTraveling = false;
+    148|         g.stepAutoPath();
+    149|         expect(g.player.loc).toEqual({ x: 9, y: 10 }); expect(g.everSe…
+       |                              ^
+    150|     });
+    151|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a audited live consumers > stale visible corpse at x=15 cannot divert or stop the next auto step
+AssertionError: expected { x: 10, y: 10 } to deeply equal { x: 9, y: 10 }
+
+- Expected
++ Received
+
+  {
+-   "x": 9,
++   "x": 10,
+    "y": 10,
+  }
+
+ ❯ src/test/x3a_live_iteration.test.ts:149:30
+    147|         g.autoPath = [{ x: 9, y: 10 }]; g.isMouseTraveling = false;
+    148|         g.stepAutoPath();
+    149|         expect(g.player.loc).toEqual({ x: 9, y: 10 }); expect(g.everSe…
+       |                              ^
+    150|     });
+    151|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 20 skipped (23)
+   Start at  19:05:18
+   Duration  2.53s (transform 533ms, setup 0ms, import 1.42s, tests 1.03s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-cached-step.json

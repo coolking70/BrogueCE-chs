@@ -1,0 +1,113 @@
+brogue-web/src/entities/Monster.ts:526:     * 睡下的怪从 `monsters` 摘链、挂到 `dormantMonsters`，于是「不占格
+brogue-web/src/entities/Monster.ts:529:     * web 照抄同一结构：本字段为真 ⇔ 该实例在 `Game.dormantMonsters` 而不在
+brogue-web/src/engine/Combat/Conjuration.ts:33:export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, origin: Pos, avoidedFlags = SPAWN_FORBIDDEN): Pos | null {
+brogue-web/src/engine/Generator/BlueprintEngine.ts:185:     * 休眠（从 monsters 摘到 dormantMonsters）。
+brogue-web/src/engine/Movement/CreaturePlacement.ts:23:    dormantMonsters?: readonly Monster[];
+brogue-web/src/engine/Movement/CreaturePlacement.ts:30:export function canPlaceCreature(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, target: Creature, at: Pos, walkingSecretDoor = false): boolean {
+brogue-web/src/engine/Movement/CreaturePlacement.ts:34:    return ![world.player, ...world.monsters, ...(world.dormantMonsters ?? [])].some(c => c !== target && c.hp > 0
+brogue-web/src/engine/Generator/GenerationPlacement.ts:46:    const occupied=(x:number,y:number)=>[...world.monsters,...(world.dormantMonsters??[])].some(m=>m.hp>0&&m.x===x&&m.y===y);
+brogue-web/src/engine/Map/DungeonFeature.ts:805: * V-2b-5：休眠怪唤醒者（CE Architect.c:3487-3496 的 `dormantMonsters` 遍历）。
+brogue-web/src/engine/Map/DungeonFeature.ts:808: * `dormantMonsters`，并对每只怪调 `toggleMonsterDormancy`——而 web 的休眠表
+brogue-web/src/engine/Map/DungeonFeature.ts:810: * `Game.dormantMonsters` 是实例状态，不是模块状态）。`spawnDungeonFeature`
+brogue-web/src/engine/Map/DungeonFeature.ts:1095:    // web 侧没有 `dormantMonsters` 链表（它归 Game：怪物状态与 monsters 链表
+brogue-web/src/engine/Map/Grid.ts:880:     * `dormantMonsters`，并清 HAS_MONSTER 改置本旗标；因此 HAS_MONSTER 的读取
+brogue-web/src/engine/Map/Grid.ts:886:     * 允许按格问）。真正的排斥由 `Game.dormantMonsters` 与 `this.monsters`
+brogue-web/src/components/GameCanvas.vue:513:        const visibleMonsters = game.monsters
+brogue-web/src/components/GameCanvas.vue:561:            monsters: visibleMonsters,
+brogue-web/src/engine/Core/MonsterLifecycle.ts:8:    dormantMonsters: Monster[];
+brogue-web/src/engine/Core/MonsterLifecycle.ts:46:    if (owner && (owner.monsters.includes(monster) || owner.dormantMonsters.includes(monster))) {
+brogue-web/src/engine/Core/LevelState.ts:18:    /** CE levels[d].dormantMonsters: dormant ownership belongs to its floor. */
+brogue-web/src/engine/Core/LevelState.ts:19:    dormantMonsters?: Monster[];
+brogue-web/src/engine/Core/LevelState.ts:21:    visibleMonsters: Set<Monster>;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:43:    dormantMonsters: GameSnapshotMonster[];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:94:        dormantMonsters: (level.dormantMonsters ?? []).map(serializeMonsterRow), items: level.items.map(serializeItem),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:101:        visibleMonsterIds: [...level.visibleMonsters].map(m => m.id),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:118:    dormantMonsters: Monster[];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:121:    everSeenMonsters: ReadonlySet<Monster>;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:123:    visibleMonsters: ReadonlySet<Monster>;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:150:    const levelRoots = levels.flatMap(([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]);
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:153:    const roots = [...source.monsters, ...source.dormantMonsters, ...source.purgatory, ...levelRoots, ...[...source.pendingFallenByDepth.values()].flat()];
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:157:    const graph = collectEntityGraph([...roots, ...source.everSeenMonsters,
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:158:        ...source.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])], [...ownedItems, ...source.everSeenItems,
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:210:        [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:227:            dormantMonsters: saved.dormantMonsters.map(m => resolve(entityGraph.monsters, m.id)),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:229:            visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:273:            || !Array.isArray(level.dormantMonsters) || !Array.isArray(level.items)) return false;
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:280:    const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
+brogue-web/src/engine/Core/WholeRunSnapshot.ts:281:        ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
+brogue-web/src/engine/Core/Game.ts:293:     * V-2b-5：CE 全局 `dormantMonsters`（Monsters.c:4156-4210 的第二条链表）。
+brogue-web/src/engine/Core/Game.ts:300:    public get dormantMonsters(): Monster[] { return this.dormantMonsterList; }
+brogue-web/src/engine/Core/Game.ts:301:    public set dormantMonsters(value: Monster[]) { this.dormantMonsterList = ownedMonsterList(value, this); }
+brogue-web/src/engine/Core/Game.ts:305:    public visibleMonsters = new Set<Monster>();
+brogue-web/src/engine/Core/Game.ts:309:    public everSeenMonsters: Set<Monster> = new Set();
+brogue-web/src/engine/Core/Game.ts:542:        this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
+brogue-web/src/engine/Core/Game.ts:550:        this.visibleMonsters = new Set();
+brogue-web/src/engine/Core/Game.ts:554:        this.everSeenMonsters = new Set();
+brogue-web/src/engine/Core/Game.ts:1022:            get dormantMonsters() { return thisGame.dormantMonsters; },
+brogue-web/src/engine/Core/Game.ts:1023:            set dormantMonsters(value: Game["dormantMonsters"]) { thisGame.dormantMonsters = value; },
+brogue-web/src/engine/Core/Game.ts:1074:            get visibleMonsters() { return thisGame.visibleMonsters; },
+brogue-web/src/engine/Core/Game.ts:1075:            set visibleMonsters(value: Game["visibleMonsters"]) { thisGame.visibleMonsters = value; },
+brogue-web/src/engine/Core/Game.ts:1241:        source.visibleMonsters.delete(m);
+brogue-web/src/engine/Core/Game.ts:1533:                if (this.dormantMonsters.some(m => m.hp > 0 && m.x === x && m.y === y)) continue;
+brogue-web/src/engine/Core/Game.ts:1644:            pos = minionPlacement(machine ? {grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: []} : this, origin, species, summoned, target);
+brogue-web/src/engine/Core/Game.ts:1878:        const visibleMonsters = this.monsters.filter(m => {
+brogue-web/src/engine/Core/Game.ts:1882:        if (visibleMonsters.length > 0) {
+brogue-web/src/engine/Core/Game.ts:1884:            visibleMonsters.sort((a, b) => {
+brogue-web/src/engine/Core/Game.ts:1889:            const m = visibleMonsters.find(mon => !this.examinedEntityIds.has(mon.id));
+brogue-web/src/engine/Core/Game.ts:1981:        this.visibleMonsters.clear();
+brogue-web/src/engine/Core/Game.ts:1989:        this.dormantMonsters = []; // test 层无休眠怪（防上一层残留）
+brogue-web/src/engine/Core/Game.ts:2531:                    if (!this.visibleMonsters.has(m)) {
+brogue-web/src/engine/Core/Game.ts:2550:            this.visibleMonsters = currentVisMonsters;
+brogue-web/src/engine/Core/Game.ts:3057:        this.everSeenMonsters.clear();
+brogue-web/src/engine/Core/Game.ts:6080:        if (entity === this.player || this.visibleMonsters.has(entity as Monster)) {
+brogue-web/src/engine/Core/Game.ts:7157:        if (clone.isDormant) this.dormantMonsters.push(clone);
+brogue-web/src/engine/Core/Game.ts:7764:        for (const m of [...this.monsters, ...this.dormantMonsters]) if (m.hp <= 0) this.killMonster(m);
+brogue-web/src/engine/Core/Game.ts:7766:        for (const m of [...this.monsters, ...this.dormantMonsters]) {
+brogue-web/src/engine/Core/Game.ts:7774:        this.dormantMonsters = this.dormantMonsters.filter(m => m.hp > 0);
+brogue-web/src/engine/Core/Game.ts:8418:            everSeenMonsterIds: [...this.everSeenMonsters].map(m => m.id),
+brogue-web/src/engine/Core/Game.ts:8431:            monsters: this.monsters, dormantMonsters: this.dormantMonsters, items: this.items,
+brogue-web/src/engine/Core/Game.ts:8432:            visibleMonsters: this.visibleMonsters, visibleItems: this.visibleItems,
+brogue-web/src/engine/Core/Game.ts:8453:            purgatory: this.purgatory, monsters: this.monsters, dormantMonsters: this.dormantMonsters,
+brogue-web/src/engine/Core/Game.ts:8454:            items: this.items, player: this.player, everSeenMonsters: this.everSeenMonsters,
+brogue-web/src/engine/Core/Game.ts:8455:            everSeenItems: this.everSeenItems, visibleMonsters: this.visibleMonsters,
+brogue-web/src/engine/Core/Game.ts:8509:        this.monsters = active.monsters; this.dormantMonsters = active.dormantMonsters!; this.items = active.items;
+brogue-web/src/engine/Core/Game.ts:8510:        this.visibleMonsters = active.visibleMonsters; this.visibleItems = active.visibleItems;
+brogue-web/src/engine/Core/Game.ts:8544:        this.everSeenMonsters = new Set(run.everSeenMonsterIds.map(id => entityGraph.monsters.get(id)!));
+brogue-web/src/engine/Core/Game.ts:8849:        if (first && entity instanceof Monster && this.visibleMonsters.has(entity)
+brogue-web/src/engine/Core/Game.ts:9048:                            // visibleMonsters），不是"本次刷新生效"。
+brogue-web/src/engine/Core/Game.ts:9057:                                && this.visibleMonsters.has(entity as Monster)
+brogue-web/src/engine/Core/Game.ts:9366:        for (const monst of [...this.dormantMonsters]) {
+brogue-web/src/engine/Core/Game.ts:9375:     * 在 dormantMonsters 里 → 醒来；在 monsters 里 → 睡下；两表皆无 → 无操作
+brogue-web/src/engine/Core/Game.ts:9389:     * 睡下方向（:4200-4209）：从 monsters 摘到 dormantMonsters、清 HAS_MONSTER
+brogue-web/src/engine/Core/Game.ts:9395:        const dormantIdx = this.dormantMonsters.indexOf(monst);
+brogue-web/src/engine/Core/Game.ts:9398:            this.dormantMonsters.splice(dormantIdx, 1);
+brogue-web/src/engine/Core/Game.ts:9444:            this.dormantMonsters.unshift(monst); // CE :4203 prependCreature
+brogue-web/src/engine/Core/Game.ts:9448:            this.visibleMonsters.delete(monst); // 不再可见（CE 不在 monsters 表 ⇒ 画不到）
+brogue-web/src/engine/Core/Game.ts:9501:        const adjacentMonsters = Array.from(this.visibleMonsters).filter(m =>
+brogue-web/src/engine/Core/Game.ts:9519:        for (const m of this.visibleMonsters) {
+brogue-web/src/engine/Core/Game.ts:9520:            this.everSeenMonsters.add(m);
+brogue-web/src/engine/Core/Game.ts:9905:            if (!canPlaceCreature({ grid: this.grid, player: this.player, monsters: this.monsters.filter(m => m !== occupant), dormantMonsters: this.dormantMonsters }, caster, landing)) return false;
+brogue-web/src/engine/Core/Game.ts:9994:        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target, respectTerrainAvoidancePreferences);
+brogue-web/src/engine/Core/Game.ts:10018:        const dormant = new Set([...(this.dormantMonsters ?? []), ...levels.flatMap(level => level.dormantMonsters ?? [])]);
+brogue-web/src/engine/Core/Game.ts:10454:            for (const m of this.visibleMonsters) {
+brogue-web/src/engine/Core/Game.ts:10459:                if (!this.everSeenMonsters.has(m)) {
+brogue-web/src/engine/Core/Game.ts:10462:                    this.everSeenMonsters.add(m);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:48:            ports.dormantMonsters = ports.dormantMonsters.filter(m => m !== mon);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:49:            ports.visibleMonsters.delete(mon);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:94:                const carriers = new Map([...ports.monsters, ...ports.dormantMonsters].map(m => [m, m.carriedItem]));
+brogue-web/src/engine/Core/GenerationCoordinator.ts:101:                    for (const mon of [...ports.monsters, ...ports.dormantMonsters]) {
+brogue-web/src/engine/Core/GenerationCoordinator.ts:109:                    for (const [mon, item] of carriers) if (mon.hp > 0 && (ports.monsters.includes(mon) || ports.dormantMonsters.includes(mon))) mon.carriedItem = item;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:111:                    for (const mon of ports.dormantMonsters) ports.grid.getCell(mon.x, mon.y)!.hasDormantMonster = true;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:181:                dormantMonsters: ports.dormantMonsters,
+brogue-web/src/engine/Core/GenerationCoordinator.ts:183:                visibleMonsters: ports.visibleMonsters,
+brogue-web/src/engine/Core/GenerationCoordinator.ts:210:            ports.dormantMonsters = cached.dormantMonsters ?? [];
+brogue-web/src/engine/Core/GenerationCoordinator.ts:212:            ports.visibleMonsters = cached.visibleMonsters;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:230:                ports.dormantMonsters = [];
+brogue-web/src/engine/Core/GenerationCoordinator.ts:235:                    ports.dormantMonsters = [];
+brogue-web/src/engine/Core/GenerationCoordinator.ts:261:                ports.visibleMonsters = new Set();
+brogue-web/src/engine/Core/GenerationCoordinator.ts:340:            ...ports.items.map(i => i.loc), ...ports.monsters.map(m => m.loc), ...ports.dormantMonsters.map(m => m.loc),
+brogue-web/src/engine/Core/GenerationCoordinator.ts:598:                        product.owner = ports.dormantMonsters.includes(mon) ? 'dormant' : ports.monsters.includes(mon) ? 'floor' : undefined;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:602:                    if (leader && (ports.monsters.includes(leader) || ports.dormantMonsters.includes(leader))) handOff(leader, spawn, mr);
+brogue-web/src/engine/Core/GenerationCoordinator.ts:609:                    const beforeIds = trace ? new Set([...ports.monsters, ...ports.dormantMonsters].map(m => m.id)) : null;
+brogue-web/src/engine/Core/GenerationCoordinator.ts:612:                    if (trace && beforeIds) for (const mon of [...ports.monsters, ...ports.dormantMonsters]) {
+brogue-web/src/engine/Core/GenerationCoordinator.ts:684:                        && !ports.dormantMonsters.some(m => m.hp > 0 && m.x === pos.x && m.y === pos.y)

@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+process.chdir(new URL('..', import.meta.url).pathname);
+const out = 'ai_docs/reports/x3a-evidence';
+const read = name => JSON.parse(fs.readFileSync(`${out}/${name}.json`, 'utf8'));
+const modes = ['build-final', 'full-final', 'drift-final', 'deep-final'];
+const summaries = modes.map(mode => ({ mode, ...read(`${mode}-summary`) }));
+for (const s of summaries) { assert.equal(s.exit, 0, s.mode); assert.deepEqual(s.changedInputs, []); assert.deepEqual(s.changedDiscovery, []); }
+const inputs = modes.map(mode => read(`${mode}-inputs`));
+for (const input of inputs.slice(1)) assert.deepEqual(input, inputs[0], 'Same frozen inputs in all final gates');
+const files = new Set(['full-final', 'drift-final', 'deep-final'].flatMap(mode => read(mode).testResults.map(r => path.relative(process.cwd(), r.name))));
+const closure = read('closure'), missing = closure.union.filter(f => !files.has(f)); assert.deepEqual(missing, []);
+const baseline = read('baseline-after'); assert.equal(baseline.unchanged, true);
+const diffCheck = spawnSync('git', ['diff', '--check'], { encoding: 'utf8' }); assert.equal(diffCheck.status, 0, diffCheck.stdout);
+const changed = spawnSync('git', ['diff', '--name-only', '--relative'], { encoding: 'utf8' }).stdout.trim().split('\n');
+assert.equal(changed.some(f => f.startsWith('src/test/')), false, 'Existing guards unchanged');
+const added = spawnSync('git', ['ls-files', '--others', '--exclude-standard'], { encoding: 'utf8' }).stdout.trim().split('\n');
+const crlf = [...changed, ...added].filter(f => fs.existsSync(f) && /\.(ts|vue|mjs|py|json|md|txt|c)$/.test(f) && fs.readFileSync(f).includes(Buffer.from('\r\n')));
+assert.deepEqual(crlf, []);
+const staged = spawnSync('git', ['diff', '--cached', '--name-only'], { encoding: 'utf8' }).stdout.trim(); assert.equal(staged, '');
+const result = { gates: summaries, R: closure.R.length, S: Object.fromEntries(Object.entries(closure.S).map(([k,v])=>[k,v.length])), closure: closure.union.length, missing, protectedUnchanged: baseline.unchanged, crlf, diffCheck: diffCheck.status, staged, finalInputFiles: Object.keys(inputs[0]).length };
+fs.writeFileSync(`${out}/final-check.json`, JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify({ gates: summaries.map(s=>({mode:s.mode,exit:s.exit,seconds:s.seconds,passed:s.passed})), closure:result.closure, protectedUnchanged:true, crlf:0 }));

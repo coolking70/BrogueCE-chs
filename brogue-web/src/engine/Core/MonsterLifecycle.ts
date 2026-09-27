@@ -14,6 +14,18 @@ const lists = new WeakMap<Monster[], { raw: Monster[]; owner: DeathOwner }>();
 // Persisted deathProcessed carries HAS_DIED; revival explicitly clears DYING.
 export const dyingMonsters = new WeakSet<Monster>();
 
+/** CE Monsters.c:925–947: HAS_DIED, not HP or IS_DYING, excludes a list member.
+ * Do not filter the owning list: death effects and physical removal have
+ * separate lifetimes. Check on each visit so nested deaths are also excluded.
+ * Callers that mutate membership must pass their existing stable cohort.
+ * This is for active/dormant lists, not web's still-marked purgatory payloads.
+ */
+export function* iterateCreatures<T extends Pick<Monster, 'deathProcessed'>>(creatures: Iterable<T>): Generator<T> {
+    for (const creature of creatures) {
+        if (!creature.deathProcessed) yield creature;
+    }
+}
+
 export function ownedMonsterList(input: Monster[], owner: DeathOwner): Monster[] {
     const old = lists.get(input);
     if (old?.owner === owner) return input;

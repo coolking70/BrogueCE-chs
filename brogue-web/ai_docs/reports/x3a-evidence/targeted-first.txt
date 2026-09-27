@@ -1,0 +1,31 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts src/test/x2k_lifecycle.test.ts src/test/x2j_monster_ai.test.ts --maxWorkers=3 --reporter=default --reporter=json --outputFile=ai_docs/reports/x3a-evidence/targeted-first.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web
+
+stdout | src/test/x2j_monster_ai.test.ts > X2j CE specialHit theft > steals category 0 stack 1 -> 1 with one owner
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2k_lifecycle.test.ts > restored vampire info replaces explosive death DF across JSON, retaining mutation bookkeeping
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 0
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2k_lifecycle.test.ts (16 tests) 3051ms
+   ✓ restored vampire info replaces explosive death DF across JSON, retaining mutation bookkeeping  430ms
+   ✓ restored vampire info replaces infested death DF across JSON, retaining mutation bookkeeping  413ms
+ ✓ src/test/x3a_live_iteration.test.ts (16 tests) 3283ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 0  414ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 1  370ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 2  422ms
+ ✓ src/test/x2j_monster_ai.test.ts (38 tests) 6812ms
+
+ Test Files  3 passed (3)
+      Tests  70 passed (70)
+   Start at  18:55:49
+   Duration  7.57s (transform 1.07s, setup 0ms, import 2.02s, tests 13.15s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/targeted-first.json

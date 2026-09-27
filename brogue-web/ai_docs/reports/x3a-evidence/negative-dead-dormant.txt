@@ -1,0 +1,162 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts --testNamePattern demotion skips --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-dead-dormant.json
+
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x3a-negative-kn1m6ef7/brogue-web
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a audited live consumers > demotion skips completed dormant followers but detaches living dormant followers
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3a_live_iteration.test.ts (23 tests | 1 failed | 22 skipped) 357ms
+     ↓ matches original CE iterator for every death mask; HP zero alone is not HAS_DIED
+     ↓ checks later members at visit time; a stable cohort does not admit a released passenger twice
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 0
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 1
+     ↓ seed22013 fear and real wait match a swept control with corpse at index 2
+     ↓ dying DF retains occupancy and iteration; reentry cannot duplicate its effects
+     ↓ released passenger participates only if contact survives (lethal=false)
+     ↓ released passenger participates only if contact survives (lethal=true)
+     ↓ explosion chain removes completed victims from live queries before sweeping
+     ↓ purgatory remains a raw resurrection payload; a restored ally is live again and can die again
+     ↓ DF activation leaves completed dormant corpses linked and inert until the sweep
+     ↓ stale visible corpse at x=11 cannot divert or stop the next auto step
+     ↓ stale visible corpse at x=15 cannot divert or stop the next auto step
+     ↓ auto-explore does not auto-attack or mark a stale visible corpse as seen
+     ↓ opening a cage cannot recruit a listed corpse or make it eligible for resurrection
+     ↓ monster spell selection neither heals a corpse nor consumes a target roll for it
+     ↓ scent following uses the same direction and RNG through a completed death cell
+     ↓ invisible dead enemies do not affect ally selection/maps or draw target RNG
+     ↓ dead allies/followers do not count toward summoning or wake with the horde
+     ↓ a dead final follower cannot keep a leader avoiding corridors
+     × demotion skips completed dormant followers but detaches living dormant followers 356ms
+     ↓ group discord/negation leave corpses untouched and still affect living targets
+     ↓ light, visible identity, telepathy markers, sidebar and auto-targets ignore listed corpses
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a audited live consumers > demotion skips completed dormant followers but detaches living dormant followers
+AssertionError: expected null to be Monster{ mapToMe: null, id: 21, …(83) } // Object.is equality
+
+- Expected:
+Monster {
+  "abilities": Set {},
+  "abilityFlags": Set {},
+  "absorbBehavior": false,
+  "absorptionBolt": 0,
+  "absorptionFlags": null,
+  "accuracy": 80,
+  "administrativeDeath": undefined,
+  "approaching": 0,
+  "attackSpeed": 100,
+  "baseAttackSpeed": 100,
+  "baseMoveSpeed": 100,
+  "behaviorFlags": Set {},
+  "bolts": [],
+  "boundToLeader": false,
+  "boundToPlayer": false,
+  "carriedItem": undefined,
+  "carriedMonster": null,
+  "char": "%",
+  "color": 8912896,
+  "corpseAbsorptionCounter": 0,
+  "creatureMode": 0,
+  "damageClumping": 1,
+  "damageString": "1d3",
+  "deathAppearance": {
+    "char": "r",
+    "color": 11163187,
+  },
+  "deathDFType": undefined,
+  "deathEffectTriggered": false,
+  "deathProcessed": true,
+  "defense": 0,
+  "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+  "doesNotResurrect": false,
+  "doesNotTrackLeader": false,
+  "dominated": false,
+  "entersLevelIn": 0,
+  "falling": false,
+  "givenUpOnScent": false,
+  "goldDropChance": 0,
+  "hp": 0,
+  "id": 21,
+  "isAbsorbing": false,
+  "isAlly": false,
+  "isCaged": false,
+  "isClone": false,
+  "isDormant": false,
+  "itemDropChance": 0,
+  "lastSeenPlayerAt": null,
+  "leader": null,
+  "leaderlessAfterDemotion": false,
+  "loc": {
+    "x": 12,
+    "y": 10,
+  },
+  "machineHome": 0,
+  "mapToMe": null,
+  "markedForSacrifice": false,
+  "maxHp": 6,
+  "maxShield": 0,
+  "maxStatus": {},
+  "movementSpeed": 100,
+  "mutation": undefined,
+  "name": "Rat",
+  "newPowerCount": 0,
+  "onHitChance": 0,
+  "onHitDuration": 0,
+  "onHitStatus": undefined,
+  "poisonAmount": 0,
+  "polymorphKeepsSpeed": false,
+  "polymorphed": false,
+  "preplaced": false,
+  "regenCounter": 0,
+  "regenTurns": 20,
+  "safetySnapshot": null,
+  "seized": false,
+  "seizing": false,
+  "spawnLoc": {
+    "x": 0,
+    "y": 0,
+  },
+  "state": 2,
+  "statusDurations": {},
+  "statusImmunities": Set {
+    "confused",
+  },
+  "statusResistTurns": {
+    "paralyzed": 1,
+  },
+  "submerged": false,
+  "targetCorpseLoc": null,
+  "targetCorpseName": "",
+  "targetWaypointIndex": -1,
+  "ticksUntilTurn": 100,
+  "totalPowerCount": 0,
+  "typeId": "rat",
+  "wasNegated": false,
+  "waypointAlreadyVisited": null,
+  "weaknessAmount": 0,
+}
+
++ Received:
+null
+
+ ❯ src/test/x3a_live_iteration.test.ts:227:31
+    225|         for (const m of [corpse, living]) { m.leader = leader; m.isDor…
+    226|         g.dormantMonsters = [corpse, living]; dead(corpse); dead(leade…
+    227|         expect(corpse.leader).toBe(leader); expect(living.leader).toBe…
+       |                               ^
+    228|     });
+    229|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 skipped (23)
+   Start at  19:05:37
+   Duration  1.80s (transform 799ms, setup 0ms, import 1.30s, tests 357ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-dead-dormant.json

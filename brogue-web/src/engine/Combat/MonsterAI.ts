@@ -3,6 +3,7 @@ import { Monster, MonsterMode, MonsterState, monstersAreEnemies, monstersAreTeam
 import { Player } from '../../entities/Player';
 import type { Creature } from '../../entities/Creature';
 import type { Game } from '../Core/Game';
+import { iterateCreatures } from '../Core/MonsterLifecycle';
 import { ScentMap } from '../Map/Scent';
 import { blinkTraversiblePath, openCreaturePath, playerTraversiblePath } from './MonsterBlink';
 
@@ -18,7 +19,7 @@ export function alertMonster(g: Game, m: Monster): void {
 export function wakeMonster(g: Game, m: Monster, stealthRange: number): void {
     if (!allyState(m)) alertMonster(g, m);
     m.ticksUntilTurn = 100;
-    for (const mate of g.monsters) {
+    for (const mate of iterateCreatures(g.monsters)) {
         if (mate.hp <= 0 || mate === m || !monstersAreTeammates(m, mate) || mate.creatureMode !== MonsterMode.NORMAL) continue;
         if (!allyState(mate) && (mate.state === MonsterState.ASLEEP || mate.state === MonsterState.WANDERING)) {
             mate.ticksUntilTurn = Math.max(100, mate.ticksUntilTurn);
@@ -83,7 +84,7 @@ export function updateMonsterState(g: Game, m: Monster, stealthRange: number): v
         && (m.state === MonsterState.WANDERING || m.state === MonsterState.HUNTING)) m.state = MonsterState.FLEEING;
 
     let closest = g.grid.width + g.grid.height;
-    for (const target of [g.player, ...g.monsters]) {
+    for (const target of [g.player, ...iterateCreatures(g.monsters)]) {
         if (!monsterFleesFrom(m, target) || distance(m, target) >= closest) continue;
         // CE tests traversibility from the feared enemy, then an open sight path.
         const traversible = target instanceof Monster ? blinkTraversiblePath(g, target, m.loc)

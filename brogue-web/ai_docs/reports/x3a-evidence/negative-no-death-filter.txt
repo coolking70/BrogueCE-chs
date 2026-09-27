@@ -1,0 +1,103 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3a_live_iteration.test.ts --testNamePattern original CE iterator|seed22013|dying DF --maxWorkers=1 --reporter=default --reporter=json --outputFile=/Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-no-death-filter.json
+
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/x3a-negative-kn1m6ef7/brogue-web
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 0
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3a_live_iteration.test.ts (23 tests | 5 failed | 18 skipped) 1796ms
+     × matches original CE iterator for every death mask; HP zero alone is not HAS_DIED 8ms
+     ↓ checks later members at visit time; a stable cohort does not admit a released passenger twice
+     × seed22013 fear and real wait match a swept control with corpse at index 0 517ms
+     × seed22013 fear and real wait match a swept control with corpse at index 1 500ms
+     × seed22013 fear and real wait match a swept control with corpse at index 2 474ms
+     × dying DF retains occupancy and iteration; reentry cannot duplicate its effects 296ms
+     ↓ released passenger participates only if contact survives (lethal=false)
+     ↓ released passenger participates only if contact survives (lethal=true)
+     ↓ explosion chain removes completed victims from live queries before sweeping
+     ↓ purgatory remains a raw resurrection payload; a restored ally is live again and can die again
+     ↓ DF activation leaves completed dormant corpses linked and inert until the sweep
+     ↓ stale visible corpse at x=11 cannot divert or stop the next auto step
+     ↓ stale visible corpse at x=15 cannot divert or stop the next auto step
+     ↓ auto-explore does not auto-attack or mark a stale visible corpse as seen
+     ↓ opening a cage cannot recruit a listed corpse or make it eligible for resurrection
+     ↓ monster spell selection neither heals a corpse nor consumes a target roll for it
+     ↓ scent following uses the same direction and RNG through a completed death cell
+     ↓ invisible dead enemies do not affect ally selection/maps or draw target RNG
+     ↓ dead allies/followers do not count toward summoning or wake with the horde
+     ↓ a dead final follower cannot keep a leader avoiding corridors
+     ↓ demotion skips completed dormant followers but detaches living dormant followers
+     ↓ group discord/negation leave corpses untouched and still affect living targets
+     ↓ light, visible identity, telepathy markers, sidebar and auto-targets ignore listed corpses
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > matches original CE iterator for every death mask; HP zero alone is not HAS_DIED
+AssertionError: CE mask 1: expected [ +0, 1, 2, 3, 4, 5, 6, 7 ] to deeply equal [ 1, 2, 3, 4, 5, 6, 7 ]
+
+- Expected
++ Received
+
+@@ -1,6 +1,7 @@
+  [
++   0,
+    1,
+    2,
+    3,
+    4,
+    5,
+
+ ❯ src/test/x3a_live_iteration.test.ts:42:87
+     40|         for (const row of rows) {
+     41|             const list = Array.from({ length: 8 }, (_, id) => ({ id, h…
+     42|             expect([...iterateCreatures(list)].map(m => m.id), `CE mas…
+       |                                                                                       ^
+     43|             expect(list).toHaveLength(8);
+     44|         }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 0
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 1
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 2
+AssertionError: expected 3 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 3
+
+ ❯ branch src/test/x3a_live_iteration.test.ts:68:31
+     66|             if (clean) sweep(g);
+     67|             const before = rng.getState(); updateMonsterState(g, rat, …
+     68|             expect(rat.state).toBe(MonsterState.HUNTING);
+       |                               ^
+     69|             expect(rng.getState()).toEqual(before);
+     70|             g.executeCommand('wait');
+ ❯ src/test/x3a_live_iteration.test.ts:73:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > dying DF retains occupancy and iteration; reentry cannot duplicate its effects
+AssertionError: expected [ Monster{ mapToMe: null, …(84) } ] to not include Monster{ mapToMe: null, id: 21, …(83) }
+ ❯ src/test/x3a_live_iteration.test.ts:87:55
+     85|         });
+     86|         dead(host); expect(add).toHaveBeenCalledOnce();
+     87|         expect([...iterateCreatures(g.monsters)]).not.toContain(host);
+       |                                                       ^
+     88|         expect(g.monsters).toContain(host); expect(g.purgatory).toEqua…
+     89|         sweep(g); expect(g.purgatory).toEqual([host]); expect(add).toH…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 18 skipped (23)
+   Start at  19:05:27
+   Duration  3.47s (transform 804ms, setup 0ms, import 1.53s, tests 1.80s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web/ai_docs/reports/x3a-evidence/negative-no-death-filter.json

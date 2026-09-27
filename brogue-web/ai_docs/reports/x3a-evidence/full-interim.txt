@@ -1,0 +1,95 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=6 --reporter=default --reporter=json --outputFile=ai_docs/reports/x3a-evidence/full-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b1a9/brogue/brogue-web
+
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 2844ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  2631ms
+ ✓ src/test/c_7_lighting.test.ts (28 tests) 4674ms
+     ✓ 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复  517ms
+     ✓ 深水且未漂浮时半径减半，离水立即恢复  482ms
+     ✓ CE 固有光让深层矿灯以外的 wisp 可见  509ms
+     ✓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红  488ms
+     ✓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减  512ms
+     ✓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见  428ms
+     ✓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）  719ms
+     ✓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）  564ms
+     ✓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj  430ms
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/f_2b_creature_burning.test.ts > F-2b 对抗①②：燃烧状态挂载与刷新语义 > 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:24779) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/f_2b_creature_burning.test.ts (13 tests) 24072ms
+     ✓ 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。  548ms
+     ✓ 对抗②：站在火里反复暴露，剩余时长必须刷新到恰好 7 而非叠加——写成 current + 7 的堆叠实现 12 块后累计 80+，在此翻红。CE Time.c:59-60：status = max(status, 7)。（CE 的 max 语义下靠暴露本身到不了 >7，"更高值保留"半边不可达，不设断言。）  544ms
+     ✓ 对抗③：燃烧的生物蹚进浅水必须被扑灭——灭火分支失效（站水里还在烧）在此翻红。CE Time.c:226-232：TM_EXTINGUISHES_FIRE && burning && !levitating → extinguishFireOnCreature。  538ms
+     ✓ 对抗④a：火盖水的格子（药水/爆炸把 PLAIN_FIRE 铺在浅水上）——非悬浮生物免疫点火（Time.c:34-35 的合取豁免：!levitating && 灭火层）。捕获的错误实现：豁免漏掉灭火层条件（站水上的火照烧）或漏掉整个合取。  522ms
+     ✓ 对抗④b：同一个火盖水格子——悬浮生物照样被点燃（Time.c:34-35 括号只包 !levitating && 灭火层的合取：悬浮者悬在水上方，不被水豁免）。捕获的错误实现：把 !levitating 括号读反/扩大成"整个豁免要求非悬浮"或"悬浮也免点火"。旗标飞行的 vampire_bat（派生悬浮）在此当探针。  542ms
+     ✓ 对抗④c：悬浮且在烧的生物悬在浅水上不被扑灭（Time.c:228 灭火守卫的!levitating——水只灭踩在水里的火）。捕获的错误实现：灭火分支漏掉!levitating 守卫（悬在水上的火被水灭）。  420ms
+     ✓ 对抗⑤：喝下抗火药水后站进火里必须完全不掉血、不上燃烧状态——P1-44 的三重断线（grantTemporaryImmunity('burning' as any)：键不存在 + 通道无读者 + 伤害端查的是 immune_fire）复发时在此翻红。CE Items.c:8188-8193：IMMUNE_TO_FIRE = magnitude，且 exposeCreatureToFire 的豁免让免疫者连状态都拿不到（Time.c:31 直接 return）。  447ms
+     ✓ 对抗⑨：着火时喝药必须立即扑灭（CE Items.c:8190-8191：若在烧则extinguishFireOnCreature）——只加免疫、不灭 existing 火的半实现翻红。  462ms
+     ✓ 在火格挂上状态后走到草地，草地必须被直燃（alwaysIgnite：Gas.ignite 即CE Time.c:539 exposeTileToFire(x,y,true)）；未着火的对照生物不得点燃脚下草地。捕获的错误实现：else-if 接线缺失（移动火种不点火）或漏掉burning 前置（任何生物都能点火）。  472ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致（与 f_2a 对抗⑪ 同一基线的等价副本，翻正时两处一起改）。错误实现：燃烧状态机顺手改动了 updateGases/addGas/客观块次序，或燃烧掷骰污染了气体试验的 RNG 流（新增抽取 → 流位移 → 舍入结果全变）。  1221ms
+     ✓ 对抗⑧：燃烧伤害必须落在 CE rand_range(1,3) 的支撑集内——30 只独立各烧一块的 rat 总伤 ∈ [30, 90]（支撑带，带外概率为 0，非统计脆弱）。捕获的错误实现：0 伤害（结算段没接）或 ≥4/块（量级走样）。"伤害恒等于 2"的平扣复辟由 p1_28 对照组的分布锁翻红。  17203ms
+     ✓ 对抗⑩：玩家被烧死 → hp 归零、lastDamageSource=fire、回合收尾判定game over（death.burned 通道）。捕获的错误实现：燃烧伤害漏设lastDamageSource（死因错报）或玩家死亡链断线。  552ms
+     ✓ 对抗⑪：怪物被烧死 → die() 收口（hp=0、尸符）+ "burns to death" 铭牌（CE Monsters.c:1887-1895 "%s burns to death." + killCreature）。捕获的错误实现：烧死只扣血不收口（尸体满血赖在怪物表）。  600ms
+stdout | src/test/f_2a_fire_mechanics.test.ts > F-2a 对抗①：蔓延只用 4 正交邻（CE Time.c:1692-1699 nbDirs 前 4 项） > 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2a_fire_mechanics.test.ts (12 tests) 8254ms
+     ✓ 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。  735ms
+     ✓ 大样本互不相邻草格各暴露一次：点燃数必须落在 15% 的二项分布带内。错误实现 a：固定 40%（web 旧值）→ 期望 130，远超上限；错误实现 b：100% 必燃 → 325；错误实现 c：掷骰被丢（永不燃）→ 0。  619ms
+     ✓ exposedToFire ≥12 时连 alwaysIgnite 都被拒绝；新回合（runFireUpdate）清零后恢复。错误实现 a：漏掉封顶检查——超封顶的直燃照样点燃；错误实现 b：漏掉每回合清零——第二回合怎么暴露都点不着。  485ms
+     ✓ 30 个草格直燃必须 100% 点燃（跳过 15% 掷骰）。错误实现：旁路失效（把 alwaysIgnite 当 false 掷骰）→ 期望只有 ~4-5 格点燃。  542ms
+     ✓ igniteForced（CE 火 DF 生成家族）在楼梯/祭坛上落不了火；对照地板照落。错误实现：绕开 DF 管线直写 SURFACE 层（F-1 旧 igniteForced）→ 楼梯/祭坛照烧。  485ms
+     ✓ 直燃路径（exposeTileToFire）同样伤不到楼梯/祭坛——它们不可燃，暴露计数都不动（CE :1308 T_IS_FLAMMABLE 先决）。  612ms
+     ✓ 60 个火格推 60 个客观块后必须大半离场（EMBERS/ASH）。错误实现：promoteChance 没接上（火永生）或仍按 burnDuration 倒计时——前者离场数恒 0，后者在更早的 f_1 对抗④红。  667ms
+     ✓ 火格在 skip 集里时它的邻居不掷骰；不在时 100% 可燃邻居（网）必被点燃。错误实现：runFireUpdate 忽略 opts.caughtFireCells。  977ms
+     ✓ DF_PLAIN_FIRE / DF_EMBERS / DF_ASH 都是 start=0 的单点 DF——spawnMapDF 的 while(startProb>0) 不执行、零掷骰；合成扩散条目的probDec>0 闸门（c_4c C1）继续覆盖未来条目。错误实现：给火链 DF 抄上非零 start（每次点火多掷骰、移动 RNG 流）或start>0 且 probDec=0（spawnMapDF 死循环——目录级断言已在 c_4c 钉死）。  473ms
+     ✓ 深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）  613ms
+     ✓ BOG（webOnly）目录记 T_IS_FLAMMABLE 但无 fireType/chanceToIgnite=0——直燃无 DF 可落、掷骰路径概率为 0：BOG 不再可点燃（web 旧白名单行为退役）。若未来给 BOG 定 CE 化的火数据，须先改 TerrainCatalog 再翻本断言。  600ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致。错误实现：后续轮次顺手改动了 updateGases/addGas/客观块次序，或气体路径新增掷骰（流位移 → 舍入结果全变）。（基线 2026-09-17 S-1 实跑录制；注入 100 = volume 口径；CREEPING_DEATH 自 G-1 起无层载体，addGas 拒绝、曲线恒空——D2 留痕。）  1445ms
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 77165ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  457ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  410ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  482ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  480ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  1744ms
+     ✓ 边界：19 杀不亮、第 20 杀亮；无生命怪不计入  381ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  1785ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  2664ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  707ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  43443ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  20243ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  1127ms
+     ✓ 扔武器到弹道上的怪：有命中结算（掉血或被激怒，不再零效果）  364ms
+     ✓ 越界守卫：扔到空地的物品仍落在目标格（原留痕的存活部分）  374ms
+     ✓ negation/sanctuary/shattering 读取后无机制效果  388ms
+     ✓ 喝 detect magic：既亮该种类，也揭示背包内其余种类的极性  329ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=452，含新环门层=127/130
+
