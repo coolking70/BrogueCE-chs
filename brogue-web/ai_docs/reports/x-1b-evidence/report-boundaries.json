@@ -1,0 +1,717 @@
+[
+  {
+    "file": "u-26a.report.md",
+    "line": 1,
+    "text": "# U26a 深层 D27–40、流明宝石与超胜利报告"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 7,
+    "text": "本轮补齐深层宝石生成、来源层与背包堆叠、整堆丢弃/水流掉落、显示，并将造门使用的最深层从 26 修为 CE 的 40。既有 U18a-3 的层种子、D26 下梯、D40 传送门，以及 U26b 的超胜利结算入口原样复用，已用自然地图与真实命令贯通。D26 护符生成的原有规则保留。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 16,
+    "text": "| 门与房型 | `Architect.c:2898–2906`：先掷 60%，再判断 depth < deepest；房型 descent 按护符层饱和 | D26–39 可以生门，D40 掷骰后仍落地板；D26/27/40 房型曲线均饱和。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 17,
+    "text": "| 深层配额 | `GlobalsBrogue.c:105`；`Items.c:572–610` | D27–40 依次 `3,3,3,2,2,2,2,2,1,1,1,1,1,1`，共 25 颗；不再运行普通物品数量/金币奖励抽签，金币堆为 0，也不增长 metered frequency。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 18,
+    "text": "| 食物与深度 | `Items.c:551–560,668–721`：实际深度索引 POW_FOOD；两次 `rand_range(-1,1)`；食物优先且不扣宝石配额 | 保留实际 depth 食物保底；深层每生成一个 FOOD 就增加一次循环配额；其余直接生成 GEM，跳过普通类别/计量强制分支。深层物品写真实 originDepth。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 23,
+    "text": "| Horde | `Monsters.c:511…、797–805、1080–1094`；CE hordeCatalog | 既有候选窗使用实际深度；OOD 超过 26 后回到 `max(actualDepth,26)`，不是统一钳成 26；深层数量基数增长至 20。没有改 Horde 表。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 24,
+    "text": "| 蓝图 / autoGen / 湖 | `Architect.c:455–468,1757–1776,1780…`；`GlobalsBrogue.c:118–170,1030` | blueprintQualifies、两趟 autoGen 均读取实际 depth；奖励机器保底上限 26 是 CE 本身的规则，不能统一改 40。D40 晶墙/荧光菌及湖泊末层深水特例保留；V、C-6、U19f 等目录守卫纳入全量。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 25,
+    "text": "| 光照 / 黑暗 | `RogueMain.c:666–670`；`Light.c:120–154` | 既有矿灯基础半径按实际 depth 逐次 85% 整除；颜色在护符层饱和是 CE 规则。新增 D27/30/39/40 固定点对照与 D40 满黑暗半径 11 检查。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 26,
+    "text": "| 楼梯 / 结局 | `Architect.c:3690–3740`；`Movement.c:2512–2542`；`RogueMain.c:1305–1377` | 原 D40 portal 携护符 → `triggerGameOver(true, undefined, true)` → U26b 结算及高分；无护符拒绝、D40 不越界；上行缓存与存档恢复经真实命令验证。 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 28,
+    "text": "与任务措辞的必要澄清：深层存在真实的深水、熔岩与深渊；“可达”不是“无需资源且全程干地”。验证物理连通性仍禁止穿墙、允许发现密门，并单独用真实移动验证游泳、用真实漂浮药水命令验证跨熔岩/深渊。未为了满足错误的干地前提修改地形生成或移除怪物。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 36,
+    "text": "| 阶段 | D1–26 | D27–40 |"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 45,
+    "text": "- 新增 `deep_generation_baseline.json` 和 `u_26a_deep_baseline.test.ts`，独立锁定 56 个 D27–40 结果：地形指纹、怪物数、物种、物品数，以及 GEM 数量、来源层、坐标。该基线是 web 回归样本，不冒称与 CE 相同种子的整图逐格一致。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 60,
+    "text": "原 fixtures 全清单见 [baseline-before.json](u-26a-evidence/baseline-before.json)；最终清单见 [baseline-after.json](u-26a-evidence/baseline-after.json)；除已登记的浅层 / UR3 重捕获及新增独立深层基线外，其他基线无变化。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 66,
+    "text": "唯一修改的既有测试是 C-0 E1 的“最深层=护符层”前提："
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 69,
+    "text": "2. 只将末层校验改为在**同一批自然门位**上显式调用 D40，并增加实际测得门位数 >0，避免因原采样只到 D26 而成为空断言。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 70,
+    "text": "3. 原“门位不回墙”“60% 分布区间”“D40 门数=0”均保留；新专项另钉 D26/27/39 能造门及 D40 仍消耗掷骰。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 72,
+    "text": "此旧前提修正提案交验收方裁决。其他既有守卫不改。w_5 的 D1–26 GEM 排除继续保留，因为这正是 CE 的深度边界；本轮新增完整 D27–40 守卫兑现其 U26a 例外，并非把 GEM 塞进浅层样本。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 76,
+    "text": "- 新增专项最终 16/16：CE 字面配额、门位/房型、GEM 零 RNG 与识别、食物优先、按深度堆叠/满包/价值、Horde 深度、光照黑暗、游泳/漂浮、3 个自然 seed 的完整深层链、0/1/多堆超胜利描述，以及整堆丢弃/水流掉落。与 U20 背包一起复跑为 21 passed / 0 failed。[结果](u-26a-evidence/drop-final.json)。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 77,
+    "text": "- 自然 seeds `777 / 31337 / 424242`：从 D1 用真实下楼命令到 D26、拾取自然护符、逐层进入 D27–40 并拾取全部自然宝石；D28 保存/恢复 → 上 D27 → 下 D28 后不重复生宝石；D40 用真实 stairs 命令终结。定位与高 HP 为测试夹具，地形、人口、物品不替换；不直接调用 victory。物理路径含可游泳/漂浮的风险地形，未宣称无伤徒步通关。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 79,
+    "text": "- 13 个隔离故障变体均检出：26 层截门、40 层房型饱和、错误宝石配额/来源层/耗 RNG、深层普通类别、跨层合并、按颗占格、主动丢弃仅一颗、水流仅冲走一颗、普通胜利替代超胜利、食物扣宝石配额、深层增加计量频率。[反事实](u-26a-evidence/negatives.json)。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 81,
+    "text": "- 6 张最终截图已逐一打开检查：[D27 地面宝石](u-26a-evidence/browser-d27-gem.png)、[同层 ×3 背包](u-26a-evidence/browser-d27-inventory.png)、[整堆落地](u-26a-evidence/browser-d27-dropped-stack.png)、[D28 恢复](u-26a-evidence/browser-d28-restored.png)、[D40 传送门](u-26a-evidence/browser-d40-portal.png)、[超胜利与高分榜](u-26a-evidence/browser-super-victory.png)。"
+  },
+  {
+    "file": "u-26a.report.md",
+    "line": 100,
+    "text": "[完整性证明](u-26a-evidence/complete-suite-proof.json)逐一核对仓库内全部默认测试文件，无遗漏；8 skipped / 5 todo 与上一轮完整结果逐名一致，所属源码也与入场 HEAD 完全相同，本轮未新增跳过。[既有延后项明细](u-26a-evidence/existing-deferred-tests.json)。C-0 全部 14 项通过，其中 E1 实测 125 门 / 62 地板（66.8%），D40 门数为 0。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 9,
+    "text": "- `Movement.c:2512–2542`：底层传送门携护符触发超胜利，一层上楼携护符触发普通胜利。本轮仅接结算，未改变深层或宝石生成流。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 16,
+    "text": "- `ItemCategory.GEM` 只补结算所需类别槽；本轮不开放深层宝石生成。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 18,
+    "text": "- 结局状态纳入 U27 命令检查点，回放逐事件核对胜负、超胜利和得分，偏离时报 OOS。超胜利运行态放在实例外 WeakMap 并在开局重置，遵守 U03 已登记的实例字段契约。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 23,
+    "text": "- `u_26b_endgame.test.ts`：死亡 2234、普通胜利 46234、超胜利 81234（金币 1234、护符 1、宝石 2、武器 1、卷轴 3）；简单模式超胜利 8123。另验榜单 30 条上限、降序、日期、存储异常与录像结局 OOS。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 31,
+    "text": "本轮不迁移旧存档或旧榜单，也不实现 D27–40、宝石自然生成与超胜利地图生成。浏览器拒绝 localStorage 时，结局仍显示分数，榜单读取为空且保存失败；运行不抛异常。"
+  },
+  {
+    "file": "u-26b.report.md",
+    "line": 37,
+    "text": "- Mac 全量门禁另暴露 2 处旧前提：`u_06` 死因期望 \"Killed by a X.\" → CE RogueMain.c:1162 带深度；`w_5` 类别覆盖要求 D1–26 出现全部枚举 → 新增 GEM 仅 D27–40（U26a），暂排除。其余均通过（blueprint_center 负载超时单跑通过）。"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 1,
+    "text": "# U27 完整命令日志与 OOS 校验"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 13,
+    "text": "- v2 每事件记录动作、参数、确认结果、位置、深度、tick、`absoluteTurnNumber` 和 `rng.getState()`（两条流的状态与计数）。`replayStep` 每步比较，首个不一致设置 `replayError`、停播并显示 OOS 命令号；seek 复播时也经过相同校验。"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 18,
+    "text": "- 新增 `src/test/u_27_recording.test.ts`：新局命令与物品入口录制/回放、鼠标旅行与自主步进、食物确认先取消后接受且回放不再弹框、v1 拒绝、篡改第二条 tick 后定位 OOS 命令 2、读档后拒绝导出。"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 20,
+    "text": "- 全量门禁的 W-7 源码守卫先以反事实运行确认失败：Vue 的 `readItem` / `chooseEnchantTarget` 显式 `toRaw` 调用被新边界隐藏。修复仅恢复这两个 Vue 解包调用，并通过回调在统一命令边界内执行；回放仍由日志命令分派。守卫未修改。"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 21,
+    "text": "- U03 字段合同守卫先以反事实运行确认失败：新增的会话态被列为 `Game` 自有字段，却不应进入整局快照。将 OOS/确认游标/新局录像标记移到按实例隔离的 `WeakMap`，由已有新局、读档与清理路径显式复位。守卫及 `scripts/u03-state-contract.json` 未修改。"
+  },
+  {
+    "file": "u-27.report.md",
+    "line": 26,
+    "text": "- `npx vitest run src/test/u_00_new_run.test.ts src/test/u_27_recording.test.ts --maxWorkers=1`：21/21 通过（含 seek OOS 与鼠标旅行）；随后新增确认取消用例，`u_27_recording.test.ts` 单独复跑 5/5 通过。"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 13,
+    "text": "- **缺**＝CE 有而 web 无执行出口；**偏**＝已有执行出口但语义不同；**创**＝web 新增的规则/替身。旧记录已修复的写“已过期”；证据不足的写“未核实”。表中的 🟡 是整域存在实质缺口，不表示该域没有完成过工作。没有将窄抽样升级为整域 ✅。"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 28,
+    "text": "| D05 怪物目录、horde、突变、俘虏/休眠生成 | C/Globals.c:1025–1164；C/Monsters.c:28–52、797–805、1080–1160；V/GlobalsBrogue.c:744 起 | data/monsters.json:1–20；G:1016–1032、1834–2095、2293–2312、9467–9608；entities/Monster.ts:382–433 | 🟡 rat 的 HP6/acc80/伤害1–3/双速100核对通过；候选过滤、加权抽 horde、落地、休眠表回调存在。**缺/偏**：伤害 clump 未入模型、突变全表/全部被动 DF 未逐项重核；延迟实化导致生成期占用不足。 | data/monsters.test.ts、monsterDamage.test.ts、hordes.test.ts；horde_selection、horde_terrain_spawn、v_2b_5、w_19/21 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 30,
+    "text": "| D07 战斗：命中、伤害、偷袭、攻击几何、符文 | C/Combat.c:68–140、681–844、921 起、1193–1285、1811–1850 | Combat/Combat.ts:76–248、314–323；G:6244–6598、6718–7025 | 🟡 护甲进入命中率，匕首偷袭×5、一般×3，突进/连枷/鞭矛有真实调用。**偏**：自动命中仍调用 randPercent(100)，全伤害 clumping=1，隐形另乘1.5、虚弱固定半伤；speed/mercy/slaying 等符文非完整 CE。怪物法伤仍套近战（K09、K15、K24）。 | Combat/CombatFormulas.test.ts、armor_model/runic、b_1、p4_5/6/7、w_8/15 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 45,
+    "text": "| D22 胜负、结局、得分、高分榜 | C/RogueMain.c:1046 起、1255–1341；C/Items.c:8861 起；V/GlobalsBrogue.c:43–44 | G:1338、10522–10551；components/GameEndOverlay.vue:14–72；App.vue:238–248 | 🔴 有死亡/携护符逃出UI。**创/缺**深度/击杀/固定物品加分与胜利×2为自定；无CE完整D27–40/宝石/超胜利及高分保存。普通胜利不能直接套用superVictory规则（K37、K39）。 | p1_24死亡归宿；未找到完整计分/高分榜合同 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 46,
+    "text": "| D23 录像、回放、种子输入 | C/Recordings.c:127 起、369 起、1421 起 | G:3059–3230；App.vue:144–231；components/ReplayControls.vue | 🟡 JSON事件导出/导入/seek真实调用handlePlayerAction。**缺/偏**事件外的背包调用、确认/选物结果未形成完整命令日志；无CE每回合RNG校验/OOS合同，读档后录制起点也非真实新局（K38）。 | p2_0_seeded_rng的种子/ID部分；没有完整交互回放CE守卫 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 50,
+    "text": "| D27 RNG与确定性 | C/Math.c:95–111、160–189；C/RogueMain.c:257–268、679–738 | Random.ts:43–111；G:742、1179–1300、8776；GameCanvas.vue:18–31 | 🟡 32位小随机核心/双流可运行，渲染切cosmetic。**缺/偏**64位种子高位被丢、per-level seed无载体、加载重播种；光照/互动会影响后层。`rand_range(1,1)`零耗随机是两侧一致，不是欠账（K04/E15）。 | Random.test.ts、p2_0、generation_baseline；后者不推进交互，不能证明回放或读档流一致 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 74,
+    "text": "| K15 | **有效，新增子项**：clumping=1不只怪物，Combat.ts:83、208–213也覆盖玩家；CE Combat.c:1245消费damage全range。自动命中仍多掷一次、额外隐形×1.5、虚弱固定半伤（:201、223–248），CE :1239短路及:68–108公式不如此。 | W第14项；P0-1旧clump登记；本轮扩展 | 是/间接/否 | U13；M，核心公式/RNG调用次数 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 92,
+    "text": "| K33 | **有效/部分未核实**：机器覆盖仍有人工语义核对、延迟实化和空转风险；需要逐feature来源/产物唯一性观测。现有性能超时历史不能当本机当前回归，本轮未测全生成耗时。 | handoff“无法机械核验”；V-2a-perf、V-2b-7 | 否/验证面/否 | U25；M，观测工具与定向测试；性能先测再定 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 96,
+    "text": "| K37 | **有效**：D26断下梯、CE最深40/宝石/超胜利缺；得分自创，高分榜无持久化。G:1338、10539–10551，对CE RogueMain.c:1305–1341、Items.c:8861。 | parity_gap§9；本轮复核 | 是/是/是 | U26，依赖U03/U04/U20；L，终局扩展分深层/分数两轮 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 97,
+    "text": "| K38 | **有效/端到端未核实**：仅handlePlayerAction记录，InventoryOverlay直接调用quaff/read/equip等及目标结果未完整记录；重放也不校验存入的tick/loc，G:3071–3098、3182–3195。录制框架有，不等于所有交互可复现。 | parity_gap§录像；P2-0边界 | 是/间接/是 | U27，依赖U02/U03；L，完整命令日志与OOS |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 127,
+    "text": "| E19 P1-13统计脆弱/P1-26旧play快照/并行超时 | **不能按旧数字判当前失败**：当前invariant/generation_baseline及显式文件门已存在；本轮未跑这些长测，旧样本失败率/耗时为未核实。 | K33；不要以build成功替代性能结案 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 131,
+    "text": "路线图其余同义项：P1-6/17的具体旧bug已关闭（E20）；其余详情不完整归K26，P1-19/20/33落位归K27/K31，P1-25/38/39/40通行归K21/K42，P1-41路径距离归K31/K32，P1-43物品闸归K11/K30，P1-51的“CE原生却当D2”归K34，P1-52甩尾的原bug归因已被撤销，当前气味等待周期未在本轮做端到端差分。P0/P2已存在测试、tick/动画设施；其本轮复核仅限已引述执行路径，不按历史勾选认定整条全齐。"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 185,
+    "text": "| **U13 战斗基础数学和耗骰**；K15 | 无；与U06分批归因 | 间；否 | R: Combat.ts、Creature/Player/M、G；S: randClump、autoHit、backstab、invisible、weaknessAmount；CombatFormulas、monsterDamage、b_1、armor、p4_5/6/7 | 旧分布与战斗tick基线可能红；先抄CE range/公式/短路，再固定RNG计数/正反边界；不拿“平均伤害近似”替代分布 | A9/A10 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 200,
+    "text": "| **U26 深层/终局/分数**；K37 | U03/U04/U20 | **直/间**；**是：范围与终局体验** | R: G、ItemLoader、App、GameEndOverlay、新高分持久层；S: amuletLevel、deepestLevel、lumenstone、itemValue、superVictory、score | 深度26夹具、generation/胜负UI；分深层生成/结局条件和结算/高分两轮；金钱/物品价值逐CE核，不照抄旧简写得分公式；死亡/普通胜利/超胜利分别验 | A0/A1/A2/A5/A13/A16 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 201,
+    "text": "| **U27 完整可复现命令日志**；K38 | U00/U02/U03；纳入已落实物品交互 | 间；**是：格式/交互合同** | R: G、Input、App、InventoryOverlay、ReplayControls、目标/确认UI；S: recordInputEvent、handlePlayerAction、quaffItem、chooseIdentifyTarget、tick、loc | 旧录像JSON/seek行为红；所有实际用户入口同一命令边界，取消/确认/目标/选物可重演，逐事件位置/tick/RNG校验、OOS报错；CE二进制录像兼容须另行决定，不默认为此轮范围 | A0/A5/A6/A7/A8/A12/A13/A16 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 311,
+    "text": "| D27 | P2-0：怪移动SUBSTANTIVE、幻觉COSMETIC | M随机移动用rng，GameCanvas:18–31用try/finally切cosmetic，抽中双流路径成立；“种子可复现”不含层seed/读档恢复。V-2b-1简并rand_range耗骰说法反而错误，E15。 |"
+  },
+  {
+    "file": "x-0-survey.report.md",
+    "line": 330,
+    "text": "- 初次`npm run build --prefix /tmp/brogue-x0-build`：vue-tsc通过后Vite进程报`SecItemCopyMatching failed -50`并退出139；完整输出[build.txt](x-0-evidence/build.txt)。这是观察到的运行环境失败，具体原因为未核实，不能据此判源码错误。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 3,
+    "text": "基准：`4292fd3ef79005a3d6b246d1f0aed84e6b787b44`；2026-09-27（Asia/Shanghai）。规格按任务书 §0 指向的 [X-0](x-0-survey.report.md) §2、§3.1、§4.3；权威为本工作树 `BrogueCE-master`。**大量原缺口已有实现和有效守卫，但不能宣布全项目 CE 对齐完成。** 优先剩余项是动画录像 OOS、盟友命中状态误施给玩家、附魔/解除诅咒卷轴、派生地形旗标分裂，以及测试模式退池物品可达。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 5,
+    "text": "本轮只新增本报告、`scripts/x1-*` 和 `x-1-evidence/`。未修生产代码、未改现有测试/数据/基线、未重捕获基线、未提交 git。**D27–40 深层生成统一登记“待 U26a 合并后复核”**，不根据当前树已有的深层常量或分支作验收。域编号 D27（RNG）与地下层 D27 不是同一概念。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 14,
+    "text": "- **缺 / 偏 / 创**分别指 CE 行为无出口、已有但语义不同、web 自定规则。证据不足明确写“未核实”，不按未找到一个测试推断功能不存在。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 29,
+    "text": "| 浏览器 | 全新 Edge 无头上下文，1440×960，正常局 seed 424242，实际中文菜单/发现/背包；[脚本](../../scripts/x1-browser.mjs)、[状态与录像](x-1-evidence/browser-observations.json)，page/console errors 均 0。[游戏](x-1-evidence/browser-game.png)、[发现](x-1-evidence/browser-discoveries.png)、[背包](x-1-evidence/browser-inventory.png)均打开检查。浏览器录像 OOS 是失败发现，不能并入“通过”。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 33,
+    "text": "## 2. D01–D27 域表"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 37,
+    "text": "| D01 地牢/楼梯/蓝图 | `G:1153 → Core/GenerationCoordinator.ts:142 → Generator/Stairs.ts:11、GenerationCoordinator:333 → Architect.prepareStairLoc`；C/Architect.c:3690 | 原 CE66/SECRET_DOOR/占用/物品品质等具体缺口已承接；**偏**：全生成 RNG 与 CE 非逐骰同构，地形派生旗标仍有自然差异（N05）。D27–40 待 U26a 合并后复核。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 41,
+    "text": "| D05 怪物/horde/突变 | `GenerationCoordinator:41 → spawnHordeAt → new Monster`；C/Monsters.c:797、1080 | 立即实体占用、damage clump、实例保存已补。**缺/偏**：monster item hopper、性别/构造 RNG/随从数量分布并未全 CE；自然目录仍有 legacy onHitStatus。全突变被动效果逐种验收未核实。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 43,
+    "text": "| D07 战斗 | `Combat/Combat.ts:201 → G:6110、6272`；C/Combat.c:1193 | 核心近战短路、clump、虚弱、符文时点已修。**偏**投掷仍由伤害字符串重建 clump 并四舍五入；盟友额外状态串写玩家（N02）。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 45,
+    "text": "| D09 武器/护甲 | `Items/ItemLoader.ts:1270 → Inventory → G.chooseEnchantTarget`；C/Items.c:7824 | flags、符文生成、实例图保存已修；**偏/创**附魔卷轴只选优先装备、漏力量/次数、额外随机授符文（N03）。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 58,
+    "text": "| D22 终局/分数 | `G:10371 → Core/Endgame.ts、HighScores.ts → GameEndOverlay`；C/RogueMain.c:1305 | U26b 计分/价值/高分持久化旧缺口闭合；深层/宝石生成/超胜利地图待 U26a 合并后复核。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 59,
+    "text": "| D23 录像/种子 | `executeCommand:2591 → recordInputEvent:2575 → replaySeek:2827`；C/Recordings.c | 命令/选物/确认/两流校验已补，但**偏**动画记录时点导致真实新录像首条 OOS；reference overlay 关闭绕过记录（N01）。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 62,
+    "text": "| D26 i18n | `i18n.ts → zh_CN.json → Vue/日志/详情`；CE 中文语义对照 | 中文主要路径实测正常；**偏**动态 OOS 英文避开硬串 AST 门、详情与未实现能力不一致。静态键齐全不代表语义完成。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 63,
+    "text": "| D27 RNG/确定性 | `Random.ts:76、100 → Core/LevelSeeds.ts:17 → GenerationCoordinator:218、299`；C/Math.c:95、160 | uint64、每层种子、双流保存旧缺口闭合；**偏**CE 生成全程调用序列、显示帧与回放 checkpoint 不等价；固定生成基线和 UR 中性测试不能替代 CE oracle。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 85,
+    "text": "| K15 | 部分 | 近战 `Combat.ts:201–250` 已短路自动命中、读 clump/weakness，去掉额外隐形倍率；`u_13_combat_math:40–41` 1215个 CE 命中黄金点。投掷 :424–427 仍忽略实例 clumping 且 `Math.round`，对 C/Items.c:6817–6819 整数截断；N08。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 97,
+    "text": "| K27 | 已闭合 | `Stairs.ts:11–40 → GenerationCoordinator:340–360` 先最终资格再选点；`AutoGenerator.ts:536` 退 CE66 集合已空。`v_2b_9e_2_autogen:238–249†` 真调度 CE66，断言 carrier wired、实际耗骰和 build回调次数；`c_8_connectivity:176–203†` 30seed×D1–25双向连通断言。D27–40 不纳入。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 101,
+    "text": "| K31 | 已闭合 | 生成与加载都按最终 grid machineNumber/area flags 重建 machineCells；`u_04c_machine_cells:45–55` 核对集合及RNG不变。旧“结果∪mr.cells漏外置feature”已关闭；历史即时存读可见ID差另列未核实，不混算修复失败。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 102,
+    "text": "| K32 | 部分 | `BlueprintEngine:2367` view、:719/767 pending occupancy、`GenerationCoordinator:41–140` 立即实体写口都存在。`u_19a:23–26` 579 CE masks；`u_19b:31–43` 64真值；`u_19c:30–40` 时序/抽样 oracle。个体构造 RNG、horde数量 min/max 与 CE clump 等边界尚未承接。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 107,
+    "text": "| K37 | 部分 | U26b已关闭自创计分/高分缺失：`Endgame.ts:9–31 → G:10371 → HighScores.ts:39–58`。`u_26b_endgame:17–27` 真死亡/普通/超胜利/easy分数 `[1734,2234,46234,81234,8123]`。生成与深层终局地图部分待 U26a 合并后复核。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 108,
+    "text": "| K38 | 部分 | `executeCommand/executeItemCommand`、选物/confirm/OOS有实现；`u_27_recording:6–18、63–78` 无动画真实wait/eat、确认回放通过。但正常动画录像在首个wait快进即OOS（N01）；:34只在故意坏录像上开动画，不能覆盖健康动画录制。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 111,
+    "text": "| K41 | 部分 | U24键/硬串门、中文真实界面有效；`u24_hardcoded_text:46–59` 中文发现/符文名称不含旧英文。但 `G:2800–2802` 拼接英文OOS后用变量入日志，实际浏览器已见；描述语义与生成资格未被AST门保护。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 120,
+    "text": "复现：seed424242全新正常局，开动画，调用原wait入口；等渲染推进结束（实际turn=1）再导出。录像只有一条wait，记录turn=0；加载并seek(1)得到 `OOS at command 1: state mismatch after command 1`、cursor0。另一个同seed无动画新局两条wait完整回放2/2、error=null。混合发现/背包操作的场景也在第4条wait报OOS，独立新局复现排除了必须依赖前置菜单的误归因。证据 `browser-observations.json.animatedReplay/freshReplay`。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 134,
+    "text": "`G.canEnchantTarget:5182 → Items/ItemUseCoordinator.ts:31–35` 对武器护甲仅允许 `equippedWeapon ?? equippedArmor`。玩家持匕首时，身穿皮甲、飞镖、备用剑都不能选。`chooseEnchantTarget:5189–5192` 最终回调 `enchantEquippedItem:5204–5225`：只加enchantment，未减strengthRequired/增timesEnchanted，负值未升到非负便不解除诅咒；无符文物品另有20%随机授符文。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 154,
+    "text": "`DetailGenerator.ts:86` 将 MA_HIT_BURN 展示为“攻击会点燃目标”，但全src生产搜索只有该描述和monsters数据，未找到读取该位的战斗出口；这是描述与实现不符。MA_HIT_STEAL_FLEE 的完整搬物也缺。`G:2800` OOS拼接英文实际可见，静态硬串门只对直接表达式不能穷尽数据流。健康护符抽查通过（§6），不外推为所有杖/符文/怪物详情正确。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 162,
+    "text": "`Combat.resolveThrownWeapon:424–427` 重新parseDamageString，再用parts.clumping，忽略已保存的item.clumping；乘damageFraction后Math.round。CE `C/Items.c:6817–6819` randClump(theItem->damage)并整数截断。近战U13黄金测试与投掷自动命中短路修复不能关闭这两项；下一轮需同时核对数值与RNG调用数，而非只换舍入函数。"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 186,
+    "text": "| 报告 | 当前处置（已过期 / 仍有效 / 未核实） |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 194,
+    "text": "| [u-04c.report.md](u-04c.report.md) | :26集合/只读资格闭合。报告登记的“即时楼梯存读可见实体ID差”本轮未按原完整步骤复现，记**未核实**，不声称仍失败也不以普通roundtrip覆盖它。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 201,
+    "text": "| [u-10.report.md](u-10.report.md) | :27尸体学习行为由U11接续；“仅字段载体、未学习”已过期。历史浏览器详情加载异常本轮未按原步骤复现，未核实。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 205,
+    "text": "| [u-13.report.md](u-13.report.md) | :132投掷clump/取整仍有效N08；虚弱后由U14a承接；符文先于伤害旧时点已过期（Combat:296–320）。零伤害“miss”措辞与FloatingText随机ID仍为表现/内部债。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 217,
+    "text": "| [u-17e.report.md](u-17e.report.md)、[u-17f.report.md](u-17f.report.md) | :132后续机器入口由U19d/e/f承接，祭坛/晶墙等载体有真消费；FUNGUS旧别名冲突由U19f接成LUMINESCENT_FUNGUS。全机器自然成功率仍未核实。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 224,
+    "text": "| [u-19d.report.md](u-19d.report.md) | :116 CE47由U19e、52/55由U19f接续；原资格退池债已关闭。CE38特定自然药水替代端到端发生率本轮未核实。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 233,
+    "text": "| [u-24.report.md](u-24.report.md) | 硬串与已改描述测试有效；历史保留描述快照中如speed/芒果旧说法只作为文档更新债，不能再当当前产品行为。动态OOS与MA_HIT_BURN语义漏网N06有效。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 235,
+    "text": "| [u-26b.report.md](u-26b.report.md) | :29计分/榜单闭合；D27–40深层/宝石/超胜利地图待U26a合并后复核；没有用计分造物夹具替代生成验收。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 253,
+    "text": "| 硬编码英文 | 正常截图所查主要交互中文；真实录像失败路径出现英文OOS。`G:2800–2802`先拼字符串再log，AST直接字符串门会漏。`AgentControls.vue:3–70` sr-only调试名称/HP未用主可见性门，是否暴露给实际屏幕阅读器用户未核实；列内部/可访问性待核，不把它混称主画面泄露。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 263,
+    "text": "| X2-录像提交时点 | 动画完成后的checkpoint；同步/动画/seek一致；参考屏鼠标及Escape关闭入统一命令；保持确认/选物/自动行走合同；真实浏览器新录像零OOS。来源N01/K38。 | 先，M |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 269,
+    "text": "| X2-投掷数学 | item完整range/clump、CE定点截断、命中/免疫短路耗骰；防与近战/符文顺序互相覆盖。N08。 | 次，M |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 273,
+    "text": "| U26a合并后复核 | **待 U26a 合并后复核**D27–40生成、宝石、超胜利地图与普通终局衔接；本轮不提出深层修补实现。 | 外部依赖 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 281,
+    "text": "| 历史异常复核 | U04c即时存读可见实体ID、U10旧详情异常、CE38自然替代分布按原步骤重现后再决定派修，当前未核实；不按旧性能超时数字启动优化。 |"
+  },
+  {
+    "file": "x-1-survey.report.md",
+    "line": 292,
+    "text": "原树前后 **7796** 个受版本控制文件的SHA均不变，见 [tracked-comparison.json](x-1-evidence/tracked-comparison.json)；Git HEAD/暂存区/新增范围见 [git-integrity.json](x-1-evidence/git-integrity.json)，最终范围/LF/引用检查见 [delivery-check.json](x-1-evidence/delivery-check.json)。没有修改、暂存或提交现有文件。测试全绿与本报告发现并不矛盾：本轮明确区分了守卫实际覆盖的合同、守卫未覆盖的可执行差异和仅历史未核实项。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 10,
+    "text": "- 动画 `replayStep` 同样延至推进结束才核对 checkpoint、推进游标和报告 OOS。同步回放与 seek 走同一核对函数。自动行走仍按原同步快进路线，每步单独记录。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 15,
+    "text": "- 新增 `x2a_recording_checkpoint.test.ts`：seed424242 动画 wait 在命令边界已有一条事件但 checkpoint 未提交、收尾后与同步完整事件相等；动画逐条回放和 seek 无 OOS；篡改 tick 准确报第 1 条 OOS；慢回合中间暂停帧仍不提交 checkpoint；发现屏关闭事件与 modal 回放；另以同 seed 混合序列逐条对比动画开/关的全部 checkpoint。"
+  },
+  {
+    "file": "x2a.report.md",
+    "line": 27,
+    "text": "- `node scripts/x2a-browser-acceptance.mjs`：14 条事件，逐条与 seek 均零 OOS。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 5,
+    "text": "> 已完成：build、完整测试、浅层与深层 drift 均通过；未提交。最终复跑见 §6，旧前提迁移的验收事项见 §5。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 54,
+    "text": "- 自然 D1 有 **4 TORCH_WALL、99 FOLIAGE**，不是人工替换的样本。新专项还对两个 seed 的 D1–40 逐层扫描，并在 D1/8/26/27/40 推进真实等待回合后复核全图。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 62,
+    "text": "入场 `test:drift` 与原 D27–40 独立基线均通过；基线及 UR2/UR3/UR4 初始 SHA 在 [baseline-before.json](x2b-evidence/baseline-before.json)。原 HEAD 的观测和原黄金 trace 逐值一致，保证采集脚本没有另立口径。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 64,
+    "text": "阶段快照位于 `x2b-evidence/sources-*.json.gz`，每段独立执行同 4 seed × D1–40。生成观测包括四字段、完整格状态、实体/物品、双流 RNG、食物/金币/计量和深层宝石；报告中的“四字段差异”不把这些额外观测字段混算进去。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 66,
+    "text": "| 单变量阶段 | D1–26 | D27–40 | UR2 / UR3 / UR4 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 78,
+    "text": "不同阶段的变化可能重叠、抵消，不能相加当最终层数。**原 HEAD → 最终：浅层 21 个层样本、44 个四字段差异，其中指纹变化 15 层；深层 23 个层样本、45 个四字段差异，其中指纹变化 14 层。** 深层另有 17 个样本的宝石坐标数组变化，数量与 originDepth 逐项保持不变，合计 62 个深层基线字段变化。UR2、UR4 无变化，UR3 的变化全部来自前两段。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 82,
+    "text": "`guard` 最后一段只调整 Gas/Game 的调用形状，以保留 C-4a-0 的层 API 许可清单；重新跑 160 层及三组 trace，所有观测字段均零变化。已于 03:29:36 CST 完成一次性重捕获：浅层 44 字段、深层 62 字段（含宝石坐标）；UR3 用原 `UR3_CAPTURE=1 npx vitest run src/test/u_r3_trace.test.ts --maxWorkers=1` 一次重录，最终差异 141 个叶路径。UR2、UR4 逐值相同，未写文件。登记见 [recapture.json](x2b-evidence/recapture.json)。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 116,
+    "text": "完整预检于 02:45:55–03:26:51 CST 跑完：200 文件、3775 passed、8 failed、8 skipped、5 todo。八项失败分别为 C4a 旧前提两项、层 API 许可、闭笼钥匙前提、麻痹时即时拾取、献祭诱导脚本、原 UR3、原深层基线，均已按前述证据处理。这轮期间实现仍在调整，因此只算完整预检，不能充当冻结终验。[原始完整结果](x2b-evidence/preflight-all.json)。"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 129,
+    "text": "| 独立深层 drift | `npx vitest run src/test/u_26a_deep_baseline.test.ts --maxWorkers=1` | 04:40:28–04:41:16 | 0 |"
+  },
+  {
+    "file": "x2b.report.md",
+    "line": 138,
+    "text": "冻结前后 **830 个运行输入 SHA-256 全部一致**，变化 0；浅层、深层、UR3 仅做 §4 登记的一次重捕获，UR2/UR4 和三个 P2 基线哈希不变，意外基线改动 0；CRLF 0。完整结论与逐文件结果见 [final-summary.json](x2b-evidence/final-summary.json)、[final-results.md](x2b-evidence/final-results.md)、[原始全量 JSON](x2b-evidence/regression-final.json)。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 3,
+    "text": "基准为本工作树 `BrogueCE-master/src/brogue/Globals.c:1025–1170`、`Combat.c:425–534, 1385–1406`、`Monsters.c:58–153`。未提交 git，未改生成流、`test:drift` 或深层基线。"
+  },
+  {
+    "file": "x2c.report.md",
+    "line": 43,
+    "text": "首次全量运行在边改边跑期间完整结束，198 文件通过、4 文件失败。四处失败分别是：曾临时增加未登记的 `legacyStatusImmunities` 实例字段触发 U01 快照守卫；曾临时不投影自然默认免疫触发 W19 polymorph 守卫与 X2c 新断言；同一中途版本使 UR3 全层 hash 改变。随后仅调整实现前提：保留字段投影，状态消费时排除无 CE 依据的自然默认值，且不增加实例字段；对应单测和 UR3 均单独转绿，最终完整复跑全绿。没有改守卫、`test:drift`、深层基线或黄金 trace。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 38,
+    "text": "[浏览器脚本](../../scripts/x2d-browser.mjs)使用独立无头 Edge 和 Vite、真实 Vue 背包操作、固定 seed 27027。初始包为明确的合成夹具，回放新局初始化后按相同步骤重建；未替换任何游戏方法或 checkpoint，不宣称自然寻获这些物品的整局录像。实测 8 个合格目标高亮、六类中文提示、隐藏其他动作/禁用关闭、Escape/遮罩/无效选择不消耗、未装备长剑 -3→-2 且解咒、15 支飞镖整堆附魔、全包解咒与空效果消息；**16 条真实 UI 命令全部回放，双流/资源/回合一致、零 OOS、零 page/console error**。证据：[状态和命令](x2d-evidence/browser.json)、[选物截图](x2d-evidence/browser-selection.png)、[结果截图](x2d-evidence/browser-result.png)，截图均实际打开检查。普通解咒动画结束后若背包仍开，脚本通过真实关闭按钮关闭，再继续操作。"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 66,
+    "text": "| 浏览器 | 16/16 命令，0 OOS，0 页面/控制台错误 |"
+  },
+  {
+    "file": "x2d.report.md",
+    "line": 69,
+    "text": "最终全量于 2026-09-27 05:41:54—06:19:13（Asia/Shanghai）完整运行；363 个源码、资源、配置及 trace 输入的前后 SHA 全部一致。P1-30、U24、U01/U03、U27、UR2、U15b/c/d、scroll_effects、b_1* 与深层基线均通过；W-7 仅 §3 指定的旧目标范围断言失败。8 个 skipped 与 5 个 todo 均为仓库原有登记，逐项列在交付审计中，本轮未新增、未移除。深层基线原测试 1/1 通过，69.794 秒；漂移基线另以原 `test:drift` 命令通过。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 5,
+    "text": "**完成：六种护符的数据、效果、附魔/充能/消魔交互、中文详情、保存及 CE 自然池已补齐。最终 build、完整全量、浅层 drift、独立深层、差异检查全部通过。** 唯一旧守卫前提修正及反事实证据见 §5，交验收方裁决。未暂存、未提交。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 24,
+    "text": "- guardian 冷却表含固定 **18** 回合，守卫寿命另为 `4 + 2E`。实体 HP=1000、命中=200、伤害 5–12/clump=2、火免/武器免疫/反射等来自现有目录；不改造成飞行刀刃。其出生延迟为 `attackSpeed + 1`，`boundToPlayer`/`doesNotTrackLeader` 为真；不掉物、不进入复活池。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 44,
+    "text": "入场先保存 [前置哈希](x2e-evidence/baseline-before.json)，浅层 drift **1/1**、深层独立基线 **1/1** 均通过，见 [浅层日志](x2e-evidence/drift-before.txt)、[深层日志](x2e-evidence/deep-before.txt)。固定四 seed（424242、777、20260913、31337），每个连续生成 D1–40。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 46,
+    "text": "| 单变量阶段 | D1–26 | D27–40 | 两条 RNG 流 |"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 51,
+    "text": "七层为 424242/D5、777/D1,D4、20260913/D1,D2、31337/D8,D15；地形指纹、怪物数量/物种、物品数量、深层宝石位置/数量均不变。见 [生成归因](x2e-evidence/generation-attribution.json)。这只证明固定样本中的变化范围，不宣称完整 CE 同 seed 逐骰生成。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 57,
+    "text": "浅层与深层分别按最终 pool 观测各写入一次，二者黄金数值均无变化，仅更新来源说明。UR3/4 分别使用原 `UR3_CAPTURE=1` / `UR4_CAPTURE=1 npx vitest run src/test/u_rN_trace.test.ts --maxWorkers=1` 入口各重录一次，结果与归因阶段候选逐字段相等。登记完成时间为 2026-09-27 **06:00:47 CST**；[重录登记](x2e-evidence/recapture.json) 含方法、写入次数和 SHA。P2 三份基线和 UR2 不改。唯一既有守卫前提修正见 §5；不修改生成、时间或 trace 的断言。"
+  },
+  {
+    "file": "x2e.report.md",
+    "line": 100,
+    "text": "| `npx vitest run src/test/u_26a_deep_baseline.test.ts --maxWorkers=1` | **1/1 通过** | [独立深层](x2e-evidence/deep-final.txt) |"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 8,
+    "text": "- 命中后，免疫武器或无敌先将伤害置 0，不调用 `randClump`。否则用投掷物实例 `damage.lowerBound/upperBound/clumpFactor` 掷骰，再计算 `randClump * damageFraction(netEnchant(item)) / 65536`，C 整数除法向零截断。投掷不复用近战的“先缩放上下界再掷骰”顺序，也没有近战 ×3/×5 偷袭倍率。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 13,
+    "text": "- `src/engine/Combat/Combat.ts`：投掷伤害使用保存的 `item.clumping`，旧实例缺失时回退解析值；改为 CE 截断；slaying 类别及 seized/seizing 命中率 100 仍掷命中骰。近战端点和投掷伤害共同调用 `enchantedDamage`，分别保持各自 CE 计算次序。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 19,
+    "text": "`ai_docs/reports/x2f-evidence/compile-original.py` 从 CE `Items.c` 原样抽取完整 `hitMonsterWithProjectileWeapon`，连同 U13 已编译核对的 CE `randClump`、`damageFraction`、`netEnchant`、`attackHit` 等原函数，使用最小 UI/世界副作用桩编译执行。生成的 C 翻译单元为 `ce-thrown-original.c`，运行输出为 `original-output.txt`。7 组武器区间、实例 clump、附魔、力量组合的全部离散分布与 `ce-thrown.json` 黄金值一致（包括每组合的 RNG 骰数）；JS 实战测试逐组合复核该 JSON。实例 `3..11/clump=3/enchant=10/strength=12` 的 48 种骰面组合分布为 `5:1, 7:3, 9:6, 11:9, 13:10, 15:9, 16:6, 18:3, 20:1`，每次恰好 3 个伤害骰；同区间 clump=1 只耗 1 骰。常量 `7..7` 不耗伤害骰。C 桩隔离的是 UI/世界副作用，保留原命中和伤害分支。"
+  },
+  {
+    "file": "x2f.report.md",
+    "line": 23,
+    "text": "反查闭包含 `p1_30_i18n_gate`、`u24_hardcoded_text`、`u_13_combat_math`、`u_15d_weapon_runic`、`u_15d2_armor_runic`、`b_2_throwing`、`u_r2_trace`、`CombatFormulas`，并由全量 `npm test` 收集其他源码守卫。未改 `test:drift`、深层基线或既有守卫。生成侧和 trace 录制文件未改；UR2 若通过则无需重录。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 45,
+    "text": "上述闭环完成后，删除 Game 的 creeping_death 过滤和 darkness 的 `excludeFromGeneration`。常规抽取、类别限定蓝图均使用同一生成池；两者各保留 CE `GlobalsBrogue.c:679/681` 的 frequency=7。未让 minDepth/maxDepth 介入 chooseKind。自创药水、符文、法器的退池约束保留。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 51,
+    "text": "初始 `test:drift`、深层基线均先通过，所有旧基线 SHA-256 先登记于 [baseline-before.json](x2g-evidence/baseline-before.json)。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 53,
+    "text": "按 `s0 → lichen → darkness → rot → submerged → pool → review` 保存生产源码快照，以同一观察器覆盖4种子 × D1–40。浅层104层、深层56层独立统计；不能将本轮回归基线称为 CE 地图一致性 oracle。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 57,
+    "text": "| 单变量 | D1–26 | D27–40 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 66,
+    "text": "所有阶段派生通行/遮挡属性与权威层标志不一致数均为0；怪物数量/种类、物品总数、宝石产量未漂移。潜没样本总计380个。三个地形指纹变化均在seed777：D8、D10、D27。详见 [generation-attribution.json](x2g-evidence/generation-attribution.json)。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 111,
+    "text": "完整发现轮于2026-09-27 08:00:40–09:04:57（Asia/Shanghai）结束：206文件，3851通过、20失败、8既有跳过、5既有todo；build、浅层drift、独立深层及diff-check均通过。19项失败为上文列明的旧前提，1项为W-15发现的重复死亡实现错误，均已保留修前结果。发现轮期间生产源码和测试保持review版本，但两个辅助脚本发生变化，因此明确不作为最终冻结验收；全套结果归档于 [first-full](x2g-evidence/first-full/README.md)。更早一次中止的预检登记在 `preflight-status.json`，不计入完成的门禁。"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 120,
+    "text": "| `npx vitest run src/test/u_26a_deep_baseline.test.ts --maxWorkers=1` | 1/1，4种子×D27–40；退出0 | 38.021秒 |"
+  },
+  {
+    "file": "x2g.report.md",
+    "line": 133,
+    "text": "浅层、深层各写1次，UR3按原方法写1次且逐值等于 review 候选；UR2、UR4不写。完整记录见 [recapture.json](x2g-evidence/recapture.json)。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 21,
+    "text": "D10–D40 继续按上述 9 类循环。物品实例的 `identityId` / `consumableId`、`runicType`，以及测试房新增的 `blueprintId` 是可执行守卫的检查面；钥匙实例原本没有种类 ID，盘点用展陈数据行与名称。D8 的 `blueprintId` 只记录测试房所用定义，不触碰真实蓝图选择或生成。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 29,
+    "text": "`x2h_test_mode_reachability.test.ts` 以菜单发出的 mode payload 建局，逐层从 D1 到 D40 经真实 `stairs_down` 操作，检查地面、背包与重置快照的物品 ID/符文，检查每间 D8 房的蓝图 ID，并实际拾取物品。`scripts/x2h-browser.mjs` 在 Edge 中点击真实菜单的 test 选项与“新游戏”，再走同一 40 层和拾取链。CE 正向样本断言防止清空展陈的假绿。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 31,
+    "text": "反查闭包由全量 `npm test` 覆盖：P1-30 的 i18n 源码扫描、U24 文案、`invented_content_pool` 正常池、B-4a/b、V 系列机器、MainMenu/App 及其他读源码守卫均未改动。另以 `test:drift` 单独验证原深层基线；未重捕获 fixture。"
+  },
+  {
+    "file": "x2h.report.md",
+    "line": 37,
+    "text": "最终复跑：`npm run build` 退出 0；`npm run test:drift` 1/1 通过，见 [漂移日志](x2h-evidence/drift.txt)；真实菜单 Edge 验证 D1–D40、9 类、5 次拾取、0 页面错误，退出 0。完整 `npm test` **跑完**，206 文件中 201 通过、5 失败，3855 项通过、5 项失败、8 跳过、5 todo，退出 1；五个失败恰为上述反事实定位的 B-1a、B-1c、P4-10、UR2、UR4，没有新失败，见 [全量日志](x2h-evidence/final-npm-test.txt)。X2h 新守卫在全量中通过，另定向复跑 1/1 通过。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 3,
+    "text": "基准：2026-09-27，按任务书 §0 指向的 X-1 §4 N06、§3 K12/K26/K41、§7.1，权威对照为本工作树 `BrogueCE-master`。本轮未提交 git，未改变 `test:drift` 或深层基线。"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 13,
+    "text": "| 回放 OOS | `Game.failReplayEvent` 的拼接英文原样送日志和回放控件 | `replayError` 保持诊断字段，以免改变既有记录守卫；新增经 i18n 的 `replayErrorDisplay`，日志和控件只显示该中文。状态、终局、其他失败分别用中文原因。新测试制造真实 checkpoint 不同步，核对日志和 UI 字段无英文字母。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 14,
+    "text": "| 动态英文门 | 原 `findHardcodedLogStrings` 仅识别 `logger.log` 首参的直接字面量 | 扩展为追踪近处 `const` 字符串模板到 `logger.log(variable)`；仍跳过 `i18next.t` 的结果。新测试用 OOS 模板反例与已翻译变量正例。扫描范围有意限制在局部不可变赋值，避免跨函数同名变量误报。 |"
+  },
+  {
+    "file": "x2i.report.md",
+    "line": 27,
+    "text": "- `git diff --check` 通过；变更文本无 CRLF；未修改深层基线，未提交 git。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 81,
+    "text": "浅/深生成 fixture、三份 P2 baseline、生成守卫、package/vite 配置和 UR2 原字节不变，入场 SHA 见 [baseline-before.json](x2j-evidence/baseline-before.json)。运行期状态字段不在生成路径消耗 RNG；没有重新捕获浅层或深层基线。"
+  },
+  {
+    "file": "x2j.report.md",
+    "line": 107,
+    "text": "`x2j-validate.mjs` 固定 **906** 个输入（src/public/scripts、依赖与 Vite 配置、UR2/3/4 黄金、C oracle 数据）。构建、drift、独立深层与最终全量均使用这组相同输入，各自前后变化 0。第二轮与第三轮的输入清单逐项完全相同。最终原始记录为 `full-clean*`，`full-final*` 是它们的同字节交付别名，映射及 SHA 见 [delivery-records.json](x2j-evidence/delivery-records.json)。[最终交付检查](x2j-evidence/final-check.json)保留四项门禁的真实结果，退出码 0。"
+  },
+  {
+    "file": "x2l.report.md",
+    "line": 14,
+    "text": "- 最终 `npm run build` 退出 0；`npm run test:drift` 1/1 通过。未改 drift/深层基线与黄金 trace；本次没有重录。改动的 TS/JSON/Markdown 文件 CRLF 数为 0，`git diff --check` 无报错。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 5,
+    "text": "规格按任务书 §0 实际引用的 [X-1 勘察报告](x-1-survey.report.md) §4 N10（第 180 行）、§3 K16（第 86 行）、§7.1（第 272 行）执行。用户消息称“X-0”，但任务书指定的是 X-1；本报告采用该明确引用，没有扩大到其他勘察条目。任务书标注的报告版本为 `bd40bbc0`，执行工作树起点为 `05cbe2dca14faf7f5794074252f13c2d2cd5d409`。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 28,
+    "text": "| Time.c:1168 | 坠落处理后的 `GENERIC_FLASH_LIGHT`，包括最深层的坠落传送分支 | 在 `playerFalls` 新增，使用落点层/坐标；致命坠落早退也保留该光。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 57,
+    "text": "| flare 光源 | CE Light.c:67–72 的 clumped radius、共享随机色、RGB 独立随机色公式；显式进入全局 COSMETIC，`finally` 恢复调用前流选择；只在准备动画序列时采样一次。 |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 118,
+    "text": "| 深层生成 | `u_26a_deep_baseline`（四 seed × D27–40）1 项与 `u_26a_deep_levels` 16 项在最终全量中通过；基线未改。 | 同最终全量及 [baseline-integrity.json](x2m-evidence/baseline-integrity.json) |"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 125,
+    "text": "R∪S 清单见 [rs-closure.json](x2m-evidence/rs-closure.json)：R 覆盖指定 p1_30、U24、C-7、R-1、U21a/b/c、U23、ui_*、UR4，以及光照/知识/DF/录像/深层直接消费者；S 保守纳入所有 `readFile`/`readFileSync` 源码或 fixture 读取测试。全量测试加单独 `test:drift` 覆盖该并集，不用挑选绿灯子集代替全量门禁。"
+  },
+  {
+    "file": "x2m.report.md",
+    "line": 135,
+    "text": "最终 `git diff --check` 通过；所有新增/修改文本均以 UTF-8/LF 交付，没有新 CRLF。工作树 HEAD 仍为 `05cbe2dca14faf7f5794074252f13c2d2cd5d409`。"
+  }
+]

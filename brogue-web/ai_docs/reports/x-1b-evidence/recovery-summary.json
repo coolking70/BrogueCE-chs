@@ -1,0 +1,39 @@
+[
+  {
+    "name": "recovery-typecheck",
+    "args": [
+      "node_modules/vue-tsc/bin/vue-tsc.js",
+      "-b"
+    ],
+    "code": 0,
+    "signal": null,
+    "seconds": 8.672
+  },
+  {
+    "name": "recovery-build",
+    "args": [
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "code": 0,
+    "signal": null,
+    "seconds": 4.77
+  },
+  {
+    "name": "recovery-targeted",
+    "args": [
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "src/test/u_02b_level_rng.test.ts",
+      "src/test/x2g_native_effects.test.ts",
+      "src/test/x2j_monster_ai.test.ts",
+      "src/test/u20_inventory.test.ts",
+      "--maxWorkers=2",
+      "--reporter=json",
+      "--outputFile=E:\\bench\\work\\x1b\\brogue-web\\ai_docs\\reports\\x-1b-evidence\\recovery-results.json"
+    ],
+    "code": 0,
+    "signal": null,
+    "seconds": 20.341
+  }
+]

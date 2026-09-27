@@ -1,0 +1,173 @@
+{
+  "firstRun": {
+    "passedTests": 231,
+    "failedTests": 0,
+    "collectionFailures": [
+      {
+        "file": "E:/bench/tmp/brogue-x1b-9HGfVe/brogue-web/src/test/u_02b_level_rng.test.ts",
+        "message": "ENOENT: no such file or directory, open 'E:\\bench\\tmp\\brogue-x1b-9HGfVe\\brogue-web\\ai_docs\\reports\\u-02b-evidence\\ce-reference.json'"
+      },
+      {
+        "file": "E:/bench/tmp/brogue-x1b-9HGfVe/brogue-web/src/test/x2g_native_effects.test.ts",
+        "message": "ENOENT: no such file or directory, open 'E:\\bench\\tmp\\brogue-x1b-9HGfVe\\brogue-web\\ai_docs\\reports\\x2g-evidence\\ce-oracle.json'"
+      },
+      {
+        "file": "E:/bench/tmp/brogue-x1b-9HGfVe/brogue-web/src/test/x2j_monster_ai.test.ts",
+        "message": "Cannot find module '../../ai_docs/reports/x2j-evidence/ce-state.json' imported from E:/bench/tmp/brogue-x1b-9HGfVe/brogue-web/src/test/x2j_monster_ai.test.ts"
+      }
+    ]
+  },
+  "recoveryPassedTests": 82,
+  "finalFileCount": 21,
+  "finalPassedTests": 313,
+  "finalFailedFiles": [],
+  "files": [
+    {
+      "file": "c_0_add_loops.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 14
+      }
+    },
+    {
+      "file": "c_6_autogenerators.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 17
+      }
+    },
+    {
+      "file": "generation_baseline.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 1
+      }
+    },
+    {
+      "file": "invented_content_pool.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 7
+      }
+    },
+    {
+      "file": "u20_inventory.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 5
+      }
+    },
+    {
+      "file": "u_02b_level_rng.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 22
+      }
+    },
+    {
+      "file": "u_03_whole_run_snapshot.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 14
+      }
+    },
+    {
+      "file": "u_03b_level_travel.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 36
+      }
+    },
+    {
+      "file": "u_18a_3_generation.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 26
+      }
+    },
+    {
+      "file": "u_19f_autogen.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 28
+      }
+    },
+    {
+      "file": "u_19f_machines.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 3
+      }
+    },
+    {
+      "file": "u_26a_deep_baseline.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 1
+      }
+    },
+    {
+      "file": "u_26a_deep_levels.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 16
+      }
+    },
+    {
+      "file": "u_26b_endgame.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 5
+      }
+    },
+    {
+      "file": "u_27_recording.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 5
+      }
+    },
+    {
+      "file": "v_2b_9e_2_autogen.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 16
+      }
+    },
+    {
+      "file": "x2a_recording_checkpoint.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 4
+      }
+    },
+    {
+      "file": "x2b_terrain_derivation.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 20
+      }
+    },
+    {
+      "file": "x2g_native_effects.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 17
+      }
+    },
+    {
+      "file": "x2j_monster_ai.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 38
+      }
+    },
+    {
+      "file": "x2m_lighting.test.ts",
+      "status": "passed",
+      "assertions": {
+        "passed": 18
+      }
+    }
+  ]
+}

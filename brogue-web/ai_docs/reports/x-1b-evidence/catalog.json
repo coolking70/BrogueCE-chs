@@ -1,0 +1,470 @@
+{
+  "hordeCountCE": 175,
+  "hordeCountWeb": 175,
+  "deepOnlyHordes": [
+    {
+      "index": 59,
+      "ceLine": 805,
+      "leader": "DRAGON",
+      "members": [
+        {
+          "type": "DRAGON",
+          "minCount": 1,
+          "maxCount": 1,
+          "clump": 1
+        }
+      ],
+      "minLevel": 27,
+      "maxLevel": 39,
+      "frequency": 30,
+      "spawnsIn": null,
+      "flags": [],
+      "webLine": 786,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 60,
+      "ceLine": 806,
+      "leader": "GOLEM",
+      "members": [
+        {
+          "type": "GOLEM",
+          "minCount": 1,
+          "maxCount": 2,
+          "clump": 1
+        },
+        {
+          "type": "DAR_PRIESTESS",
+          "minCount": 0,
+          "maxCount": 1,
+          "clump": 1
+        },
+        {
+          "type": "DAR_BATTLEMAGE",
+          "minCount": 0,
+          "maxCount": 1,
+          "clump": 1
+        }
+      ],
+      "minLevel": 27,
+      "maxLevel": 39,
+      "frequency": 80,
+      "spawnsIn": null,
+      "flags": [],
+      "webLine": 802,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 61,
+      "ceLine": 807,
+      "leader": "GOLEM",
+      "members": [
+        {
+          "type": "GOLEM",
+          "minCount": 5,
+          "maxCount": 10,
+          "clump": 2
+        }
+      ],
+      "minLevel": 30,
+      "maxLevel": 39,
+      "frequency": 20,
+      "spawnsIn": null,
+      "flags": [],
+      "webLine": 828,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 62,
+      "ceLine": 808,
+      "leader": "KRAKEN",
+      "members": [
+        {
+          "type": "KRAKEN",
+          "minCount": 5,
+          "maxCount": 10,
+          "clump": 2
+        }
+      ],
+      "minLevel": 30,
+      "maxLevel": 39,
+      "frequency": 100,
+      "spawnsIn": "DEEP_WATER",
+      "flags": [],
+      "webLine": 844,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 63,
+      "ceLine": 809,
+      "leader": "TENTACLE_HORROR",
+      "members": [
+        {
+          "type": "TENTACLE_HORROR",
+          "minCount": 1,
+          "maxCount": 3,
+          "clump": 1
+        },
+        {
+          "type": "REVENANT",
+          "minCount": 2,
+          "maxCount": 4,
+          "clump": 1
+        }
+      ],
+      "minLevel": 32,
+      "maxLevel": 39,
+      "frequency": 20,
+      "spawnsIn": null,
+      "flags": [],
+      "webLine": 860,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 64,
+      "ceLine": 810,
+      "leader": "DRAGON",
+      "members": [
+        {
+          "type": "DRAGON",
+          "minCount": 3,
+          "maxCount": 5,
+          "clump": 1
+        }
+      ],
+      "minLevel": 34,
+      "maxLevel": 39,
+      "frequency": 20,
+      "spawnsIn": null,
+      "flags": [],
+      "webLine": 881,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 119,
+      "ceLine": 877,
+      "leader": "DRAGON",
+      "members": [],
+      "minLevel": 29,
+      "maxLevel": 40,
+      "frequency": 100,
+      "spawnsIn": "STATUE_DORMANT",
+      "flags": [
+        "HORDE_MACHINE_STATUE"
+      ],
+      "webLine": 1812,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    },
+    {
+      "index": 120,
+      "ceLine": 878,
+      "leader": "TENTACLE_HORROR",
+      "members": [],
+      "minLevel": 29,
+      "maxLevel": 40,
+      "frequency": 100,
+      "spawnsIn": "STATUE_DORMANT",
+      "flags": [
+        "HORDE_MACHINE_STATUE"
+      ],
+      "webLine": 1824,
+      "webMatchesExceptClump": true,
+      "webMissingSpecies": []
+    }
+  ],
+  "newDeepOnlySpecies": [],
+  "hordeFieldMismatchIndices": [],
+  "deepMissingSpecies": [],
+  "ceBlueprintCount": 71,
+  "deepEligibleBlueprints": [
+    {
+      "ceBlueprintId": 58,
+      "ceLine": 558,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_58_bloodwort",
+          "line": 4154,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 59,
+      "ceLine": 562,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_59_shrine",
+          "line": 4202,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 60,
+      "ceLine": 567,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_60_idyll",
+          "line": 4269,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 61,
+      "ceLine": 571,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_61_swamp",
+          "line": 4313,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 62,
+      "ceLine": 575,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_62_camp",
+          "line": 4356,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 63,
+      "ceLine": 581,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_63_remnant",
+          "line": 4426,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 64,
+      "ceLine": 585,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_64_dismal",
+          "line": 4470,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 65,
+      "ceLine": 590,
+      "depthRange": [
+        1,
+        39
+      ],
+      "web": [
+        {
+          "id": "ce_65_environment",
+          "line": 5241,
+          "depthRange": [
+            1,
+            25
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 66,
+      "ceLine": 596,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_66_environment",
+          "line": 5322,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 67,
+      "ceLine": 601,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "trap_paralysis_revealed",
+          "line": 2305,
+          "depthRange": [
+            1,
+            40
+          ],
+          "frequency": 0,
+          "matches": true
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 68,
+      "ceLine": 605,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "trap_paralysis_hidden",
+          "line": 2353,
+          "depthRange": [
+            1,
+            40
+          ],
+          "frequency": 0,
+          "matches": true
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 69,
+      "ceLine": 609,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "area_trick_statue",
+          "line": 2778,
+          "depthRange": [
+            1,
+            40
+          ],
+          "frequency": 0,
+          "matches": true
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 70,
+      "ceLine": 614,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "area_worm",
+          "line": 2850,
+          "depthRange": [
+            1,
+            40
+          ],
+          "frequency": 0,
+          "matches": true
+        }
+      ]
+    },
+    {
+      "ceBlueprintId": 71,
+      "ceLine": 618,
+      "depthRange": [
+        1,
+        40
+      ],
+      "web": [
+        {
+          "id": "ce_71_sentinels",
+          "line": 4526,
+          "depthRange": [
+            1,
+            26
+          ],
+          "frequency": 0,
+          "matches": false
+        }
+      ]
+    }
+  ],
+  "ceDeepOnlyBlueprints": [],
+  "webDeepOnlyBlueprints": []
+}
