@@ -7,7 +7,7 @@ import type { LogMessage } from '../engine/Systems/Logger';
 import { creatureStatusRows, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 import { computeSidebarWidth, displaySettings } from '../engine/Settings';
-import { visibleMonsterRows } from '../engine/UI/MonsterSidebar';
+import { sidebarEntityRows, sidebarPlayerStats } from '../engine/UI/MonsterSidebar';
 
 // P2-6：侧栏宽度模式（固定 340px / 按容器宽 20% 且不低于最小宽度）。
 // 侧栏是 app-layout（100vw flex 行）的直接子元素，容器宽即窗口宽；
@@ -37,7 +37,16 @@ const playerNutrition = ref(STOMACH_SIZE);
 const logs = ref<LogMessage[]>([]);
 const hoverText = ref('');
 const playerStatuses = ref<ReturnType<typeof creatureStatusRows>>([]);
-const monsterRows = ref<ReturnType<typeof visibleMonsterRows>>([]);
+const entityRows = ref<ReturnType<typeof sidebarEntityRows>>([]);
+const playerStats = ref<ReturnType<typeof sidebarPlayerStats> | null>(null);
+const playerNumberLines = computed(() => {
+  const stats = playerStats.value;
+  return stats ? [
+    i18next.t('sidebar.strength_armor', { current: stats.strength, max: stats.maxStrength, armor: stats.armor, defaultValue: 'Str: {{current}}/{{max}}  Armor: {{armor}}' }),
+    i18next.t('sidebar.gold', { gold: stats.gold, defaultValue: 'Gold: {{gold}}' }),
+    i18next.t('sidebar.stealth_range', { range: stats.stealthRange, defaultValue: 'Stealth range: {{range}}' }),
+  ] : [];
+});
 
 // Tiers mirror Player.computeHungerState: thresholds are CE Rogue.h:1125-1127
 const getNutritionStatus = (nutrition: number) => {
@@ -63,7 +72,12 @@ onMounted(() => {
       // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见
       // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
       playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);
-      monsterRows.value = visibleMonsterRows(activeGame.player, activeGame.grid, activeGame.monsters);
+      entityRows.value = sidebarEntityRows(activeGame.player, activeGame.grid, activeGame.monsters,
+        activeGame.items, activeGame.hoveredCell);
+      // Read the existing calculation without changing Game's rules/method visibility
+      // (X3-U7's edit boundary excludes calculateStealthRange).
+      playerStats.value = sidebarPlayerStats(activeGame.player, activeGame.stats.gold,
+        activeGame['calculateStealthRange']());
     }
     // Clone array for Vue reactivity
     logs.value = [...logger.messages].reverse(); 
@@ -120,21 +134,32 @@ onUnmounted(() => {
           </span>
         </div>
       </div>
+
+      <div v-if="playerStats" class="player-numbers">
+        <div v-for="(line, index) in playerNumberLines" :key="index">{{ line }}</div>
+      </div>
     </div>
     
-    <div v-if="monsterRows.length" class="monster-panel">
+    <div v-if="entityRows.length" class="monster-panel">
       <div class="monster-heading">{{ $t('sidebar.monsters') }}</div>
-      <div v-for="monster in monsterRows" :key="monster.id" class="monster-entry">
+      <div v-for="entity in entityRows" :key="`${entity.kind}:${entity.id}`" class="monster-entry"
+        :class="{ 'entity-focused': entity.focused }" :data-entity-kind="entity.kind" :data-entity-id="entity.id">
         <div class="monster-line">
-          <span class="monster-glyph" :style="{ color: monster.color }">{{ monster.char }}</span>
-          <span class="monster-name">{{ monster.name }}</span>
-          <span class="monster-health">{{ monster.hp }}/{{ monster.maxHp }}</span>
+          <span class="monster-glyph" :style="{ color: entity.color }">{{ entity.char }}</span>
+          <span class="monster-name">{{ entity.name }}</span>
+          <span v-if="entity.kind === 'monster'" class="monster-health">{{ entity.hp }}/{{ entity.maxHp }}</span>
         </div>
-        <div class="monster-hp-track"><div class="monster-hp-fill"
-          :style="{ width: `${Math.max(0, Math.min(100, monster.hp / Math.max(1, monster.maxHp) * 100))}%`, background: monster.ally ? '#4ade80' : '#ef4444' }"></div></div>
-        <div v-if="monster.statuses.length" class="monster-statuses">
-          <span v-for="status in monster.statuses" :key="status.id" :style="{ color: status.color }">{{ status.label }} {{ status.value }}</span>
-        </div>
+        <template v-if="entity.kind === 'monster'">
+          <div class="monster-hp-track"><div class="monster-hp-fill"
+            :style="{ width: `${Math.max(0, Math.min(100, entity.hp / Math.max(1, entity.maxHp) * 100))}%`, background: entity.ally ? '#4ade80' : '#ef4444' }"></div></div>
+          <div v-if="entity.negated || entity.behavior" class="monster-statuses">
+            <span v-if="entity.negated" class="negated-label">{{ $t('negation.label', { defaultValue: 'Negated' }) }}</span>
+            <span>{{ entity.behavior }}</span>
+          </div>
+          <div v-if="entity.statuses.length" class="monster-statuses">
+            <span v-for="status in entity.statuses" :key="status.id" :style="{ color: status.color }">{{ status.label }} {{ status.value }}</span>
+          </div>
+        </template>
       </div>
     </div>
 
@@ -165,6 +190,9 @@ onUnmounted(() => {
 
 <style scoped>
 .log-acknowledge { border-left: 2px solid #facc15; padding-left: 6px; font-weight: 600; }
+.player-numbers { margin-top: .75rem; font-family: var(--font-mono); font-size: .8rem; line-height: 1.6; }
+.entity-focused { outline: 1px solid var(--color-accent); border-radius: 3px; background: #ffffff0c; }
+.negated-label { color: #ff99aa; }
 .monster-panel { max-height: 28vh; overflow-y: auto; margin-bottom: 1rem; padding: .65rem; background: rgba(0,0,0,.3); border-radius: 8px; }
 .monster-heading { font-size: .75rem; color: var(--text-secondary); margin-bottom: .5rem; }
 .monster-entry { margin-bottom: .55rem; font-family: var(--font-mono); font-size: .8rem; }
