@@ -8,6 +8,7 @@ import type { Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { logger } from '../engine/Systems/Logger';
 import { generateItemDetail } from '../engine/UI/DetailGenerator';
+import { createItemDetailContext } from '../engine/UI/ItemDetailContext';
 
 // Local reactive state for the inventory visibility
 const isVisible = ref(false);
@@ -235,7 +236,7 @@ const selectItemOrIdentify = (item: Item) => {
 };
 
 const performInspect = (item: Item) => {
-    activeGame.inspectTarget = generateItemDetail(item, activeGame.player.effectiveStrength);
+    activeGame.inspectTarget = generateItemDetail(item, createItemDetailContext(activeGame, item));
 };
 
 const performEquip = (item: Item) => {

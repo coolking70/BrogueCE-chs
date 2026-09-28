@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fe40/brogue/brogue-web
+
+ ❯ src/test/u_15d3_runic_generation.test.ts (7 tests | 1 failed) 890ms
+     × ordinary birth → U01 JSON → hidden detail → identification → JSON preserves every generated runic 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_15d3_runic_generation.test.ts > U15d-3 original CE C oracle equipment lotteries > ordinary birth → U01 JSON → hidden detail → identification → JSON preserves every generated runic
+AssertionError: plenty: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/test/u_15d3_runic_generation.test.ts:96:90
+     94|                 expect(detail()).toHaveLength(0);
+     95|                 ItemLoader.identifyInstance(restored);
+     96|                 expect(restored.runicKnown).toBe(true); expect(detail(…
+       |                                                                                          ^
+     97|                 expect(detail()[0]!.lines[0]!.text).toBeTruthy();
+     98|                 if (category === 0 && item.runicType === 'mercy') expe…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 25 passed (26)
+      Tests  1 failed | 673 passed (674)
+   Start at  16:21:11
+   Duration  385.91s (transform 2.27s, setup 0ms, import 26.83s, tests 353.13s, environment 12ms)
+

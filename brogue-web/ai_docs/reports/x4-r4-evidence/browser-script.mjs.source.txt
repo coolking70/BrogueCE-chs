@@ -1,0 +1,72 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const dir='ai_docs/reports/x4-r4-evidence';
+const browser=await chromium.launch({headless:false});
+const observations=[],errors=[];
+try {
+ const page=await browser.newPage({viewport:{width:1280,height:900}});
+ page.on('pageerror',e=>errors.push(String(e)));
+ page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+ await page.goto('http://127.0.0.1:5194/');
+ await page.locator('.menu-card input[type=text]').fill('44004');
+ await page.locator('.menu-card .actions').first().locator('button').first().click();
+ await page.waitForFunction(()=>!!window.render_game_to_text && !!window.activeGame.onRenderRequested);
+ const setup=async(scenario)=>{
+  await page.evaluate(async(scenario)=>{
+   const [{ItemLoader:L},{createItemDetailContext},{generateItemDetail},{rng}]=await Promise.all([
+    import('/src/engine/Items/ItemLoader.ts'),import('/src/engine/UI/ItemDetailContext.ts'),
+    import('/src/engine/UI/DetailGenerator.ts'),import('/src/engine/Random.ts')]);
+   const g=window.activeGame;g.startNewGame({seed:44004,mode:'test'});g.animationEnabled=false;
+   g.monsters=[];g.dormantMonsters=[];g.items=[];g.player.inventory.items=[];
+   g.player.equippedWeapon=null;g.player.equippedArmor=null;g.player.ringLeft=null;g.player.ringRight=null;
+   g.player.nutrition=200;g.player.hp=17;g.player.maxHp=30;
+   let item;
+   if(scenario.startsWith('potion'))item=L.spawnPotion('potion_of_life',-1,-1);
+   if(scenario.startsWith('scroll'))item=L.spawnScroll('scroll_of_identify',-1,-1);
+   if(scenario==='staff-capacity'){
+    item=L.spawnStaff('staff_of_poison',-1,-1);Object.assign(item,{enchantment:3,maxCharges:3,charges:1,maxChargesKnown:true});L.identify(item.identityId);
+   }
+   if(scenario==='wand-known'){
+    item=L.spawnWand('wand_of_domination',-1,-1);item.timesUsed=1;L.identify(item.identityId);
+   }
+   if(scenario==='weapon-runic'){
+    item=L.spawnWeapon('dagger',-1,-1);Object.assign(item,{enchantment:3,runicType:'paralyzing',runicKnown:true,identified:true,isCursed:false});
+   }
+   if(scenario==='armor-cursed'){
+    item=L.spawnArmor('chain_mail',-1,-1);Object.assign(item,{enchantment:-2,isCursed:true,magicDetected:true,runicType:undefined});g.player.equippedArmor=item;
+   }
+   if(scenario==='food')item=L.spawnFood('ration_of_food',-1,-1);
+   if(scenario==='charm-protection'){item=L.spawnCharm('charm_of_protection',-1,-1);item.enchantment=2;}
+   if(scenario.endsWith('-known'))L.identify(item.consumableId??item.identityId);
+   item.originDepth=7;g.player.inventory.addItem(item);g.inspectTarget=null;g.isInventoryOpen=true;g.needsRender=true;g.update();
+   window.x4expected=generateItemDetail(item,createItemDetailContext(g,item));
+   window.x4item=item;window.x4before={item:JSON.stringify(item),rng:JSON.stringify(rng.getState()),turn:g.absoluteTurnNumber};
+   window.x4check=()=>({item:JSON.stringify(item),rng:JSON.stringify(rng.getState()),turn:g.absoluteTurnNumber,
+    expected:window.x4expected,actual:g.inspectTarget,state:JSON.parse(window.render_game_to_text())});
+  },scenario);
+  await page.waitForFunction(()=>document.querySelector('.item-row .item-name')?.textContent?.trim().startsWith(window.x4item.displayName));
+  if (!(await page.getByRole('button',{name:'查看详情',exact:true}).isVisible())) await page.locator('.item-row').first().click();
+  await page.getByRole('button',{name:'查看详情',exact:true}).click();
+  await page.locator('.detail-panel').waitFor();
+  const o=await page.evaluate(()=>window.x4check());
+  const before=await page.evaluate(()=>window.x4before);
+  assert.equal(o.item,before.item);assert.equal(o.rng,before.rng);assert.equal(o.turn,before.turn);
+  assert.deepEqual(o.actual,o.expected);
+  const lines=await page.locator('.detail-panel .section-line').allTextContents();
+  assert.deepEqual(lines.map(s=>s.trim()),o.expected.sections.flatMap(s=>s.lines.map(l=>l.text)));
+  observations.push({scenario,lines:lines.map(s=>s.trim()),state:o.state,zeroMutation:true});
+  await page.screenshot({path:`${dir}/browser-${page.viewportSize().width < 600 ? 'mobile-' : ''}${scenario}.png`,animations:'disabled'});
+  await page.locator('.detail-close').click();
+  await page.locator('.detail-panel').waitFor({state:'hidden'});
+  await page.locator('.inventory-overlay .close-btn').click();
+  await page.locator('.inventory-overlay').waitFor({state:'hidden'});
+ };
+ for(const scenario of ['potion-unknown','potion-known','scroll-unknown','scroll-known','staff-capacity','wand-known','weapon-runic','armor-cursed','food','charm-protection'])await setup(scenario);
+ await page.setViewportSize({width:390,height:844});await setup('weapon-runic');
+ await page.screenshot({path:`${dir}/browser-mobile-inventory.png`,animations:'disabled'});
+ assert.deepEqual(errors,[]);
+ fs.writeFileSync(`${dir}/browser.json`,JSON.stringify({observations,errors},null,2)+'\n');
+ fs.writeFileSync(`${dir}/browser-text.txt`,observations.map(o=>`${o.scenario}\n${o.lines.join('\n')}\n`).join('\n'));
+ console.log(`${observations.length} scenarios; UI text equals generator; item/turn/RNG unchanged; no browser errors`);
+} finally {await browser.close();}

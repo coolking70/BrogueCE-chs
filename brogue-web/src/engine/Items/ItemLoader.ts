@@ -26,6 +26,7 @@ function kindIdOf(item: Item): string | undefined {
 }
 
 export interface ConsumableConfig {
+    description?: string;
     id: string;
     trueName: string;
     effect: string;

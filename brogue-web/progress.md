@@ -1596,3 +1596,11 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 - B2原始日志明确900000ms超时（实测1124秒），未改断言/样本/门限，按任务书用1 worker单独复跑原21项文件；结果待收口。首轮完整记录保留，不将单项复验宣称为完整npm test exit0。
 - X3-U2 最终完成：B2原文件21/21复验通过（408.378秒，原超时census405.193秒），完整首轮唯一900秒超时如实保留；按任务书单独复验收口。最后生产/测试输入985项始终零变化，225/225文件覆盖，既有守卫修改0，trace/浅深基线/锁文件与HEAD一致。
 - ai_docs/reports/x3-u2.report.md 已收口；final-check通过，CRLF=0，7张PNG均本地忽略，未暂存/提交/推送。本任务浏览器与Vite已关闭，无剩余实现或验收TODO。
+## 2026-09-28 X4-R4：物品详情 CE 分支移植
+
+- 用户任务：严格按 `ai_docs/tasks/x4-r4.prompt.md` 完成代码、中档门禁与报告，不跑全量测试、不提交/推送；本机另有执行方，限制单 worker。
+- 新增只读 ItemDetailContext 与 Intro/Equipment/Arcana/Jewelry 模块，背包接现有公开状态；Loader 仅传递 description；未知态、容量/余量、符文与诅咒分别门控。
+- 新增 x4_r4 状态矩阵、双 RNG/物品不变性、预测与入口守卫；正式定向范围通过引用反查确定。
+- Game.ts 不改；历史、检视上下文、内联公式抽取和负附魔反射分支的后续事项统一见 `ai_docs/reports/x4-r4.report.md` 的 R6 集成需求。最终门禁与浏览器证据也以该报告为准。
+
+- X4-R4 验收收尾：类型/构建/drift通过；单worker定向26文件675/676，唯一失败为 Discoveries 的“容量已知却不显示距离”旧前提。HEAD DetailGenerator反事实3/3、仅把该用例容量前提改为未知的进程内反事实3/3；原测试未改，单行提案交R6裁决。新增23项覆盖99身份/440合法状态，最终浏览器11场景通过、0错误、RNG/物品/回合不变。Game与既有测试未改，未跑全量/提交/推送；浏览器及本任务Vite已关闭。

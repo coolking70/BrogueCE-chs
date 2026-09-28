@@ -1,0 +1,15 @@
+import { defineConfig } from 'vitest/config';
+import fs from 'node:fs';
+import path from 'node:path';
+export default defineConfig({
+ cacheDir: 'node_modules/.vite/x4-r4-counterfactual',
+ plugins: [{name:'x4-r4-counterfactual',enforce:'pre',load(id){
+  if(process.env.X4_R4_CASE==='legacy' && id===path.resolve('src/engine/UI/DetailGenerator.ts')) return fs.readFileSync('tmp-x4-r4/DetailGenerator.original.txt','utf8');
+  if(process.env.X4_R4_CASE==='premise' && id===path.resolve('src/engine/UI/Discoveries.test.ts')) {
+   const source=fs.readFileSync(id,'utf8');
+   if(source.split('staff.maxChargesKnown = true;').length!==2)throw new Error('Expected exactly one premise');
+   return source.replace('staff.maxChargesKnown = true;','staff.maxChargesKnown = false;');
+  }
+ }}],
+ test:{testTimeout:900000,hookTimeout:120000}
+});

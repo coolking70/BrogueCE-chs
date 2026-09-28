@@ -1,0 +1,52 @@
+{
+  "head": "066ed709a20fdecbe0cbab628c8911df762907a6",
+  "source_manifest_changed": [],
+  "game_unchanged": true,
+  "existing_tests_changed": [],
+  "staged_files": [],
+  "referenced_test_files": 23,
+  "medium_test_files": 26,
+  "missing_referenced_tests": [],
+  "crlf_files": [],
+  "png_count": 13,
+  "unignored_pngs": [],
+  "diff_check_exit": 0,
+  "browser_scenarios": 11,
+  "browser_errors": [],
+  "gates": [
+    {
+      "gate": "typecheck",
+      "exit": 0,
+      "seconds": 10.014
+    },
+    {
+      "gate": "build",
+      "exit": 0,
+      "seconds": 16.918
+    },
+    {
+      "gate": "targeted",
+      "exit": 1,
+      "seconds": 230.192
+    },
+    {
+      "gate": "drift",
+      "exit": 0,
+      "seconds": 47.236
+    }
+  ],
+  "changed_source_files": [
+    "brogue-web/src/components/InventoryOverlay.vue",
+    "brogue-web/src/engine/Items/ItemLoader.ts",
+    "brogue-web/src/engine/UI/DetailGenerator.ts",
+    "brogue-web/src/engine/UI/ItemDetailArcana.ts",
+    "brogue-web/src/engine/UI/ItemDetailContext.ts",
+    "brogue-web/src/engine/UI/ItemDetailEquipment.ts",
+    "brogue-web/src/engine/UI/ItemDetailIntro.ts",
+    "brogue-web/src/engine/UI/ItemDetailJewelry.ts",
+    "brogue-web/src/engine/UI/ItemDetailText.ts",
+    "brogue-web/src/engine/UI/ItemKnowledge.ts",
+    "brogue-web/src/locales/zh_CN.json",
+    "brogue-web/src/test/x4_r4_item_details.test.ts"
+  ]
+}

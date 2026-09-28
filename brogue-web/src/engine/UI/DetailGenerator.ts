@@ -1,24 +1,22 @@
+import type { ItemDetailContext } from './ItemDetailContext';
+import { itemIntro, itemEquipmentState } from './ItemDetailIntro';
+import { equipmentDetail } from './ItemDetailEquipment';
+import { arcanaDetail } from './ItemDetailArcana';
+import { ringDetail, charmDetail } from './ItemDetailJewelry';
 /**
  * src/engine/UI/DetailGenerator.ts
  * Generates detail description text for monsters and items,
  * modeled after CE's monsterDetails() and itemDetails().
  */
 
-import { ItemLoader } from '../Items/ItemLoader';
-import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, charmShattering, charmGuardianLifespan, charmNegationRadius, isCharmKind } from '../Items/CharmModel';
-import { itemKnowledge } from './ItemKnowledge';
-import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
-import { turnsForFullRegenInThousandths } from '../Items/RingBonuses';
-import { ringWisdomMultiplierPercent } from '../Items/ArcanaRecharge';
 import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { creatureStatusRows } from '../Status/statusConfig';
 import { monsterAccuracyAdjusted, monsterDefenseAdjusted, monsterDamageAdjustmentAmount } from '../Combat/CombatFormulas';
-import { hitProbability, netEnchant, damageFraction, enchantedDamage, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
+import { hitProbability, netEnchant, damageFraction, playerDefense } from '../Combat/CombatFormulas';
 import { CombatSystem } from '../Combat/Combat';
-import i18next from 'i18next';
 
 // ---------- Helper types ----------
 
@@ -45,38 +43,6 @@ export interface DetailLine {
     color?: string; // CSS color string, e.g. '#ff4444'
     progress?: { value: number; max: number };
 }
-
-// ---------- Runic description tables ----------
-
-const weaponRunicDescriptions: Record<string, string> = {
-    paralyzing: '每次攻击有概率麻痹目标数回合。',
-    multiplicity: '命中时有概率生成短命的武器谱影，协助你攻击敌人。',
-    slowing: '命中时有概率使目标减速数回合。',
-    plenty: '命中时有概率复制仍存活的目标，制造另一个敌人。',
-    venom: '触发时对目标追加毒性伤害或施加中毒效果。',
-    quietus: '每次攻击有概率瞬间击杀目标。',
-    vampirism: '攻击会吸取目标生命值来治愈自身。',
-    speed: '攻击后有概率获得额外攻击机会。',
-    confusion: '每次攻击有概率使目标陷入混乱。',
-    force: '每次攻击有概率将目标击退数格。',
-    slaying: '命中指定怪物类别时立即击杀目标。',
-    mercy: '命中时有概率为仍存活的目标恢复其最大生命值的 50%。',
-};
-
-const armorRunicDescriptions: Record<string, string> = {
-    reflection: '受到法术射线攻击时有概率将射线反射回去。',
-    dampening: '免疫爆炸伤害。',
-    mutuality: '受到武器攻击时，将伤害分摊给你身旁的其他敌人。',
-    respiration: '免疫有害气体的影响。',
-    vitality: '持续缓慢再生生命值。',
-    absorption: '受到武器攻击时吸收部分伤害；吸收量足够时可完全抵挡。',
-    reprisal: '受到近战攻击时，对攻击者造成一定比例的反击伤害。',
-    immunity: '免疫指定怪物类别的武器攻击。',
-    multiplicity: '受到近战攻击时有概率生成攻击者的短命谱影。',
-    burden: '受击时有概率增加护甲力量需求。',
-    vulnerability: '受到武器攻击时承受双倍伤害。',
-    immolation: '受击时有概率在身边引发火焰。',
-};
 
 // ---------- Monster ability / behavior description ----------
 
@@ -313,231 +279,19 @@ export function generateMonsterDetail(
     };
 }
 
-// ---------- Display helpers ----------
-
-/** 净附魔含 0.25 步进的力量修正，可能出现一位小数；去浮点尾噪后转显示串。 */
-function trimFloatStr(v: number): string {
-    return String(Math.round(v * 100) / 100);
-}
-
-/** 同上，但正数带 + 前缀（附魔标注惯例）。 */
-function signedTrimFloatStr(v: number): string {
-    return (v > 0 ? '+' : '') + trimFloatStr(v);
-}
-
 // ---------- Item detail generator ----------
 
-export function generateItemDetail(
-    item: Item,
-    playerStrength: number
-): DetailInfo {
-    const sections: DetailSection[] = [];
-    const knowledge = itemKnowledge(item);
-
-    // --- Description ---
-    const desc = item.description || (item.category === ItemCategory.RING
-        ? ItemLoader.rings.find(r => r.id === item.identityId)?.description
-        : item.category === ItemCategory.CHARM ? ItemLoader.charms.find(c => c.id === item.identityId)?.description : '') || '';
-    if (desc && knowledge.kindKnown) {
-        sections.push({
-            lines: [{ text: desc, color: '#aaaacc' }]
-        });
+/** Numeric strength remains supported for Game's inspect outlet until R6 wires
+ * the contextual adapter there. All callers share the same knowledge gates. */
+export function generateItemDetail(item: Item, context: number | ItemDetailContext): DetailInfo {
+    const ctx = typeof context === 'number' ? { strength: context } : context;
+    const sections = itemIntro(item, ctx);
+    switch (item.category) {
+        case ItemCategory.WEAPON: case ItemCategory.ARMOR: sections.push(...equipmentDetail(item, ctx)); break;
+        case ItemCategory.STAFF: case ItemCategory.WAND: sections.push(...arcanaDetail(item, ctx)); break;
+        case ItemCategory.RING: sections.push(...ringDetail(item, ctx)); break;
+        case ItemCategory.CHARM: sections.push(...charmDetail(item, ctx)); break;
     }
-
-    // --- Weapon stats ---
-    if (item.category === ItemCategory.WEAPON) {
-        const statsLines: DetailLine[] = [];
-        if (item.damage) {
-            const { min: lo, max: hi } = CombatSystem.parseDamageString(item.damage);
-            // 基础伤害是种类数据（CE itemName/详情对未鉴定也显示类型已知信息）
-            statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
-
-            // B-1a 反泄露（CE Items.c:1488-1493）：附魔修正只在实例已鉴定后显示。
-            if (knowledge.instanceKnown) {
-                // Zero is a valid requirement; absent fields use combat's fallback.
-                const strReq = item.strengthRequired ?? 0;
-                const ne = netEnchant(item.enchantment, playerStrength, strReq);
-                const eLo = Math.max(1, enchantedDamage(lo, ne));
-                const eHi = Math.max(1, enchantedDamage(hi, ne));
-                statsLines.push({
-                    text: `实际伤害: ${eLo}~${eHi} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
-                    color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
-                });
-            }
-        }
-        if (item.strengthRequired !== undefined) {
-            const mod = strengthModifier(playerStrength, item.strengthRequired);
-            statsLines.push({
-                text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
-                color: mod >= 0 ? '#44ff44' : '#ff4444'
-            });
-        }
-        // UI-2：ITEM_PROTECTED 详情行（CE Items.c:2394-2400）。CE 该块在武器/
-        // 护甲 if-else 之外，两类装备都显示，故武器段与护甲段各放一份；中文
-        // 取 CE chineseUi 原文「不会被酸液腐蚀。」，色同 goodColorEscape（绿）。
-        if (item.isProtected) {
-            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
-        }
-        // B-1a 反泄露：诅咒不预亮（CE 全源码无"详情面板显示诅咒"的分支——
-        // 玩家经穿戴后摘不下来得知，Items.c:7110；或鉴定卷轴整件亮）。
-        sections.push({ header: '武器属性', lines: statsLines });
-    }
-
-    // --- Armor stats ---
-    if (item.category === ItemCategory.ARMOR) {
-        const statsLines: DetailLine[] = [];
-        if (item.armor !== undefined) {
-            // CE 加法防御模型（Items.c:8515-8523）：显示防御 = armor + 净附魔
-            // （含力量修正）。旧乘法"减伤值"口径已随 P1-11 废弃。
-            // B-1a 反泄露：净附魔段只在实例已鉴定后显示（同武器，CE 对未鉴定
-            // 装备只给类型已知信息与力量需求）。
-            statsLines.push({ text: `基础防御值: ${item.armor}` });
-            if (knowledge.instanceKnown) {
-                const strReq = item.strengthRequired ?? 0;
-                const ne = netEnchant(item.enchantment, playerStrength, strReq);
-                if (ne !== 0 || item.enchantment !== 0) {
-                    const effectiveArmor = item.armor + ne;
-                    const strengthNote = ne !== item.enchantment ? '，含力量修正' : '';
-                    statsLines.push({
-                        text: `实际防御值: ${trimFloatStr(effectiveArmor)} (净附魔 ${signedTrimFloatStr(ne)}${strengthNote})`,
-                        color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
-                    });
-                }
-            }
-        }
-        if (item.strengthRequired !== undefined) {
-            const mod = strengthModifier(playerStrength, item.strengthRequired);
-            statsLines.push({
-                text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
-                color: mod >= 0 ? '#44ff44' : '#ff4444'
-            });
-        }
-        // UI-2：ITEM_PROTECTED 详情行（CE Items.c:2394-2400，见武器段注）。
-        if (item.isProtected) {
-            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
-        }
-        // B-1a 反泄露：诅咒不预亮（同武器段注）。
-        sections.push({ header: '护甲属性', lines: statsLines });
-    }
-
-    // --- Runic ---
-    if (item.runicType && knowledge.runicKnown) {
-        const runicLines: DetailLine[] = [];
-        if (item.category === ItemCategory.WEAPON) {
-            const runicDesc = weaponRunicDescriptions[item.runicType];
-            if (runicDesc) runicLines.push({ text: runicDesc, color: '#ffcc44' });
-        } else if (item.category === ItemCategory.ARMOR) {
-            const runicDesc = armorRunicDescriptions[item.runicType];
-            if (runicDesc) runicLines.push({ text: runicDesc, color: '#ffcc44' });
-        }
-        if (runicLines.length > 0) {
-            const runicName = i18next.t('runic.name.' + item.runicType, { defaultValue: '未知符文' });
-            sections.push({ header: `附魔: ${runicName}`, lines: runicLines });
-        }
-    }
-
-    // --- Consumable info ---
-    if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
-        const statsLines: DetailLine[] = [];
-        // B-1a 反泄露（CE Items.c:1611-1634 / 1650-1653）：充能只在实例层已知
-        // （ITEM_IDENTIFIED / ITEM_MAX_CHARGES_KNOWN）时显示；未识别魔杖显示
-        // 使用次数（enchant2 计数，Items.c:7435）而非充能。
-        if (knowledge.instanceKnown) {
-            if (item.charges !== undefined && item.maxCharges !== undefined) {
-                statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
-            }
-        } else if (knowledge.capacityKnown) {
-            if (item.maxCharges !== undefined) {
-                statsLines.push({ text: `充能上限: ${item.maxCharges}（当前余量未知）` });
-            }
-        } else if (item.category === ItemCategory.WAND && (item.timesUsed ?? 0) > 0) {
-            statsLines.push({ text: `已使用 ${item.timesUsed} 次（充能未知）`, color: '#aaaaff' });
-        }
-        statsLines.push({ text: item.category === ItemCategory.WAND
-            ? '不会自然恢复充能'
-            : '随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响' });
-        const staffId = (item as Item & { identityId?: string }).identityId;
-        if (item.category === ItemCategory.STAFF && staffId === 'staff_of_blinking'
-            && ItemLoader.identifiedItems.has(staffId)) {
-            statsLines.push({ text: '自然回电速度为普通法杖的一半' });
-            if (knowledge.instanceKnown) {
-                statsLines.push({ text: `最多瞬移 ${staffBlinkDistance(item.enchantment)} 格（附魔后 ${staffBlinkDistance(item.enchantment + 1)} 格）` });
-            }
-        }
-        sections.push({ header: '法器属性', lines: statsLines });
-    }
-
-    if (item.category === ItemCategory.CHARM && knowledge.kindKnown) {
-        const statsLines: DetailLine[] = [];
-        const id = item.identityId;
-        if (isCharmKind(id)) {
-            const effectAt = (enchant: number): string => {
-                switch (id) {
-                    case 'charm_of_health': return `恢复生命 ${charmHealing(enchant)}%`;
-                    case 'charm_of_protection': return `护盾 ${charmProtection(enchant) / 10} 点`;
-                    case 'charm_of_levitation': return i18next.t('detail.charm.levitation', { turns: charmEffectDuration(id, enchant), defaultValue: 'Levitate for {{turns}} turns and break free of seizure' });
-                    case 'charm_of_shattering': return i18next.t('detail.charm.shattering', { radius: charmShattering(enchant), defaultValue: 'Shatter walls up to {{radius}} spaces away' });
-                    case 'charm_of_guardian': return i18next.t('detail.charm.guardian', { turns: charmGuardianLifespan(enchant), defaultValue: 'Summon a guardian for {{turns}} turns' });
-                    case 'charm_of_teleportation': return i18next.t('detail.charm.teleportation', { defaultValue: 'Teleport elsewhere on this floor' });
-                    case 'charm_of_recharging': return i18next.t('detail.charm.recharging', { defaultValue: 'Fully recharge staffs in your pack (not wands or charms)' });
-                    case 'charm_of_negation': return i18next.t('detail.charm.negation', { radius: charmNegationRadius(enchant), defaultValue: 'Negate yourself and visible creatures and floor items up to {{radius}} spaces away' });
-                    default: return `${charmEffectDuration(id, enchant)} 回合`;
-                }
-            };
-            statsLines.push({ text: `效果: ${effectAt(item.enchantment)}` });
-            statsLines.push({ text: `冷却回合: ${charmRechargeDelay(id, item.enchantment)}` });
-            statsLines.push({ text: i18next.t('detail.charm.enchanted', {
-                effect: effectAt(item.enchantment + 1), cooldown: charmRechargeDelay(id, item.enchantment + 1),
-                defaultValue: 'If enchanted: {{effect}}; recharge in {{cooldown}} turns',
-            }) });
-        }
-        if (item.cooldownRemaining) {
-            statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });
-        }
-        sections.push({ header: '护符属性', lines: statsLines });
-    }
-
-    if (item.category === ItemCategory.RING) {
-        const lines: DetailLine[] = [];
-        const e = item.enchantment;
-        if (knowledge.instanceKnown && knowledge.kindKnown) {
-            // CE itemName(includeDetails) exposes actual E after instance ID.
-            // Keep it explicit here too, including light (which has no formula paragraph).
-            lines.push({ text: `附魔等级 ${e >= 0 ? '+' : ''}${e}` });
-            switch (item.identityId) {
-                case 'ring_of_clairvoyance':
-                    lines.push({ text: e > 0 ? `透视半径 ${e + 1} 格；再附魔后 ${e + 2} 格`
-                        : e < 0 ? `致盲半径 ${1 - e} 格；再附魔后 ${-e} 格` : '无透视效果' });
-                    break;
-                case 'ring_of_stealth':
-                    lines.push({ text: `潜行察觉距离修正 ${e < 0 ? -4 * e : -e} 格` });
-                    break;
-                case 'ring_of_regeneration':
-                    lines.push({ text: `满血恢复约 ${Math.floor(turnsForFullRegenInThousandths(e) / 1000)} 回合（无戒指约 300 回合）；再附魔后约 ${Math.floor(turnsForFullRegenInThousandths(e + 1) / 1000)} 回合` });
-                    break;
-                case 'ring_of_transference':
-                    lines.push({ text: `直接伤害${e < 0 ? '反噬' : '吸血'} ${Math.abs(e) * 5}%；再附魔后 ${Math.abs(e + 1) * 5}%` });
-                    break;
-                case 'ring_of_awareness':
-                    lines.push({ text: `搜索强度修正 ${20 * e}` });
-                    break;
-                case 'ring_of_reaping':
-                    if (e) lines.push({ text: `每次近战命中每点伤害${e < 0 ? '消耗' : '恢复'}法杖与护符 0–${Math.abs(e)} 回合充能；再附魔后 0–${Math.abs(e + 1)} 回合` });
-                    break;
-                case 'ring_of_wisdom':
-                    lines.push({ text: `法杖充能速度为正常的 ${ringWisdomMultiplierPercent(e)}%；再附魔后 ${ringWisdomMultiplierPercent(e + 1)}%` });
-                    break;
-            }
-        } else {
-            lines.push({ text: `再佩戴 ${item.charges ?? 1500} 回合可自动鉴定；未鉴定时正附魔最多按 +${item.timesEnchanted + 1} 生效` });
-        }
-        if (lines.length) sections.push({ header: '戒指效果', lines });
-    }
-
-    return {
-        char: item.char,
-        color: item.color,
-        name: item.displayName,
-        sections
-    };
+    sections.push(...itemEquipmentState(item, ctx));
+    return { char: item.char, color: item.color, name: ctx.omniscient ? item.name : item.displayName, sections };
 }

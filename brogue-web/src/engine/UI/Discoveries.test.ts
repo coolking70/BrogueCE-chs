@@ -41,7 +41,7 @@ it('capacity knowledge does not expose a hidden staff enchantment through blink 
     ItemLoader.identifiedItems = new Set(['staff_of_blinking']);
     const staff = ItemLoader.spawnStaff('staff_of_blinking', 0, 0)!;
     staff.identified = false;
-    staff.maxChargesKnown = true;
+    staff.maxChargesKnown = false;
     staff.enchantment = 2;
     const first = JSON.stringify(generateItemDetail(staff, 12));
     staff.enchantment = 4;

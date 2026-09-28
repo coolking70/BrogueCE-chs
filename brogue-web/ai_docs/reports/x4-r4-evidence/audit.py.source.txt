@@ -1,0 +1,33 @@
+from pathlib import Path
+import subprocess,hashlib,json
+root=Path('brogue-web'); out=root/'ai_docs/reports/x4-r4-evidence'
+def git(*args):return subprocess.check_output(['git',*args],text=True).strip()
+manifest=(out/'source-manifest.txt').read_text().splitlines();changed=[]
+for row in manifest[1:]:
+ digest,p=row.split('  ',1);p=p.removesuffix(' (unchanged)')
+ if hashlib.sha256(Path(p).read_bytes()).hexdigest()!=digest:changed.append(p)
+tracked=git('diff','--name-only').splitlines()
+untracked=git('ls-files','--others','--exclude-standard','brogue-web').splitlines()
+files=sorted(set(tracked+untracked))
+refs=subprocess.check_output(['rg','-l','DetailGenerator|ItemKnowledge|InventoryOverlay|generateItemDetail','brogue-web/src','--glob','*test*','--glob','*spec*'],text=True).splitlines()
+scope=(out/'test-scope.txt').read_text().splitlines()
+pngs=list(out.glob('*.png'));not_ignored=[str(p) for p in pngs if subprocess.run(['git','check-ignore','-q',str(p)]).returncode]
+checks={
+ 'head':git('rev-parse','HEAD'), 'source_manifest_changed':changed,
+ 'game_unchanged':not git('diff','--','brogue-web/src/engine/Core/Game.ts'),
+ 'existing_tests_changed':[p for p in tracked if p.endswith(('.test.ts','.spec.ts'))],
+ 'staged_files':git('diff','--cached','--name-only').splitlines(),
+ 'referenced_test_files':len(refs),'medium_test_files':len(scope),
+ 'missing_referenced_tests':[p for p in refs if p.removeprefix('brogue-web/') not in scope],
+ 'crlf_files':[p for p in files if b'\r\n' in Path(p).read_bytes()],
+ 'png_count':len(pngs),'unignored_pngs':not_ignored,
+ 'diff_check_exit':subprocess.run(['git','diff','--check']).returncode,
+ 'browser_scenarios':len(json.loads((out/'browser.json').read_text())['observations']),
+ 'browser_errors':json.loads((out/'browser.json').read_text())['errors'],
+ 'gates':json.loads((out/'gates.json').read_text()),
+ 'changed_source_files':[p for p in files if p.startswith('brogue-web/src/')],
+}
+assert not changed and checks['game_unchanged'] and not checks['existing_tests_changed']
+assert not any(checks[k] for k in ('staged_files','missing_referenced_tests','crlf_files','unignored_pngs','diff_check_exit','browser_errors'))
+(out/'final-audit.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(checks,ensure_ascii=False,indent=2))

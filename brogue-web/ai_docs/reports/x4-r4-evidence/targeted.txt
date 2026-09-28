@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fe40/brogue/brogue-web
+
+ ❯ src/engine/UI/Discoveries.test.ts (3 tests | 1 failed) 11ms
+   × capacity knowledge does not expose a hidden staff enchantment through blink distance 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/engine/UI/Discoveries.test.ts > capacity knowledge does not expose a hidden staff enchantment through blink distance
+AssertionError: expected '{"char":"\\","color":16777215,"name":…' not to contain '最多瞬移'
+
+Expected: "最多瞬移"
+Received: "{"char":"\\","color":16777215,"name":"undefined [?/3]","sections":[{"lines":[{"text":"沿选定方向瞬移，生物和障碍会截断行程；附魔能增加距离。这根法杖的自然回电速度为普通法杖的一半。","color":"#aaaacc"}]},{"header":"法器属性","lines":[{"text":"充能上限: 3（当前余量未知）"},{"text":"随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"},{"text":"按当前可知戒指加成，约 333 回合恢复一次充能；再附魔后约 250 回合。"},{"text":"自然回电速度为普通法杖的一半。"},{"text":"最多瞬移 8 格（附魔后 10 格）"}]}]}"
+
+ ❯ src/engine/UI/Discoveries.test.ts:49:23
+     47|     staff.enchantment = 4;
+     48|     expect(JSON.stringify(generateItemDetail(staff, 12))).toBe(first);
+     49|     expect(first).not.toContain('最多瞬移');
+       |                       ^
+     50| });
+     51|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 25 passed (26)
+      Tests  1 failed | 675 passed (676)
+   Start at  17:07:30
+   Duration  229.03s (transform 1.53s, setup 0ms, import 15.68s, tests 209.44s, environment 8ms)
+

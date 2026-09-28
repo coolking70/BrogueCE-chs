@@ -1,0 +1,11 @@
+--- a/brogue-web/src/engine/UI/Discoveries.test.ts
++++ b/brogue-web/src/engine/UI/Discoveries.test.ts
+@@ -41,7 +41,7 @@
+     ItemLoader.identifiedItems = new Set(['staff_of_blinking']);
+     const staff = ItemLoader.spawnStaff('staff_of_blinking', 0, 0)!;
+     staff.identified = false;
+-    staff.maxChargesKnown = true;
++    staff.maxChargesKnown = false;
+     staff.enchantment = 2;
+     const first = JSON.stringify(generateItemDetail(staff, 12));
+     staff.enchantment = 4;

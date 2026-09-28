@@ -6,15 +6,24 @@ export function kindIsKnown(kindId: string | undefined): boolean {
 }
 
 /** Shared presentation gates for inventory details and the discovery table. */
-export function itemKnowledge(item: Item) {
+export function itemKnowledge(item: Item, context: { readonly equipped?: boolean; readonly omniscient?: boolean } = {}) {
     const kindId = item.consumableId ?? item.identityId;
+    const flavored = [ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.STAFF, ItemCategory.WAND, ItemCategory.RING].includes(item.category);
+    const equipment = [ItemCategory.WEAPON, ItemCategory.ARMOR, ItemCategory.RING].includes(item.category);
+    const arcana = item.category === ItemCategory.STAFF || item.category === ItemCategory.WAND;
+    const instanceKnown = !!context.omniscient || item.isIdentified;
     return {
         kindId,
-        kindKnown: kindIsKnown(kindId),
-        instanceKnown: item.isIdentified,
+        kindKnown: !!context.omniscient || !flavored || kindIsKnown(kindId),
+        instanceKnown,
         polarityKnown: ItemLoader.isPolarityRevealed(kindId),
-        capacityKnown: item.isIdentified || item.maxChargesKnown,
-        runicKnown: item.runicKnown,
+        magicDetected: item.magicDetected,
+        capacityKnown: arcana && (instanceKnown || item.maxChargesKnown),
+        // CE WAND's MAX_CHARGES_KNOWN reveals remaining uses, unlike STAFF.
+        chargesKnown: arcana && (instanceKnown || (item.category === ItemCategory.WAND && item.maxChargesKnown)),
+        runicKnown: (item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR)
+            && (!!context.omniscient || item.runicKnown),
+        curseKnown: equipment && (instanceKnown || item.magicDetected || !!context.equipped),
     };
 }
 

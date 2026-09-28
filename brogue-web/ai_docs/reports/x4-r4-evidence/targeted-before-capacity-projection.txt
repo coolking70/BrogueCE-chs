@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/fe40/brogue/brogue-web
+
+ ❯ src/engine/UI/Discoveries.test.ts (3 tests | 1 failed) 9ms
+   × capacity knowledge does not expose a hidden staff enchantment through blink distance 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/engine/UI/Discoveries.test.ts > capacity knowledge does not expose a hidden staff enchantment through blink distance
+AssertionError: expected '{"char":"\\","color":16777215,"name":…' to be '{"char":"\\","color":16777215,"name":…' // Object.is equality
+
+Expected: "{"char":"\\","color":16777215,"name":"undefined [?/2]","sections":[{"lines":[{"text":"沿选定方向瞬移，生物和障碍会截断行程；附魔能增加距离。这根法杖的自然回电速度为普通法杖的一半。","color":"#aaaacc"}]},{"header":"法器属性","lines":[{"text":"充能上限: 2（当前余量未知）"},{"text":"随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"},{"text":"按当前可知戒指加成，约 500 回合恢复一次充能；再附魔后约 333 回合。"},{"text":"自然回电速度为普通法杖的一半。"},{"text":"最多瞬移 6 格（附魔后 8 格）"}]}]}"
+Received: "{"char":"\\","color":16777215,"name":"undefined [?/2]","sections":[{"lines":[{"text":"沿选定方向瞬移，生物和障碍会截断行程；附魔能增加距离。这根法杖的自然回电速度为普通法杖的一半。","color":"#aaaacc"}]},{"header":"法器属性","lines":[{"text":"充能上限: 2（当前余量未知）"},{"text":"随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"},{"text":"按当前可知戒指加成，约 250 回合恢复一次充能；再附魔后约 200 回合。"},{"text":"自然回电速度为普通法杖的一半。"},{"text":"最多瞬移 10 格（附魔后 12 格）"}]}]}"
+
+ ❯ src/engine/UI/Discoveries.test.ts:48:59
+     46|     const first = JSON.stringify(generateItemDetail(staff, 12));
+     47|     staff.enchantment = 4;
+     48|     expect(JSON.stringify(generateItemDetail(staff, 12))).toBe(first);
+       |                                                           ^
+     49|     expect(first).not.toContain('最多瞬移');
+     50| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 25 passed (26)
+      Tests  1 failed | 674 passed (675)
+   Start at  16:36:59
+   Duration  231.32s (transform 1.48s, setup 0ms, import 14.80s, tests 212.62s, environment 9ms)
+

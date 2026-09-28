@@ -1,0 +1,17 @@
+from pathlib import Path
+import subprocess,os,json,time
+out=Path('ai_docs/reports/x4-r4-evidence')
+refs=subprocess.check_output(['rg','-l','DetailGenerator|ItemKnowledge|InventoryOverlay|generateItemDetail','src','--glob','*.test.ts'],text=True).splitlines()
+required=['b_1a_identification','b_1c_detect_magic','x3b_item_details','p1_30','u24','ui_1_rendering','i_1_interaction','fe_1_touch','x4_r4']
+files=sorted(set(refs+[str(f) for f in Path('src').rglob('*.test.ts') if any(s in f.name for s in required)]))
+(out/'test-scope.txt').write_text('\n'.join(files)+'\n')
+commands=[('typecheck',['npx','--no-install','vue-tsc','-b']),('build',['npm','run','build']),('targeted',['npx','--no-install','vitest','run',*files,'--maxWorkers=1','--no-file-parallelism']),('drift',['npm','run','test:drift','--','--maxWorkers=1','--no-file-parallelism'])]
+(out/'commands.txt').write_text('\n'.join(' '.join(c) for _,c in commands)+'\n')
+results=[]
+for name,cmd in commands:
+ print('START',name,flush=True);start=time.monotonic()
+ with (out/(name+'.txt')).open('w') as f: result=subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,env={**os.environ,'X4_R4_EVIDENCE':'1'})
+ results.append(dict(gate=name,exit=result.returncode,seconds=round(time.monotonic()-start,3)))
+ (out/'gates.json').write_text(json.dumps(results,indent=2)+'\n')
+ print(results[-1],flush=True)
+ if result.returncode and name in ('typecheck','build'):break
