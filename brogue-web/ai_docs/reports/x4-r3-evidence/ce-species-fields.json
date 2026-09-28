@@ -1,0 +1,613 @@
+[
+  {
+    "name": "you",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0"
+  },
+  {
+    "name": "rat",
+    "bloodType": 23,
+    "DFChance": 1,
+    "DFType": 46,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_URINE",
+    "webId": "rat"
+  },
+  {
+    "name": "kobold",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "kobold"
+  },
+  {
+    "name": "jackal",
+    "bloodType": 23,
+    "DFChance": 1,
+    "DFType": 46,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_URINE",
+    "webId": "jackal"
+  },
+  {
+    "name": "eel",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "eel"
+  },
+  {
+    "name": "monkey",
+    "bloodType": 23,
+    "DFChance": 1,
+    "DFType": 46,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_URINE",
+    "webId": "monkey"
+  },
+  {
+    "name": "bloat",
+    "bloodType": 25,
+    "DFChance": 0,
+    "DFType": 34,
+    "ceBlood": "DF_PURPLE_BLOOD",
+    "ceDF": "DF_BLOAT_DEATH",
+    "webId": "bloat"
+  },
+  {
+    "name": "pit bloat",
+    "bloodType": 25,
+    "DFChance": 0,
+    "DFType": 135,
+    "ceBlood": "DF_PURPLE_BLOOD",
+    "ceDF": "DF_HOLE_POTION",
+    "webId": "pit_bloat"
+  },
+  {
+    "name": "goblin",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "goblin"
+  },
+  {
+    "name": "goblin conjurer",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "goblin_conjurer"
+  },
+  {
+    "name": "goblin mystic",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "goblin_mystic"
+  },
+  {
+    "name": "goblin totem",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "goblin_totem"
+  },
+  {
+    "name": "pink jelly",
+    "bloodType": 25,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_PURPLE_BLOOD",
+    "ceDF": "0",
+    "webId": "pink_jelly"
+  },
+  {
+    "name": "toad",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "toad"
+  },
+  {
+    "name": "vampire bat",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "vampire_bat"
+  },
+  {
+    "name": "arrow turret",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "arrow_turret"
+  },
+  {
+    "name": "acid mound",
+    "bloodType": 27,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ACID_BLOOD",
+    "ceDF": "0",
+    "webId": "acid_mound"
+  },
+  {
+    "name": "centipede",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "centipede"
+  },
+  {
+    "name": "ogre",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "ogre"
+  },
+  {
+    "name": "bog monster",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "bog_monster"
+  },
+  {
+    "name": "ogre totem",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "ogre_totem"
+  },
+  {
+    "name": "spider",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "spider"
+  },
+  {
+    "name": "spark turret",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "spark_turret"
+  },
+  {
+    "name": "wisp",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "wisp"
+  },
+  {
+    "name": "wraith",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "wraith"
+  },
+  {
+    "name": "zombie",
+    "bloodType": 32,
+    "DFChance": 100,
+    "DFType": 41,
+    "ceBlood": "DF_ROT_GAS_BLOOD",
+    "ceDF": "DF_ROT_GAS_PUFF",
+    "webId": "zombie"
+  },
+  {
+    "name": "troll",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "troll"
+  },
+  {
+    "name": "ogre shaman",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "ogre_shaman"
+  },
+  {
+    "name": "naga",
+    "bloodType": 24,
+    "DFChance": 100,
+    "DFType": 48,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "DF_PUDDLE",
+    "webId": "naga"
+  },
+  {
+    "name": "salamander",
+    "bloodType": 28,
+    "DFChance": 100,
+    "DFType": 45,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "DF_SALAMANDER_FLAME",
+    "webId": "salamander"
+  },
+  {
+    "name": "explosive bloat",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 35,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_BLOAT_EXPLOSION",
+    "webId": "explosive_bloat"
+  },
+  {
+    "name": "dar blademaster",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "dar_blademaster"
+  },
+  {
+    "name": "dar priestess",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "dar_priestess"
+  },
+  {
+    "name": "dar battlemage",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "dar_battlemage"
+  },
+  {
+    "name": "acidic jelly",
+    "bloodType": 27,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ACID_BLOOD",
+    "ceDF": "0",
+    "webId": "acidic_jelly"
+  },
+  {
+    "name": "centaur",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "centaur"
+  },
+  {
+    "name": "underworm",
+    "bloodType": 26,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_WORM_BLOOD",
+    "ceDF": "0",
+    "webId": "underworm"
+  },
+  {
+    "name": "sentinel",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "sentinel"
+  },
+  {
+    "name": "dart turret",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "dart_turret"
+  },
+  {
+    "name": "kraken",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "kraken"
+  },
+  {
+    "name": "lich",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "lich"
+  },
+  {
+    "name": "phylactery",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "phylactery"
+  },
+  {
+    "name": "pixie",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "pixie"
+  },
+  {
+    "name": "phantom",
+    "bloodType": 30,
+    "DFChance": 2,
+    "DFType": 50,
+    "ceBlood": "DF_ECTOPLASM_BLOOD",
+    "ceDF": "DF_ECTOPLASM_DROPLET",
+    "webId": "phantom"
+  },
+  {
+    "name": "flame turret",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "flame_turret"
+  },
+  {
+    "name": "imp",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "imp"
+  },
+  {
+    "name": "fury",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "fury"
+  },
+  {
+    "name": "revenant",
+    "bloodType": 30,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ECTOPLASM_BLOOD",
+    "ceDF": "0",
+    "webId": "revenant"
+  },
+  {
+    "name": "tentacle horror",
+    "bloodType": 25,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_PURPLE_BLOOD",
+    "ceDF": "0",
+    "webId": "tentacle_horror"
+  },
+  {
+    "name": "golem",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "golem"
+  },
+  {
+    "name": "dragon",
+    "bloodType": 24,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_GREEN_BLOOD",
+    "ceDF": "0",
+    "webId": "dragon"
+  },
+  {
+    "name": "goblin warlord",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "0",
+    "webId": "goblin_warlord"
+  },
+  {
+    "name": "black jelly",
+    "bloodType": 25,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_PURPLE_BLOOD",
+    "ceDF": "0",
+    "webId": "black_jelly"
+  },
+  {
+    "name": "vampire",
+    "bloodType": 23,
+    "DFChance": 0,
+    "DFType": 36,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_BLOOD_EXPLOSION",
+    "webId": "vampire"
+  },
+  {
+    "name": "flamedancer",
+    "bloodType": 29,
+    "DFChance": 100,
+    "DFType": 37,
+    "ceBlood": "DF_EMBER_BLOOD",
+    "ceDF": "DF_FLAMEDANCER_CORONA",
+    "webId": "flamedancer"
+  },
+  {
+    "name": "spectral blade",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "spectral_blade"
+  },
+  {
+    "name": "spectral sword",
+    "bloodType": 0,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "spectral_sword"
+  },
+  {
+    "name": "stone guardian",
+    "bloodType": 7,
+    "DFChance": 100,
+    "DFType": 92,
+    "ceBlood": "DF_RUBBLE",
+    "ceDF": "DF_GUARDIAN_STEP",
+    "webId": "stone_guardian"
+  },
+  {
+    "name": "winged guardian",
+    "bloodType": 7,
+    "DFChance": 100,
+    "DFType": 91,
+    "ceBlood": "DF_RUBBLE",
+    "ceDF": "DF_SILENT_GLYPH_GLOW",
+    "webId": "winged_guardian"
+  },
+  {
+    "name": "guardian spirit",
+    "bloodType": 0,
+    "DFChance": 100,
+    "DFType": 0,
+    "ceBlood": "0",
+    "ceDF": "0",
+    "webId": "guardian_spirit"
+  },
+  {
+    "name": "Warden of Yendor",
+    "bloodType": 7,
+    "DFChance": 100,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE",
+    "ceDF": "0",
+    "webId": "Warden_of_Yendor"
+  },
+  {
+    "name": "eldritch totem",
+    "bloodType": 31,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "0",
+    "webId": "eldritch_totem"
+  },
+  {
+    "name": "mirrored totem",
+    "bloodType": 31,
+    "DFChance": 100,
+    "DFType": 93,
+    "ceBlood": "DF_RUBBLE_BLOOD",
+    "ceDF": "DF_MIRROR_TOTEM_STEP",
+    "webId": "mirrored_totem"
+  },
+  {
+    "name": "unicorn",
+    "bloodType": 23,
+    "DFChance": 1,
+    "DFType": 47,
+    "ceBlood": "DF_RED_BLOOD",
+    "ceDF": "DF_UNICORN_POOP",
+    "webId": "unicorn"
+  },
+  {
+    "name": "ifrit",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "ifrit"
+  },
+  {
+    "name": "phoenix",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "phoenix"
+  },
+  {
+    "name": "phoenix egg",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "phoenix_egg"
+  },
+  {
+    "name": "mangrove dryad",
+    "bloodType": 28,
+    "DFChance": 0,
+    "DFType": 0,
+    "ceBlood": "DF_ASH_BLOOD",
+    "ceDF": "0",
+    "webId": "mangrove_dryad"
+  }
+]

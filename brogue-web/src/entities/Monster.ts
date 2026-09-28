@@ -1,4 +1,5 @@
 import { notifyMonsterDeath } from '../engine/Core/MonsterLifecycle';
+import { creatureFeatureInfo, spawnCreatureBlood } from '../engine/Combat/CreatureFeatures';
 import { updateMonsterState, wanderTowardLastSeen } from '../engine/Combat/MonsterAI';
 /**
  * src/entities/Monster.ts
@@ -24,8 +25,6 @@ import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import monsterCatalogData from '../data/monsters.json';
 import { PERMANENT_STATUS_DURATION } from './Creature';
-import { DF } from '../engine/Map/DungeonFeatureCatalog';
-import { catalogFeature, spawnDungeonFeature } from '../engine/Map/DungeonFeature';
 import { DungeonLayer, TerrainType, type Grid } from '../engine/Map/Grid';
 import { breakEntanglingTerrain, discoverTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
@@ -258,6 +257,10 @@ export enum MonsterMode { NORMAL, PERM_FLEEING }
 export type MonsterAbility = 'flying' | 'regenerating' | 'ranged' | 'poisonous';
 
 export interface MonsterData {
+    /** Globals.c monsterCatalog info fields; zero means no feature. */
+    bloodType?: number;
+    DFChance?: number;
+    DFType?: number;
     id: string;
     name: string;
     char: string;
@@ -305,6 +308,10 @@ export interface MutationData {
 }
 
 export class Monster extends Creature {
+    /** Derived from saved typeId/mutation/deathDFType, including info resets. */
+    public get bloodType(): number { return creatureFeatureInfo(this.typeId).bloodType; }
+    public get DFChance(): number { return creatureFeatureInfo(this.typeId, this.mutation?.id, this.deathDFType).DFChance; }
+    public get DFType(): number { return creatureFeatureInfo(this.typeId, this.mutation?.id, this.deathDFType).DFType; }
     public state: MonsterState = MonsterState.ASLEEP;
     public creatureMode: MonsterMode = MonsterMode.NORMAL;
     public damageString: string;
@@ -388,19 +395,19 @@ export class Monster extends Creature {
     public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
         this.interruptCorpseAbsorption(amount);
         const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
-        // CE Combat.c:1827–1837: truncate both C divisions BEFORE gas ×100.
+        // Preserve the existing zombie consumer until R6 replaces Game.spawnBlood
+        // atomically at all damage sites. The shared emitter handles every species.
         if (grid && this.typeId === 'zombie' && damage > 0 && this.hp > 0 && !this.isInvulnerable()) {
-            const blood = catalogFeature(DF.DF_ROT_GAS_BLOOD);
-            const volume = Math.trunc(12 * (15 + Math.trunc(Math.min(damage, this.hp) * 3 / 2)) / 100) * 100;
-            spawnDungeonFeature(grid, this.x, this.y, { ...blood, startProbability: volume }, false);
+            spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp);
         }
         super.takeDamage(damage, true);
     }
 
     public administrativeDeath?: boolean;
     public deathAppearance?: { char: string; color: number };
-    /** Explicit CE info.DFType after a catalog info reset. Mutation bookkeeping
-     * survives resurrection, but must not reapply its old DF to restored info. */
+    /** Explicit CE info.DFType after mutation or a catalog info reset. It
+     * survives negation removing mutationIndex; resurrection resets info even
+     * though mutation bookkeeping survives. Already part of the U01 codec. */
     public deathDFType?: number;
 
     protected override die(): void {
@@ -924,7 +931,13 @@ export class Monster extends Creature {
     }
 
     public mutate(m: MutationData) {
-        delete this.deathDFType;
+        // CE Monsters.c:45-49 / Items.c:4514-4518: retain overridden info when
+        // negation later clears mutationIndex. The existing saved DF field is
+        // sufficient: both mutation DF identities imply a zero periodic chance.
+        // A mutation with DFChance=-1/DFType=0 leaves existing info unchanged.
+        if (m.id === 'explosive' || m.id === 'infested') {
+            this.deathDFType = creatureFeatureInfo(this.typeId, m.id).DFType;
+        }
         this.mutation = m;
         // P1-30：变异名经 i18n 组装，语序与连接符收在资源键里（zh_CN
         // "mutation.<id>" 为"爆裂的{{name}}"式插值；harness 空资源回退英文

@@ -1,0 +1,38 @@
+[
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "reason": "Register exactly two new consumers; the zombie source assertion follows the shared emitter. Whole-source scanner and all behavioral assertions retained.",
+    "before": "61ddcaa3ff661c0f835c13f8de12c4ff724c2ec6cb7db6a7f85aec77456b9b01",
+    "after": "4027065531842672adb58a08dfe2833602168a36c84a234465546ece52760ec0"
+  },
+  {
+    "file": "src/test/b_1c_detect_magic.test.ts",
+    "reason": "The old guard explicitly anticipated this flip when aggravation was restored. Keep pack/floor detection, global polarity and consumed-potion assertions.",
+    "before": "a8f28217804895a52f11b8ee2326b664c644695cff5608547beba2df56e9258e",
+    "after": "43f0e7ec95f1c0d08c45853aad838dcbefcffddaa5a2165da8afbd9ccf59cc26"
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "reason": "The full CE scroll table has total weight 158, not the old missing-kind normalization (old comment 133 was already stale; old actual pool total 143). Recenter six-sigma interval without increasing width/sample tolerance; keep uniform counterexample, potion checks and all RNG/zero-frequency checks.",
+    "before": "a8f1c55d16391204b7f9df6af720804123d3c63278c2844e4c17c96c32718b73",
+    "after": "e6354d23d9ac9a7b2969f19b72ecd67a490cb1d0143113e37a8d50307d81e7ed"
+  },
+  {
+    "file": "src/test/x4_r4_item_details.test.ts",
+    "reason": "The matrix automatically exercises the new real item and all its knowledge states. Update only the identity total and explicit old absence assumption; preserve every detail/hidden-information/RNG assertion.",
+    "before": "64b135345947deb915e0cb65a2e2c1969b7628a5380fb3e68baeacad057ed528",
+    "after": "25eb52c8cc3601233ed1633e0d87532a1dc6feea94e66f47e334a7ede8af8b8b"
+  },
+  {
+    "file": "src/engine/UI/Discoveries.test.ts",
+    "reason": "Restore the fourteenth scroll and its real denominator; keep integer truncation, all other tables, naming and hidden-knowledge guards.",
+    "before": "94a6424882e654f7ee0eb1f8e7a52a0734854ffacb0702bead0b20ad8a436728",
+    "after": "aa840040c861914b17be0a1f5cd44a4062eb18d4a89965daca488ca0e56d33fc"
+  },
+  {
+    "file": "src/test/x3b_display_recording.test.ts",
+    "reason": "Same natural seed, items, route and commands. New generation causes the target enchantment scroll #16 to merge into already collected stack #17 (quantity 2). Replace the unique-object premise with exact quantity gain at the actual pickup command and floor removal; return the surviving pack object. All replay/frame/seek/OOS assertions remain unchanged.",
+    "before": "31a440cfd71386c887f08a58cbb608a96b77ed128c724ca11a3a845097ccb2e9",
+    "after": "7fd74439eeeabb0f272129a86727d5f24e047b2762bd529249a01e1ba62b4220"
+  }
+]

@@ -1,0 +1,61 @@
+{
+  "sources": [
+    {
+      "file": "src/data/consumables.json",
+      "head": "7ae3960cf2e84068189c32297ccca674b39475e2ea385e24c2426f4e12c0da00",
+      "final": "e84fb57af48ac0187619474a62c0f06445ee821e6982a1f2e0eac03f29ce450b"
+    },
+    {
+      "file": "src/data/monsters.json",
+      "head": "25e88ea3bc711b67718bdb24cd69eda2d2b8b6521fca4a6247e35704a8b2eaeb",
+      "final": "dba93f0fb35135faffb215a539375888c97dce026def07c9295721d3aeca5a5c"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "head": "3fa7fd4197fc1e3e2d067162f794182f6c601eaa5e5ca743bd249bbdf42d35b8",
+      "final": "6151ac2ef467baafeb0cac1da6d8932f53ef39cb8116018a77e34894eb0c8176"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "head": "10791a29ebc3cda064cfe2021d8ce5ffa5bea80f590d9b4eba07ebf9cb463783",
+      "final": "b6f3a3faae003ace0bdf3cdb3b1f3964e36422273dae8932b84745bafae51496"
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "head": "785c4b118d45218ebe270eaf7254b12fb15695deca2c1b1c12d0f272462bc7ca",
+      "final": "d14767e1334028c1caf2f342bf7059ef4809c571d11fb7bfc2a6b8851ca15988"
+    }
+  ],
+  "added": [
+    {
+      "file": "src/engine/Combat/CreatureFeatures.ts",
+      "final": "28541ff5e3b72090906d59730eac4d11047729a90f732add825a4fc67e60f222"
+    },
+    {
+      "file": "src/engine/Items/IncendiaryDart.ts",
+      "final": "d9997b207210d0a06d5b597b0d2809b31c0cdacd4ebd255f21cd27a91d48209a"
+    },
+    {
+      "file": "src/engine/Items/AggravationScroll.ts",
+      "final": "37378064ff086a1788b5334b347e9344667bd82c1655227e4067f71440a985ef"
+    }
+  ],
+  "tests": {
+    "E:/bench/work/x4r3/brogue-web/src/test/b_1c_detect_magic.test.ts": "a8f28217804895a52f11b8ee2326b664c644695cff5608547beba2df56e9258e",
+    "E:/bench/work/x4r3/brogue-web/src/test/c_4b_dungeon_feature.test.ts": "61ddcaa3ff661c0f835c13f8de12c4ff724c2ec6cb7db6a7f85aec77456b9b01",
+    "E:/bench/work/x4r3/brogue-web/src/test/t_1_tail.test.ts": "a8f1c55d16391204b7f9df6af720804123d3c63278c2844e4c17c96c32718b73",
+    "E:/bench/work/x4r3/brogue-web/src/test/u_r2_trace.test.ts": "791f584a34516b5e278359e0e04822c901a761b6171bf6a2405369618211c381",
+    "E:/bench/work/x4r3/brogue-web/src/test/u_r3_trace.test.ts": "7a42327e8ce657ed9e25d2fe4046903c4e7bbfd118d18f11174d26357565116e",
+    "E:/bench/work/x4r3/brogue-web/src/test/u_r4_trace.test.ts": "3001852e4359f9ce3af3e42929549f9c3849e23ac565d73e7d20f14bc453fdee",
+    "E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts": "31a440cfd71386c887f08a58cbb608a96b77ed128c724ca11a3a845097ccb2e9",
+    "E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts": "64b135345947deb915e0cb65a2e2c1969b7628a5380fb3e68baeacad057ed528",
+    "E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts": "94a6424882e654f7ee0eb1f8e7a52a0734854ffacb0702bead0b20ad8a436728"
+  },
+  "fixtures": {
+    "src/test/fixtures/generation_baseline.json": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+    "src/test/fixtures/deep_generation_baseline.json": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+    "ai_docs/reports/u-r2-trace.json": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+    "ai_docs/reports/u-r3-trace.json.gz": "842f47cbdaa37031ff6bc165ec926003c114f4dc1f8687e9098b170c6ba0193a",
+    "ai_docs/reports/u-r4-trace.json.gz": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444"
+  }
+}

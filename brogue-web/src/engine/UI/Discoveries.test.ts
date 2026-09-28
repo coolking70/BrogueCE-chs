@@ -12,7 +12,7 @@ it('shows true names for the five CE tables and omits missing web kinds', () => 
     ItemLoader.callTitles = new Map();
     const groups = getDiscoveries();
     expect(groups.map(g => [g.label, g.rows.length])).toEqual([
-        ['scrolls', 13], ['rings', 8], ['potions', 16], ['staffs', 12], ['wands', 9],
+        ['scrolls', 14], ['rings', 8], ['potions', 16], ['staffs', 12], ['wands', 9],
     ]);
     expect(groups[2]!.rows.map(r => r.id)).toEqual(expect.arrayContaining(['potion_of_darkness', 'potion_of_creeping_death']));
     const life = groups[2]!.rows[0]!;
@@ -32,7 +32,7 @@ it('uses integer-truncated percentages among unidentified kinds only', () => {
     const initial = getDiscoveries();
     expect(initial[1]!.rows.map(row => row.percentage)).toEqual([12, 12, 12, 12, 12, 12, 12, 12]);
     expect(initial[0]!.rows[0]!.percentage).toBeUndefined(); // zero-frequency enchanting
-    expect(initial[0]!.rows[1]!.percentage).toBe(20); // 30 / 143, truncated
+    expect(initial[0]!.rows[1]!.percentage).toBe(18); // CE full table: 30 / 158, truncated
     ItemLoader.identifiedItems.add('ring_of_clairvoyance');
     expect(getDiscoveries()[1]!.rows.map(row => row.percentage)).toEqual([undefined, 14, 14, 14, 14, 14, 14, 14]);
 });

@@ -171,7 +171,7 @@ export class ItemLoader {
         { category: 'SCROLL', ceKind: 'SCROLL_NEGATION',          webId: 'scroll_of_negation',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'SCROLL', ceKind: 'SCROLL_SHATTERING',        webId: 'scroll_of_shattering',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'SCROLL', ceKind: 'SCROLL_DISCORD',           webId: 'scroll_of_discord',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
-        { category: 'SCROLL', ceKind: 'SCROLL_AGGRAVATE_MONSTER', webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_AGGRAVATE_MONSTER', webId: 'scroll_of_aggravate_monsters',                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'SCROLL', ceKind: 'SCROLL_SUMMON_MONSTER',    webId: 'scroll_of_summon_monsters', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         // ---- 16 药水（potionTable_Brogue 顺序）----
         { category: 'POTION', ceKind: 'POTION_LIFE',          webId: 'potion_of_life',           initialFrequency: 0, incrementFrequency: 34, decrementFrequency: 150, genMultiplier: 4, genIncrement: 3, levelScaling: 1, levelGuarantee: 0, itemNumberGuarantee: 0 },
@@ -179,7 +179,7 @@ export class ItemLoader {
         { category: 'POTION', ceKind: 'POTION_TELEPATHY',     webId: 'potion_of_telepathy',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_LEVITATION',    webId: 'potion_of_levitation',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_DETECT_MAGIC',  webId: 'potion_of_detect_magic',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
-        { category: 'POTION', ceKind: 'POTION_SPEED',         webId: 'potion_of_haste',          initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_HASTE_SELF',         webId: 'potion_of_haste',          initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_FIRE_IMMUNITY', webId: 'potion_of_fire_immunity',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_INVISIBILITY',  webId: 'potion_of_invisibility',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_POISON',        webId: 'potion_of_poison',         initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
@@ -525,9 +525,8 @@ export class ItemLoader {
      *   - 戒指 ringTable，brogue/Globals.c:1656-1664（全部 +1）
      * web 自创/错位实体（CE 无此种类）记 0 并注明：potion_of_healing（自创，退池）、
      * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
-     * 错位实体，退池）、staff_of_light（自创，退池）。CE 有而 web 缺的种类
-     * （scroll aggravate）不在 web 表内，
-     * 不参与分组——补目录时须同时补本表（W-24～26 已补齐法器目录）。
+     * 错位实体，退池）、staff_of_light（自创，退池）。X4-R3 补齐激怒
+     * 怪物卷轴及恶意极性；W-24～26 已补齐法器目录。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
      * 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均为原生种类且
@@ -540,7 +539,7 @@ export class ItemLoader {
         potion_of_telepathy: 1,       // telepathy
         potion_of_levitation: 1,      // levitation
         potion_of_detect_magic: 1,    // detect magic
-        // B-1c 更正：CE POTION_SPEED 在 web 的 id 是 `potion_of_haste`
+        // B-1c 更正：CE POTION_HASTE_SELF 在 web 的 id 是 `potion_of_haste`
         // （consumables.json，trueName "Potion of Speed"、effect "speed"）。
         // B-1a 写成 `potion_of_speed` → 该键在表里恒查不到，速度药水此前
         // 落在"无极性"（0）而不参与善意分组；B-0 §5.1-9 "web 缺速度药水"
@@ -557,7 +556,7 @@ export class ItemLoader {
         potion_of_descent: -1,        // descent
         potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN）
         potion_of_healing: 0,         // 自创（CE 无），退池
-        // 卷轴（web 14 条，含 1 条自创；CE aggravate monsters web 缺）
+        // 卷轴（CE 14 条，另含 1 条退池的自创 amnesia）
         scroll_of_enchantment: 1,     // enchanting
         scroll_of_identify: 1,        // identify
         scroll_of_teleportation: 1,   // teleportation
@@ -570,6 +569,7 @@ export class ItemLoader {
         scroll_of_negation: 1,        // negation
         scroll_of_shattering: 1,      // shattering
         scroll_of_discord: 1,         // discord
+        scroll_of_aggravate_monsters: -1, // CE SCROLL_AGGRAVATE_MONSTER
         scroll_of_summon_monsters: -1,// summon monsters
         scroll_of_amnesia: 0,         // 自创（CE 无），退池
         // 魔杖（CE 全 9 条 + 2 条退池兼容定义，GlobalsBrogue.c:702-710）

@@ -1,0 +1,42 @@
+{
+  "time": "2026-09-28T22:29:25.062Z",
+  "generationFields": 0,
+  "records": [
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "before": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+      "after": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+      "writes": 0
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "before": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+      "after": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+      "writes": 0
+    },
+    {
+      "file": "ai_docs/reports/u-r2-trace.json",
+      "before": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+      "after": "0ab953ab936f0b38623b4fefd7eee06469443ce3ff9bafd402c2bd46567d4f9d",
+      "writes": 1,
+      "changedLeaves": 113,
+      "originalMethod": "UR2_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r2_trace.test.ts --maxWorkers=1"
+    },
+    {
+      "file": "ai_docs/reports/u-r3-trace.json.gz",
+      "before": "842f47cbdaa37031ff6bc165ec926003c114f4dc1f8687e9098b170c6ba0193a",
+      "after": "4a38ca0d6dd0b0320dc4ae023fa0164de539fe8ab78649f4395de0b2b2a5a381",
+      "writes": 1,
+      "changedLeaves": 120,
+      "originalMethod": "UR3_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r3_trace.test.ts --maxWorkers=1"
+    },
+    {
+      "file": "ai_docs/reports/u-r4-trace.json.gz",
+      "before": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444",
+      "after": "b2a02432ea13343be60275ec1e38fcf47e56487fb8dfcfdd885bc7142fe249e0",
+      "writes": 1,
+      "changedLeaves": 3570,
+      "originalMethod": "UR4_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r4_trace.test.ts --maxWorkers=1"
+    }
+  ]
+}

@@ -37,7 +37,7 @@ beforeEach(() => {
 });
 
 describe('X4-R4 legal catalogue/state matrix', () => {
-    it('covers all 99 existing CE identities, with effect assertions and forbidden information', () => {
+    it('covers all 100 CE identities, with effect assertions and forbidden information', () => {
         const evidence: string[] = [], counts: Record<string, number> = {};
         let identities = 0;
         for (const [table, spawn, category] of tables) for (const row of table) {
@@ -105,7 +105,7 @@ describe('X4-R4 legal catalogue/state matrix', () => {
             expect(itemKnowledge(item).runicKnown).toBe(false); expect(itemKnowledge(item).curseKnown).toBe(false);
             evidence.push(`${C[item.category]} / natural\n${detail}\n`);
         }
-        expect(identities).toBe(99);
+        expect(identities).toBe(100);
         if (process.env.X4_R4_EVIDENCE) writeFileSync('ai_docs/reports/x4-r4-evidence/state-matrix.txt',
             `Identities: ${identities}\nStates: ${JSON.stringify(counts)}\n\n${evidence.join('\n')}`);
     });
@@ -147,7 +147,7 @@ describe('X4-R4 legal catalogue/state matrix', () => {
 });
 
 describe('X4-R4 CE branches and numeric predictions', () => {
-    it('uses catalogue descriptions for restored instances and reserves the R3 aggravation branch', () => {
+    it('uses catalogue descriptions for restored instances and the restored R3 aggravation item', () => {
         const item = L.spawnPotion('potion_of_life', -1, -1)!;
         // 验收裁决：描述不写入物品实例（CE 按种类表查询；避免快照/存档膨胀与 trace 漂移），详情从目录解析。
         expect(item.description).toBeUndefined();
@@ -157,7 +157,7 @@ describe('X4-R4 CE branches and numeric predictions', () => {
         const scroll = L.spawnScroll('scroll_of_identify', -1, -1)!;
         scroll.consumableId = 'scroll_of_aggravate_monsters'; L.identify(scroll.consumableId);
         expect(text(scroll)).toContain('唤醒本层怪物');
-        expect(L.scrolls.some(s => s.id === 'scroll_of_aggravate_monsters')).toBe(false);
+        expect(L.scrolls.some(s => s.id === 'scroll_of_aggravate_monsters')).toBe(true);
     });
 
     it('food boundary, carried/vault origin, no-context omission and special assets', () => {

@@ -1,0 +1,30 @@
+[
+  {
+    "label": "typecheck",
+    "command": "npx vue-tsc -b",
+    "exit": 0,
+    "seconds": 10.021,
+    "log": "output/x4-r3/final-typecheck.log"
+  },
+  {
+    "label": "build",
+    "command": "npm run build",
+    "exit": 0,
+    "seconds": 14.175,
+    "log": "output/x4-r3/final-build.log"
+  },
+  {
+    "label": "test",
+    "command": "npm test -- --maxWorkers=8 --reporter=default --reporter=json --outputFile=output/x4-r3/final-test.json",
+    "exit": 0,
+    "seconds": 1527.712,
+    "log": "output/x4-r3/final-test.log"
+  },
+  {
+    "label": "drift",
+    "command": "npm run test:drift -- --maxWorkers=1 --reporter=default --reporter=json --outputFile=output/x4-r3/final-drift.json",
+    "exit": 0,
+    "seconds": 34.49,
+    "log": "output/x4-r3/final-drift.log"
+  }
+]

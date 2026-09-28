@@ -1,0 +1,62 @@
+[
+  {
+    "label": "counterfactual-old-tests",
+    "args": [
+      "E:/bench/work/x4r3/brogue-web/src/test/b_1c_detect_magic.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/t_1_tail.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/u_r2_trace.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/u_r3_trace.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/u_r4_trace.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts",
+      "E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts",
+      "src/test/generation_baseline.test.ts",
+      "src/test/u_r2_trace.test.ts",
+      "src/test/u_r3_trace.test.ts",
+      "src/test/u_r4_trace.test.ts",
+      "--maxWorkers=8",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=output/x4-r3/counterfactual-old-tests.json"
+    ],
+    "exit": 0,
+    "seconds": 70.575,
+    "log": "output/x4-r3/counterfactual-old-tests.log"
+  },
+  {
+    "label": "counterfactual-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r3-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 56.467,
+    "log": "output/x4-r3/counterfactual-generation.log"
+  },
+  {
+    "label": "final-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r3-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 54.684,
+    "log": "output/x4-r3/final-generation.log"
+  },
+  {
+    "label": "final-original-traces",
+    "args": [
+      "src/test/u_r2_trace.test.ts",
+      "src/test/u_r3_trace.test.ts",
+      "src/test/u_r4_trace.test.ts",
+      "--maxWorkers=3",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=output/x4-r3/final-original-traces.json"
+    ],
+    "exit": 1,
+    "seconds": 65.744,
+    "log": "output/x4-r3/final-original-traces.log"
+  }
+]

@@ -96,12 +96,16 @@ describe('T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（C
         expect(weapons['dart'] ?? 0, 'dart 基频 0').toBe(0);
     });
 
-    it('AD-A2 对抗：identify 占比贴 CE 加权值 30/133（等概率 1/13 在此翻红）', () => {
+    it('AD-A2 对抗：identify 占比贴 CE 完整卷轴表 30/158（等概率 1/14 在此翻红）', () => {
         const scrolls = tally('SCROLL', 6000, 4242);
         const p = (scrolls['scroll_of_identify'] ?? 0) / 6000;
-        // 二项 σ≈0.0054；带 [0.19, 0.26] ≈ 期望 0.2256 ± 6σ。
-        expect(p, `identify 占比 ${p.toFixed(4)}，期望 30/133≈0.2256`).toBeGreaterThan(0.19);
-        expect(p, `identify 占比 ${p.toFixed(4)}，期望 30/133≈0.2256`).toBeLessThan(0.26);
+        // GlobalsBrogue.c:684-699: complete CE base mass is 158 (aggravate=15).
+        // Retain 6000 samples and the original six-sigma intent; this window
+        // is narrower than the old 0.07-wide band and still rejects uniform draw.
+        const expected = 30 / 158;
+        const sixSigma = 6 * Math.sqrt(expected * (1 - expected) / 6000);
+        expect(p, `identify proportion ${p.toFixed(4)}, CE expectation 30/158`).toBeGreaterThan(expected - sixSigma);
+        expect(p, `identify proportion ${p.toFixed(4)}, CE expectation 30/158`).toBeLessThan(expected + sixSigma);
         // 药水侧同理：telepathy 权重 20/175≈0.1143（D2 剔除 creeping_death 后归一）。
         const potions = tally('POTION', 6000, 4243);
         const pp = (potions['potion_of_telepathy'] ?? 0) / 6000;

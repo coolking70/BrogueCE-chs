@@ -1,0 +1,14 @@
+{
+  "time": "2026-09-28T22:01:25.902823+00:00",
+  "reason": "Review during initial full-suite run found mutation info must survive real negation; reuse saved deathDFType for the two overrides and add graph-roundtrip guards. Initial suite is diagnostic; final complete gates will run after all changes are frozen.",
+  "productionSHA256": {
+    "src/data/consumables.json": "e84fb57af48ac0187619474a62c0f06445ee821e6982a1f2e0eac03f29ce450b",
+    "src/data/monsters.json": "dba93f0fb35135faffb215a539375888c97dce026def07c9295721d3aeca5a5c",
+    "src/engine/Items/ItemLoader.ts": "6151ac2ef467baafeb0cac1da6d8932f53ef39cb8116018a77e34894eb0c8176",
+    "src/entities/Monster.ts": "8988940b7abd507716f93b7f4a1d336deb50c687d9dcad842a9b8f72a7536318",
+    "src/locales/zh_CN.json": "d14767e1334028c1caf2f342bf7059ef4809c571d11fb7bfc2a6b8851ca15988",
+    "src/engine/Combat/CreatureFeatures.ts": "28541ff5e3b72090906d59730eac4d11047729a90f732add825a4fc67e60f222",
+    "src/engine/Items/IncendiaryDart.ts": "d9997b207210d0a06d5b597b0d2809b31c0cdacd4ebd255f21cd27a91d48209a",
+    "src/engine/Items/AggravationScroll.ts": "37378064ff086a1788b5334b347e9344667bd82c1655227e4067f71440a985ef"
+  }
+}

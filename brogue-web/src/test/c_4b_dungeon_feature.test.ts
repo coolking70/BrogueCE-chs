@@ -1117,7 +1117,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // igniteForced=DF_PLAIN_FIRE 生成）成为 DF 子系统的第一个火侧消费者
         // （任务书 §四提前授权的留痕到期翻转；越界守卫保留——白名单外仍全红）。
         const allowed = new Set([
-            'entities/Monster.ts', // X2g: CE Combat.c:1827-1837 zombie blood DF after shield absorption.
+            'entities/Monster.ts', // Existing monster consumer remains allowed.
+            'engine/Combat/CreatureFeatures.ts', // X4-R3: species blood and objective/activation DF.
+            'engine/Items/IncendiaryDart.ts', // X4-R3: CE Items.c:7049 impact DF.
             'engine/Map/DungeonFeature.ts',
             'engine/Map/DungeonFeatureCatalog.ts',
             'engine/Map/Promotion.ts',   // C-4c：promoteTile 经 spawnDungeonFeature 落地 DF
@@ -1141,7 +1143,8 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                            // fillVestibuleInterior 的 BP_TREAT/
                                            // REQUIRE 复核；无需放宽到第二个文件。
         ]);
-        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('catalogFeature(DF.DF_ROT_GAS_BLOOD)');
+        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp)');
+        expect(readFileSync(join(srcDir, 'engine/Combat/CreatureFeatures.ts'), 'utf8')).toContain('catalogFeature(bloodType as DF)');
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的
         // DF 符号字样会被误判为生产读者（AI-1 写新注释时实际踩到，被迫改写

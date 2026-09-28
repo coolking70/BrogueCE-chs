@@ -384,13 +384,10 @@ describe('B-1c E2E：喝 detect magic 照亮背包与地面', () => {
         expect(ItemLoader.isPolarityRevealed('scroll_of_summon_monsters')).toBe(true);
         // 极性揭示不等于识别（恶意药水类有 6 种，远不止 1 种未识别）
         expect(ItemLoader.identifiedItems.has('potion_of_paralysis')).toBe(false);
-        // ★ 例外且**符合 CE**：web 卷轴表里恶意类只有 summon monsters 一种
-        //   （CE 还有 aggravate monsters，web 目录缺口，B-0 §5.1-9）。恶意类
-        //   "只剩 1 种未识别 + 该种极性已揭示" 恰好满足 CE :6648 的升格条件，
-        //   于是它被连带识别。这是目录缺口的真实后果，不是实现错——B-4 补上
-        //   aggravate monsters 后本条会自动变回"未识别"，届时改这条断言。
+        // X4-R3: CE now has both malevolent scrolls. Polarity revelation
+        // cannot identify summon while aggravation is also still unknown.
         expect(ItemLoader.identifiedItems.has('scroll_of_summon_monsters'),
-            'web 恶意卷轴仅此一种 → 极性一揭示就触发 CE 的最后一种类升格').toBe(true);
+            'two unknown malevolent scroll kinds do not satisfy the last-kind rule').toBe(false);
         // 喝掉的那瓶自身按 CE 也被照到（它在 CE 里此刻仍在 packItems 内）
         expect(ItemLoader.isPolarityRevealed('potion_of_detect_magic')).toBe(true);
     });

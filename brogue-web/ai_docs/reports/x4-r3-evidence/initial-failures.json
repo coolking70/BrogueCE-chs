@@ -1,0 +1,100 @@
+[
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/b_1c_detect_magic.test.ts",
+    "name": "B-1c E2E：喝 detect magic 照亮背包与地面 背包与地面各有带极性的物品 → 两处都被照到，且极性揭示落在种类上",
+    "messages": [
+      "AssertionError: web 恶意卷轴仅此一种 → 极性一揭示就触发 CE 的最后一种类升格: expected false to be true // Object.is equality\n    at E:/bench/work/x4r3/brogue-web/src/test/b_1c_detect_magic.test.ts:393:52\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+    "name": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）",
+    "messages": [
+      "AssertionError: expected 'import { notifyMonsterDeath } from \\'…' to contain 'catalogFeature(DF.DF_ROT_GAS_BLOOD)'\n    at E:/bench/work/x4r3/brogue-web/src/test/c_4b_dungeon_feature.test.ts:1144:75\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/t_1_tail.test.ts",
+    "name": "T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） AD-A2 对抗：identify 占比贴 CE 加权值 30/133（等概率 1/13 在此翻红）",
+    "messages": [
+      "AssertionError: identify 占比 0.1870，期望 30/133≈0.2256: expected 0.187 to be greater than 0.19\n    at E:/bench/work/x4r3/brogue-web/src/test/t_1_tail.test.ts:103:67\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/u_r2_trace.test.ts",
+    "name": "UR2 fixed command traces matches the pre-refactor state after each item command",
+    "messages": [
+      "AssertionError: expected [ …(8) ] to deeply equal [ …(8) ]\n    at E:/bench/work/x4r3/brogue-web/src/test/u_r2_trace.test.ts:92:29\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/u_r3_trace.test.ts",
+    "name": "UR3 complete generation and revisit trace matches HEAD for four drift seeds through D26 and cached/save return",
+    "messages": [
+      "AssertionError: expected { …(4) } to deeply equal { …(4) }\n    at E:/bench/work/x4r3/brogue-web/src/test/u_r3_trace.test.ts:53:29\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/u_r4_trace.test.ts",
+    "name": "UR4 objective block trace matches HEAD for complete snapshots, events, tick, both RNG streams and command log",
+    "messages": [
+      "AssertionError: expected { Object (slowed-environment, hasted, ...) } to deeply equal { Object (slowed-environment, hasted, ...) }\n    at E:/bench/work/x4r3/brogue-web/src/test/u_r4_trace.test.ts:88:29\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts",
+    "name": "X3b importable public new-game command recording keeps each state equal with frames, automatic/animated playback, backward seek and strict OOS",
+    "messages": [
+      "AssertionError: expected [ …(7) ] to include Item{ spawnTurnNumber: +0, …(41) }\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/expect/dist/index.js:1319:15)\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///E:/bench/work/x4r3/brogue-web/node_modules/chai/index.js:1700:25)\n    at collect (E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts:201:42)\n    at publicRecording (E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts:204:21)\n    at E:/bench/work/x4r3/brogue-web/src/test/x3b_display_recording.test.ts:238:23\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts",
+    "name": "X4-R3 CE species blood and feature pipeline derives feature state through mutation, info reset and saved species without adding a timer",
+    "messages": [
+      "AssertionError: expected [ 100, 41 ] to deeply equal [ +0, 38 ]\n    at E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts:156:39\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts",
+    "name": "X4-R3 CE species blood and feature pipeline retains explosive DF info through real negation, graph round-trip and resurrection reset",
+    "messages": [
+      "AssertionError: expected [ 100, 41 ] to deeply equal [ +0, 38 ]\n    at E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts:170:39\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts",
+    "name": "X4-R3 CE species blood and feature pipeline retains infested DF info through real negation, graph round-trip and resurrection reset",
+    "messages": [
+      "AssertionError: expected [ 100, 41 ] to deeply equal [ +0, 39 ]\n    at E:/bench/work/x4r3/brogue-web/src/test/x4_r3_creature_items.test.ts:170:39\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2027:60\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts",
+    "name": "X4-R4 legal catalogue/state matrix covers all 99 existing CE identities, with effect assertions and forbidden information",
+    "messages": [
+      "AssertionError: expected 100 to be 99 // Object.is equality\n    at E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts:108:28\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts",
+    "name": "X4-R4 CE branches and numeric predictions uses catalogue descriptions for restored instances and reserves the R3 aggravation branch",
+    "messages": [
+      "AssertionError: expected true to be false // Object.is equality\n    at E:/bench/work/x4r3/brogue-web/src/test/x4_r4_item_details.test.ts:160:78\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts",
+    "name": "shows true names for the five CE tables and omits missing web kinds",
+    "messages": [
+      "AssertionError: expected [ [ 'scrolls', 14 ], …(4) ] to deeply equal [ [ 'scrolls', 13 ], …(4) ]\n    at E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts:14:55\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts",
+    "name": "uses integer-truncated percentages among unidentified kinds only",
+    "messages": [
+      "AssertionError: expected 18 to be 20 // Object.is equality\n    at E:/bench/work/x4r3/brogue-web/src/engine/UI/Discoveries.test.ts:35:45\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r3/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  }
+]

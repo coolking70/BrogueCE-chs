@@ -1,0 +1,1378 @@
+[
+  {
+    "file": "src/engine/Combat/BoltCatalog.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 10,
+        "source": "const ce = (file: string) => readFileSync(new URL(`../../../../BrogueCE-master/src/${file}`, import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 30,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 775,
+        "source": "const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');"
+      }
+    ],
+    "mentionsR3": [
+      "ItemLoader.ts",
+      "consumables.json",
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 104,
+        "source": "const gameSource = fs.readFileSync(\"src/engine/Core/Game.ts\", \"utf8\");"
+      }
+    ],
+    "mentionsR3": [
+      "consumables.json"
+    ]
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 21,
+        "source": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 39,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 799,
+        "source": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+      },
+      {
+        "line": 862,
+        "source": "const gridSrc = readFileSync("
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 20,
+        "source": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 55,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 862,
+        "source": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 24,
+        "source": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 1108,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 1146,
+        "source": "expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp)');"
+      },
+      {
+        "line": 1147,
+        "source": "expect(readFileSync(join(srcDir, 'engine/Combat/CreatureFeatures.ts'), 'utf8')).toContain('catalogFeature(bloodType as DF)');"
+      },
+      {
+        "line": 1193,
+        "source": "stripComments(readFileSync(f, 'utf8')).split('\\n').forEach((line, i) => {"
+      },
+      {
+        "line": 1228,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 1241,
+        "source": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+      }
+    ],
+    "mentionsR3": [
+      "CreatureFeatures",
+      "IncendiaryDart",
+      "Monster.ts"
+    ]
+  },
+  {
+    "file": "src/test/c_4c_promotion.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 21,
+        "source": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 213,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 226,
+        "source": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 892,
+        "source": "for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {"
+      },
+      {
+        "line": 913,
+        "source": "let text = fs.readFileSync(file, 'utf8');"
+      },
+      {
+        "line": 941,
+        "source": "const text = fs.readFileSync(file, 'utf8');"
+      },
+      {
+        "line": 947,
+        "source": "const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/fe_1_touch.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 12,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 206,
+        "source": "const read = (p: string) => readFileSync(new URL(p, import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/p1_42_secret_door_search.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 36,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 251,
+        "source": "const src = readFileSync("
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/p2_0_seeded_rng.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 19,
+        "source": "import { readFileSync, readdirSync } from 'node:fs';"
+      },
+      {
+        "line": 260,
+        "source": "for (const entry of readdirSync(dir, { withFileTypes: true })) {"
+      },
+      {
+        "line": 268,
+        "source": "if (readFileSync(p, 'utf8').includes('Math.random(')) {"
+      }
+    ],
+    "mentionsR3": [
+      "Monster.ts"
+    ]
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 45,
+        "source": "import { readFileSync, readdirSync } from 'node:fs';"
+      },
+      {
+        "line": 58,
+        "source": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+      },
+      {
+        "line": 228,
+        "source": "const timeTs = readFileSync(join(srcRoot, 'engine/Systems/Time.ts'), 'utf8');"
+      },
+      {
+        "line": 233,
+        "source": "for (const entry of readdirSync(dir, { withFileTypes: true })) {"
+      },
+      {
+        "line": 242,
+        "source": "if (/scheduleEvent|eventQueue|advanceToNextEvent|clearEventsForActor|ScheduledEvent/.test(readFileSync(p, 'utf8'))) {"
+      },
+      {
+        "line": 252,
+        "source": "const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 51,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 64,
+        "source": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+      },
+      {
+        "line": 73,
+        "source": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/p2_3_objective_time.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 49,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 61,
+        "source": "readFileSync(new URL('./fixtures/p2_3_baseline.json', import.meta.url), 'utf8')"
+      },
+      {
+        "line": 70,
+        "source": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+      },
+      {
+        "line": 73,
+        "source": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/p2_4_animation_cadence.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 26,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 279,
+        "source": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/p2_6_display_settings.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 20,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 305,
+        "source": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+      },
+      {
+        "line": 315,
+        "source": "const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/r_1_appearance.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 19,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 509,
+        "source": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+      },
+      {
+        "line": 560,
+        "source": "const appearanceSrc = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/repo_hygiene.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 5,
+        "source": "import { readdirSync, readFileSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 11,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 23,
+        "source": "expect(files.filter(f => MARKER.test(readFileSync(f, 'utf8')))).toEqual([]);"
+      },
+      {
+        "line": 27,
+        "source": "try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; }"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u24_hardcoded_text.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, readdirSync } from 'node:fs';"
+      },
+      {
+        "line": 6,
+        "source": "import { parse as parseSfc } from '@vue/compiler-sfc';"
+      },
+      {
+        "line": 22,
+        "source": "for (const entry of readdirSync(dir, { withFileTypes: true })) {"
+      },
+      {
+        "line": 67,
+        "source": "const raw = readFileSync(file, 'utf8');"
+      },
+      {
+        "line": 68,
+        "source": "const script = extname(file) === '.vue' ? parseSfc(raw).descriptor.scriptSetup?.content ?? parseSfc(raw).descriptor.script?.content ?? '' : raw;"
+      },
+      {
+        "line": 69,
+        "source": "const source = ts.createSourceFile(file, script, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);"
+      },
+      {
+        "line": 97,
+        "source": "const template = parseSfc(readFileSync(file, 'utf8')).descriptor.template?.content;"
+      }
+    ],
+    "mentionsR3": [
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/u_01_instance_snapshot.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 32,
+        "source": "const source = ts.createSourceFile(path, fs.readFileSync(path, 'utf8'), ts.ScriptTarget.Latest, true);"
+      }
+    ],
+    "mentionsR3": [
+      "Monster.ts",
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 9,
+        "source": "const ce = JSON.parse(fs.readFileSync('ai_docs/reports/u-02b-evidence/ce-reference.json', 'utf8'));"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_03_whole_run_snapshot.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 39,
+        "source": "const source = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+      },
+      {
+        "line": 43,
+        "source": "const contract = JSON.parse(fs.readFileSync('scripts/u03-state-contract.json', 'utf8'));"
+      },
+      {
+        "line": 48,
+        "source": "const source = ts.createSourceFile('Grid.ts', fs.readFileSync('src/engine/Map/Grid.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_05_machine_items.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 64,
+        "source": "const history=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/historical-null-requests.json','utf8'));"
+      },
+      {
+        "line": 81,
+        "source": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/ce-golden.json','utf8'));"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_05a_item_ownership.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 34,
+        "source": "for(const line of fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8').split('\\n')){"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_06_monster_damage.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 49,
+        "source": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-06-evidence/ce-staff-damage.json', 'utf8'))"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_09_learning_consumers.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 45,
+        "source": "const source=fs.readFileSync('../BrogueCE-master/src/brogue/Rogue.h','utf8');"
+      },
+      {
+        "line": 80,
+        "source": "const oracle=JSON.parse(fs.readFileSync('ai_docs/reports/u-09-evidence/ce-target-cases.json','utf8')) as {"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_13_combat_math.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 15,
+        "source": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-13-evidence/ce-combat.json', 'utf8')) as {"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_14a_status_gaps.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 18,
+        "source": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14a-evidence/ce-weakness.json','utf8')) as Array<Record<string,number>>;"
+      },
+      {
+        "line": 184,
+        "source": "const ce=readFileSync('../BrogueCE-master/src/brogue/Items.c','utf8');expect(ce).toContain('//void causeFear(');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_14b_status_gaps.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 18,
+        "source": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14b-evidence/ce-donning.json', 'utf8')) as Array<Record<string, number>>;"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_15b2_ring_birth.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 19,
+        "source": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-15b2-evidence/ce-golden.json','utf8'));"
+      },
+      {
+        "line": 41,
+        "source": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable ringTable[NUMBER_RING_KINDS] = {')[1]!.split('\\n};')[0]!;"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_15d3_runic_generation.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 13,
+        "source": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-15d3-evidence/ce-golden.json', 'utf8'));"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_17b_carriers.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 55,
+        "source": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_17c_triggers.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 54,
+        "source": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_17d_vents.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 67,
+        "source": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_17e_altars.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 81,
+        "source": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);const g=scene();"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_17f_carriers.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 58,
+        "source": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_19a_machine_view.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 3,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 31,
+        "source": "expect(crypto.createHash('sha256').update(readFileSync(`../BrogueCE-master/src/brogue/${file}`)).digest('hex')).toBe(golden.source[key]);"
+      },
+      {
+        "line": 99,
+        "source": "expect(crypto.createHash('sha256').update(readFileSync(carriers.file)).digest('hex')).toBe(carriers.sha256);"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_19d_machine_families.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';import crypto from 'node:crypto';"
+      },
+      {
+        "line": 19,
+        "source": "expect(crypto.createHash('sha256').update(readFileSync(golden.file)).digest('hex')).toBe(golden.sha256);"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_19e_machine_families.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 20,
+        "source": "for(const [file,sha] of [[golden.file,golden.sha256],[golden.headerFile,golden.headerSHA256]])expect(crypto.createHash('sha256').update(readFileSync(file!)).digest('hex')).toBe(sha);"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_19f_autogen.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import {readFileSync} from 'node:fs';"
+      },
+      {
+        "line": 18,
+        "source": "for(const [file,hash] of Object.entries(golden.sources))expect(crypto.createHash('sha256').update(readFileSync(file)).digest('hex')).toBe(hash);"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_26a_deep_levels.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 30,
+        "source": "const ce = readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_r2_trace.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, writeFileSync } from 'node:fs';"
+      },
+      {
+        "line": 92,
+        "source": "else expect(traces).toEqual(JSON.parse(readFileSync(fixture, 'utf8')));"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/u_r3_trace.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, writeFileSync } from 'node:fs';"
+      },
+      {
+        "line": 53,
+        "source": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/u_r4_trace.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, writeFileSync } from 'node:fs';"
+      },
+      {
+        "line": 88,
+        "source": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/ui_1_rendering.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 29,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 198,
+        "source": "const src = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+      },
+      {
+        "line": 384,
+        "source": "const src = readFileSync("
+      },
+      {
+        "line": 439,
+        "source": "const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 11,
+        "source": "*      readFileSync 静态守卫模式。"
+      },
+      {
+        "line": 26,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 261,
+        "source": "const overlaySrc = readFileSync("
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 29,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 106,
+        "source": "const json = readFileSync(new URL('../data/blueprints.json', import.meta.url), 'utf8');"
+      },
+      {
+        "line": 121,
+        "source": "const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/v_2b_4_altars.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 16,
+        "source": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+      },
+      {
+        "line": 565,
+        "source": "for (const name of readdirSync(dir)) {"
+      },
+      {
+        "line": 584,
+        "source": "const code = stripComments(readFileSync(f, 'utf8'));"
+      },
+      {
+        "line": 605,
+        "source": "const code = rel.endsWith('.json') ? readFileSync(f, 'utf8') : stripComments(readFileSync(f, 'utf8'));"
+      },
+      {
+        "line": 614,
+        "source": "const src = stripComments(readFileSync("
+      },
+      {
+        "line": 663,
+        "source": "const zh = readFileSync(fileURLToPath(new URL('../locales/zh_CN.json', import.meta.url)), 'utf8');"
+      },
+      {
+        "line": 664,
+        "source": "const legacy = readFileSync(fileURLToPath(new URL('../locales/zh_CN.legacy.json', import.meta.url)), 'utf8');"
+      },
+      {
+        "line": 756,
+        "source": "const src = stripComments(readFileSync("
+      }
+    ],
+    "mentionsR3": [
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 23,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 688,
+        "source": "const ratData = (JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../data/monsters.json'), 'utf8')) as Array<{ id: string }>)"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_9b_environment.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 5,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 77,
+        "source": "const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 101,
+        "source": "const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 52,
+        "source": "const ce=readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c',import.meta.url),'utf8').split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 59,
+        "source": "const ce = readFileSync('../BrogueCE-master/src/brogue/PowerTables.c', 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 45,
+        "source": "const values=fs.readFileSync('ai_docs/reports/w-16-evidence/ce-blade-count.txt','utf8').trim().split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 42,
+        "source": "const rows=fs.readFileSync('ai_docs/reports/w-17-evidence/ce-domination.txt','utf8').trim().split('\\n');"
+      },
+      {
+        "line": 243,
+        "source": "expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 45,
+        "source": "for(const row of fs.readFileSync('ai_docs/reports/w-18-evidence/ce-entrancement.txt','utf8').trim().split('\\n')){"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 42,
+        "source": "const rows=JSON.parse(fs.readFileSync('ai_docs/reports/w-19-evidence/ce-catalog.json','utf8'));"
+      },
+      {
+        "line": 55,
+        "source": "const rows=fs.readFileSync('ai_docs/reports/w-19-evidence/ce-polymorph.txt','utf8').trim().split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 146,
+        "source": "const rows=fs.readFileSync('ai_docs/reports/w-20-evidence/ce-clone.txt','utf8').trim().split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 41,
+        "source": "const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\\n').filter(l=>l.startsWith('empower '));"
+      },
+      {
+        "line": 69,
+        "source": "const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\\n').find(l=>l.startsWith(`heal ${duration} `))!;"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 52,
+        "source": "const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\\n').filter(s => s.startsWith(`status ${+player} `));"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 45,
+        "source": "const ce = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 43,
+        "source": "const body = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable staffTable[NUMBER_STAFF_KINDS] = {')[1]!.split('\\n};')[0]!;"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/w_7_arcana_enchantment.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 266,
+        "source": "const src = readFileSync(fileURLToPath(new URL('../components/InventoryOverlay.vue', import.meta.url)), 'utf8');"
+      }
+    ],
+    "mentionsR3": []
+  },
+  {
+    "file": "src/test/x2b_terrain_derivation.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 49,
+        "source": "const walk=(dir:string):string[]=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(`${dir}/${e.name}`):[`${dir}/${e.name}`]);"
+      },
+      {
+        "line": 52,
+        "source": "const ast=ts.createSourceFile(file,fs.readFileSync(file,'utf8'),ts.ScriptTarget.Latest,true);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x2e_charms.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 22,
+        "source": "const oracle = JSON.parse(fs.readFileSync(new URL('../../ai_docs/reports/x2e-evidence/ce-oracle.json', import.meta.url), 'utf8'));"
+      },
+      {
+        "line": 258,
+        "source": "const ce = fs.readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json",
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x2f_thrown_math.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 15,
+        "source": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/x2f-evidence/ce-thrown.json', 'utf8')) as Case[];"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x2g_native_effects.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 44,
+        "source": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8');"
+      },
+      {
+        "line": 90,
+        "source": "const oracle = JSON.parse(fs.readFileSync(new URL('../../ai_docs/reports/x2g-evidence/ce-oracle.json',import.meta.url),'utf8'));"
+      },
+      {
+        "line": 198,
+        "source": "const ce=fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x2k_lifecycle.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 3,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 159,
+        "source": "const rows = JSON.parse(readFileSync(new URL('../../ai_docs/reports/x2k-evidence/ce-path.json', import.meta.url), 'utf8')) as {"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x2m_lighting.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 145,
+        "source": "const lines = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c', 'utf8').split('\\n');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x2o_horde_clump.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 3,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 28,
+        "source": "expect(createHash('sha256').update(readFileSync(`../${file}`)).digest('hex')).toBe(hash);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x3_u5_ui.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 7,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 58,
+        "source": "const { descriptor } = parse(readFileSync(new URL(`../components/${file}`, import.meta.url), 'utf8'));"
+      }
+    ],
+    "mentionsR3": [
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x3_u6_messages.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 254,
+        "source": "const source = readFileSync('src/engine/Core/Game.ts','utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x3_u8c_combat_items.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 47,
+        "source": "const globals = readFileSync('../BrogueCE-master/src/brogue/Globals.c', 'utf8');"
+      },
+      {
+        "line": 48,
+        "source": "const header = readFileSync('../BrogueCE-master/src/brogue/Rogue.h', 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json",
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x3a_live_iteration.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 38,
+        "source": "const rows = JSON.parse(readFileSync(new URL('../../ai_docs/reports/x3a-evidence/ce-iterator.json', import.meta.url), 'utf8'));"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x4_r1_world_catalog.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, writeFileSync } from 'node:fs';"
+      },
+      {
+        "line": 24,
+        "source": "const ce = readFileSync(resolve('../BrogueCE-master/src/brogue/Globals.c'), 'utf8');"
+      },
+      {
+        "line": 25,
+        "source": "const header = readFileSync(resolve('../BrogueCE-master/src/brogue/Rogue.h'), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x4_r3_creature_items.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 26,
+        "source": "const ce = readFileSync(resolve('../BrogueCE-master/src/brogue/Globals.c'), 'utf8');"
+      },
+      {
+        "line": 27,
+        "source": "const header = readFileSync(resolve('../BrogueCE-master/src/brogue/Rogue.h'), 'utf8');"
+      },
+      {
+        "line": 239,
+        "source": "const variants = readFileSync(resolve('../BrogueCE-master/src/variants/GlobalsBrogue.c'), 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "AggravationScroll",
+      "CreatureFeatures",
+      "IncendiaryDart",
+      "monsters.json",
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x4_r5_content_text.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 18,
+        "source": "const globals = readFileSync(new URL('../../../BrogueCE-master/src/brogue/Globals.c', import.meta.url), 'utf8').split(/\\r?\\n/);"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  },
+  {
+    "file": "src/test/x4a_movement_rendering.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync, readdirSync } from 'node:fs';"
+      },
+      {
+        "line": 223,
+        "source": "for (const ent of readdirSync(dir, { withFileTypes: true })) {"
+      },
+      {
+        "line": 227,
+        "source": "const source = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);"
+      },
+      {
+        "line": 240,
+        "source": "const canvas = readFileSync('src/components/GameCanvas.vue', 'utf8');"
+      },
+      {
+        "line": 242,
+        "source": "const target = readFileSync('src/components/TargetBar.vue', 'utf8');"
+      },
+      {
+        "line": 245,
+        "source": "const game = readFileSync('src/engine/Core/Game.ts', 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json",
+      "zh_CN.json"
+    ]
+  },
+  {
+    "file": "src/test/x4b_flavor_text.test.ts",
+    "sourceReadSites": [
+      {
+        "line": 2,
+        "source": "import { readFileSync } from 'node:fs';"
+      },
+      {
+        "line": 168,
+        "source": "const sidebar = readFileSync('src/components/Sidebar.vue', 'utf8');"
+      },
+      {
+        "line": 169,
+        "source": "const hud = readFileSync('src/ui/useGameHud.ts', 'utf8');"
+      },
+      {
+        "line": 170,
+        "source": "const strip = readFileSync('src/components/MessageStrip.vue', 'utf8');"
+      }
+    ],
+    "mentionsR3": [
+      "monsters.json"
+    ]
+  }
+]

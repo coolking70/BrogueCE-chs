@@ -1,0 +1,221 @@
+[
+  {
+    "file": "src/engine/Core/Game.ts",
+    "sites": [
+      {
+        "line": 1283,
+        "source": "m.takeDamage(damage, false, this.grid);"
+      },
+      {
+        "line": 2349,
+        "source": "public spawnBlood(x: number, y: number) {"
+      },
+      {
+        "line": 4491,
+        "source": "if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp, true, this.grid);"
+      },
+      {
+        "line": 4701,
+        "source": "const hpDamage = target.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 4703,
+        "source": "target.takeDamage(hpDamage, true, this.grid);"
+      },
+      {
+        "line": 5271,
+        "source": "const hpDamage = target.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 5275,
+        "source": "target.takeDamage(hpDamage, true, this.grid); // shield already consumed once."
+      },
+      {
+        "line": 5282,
+        "source": "if (isPlayer) this.spawnBlood(target.loc.x, target.loc.y);"
+      },
+      {
+        "line": 5330,
+        "source": "this.spawnBlood(target.loc.x, target.loc.y);"
+      },
+      {
+        "line": 5675,
+        "source": "monster.takeDamage(0, true);"
+      },
+      {
+        "line": 5864,
+        "source": "monst.takeDamage(monst.hp, true, this.grid); // CE inflictLethalDamage bypasses shields."
+      },
+      {
+        "line": 6114,
+        "source": "const res = CombatSystem.resolveThrownWeapon(this.player, monst, thrown, this.grid);"
+      },
+      {
+        "line": 6133,
+        "source": "this.spawnBlood(monst.loc.x, monst.loc.y);"
+      },
+      {
+        "line": 6548,
+        "source": "target.takeDamage(9999, true, this.grid);"
+      },
+      {
+        "line": 6554,
+        "source": "target.takeDamage(9999, true, this.grid);"
+      },
+      {
+        "line": 6652,
+        "source": "if (!target.isImmuneToWeapons() && !target.isInvulnerable()) target.takeDamage(traveled, false, this.grid);"
+      },
+      {
+        "line": 6653,
+        "source": "if (other && !other.isImmuneToWeapons() && !other.isInvulnerable()) other.takeDamage(traveled, false, this.grid);"
+      },
+      {
+        "line": 6746,
+        "source": "m.takeDamage(share, true, this.grid);"
+      },
+      {
+        "line": 6808,
+        "source": "attacker.takeDamage(reprisalDmg, true, this.grid);"
+      },
+      {
+        "line": 6868,
+        "source": "entity.takeDamage(Math.max(1, entity.poisonAmount), true, this.grid);"
+      },
+      {
+        "line": 6939,
+        "source": "spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_ROT_GAS_PUFF), false);"
+      },
+      {
+        "line": 7220,
+        "source": "this.spawnBlood(target.loc.x, target.loc.y);"
+      },
+      {
+        "line": 7806,
+        "source": "this.player.hp -= this.player.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 7859,
+        "source": "m.takeDamage(rng.randClumpedRange(6, 12, 2), false, this.grid);"
+      },
+      {
+        "line": 8150,
+        "source": "if (m.hp > 0 && m.boundToLeader && !m.leader && !m.isAlly) m.takeDamage(m.hp, true);"
+      },
+      {
+        "line": 9108,
+        "source": "if (entity instanceof Monster) entity.takeDamage(damage, true, this.grid);"
+      },
+      {
+        "line": 9109,
+        "source": "else { entity.hp -= damage; this.disturbed = true; } // CE burning bypasses shields."
+      },
+      {
+        "line": 9193,
+        "source": "entity.hp -= entity.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 9204,
+        "source": "if (!monst.isInvulnerable()) monst.takeDamage(damage, false, this.grid);"
+      },
+      {
+        "line": 9411,
+        "source": "if (entity instanceof Monster) entity.takeDamage(Math.max(1, Math.floor(entity.maxHp / 15)), true, this.grid);"
+      },
+      {
+        "line": 9412,
+        "source": "else entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields"
+      },
+      {
+        "line": 9505,
+        "source": "entity.hp -= 10;"
+      },
+      {
+        "line": 9604,
+        "source": "aggravate: (radius, origin) => this.aggravateMonsters(radius, origin),"
+      },
+      {
+        "line": 9720,
+        "source": "private aggravateMonsters(radius: number, origin: Pos): void {"
+      }
+    ]
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "sites": [
+      {
+        "line": 389,
+        "source": "public override absorbShieldDamage(amount: number): number {"
+      },
+      {
+        "line": 390,
+        "source": "const damage = super.absorbShieldDamage(amount);"
+      },
+      {
+        "line": 395,
+        "source": "public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {"
+      },
+      {
+        "line": 397,
+        "source": "const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);"
+      },
+      {
+        "line": 403,
+        "source": "super.takeDamage(damage, true);"
+      },
+      {
+        "line": 1350,
+        "source": "game.spawnBlood(game.player.loc.x, game.player.loc.y);"
+      },
+      {
+        "line": 1384,
+        "source": "game.spawnBlood(target.loc.x, target.loc.y);"
+      },
+      {
+        "line": 1750,
+        "source": "game.spawnBlood(game.player.loc.x, game.player.loc.y);"
+      },
+      {
+        "line": 1830,
+        "source": "game.spawnBlood(other.loc.x, other.loc.y);"
+      },
+      {
+        "line": 1900,
+        "source": "game.spawnBlood(game.player.loc.x, game.player.loc.y);"
+      }
+    ]
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "sites": [
+      {
+        "line": 179,
+        "source": "attacker.takeDamage(attacker.hp, true);"
+      },
+      {
+        "line": 301,
+        "source": "const hpDamage = applyTo.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 304,
+        "source": "else applyTo.takeDamage(hpDamage, true, opts?.grid); // shield applied exactly once"
+      },
+      {
+        "line": 370,
+        "source": "if (transfer < 0) attacker.takeDamage(-transfer, true);"
+      },
+      {
+        "line": 425,
+        "source": "public static resolveThrownWeapon("
+      },
+      {
+        "line": 463,
+        "source": "const hpDamage = defender.absorbShieldDamage(damage);"
+      },
+      {
+        "line": 465,
+        "source": "defender.takeDamage(hpDamage, true, grid);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "head": "40da8b76669810f9e49cb5b2f8574d49b39ffe7c",
+  "game": "934be219a9b30164df0724eaa0f97426fbc2bdf5d1c5cc643085f7ff61162f4a",
+  "production": [
+    "src/data/consumables.json",
+    "src/data/monsters.json",
+    "src/engine/Items/ItemLoader.ts",
+    "src/entities/Monster.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "added": [
+    "src/engine/Combat/CreatureFeatures.ts",
+    "src/engine/Items/IncendiaryDart.ts",
+    "src/engine/Items/AggravationScroll.ts"
+  ],
+  "sources": {
+    "src/data/consumables.json": "e84fb57af48ac0187619474a62c0f06445ee821e6982a1f2e0eac03f29ce450b",
+    "src/data/monsters.json": "dba93f0fb35135faffb215a539375888c97dce026def07c9295721d3aeca5a5c",
+    "src/engine/Items/ItemLoader.ts": "6151ac2ef467baafeb0cac1da6d8932f53ef39cb8116018a77e34894eb0c8176",
+    "src/entities/Monster.ts": "f84e135fb9864db26d677ff665af3cab799f32cbf08dfa60924d9aa776994b3f",
+    "src/locales/zh_CN.json": "d14767e1334028c1caf2f342bf7059ef4809c571d11fb7bfc2a6b8851ca15988",
+    "src/engine/Combat/CreatureFeatures.ts": "6e00eb6e0e58b038114d658ea6ba41a354f8437dbd0d9ebd407448fd971a021b",
+    "src/engine/Items/IncendiaryDart.ts": "d9997b207210d0a06d5b597b0d2809b31c0cdacd4ebd255f21cd27a91d48209a",
+    "src/engine/Items/AggravationScroll.ts": "37378064ff086a1788b5334b347e9344667bd82c1655227e4067f71440a985ef"
+  },
+  "fixtures": {
+    "src/test/fixtures/generation_baseline.json": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+    "src/test/fixtures/deep_generation_baseline.json": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+    "ai_docs/reports/u-r2-trace.json": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+    "ai_docs/reports/u-r3-trace.json.gz": "842f47cbdaa37031ff6bc165ec926003c114f4dc1f8687e9098b170c6ba0193a",
+    "ai_docs/reports/u-r4-trace.json.gz": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444"
+  }
+}

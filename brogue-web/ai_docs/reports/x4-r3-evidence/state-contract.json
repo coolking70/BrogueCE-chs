@@ -1,0 +1,39 @@
+{
+  "contract": "U01 explicit entity codec + U03 whole-run state classification; no old-save migration",
+  "bloodType": {
+    "kind": "derived",
+    "source": "CE species catalog keyed by already-persisted typeId; player constant DF_RED_BLOOD",
+    "snapshotField": null,
+    "reset": "typeId replacement on polymorph selects the new species blood; clone/restore retains typeId"
+  },
+  "DFChance": {
+    "kind": "derived",
+    "source": "species + explicit deathDFType override, with mutation identity fallback",
+    "snapshotField": null,
+    "invariant": "DF_MUTATION_EXPLOSION and DF_MUTATION_LICHEN imply chance 0; other explicit info resets retain the species chance"
+  },
+  "DFType": {
+    "kind": "derived",
+    "source": "deathDFType when defined, otherwise mutation override or species catalog",
+    "snapshotField": null
+  },
+  "deathDFType": {
+    "kind": "existing-persisted",
+    "codec": "src/engine/Core/EntitySnapshot.ts MONSTER_FIELDS and graph codec",
+    "change": "Monster.mutate now records the two CE mutation DF overrides in this existing field. Clearing mutation identity by negation cannot restore old info. No new codec field or schema version.",
+    "reset": "polymorph deletes override; restoreSummonerForm writes catalog death DF (vampire 36, phoenix egg/phylactery 0); a subsequent mutation installs its own override"
+  },
+  "featureTimer": {
+    "kind": "absent",
+    "contract": "one randPercent per eligible existing objective/activation call; no additional countdown or accumulation"
+  },
+  "terrainEffects": {
+    "kind": "existing-persisted",
+    "fields": ["cell.layers", "cell.volume"]
+  },
+  "aggravationScroll": {
+    "kind": "existing-persisted",
+    "fields": ["consumableId", "quantity", "ItemLoader.scrollFlavorMap", "ItemLoader.identifiedItems", "ItemLoader.magicPolarityRevealed", "meteredItems", "statusDurations", "maxStatus", "scent", "waypoints"]
+  },
+  "proof": "x4_r3_creature_items.test.ts: real negateCreatureMagic, serializeMonster/restoreEntityGraph JSON round-trip with unchanged RNG, then periodic gate; summoner resurrection restores catalog info while mutation bookkeeping remains"
+}

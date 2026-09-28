@@ -196,9 +196,28 @@ function publicRecording(schedule: number[]) {
     const use = (operation: string, item?: { inventoryLetter?: string }) => act('item:command', `${operation}|${item?.inventoryLetter ?? ''}|`);
     const collect = (id: string) => {
         const item = g.items.find(i => i.identityId === id || i.consumableId === id)!;
-        expect(item, id).toBeDefined(); walk(g, item.loc, act);
-        if (!g.player.inventory.items.includes(item)) act('pickup');
-        expect(g.player.inventory.items).toContain(item); return item;
+        expect(item, id).toBeDefined();
+        // X4-R3: a naturally collected scroll can merge into a pre-existing
+        // stack along this same route. Verify the pickup transaction, then use
+        // the surviving pack object; recording/replay comparators stay intact.
+        const sameKind = (i: Item) => i.identityId === id || i.consumableId === id;
+        const quantity = () => g.player.inventory.items.filter(sameKind).reduce((sum, i) => sum + i.quantity, 0);
+        let collected = false;
+        const pickupAct = (action: string, data?: unknown) => {
+            const before = quantity(), onFloor = g.items.includes(item), amount = item.quantity;
+            act(action, data);
+            if (onFloor && !g.items.includes(item)) {
+                expect(quantity(), `pickup of ${id} preserves the full quantity`).toBe(before + amount);
+                collected = true;
+            }
+        };
+        walk(g, item.loc, pickupAct);
+        if (g.items.includes(item)) pickupAct('pickup');
+        expect(collected, id).toBe(true);
+        expect(g.items).not.toContain(item);
+        const carried = g.player.inventory.items.find(sameKind)!;
+        expect(carried, id).toBeDefined();
+        expect(g.player.inventory.items).toContain(carried); return carried;
     };
     const wand = collect('wand_of_slowness');
     const enchant = collect('scroll_of_enchantment');
