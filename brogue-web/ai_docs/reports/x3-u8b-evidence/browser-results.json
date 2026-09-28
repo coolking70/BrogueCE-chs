@@ -1,0 +1,1032 @@
+{
+  "results": [
+    {
+      "scene": "replace left",
+      "state": {
+        "turn": 1,
+        "tick": 100,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "left": "替换戒指",
+        "right": "右侧戒指",
+        "pack": [
+          {
+            "name": "左侧戒指"
+          },
+          {
+            "name": "右侧戒指"
+          },
+          {
+            "name": "替换戒指"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "你已经戴着两枚戒指；先取下哪一枚？",
+          "你装备了替换戒指。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "左侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "b",
+              "name": "右侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "c",
+              "name": "替换戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "replace right",
+      "state": {
+        "turn": 1,
+        "tick": 100,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "left": "左侧戒指",
+        "right": "替换戒指",
+        "pack": [
+          {
+            "name": "左侧戒指"
+          },
+          {
+            "name": "右侧戒指"
+          },
+          {
+            "name": "替换戒指"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "你已经戴着两枚戒指；先取下哪一枚？",
+          "你装备了替换戒指。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "左侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "b",
+              "name": "右侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "c",
+              "name": "替换戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "cancel replacement",
+      "state": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "left": "左侧戒指",
+        "right": "右侧戒指",
+        "pack": [
+          {
+            "name": "左侧戒指"
+          },
+          {
+            "name": "右侧戒指"
+          },
+          {
+            "name": "替换戒指"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "你已经戴着两枚戒指；先取下哪一枚？"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "左侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "b",
+              "name": "右侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "c",
+              "name": "替换戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "switch pending replacement to drop",
+      "state": {
+        "turn": 1,
+        "tick": 100,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "left": "左侧戒指",
+        "right": "右侧戒指",
+        "pack": [
+          {
+            "name": "左侧戒指"
+          },
+          {
+            "name": "右侧戒指"
+          }
+        ],
+        "floor": [
+          {
+            "name": "替换戒指",
+            "flags": [
+              "ITEM_PLAYER_AVOIDS"
+            ]
+          }
+        ],
+        "messages": [
+          "你已经戴着两枚戒指；先取下哪一枚？",
+          "你丢弃了替换戒指。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "左侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "b",
+              "name": "右侧戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "替换戒指",
+              "x": 10,
+              "y": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scene": "mobile cursed replacement",
+      "state": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "left": "左侧戒指",
+        "right": "右侧戒指",
+        "pack": [
+          {
+            "name": "左侧戒指"
+          },
+          {
+            "name": "右侧戒指"
+          },
+          {
+            "name": "替换戒指"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "你已经戴着两枚戒指；先取下哪一枚？",
+          "你办不到；你的左侧戒指似乎受到了诅咒。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "左侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "b",
+              "name": "右侧戒指",
+              "category": 8
+            },
+            {
+              "letter": "c",
+              "name": "替换戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 33.375,
+            "scaleX": 1.015625,
+            "scaleY": 1.015625,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "strength warnings",
+      "state": {
+        "turn": 2,
+        "tick": 200,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "pack": [
+          {
+            "name": "重剑"
+          },
+          {
+            "name": "重甲"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "你装备了重剑。",
+          "你几乎举不起重剑；还需要 6 点力量。",
+          "你装备了重甲。",
+          "你在重甲的重量下摇摇欲坠；还需要 6 点力量。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "重剑",
+              "category": 0
+            },
+            {
+              "letter": "b",
+              "name": "重甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "full pack",
+      "state": {
+        "turn": 1,
+        "tick": 100,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "pack": [
+          {
+            "name": "口粮"
+          }
+        ],
+        "floor": [
+          {
+            "name": "药水",
+            "flags": [
+              "ITEM_PLAYER_AVOIDS"
+            ]
+          }
+        ],
+        "messages": [
+          "你的背包太满了，装不下药水。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 11,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "药水",
+              "x": 11,
+              "y": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scene": "drop then explore",
+      "state": {
+        "turn": 2,
+        "tick": 200,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "pack": [],
+        "floor": [
+          {
+            "name": "口粮",
+            "flags": [
+              "ITEM_PLAYER_AVOIDS"
+            ]
+          }
+        ],
+        "messages": [
+          "你丢弃了口粮。",
+          "我看不到可以继续探索的路径。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 11,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "口粮",
+              "x": 10,
+              "y": 10
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scene": "drop obstruction",
+      "state": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2622608817,
+              "b": 1416493066,
+              "c": 1831664774,
+              "d": 2462605287
+            },
+            {
+              "a": 960454558,
+              "b": 3738719986,
+              "c": 2184591319,
+              "d": 1117976912
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2620,
+          "cosmeticNumbersGenerated": 161
+        },
+        "pack": [
+          {
+            "name": "口粮"
+          }
+        ],
+        "floor": [],
+        "messages": [
+          "那里已经有东西了。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

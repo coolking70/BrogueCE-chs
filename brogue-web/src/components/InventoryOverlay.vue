@@ -14,6 +14,10 @@ const isVisible = ref(false);
 const inventoryItems = ref<Item[]>([]);
 const selectedItem = ref<Item | null>(null);
 const inventoryAction = ref<typeof activeGame.inventoryAction>(null);
+// Uncommitted selection is UI-only. The final equip command carries both
+// letters, so replay/seek needs no pending world state or save migration.
+const ringReplacementTarget = ref<Item | null>(null);
+let ringSelectionPlayer = activeGame.player;
 // B-1b：鉴定目标待选态与 call 输入态（引擎态是普通单例，沿用本组件 100ms
 // 轮询的既有模式镜像进 ref）
 const pendingIdentify = ref(false);
@@ -25,6 +29,11 @@ const pendingUseConfirm = ref<Item | null>(null);
 const pendingUseConfirmText = ref('');
 
 const updateInventoryState = () => {
+    if (!activeGame.isInventoryOpen || ringSelectionPlayer !== activeGame.player
+        || inventoryAction.value !== activeGame.inventoryAction) {
+        ringReplacementTarget.value = null;
+        ringSelectionPlayer = activeGame.player;
+    }
     if (inventoryAction.value !== activeGame.inventoryAction || !activeGame.isInventoryOpen) {
         selectedItem.value = null;
         callTarget.value = null;
@@ -73,6 +82,7 @@ const flushDeferredClose = () => {
 const closeInventory = () => {
     if (activeGame.pendingEnchantment) return; // CE mandatory target after reading.
     activeGame.handlePlayerAction('escape');
+    ringReplacementTarget.value = null;
     if (activeGame.isInventoryOpen && activeGame.isAdvancing) closeDeferred = true;
     selectedItem.value = null;
     updateInventoryState();
@@ -242,6 +252,13 @@ const selectItem = (item: Item) => {
 // B-1b：鉴定卷轴目标选择模式——行点击被拦截为"指定目标"，只有
 // canBeIdentified 的物品可选中（CE promptForItemOfType 只列合法目标）。
 const selectItemOrIdentify = (item: Item) => {
+    if (ringReplacementTarget.value) {
+        if (item.category !== ItemCategory.RING || !isEquipped(item)) return;
+        activeGame.executeItemCommand('equip', toRaw(ringReplacementTarget.value), item.inventoryLetter);
+        ringReplacementTarget.value = null;
+        closeInventory();
+        return;
+    }
     if (pendingEnchantment.value) {
         activeGame.executeItemCommand('enchant', toRaw(item), undefined, () => activeGame.chooseEnchantTarget(toRaw(item)));
         selectedItem.value = null;
@@ -267,7 +284,16 @@ const performInspect = (item: Item) => {
 };
 
 const performEquip = (item: Item) => {
+    const chooseRing = item.category === ItemCategory.RING && !isEquipped(item)
+        && activeGame.player.ringLeft && activeGame.player.ringRight;
     activeGame.executeItemCommand('equip', toRaw(item));
+    if (chooseRing) {
+        ringReplacementTarget.value = item;
+        ringSelectionPlayer = activeGame.player;
+        selectedItem.value = null;
+        updateInventoryState();
+        return;
+    }
     closeInventory();
 };
 
@@ -351,7 +377,10 @@ const confirmCall = () => {
       </div>
       
       <div class="modal-content">
-        <div v-if="actionPrompt && !pendingIdentify && !pendingEnchantment" class="identify-banner">
+        <div v-if="ringReplacementTarget" class="identify-banner">
+          {{ t('item.ring_replace_prompt') }}
+        </div>
+        <div v-if="actionPrompt && !pendingIdentify && !pendingEnchantment && !ringReplacementTarget" class="identify-banner">
           {{ actionPrompt }}
         </div>
         <div v-if="pendingEnchantment" class="identify-banner enchant-banner">
@@ -368,6 +397,7 @@ const confirmCall = () => {
                   <div class="item-row" @click="selectItemOrIdentify(entry.item)"
                        :class="{ 'selected-row': selectedItem?.id === entry.item.id,
                                  'identify-candidate': pendingIdentify && entry.item.canBeIdentified,
+                                 'ring-replacement-candidate': ringReplacementTarget && entry.item.category === ItemCategory.RING && isEquipped(entry.item),
                                  'enchant-candidate': pendingEnchantment && activeGame.canEnchantTarget(toRaw(entry.item)) }">
                     <!-- UI-2：ITEM_PROTECTED 闭括号 }（CE Items.c:3629/3641）——受保护物品闭括号从 ) 变 } -->
                     <span class="item-letter">{{ entry.letter }}{{ entry.item.isProtected ? '}' : ')' }}</span>
@@ -382,7 +412,7 @@ const confirmCall = () => {
                        </span>
                     </span>
                   </div>
-                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify && !pendingEnchantment" class="item-actions">
+                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify && !pendingEnchantment && !ringReplacementTarget" class="item-actions">
                      <button @click="performInspect(entry.item)" class="action-btn">{{ t('item.inspect', { defaultValue: '查看详情' }) }}</button>
                      <button v-if="isEquippable(entry.item) && !isEquipped(entry.item)" @click="performEquip(entry.item)" class="action-btn">{{ t('Equip') || 'Equip' }}</button>
                      <button v-if="isEquippable(entry.item) && isEquipped(entry.item)" @click="performUnequip(entry.item)" class="action-btn">{{ t('Unequip') || 'Unequip' }}</button>
@@ -528,11 +558,11 @@ const confirmCall = () => {
   text-align: center;
 }
 
-.item-row.identify-candidate, .item-row.enchant-candidate {
+.item-row.identify-candidate, .item-row.enchant-candidate, .item-row.ring-replacement-candidate {
   cursor: pointer;
   background: rgba(0, 255, 255, 0.06);
 }
-.item-row.identify-candidate:hover, .item-row.enchant-candidate:hover {
+.item-row.identify-candidate:hover, .item-row.enchant-candidate:hover, .item-row.ring-replacement-candidate:hover {
   background: rgba(0, 255, 255, 0.14);
 }
 

@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7478/brogue/brogue-web
+
+ ❯ src/test/x3_u8b_items.test.ts (28 tests | 1 failed) 6824ms
+     × automatic travel crosses avoided loot without pickup; manual walking can recover it 219ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8b_items.test.ts > X3-U8b A09 pack and persistent avoidance > automatic travel crosses avoided loot without pickup; manual walking can recover it
+AssertionError: expected 11 to be 13 // Object.is equality
+
+- Expected
++ Received
+
+- 13
++ 11
+
+ ❯ src/test/x3_u8b_items.test.ts:124:61
+    122|         g.executeCommand('mouse_travel', { x: 13, y: 10 });
+    123|         for (let n = 0; n < 5 && g.autoPath.length; n++) g.executeComm…
+    124|         expect(g.items).toContain(loot); expect(g.player.x).toBe(13);
+       |                                                             ^
+    125|         g.executeCommand('move', { x: -1, y: 0 }); g.executeCommand('m…
+    126|         expect(g.items).not.toContain(loot); expect(g.player.inventory…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 27 passed (28)
+   Start at  23:47:23
+   Duration  7.78s (transform 524ms, setup 0ms, import 857ms, tests 6.82s, environment 0ms)
+

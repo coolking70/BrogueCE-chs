@@ -1,0 +1,883 @@
+{
+  "base": "0409de1d5486d7e675b496d8023f06ad9814ba89",
+  "changedGameMembers": [
+    "applyCommand",
+    "performPlayerAction",
+    "equipItem",
+    "unequipItem",
+    "dropItem",
+    "throwItemAt",
+    "recomputeExplorePath",
+    "markPackFull",
+    "pickUpItemAfterDisplacement"
+  ],
+  "movementParalysisHallucinationUnchanged": true,
+  "equipDispatchOnly": true,
+  "existingTestsChanged": [],
+  "protectedFiles": 74,
+  "protectedHashes": {
+    "ai_docs/reports/u-r2-trace.json": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+    "ai_docs/reports/u-r3-trace.json.gz": "212a6649ace6aa7f7709712d0b0126c8489e5bfb5716b0f67dcefc5c58206829",
+    "ai_docs/reports/u-r4-trace.json.gz": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444",
+    "package-lock.json": "c3c782a87104a90608278062f925d43681d7c03a8c97f8ac4bfda5e0dfe0cd55",
+    "src/data/arcana.json": "62f10bbf32fcae563f4ddbe902009f3e7710cd620e13225357aabbb658d38b3e",
+    "src/data/armors.json": "d11a460c5e6c13ef939f78a1404be9df567313016eaa70b7ee632a9902656471",
+    "src/data/armors.test.ts": "725307f2558cc771fcc517923cd908ed4c1865b848655595be111b9d39ce00c8",
+    "src/data/blueprints.json": "badae7967a007ad773c32e191a268bfd52d6a1929d7df0bc0025bd108a0382b9",
+    "src/data/consumables.json": "7ae3960cf2e84068189c32297ccca674b39475e2ea385e24c2426f4e12c0da00",
+    "src/data/hordes.json": "0d3c2e080dafdcf3a6da4ddf4b29d613a13bb4156e998b8518808cdabdd8645a",
+    "src/data/hordes.test.ts": "b97ba1880776c9b854b7ad9c0f4b1dd1b1ea5c0af4391d8a6cd6f3f092692e99",
+    "src/data/monsterAbsorptionVerbs.json": "c1ca1de179dd749bff5161b8cbae65d3c2f2871f9dd8d24d838051c55bfdb0ec",
+    "src/data/monsterBolts.test.ts": "6d30b3ccadcdb3f0a8bb2a2f02b8526b4e13a9814ccf990c544becd30bee1b74",
+    "src/data/monsterDamage.test.ts": "17f1e254e16351b978b66a4dcfd497e782c40865186644add102fa45546ba69d",
+    "src/data/monsters.json": "25e88ea3bc711b67718bdb24cd69eda2d2b8b6521fca4a6247e35704a8b2eaeb",
+    "src/data/monsters.test.ts": "7bdd60f416005e0d6d73d9c3927494cceb8b0bdbc725c348dac02882e9f23cb2",
+    "src/data/mutations.json": "b017cbaf1a4c13c84c2c32bc4200ae1cd28dbd2648f55ff33af3a67ba8583775",
+    "src/data/weapons.json": "841bcbaba8c442da3a383696673838f1d7bca936b836273cfcf050f1c9d42db8",
+    "src/data/weapons.test.ts": "cbac981fe657beffcaa8cf3d2340504a52960fc33c06f0d26cd5df11843d1924",
+    "src/engine/Core/TimeCoordinator.ts": "b1bf294df24186ceb5b1dc381aa8a24a783a28bc6c134142e1c7c8fa4c1c91ea",
+    "src/engine/Map/AutoGenerator.ts": "4629d84b8a2e4aaf9c414b7dfc242c6dbff30e5891404a878b62cc2a6653d0c6",
+    "src/engine/Map/Color.ts": "d94ac2ce891d1d819126aafc3c9ec8bdf9cd321b96f08fa8b0d68327edb38a72",
+    "src/engine/Map/Connectivity.ts": "0f25ae47529e440e90e53283066307411f531180462ac2f682352472076d2d44",
+    "src/engine/Map/DungeonFeature.ts": "e3f32c40447618eade6a7254efd572d5f8e05992cd1b1f31b991ffff118895cb",
+    "src/engine/Map/DungeonFeatureCatalog.ts": "40252dae6abf53980bcec19cf044fd222edaa27c7684111fea8f4aa2d7ee757c",
+    "src/engine/Map/Grid.ts": "f0637d8c04c701ebefc26ed78f43b1e44a8366ed3c3857e0cc14b50e1eee32a9",
+    "src/engine/Map/LakeSystem.ts": "fb9f1ce50353a806b12d45c1b0d160fd4ebd4fe5003fd44e1a5e288b8e97c42f",
+    "src/engine/Map/LightCatalog.ts": "27983028536e36be413c24f8f1a3f5649248abc7c93deace9c47ad1c56809bc9",
+    "src/engine/Map/LoopMap.ts": "da045bbdd697a6cd2f76d6bdfc199777d739c5d18ae3d13bdb69e520fd617cc5",
+    "src/engine/Map/MachineCells.ts": "60bc03b62b374b9e8c7c3283595c66a36d1dc87a2a90c0c15a1885ca7721d638",
+    "src/engine/Map/MapToShore.ts": "a6800530288cd98608cc0aed3a35b7b2d46cc71ef7087ffac5fbd2d534304a85",
+    "src/engine/Map/Pathfind.ts": "45180ece574acc7ade21950d80fd1817f740889674c3cdbc49817c4a20cdf4e6",
+    "src/engine/Map/Pathfinding.ts": "88bf8e22d1c15334abc580f687fef01b12e854aaeaf1a96b46374fc6a47fadfb",
+    "src/engine/Map/Promotion.ts": "f97e5af45e2820279f309436e4c6198d898c5dbfd0618a468db387ab80fbbf40",
+    "src/engine/Map/SafetyMap.ts": "60bdf3897e5ed73833ddfcda4d4d812eafabccb15de7bf016a428c65262e1403",
+    "src/engine/Map/Scent.ts": "22443addc75c77d2890efbabdb6fa53dc4f55b7e2a7a7e74763169030ec8d695",
+    "src/engine/Map/TerrainCatalog.ts": "3011147f91e6d9d0bc50eb335bd83e0bea86975d9c9fa5fc40a8712179df4b53",
+    "src/engine/Map/TerrainRules.ts": "69f71feeede79636979c71976ce08be49ce53e24d75a48c85a8af918bfbdd76b",
+    "src/engine/Map/TerrainType.ts": "f517b250bdde4cf69660a81cf6e957be713af15aea30dc53ce04767b2ca28377",
+    "src/engine/Map/WallDoorFinish.ts": "304887ce2f6b2b9711c12105ff3c9f4a15918e3acd7e0ae6b7eabd9f5b399115",
+    "src/engine/Map/WaypointMap.ts": "c5cff9634426b011bfa447b76718494c20ec7aaa0ea5546350c33f8dbb9d73cf",
+    "src/entities/Player.ts": "4e329446c762064faf36d2313dcfa163d76e9f0967b4f7cd9c6bcb5722f718d7",
+    "src/test/fixtures/deep_generation_baseline.json": "1360215b7bb2ab69528831f9b9b8f989ef9fa334af127b037598fbbed36b4a60",
+    "src/test/fixtures/generation_baseline.json": "8de4bb7a4f3fa40f72bd2f5b511699dff771b846131c65d72f4c3e6788ec8580",
+    "src/test/fixtures/p2_2_baseline.json": "ba5cfdab37e2bdf633714ac9da1b54c5db71318967c54cffdb47da7519f51726",
+    "src/test/fixtures/p2_3_baseline.json": "9b3bb0c149e968f6eccae04752e13390beaf4602c6e8216aa65426432f5ecf2e",
+    "src/test/fixtures/p2_baseline.json": "f1690f3748c3e49c0df692cbee283fb962719d9b290131b9507282a6b504fc4b",
+    "src/test/fixtures/u03b-ce-follow.json": "8a6119074d82cd0e3a27953b71188afe2bf89196e402d748eb96d1a1912508c6",
+    "src/test/fixtures/u17b-ce-catalog.json": "bf81ddb7edfd198dad1b6cb3c25c4da36673af1ca5410c3288c8ebaa17a3494d",
+    "src/test/fixtures/u17c-ce-catalog.json": "4ba5a4d0ea04d52b1f7c7f4b53fa89fbee7cd1389dcd616930542b0de5c755bf",
+    "src/test/fixtures/u17d-ce-catalog.json": "38e6de0c5e6fe2eaaf4cb02949c9bd4f90bfe2e05c8f3d42be2e0f31ff772657",
+    "src/test/fixtures/u17e-ce-catalog.json": "0991648540a635503e4684aea2e9e2b42218bacb411bab279f13c1e5498c6e94",
+    "src/test/fixtures/u17f-ce-catalog.json": "72ef9b77d65b5b72a6e58602a9fb53d1d6d8b323100bb80b381ee01a0ff52c14",
+    "src/test/fixtures/u19a-ce-carriers.json": "9be01a53397ecb52cc77ce5d1e668c7fe544f4efd37fc2cc774fec3c45bbadf3",
+    "src/test/fixtures/u19a-ce-view.json": "6ed1c5de21b36e51bbbafa592c1d8c381f8c7286138aa1a482ac67ba42fafeab",
+    "src/test/fixtures/u19a-machine-scenes.ts": "ac2d7a692f0d9ec60abd48ab336a448801bef027a0d667d57d43211b92ed894a",
+    "src/test/fixtures/u19b-ce-occupancy.json": "5b9c721b52e066f76929e63be8b02fe887f433f5466e8563b5d321e6c5397df5",
+    "src/test/fixtures/u19b-machine-scenes.ts": "54bc14ea9c3b19627b3e81f671375c8d3cea7c806a6a2c1ea974626270a39673",
+    "src/test/fixtures/u19c-ce-order.json": "2a338fa0dce8cc6864bd4348c258f6ca901153657baac2b49f69d2d25d47be8d",
+    "src/test/fixtures/u19c-machine-actions.ts": "99088b3779a230c49aed700c5c97edeb96224d8b7c47312a197b41c74d240804",
+    "src/test/fixtures/u19d-ce-catalog.json": "2dcf84f7adf483094e2ce7faa2dd838d4bd94975b412ebce0296665ccd612adf",
+    "src/test/fixtures/u19d-machine-actions.ts": "e3c86b44d8e3c448d6797c066930723406d548ea6097af6eb4b0453017a82ac3",
+    "src/test/fixtures/u19d-natural-cases.json": "be941f99fcc9b7447c330bb5487c8b1781b286cff7b367ebe4cb821de5d1d858",
+    "src/test/fixtures/u19e-ce-catalog.json": "84641993d60595672b9d96049e6f74d3bfe86a89c77bba3fe1156c55d5b17d2d",
+    "src/test/fixtures/u19e-machine-actions.ts": "1c226b86c751d38724a104b3d576aa48679c5fdde45f233c6c0d6668c783f3a3",
+    "src/test/fixtures/u19e-natural-cases.json": "98c368b5a3b16fb6b2a28e69d2dcea6e3fbbcaa3fb02f7f7270c694e23444a01",
+    "src/test/fixtures/u19f-auto-actions.ts": "ba10dfd4ddf645f14bab5d3a086fb31ed193dadc42ec89232b91525ca9a34717",
+    "src/test/fixtures/u19f-ce-catalog.json": "095818841031f47c099bc0925f2013299f674d817e8739969e5234881037fd5d",
+    "src/test/fixtures/u19f-machine-actions.ts": "3759f5b0a8da3ea3ed3591e7d7080b2340356177cc8b505e1c84f6237d4f65a0",
+    "src/test/fixtures/u19f-natural-cases.json": "e9fdbd35a2b28468158adcf60681fda715221281e9b02dac2dce222d5bb168c2",
+    "src/test/fixtures/u21c-ce-terrain.json": "fa8303fe65b922cd8e6a4e49cece9351a6fd7791dbcda8a6d516a96a831ec44f",
+    "src/test/fixtures/x2g-ce-terrain.json": "7e3f0699f102671742b9fb35ae9f8e498ac64c40e6d99107dd95f466b9e568ed",
+    "src/test/fixtures/x2o-ce-catalog.json": "1b06a507026260baa9a3177b3ee99b22adec5d140880cb0b24823adb5087f0e7",
+    "src/test/fixtures/x2o-clump-oracle.json": "91ac5db13b746e4afb4b1a23be71955aae8517b93ad72326709cdac9eeecd390"
+  },
+  "CRLF": [],
+  "staged": [],
+  "localIgnoredPNGs": [
+    "ai_docs/reports/x3-u8b-evidence/browser-drop-explore.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-drop-refused.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-full-pack.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-mobile-rings.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-rings-left-prompt.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-rings-right-prompt.png",
+    "ai_docs/reports/x3-u8b-evidence/browser-strength.png",
+    "ai_docs/reports/x3-u8b-evidence/shot-0.png"
+  ],
+  "selection": {
+    "references": 73,
+    "required": 19,
+    "tests": 83,
+    "rechecked": 24
+  },
+  "firstRun": {
+    "passed": 1839,
+    "failed": 1
+  },
+  "counts": {
+    "passed": 1842,
+    "failed": 0,
+    "skipped": 4,
+    "todo": 4
+  },
+  "fullIntegrity": {
+    "inputs": 528,
+    "changed": []
+  },
+  "repairDelta": [
+    "src/engine/Core/Game.ts",
+    "src/test/x3_u8b_items.test.ts"
+  ],
+  "integrity": {
+    "inputs": 528,
+    "changed": []
+  },
+  "actual": [
+    {
+      "file": "src/data/armors.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/data/weapons.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/engine/Combat/CombatFormulas.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 4
+    },
+    {
+      "file": "src/engine/Core/startingKit.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/armor_display_effect.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/armor_model_effect.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/armor_runic_effect.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_1_weapon_specials.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_1b_identification_persistence.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_2_throwing.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/fe_1_touch.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/i_1_interaction.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 2,
+      "todo": 0
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 2,
+      "todo": 0
+    },
+    {
+      "file": "src/test/p4_7_player_weapon_geometry.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_03b_level_travel.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 91,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 49,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 97,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_15b_rings.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_15d_weapon_runic.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_15d2_armor_runic.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_15d3_runic_generation.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_18_water_cage.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_19b_pending_occupancy.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_19c_immediate_entities.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_27_recording.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u20_inventory.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 57,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_2_arcana_submission.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_4_bolt_reflection.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2a_recording_checkpoint.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2d_scroll_equipment.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2f_thrown_math.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2h_test_mode_reachability.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x2j_monster_ai.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u1_movement_safety.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u2_ally_captive.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u3_cursed_equipment.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u4_auto_travel.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u5_commands.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u5_ui.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u6_messages.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u7_sidebar.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3_u8b_items.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3b_display_recording.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x3b_item_details.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x4_r4_item_details.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x4a_movement_rendering.test.ts",
+      "status": "passed",
+      "source": "修正后复验",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "file": "src/test/x4b_flavor_text.test.ts",
+      "status": "passed",
+      "source": "83 文件首轮",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  ]
+}

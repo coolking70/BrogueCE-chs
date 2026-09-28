@@ -1,0 +1,26 @@
+--- gate/Game.ts
++++ final/Game.ts
+@@ -2697,7 +2697,7 @@
+             if (operation !== 'confirm' && operation !== 'cancel' && !item) throw new Error(`Missing replay item ${letter}`);
+             switch (operation) {
+                 case 'equip': this.equipItem(item!, rest[0]
+-                    ? this.player.inventory.items.find(i => i.inventoryLetter === rest[0]) ?? null : undefined); break;
++                    ? this.player.inventory.items.find(i => i.inventoryLetter === rest[0]) ?? null : undefined, true); break;
+                 case 'unequip': this.unequipItem(item!); break;
+                 case 'drop': this.dropItem(item!); break;
+                 case 'quaff': this.quaffItem(item!); break;
+@@ -3548,10 +3548,12 @@
+         }
+     }
+ 
+-    public equipItem(item: Item, replacement?: Item | null) {
++    /** CE equip() rejects repeated commands; internal equipItem() can refresh
++     * weapon/armor state (Items.c:4005-4008 vs 8538-8561). */
++    public equipItem(item: Item, replacement?: Item | null, fromCommand = false) {
+         const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+             .some(slot => slot?.id === item.id);
+-        if (equipped) {
++        if (equipped && (fromCommand || item.category === ItemCategory.RING)) {
+             logger.log(item.category === ItemCategory.RING
+                 ? i18next.t('item.ring_already_worn', { defaultValue: 'you are already wearing that ring.' })
+                 : i18next.t('item.already_equipped', { defaultValue: 'already equipped.' }), '#cccccc');

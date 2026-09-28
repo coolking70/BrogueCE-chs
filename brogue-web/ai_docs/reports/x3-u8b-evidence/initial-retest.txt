@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7478/brogue/brogue-web
+
+ ❯ src/test/x3_u8b_items.test.ts (29 tests | 1 failed) 7190ms
+     × avoidance survives cached-level JSON roundtrip and return, with no RNG consumed by load 236ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8b_items.test.ts > X3-U8b A09 pack and persistent avoidance > avoidance survives cached-level JSON roundtrip and return, with no RNG consumed by load
+TypeError: Cannot read properties of undefined (reading 'items')
+ ❯ src/test/x3_u8b_items.test.ts:134:59
+    132|         g.depth = 2; (g as any).generateDepth(false);
+    133|         const saved = JSON.parse(JSON.stringify(g.toSnapshot()));
+    134|         expect(saved.levels.find((l: any) => l.depth === 1).items.find…
+       |                                                           ^
+    135|         const beforeRng = rng.getState(); expect(g.loadSnapshot(saved)…
+    136|         g.depth = 1; (g as any).generateDepth(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 passed (29)
+   Start at  23:49:04
+   Duration  8.27s (transform 525ms, setup 0ms, import 986ms, tests 7.19s, environment 0ms)
+

@@ -2696,7 +2696,8 @@ export class Game {
             const item = this.player.inventory.items.find(i => i.inventoryLetter === letter);
             if (operation !== 'confirm' && operation !== 'cancel' && !item) throw new Error(`Missing replay item ${letter}`);
             switch (operation) {
-                case 'equip': this.equipItem(item!); break;
+                case 'equip': this.equipItem(item!, rest[0]
+                    ? this.player.inventory.items.find(i => i.inventoryLetter === rest[0]) ?? null : undefined, true); break;
                 case 'unequip': this.unequipItem(item!); break;
                 case 'drop': this.dropItem(item!); break;
                 case 'quaff': this.quaffItem(item!); break;
@@ -3541,15 +3542,39 @@ export class Game {
                     timeSystem.currentTick += this.player.movementSpeed;
                     this.playerTurnEnded();
                 } else {
-                    logger.log(i18next.t('game.inventory_full', { defaultValue: 'Your inventory is full.' }), '#ff8888');
+                    this.markPackFull(item);
                 }
             }
         }
     }
 
-    public equipItem(item: Item) {
-        const previous = item.category === ItemCategory.WEAPON ? this.player.equippedWeapon
+    /** CE equip() rejects repeated commands; internal equipItem() can refresh
+     * weapon/armor state (Items.c:4005-4008 vs 8538-8561). */
+    public equipItem(item: Item, replacement?: Item | null, fromCommand = false) {
+        const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+            .some(slot => slot?.id === item.id);
+        if (equipped && (fromCommand || item.category === ItemCategory.RING)) {
+            logger.log(item.category === ItemCategory.RING
+                ? i18next.t('item.ring_already_worn', { defaultValue: 'you are already wearing that ring.' })
+                : i18next.t('item.already_equipped', { defaultValue: 'already equipped.' }), '#cccccc');
+            return;
+        }
+        let previous = item.category === ItemCategory.WEAPON ? this.player.equippedWeapon
             : item.category === ItemCategory.ARMOR ? this.player.equippedArmor : null;
+        if (item.category === ItemCategory.RING && this.player.ringLeft && this.player.ringRight) {
+            if (replacement === undefined) {
+                logger.log(i18next.t('item.ring_replace_prompt', {
+                    defaultValue: 'You are already wearing two rings; remove which first?'
+                }), '#cccccc');
+                return;
+            }
+            if (!replacement || replacement.category !== ItemCategory.RING
+                || ![this.player.ringLeft, this.player.ringRight].includes(replacement)) {
+                logger.log(i18next.t('item.invalid_entry', { defaultValue: 'Invalid entry.' }), '#ff8888');
+                return;
+            }
+            previous = replacement;
+        }
         if (previous && !this.unequipItem(previous, false)) return;
         if (this.player.equip(item, false)) {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
@@ -3562,6 +3587,20 @@ export class Game {
                 ItemLoader.identifyItemKind(item);
             }
             this.syncEquipmentStatuses();
+            // CE Items.c:3925-3958 strengthCheck: message only; use actual
+            // strengthRequired, with weakness deducted and the deficit clamped.
+            if ((item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR)
+                && (item.strengthRequired ?? 0) > this.player.effectiveStrength) {
+                const name = Object.assign(Object.create(item) as Item, {
+                    identified: false, runicKnown: false, maxChargesKnown: false, timesUsed: 0,
+                }).displayName;
+                const strength = (item.strengthRequired ?? 0) - Math.max(0, this.player.effectiveStrength);
+                logger.log(item.category === ItemCategory.WEAPON
+                    ? i18next.t('item.weapon_strength_warning', { name, strength,
+                        defaultValue: 'You can barely lift the {{name}}; {{strength}} more strength would be ideal.' })
+                    : i18next.t('item.armor_strength_warning', { name, strength,
+                        defaultValue: 'You stagger under the weight of the {{name}}; {{strength}} more strength would be ideal.' }), '#cccccc');
+            }
             this.needsRender = true;
             // CE Items.c:4024 equip() 以 playerTurnEnded() 收尾——完整回合
             timeSystem.currentTick += this.player.movementSpeed;
@@ -3575,7 +3614,14 @@ export class Game {
     public unequipItem(item: Item, endTurn = true, cursedMessage?: string): boolean {
         const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
             .some(slot => slot?.id === item.id);
-        if (!equipped) return false;
+        if (!equipped) {
+            const name = Object.assign(Object.create(item) as Item, {
+                identified: false, runicKnown: false, maxChargesKnown: false, timesUsed: 0,
+            }).displayName;
+            logger.log(i18next.t('item.not_equipped', { name, verb: item.quantity === 1 ? 'was' : 'were',
+                defaultValue: 'your {{name}} {{verb}} not equipped.' }), '#cccccc');
+            return false;
+        }
         if (!this.player.unequip(item)) {
             // CE itemName(includeDetails=false): no enchantment/runic disclosure.
             const name = Object.assign(Object.create(item) as Item, {
@@ -3602,6 +3648,13 @@ export class Game {
         if (this.player.inventory.items.includes(item)) {
             const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
                 .some(slot => slot?.id === item.id);
+            // CE drop checks an equipped curse before canDrop, but must not
+            // remove ordinary equipment before rejecting obstructing terrain.
+            if (equipped && item.isCursed) { this.unequipItem(item, false); return; }
+            if (cellTerrainFlags(this.grid, this.player.x, this.player.y) & T_OBSTRUCTS_ITEMS) {
+                logger.log(i18next.t('item.drop_obstructed', { defaultValue: 'There is already something there.' }), '#cccccc');
+                return;
+            }
             if (equipped && !this.unequipItem(item, false)) return;
             // CE dropItem peels one food/potion/scroll, but drops an entire
             // throwing-weapon or GEM stack. The peeled copy needs its own entity ID.
@@ -3616,6 +3669,7 @@ export class Game {
                 this.syncEquipmentStatuses();
             }
             dropped.loc = { x: this.player.loc.x, y: this.player.loc.y };
+            dropped.flags = [...new Set([...(dropped.flags ?? []), 'ITEM_PLAYER_AVOIDS'])];
             this.items.push(dropped);
             // C-4c：TM_PROMOTES_ON_ITEM（CE Items.c:1278-1286，物品落格时）。
             // 当前 31 地形零载体，调用为结构性忠实；实际触发数 0（报告）。
@@ -5963,6 +6017,7 @@ export class Game {
         // 再更新背包。堆叠 >1：数量 -1，克隆件（quantity=1）起飞；
         // 最后一件：整件移出背包（已装备则先卸下）。
         const thrown = prepareThrownItem(this.player, item, origin, false);
+        thrown.flags = [...new Set([...(thrown.flags ?? []), 'ITEM_PLAYER_AVOIDS'])];
 
         // —— 弹道（CE throwItem，Items.c:6882-6947）——
         // BOLT_NONE 取线（web 复用 boltPath 的 Bresenham 近似，怪物弹道同款）；
@@ -6010,6 +6065,9 @@ export class Game {
                         this.playerTurnEnded();
                         return;
                     }
+                    // CE Items.c:6857: only a weapon that missed a creature
+                    // becomes an exploration target again (not an empty throw).
+                    thrown.flags = thrown.flags.filter(flag => flag !== 'ITEM_PLAYER_AVOIDS');
                     logger.log(i18next.t('throw.miss', {
                         weapon: thrown.displayName, monster: monst.name,
                         defaultValue: `The thrown ${thrown.displayName} missed the ${monst.name}.`
@@ -9879,9 +9937,10 @@ export class Game {
         for (let index = 0; index < queue.length; index++) {
             const curr = queue[index]!;
             const cell = this.grid.getCell(curr.x, curr.y)!;
+            const loot = this.items.filter(i => i.loc.x === curr.x && i.loc.y === curr.y);
             const hasLoot = cell.isVisible
-                ? this.items.some(i => i.loc.x === curr.x && i.loc.y === curr.y)
-                : !!cell.rememberedItem;
+                ? loot.some(i => !i.flags?.includes('ITEM_PLAYER_AVOIDS'))
+                : !!cell.rememberedItem && (loot.length === 0 || loot.some(i => !i.flags?.includes('ITEM_PLAYER_AVOIDS')));
             if (index > 0 && (!cell.isExplored || hasLoot)) {
                 const path: Pos[] = [];
                 let step = curr;
@@ -10484,15 +10543,28 @@ export class Game {
             interpolation: { escapeValue: false }, defaultValue: 'you now have {{name}} ({{letter}}).' }), '#ffffff');
     }
 
+    /** CE Items.c:930-934: retain the item and avoid repeated exploration attempts. */
+    private markPackFull(item: Item): void {
+        item.flags = [...new Set([...(item.flags ?? []), 'ITEM_PLAYER_AVOIDS'])];
+        const name = Object.assign(Object.create(item) as Item, {
+            identified: false, runicKnown: false, maxChargesKnown: false, timesUsed: 0,
+        }).displayName;
+        logger.log(i18next.t('item.pack_too_full', { name,
+            defaultValue: 'Your pack is too full to pick up {{name}}.' }), '#ff8888');
+    }
+
     /** CE setMonsterLocation picks up without a second player action/turn. */
     private pickUpItemAfterDisplacement(): void {
-        const index = this.items.findIndex(item => item.loc.x === this.player.loc.x && item.loc.y === this.player.loc.y);
+        // An explicit manual walk/pickup can recover an avoided item. Only
+        // automatic travel must leave it alone when crossing its cell.
+        const index = this.items.findIndex(item => item.loc.x === this.player.loc.x && item.loc.y === this.player.loc.y
+            && (!this.inAutoTravelStep || !item.flags?.includes('ITEM_PLAYER_AVOIDS')));
         if (index < 0) return;
         const item = this.items[index]!;
         // CE Items.c:865-888: gold bypasses pack capacity and is currency,
         // never an inventory entry. W-11's ordinary-item pickup test missed it.
         if (item.category === ItemCategory.GOLD) this.stats.gold += item.quantity;
-        else if (!this.player.inventory.addItem(item)) return;
+        else if (!this.player.inventory.addItem(item)) { this.markPackFull(item); return; }
         this.items.splice(index, 1);
         promoteOnItemPickup(this.grid, this.player.loc.x, this.player.loc.y);
         this.logPickup(item);

@@ -1,0 +1,60 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import ts from 'typescript';
+const out='ai_docs/reports/x3-u8b-evidence';
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const git=args=>execFileSync('git',args,{encoding:'utf8',maxBuffer:32e6});
+const head=f=>git(['show',`HEAD:brogue-web/${f}`]);
+const gameFile='src/engine/Core/Game.ts', before=head(gameFile), after=fs.readFileSync(gameFile,'utf8');
+function members(code){const s=ts.createSourceFile('Game.ts',code,ts.ScriptTarget.Latest,true);const c=s.statements.find(n=>ts.isClassDeclaration(n)&&n.name.text==='Game');return Object.fromEntries(c.members.map(m=>[m.name?.getText(s)??'constructor',m.getText(s)]));}
+const a=members(before),b=members(after), changed=Object.keys(b).filter(k=>a[k]!==b[k]);
+const allowed=['applyCommand','performPlayerAction','equipItem','unequipItem','dropItem','throwItemAt','recomputeExplorePath','markPackFull','pickUpItemAfterDisplacement'];
+assert.deepEqual(changed.filter(k=>!allowed.includes(k)),[]);
+assert.equal(a.performPlayerAction.split("} else if (action === 'pickup')")[0],b.performPlayerAction.split("} else if (action === 'pickup')")[0]);
+assert.equal(a.applyCommand,b.applyCommand.replace("case 'equip': this.equipItem(item!, rest[0]\n                    ? this.player.inventory.items.find(i => i.inventoryLetter === rest[0]) ?? null : undefined, true); break;", "case 'equip': this.equipItem(item!); break;"));
+const tracked=git(['diff','--name-only','--relative']).trim().split('\n').filter(Boolean);
+assert.deepEqual(tracked.filter(f=>f.endsWith('.test.ts')),[]);
+const protectedPaths=git(['ls-files','src/engine/Map','src/data','src/test/fixtures','src/engine/Core/TimeCoordinator.ts','src/entities/Player.ts','package-lock.json','ai_docs/reports/u-r2-trace.json','ai_docs/reports/u-r3-trace.json.gz','ai_docs/reports/u-r4-trace.json.gz']).trim().split('\n').filter(Boolean);
+const protectedHashes=Object.fromEntries(protectedPaths.map(f=>{const actual=sha(fs.readFileSync(f));const expected=sha(execFileSync('git',['show',`HEAD:brogue-web/${f}`],{maxBuffer:32e6}));assert.equal(actual,expected,f);return[f,actual];}));
+const files=[...new Set([...tracked,...git(['ls-files','--others','--exclude-standard']).trim().split('\n').filter(Boolean)])].filter(f=>fs.existsSync(f)&&fs.statSync(f).isFile());
+const crlf=files.filter(f=>fs.readFileSync(f).includes(Buffer.from('\r\n')));assert.deepEqual(crlf,[]);
+const staged=git(['diff','--cached','--name-only']).trim();assert.equal(staged,'');
+const pngs=fs.readdirSync(out).filter(f=>f.endsWith('.png')).map(f=>`${out}/${f}`);
+for(const f of pngs)assert(git(['check-ignore',f]).trim());
+const selection=JSON.parse(fs.readFileSync(`${out}/test-selection.json`));
+const actualReferences=execFileSync('rg',['-l','-g','*.test.ts',selection.pattern,'src'],{encoding:'utf8'}).trim().split('\n');
+assert.deepEqual(actualReferences.filter(f=>!selection.tests.includes(f)),[]);
+const fullIntegrity=JSON.parse(fs.readFileSync(`${out}/gate-integrity.json`));
+assert.deepEqual(fullIntegrity.changed,[]);
+const oldFrozen=JSON.parse(fs.readFileSync(`${out}/gate-inputs.json`));
+const frozen=JSON.parse(fs.readFileSync(`${out}/recheck-inputs.json`));
+const repairDelta=Object.keys(oldFrozen).filter(f=>oldFrozen[f]!==frozen[f]).sort();
+assert.deepEqual(repairDelta,['src/engine/Core/Game.ts','src/test/x3_u8b_items.test.ts']);
+const integrity={inputs:Object.keys(frozen).length,changed:Object.entries(frozen).filter(([f,h])=>sha(fs.readFileSync(f))!==h).map(([f])=>f)};
+assert.deepEqual(integrity.changed,[]);
+assert.deepEqual(JSON.parse(fs.readFileSync(`${out}/recheck-integrity.json`)).changed,[]);
+const first=JSON.parse(fs.readFileSync(`${out}/targeted.json`));
+const second=JSON.parse(fs.readFileSync(`${out}/recheck-targeted.json`));
+const recheck=JSON.parse(fs.readFileSync(`${out}/recheck-selection.json`));
+assert.equal(first.numFailedTests,1);
+assert.equal(first.testResults.flatMap(f=>f.assertionResults).filter(t=>t.status==='failed'&&t.fullName.includes('ordinary equip starts armor/10')).length,1);
+assert.equal(second.numFailedTests,0);assert.equal(second.numFailedTestSuites,0);
+assert.deepEqual(second.testResults.map(f=>f.name.replace(`${process.cwd()}/`,'')).sort(),recheck.tests);
+assert.deepEqual([...recheck.direct,...selection.required].filter(f=>!recheck.tests.includes(f)),[]);
+const rows=(r,source)=>r.testResults.map(f=>({file:f.name.replace(`${process.cwd()}/`,''),status:f.status,source,
+ passed:f.assertionResults.filter(t=>t.status==='passed').length,
+ failed:f.assertionResults.filter(t=>t.status==='failed').length,
+ skipped:f.assertionResults.filter(t=>t.status==='pending'||t.status==='skipped').length,
+ todo:f.assertionResults.filter(t=>t.status==='todo').length}));
+const firstRows=rows(first,'83 文件首轮'),secondRows=rows(second,'修正后复验');
+assert.deepEqual(firstRows.map(f=>f.file).sort(),selection.tests);
+const merged=new Map(firstRows.map(f=>[f.file,f]));for(const f of secondRows)merged.set(f.file,f);
+const actual=[...merged.values()].sort((a,b)=>a.file.localeCompare(b.file));
+assert.equal(actual.reduce((n,f)=>n+f.failed,0),0);
+const counts=actual.reduce((s,f)=>{for(const k of ['passed','failed','skipped','todo'])s[k]+=f[k];return s;},{passed:0,failed:0,skipped:0,todo:0});
+fs.writeFileSync(`${out}/actual-tests.md`,'# X3-U8b 实际执行清单\n\n全部单 worker。83 文件首轮为 1839 passed / 1 failed / 4 skipped / 4 todo；修正后以全部直接调用反查与固定回归组复验结果覆盖对应文件，未将首轮宣称为 exit 0。表中标明最后验证来源；另有两轮 test:drift 均通过。\n\n| 文件 | 最后验证 | 结果 | 通过 | 失败 | skip | todo |\n| --- | --- | --- | ---: | ---: | ---: | ---: |\n'+actual.map(f=>`| ${f.file} | ${f.source} | ${f.status} | ${f.passed} | ${f.failed} | ${f.skipped} | ${f.todo} |`).join('\n')+'\n');
+const summary={base:git(['rev-parse','HEAD']).trim(),changedGameMembers:changed,movementParalysisHallucinationUnchanged:true,equipDispatchOnly:true,existingTestsChanged:[],protectedFiles:protectedPaths.length,protectedHashes,CRLF:crlf,staged:[],localIgnoredPNGs:pngs,selection:{references:selection.references.length,required:selection.required.length,tests:selection.tests.length,rechecked:recheck.tests.length},firstRun:{passed:first.numPassedTests,failed:first.numFailedTests},counts,fullIntegrity,repairDelta,integrity,actual};
+fs.writeFileSync(`${out}/final-audit.json`,JSON.stringify(summary,null,2)+'\n');
+console.log(JSON.stringify({gameMembers:changed,protectedFiles:protectedPaths.length,CRLF:crlf,staged:[],localIgnoredPNGs:pngs.length,fullIntegrity,repairDelta,integrity,counts,rechecked:recheck.tests.length},null,2));

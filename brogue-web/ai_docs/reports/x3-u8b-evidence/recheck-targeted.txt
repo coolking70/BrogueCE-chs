@@ -1,0 +1,285 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7478/brogue/brogue-web
+
+stdout | src/test/u_14b_status_gaps.test.ts > U14b STUCK is a counter with real terrain contact > source draws 3–7 once and never refreshes (3)
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_14b_status_gaps.test.ts (97 tests) 8620ms
+     ✓ source draws 3–7 once and never refreshes (3)  363ms
+     ✓ contact gates: inanimate  348ms
+     ✓ contact gates: immune  348ms
+     ✓ contact gates: invulnerable  345ms
+     ✓ entranced forced follow gates on counter, including away from terrain  379ms
+     ✓ blink releases even when landing in another web; unsuccessful placement retains count  334ms
+     ✓ ordinary equip starts armor/10, refresh replaces; forced starting equipment and unequip clear  317ms
+     ✓ actual armor hit chance and detail include donning, without a damage penalty  303ms
+     ✓ objective clock, slowed equipment/action timing  301ms
+     ✓ conjuration blades still have 1 HP and no lifespan; no expansion of retired sources  352ms
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 65406ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  449ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  427ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  512ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  488ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  1812ms
+     ✓ 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）  346ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  1866ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  2354ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  600ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  36949ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  16219ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  1045ms
+stdout | src/test/u_r3_trace.test.ts > UR3 complete generation and revisit trace > matches HEAD for four drift seeds through D26 and cached/save return
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r3_trace.test.ts (1 test) 55474ms
+     ✓ matches HEAD for four drift seeds through D26 and cached/save return  55473ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 18168ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2550ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2685ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2454ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1387ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  1490ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  1280ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  1391ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  1150ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  721ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1320ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  532ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  1134ms
+stdout | src/test/x3_u5_commands.test.ts > X3-U5 stairs travel and pure rest > up: unknown stairs report CE failure without exposing the target or spending a turn/RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u5_commands.test.ts (44 tests) 14128ms
+     ✓ injured rest stops at full health, and full-health rest lasts exactly 100 turns  556ms
+     ✓ recovery is capped at CE TURNS_FOR_FULL_REGEN (300) turns, without changing regeneration rates  1201ms
+     ✓ injured rest from 1 HP either recovers fully or stops at the 300-turn cap  1097ms
+     ✓ rest detects changed cardinal danger without a message  367ms
+     ✓ long search uses the real five-search cadence and stops immediately on discovery  369ms
+     ✓ runs a corridor to the wall with no extra turn  437ms
+     ✓ stops on a side opening, while ignoring the changed cell behind it  445ms
+     ✓ stops before an avoided hazard, and confusion refuses without a turn or RNG  352ms
+     ✓ adjacent ally has CE isDisturbed semantics  304ms
+     ✓ adjacent invisible enemy has CE isDisturbed semantics  415ms
+     ✓ new automatic commands cannot turn a pending throw into a throw at the stairs or advance through the target modal  309ms
+     ✓ auto_rest survives JSON save/load at the same yielded step  919ms
+     ✓ search_long survives JSON save/load at the same yielded step  327ms
+     ✓ run survives JSON save/load at the same yielded step  467ms
+     ✓ all new commands and autonomous steps record, replay and seek with zero OOS (including depth travel)  628ms
+stdout | src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D08 one engine removal gate > equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u3_cursed_equipment.test.ts (65 tests) 15189ms
+     ✓ equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  389ms
+     ✓ equippedWeapon unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  394ms
+     ✓ equippedWeapon drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  359ms
+     ✓ equippedWeapon drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  339ms
+     ✓ equippedArmor drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  326ms
+     ✓ equippedArmor drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  314ms
+     ✓ equippedArmor throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  315ms
+     ✓ ringLeft ordinary drop succeeds and spends exactly one turn  326ms
+     ✓ ringLeft ordinary throw succeeds and spends exactly one turn  319ms
+     ✓ ringRight ordinary unequip succeeds and spends exactly one turn  313ms
+stdout | src/test/u_03b_level_travel.test.ts > U03b CE level travel > actual entry schedules, return cancels and restores the travelled portion
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03b_level_travel.test.ts (36 tests) 15110ms
+     ✓ 4608 eligibility/countdown rows match the compiled local CE loop  1605ms
+     ✓ actual entry schedules, return cancels and restores the travelled portion  748ms
+     ✓ adjacent only; arrival displaces a player and incurs movement-speed debt  663ms
+     ✓ upstairs enters by down stair; pit uses stored exit, clumped damage/shield and levitation immunity  627ms
+     ✓ actual hasted actions advance approach once per 100 ticks, and off-level statuses stay frozen  632ms
+     ✓ pit entry can kill, uses shielding, and separates corpse location from learning payload  662ms
+     ✓ real entry clears an absent leader, while JSON decoding alone preserves its identity  1147ms
+     ✓ save mid-approach 1 preserves one graph and exact subsequent objective-block/return state  1329ms
+     ✓ save mid-approach 4 preserves one graph and exact subsequent objective-block/return state  1258ms
+     ✓ revisit after 0 objective blocks clamps to 100 and borrows CE historical clock  668ms
+     ✓ revisit after 1 objective blocks clamps to 100 and borrows CE historical clock  657ms
+     ✓ revisit after 7 objective blocks clamps to 100 and borrows CE historical clock  616ms
+     ✓ revisit after 100 objective blocks clamps to 100 and borrows CE historical clock  670ms
+     ✓ revisit after 101 objective blocks clamps to 100 and borrows CE historical clock  703ms
+     ✓ revisit after 500 objective blocks clamps to 100 and borrows CE historical clock  622ms
+     ✓ new level runs 50 after oldSeed reseed, before placement; no objective or player resources advance  742ms
+     ✓ real gas, fire and promotion evolve, without touching player or monster states, debt, hunger, scent or resources  598ms
+     ✓ CE gas precedes promotion/fire  575ms
+     ✓ borrowed clock and player position restore on exception; timer normalization is CE +100 once  580ms
+stdout | src/test/x3_u4_auto_travel.test.ts > X3-U4 disturbed and CE startFighting > already seen enemy attack (accuracy 100, including miss) interrupts the current travel step
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u4_auto_travel.test.ts (38 tests) 13244ms
+     ✓ already seen enemy attack (accuracy 100, including miss) interrupts the current travel step  370ms
+     ✓ already seen enemy attack (accuracy 0, including miss) interrupts the current travel step  317ms
+     ✓ new runs and command boundaries bind message disturbance to the active Game  766ms
+     ✓ repeated terrain contact 192 disturbs even with unchanged status and no message  512ms
+     ✓ ordinary item first sight has the CE stop/message policy  356ms
+     ✓ key first sight has the CE stop/message policy  304ms
+     ✓ ally first sight has the CE stop/message policy  333ms
+     ✓ enemy first sight has the CE stop/message policy  337ms
+     ✓ stairs first sight has the CE stop/message policy  341ms
+     ✓ a seen staircase never stops a second automatic command  324ms
+     ✓ key recording and replay stop at identical positions with and without render  1158ms
+     ✓ enemy recording and replay stop at identical positions with and without render  813ms
+     ✓ stairs recording and replay stop at identical positions with and without render  879ms
+     ✓ escape cancels before an early-return branch  445ms
+     ✓ cancel_target cancels before an early-return branch  406ms
+stdout | src/test/p2_3_objective_time.test.ts > P2-3 A: 客观时间生效（对抗性核心） > A1 haste 下连续两次动作，客观块只触发一次（营养 -1；门 100→50→100）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p2_3_objective_time.test.ts (19 tests | 2 skipped) 5377ms
+     ✓ B3 怪物状态按 tick 递减：haste 两动作 -1，slowed 一动作 -2  438ms
+     ✓ C1 haste 两次动作只递减一次（fuse 5→4），不触发刷怪  466ms
+     ✓ C2 slowed 一次动作递减两次（fuse 2→0）并触发一次周期刷怪  436ms
+     ✓ D1d equip 是完整回合（CE Items.c:4024 equip → playerTurnEnded）  302ms
+     ✓ D1e unequip 是完整回合（CE Items.c:8349 unequipItem → playerTurnEnded）  303ms
+     ✓ D2 楼梯不消耗回合（CE useStairs 无 playerTurnEnded），但换层同步客观门  725ms
+     ✓ haste 在客观块内到期后，门对齐玩家剩余 tick（而非机械 +100）  326ms
+stdout | src/test/x3_u6_messages.test.ts > X3-U6 presentation acknowledgments > blocks commands before recording and confirmation changes no world, time, RNG or decisions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:81423) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/x3_u6_messages.test.ts (51 tests) 10694ms
+     ✓ blocks commands before recording and confirmation changes no world, time, RNG or decisions  344ms
+     ✓ replay/seek bypass pending display and preserve real checkpoints  1135ms
+     ✓ a warning interrupts an active route through U4 disturbed, without another move  353ms
+     ✓ warns over 7 once, persists latch, resets on land, zero RNG  369ms
+     ✓ warns over 9 once, persists latch, resets on land, zero RNG  359ms
+     ✓ warns over 8 once, persists latch, resets on land, zero RNG  364ms
+     ✓ fire immunity protects lava only, uses max duration, and real turn epilogue warns after countdown  357ms
+     ✓ expiration confused has its own CE prose  409ms
+     ✓ expiration hallucinating has its own CE prose  391ms
+     ✓ expiration telepathy has its own CE prose  384ms
+     ✓ expiration levitating has its own CE prose  304ms
+     ✓ expiration weakened has its own CE prose  314ms
+     ✓ regeneration expires silently; confusion and hallucination remain separate on the same turn  312ms
+     ✓ hunger hungry has food suffix and CE acknowledgment policy  302ms
+stdout | src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > refuses known lava (memory) without time, RNG, movement or an executed turn
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u1_movement_safety.test.ts (33 tests) 9109ms
+     ✓ whip cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  354ms
+     ✓ spear cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  339ms
+     ✓ axe cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  331ms
+     ✓ rapier cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  488ms
+     ✓ flail cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  469ms
+     ✓ an animated auto step records answer=true and replay/seek stays stopped with zero OOS  311ms
+     ✓ flame replays rejected/accepted decisions and seeks without UI or OOS  300ms
+     ✓ acid attack replays rejected/accepted decisions and seeks without UI or OOS  416ms
+     ✓ lava refusal replays rejected/accepted decisions and seeks without UI or OOS  380ms
+stdout | src/test/x3_u8b_items.test.ts > X3-U8b A08 strengthCheck messages > category 0, weakness 0 uses effective strength with zero-clamped deficiency
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u8b_items.test.ts (32 tests) 9388ms
+     ✓ category 0, weakness 0 uses effective strength with zero-clamped deficiency  353ms
+     ✓ category 0, weakness 4 uses effective strength with zero-clamped deficiency  322ms
+     ✓ category 1, weakness 0 uses effective strength with zero-clamped deficiency  312ms
+     ✓ automatic travel crosses avoided loot without pickup; manual walking can recover it  451ms
+     ✓ an avoided item does not hide collectable loot on the same cell  396ms
+     ✓ avoidance survives cached-level JSON roundtrip and return, with no RNG consumed by load  874ms
+     ✓ unequipped quantity 2 reports singular/plural without mutation  366ms
+     ✓ T_OBSTRUCTS_ITEMS refuses category 4 before splitting or unequipping  356ms
+     ✓ T_OBSTRUCTS_ITEMS refuses category 0 before splitting or unequipping  381ms
+     ✓ ring choice, drop and avoidance reconstruct through public commands with zero OOS  328ms
+stdout | src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > undefined swaps a normal ally without attacking or confirming, using movementSpeed
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u2_ally_captive.test.ts (32 tests) 9703ms
+     ✓ undefined swaps a normal ally without attacking or confirming, using movementSpeed  343ms
+     ✓ axe swaps a normal ally without attacking or confirming, using movementSpeed  313ms
+     ✓ temporary flight permits the original lava square without invoking fallback  618ms
+     ✓ applies CE current-terrain exception after relocation: deep water does not force fallback  588ms
+     ✓ swap public commands replay and seek with zero OOS and no UI  363ms
+     ✓ fallback public commands replay and seek with zero OOS and no UI  500ms
+     ✓ discordant public commands replay and seek with zero OOS and no UI  486ms
+     ✓ captive public commands replay and seek with zero OOS and no UI  538ms
+     ✓ discordant request stops automation before asking, including on Yes  470ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 6158ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  6149ms
+stdout | src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x4a_movement_rendering.test.ts (21 tests) 6647ms
+     ✓ silently rejects a known obstruction later in the route BEFORE moving  613ms
+     ✓ uses remembered terrain, not hidden live walls/hazards, when validating the remaining route  588ms
+     ✓ does not read unknown next-cell passability before dispatching the shared movement entry  313ms
+     ✓ checks newly known diagonal corners throughout the route  311ms
+     ✓ prioritizes a known adjacent enemy through the common attack entry  381ms
+     ✓ automatic movement runs the same special-tile entry exactly once  378ms
+     ✓ walking pickup, terrain entry and timing match manual movement and record only auto_step  680ms
+     ✓ known-item pickup disturbs exploration in the movement turn  322ms
+     ✓ retains exploration mode across a whole-run snapshot and clears it on manual interruption  337ms
+     ✓ preserves no-target and no-initial-route messages  413ms
+     ✓ escape clears targeting without using resources, a turn or either RNG stream; replays as escape  426ms
+     ✓ an open inventory takes precedence; the next escape cancels throwing  316ms
+stdout | src/test/x2a_recording_checkpoint.test.ts > X2a recording checkpoints > commits after the animated turn and matches synchronous recording, replay and seek
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2a_recording_checkpoint.test.ts (4 tests) 5556ms
+     ✓ commits after the animated turn and matches synchronous recording, replay and seek  2181ms
+     ✓ records reference screen closes through the command boundary  1256ms
+     ✓ keeps a slow-turn checkpoint pending through the intermediate animation frame  1025ms
+     ✓ keeps every checkpoint equal across a mixed animated and synchronous command sequence  1094ms
+stdout | src/test/u_r4_trace.test.ts > UR4 objective block trace > matches HEAD for complete snapshots, events, tick, both RNG streams and command log
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:81465) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_r4_trace.test.ts (1 test) 3507ms
+     ✓ matches HEAD for complete snapshots, events, tick, both RNG streams and command log  3505ms
+stdout | src/test/u_27_recording.test.ts > U27 command recording > replays turns and inventory commands with both RNG streams checked
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_27_recording.test.ts (5 tests) 4079ms
+     ✓ replays turns and inventory commands with both RNG streams checked  657ms
+     ✓ rejects legacy recordings and reports the first changed checkpoint  1251ms
+     ✓ rejects exporting a partial recording after a save is loaded  413ms
+     ✓ records mouse travel and its autonomous steps as separate checked events  665ms
+     ✓ replays a refused then accepted food confirmation without asking again  1092ms
+stdout | src/test/u_r2_trace.test.ts > UR2 fixed command traces > matches the pre-refactor state after each item command
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r2_trace.test.ts (1 test) 1862ms
+     ✓ matches the pre-refactor state after each item command  1861ms
+stdout | src/test/i_1_interaction.test.ts > I-1 第 1 件：isProtected 豁免酸液腐蚀护甲（CE Combat.c:425-431） > takeTurn 近战路径：带保护的护甲被酸怪命中也不降级、无腐蚀消息
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/i_1_interaction.test.ts (6 tests) 2877ms
+     ✓ takeTurn 近战路径：带保护的护甲被酸怪命中也不降级、无腐蚀消息  514ms
+     ✓ takeTurn 近战路径：不带保护的护甲被命中后降级 1 点、打腐蚀消息（行为终点）  428ms
+     ✓ resolveGeometryAttackOn 路径（P4-6 几何分发支）：同一豁免两处落点都要过  462ms
+     ✓ 非 FIERY 怪燃烧：自身格光增 2×fireBoltColor{500,150,0}，邻格也受光  480ms
+     ✓ FIERY 怪（wisp）燃烧：不叠加光；但燃烧状态本身照常在（防"用不燃烧来修"）  518ms
+     ✓ 玩家燃烧：同样发光（CE handledPlayer 模式把玩家包含在生物光循环里）  473ms
+stdout | src/test/fe_1_touch.test.ts > FE-1 录制边界：触屏命令录像可零 OOS 回放 > 命令栏 + 方向键 + 投掷两步确认 + 点地图寻路，经 dispatch/executeCommand 录制并回放一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/fe_1_touch.test.ts (16 tests) 1485ms
+     ✓ 命令栏 + 方向键 + 投掷两步确认 + 点地图寻路，经 dispatch/executeCommand 录制并回放一致  1280ms
+stdout | src/test/u_15b2_ring_birth.test.ts > U15b2 light equipment -> CE fixed point -> visibility > refreshes actual Game light on equip/unequip, kind-only identification and load
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_15b2_ring_birth.test.ts (15 tests) 614ms
+     ✓ refreshes actual Game light on equip/unequip, kind-only identification and load  320ms
+stdout | src/test/x3_u5_ui.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u5_ui.test.ts (7 tests) 335ms
+stdout | src/test/u24_hardcoded_text.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u24_hardcoded_text.test.ts (3 tests) 260ms
+
+ Test Files  24 passed (24)
+      Tests  589 passed | 2 skipped (591)
+   Start at  01:01:31
+   Duration  297.39s (transform 922ms, setup 0ms, import 11.83s, tests 282.99s, environment 5ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/7478/brogue/brogue-web/ai_docs/reports/x3-u8b-evidence/recheck-targeted.json

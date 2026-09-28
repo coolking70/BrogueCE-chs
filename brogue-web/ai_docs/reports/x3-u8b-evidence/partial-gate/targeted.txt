@@ -1,0 +1,46 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7478/brogue/brogue-web
+
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_7_lighting.test.ts (28 tests) 3517ms
+     ✓ 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复  367ms
+     ✓ 深水且未漂浮时半径减半，离水立即恢复  439ms
+     ✓ CE 固有光让深层矿灯以外的 wisp 可见  342ms
+     ✓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红  356ms
+     ✓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减  432ms
+     ✓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见  369ms
+     ✓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）  439ms
+     ✓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）  424ms
+     ✓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj  322ms
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests) 95991ms
+     ✓ D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）  449ms
+     ✓ E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）  46729ms
+     ✓ E2 实测：每局护符数恒为 1（noAmulet=0 / multiAmulet=0）——两套来源不可能叠加  48264ms
+     ✓ E3 U19b：AMULET 请求可实化；frequency=0 与自然唯一性仍由 E1/E2 守卫  394ms
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 63773ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  417ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  398ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  392ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  436ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  1653ms
+     ✓ 边界：19 杀不亮、第 20 杀亮；无生命怪不计入  470ms
+     ✓ 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）  432ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  1659ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  2402ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  564ms
+     ✓ enchanting / identify 读的瞬间自亮；其它卷轴效果后亮  337ms
+     ✓ 目标池按 CAN_BE_IDENTIFIED 过滤；命中者附魔/符文一起亮  328ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  36380ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  15370ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  861ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+

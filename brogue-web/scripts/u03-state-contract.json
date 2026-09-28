@@ -177,7 +177,7 @@
   },
   "items": {
     "kind": "level",
-    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。X3-U8b：ITEM_PLAYER_AVOIDS 复用 U01 Item.flags，经 ITEM_FIELDS 保存整个实体图（当前/缓存/携带/待坠层/背包），不做旧档迁移。戒指待选仅 UI 临时态，最终 equip 命令携带两个字母，取消/读档/新局丢弃选择。"
   },
   "justRested": {
     "kind": "run",

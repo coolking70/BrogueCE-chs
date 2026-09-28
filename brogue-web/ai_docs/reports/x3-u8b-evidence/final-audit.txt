@@ -1,0 +1,36 @@
+{
+  "gameMembers": [
+    "applyCommand",
+    "performPlayerAction",
+    "equipItem",
+    "unequipItem",
+    "dropItem",
+    "throwItemAt",
+    "recomputeExplorePath",
+    "markPackFull",
+    "pickUpItemAfterDisplacement"
+  ],
+  "protectedFiles": 74,
+  "CRLF": [],
+  "staged": [],
+  "localIgnoredPNGs": 8,
+  "fullIntegrity": {
+    "inputs": 528,
+    "changed": []
+  },
+  "repairDelta": [
+    "src/engine/Core/Game.ts",
+    "src/test/x3_u8b_items.test.ts"
+  ],
+  "integrity": {
+    "inputs": 528,
+    "changed": []
+  },
+  "counts": {
+    "passed": 1842,
+    "failed": 0,
+    "skipped": 4,
+    "todo": 4
+  },
+  "rechecked": 24
+}

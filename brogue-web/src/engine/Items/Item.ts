@@ -74,7 +74,8 @@ export class Item implements Entity {
      * P4-7：CE 物品旗标（Rogue.h:1376-1380），生成时按武器种类赋予
      * （Items.c:209-236）：whip=ITEM_ATTACKS_EXTEND、spear/war_pike=
      * ITEM_ATTACKS_PENETRATE、axe=ITEM_ATTACKS_ALL_ADJACENT、
-     * mace/war_hammer=ITEM_ATTACKS_STAGGER。当前仅武器几何/钝器口径使用。
+     * mace/war_hammer=ITEM_ATTACKS_STAGGER。X3-U8b：ITEM_PLAYER_AVOIDS 也复用
+     * 本持久字段，满包/丢弃/投掷置位；U01 ITEM_FIELDS 随全局物品图保存。
      */
     public flags?: string[];
     public isCursed: boolean = false;
