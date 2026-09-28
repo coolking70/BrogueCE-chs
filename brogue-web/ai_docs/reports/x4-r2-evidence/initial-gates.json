@@ -1,0 +1,30 @@
+[
+  {
+    "label": "typecheck",
+    "command": "npx vue-tsc -b",
+    "exit": 0,
+    "seconds": 12.536,
+    "log": "ai_docs/reports/x4-r2-evidence/initial-typecheck.log"
+  },
+  {
+    "label": "build",
+    "command": "npm run build",
+    "exit": 0,
+    "seconds": 16.592,
+    "log": "ai_docs/reports/x4-r2-evidence/initial-build.log"
+  },
+  {
+    "label": "test",
+    "command": "npm test -- --maxWorkers=8 --reporter=json --outputFile=ai_docs/reports/x4-r2-evidence/initial-test.json",
+    "exit": 1,
+    "seconds": 2629.75,
+    "log": "ai_docs/reports/x4-r2-evidence/initial-test.log"
+  },
+  {
+    "label": "drift",
+    "command": "npm run test:drift -- --maxWorkers=1 --reporter=json --outputFile=ai_docs/reports/x4-r2-evidence/initial-drift.json",
+    "exit": 1,
+    "seconds": 34.273,
+    "log": "ai_docs/reports/x4-r2-evidence/initial-drift.log"
+  }
+]

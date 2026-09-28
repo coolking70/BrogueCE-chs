@@ -1,0 +1,72 @@
+[
+  {
+    "file": "src/test/fixtures/u19d-natural-cases.json",
+    "beforeSha256": "be941f99fcc9b7447c330bb5487c8b1781b286cff7b367ebe4cb821de5d1d858",
+    "afterSha256": "389dc2d3cb9352fa9f385ad6fd5c9b96a3bc4f71c5c516a254db5dfe27b4b9dc",
+    "changes": [
+      {
+        "before": {
+          "ce": 40,
+          "seed": 31337,
+          "depth": 19,
+          "machine": 3,
+          "kind": "natural action chain"
+        },
+        "after": {
+          "ce": 40,
+          "seed": 1247333,
+          "depth": 21,
+          "machine": 3,
+          "kind": "natural action chain"
+        }
+      },
+      {
+        "before": {
+          "ce": 35,
+          "seed": 2,
+          "depth": 20,
+          "machine": 4,
+          "kind": "natural action chain"
+        },
+        "after": {
+          "ce": 35,
+          "seed": 1199819,
+          "depth": 2,
+          "machine": 3,
+          "kind": "natural action chain"
+        }
+      }
+    ],
+    "proof": "replacement-scenes.json; original full action assertions retained"
+  },
+  {
+    "file": "src/test/fixtures/u19f-natural-cases.json",
+    "beforeSha256": "e9fdbd35a2b28468158adcf60681fda715221281e9b02dac2dce222d5bb168c2",
+    "afterSha256": "2333783d37aa8468a03e4585219faebf87adcb10244de5cd5f00b6e64ed825fc",
+    "changes": [
+      {
+        "before": {
+          "seed": 17,
+          "depth": 19,
+          "ce": 52,
+          "machine": 3,
+          "entry": {
+            "x": 68,
+            "y": 7
+          }
+        },
+        "after": {
+          "seed": 1247333,
+          "depth": 18,
+          "ce": 52,
+          "machine": 3,
+          "entry": {
+            "x": 66,
+            "y": 18
+          }
+        }
+      }
+    ],
+    "proof": "replacement-scenes.json action proof; ce52-complete-scene.json records the original count-premise failure; ce52-independent-feature-counts.json validates CE independent counts and complete actions; closure-u19f.json validates the entire final test file"
+  }
+]

@@ -1,7 +1,7 @@
 import { ownedMonsterList, dyingMonsters, iterateCreatures } from './MonsterLifecycle';
 import { alertMonster, wakeMonster } from '../Combat/MonsterAI';
 import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
-import { createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';
+import { buildHordeMachine, createMachineRuntime, generateDepth, placeStairs, populateLevel } from './GenerationCoordinator';
 import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
 import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { minionPlacement, generationDistances, speciesForbiddenFlags } from '../Generator/GenerationPlacement';
@@ -1602,6 +1602,8 @@ export class Game {
     ): boolean {
         const leaderMData = (monsterData as MonsterData[]).find(m => m.id === h.leader.toLowerCase());
         if (!leaderMData) return false;
+
+        if (h.machine > 0) buildHordeMachine(this.makeGenerationPorts(), h.machine, centerPos, depth);
 
         const leaderMon = new Monster(centerPos.x, centerPos.y, leaderMData);
         // CE Monsters.c:883-885: only the horde leader is the marked sacrifice.

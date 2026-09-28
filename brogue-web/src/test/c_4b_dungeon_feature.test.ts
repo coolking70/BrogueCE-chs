@@ -1258,6 +1258,20 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // X4-R2: old production alone restores the old guard. Exact final
+            // writers/coordinates: x4-r2-evidence/f3-layer-writers.json.gz.
+            // Lake LIQUID writes preserve walls/floors; camp DFs write SURFACE;
+            // a later blueprint vent preserves the pre-existing MUD layer.
+            [C.WALL, C.WATER_SHALLOW, C.NOTHING, C.NOTHING],
+            [C.PRESSURE_PLATE, C.NOTHING, C.NOTHING, C.URINE],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.DEAD_FOLIAGE],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.DEAD_GRASS],
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.URINE],
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.HAY],
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.JUNK],
+            [C.MACHINE_PARALYSIS_VENT_HIDDEN, C.MUD, C.NOTHING, C.NOTHING],
+            [C.FLOOR, C.LAVA, C.NOTHING, C.NOTHING],
+            [C.NOTHING, C.MUD, C.NOTHING, C.HAY],
             // X4-R1 CE58 POD (Globals.c:699), pure SURFACE writer:
             // 424242/D1 (27,11) and D9 (26,21); exact writer trace in report.
             [C.FLOOR, C.NOTHING, C.NOTHING, C.BLOODFLOWER_POD],

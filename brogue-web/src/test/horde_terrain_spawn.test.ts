@@ -18,13 +18,18 @@
  * 物种名口径：hordes.json 的 leader 是目录大写名（EEL），monsters.json 的
  * 显示 name 是词首大写（Eel）；比较一律 toLowerCase / toUpperCase。
  */
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Game, HORDE_POPULATE_FORBIDDEN_FLAGS, type HordeEntry } from '../engine/Core/Game';
 import { TerrainType, DungeonLayer, DCOLS, DROWS } from '../engine/Map/Grid';
 import { TERRAIN_FLAGS, T_OBSTRUCTS_PASSABILITY } from '../engine/Map/TerrainCatalog';
 import { ItemCategory } from '../engine/Items/Item';
 import hordesJson from '../data/hordes.json';
+import type { MachineResult } from '../engine/Generator/BlueprintEngine';
+import { setMachineObservationHook } from '../engine/Generator/MachineObservation';
+import { runAltarActions } from './fixtures/u19e-machine-actions';
+
+afterEach(() => setMachineObservationHook(null));
 
 /** 测试种子（固定，保证断言确定性） */
 const STAMP_SEED = 20260917;
@@ -255,11 +260,18 @@ describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普
 describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 / 物品）', () => {
     it('多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙', () => {
         let amuletSeen = 0;
+        const deferred: Array<{snapshot: ReturnType<Game['toSnapshot']>; machine: MachineResult; itemId: number}> = [];
+        setMachineObservationHook(() => {});
         // 既有事实：machine/vault 房宝藏直接放在 room 质心（machine.center 等），
         // 质心可能落在墙里——这是与本修复无关的既有行为，只记录不判定。
         const onImpassable: string[] = [];
         for (const seed of SCAN_SEEDS.slice(0, 4)) {
             const game = createHeadlessGame(seed);
+            let machines: MachineResult[] = [];
+            const runtime = game as any, populate = runtime.populateLevel.bind(game);
+            runtime.populateLevel = (...args: any[]) => {
+                const result = populate(...args); machines = args[3]; return result;
+            };
             for (let d = 1; d <= 26; d++) {
                 genDepth(game, d);
 
@@ -282,7 +294,7 @@ describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 /
                     const cell = game.grid.getCell(item.loc.x, item.loc.y);
                     expect(cell, `seed=${seed} D${d} 物品 ${item.name} 落点应在图内`).not.toBeNull();
                     if (item.category === ItemCategory.AMULET) {
-                        // 护符只经 floorTiles 落格
+                        // 普通兜底或 CE15 开关都必须可站立。
                         expect(cell!.isPassable, `seed=${seed} D${d} 护符不应落在墙里`).toBe(true);
                         amuletSeen++;
                     } else if (item.category === ItemCategory.KEY) {
@@ -290,7 +302,17 @@ describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 /
                         // blocking retractable cage (GlobalsBrogue.c:360-363).
                         // The old cache mislabeled that cage as passable. Keep
                         // the floor-key guard, and constrain this single recipe.
-                        if (cell!.layers[DungeonLayer.DUNGEON] === TerrainType.ALTAR_CAGE_RETRACTABLE) {
+                        if (cell!.layers[DungeonLayer.DUNGEON] === TerrainType.SACRIFICE_CAGE_DORMANT) {
+                            // X4-R2 changed this sample to a CE47 adopted key.
+                            // Require its exact source and a complete command replay;
+                            // merely naming a blocking terrain never exempts an item.
+                            const machine = machines.find(m => m.itemSpawns.some(s => s.viaAdoption && s.entity === item));
+                            expect(machine?.observation?.ceBlueprintId).toBe(47);
+                            expect(cell!.machineNumber).toBe(machine!.machineNumber);
+                            expect(game.grid.isImpregnable(item.loc.x, item.loc.y)).toBe(true);
+                            expect(item.keyLoc?.length).toBeGreaterThan(0);
+                            deferred.push({snapshot: JSON.parse(JSON.stringify(game.toSnapshot())), machine: machine!, itemId: item.id});
+                        } else if (cell!.layers[DungeonLayer.DUNGEON] === TerrainType.ALTAR_CAGE_RETRACTABLE) {
                             expect(cell!.isPassable).toBe(false);
                             expect(cell!.machineNumber).toBeGreaterThan(0);
                             expect(game.grid.isImpregnable(item.loc.x, item.loc.y)).toBe(true);
@@ -304,6 +326,16 @@ describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 /
                     }
                 }
             }
+        }
+        // Replay only after the scan, preserving the original generation RNG.
+        expect(deferred.length, '自然 CE47 闭笼钥匙必须有完整领取正例').toBeGreaterThan(0);
+        for (const row of deferred) {
+            const replay = createHeadlessGame(19, 'test');
+            expect(replay.loadSnapshot(row.snapshot)).toBe(true);
+            const result = runAltarActions(replay, row.machine.observation!, row.machine.door ?? row.machine.center);
+            expect(result.rewardId).toBe(row.itemId);
+            expect(replay.player.inventory.items.filter(i => i.id === row.itemId)).toHaveLength(1);
+            expect(result.after.player).toEqual(result.entry);
         }
         // 原为 toBe(4)（每个 seed 的 D26 恰好一次）。D26 可能因蓝图/机关额外放置护符，
         // 且该计数随 RNG 流变动。断言"每个 seed 至少见到一次"才是本测试的真实意图。

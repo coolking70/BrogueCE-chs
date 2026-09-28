@@ -33,6 +33,7 @@ import { TerrainType } from '../engine/Map/Grid';
 import { logger } from '../engine/Systems/Logger';
 import { timeSystem } from '../engine/Systems/Time';
 import { ItemLoader } from '../engine/Items/ItemLoader';
+import { rng } from '../engine/Random';
 import weaponsDataJson from '../data/weapons.json';
 import monsterDataJson from '../data/monsters.json';
 
@@ -403,6 +404,8 @@ describe('P4-7 数据留痕', () => {
         expectFlags('dart');
 
         // 真实装载链路：flags 从 json 流入 Item
+        // X4-R2: isolate this non-runic example from prior generation RNG.
+        rng.seedRandomGenerator(1);
         const hammer = ItemLoader.spawnWeapon('war_hammer', -1, -1);
         expect(hammer?.flags).toEqual(['ITEM_ATTACKS_STAGGER']);
     });

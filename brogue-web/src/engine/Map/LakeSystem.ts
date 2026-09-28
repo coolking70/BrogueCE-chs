@@ -31,11 +31,9 @@
  *    的 TM 列为 0）。U17b 已接 INERT → ACTIVE → INERT + BRIMSTONE_FIRE 循环；CE 此链没有爆炸或转黑曜石
  *    （CE Globals.c:425-426/695-696/744）；生成惰性态本身忠于 CE。
  *
- * 与 CE 的结构性差异（web 单层地形模型，报告均有登记）：
- * - web 一格一个 terrain，无 CE 的 DUNGEON/LIQUID/SURFACE 三层。液体直接
- *   落 terrain；createWreath 只盖 FLOOR/DOOR。CE 会把浅水画在**墙格**的
- *   LIQUID 层上（纯渲染、玩法旗标仍来自 DUNGEON 层的墙）；web 若照搬会把
- *   墙变成可走地形，直接破坏 P1-29 的连通性合同，故必须跳过。
+ * X4-R2：湖体/浅缘/桥按 CE 写 LIQUID，桥端写 SURFACE；浅缘保留
+ * 墙的 DUNGEON 层，清理复制完整四层，不再经 setTerrain 清空底层。
+ * 保留的连通性守卫：
  * - cleanUpLakeBoundaries 增加"不可降低可走性"守卫：CE 四种液体全都是
  *   pathing blocker，清理永不改变可走拓扑；web 的岩浆/硫矿可走（P1-25），
  *   [深水][岩浆][深水] 若照 CE 复刻会把中间岩浆改成深水——**删掉**一个
@@ -46,7 +44,7 @@
  *   恒 0，buildABridge 每层仍按 CE 照常消耗 RNG（比值 2 抽 + 两张洗牌）并
  *   空转返回 false。C-5 解禁后桥梁自动开始出现。
  */
-import { Grid, TerrainType, DCOLS, DROWS } from './Grid';
+import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, TERRAIN_HOME_LAYER } from './Grid';
 import { terrainAllowsMove } from './Connectivity';
 import { rng } from '../Random';
 
@@ -181,8 +179,16 @@ const LIQUID_DISPLAY: Partial<Record<TerrainType, { char: string, color: number 
 };
 
 function stampTerrain(grid: Grid, x: number, y: number, terrain: TerrainType): void {
+    const cell = grid.getCell(x, y);
+    if (!cell) return;
     const disp = LIQUID_DISPLAY[terrain] ?? { char: '?', color: 0xffffff };
-    grid.setTerrain(x, y, terrain, disp.char, disp.color);
+    // CE fillLake/createWreath/buildABridge write only LIQUID (bridge ends:
+    // SURFACE). In particular deep water must retain its FLOOR substrate for
+    // randomMatchingLocation(FLOOR, DEEP_WATER), used by the algae well.
+    cell.layers[TERRAIN_HOME_LAYER[terrain]] = terrain;
+    cell.refreshTerrainProperties();
+    cell.char = disp.char;
+    cell.color = disp.color;
 }
 
 /**
@@ -221,8 +227,7 @@ function fillLake(
  * CE createWreath（Architect.c:2692-2707）：对 wreathMap 的每个格子，在
  * 半径 wreathWidth 的欧氏圆盘内给 LIQUID==NOTHING 的格子上浅液体；门格
  * （DUNGEON==DOOR）被浅水覆盖时门消失（CE 2703-2705）。
- * web 单层模型：可受液体的是 FLOOR 与 DOOR；墙/花岗岩/楼梯/既有液体一律
- * 跳过（CE 在墙格的 LIQUID 层画浅水是纯渲染，web 照搬会把墙变成可走）。
+ * 墙格保留 DUNGEON 层，浅缘只写 LIQUID；合并四层旗标仍保证墙阻挡。
  */
 function createWreath(grid: Grid, shallowLiquid: TerrainType, wreathWidth: number, wreath: Set<number>): void {
     if (wreathWidth <= 0 || shallowLiquid === TerrainType.NOTHING) return;
@@ -235,8 +240,12 @@ function createWreath(grid: Grid, shallowLiquid: TerrainType, wreathWidth: numbe
                 if ((i - k) * (i - k) + (j - l) * (j - l) > wreathWidth * wreathWidth) continue;
                 const cell = grid.getCell(k, l);
                 if (!cell) continue;
-                // CE 2702 `pmap[k][l].layers[LIQUID] == NOTHING` 的单层对应物。
-                if (cell.terrain === TerrainType.FLOOR || cell.terrain === TerrainType.DOOR) {
+                // CE 2702-2705: liquid on walls preserves the blocking dungeon
+                // layer; only doors under the wreath become floor.
+                if (cell.layers[DungeonLayer.LIQUID] === TerrainType.NOTHING) {
+                    if (cell.layers[DungeonLayer.DUNGEON] === TerrainType.DOOR) {
+                        cell.layers[DungeonLayer.DUNGEON] = TerrainType.FLOOR;
+                    }
                     stampTerrain(grid, k, l, shallowLiquid);
                 }
             }
@@ -329,8 +338,10 @@ export function cleanUpLakeBoundaries(grid: Grid): void {
                 // 若会删掉可走格则跳过（保护 P1-29 闸门的干地连通合同）。见文件头。
                 if (terrainAllowsMove(subject.terrain) && !terrainAllowsMove(targetCell.terrain)) continue;
 
-                // CE 1894-1897：整格复制（web 单层 = terrain + 显示参数）。
-                subject.terrain = targetCell.terrain;
+                // CE 1901-1903 copies every terrain layer, including FLOOR
+                // beneath the liquid. The terrain setter would erase it again.
+                subject.layers = [...targetCell.layers];
+                subject.refreshTerrainProperties();
                 subject.char = targetCell.char;
                 subject.color = targetCell.color;
                 madeChange = true;

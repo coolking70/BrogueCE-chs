@@ -1,0 +1,268 @@
+[
+  {
+    "file": "b2_transcription.test.ts",
+    "assertion": "B2 production census observes committed CE71 machines and their actual occupants on 34 seed × D1–D26",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 1353890.7048000002,
+    "headDurationMs": 390445.8349,
+    "initialMessages": [
+      "Error: STACK_TRACE_ERROR\n    at task (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1784:27)\n    at Object.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1817:16)\n    at Object.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1563:28)\n    at chain (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:599:14)\n    at E:/bench/work/x4r2/brogue-web/src/test/b2_transcription.test.ts:58:5\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:40\n    at runWithSuite (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2258:8)\n    at Object.collect (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:10)\n    at Object.collect (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:54)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "c_4a_terrain_catalog.test.ts",
+    "assertion": "C-4a E：留痕（本轮明确不做的事，断言现状） 留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件",
+    "initial": "failed",
+    "headOnly": "failed",
+    "initialDurationMs": 81.33410000000003,
+    "headDurationMs": 59.3066000000008,
+    "initialMessages": [
+      "AssertionError: promote/fire 类字段出现了白名单之外的生产读者：\nengine/UI/MonsterSidebar.ts:27: && !grid.getCell(monster.x, monster.y)?.layers.some(t => TERRAIN_FLAGS[t].mechFlags & TM_ALLOWS_SUBMERGING)) {\nengine/UI/MonsterSidebar.ts:91: const terrain = cell.layers.find(t => TERRAIN_FLAGS[t].mechFlags & TM_LIST_IN_SIDEBAR);: expected [ …(2) ] to deeply equal []\n    at E:/bench/work/x4r2/brogue-web/src/test/c_4a_terrain_catalog.test.ts:866:86\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": [
+      "AssertionError: promote/fire 类字段出现了白名单之外的生产读者：\nengine/UI/MonsterSidebar.ts:27: && !grid.getCell(monster.x, monster.y)?.layers.some(t => TERRAIN_FLAGS[t].mechFlags & TM_ALLOWS_SUBMERGING)) {\nengine/UI/MonsterSidebar.ts:91: const terrain = cell.layers.find(t => TERRAIN_FLAGS[t].mechFlags & TM_LIST_IN_SIDEBAR);: expected [ …(2) ] to deeply equal []\n    at E:/bench/work/x4r2/brogue-web/src/test/c_4a_terrain_catalog.test.ts:866:86\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "c_4b_dungeon_feature.test.ts",
+    "assertion": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 2333.6461999999997,
+    "headDurationMs": 3610.7073000000005,
+    "initialMessages": [
+      "AssertionError: expected \"seed=424242 D9 (27,4) 两层组合 0:3 1:6 不属于任何已知合法形态\" not to be reached\n    at expect.unreachable (file:///E:/bench/work/x4r2/brogue-web/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:4128:15)\n    at Game.g.catchUpEnvironment (E:/bench/work/x4r2/brogue-web/src/test/c_4b_dungeon_feature.test.ts:1600:40)\n    at generateDepth (E:/bench/work/x4r2/brogue-web/src/engine/Core/GenerationCoordinator.ts:338:15)\n    at Game.generateDepth (E:/bench/work/x4r2/brogue-web/src/engine/Core/Game.ts:1200:16)\n    at E:/bench/work/x4r2/brogue-web/src/test/c_4b_dungeon_feature.test.ts:1613:53\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "horde_terrain_spawn.test.ts",
+    "assertion": "地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 / 物品） 多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 55522.29,
+    "headDurationMs": 45769.60470000001,
+    "initialMessages": [
+      "AssertionError: seed=20260916 D15 钥匙不应落在墙里: expected false to be true // Object.is equality\n    at E:/bench/work/x4r2/brogue-web/src/test/horde_terrain_spawn.test.ts:300:85\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "p1_20_item_placement.test.ts",
+    "assertion": "地面物品落格可通行性（全局扫描，P1-20） 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 76293.20109999999,
+    "headDurationMs": 62895.2295,
+    "initialMessages": [
+      "AssertionError: expected [ Array(1) ] to deeply equal []\n    at E:/bench/work/x4r2/brogue-web/src/test/p1_20_item_placement.test.ts:162:28\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "p1_37_machine_flag_i18n.test.ts",
+    "assertion": "P1-37 机器旗标：宝库恢复地板、内容落点回避机器格 AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器物品守原布点；非机器怪只准可达且物种合格的随从",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 72322.2096,
+    "headDurationMs": 53639.6357,
+    "initialMessages": [
+      "AssertionError: 内容落点闯入机器格 5 处：\nseed424242/D26 护符落在 (31,12) 机器格内\nseed31337/D26 护符落在 (71,24) 机器格内\nseed20260916/D26 护符落在 (59,4) 机器格内\nseed42/D26 护符落在 (43,23) 机器格内\nseed999/D26 护符落在 (13,6) 机器格内: expected [ …(5) ] to deeply equal []\n    at E:/bench/work/x4r2/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts:205:104\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "p4_7_player_weapon_geometry.test.ts",
+    "assertion": "P4-7 数据留痕 weapons.json 旗标对照 CE Items.c:209-236：六件武器各有其旗标，且经spawnWeapon 装载进 Item；halberd（web 自创、已退出生成池）与普通武器不带任何几何/钝器旗标。",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 9.834399999999732,
+    "headDurationMs": 1.6440999999995256,
+    "initialMessages": [
+      "AssertionError: expected [ Array(2) ] to deeply equal [ 'ITEM_ATTACKS_STAGGER' ]\n    at E:/bench/work/x4r2/brogue-web/src/test/p4_7_player_weapon_geometry.test.ts:407:31\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "u_19d_machine_families.test.ts",
+    "assertion": "U19d whole natural machines: entrance → actual commands → payoff natural CE40 seed31337/D19: natural action chain",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 32490.517300000007,
+    "headDurationMs": 8535.8853,
+    "initialMessages": [
+      "AssertionError: final realized machine, not an abandoned build: expected undefined to be defined\n    at E:/bench/work/x4r2/brogue-web/src/test/u_19d_machine_families.test.ts:45:152\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "u_19d_machine_families.test.ts",
+    "assertion": "U19d whole natural machines: entrance → actual commands → payoff natural CE35 seed2/D20: natural action chain",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 26014.57389999999,
+    "headDurationMs": 11369.640899999999,
+    "initialMessages": [
+      "AssertionError: final realized machine, not an abandoned build: expected undefined to be defined\n    at E:/bench/work/x4r2/brogue-web/src/test/u_19d_machine_families.test.ts:45:152\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "u_19f_machines.test.ts",
+    "assertion": "U19f natural CE52: generation → player activation → original reward → exit",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 10425.3272,
+    "headDurationMs": 12576.194300000001,
+    "initialMessages": [
+      "AssertionError: machine must survive the final generation attempt: expected undefined to be defined\n    at E:/bench/work/x4r2/brogue-web/src/test/u_19f_machines.test.ts:16:68\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "u_26a_deep_baseline.test.ts",
+    "assertion": "U26a independent D27–40 generation baseline four full-run seeds retain deep terrain, population, gem quantity, origins and positions",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 86101.1084,
+    "headDurationMs": 88843.4466,
+    "initialMessages": [
+      "AssertionError: expected [ …(56) ] to deeply equal [ …(56) ]\n    at E:/bench/work/x4r2/brogue-web/src/test/u_26a_deep_baseline.test.ts:21:22\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "u_r3_trace.test.ts",
+    "assertion": "UR3 complete generation and revisit trace matches HEAD for four drift seeds through D26 and cached/save return",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 93526.4916,
+    "headDurationMs": 97073.15819999999,
+    "initialMessages": [
+      "AssertionError: expected { …(4) } to deeply equal { …(4) }\n    at E:/bench/work/x4r2/brogue-web/src/test/u_r3_trace.test.ts:53:29\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_1b_alternative.test.ts",
+    "assertion": "V-1b 前提自检 P1（V-2b-9e-2 顺延）MF_ALTERNATIVE 精确目录含 CE8 四条；MF_ALTERNATIVE_2 仍零载体",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 24.200400000000002,
+    "headDurationMs": 9.215300000000013,
+    "initialMessages": [
+      "AssertionError: 替代集合载体集变动：核对 CE GlobalsBrogue.c 原表，并重捕获 generation_baseline: expected [ { …(4) }, { …(4) }, { …(4) }, …(45) ] to deeply equal [ { …(4) }, { …(4) }, { …(4) }, …(43) ]\n    at E:/bench/work/x4r2/brogue-web/src/test/v_1b_alternative.test.ts:167:72\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_2a_placement_flags.test.ts",
+    "assertion": "V-2b-2a 前提自检 P1（V-2b-7 五次顺延）feature 旗标载体普查与 V-2b-7 落地后的 CE 原表一致",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 7.9179000000000315,
+    "headDurationMs": 2.039500000000004,
+    "initialMessages": [
+      "AssertionError: PERMIT_BLOCKING 载体数（V-2b-4 基线 26；V-2b-5 +1；V-2b-6 +3；V-2b-7 +9 → 39；V-2b-9b +6：36/37 号隐桥、38/39 号岩浆回缩、65/66 号触发地板）: expected 45 to be 46 // Object.is equality\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_2a_placement_flags.test.ts:164:162\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_2b_blueprints.test.ts",
+    "assertion": "V-2b-2b P1：生产蓝图数据 ≡ CE GlobalsBrogue.c 原表（:198-220/:309-331） 19 号 barricade / 20 号 statue doorway / 23 号 pit traps：全等 + §4 偏差钉死",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 9.344700000000103,
+    "headDurationMs": 0.9237000000000535,
+    "initialMessages": [
+      "AssertionError: expected [ { …(6) }, …(2) ] to have a length of 2 but got 3\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///E:/bench/work/x4r2/brogue-web/node_modules/chai/index.js:1700:25)\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_2b_blueprints.test.ts:178:28\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_2b_blueprints.test.ts",
+    "assertion": "V-2b-2b T7：生产蓝图 applyBlueprint 行使（19/20/23 号） 19 号：木栅钉在 origin，焚化药水落在层内非走廊格",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 25.78800000000001,
+    "headDurationMs": 16.396400000000085,
+    "initialMessages": [
+      "AssertionError: expected { instanceId: '21:0', …(6) } to match object { category: 'POTION', …(2) }\n(4 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///E:/bench/work/x4r2/brogue-web/node_modules/chai/index.js:1700:25)\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_2b_blueprints.test.ts:556:39\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_4_altars.test.ts",
+    "assertion": "V-2b-4 E：15 号护符双轨——实测数据与结论 E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 93641.24979999999,
+    "headDurationMs": 81112.4124,
+    "initialMessages": [
+      "AssertionError: CE :290 freq=0 ⇒ 配额抽签永不可能选中它；建成即红: expected 6 to be +0 // Object.is equality\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_4_altars.test.ts:715:63\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_6_keys.test.ts",
+    "assertion": "V-2b-6 B：keyLoc 绑定与 generatedKey 回声（BlueprintEngine 单元） B3 Kennel 蓝图结构 ≡ CE 10 号（GlobalsBrogue.c:247-256）",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 8.957200000000057,
+    "headDurationMs": 1.1006999999999607,
+    "initialMessages": [
+      "AssertionError: expected [ { …(7) }, …(3) ] to have a length of 5 but got 4\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1389:20)\n    at Proxy.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///E:/bench/work/x4r2/brogue-web/node_modules/chai/index.js:1700:25)\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_6_keys.test.ts:144:33\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_7_features.test.ts",
+    "assertion": "V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 缺失） G2 U19f: both CE47 and CE52 closed-cage adoption machines occur naturally",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 460827.8834999999,
+    "headDurationMs": 139400.07770000002,
+    "initialMessages": [
+      "AssertionError: CE52 restored with its complete U19f action proof: expected 0 to be greater than 0\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_7_features.test.ts:925:79\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "v_2b_9e_2_autogen.test.ts",
+    "assertion": "V-2b-9e-2 production census observes six active forced carriers, CE66 restored, blocking retry, and empty rewards",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 673223.2603999999,
+    "headDurationMs": 171404.4305,
+    "initialMessages": [
+      "Error: STACK_TRACE_ERROR\n    at task (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1784:27)\n    at Object.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1817:16)\n    at Object.<anonymous> (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1563:28)\n    at chain (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:599:14)\n    at E:/bench/work/x4r2/brogue-web/src/test/v_2b_9e_2_autogen.test.ts:132:5\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:40\n    at runWithSuite (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2258:8)\n    at Object.collect (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:10)\n    at Object.collect (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:54)\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "x2b_terrain_derivation.test.ts",
+    "assertion": "X2b full-layer terrain derivation production has one boolean derivation owner and an exhaustive direct-layer writer inventory",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 563.8953999999999,
+    "headDurationMs": 546.7955000000002,
+    "initialMessages": [
+      "AssertionError: expected [ …(11) ] to deeply equal [ …(8) ]\n    at E:/bench/work/x4r2/brogue-web/src/test/x2b_terrain_derivation.test.ts:67:37\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ],
+    "headMessages": []
+  },
+  {
+    "file": "x3b_display_recording.test.ts",
+    "assertion": "X3b importable public new-game command recording keeps each state equal with frames, automatic/animated playback, backward seek and strict OOS",
+    "initial": "failed",
+    "headOnly": "passed",
+    "initialDurationMs": 2852.9722,
+    "headDurationMs": 32080.3797,
+    "initialMessages": [
+      "AssertionError: wand_of_slowness: expected undefined to be defined\n    at collect (E:/bench/work/x4r2/brogue-web/src/test/x3b_display_recording.test.ts:197:26)\n    at publicRecording (E:/bench/work/x4r2/brogue-web/src/test/x3b_display_recording.test.ts:201:18)\n    at E:/bench/work/x4r2/brogue-web/src/test/x3b_display_recording.test.ts:236:23\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)"
+    ],
+    "headMessages": []
+  }
+]

@@ -82,7 +82,7 @@ function installRecorder(record: LevelMachines[]): () => void {
 const key = (p: Pos): number => p.y * DCOLS + p.x;
 
 describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格', () => {
-    it('AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器物品守原布点；非机器怪只准可达且物种合格的随从', () => {
+    it('AD1: 5 种子 × D1-D26 —— 非机器来源内容回避机器格；机器物品守原布点；非机器怪只准可达且物种合格的随从', () => {
         const violations: string[] = [];
         let machinesSeen = 0;
         let charredSeen = 0;
@@ -159,7 +159,15 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                                 violations.push(`seed${seed}/D${d} 牌堆钥匙落在 (${item.loc.x},${item.loc.y}) 机器格内（会掉进锁死的密库）`);
                             }
                         } else if (item.category === ItemCategory.AMULET) {
-                            violations.push(`seed${seed}/D${d} 护符落在 (${item.loc.x},${item.loc.y}) 机器格内`);
+                            // X4-R2 B02: only the exact CE15-produced instance
+                            // may occupy its own D26 switch. Fallbacks stay outside.
+                            const source = results.find(m => m.blueprintId === 'reward_statuary'
+                                && m.itemSpawns.some(s => s.entity === item && s.category === 'AMULET' && key(s.pos) === k));
+                            const cell = game.grid.getCell(item.loc.x, item.loc.y)!;
+                            if (d !== 26 || !source || cell.machineNumber !== source.machineNumber
+                                || !cell.layers.includes(TerrainType.AMULET_SWITCH)) {
+                                violations.push(`seed${seed}/D${d} 护符缺少匹配的 CE15 来源或开关 (${item.loc.x},${item.loc.y})`);
+                            }
                         } else if (!legitItemCells.has(k)) {
                             violations.push(`seed${seed}/D${d} 随机物品落在 (${item.loc.x},${item.loc.y}) 机器格内且不是机器布点`);
                         }

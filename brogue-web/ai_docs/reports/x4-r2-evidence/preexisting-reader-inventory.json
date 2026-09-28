@@ -1,0 +1,13 @@
+{
+  "proof": "head-reader-inventory.json",
+  "unchangedFiles": {
+    "src/test/c_4a_terrain_catalog.test.ts": "f29834643290783aecc0c8e8ef1022deb3764b3bd077c63fd959aecd01c99730",
+    "src/engine/UI/MonsterSidebar.ts": "8cfbdd6d9e4335ec0752f1084a656419c8200616a246a7c0302f7fcc152ff965"
+  },
+  "failure": {
+    "file": "E:/bench/work/x4r2/brogue-web/src/test/c_4a_terrain_catalog.test.ts",
+    "name": "C-4a E：留痕（本轮明确不做的事，断言现状） 留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件",
+    "message": "AssertionError: promote/fire 类字段出现了白名单之外的生产读者：\nengine/UI/MonsterSidebar.ts:27: && !grid.getCell(monster.x, monster.y)?.layers.some(t => TERRAIN_FLAGS[t].mechFlags & TM_ALLOWS_SUBMERGING)) {\nengine/UI/MonsterSidebar.ts:91: const terrain = cell.layers.find(t => TERRAIN_FLAGS[t].mechFlags & TM_LIST_IN_SIDEBAR);: expected [ …(2) ] to deeply equal []\n    at E:/bench/work/x4r2/brogue-web/src/test/c_4a_terrain_catalog.test.ts:866:86\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///E:/bench/work/x4r2/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+  },
+  "disposition": "Preserve the existing guard and UI source; outside R2 generation scope. Report as baseline failure, not a passed gate."
+}

@@ -6,7 +6,7 @@ import { monsterCanSubmergeNow } from '../Movement/Submersion';
  * the run streams before entry/catch-up.
  */
 import type { GenerationPorts, HordeEntry } from './Game';
-import { type MachineEntityRuntime, type MachineItemSpawn, type MachineMonsterSpawn, type MachineResult } from '../Generator/BlueprintEngine';
+import { BlueprintEngine, type MachineEntityRuntime, type MachineItemSpawn, type MachineMonsterSpawn, type MachineResult } from '../Generator/BlueprintEngine';
 import { getMachineObservationHook, type MachineTrace } from '../Generator/MachineObservation';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
 import { qualifyingNear } from '../Generator/GenerationPlacement';
@@ -38,6 +38,32 @@ const HORDE_MACHINE_ONLY_FLAGS: readonly string[] = [
     'HORDE_MACHINE_THIEF', 'HORDE_MACHINE_GOBLIN_WARREN', 'HORDE_SACRIFICE_TARGET',
 ];
 const HORDE_POPULATE_FORBIDDEN_FLAGS: readonly string[] = ['HORDE_IS_SUMMONED', ...HORDE_MACHINE_ONLY_FLAGS];
+
+/** CE Monsters.c:860-862: build the accompanying camp before creating the
+ * leader. A failed machine rolls back its terrain/entities; the horde still
+ * spawns. The existing engine transaction also covers recursive products. */
+export function buildHordeMachine(ports: GenerationPorts, machine: number, origin: Pos, depth: number): MachineResult | null {
+    const engine = new BlueprintEngine(ports.grid, depth, undefined, createMachineRuntime(ports, depth));
+    const built = engine.buildAMachine(machine, [], null, origin);
+    if (!built) return null;
+    ports.machineCells = collectMachineCells(ports.grid);
+    const observe = (result: MachineResult): void => {
+        const trace = result.observation;
+        if (trace) {
+            trace.seed = ports.currentSeed;
+            for (const feature of result.featureSpawns) {
+                if (feature.terrain) trace.products.push({kind: 'terrain', featureIndex: feature.featureIndex,
+                    name: feature.terrain, pos: {...feature.pos}});
+                if (feature.featureDF) trace.products.push({kind: 'featureDF', featureIndex: feature.featureIndex,
+                    name: feature.featureDF, pos: {...feature.pos}});
+            }
+            getMachineObservationHook()?.(trace);
+        }
+        for (const child of result.subMachines) observe(child);
+    };
+    observe(built);
+    return built;
+}
 
 export function createMachineRuntime(ports: GenerationPorts, depth: number): MachineEntityRuntime {
         const created: Monster[] = [];
@@ -431,8 +457,6 @@ export function populateLevel(ports: GenerationPorts,
             if (!c || !c.isPassable) floorTiles.splice(i, 1);
         }
 
-        ports.placeAmuletForLevel(floorTiles);
-
         // B-4b：删除两个 web 自创的「结构性投放点」（登记于报告）：
         // 1) legacy machines 循环——每锁房发一把钥匙（与下方 machineResults
         //    循环重复，钥匙 ×2 的根源）+ 每房 50% 硬编码附魔卷轴/随机魔杖宝藏
@@ -635,6 +659,10 @@ export function populateLevel(ports: GenerationPorts,
             }
             if (trace) getMachineObservationHook()?.(trace);
         }
+
+        // Materialize the forced CE15 reward before checking the ordinary
+        // fallback, including callers that use deferred machine entities.
+        ports.placeAmuletForLevel(floorTiles);
 
         // （P1-31：进层落位不再在此处直接站上楼梯——移到本方法末尾、
         // 怪物/物品全部布设完成之后执行，与 CE RogueMain.c:817 "Position

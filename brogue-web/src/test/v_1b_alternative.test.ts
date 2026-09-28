@@ -129,10 +129,8 @@ describe('V-1b 前提自检', () => {
     //      附魔卷轴/生命药水带具体 id）——多一条/少一条都红；
     //   b) MF_ALTERNATIVE_2 在 CE Brogue 目录全表零使用，生产数据零载体——
     //      有人顺手加载体时红；
-    //   c) CE 19 号的两件 ALTERNATIVE 点火物（incendiary_dart /
-    //      potion_of_incineration）本轮按任务书 §4 方案 2 只落药水一条、
-    //      ALTERNATIVE 配对暂缺——飞镖点燃接线轮须把第 16、17 条载体补回本断言
-    //      （V-2b-3 后基数 9→15，补回后为 17）。
+    //   c) X4-R2 按 CE :309-313 恢复 19 号两件 ALTERNATIVE 点火物；
+    //      生成与投掷效果分轮验收，R3 负责飞镖投掷。
     // **V-2b-3 二次反转**（本文件在 V-2b-3 的授权范围内——B 类留痕反转）：
     // 六条 wired 蓝图落地带来 6 条新 ALTERNATIVE 载体，9 → 15：
     //   vestibule_secret_lever（18 号）     CE GlobalsBrogue.c:306-307 两条
@@ -153,7 +151,7 @@ describe('V-1b 前提自检', () => {
     //（GlobalsBrogue.c:320 STATUE_DORMANT_DOORWAY）与 69 号（:608/:611 两条
     // STATUE_DORMANT 的 BUILD_AT_ORIGIN / BUILD_IN_WALLS 替代组）落地，
     // 17 → 20。三条均 item=null（地形载体）。MF_ALTERNATIVE_2 仍零载体。
-    it('P1（V-2b-9e-2 顺延）MF_ALTERNATIVE 精确目录含 CE8 四条；MF_ALTERNATIVE_2 仍零载体', () => {
+    it('P1（X4-R2 顺延）MF_ALTERNATIVE 精确目录含 CE19 两条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -208,10 +206,12 @@ describe('V-1b 前提自检', () => {
             { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
             { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
 
+            { bpId: 'vestibule_flammable_barricade', alt1: true, alt2: false, item: 'incendiary_dart' },
             { bpId: 'key_fun_with_fire', alt1: true, alt2: false, item: 'potion_of_creeping_death' },
             { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'potion_of_descent' },
             { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_fire_immunity' },
             { bpId: 'ce_39_environment', alt1: true, alt2: false, item: 'potion_of_fire_immunity' },
+            { bpId: 'vestibule_flammable_barricade', alt1: true, alt2: false, item: 'potion_of_incineration' },
             { bpId: 'ce_36_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
             { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
             { bpId: 'ce_39_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },

@@ -511,19 +511,6 @@
                 "minimumInstanceCount": 3,
                 "personalSpace": 1,
                 "flags": []
-            },
-            {
-                "terrain": "TORCH_WALL",
-                "layer": "DUNGEON",
-                "instanceCount": [
-                    2,
-                    3
-                ],
-                "minimumInstanceCount": 2,
-                "personalSpace": 1,
-                "flags": [
-                    "MF_BUILD_IN_WALLS"
-                ]
             }
         ]
     },
@@ -1120,6 +1107,22 @@
                 ]
             },
             {
+                "itemCategory": "WEAPON",
+                "itemId": "incendiary_dart",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
                 "itemCategory": "POTION",
                 "itemId": "potion_of_incineration",
                 "instanceCount": [
@@ -1131,7 +1134,8 @@
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_BUILD_ANYWHERE_ON_LEVEL",
-                    "MF_NOT_IN_HALLWAY"
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
                 ]
             }
         ]
@@ -2975,19 +2979,6 @@
                 "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": []
-            },
-            {
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "minimumInstanceCount": 1,
-                "personalSpace": 2,
-                "flags": [
-                    "MF_BUILD_AT_ORIGIN",
-                    "MF_PERMIT_BLOCKING",
-                    "MF_BUILD_VESTIBULE"
-                ]
             }
         ]
     },

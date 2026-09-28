@@ -1,0 +1,158 @@
+
+variants/GlobalsBrogue.c:124-124
+124:     {0,                         0,      DF_BUILD_ALGAE_WELL,        0,                          FLOOR,      DEEP_WATER, 10,     DEEPEST_LEVEL,  50,     0,      0,          2},
+
+variants/GlobalsBrogue.c:239-252
+239:     {"Dungeon -- two allies chained up for the taking",
+240:     {5, AMULET_LEVEL}, {30, 80},   12,     5,          0,                  (BP_ROOM | BP_REWARD),  {
+241:         {0,         VOMIT,      SURFACE,        {2,2},      2,          0,          -1,         0,              2,              (HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING)},
+242:         {DF_AMBIENT_BLOOD,MANACLE_T,SURFACE,    {1,2},      1,          0,          -1,         0,              1,              0,          0,          0},
+243:         {DF_AMBIENT_BLOOD,MANACLE_L,SURFACE,    {1,2},      1,          0,          -1,         0,              1,              0,          0,          0},
+244:         {DF_BONES,  0,          0,              {2,3},      1,          0,          -1,         0,              1,              0,          0,          0},
+245:         {DF_VOMIT,  0,          0,              {2,3},      1,          0,          -1,         0,              1,              0,          0,          0},
+246:         {0,         0,          0,              {1,1},      1,          0,          0,          0,              2,              0,          0,          (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_BUILD_VESTIBULE)}}},
+247:     {"Kennel -- allies locked in cages in an open room; choose one or two to unlock and take with you.",
+248:     {5, AMULET_LEVEL}, {30, 80},   12,     4,          0,                  (BP_ROOM | BP_REWARD),  {
+249:         {0,         MONSTER_CAGE_CLOSED,DUNGEON,{3,5},      3,          0,          -1,         0,              2,              (HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE), 0, (MF_GENERATE_HORDE | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},
+250:         {0,         0,          0,              {1,2},      1,          KEY,        KEY_CAGE,   0,              1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_SKELETON_KEY | MF_KEY_DISPOSABLE)},
+251:         {DF_AMBIENT_BLOOD, 0,   0,              {3,5},      3,          0,          -1,         0,              1,              0,          0,          0},
+252:         {DF_BONES,  0,          0,              {3,5},      3,          0,          -1,         0,              1,              0,          0,          0},
+
+variants/GlobalsBrogue.c:289-294
+289:     {"Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+290:     {10, AMULET_LEVEL},{35, 40},   0,      4,          0,                  (BP_PURGE_INTERIOR | BP_OPEN_INTERIOR), {
+291:         {DF_LUMINESCENT_FUNGUS, AMULET_SWITCH, DUNGEON, {1,1}, 1,       AMULET,     -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},
+292:         {0,         FUNGUS_FOREST,SURFACE,      {2,3},      0,          0,          -1,         0,              2,              0,          0,          MF_NOT_IN_HALLWAY},
+293:         {0,         STATUE_INSTACRACK,DUNGEON,  {1,1},      1,          0,          -1,         MK_WARDEN_OF_YENDOR,1,          0,          0,          (MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_IN_PASSABLE_VIEW_OF_ORIGIN | MF_IMPREGNABLE)},
+294:         {0,         TORCH_WALL, DUNGEON,        {3,4},      0,          0,          0,          0,              1,              0,          0,          (MF_BUILD_IN_WALLS)}}},
+
+variants/GlobalsBrogue.c:309-313
+309:     {"Flammable barricade in the doorway -- burn the wooden barricade to enter",
+310:     {1, 6},            {1, 1},     10,     3,          0,                  (BP_VESTIBULE), {
+311:         {0,         WOODEN_BARRICADE,DUNGEON,   {1,1},      1,          0,          0,          0,              1,              0,          0,          (MF_PERMIT_BLOCKING | MF_BUILD_AT_ORIGIN)},
+312:         {0,         0,          0,              {1,1},      1,          WEAPON,     INCENDIARY_DART, 0,         1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)},
+313:         {0,         0,          0,              {1,1},      1,          POTION,     POTION_INCINERATION, 0,     1,              0,          0,          (MF_GENERATE_ITEM | MF_BUILD_ANYWHERE_ON_LEVEL | MF_NOT_IN_HALLWAY | MF_ALTERNATIVE)}}},
+
+variants/GlobalsBrogue.c:570-585
+570:     {"Swamp -- mud, grass and some shallow water",
+571:     {1,DEEPEST_LEVEL}, {50, 65},   0,      2,          0,                  BP_NO_INTERIOR_FLAG, {
+572:         {DF_SWAMP,  0,          0,              {6, 8},     3,          0,          -1,         0,              1,              0,          0,          0},
+573:         {DF_DEEP_WATER_POOL,0,  0,              {0, 1},     0,          0,          -1,         0,              3,              0,          0,          (MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING)}}},
+574:     {"Camp -- hay, junk, urine, vomit",
+575:     {1,DEEPEST_LEVEL}, {40, 50},   0,      4,          0,                  BP_NO_INTERIOR_FLAG, {
+576:         {DF_HAY,    0,          0,              {1, 3},     1,          0,          -1,         0,              1,              0,          0,          (MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},
+577:         {DF_JUNK,   0,          0,              {1, 2},     1,          0,          -1,         0,              3,              0,          0,          (MF_NOT_IN_HALLWAY | MF_IN_VIEW_OF_ORIGIN)},
+578:         {DF_URINE,  0,          0,              {3, 5},     1,          0,          -1,         0,              1,              0,          0,          MF_IN_VIEW_OF_ORIGIN},
+579:         {DF_VOMIT,  0,          0,              {0, 2},     0,          0,          -1,         0,              1,              0,          0,          MF_IN_VIEW_OF_ORIGIN}}},
+580:     {"Remnant -- carpet surrounded by ash and with some statues",
+581:     {1,DEEPEST_LEVEL}, {80, 120},  0,      2,          0,                  BP_NO_INTERIOR_FLAG, {
+582:         {DF_REMNANT, 0,         0,              {6, 8},     3,          0,          -1,         0,              1,              0,          0,          0},
+583:         {0,         STATUE_INERT,DUNGEON,       {3, 5},     2,          0,          -1,         0,              1,              0,          0,          (MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING)}}},
+584:     {"Dismal -- blood, bones, charcoal, some rubble",
+585:     {1,DEEPEST_LEVEL}, {60, 70},   0,      3,          0,                  BP_NO_INTERIOR_FLAG, {
+
+variants/GlobalsBrogue.c:755-781
+755:     {MK_PIT_BLOAT,      1,      {MK_PIT_BLOAT},                         {{0, 2, 1}},                    14,     26,     10},
+756:     {MK_EXPLOSIVE_BLOAT,0,      {0},                                    {{0}},                          10,     26,     10},
+757:     {MK_GOBLIN,         0,      {0},                                    {{0}},                          3,      10,     100},
+758:     {MK_GOBLIN_CONJURER,0,      {0},                                    {{0}},                          3,      10,     60},
+759:     {MK_TOAD,           0,      {0},                                    {{0}},                          4,      11,     100},
+760:     {MK_PINK_JELLY,     0,      {0},                                    {{0}},                          4,      13,     100},
+761:     {MK_GOBLIN_TOTEM,   1,      {MK_GOBLIN},                            {{2,4,1}},                      5,      13,     100,        0,              MT_CAMP_AREA,   HORDE_NO_PERIODIC_SPAWN},
+762:     {MK_ARROW_TURRET,   0,      {0},                                    {{0}},                          5,      13,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN},
+763:     {MK_MONKEY,         1,      {MK_MONKEY},                            {{2,4,1}},                      5,      13,     20},
+764:     {MK_VAMPIRE_BAT,    0,      {0},                                    {{0}},                          6,      13,     30},
+765:     {MK_VAMPIRE_BAT,    1,      {MK_VAMPIRE_BAT},                       {{1,2,1}},                      6,      13,     70,      0,              0,              HORDE_NEVER_OOD},
+766:     {MK_ACID_MOUND,     0,      {0},                                    {{0}},                          6,      13,     100},
+767:     {MK_GOBLIN,         3,      {MK_GOBLIN, MK_GOBLIN_MYSTIC, MK_JACKAL},{{2, 3, 1}, {1,2,1}, {1,2,1}}, 6,      12,     40},
+768:     {MK_GOBLIN_CONJURER,2,      {MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC}, {{0,1,1}, {1,1,1}},             7,      15,     40},
+769:     {MK_CENTIPEDE,      0,      {0},                                    {{0}},                          7,      14,     100},
+770:     {MK_BOG_MONSTER,    0,      {0},                                    {{0}},                          7,      14,     80,     MUD,            0,              HORDE_NEVER_OOD},
+771:     {MK_OGRE,           0,      {0},                                    {{0}},                          7,      13,     100},
+772:     {MK_EEL,            1,      {MK_EEL},                               {{2, 4, 1}},                    8,      22,     70,     DEEP_WATER},
+773:     {MK_ACID_MOUND,     1,      {MK_ACID_MOUND},                        {{2, 4, 1}},                    9,      13,     30},
+774:     {MK_SPIDER,         0,      {0},                                    {{0}},                          9,      16,     100},
+775:     {MK_DAR_BLADEMASTER,1,      {MK_DAR_BLADEMASTER},                   {{0, 1, 1}},                    10,     14,     100},
+776:     {MK_WILL_O_THE_WISP,0,      {0},                                    {{0}},                          10,     17,     100},
+777:     {MK_WRAITH,         0,      {0},                                    {{0}},                          10,     17,     100},
+778:     {MK_GOBLIN_TOTEM,   4,      {MK_GOBLIN_TOTEM, MK_GOBLIN_CONJURER, MK_GOBLIN_MYSTIC, MK_GOBLIN}, {{1,2,1},{1,2,1},{1,2,1},{3,5,1}},10,17,80,0,MT_CAMP_AREA,  HORDE_NO_PERIODIC_SPAWN},
+779:     {MK_SPARK_TURRET,   0,      {0},                                    {{0}},                          11,     18,     100,        WALL,   0,                      HORDE_NO_PERIODIC_SPAWN},
+780:     {MK_ZOMBIE,         0,      {0},                                    {{0}},                          11,     18,     100},
+781:     {MK_TROLL,          0,      {0},                                    {{0}},                          12,     19,     100},
+
+brogue/Architect.c:1749-1754
+1749:         for (failsafe = 50; failsafe; failsafe--) {
+1750:             if (buildAMachine(MT_AMULET_AREA, -1, -1, 0, NULL, NULL, NULL)) {
+1751:                 break;
+1752:             }
+1753:         }
+1754:     }
+
+brogue/Architect.c:2555-2570
+2555:     short i, j;
+2556: 
+2557:     for (i = x - scanWidth; i <= x + scanWidth; i++) {
+2558:         for (j = y - scanWidth; j <= y + scanWidth; j++) {
+2559:             if (coordinatesAreInMap(i, j) && unfilledLakeMap[i][j]) {
+2560:                 unfilledLakeMap[i][j] = false;
+2561:                 pmap[i][j].layers[LIQUID] = liquid;
+2562:                 wreathMap[i][j] = 1;
+2563:                 fillLake(i, j, liquid, scanWidth, wreathMap, unfilledLakeMap);  // recursive
+2564:             }
+2565:         }
+2566:     }
+2567: }
+2568: 
+2569: static void lakeFloodFill(short x, short y, short **floodMap, short **grid, short **lakeMap, short dungeonToGridX, short dungeonToGridY) {
+2570:     short newX, newY;
+
+brogue/Architect.c:2692-2707
+2692:         for (j=0; j<DROWS; j++) {
+2693:             if (wreathMap[i][j]) {
+2694:                 for (k = i-wreathWidth; k<= i+wreathWidth; k++) {
+2695:                     for (l = j-wreathWidth; l <= j+wreathWidth; l++) {
+2696:                         if (coordinatesAreInMap(k, l) && pmap[k][l].layers[LIQUID] == NOTHING
+2697:                             && (i-k)*(i-k) + (j-l)*(j-l) <= wreathWidth*wreathWidth) {
+2698:                             pmap[k][l].layers[LIQUID] = shallowLiquid;
+2699:                             if (pmap[k][l].layers[DUNGEON] == DOOR) {
+2700:                                 pmap[k][l].layers[DUNGEON] = FLOOR;
+2701:                             }
+2702:                         }
+2703:                     }
+2704:                 }
+2705:             }
+2706:         }
+2707:     }
+
+brogue/Architect.c:3822-3837
+3822: boolean randomMatchingLocation(pos* loc, short dungeonType, short liquidType, short terrainType) {
+3823:     short failsafeCount = 0;
+3824:     do {
+3825:         failsafeCount++;
+3826:         loc->x = rand_range(0, DCOLS - 1);
+3827:         loc->y = rand_range(0, DROWS - 1);
+3828:     } while (failsafeCount < 500 && ((terrainType >= 0 && !cellHasTerrainType(*loc, terrainType))
+3829:                                      || (((dungeonType >= 0 && pmapAt(*loc)->layers[DUNGEON] != dungeonType) || (liquidType >= 0 && pmapAt(*loc)->layers[LIQUID] != liquidType)) && terrainType < 0)
+3830:                                      || (pmapAt(*loc)->flags & (HAS_PLAYER | HAS_MONSTER | HAS_STAIRS | HAS_ITEM | IS_IN_MACHINE))
+3831:                                      || (terrainType < 0 && !(tileCatalog[dungeonType].flags & T_OBSTRUCTS_ITEMS)
+3832:                                          && cellHasTerrainFlag(*loc, T_OBSTRUCTS_ITEMS))));
+3833:     if (failsafeCount >= 500) {
+3834:         return false;
+3835:     }
+3836:     return true;
+3837: }
+
+brogue/Monsters.c:856-868
+856: //  }
+857: 
+858:     theHorde = &hordeCatalog[hordeID];
+859: 
+860:     if (theHorde->machine > 0) {
+861:         // Build the accompanying machine (e.g. a goblin encampment)
+862:         buildAMachine(theHorde->machine, loc.x, loc.y, 0, NULL, NULL, NULL);
+863:     }
+864: 
+865:     leader = generateMonster(theHorde->leaderType, true, true);
+866:     leader->loc = loc;
+867: 
+868:     if (hordeCatalog[hordeID].flags & HORDE_LEADER_CAPTIVE) {

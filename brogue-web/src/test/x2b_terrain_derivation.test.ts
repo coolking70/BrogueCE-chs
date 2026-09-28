@@ -68,6 +68,8 @@ describe('X2b full-layer terrain derivation',()=>{
             'src/engine/Core/Game.ts:crystalizeFromPlayer','src/engine/Core/Game.ts:resetTestRoom',
             'src/engine/Environment/Gas.ts:addGas','src/engine/Environment/Gas.ts:clearGasAt','src/engine/Environment/Gas.ts:updateGases',
             'src/engine/Generator/BlueprintEngine.ts:restoreLevel','src/engine/Map/Grid.ts:setTerrainLayer','src/engine/Map/Grid.ts:writeTerrainHome',
+            // X4-R2 pure-layer lake writes; each refreshes derived properties.
+            'src/engine/Map/LakeSystem.ts:cleanUpLakeBoundaries','src/engine/Map/LakeSystem.ts:createWreath','src/engine/Map/LakeSystem.ts:stampTerrain',
         ]);
     });
     it('fresh cells, every catalog entry, every layer, overlap, replacement and clear agree with flags',()=>{

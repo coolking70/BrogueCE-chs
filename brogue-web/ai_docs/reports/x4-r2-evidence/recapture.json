@@ -1,0 +1,39 @@
+{
+  "time": "2026-09-28T17:29:18.381Z",
+  "generationFields": 427,
+  "records": [
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "before": "6800e38f5687c4237dfab9c054e03bf25987b17781fe69e5596264287ec01a9b",
+      "after": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+      "writes": 1
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "before": "2998e47f27c6d163450a3b4eede24d525fbeaec6c413324eee5471e32a3899d9",
+      "after": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+      "writes": 1
+    },
+    {
+      "file": "ai_docs/reports/u-r2-trace.json",
+      "before": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+      "after": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+      "writes": 0
+    },
+    {
+      "file": "ai_docs/reports/u-r3-trace.json.gz",
+      "before": "695f32c7a396a21e669e1e51a122453c9ff6d4901d67f3efea8714806e741caf",
+      "after": "842f47cbdaa37031ff6bc165ec926003c114f4dc1f8687e9098b170c6ba0193a",
+      "writes": 1,
+      "changedLeaves": 385,
+      "originalMethod": "UR3_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r3_trace.test.ts --maxWorkers=1",
+      "reason": "Only R2 production rollback passes original trace; complete leaf changes retained in evidence"
+    },
+    {
+      "file": "ai_docs/reports/u-r4-trace.json.gz",
+      "before": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444",
+      "after": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444",
+      "writes": 0
+    }
+  ]
+}

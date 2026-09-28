@@ -1,0 +1,475 @@
+[
+  {
+    "id": 46,
+    "success": {
+      "id": 46,
+      "seed": 1,
+      "size": -1,
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "ALTAR",
+            "featureDF": "DF_GLYPH_CIRCLE",
+            "monsterId": "stone_guardian",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_ALTERNATIVE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 19,
+              "y": 10
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "ALTAR",
+            "featureDF": "DF_GLYPH_CIRCLE",
+            "monsterId": "winged_guardian",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_FAR_FROM_ORIGIN",
+              "MF_ALTERNATIVE"
+            ]
+          },
+          "iterations": 0,
+          "placements": [],
+          "status": "skipped"
+        },
+        {
+          "index": 2,
+          "request": {
+            "terrain": "MACHINE_GLYPH",
+            "instanceCount": [
+              3,
+              5
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 13,
+              "y": 14
+            },
+            {
+              "x": 12,
+              "y": 16
+            },
+            {
+              "x": 12,
+              "y": 12
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 12,
+              "y": 14
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "terrain": "WALL",
+            "instanceCount": [
+              80,
+              80
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_REPEAT_UNTIL_NO_PROGRESS"
+            ]
+          },
+          "iterations": 4,
+          "placements": [
+            {
+              "x": 13,
+              "y": 10
+            },
+            {
+              "x": 18,
+              "y": 15
+            },
+            {
+              "x": 17,
+              "y": 17
+            },
+            {
+              "x": 12,
+              "y": 10
+            },
+            {
+              "x": 17,
+              "y": 15
+            },
+            {
+              "x": 18,
+              "y": 13
+            },
+            {
+              "x": 19,
+              "y": 15
+            },
+            {
+              "x": 15,
+              "y": 10
+            },
+            {
+              "x": 15,
+              "y": 11
+            },
+            {
+              "x": 15,
+              "y": 16
+            },
+            {
+              "x": 15,
+              "y": 13
+            },
+            {
+              "x": 14,
+              "y": 18
+            },
+            {
+              "x": 16,
+              "y": 10
+            },
+            {
+              "x": 16,
+              "y": 12
+            },
+            {
+              "x": 19,
+              "y": 16
+            },
+            {
+              "x": 17,
+              "y": 18
+            },
+            {
+              "x": 19,
+              "y": 18
+            },
+            {
+              "x": 18,
+              "y": 18
+            },
+            {
+              "x": 15,
+              "y": 12
+            },
+            {
+              "x": 13,
+              "y": 18
+            },
+            {
+              "x": 15,
+              "y": 15
+            },
+            {
+              "x": 15,
+              "y": 18
+            },
+            {
+              "x": 16,
+              "y": 15
+            },
+            {
+              "x": 17,
+              "y": 13
+            },
+            {
+              "x": 16,
+              "y": 18
+            },
+            {
+              "x": 16,
+              "y": 13
+            },
+            {
+              "x": 19,
+              "y": 17
+            },
+            {
+              "x": 18,
+              "y": 17
+            },
+            {
+              "x": 12,
+              "y": 18
+            },
+            {
+              "x": 14,
+              "y": 10
+            },
+            {
+              "x": 18,
+              "y": 16
+            },
+            {
+              "x": 16,
+              "y": 11
+            },
+            {
+              "x": 14,
+              "y": 11
+            },
+            {
+              "x": 17,
+              "y": 16
+            },
+            {
+              "x": 16,
+              "y": 16
+            },
+            {
+              "x": 16,
+              "y": 17
+            },
+            {
+              "x": 15,
+              "y": 17
+            },
+            {
+              "x": 14,
+              "y": 17
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "terrain": "MACHINE_GLYPH",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_PERMIT_BLOCKING",
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 16,
+              "y": 14
+            },
+            {
+              "x": 18,
+              "y": 14
+            },
+            {
+              "x": 15,
+              "y": 14
+            },
+            {
+              "x": 19,
+              "y": 13
+            },
+            {
+              "x": 19,
+              "y": 14
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 6,
+          "request": {
+            "terrain": "MACHINE_GLYPH",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+              "MF_NOT_IN_HALLWAY",
+              "MF_BUILD_ANYWHERE_ON_LEVEL"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 9,
+              "y": 13
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "items": [
+        {
+          "loc": {
+            "x": 19,
+            "y": 10
+          }
+        }
+      ],
+      "monsters": [
+        {
+          "type": "stone_guardian",
+          "dormant": false
+        }
+      ]
+    },
+    "failures": []
+  },
+  {
+    "id": 50,
+    "success": {
+      "id": 50,
+      "seed": 1,
+      "size": -1,
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "ALTAR_SWITCH",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_ADOPT_ITEM",
+              "MF_NEAR_ORIGIN",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 17,
+              "y": 15
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "WALL_MONSTER_DORMANT",
+            "monsterId": "underworm",
+            "instanceCount": [
+              5,
+              8
+            ],
+            "minimum": 5,
+            "flags": [
+              "MF_MONSTERS_DORMANT",
+              "MF_BUILD_IN_WALLS",
+              "MF_NOT_ON_LEVEL_PERIMETER"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 14,
+              "y": 9
+            },
+            {
+              "x": 20,
+              "y": 18
+            },
+            {
+              "x": 11,
+              "y": 16
+            },
+            {
+              "x": 11,
+              "y": 15
+            },
+            {
+              "x": 15,
+              "y": 19
+            },
+            {
+              "x": 20,
+              "y": 16
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "items": [
+        {
+          "loc": {
+            "x": 17,
+            "y": 15
+          }
+        }
+      ],
+      "monsters": [
+        {
+          "type": "underworm",
+          "dormant": true
+        },
+        {
+          "type": "underworm",
+          "dormant": true
+        },
+        {
+          "type": "underworm",
+          "dormant": true
+        },
+        {
+          "type": "underworm",
+          "dormant": true
+        },
+        {
+          "type": "underworm",
+          "dormant": true
+        },
+        {
+          "type": "underworm",
+          "dormant": true
+        }
+      ]
+    },
+    "failures": []
+  }
+]

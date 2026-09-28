@@ -163,26 +163,21 @@ describe('V-2b-2b P1：生产蓝图数据 ≡ CE GlobalsBrogue.c 原表（:198-2
         expect(c.features[3]!.flags).toEqual(['MF_GENERATE_ITEM', 'MF_ALTERNATIVE', 'MF_TREAT_AS_BLOCKING']);
     });
 
-    it('19 号 barricade / 20 号 statue doorway / 23 号 pit traps：全等 + §4 偏差钉死', () => {
+    it('19 号 barricade / 20 号 statue doorway / 23 号 pit traps：CE 有效 feature 全等', () => {
         const b = byId('vestibule_flammable_barricade');
         expect(b.depthRange).toEqual([1, 6]);
         expect(b.roomSize).toEqual([1, 1]);
         expect(b.frequency).toBe(10);
         expect(b.flags).toEqual(['BP_VESTIBULE']);
-        // §4 方案 2：CE 原表为 3 个 feature（WOODEN_BARRICADE + 两件
-        // MF_ALTERNATIVE 点火物 INCENDIARY_DART / POTION_INCINERATION）。
-        // web 的 incendiary_dart 投掷落点不点火（引擎零消费点），照抄会让
-        // 掷到飞镖的那一半房间不可解——本轮去掉飞镖 feature 与 ALTERNATIVE
-        // 配对，只保留焚化药水。"飞镖点燃接线"轮反转本断言时：
-        //   features 恢复 3 条 + 两条点火物各带 MF_ALTERNATIVE。
-        expect(b.features).toHaveLength(2);
+        // X4-R2 A12 restores CE :309-313's three effective features.
+        // The real alternative choice is tested here; throwing belongs to R3.
+        expect(b.features).toHaveLength(3);
         expect(b.features[0]).toMatchObject({ terrain: 'WOODEN_BARRICADE', instanceCount: [1, 1], minimumInstanceCount: 1, personalSpace: 1 });
         expect(b.features[0]!.flags).toEqual(['MF_PERMIT_BLOCKING', 'MF_BUILD_AT_ORIGIN']);
-        expect(b.features[1]).toMatchObject({ itemCategory: 'POTION', itemId: 'potion_of_incineration', instanceCount: [1, 1], minimumInstanceCount: 1, personalSpace: 1 });
-        expect(b.features[1]!.flags).toEqual(['MF_GENERATE_ITEM', 'MF_BUILD_ANYWHERE_ON_LEVEL', 'MF_NOT_IN_HALLWAY']);
-        for (const f of b.features) {
-            expect(f.flags, '§4 方案 2：本轮不得有 ALTERNATIVE 载体（CE 19 号原文带，接线轮恢复）')
-                .not.toContain('MF_ALTERNATIVE');
+        expect(b.features[1]).toMatchObject({ itemCategory: 'WEAPON', itemId: 'incendiary_dart', instanceCount: [1, 1], minimumInstanceCount: 1, personalSpace: 1 });
+        expect(b.features[2]).toMatchObject({ itemCategory: 'POTION', itemId: 'potion_of_incineration', instanceCount: [1, 1], minimumInstanceCount: 1, personalSpace: 1 });
+        for (const f of b.features.slice(1)) {
+            expect(f.flags).toEqual(['MF_GENERATE_ITEM', 'MF_BUILD_ANYWHERE_ON_LEVEL', 'MF_NOT_IN_HALLWAY', 'MF_ALTERNATIVE']);
         }
 
         const s = byId('vestibule_statue_doorway');
@@ -541,7 +536,7 @@ describe('V-2b-2b T6：BP_NO_INTERIOR_FLAG（CE :1691-1702）', () => {
 // ---------- T7：生产蓝图合成行使（CE 数据真实驱动建造） ----------
 
 describe('V-2b-2b T7：生产蓝图 applyBlueprint 行使（19/20/23 号）', () => {
-    it('19 号：木栅钉在 origin，焚化药水落在层内非走廊格', () => {
+    it('19 号：木栅钉在 origin，唯一替代工具落在层内非走廊格', () => {
         const build = (): Grid => {
             const grid = blankGrid();
             carve(grid, [{ x: 10, y: 10 }]);  // origin（前厅 {1,1} → interior 仅此一格）
@@ -550,10 +545,10 @@ describe('V-2b-2b T7：生产蓝图 applyBlueprint 行使（19/20/23 号）', ()
         };
         const { result, grid } = runOnce(build, byId('vestibule_flammable_barricade'),
             { cells: [{ x: 10, y: 10 }], center: { x: 10, y: 10 }, door: { x: 10, y: 10 } }, 20260919);
-        expect(result, '两 feature 均 min 1 且候选充足，不应失败').not.toBeNull();
+        expect(result, '木栅和被选工具均 min 1 且候选充足，不应失败').not.toBeNull();
         expect(grid.getCell(10, 10)!.terrain).toBe(TerrainType.WOODEN_BARRICADE);
         expect(result!.itemSpawns).toHaveLength(1);
-        expect(result!.itemSpawns[0]).toMatchObject({ category: 'POTION', id: 'potion_of_incineration', pos: { x: 30, y: 15 } });
+        expect(result!.itemSpawns[0]).toMatchObject({ category: 'WEAPON', id: 'incendiary_dart', pos: { x: 30, y: 15 } });
     });
 
     it('20 号：门内雕像钉在 origin，碎裂卷轴落在层内非走廊格', () => {

@@ -141,8 +141,9 @@ describe('V-2b-6 B：keyLoc 绑定与 generatedKey 回声（BlueprintEngine 单�
         const kennel = (blueprintData as BlueprintDef[]).find(b => b.id === 'reward_kennel')!;
         expect(kennel.depthRange).toEqual([5, 26]);
         expect(kennel.roomSize).toEqual([30, 80]); // CE 原值——内部面积须容得下 3-5 座 3×3 笼
-        expect(kennel.features).toHaveLength(5);
-        const [cages, key, blood, bones, torch] = kennel.features;
+        // X4-R2: CE featureCount=4; the stored fifth initializer is inactive.
+        expect(kennel.features).toHaveLength(4);
+        const [cages, key, blood, bones] = kennel.features;
         expect(cages!.terrain).toBe('MONSTER_CAGE_CLOSED');
         expect(cages!.instanceCount).toEqual([3, 5]);
         expect(cages!.minimumInstanceCount).toBe(3);
@@ -150,8 +151,7 @@ describe('V-2b-6 B：keyLoc 绑定与 generatedKey 回声（BlueprintEngine 单�
         expect(key!.itemCategory).toBe('KEY');
         expect(blood!.featureDF).toBe('DF_AMBIENT_BLOOD');
         expect(bones!.featureDF).toBe('DF_BONES');
-        expect(torch!.terrain).toBe('TORCH_WALL');
-        expect(torch!.flags).toContain('MF_BUILD_IN_WALLS');
+        expect(kennel.features.some(f => f.terrain === 'TORCH_WALL')).toBe(false);
     });
 });
 

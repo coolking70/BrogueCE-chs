@@ -1,0 +1,64 @@
+[
+  {
+    "label": "counterfactual-old-tests",
+    "args": [
+      "E:/bench/work/x4r2/brogue-web/src/test/b2_transcription.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/c_4a_terrain_catalog.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/horde_terrain_spawn.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/p1_20_item_placement.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/p4_7_player_weapon_geometry.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/u_19d_machine_families.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/u_19f_machines.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/u_26a_deep_baseline.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/u_r3_trace.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_1b_alternative.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_2a_placement_flags.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_2b_blueprints.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_4_altars.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_6_keys.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_7_features.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/v_2b_9e_2_autogen.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/x2b_terrain_derivation.test.ts",
+      "E:/bench/work/x4r2/brogue-web/src/test/x3b_display_recording.test.ts",
+      "src/test/generation_baseline.test.ts",
+      "--maxWorkers=4",
+      "--reporter=json",
+      "--outputFile=ai_docs/reports/x4-r2-evidence/counterfactual-old-tests.json"
+    ],
+    "exit": 1,
+    "seconds": 887.791,
+    "log": "ai_docs/reports/x4-r2-evidence/counterfactual-old-tests.log"
+  },
+  {
+    "label": "counterfactual-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r2-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 60.97,
+    "log": "ai_docs/reports/x4-r2-evidence/counterfactual-generation.log"
+  },
+  {
+    "label": "counterfactual-shallow-census",
+    "args": [
+      "--config",
+      "scripts/x4-r2-census.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 74.741,
+    "log": "ai_docs/reports/x4-r2-evidence/counterfactual-shallow-census.log"
+  },
+  {
+    "label": "final-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r2-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 57.643,
+    "log": "ai_docs/reports/x4-r2-evidence/final-generation.log"
+  }
+]

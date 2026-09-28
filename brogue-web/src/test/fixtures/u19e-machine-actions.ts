@@ -128,7 +128,10 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
    if(!options.length)throw Error('marked statue unreachable');const p=options[0]![0]!;
    if(g.grid.getCell(p.x,p.y).layers.includes(T.SECRET_DOOR))act('search');else act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
   };
-  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>3;n++)approachMarked();
+  // X4-R2's same-snapshot proof: at three cells a door can break pursuit,
+  // causing oscillation until ambient gas kills the target outside the altar.
+  // Stay within two cells using only the same public player commands.
+  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>2;n++)approachMarked();
   for(let n=0;n<30&&target.isDormant;n++)act('wait');state('awakened');
   const lurePath=route(g,g.player.loc,altar,true);if(!lurePath)throw Error('altar unreachable');
   for(let n=0;n<300&&!same(g.player.loc,altar);n++){
@@ -136,10 +139,10 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
    // X4-R1: changed terrain/promotion RNG can break pursuit. Reacquire the
    // original marked creature by player moves; waiting indefinitely loses
    // wandering targets and can leave the player sitting in spreading gas.
-   if(distance>3){approachMarked();continue;}
+   if(distance>2){approachMarked();continue;}
    const p=route(g,g.player.loc,altar,true)?.[0];if(!p)throw Error('lure path blocked');
    act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
-  }state('lured');
+  }if(!same(g.player.loc,altar))throw Error('lure did not reach altar');state('lured');
   for(let n=0;n<160&&target.hp>0;n++){
    const dx=Math.sign(altar.x-target.x),dy=Math.sign(altar.y-target.y);
    // Prefer a bait square that makes the target's next step approach the
@@ -149,7 +152,7 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
    const beyond=[{x:altar.x+dx,y:altar.y+dy},...around.map(d=>({x:altar.x+d.x,y:altar.y+d.y}))].sort((a,b)=>approach(a)-approach(b)).find(p=>safe(g,p,true)&&!same(p,target.loc)&&route(g,g.player.loc,p,true));
    if(!beyond)throw Error('no safe lure position');walk(beyond);act('wait');
   }
-  state('sacrificed');if(target.hp>0)throw Error(`marked target did not enter altar ${JSON.stringify(target.loc)}`);
+  state('sacrificed');if(target.hp>0||!altar.layers.includes(T.SACRIFICE_LAVA))throw Error(`marked target did not enter altar ${JSON.stringify(target.loc)}`);
   walk(reward.loc);act('pickup');state('reward');walk(entry);
  }else throw Error(`unknown family ${ce}`);
  state('final');g.updateVision();g.update();

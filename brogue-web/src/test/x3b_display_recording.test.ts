@@ -187,7 +187,9 @@ function walk(g: Game, target: { x: number; y: number }, act: (action: string, d
 }
 
 function publicRecording(schedule: number[]) {
-    const g = createHeadlessGame(25, 'wizard'), rows: ReturnType<typeof state>[] = [];
+    // X4-R2 generation drift: this census seed naturally supplies the same
+    // wand/enchantment/strength prerequisites. Every recording assertion stays.
+    const g = createHeadlessGame(1453227, 'wizard'), rows: ReturnType<typeof state>[] = [];
     const act = (action: string, data?: unknown) => {
         frames(g, schedule); g.executeCommand(action, data); settle(g); rows.push(state(g));
     };

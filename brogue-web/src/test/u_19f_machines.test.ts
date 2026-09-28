@@ -19,8 +19,14 @@ for(const row of cases)it(`U19f natural CE${row.ce}: generation → player activ
  expect(last.player).toEqual(r.entry);expect(last.depth).toBe(row.depth);expect(last.hp).toBeGreaterThan(0);
  expect(first.inventory).not.toContain(r.rewardId);expect(last.inventory.filter((id:number)=>id===r.rewardId)).toHaveLength(1);
  if(row.ce===52){
-  const crystals=count('entry',T.ELECTRIC_CRYSTAL_OFF);expect(crystals).toBeGreaterThanOrEqual(3);
-  expect(first.residents).toHaveLength(crystals);expect(first.residents.every((m:any)=>m.dormant)).toBe(true);
+  // CE GlobalsBrogue.c:517,520: globes (3-4) and turret levers (7-9,
+  // minimum 4) are independent features. Each lever owns one dormant turret.
+  const crystals=count('entry',T.ELECTRIC_CRYSTAL_OFF);expect(crystals).toBeGreaterThanOrEqual(3);expect(crystals).toBeLessThanOrEqual(4);
+  const levers=first.tiles.filter((c:any)=>c.layers.includes(T.TURRET_LEVER));
+  expect(levers.length).toBeGreaterThanOrEqual(4);expect(levers.length).toBeLessThanOrEqual(9);
+  expect(first.residents).toHaveLength(levers.length);
+  for(const lever of levers)expect(first.residents.filter((m:any)=>m.loc.x===lever.x&&m.loc.y===lever.y)).toHaveLength(1);
+  expect(first.residents.every((m:any)=>m.dormant)).toBe(true);
   expect(phase('turrets').residents.every((m:any)=>!m.dormant)).toBe(true);
   expect(count('charged',T.ELECTRIC_CRYSTAL_OFF)).toBe(0);expect(count('charged',T.ELECTRIC_CRYSTAL_ON)).toBe(crystals);
   expect(count('entry',T.ALTAR_CAGE_RETRACTABLE)).toBe(1);expect(count('charged',T.ALTAR_CAGE_RETRACTABLE)).toBe(0);

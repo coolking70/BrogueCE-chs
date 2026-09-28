@@ -902,11 +902,11 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         ).map(bp => bp.id);
         expect(ineligible, '领养落点不可达的蓝图集合（9c 新增 52 号闭笼）').toEqual(['key_sacrifice_altar', 'key_electric_crystals']);
 
-        // U19f: preserve the old 14 seeds and add seed17 for natural CE52.
+        // X4-R2: retain all prior seeds and add the census's CE52 positive.
         // Both machines must occur; the blocked terrain names are unchanged;
         // their passability no longer decides whether a machine can adopt.
         let appear = 0, electric = 0;
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8, 17]) {
+        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8, 17, 1247333]) {
             const record: LevelMachines[] = [];
             const restore = installRecorder(record);
             try {

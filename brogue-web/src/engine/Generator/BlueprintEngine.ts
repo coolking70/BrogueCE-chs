@@ -587,7 +587,8 @@ const MACHINES_PER_LEVEL_SUPPRESSION_OFFSET = 2;
 const MACHINES_PER_LEVEL_INCREASE_FACTOR = 1;
 const MAX_LEVEL_FOR_BONUS_MACHINES = 2;
 /** CE GlobalsBrogue.c:1030 `.deepestLevelForMachines = AMULET_LEVEL`。 */
-const DEEPEST_LEVEL_FOR_MACHINES = 26;
+const AMULET_LEVEL = 26;
+const DEEPEST_LEVEL_FOR_MACHINES = AMULET_LEVEL;
 
 export const BP_ADOPT_ITEM = 'BP_ADOPT_ITEM';
 export const BP_VESTIBULE = 'BP_VESTIBULE';
@@ -783,13 +784,27 @@ export class BlueprintEngine {
      * 顶层只建奖励机器（requiredMachineFlags = BP_REWARD 的抽签），数量由
      * 跨层配额公式给出（"约每 4 层 1 间" + 前 2 层 40% 加成），不再是 web
      * 自创的每层 min(2+⌊depth/3⌋, 6) 台全类别同池抽。CE 的另两个顶层调用
-     * ——Bullet Brogue 的 L1 兵器库与 D26 的 MT_AMULET_AREA——在 web 数据
-     * 无对应蓝图（D2 退池留形，归 V-2 数据轮）。
+     * ——D26 MT_AMULET_AREA 在奖励房之前强制建造；Bullet L1 兵器库
+     * 不属于本 Brogue 变体。
      *
      * V-2b-9e：BP_ROOM 保持 P1-33 gate 选址；BP_VESTIBULE 从传入门位生长；
      * 其余蓝图用 CE 区域距离外壳生长，不再借用房间门位。
      */
     public buildMachines(): MachineResult[] {
+        const results: MachineResult[] = [];
+        const flatten = (r: MachineResult): MachineResult[] =>
+            [r, ...r.subMachines.flatMap(flatten)];
+        // CE Architect.c:1749-1754: the frequency-zero amulet area is forced
+        // before reward rooms, at most 50 calls, without spending their quota.
+        if (this.depth === AMULET_LEVEL) {
+            for (let attempt = 0; attempt < 50; attempt++) {
+                const built = this.buildAMachine(15, [], null, null);
+                if (built) {
+                    results.push(...flatten(built));
+                    break;
+                }
+            }
+        }
         // 奖励房配额（CE Architect.c:1757-1766）：
         //   保底 while——"try to build at least one every four levels on average"；
         //   加成 while——前 2 层且一间未建时 40%，此后固定 15%，逐次掷骰累加。
@@ -808,13 +823,10 @@ export class BlueprintEngine {
             machineCount++;
         }
 
-        const results: MachineResult[] = [];
         // CE Architect.c:1768-1775：failsafe 50 次抽签建造，建成才核销配额。
         // 子机器深扁平化输出（CE 把子孙机器的产物逐级并入顶层缓冲——
         // :1555-1567 的合并是递归生效的：子机器的 spawnedItems 已含其
         // 自己的子机器产物；web 用深展开等价）。
-        const flatten = (r: MachineResult): MachineResult[] =>
-            [r, ...r.subMachines.flatMap(flatten)];
         for (let failsafe = 50; machineCount > 0 && failsafe > 0; failsafe--) {
             const built = this.buildAMachine(-1, [BP_REWARD], null, null);
             if (built) {

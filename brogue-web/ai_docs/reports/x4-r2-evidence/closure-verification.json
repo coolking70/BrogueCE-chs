@@ -1,0 +1,29 @@
+{
+  "changed": [
+    "src/test/u_19f_machines.test.ts"
+  ],
+  "afterSha256": "c62f23a60b4b39f0597dcafe8e6ed5a22a2129a64b782a1bbd952d448680e21c",
+  "focusedTest": {
+    "file": "closure-u19f.json",
+    "command": "node node_modules/vitest/vitest.mjs run src/test/u_19f_machines.test.ts --maxWorkers=1 --reporter=json --outputFile=ai_docs/reports/x4-r2-evidence/closure-u19f.json",
+    "passed": 3,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "label": "typecheck",
+      "command": "npx vue-tsc -b",
+      "exit": 0,
+      "seconds": 10.74,
+      "log": "ai_docs/reports/x4-r2-evidence/closure-typecheck.log"
+    },
+    {
+      "label": "build",
+      "command": "npm run build",
+      "exit": 0,
+      "seconds": 15.395,
+      "log": "ai_docs/reports/x4-r2-evidence/closure-build.log"
+    }
+  ],
+  "fullSuiteRepeatedAfterClosure": false
+}

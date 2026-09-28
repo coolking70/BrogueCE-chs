@@ -703,18 +703,19 @@ function runFullGame(seed: number): { comp: Map<string, number>; amulets: number
 describe('V-2b-4 E：15 号护符双轨——实测数据与结论', () => {
     const SEEDS = [70_000, 71_313, 72_626, 73_939, 75_252, 76_565];
 
-    it('E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）', () => {
+    it('E1 X4-R2：6 seed × D1-D26 各强制一台 CE15，frequency=0 仍不进入普通抽签', () => {
         let statuary = 0;
         let otherReward = 0;
         for (const seed of SEEDS) {
             for (const [id, n] of runFullGame(seed).comp) {
                 if (id === 'reward_statuary') statuary += n;
-                if (id.startsWith('reward_')) otherReward += n;
+                if (id.startsWith('reward_') && id !== 'reward_statuary') otherReward += n;
             }
         }
-        expect(statuary, 'CE :290 freq=0 ⇒ 配额抽签永不可能选中它；建成即红').toBe(0);
+        expect(statuary, 'CE Architect.c:1749-1754 强制 D26；旧零台前提已到期').toBe(SEEDS.length);
+        expect(byId('reward_statuary').frequency).toBe(0);
         // 反真空：同一样本里别的 reward 蓝图确实建成了——抽签在跑，
-        // "0 台"不是"整台引擎没动"造成的假绿。
+        // 强制护符房不能替代普通奖励房配额。
         expect(otherReward, '样本里必须有其它 reward 机器（否则是空转假绿）').toBeGreaterThan(0);
     });
 

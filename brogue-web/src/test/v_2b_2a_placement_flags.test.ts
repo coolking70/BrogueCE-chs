@@ -161,22 +161,22 @@ describe('V-2b-2a 前提自检', () => {
                 (n, bp) => n + bp.features.filter(f => f.flags.includes(flag)).length,
                 0
             );
-        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-4 基线 26；V-2b-5 +1；V-2b-6 +3；V-2b-7 +9 → 39；V-2b-9b +6：36/37 号隐桥、38/39 号岩浆回缩、65/66 号触发地板）').toBe(46); // V-2b-9d CE 13/14 literal feature census.
+        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-4 基线 26；V-2b-5 +1；V-2b-6 +3；V-2b-7 +9 → 39；V-2b-9b +6：36/37 号隐桥、38/39 号岩浆回缩、65/66 号触发地板）').toBe(45); // V-2b-9d CE 13/14 literal feature census. // X4-R2: CE9/10 effective counts and CE19 alternative.
         expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-7 后 33；V-2b-9b 36/38 号墙内逃生药 +2）').toBe(38); // V-2b-9c CE 32/51/52/54 census.
         expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-8 后 73；V-2b-9b 九条蓝图原表共 +16）').toBe(102); // V-2b-9d CE 13/14 literal feature census.
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-9d 后 78；B2 补 CE31/F1 :380 漏位 +1）').toBe(79);
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-9d 后 78；B2 补 CE31/F1 :380 漏位 +1）').toBe(80); // X4-R2: CE9/10 effective counts and CE19 alternative.
         // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）；V-2b-7 再 +2：11 号棺木钥匙 :86、12 号水晶球 :262；3 → 5').toBe(5);
         // V-2b-2b 新载体（CE 原表核对）：
-        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-7 后 22；V-2b-9b 36/37/38/65/66 号共 +6）').toBe(33); // V-2b-9d CE 13/14 literal feature census.
+        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-7 后 22；V-2b-9b 36/37/38/65/66 号共 +6）').toBe(32); // V-2b-9d CE 13/14 literal feature census. // X4-R2: CE9/10 effective counts and CE19 alternative.
         expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-7 后 21；V-2b-9b 共 +8）').toBe(35); // V-2b-9d CE 13/14 literal feature census.
-        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（原 15；V-2b-9e-2 CE8 四条 +4）').toBe(19);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（原 15；V-2b-9e-2 CE8 四条 +4）').toBe(20); // X4-R2: CE9/10 effective counts and CE19 alternative.
         expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（V-2b-7 后 4；V-2b-9b 36/37/38/39/65/66 号共 +6）').toBe(10);
         expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（原 5；V-2b-9e-2 CE8 武器 +1）').toBe(6);
         expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（原 2；V-2b-9e-2 CE8 武器/护甲 +2）').toBe(4);
         expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-8 后 26；V-2b-9b 31/34/36/37/38/44 号 +6）').toBe(40); // V-2b-9d CE 13/14 literal feature census.
         expect(count('MF_NEAR_ORIGIN'), 'NEAR_ORIGIN 载体数（V-2b-8 后 18；V-2b-9b 34/65/66 号 +3）').toBe(21);
-        expect(count('MF_BUILD_AT_ORIGIN'), 'BUILD_AT_ORIGIN 载体数（V-2b-8 后 41；V-2b-9b 36/37/38/39/44 号 +5）').toBe(49); // V-2b-9d CE 13/14 literal feature census.
+        expect(count('MF_BUILD_AT_ORIGIN'), 'BUILD_AT_ORIGIN 载体数（V-2b-8 后 41；V-2b-9b 36/37/38/39/44 号 +5）').toBe(48); // V-2b-9d CE 13/14 literal feature census. // X4-R2: CE9/10 effective counts and CE19 alternative.
         expect(count('MF_ADOPT_ITEM'), 'ADOPT_ITEM 载体数（V-2b-7 后 21；V-2b-9b 31/34/36/37/38/39/44 号 +7）').toBe(32); // V-2b-9c CE 32/51/52/54 census.
         // V-2b-5 新载体（CE 原表核对）：
         expect(count('MF_GENERATE_HORDE'), 'GENERATE_HORDE 载体数（V-2b-7 后 13；V-2b-9b 31/65/66 号 +3）').toBe(19); // V-2b-9d CE 13/14 literal feature census.
