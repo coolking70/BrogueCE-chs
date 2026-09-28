@@ -1,0 +1,33 @@
+import { describe, it } from 'vitest';
+import { createHeadlessGame } from '../src/test/harness';
+import { Game } from '../src/engine/Core/Game';
+import { TerrainType } from '../src/engine/Map/Grid';
+import { logger } from '../src/engine/Systems/Logger';
+
+function room(game: Game) {
+    game.monsters.length = 0; game.items.length = 0;
+    for (let x = 1; x < 40; x++) for (let y = 1; y < 20; y++) game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
+    for (let x = 2; x <= 35; x++) for (let y = 2; y <= 14; y++) {
+        game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        const c = game.grid.getCell(x, y)!; c.isVisible = true; c.isExplored = true; c.hasMemory = true;
+    }
+    game.player.loc = { x: 4, y: 5 }; game.player.hp = game.player.maxHp = 200; logger.reset();
+}
+describe('X-3 probes 4', () => {
+    it('P14 confused mouse travel next to lava: confirm auto-accepted by the App.vue rule', () => {
+        const g = createHeadlessGame(3301); room(g);
+        g.grid.setTerrain(4, 6, TerrainType.LAVA, '~', 0xff0000);
+        const lava = g.grid.getCell(4, 6)!; lava.isVisible = true; lava.hasMemory = true; lava.isExplored = true;
+        const asked: string[] = []; const autoAccepted: string[] = [];
+        // Same predicate as App.vue wireConfirmRequest (window.confirm replaced by "No").
+        g.onConfirmRequest = (m) => { if (g.isAutoTraveling()) { autoAccepted.push(m); return true; } asked.push(m); return false; };
+        g.player.applyStatus('confused', 10);
+        g.handleMouseTravel(20, 5);
+        g.stepAutoPath();
+        const manual: string[] = [];
+        g.onConfirmRequest = (m) => { manual.push(m); return false; };
+        g.player.loc = { x: 4, y: 5 };
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P14', JSON.stringify({ autoAccepted, askedDuringTravel: asked, manualMoveAsked: manual }));
+    });
+});

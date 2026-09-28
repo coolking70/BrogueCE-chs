@@ -1,0 +1,37 @@
+P1 {"player":{"x":4,"y":5},"ally":{"x":5,"y":5},"hp0":12,"hp":9,"confirms":[],"log":["You hit the Monkey for 3 damage with Dagger."]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P1 bump ally: attack or swap? 1338ms
+P13 escape {"before":{"x":3,"y":5},"remainAfterKey":27,"after":{"x":6,"y":5},"ref":null}
+ ✓ tmp-x3/x3_probe3.test.ts > X-3 probes 3 > P13 escape during explore 1738ms
+P10 {"moves":40,"offCourse":14,"log":["You stumble in a random direction! x14"]}
+ ✓ tmp-x3/x3_probe2.test.ts > X-3 probes 2 > P10 hallucination stumble 2869ms
+P13 cancel_target {"before":{"x":3,"y":5},"remainAfterKey":27,"after":{"x":6,"y":5},"ref":null}
+ ✓ tmp-x3/x3_probe3.test.ts > X-3 probes 3 > P13 cancel_target during explore 1110ms
+P2 {"hp0":15,"hp":0,"isCaged":true,"isAlly":false,"confirms":[],"log":["You backstab the Goblin for 15 damage!","You defeated the Goblin!"]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P2 bump captive: free prompt or attack? 1438ms
+P13 discoveries {"before":{"x":3,"y":5},"remainAfterKey":27,"after":{"x":3,"y":5},"ref":"discoveries"}
+ ✓ tmp-x3/x3_probe3.test.ts > X-3 probes 3 > P13 discoveries during explore 896ms
+P3 {"player":{"x":5,"y":5},"over":true,"hp":200,"confirms":[],"log":["You are incinerated by the lava!"]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P3 step into known lava 900ms
+P11 {"item":"Ration of Food","dropAt":{"x":4,"y":5},"steps":6,"player":{"x":4,"y":5},"backInPack":true,"log":["Dropped Ration of Food.","You picked up Ration of Food."]}
+ ✓ tmp-x3/x3_probe2.test.ts > X-3 probes 2 > P11 explore returns to a dropped item 1294ms
+P4 {"layers":[0,0,0,31],"player":{"x":5,"y":5},"confirms":[],"log":["You catch fire!"]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P4 step into visible fire 1017ms
+P13 help {"before":{"x":3,"y":5},"remainAfterKey":27,"after":{"x":3,"y":5},"ref":"help"}
+ ✓ tmp-x3/x3_probe3.test.ts > X-3 probes 3 > P13 help during explore 1056ms
+P12 {"packSize":26,"onFloor":true,"log":[]}
+ ✓ tmp-x3/x3_probe2.test.ts > X-3 probes 2 > P12 full pack walking onto item 997ms
+P5 {"before":{"x":38,"y":26},"after":{"x":38,"y":26},"depth0":1,"depth":1,"autoPath":0,"log":["There are no stairs down here."]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P5 > key away from stairs 892ms
+P6 {"steps":8,"hp0":200,"hp":188,"player":{"x":12,"y":5},"remaining":18,"jackal":{"x":11,"y":5},"log":["The Jackal hits you for 2 damage.","The Jackal hits you for 4 damage.","The Jackal hits you for 3 damage.","The Jackal hits you for 4 damage."]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P6 travel continues while an already-seen monster attacks 845ms
+P7a {"dropped":true,"equipped":null,"log":["Dropped Dagger."]}
+P7b {"other":"Dart","equipped":"Dart","stillCursedOn":false}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P7 drop cursed equipped weapon / equip over cursed 1497ms
+P8 ["You see a Monkey.","You see a Rat."]
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P8 see-monster message outside automation and for ally 938ms
+P9 {"turns":1,"left":4,"log":["You are paralyzed and cannot act!"]}
+ ✓ tmp-x3/x3_probe.test.ts > X-3 probes > P9 paralysis requires keypresses 603ms
+ Test Files  3 passed (3)
+      Tests  16 passed (16)
+P14 {"autoAccepted":["Risk stumbling into lava?"],"askedDuringTravel":[],"manualMoveAsked":["Risk stumbling into lava?"]}
+ ✓ tmp-x3/x3_probe4.test.ts > X-3 probes 4 > P14 confused mouse travel next to lava: confirm auto-accepted by the App.vue rule 1084ms

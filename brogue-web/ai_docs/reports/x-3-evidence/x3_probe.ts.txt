@@ -1,0 +1,100 @@
+// X-3 只读勘察探针（不提交到 src/）：用原实现观察交互层行为。
+import { describe, it, expect } from 'vitest';
+import { createHeadlessGame } from '../src/test/harness';
+import { Game } from '../src/engine/Core/Game';
+import { Monster, MonsterState, type MonsterData } from '../src/entities/Monster';
+import { TerrainType } from '../src/engine/Map/Grid';
+import { logger } from '../src/engine/Systems/Logger';
+import monsterDataJson from '../src/data/monsters.json';
+
+const DATA = monsterDataJson as MonsterData[];
+const row = (id: string) => DATA.find(m => m.id === id)!;
+
+function room(game: Game) {
+    game.monsters.length = 0;
+    game.items.length = 0;
+    for (let x = 1; x < 40; x++) for (let y = 1; y < 20; y++) game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
+    for (let x = 2; x <= 35; x++) for (let y = 2; y <= 14; y++) {
+        game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        const c = game.grid.getCell(x, y)!; c.isVisible = true; c.isExplored = true; c.hasMemory = true;
+    }
+    game.player.loc = { x: 4, y: 5 };
+    game.player.hp = game.player.maxHp = 200;
+    logger.reset();
+}
+const texts = () => logger.messages.map(m => m.text);
+const confirms: string[] = [];
+function hook(game: Game) { confirms.length = 0; game.onConfirmRequest = (m) => { confirms.push(m); return false; }; }
+
+describe('X-3 probes', () => {
+    it('P1 bump ally: attack or swap?', () => {
+        const g = createHeadlessGame(3001); room(g); hook(g);
+        const ally = new Monster(5, 5, row('monkey')); ally.isAlly = true; ally.state = MonsterState.WANDERING; g.monsters.push(ally);
+        const hp0 = ally.hp;
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P1', JSON.stringify({ player: g.player.loc, ally: ally.loc, hp0, hp: ally.hp, confirms, log: texts() }));
+    });
+    it('P2 bump captive: free prompt or attack?', () => {
+        const g = createHeadlessGame(3002); room(g); hook(g);
+        const cap = new Monster(5, 5, row('goblin')); cap.isCaged = true; g.monsters.push(cap);
+        const hp0 = cap.hp;
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P2', JSON.stringify({ hp0, hp: cap.hp, isCaged: cap.isCaged, isAlly: cap.isAlly, confirms, log: texts() }));
+    });
+    it('P3 step into known lava', () => {
+        const g = createHeadlessGame(3003); room(g); hook(g);
+        g.grid.setTerrain(5, 5, TerrainType.LAVA, '~', 0xff0000);
+        const c = g.grid.getCell(5, 5)!; c.isVisible = true; c.isExplored = true; c.hasMemory = true;
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P3', JSON.stringify({ player: g.player.loc, over: g.isGameOver, hp: g.player.hp, confirms, log: texts() }));
+    });
+    it('P4 step into visible fire', () => {
+        const g = createHeadlessGame(3004); room(g); hook(g);
+        g.grid.setTerrain(5, 5, TerrainType.PLAIN_FIRE, '^', 0xff8800);
+        const c = g.grid.getCell(5, 5)!; c.isVisible = true;
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P4', JSON.stringify({ layers: g.grid.getCell(5,5)!.layers, player: g.player.loc, confirms, log: texts().slice(0, 6) }));
+    });
+    it('P5 > key away from stairs', () => {
+        const g = createHeadlessGame(3005);
+        logger.reset();
+        const before = { ...g.player.loc }, d = g.depth;
+        g.handlePlayerAction('stairs_down');
+        console.log('P5', JSON.stringify({ before, after: g.player.loc, depth0: d, depth: g.depth, autoPath: g.autoPath.length, log: texts() }));
+    });
+    it('P6 travel continues while an already-seen monster attacks', () => {
+        const g = createHeadlessGame(3006); room(g); hook(g);
+        const jackal = new Monster(5, 6, row('jackal')); jackal.state = MonsterState.HUNTING; jackal.accuracy = 10000; g.monsters.push(jackal);
+        g.update();
+        g.handleMouseTravel(30, 5);
+        const hp0 = g.player.hp; let steps = 0;
+        while (g.autoPath.length && steps < 8) { g.stepAutoPath(); steps++; }
+        console.log('P6', JSON.stringify({ steps, hp0, hp: g.player.hp, player: g.player.loc, remaining: g.autoPath.length, jackal: jackal.loc, log: texts().slice(-8) }));
+    });
+    it('P7 drop cursed equipped weapon / equip over cursed', () => {
+        const g = createHeadlessGame(3007); room(g);
+        const w = g.player.equippedWeapon!; w.isCursed = true;
+        g.dropItem(w);
+        const dropped = !g.player.inventory.items.includes(w);
+        console.log('P7a', JSON.stringify({ dropped, equipped: g.player.equippedWeapon?.name ?? null, log: texts() }));
+        const g2 = createHeadlessGame(3008); room(g2);
+        const w2 = g2.player.equippedWeapon!; w2.isCursed = true;
+        const other = g2.player.inventory.items.find(i => i.category === w2.category && i !== w2);
+        if (other) { g2.equipItem(other); }
+        console.log('P7b', JSON.stringify({ other: other?.name ?? null, equipped: g2.player.equippedWeapon?.name, stillCursedOn: g2.player.equippedWeapon === w2 }));
+    });
+    it('P8 see-monster message outside automation and for ally', () => {
+        const g = createHeadlessGame(3009); room(g);
+        const ally = new Monster(8, 5, row('monkey')); ally.isAlly = true; g.monsters.push(ally);
+        const rat = new Monster(9, 6, row('rat')); rat.state = MonsterState.ASLEEP; g.monsters.push(rat);
+        g.needsRender = true; g.onRenderRequested = () => {}; g.update();
+        console.log('P8', JSON.stringify(texts()));
+    });
+    it('P9 paralysis requires keypresses', () => {
+        const g = createHeadlessGame(3010); room(g);
+        g.player.applyStatus('paralyzed', 5);
+        const t0 = g.stats.turns;
+        g.handlePlayerAction('wait', undefined, 'system');
+        console.log('P9', JSON.stringify({ turns: g.stats.turns - t0, left: g.player.getStatusDuration('paralyzed'), log: texts() }));
+    });
+});
