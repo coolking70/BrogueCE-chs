@@ -7,6 +7,9 @@ import {catalogFeature, spawnDungeonFeature} from '../engine/Map/DungeonFeature'
 import {LightKind} from '../engine/Map/LightCatalog';
 import {terrainAppearance} from '../engine/UI/Appearance';
 import {createHeadlessGame} from './harness';
+// 验收裁决（X3-U6 合并）：地形名本地化断言须在已加载中文资源下成立；原先靠写死中文 defaultValue
+// 才绿，X3-C13 已按 CE 改回英文 defaultValue，故此处显式初始化 i18n（断言不变）。
+import '../i18n';
 import {Item, ItemCategory as C} from '../engine/Items/Item';
 import {ItemLoader} from '../engine/Items/ItemLoader';
 import {Monster, type MonsterData} from '../entities/Monster';
