@@ -1,0 +1,1852 @@
+{
+  "results": [
+    {
+      "kind": "swap",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "loc": {
+          "x": 41,
+          "y": 15
+        },
+        "turn": 1,
+        "tick": 100,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 40,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [
+          []
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 41,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 40,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "kind": "fallback",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "levitating": 100
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "loc": {
+          "x": 41,
+          "y": 15
+        },
+        "turn": 1,
+        "tick": 100,
+        "substantive": {
+          "stream": {
+            "a": 3152962826,
+            "b": 2621232539,
+            "c": 519068713,
+            "d": 1895419123
+          },
+          "draws": 2600
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 16
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [
+          []
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 41,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "levitating": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 16,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "kind": "discordant-denied",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 100,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "denied": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [
+          [
+            false
+          ]
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 100,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "kind": "discordant",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 100,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 1,
+        "tick": 100,
+        "substantive": {
+          "stream": {
+            "a": 2946053375,
+            "b": 2627935823,
+            "c": 535075778,
+            "d": 1984278654
+          },
+          "draws": 2603
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 499,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [
+          [
+            false
+          ],
+          [
+            true
+          ]
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 499,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 99,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "kind": "captive-denied",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": false,
+          "captive": true
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "denied": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": false,
+          "captive": true
+        },
+        "decisions": [
+          [
+            false
+          ]
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "kind": "captive",
+      "old": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 0,
+        "tick": 0,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": false,
+          "captive": true
+        },
+        "decisions": [],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "loc": {
+          "x": 40,
+          "y": 15
+        },
+        "turn": 1,
+        "tick": 100,
+        "substantive": {
+          "stream": {
+            "a": 3772131318,
+            "b": 2035810725,
+            "c": 844620123,
+            "d": 1776612416
+          },
+          "draws": 2599
+        },
+        "monster": {
+          "loc": {
+            "x": 41,
+            "y": 15
+          },
+          "hp": 500,
+          "ally": true,
+          "captive": false
+        },
+        "decisions": [
+          [
+            false
+          ],
+          [
+            true
+          ]
+        ],
+        "text": {
+          "seed": "33002",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 500,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 73,
+              "y": 15
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "猴子",
+              "x": 41,
+              "y": 15,
+              "hp": 500,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [],
+              "typeId": "monkey",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    }
+  ],
+  "dialogs": [
+    {
+      "message": "你确定要攻击猴子吗？",
+      "type": "confirm",
+      "answer": false
+    },
+    {
+      "message": "你确定要攻击猴子吗？",
+      "type": "confirm",
+      "answer": true
+    },
+    {
+      "message": "释放被俘的猴子吗？",
+      "type": "confirm",
+      "answer": false
+    },
+    {
+      "message": "释放被俘的猴子吗？",
+      "type": "confirm",
+      "answer": true
+    }
+  ],
+  "errors": [],
+  "networkErrors": []
+}

@@ -1,0 +1,93 @@
+{
+  "timeoutRetries": [
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "src/test/b2_transcription.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile.json=ai_docs/reports/x3-u2-evidence/timeout-retry-1.json"
+      ],
+      "originalError": "Test timed out in 900000ms. (full.txt)",
+      "originalFailures": [
+        {
+          "name": "B2 production census observes committed CE71 machines and their actual occupants on 34 seed × D1–D26",
+          "messages": [
+            "Error: STACK_TRACE_ERROR\n    at task (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1784:27)\n    at Object.<anonymous> (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1817:16)\n    at Object.<anonymous> (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1563:28)\n    at chain (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:599:14)\n    at /Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/src/test/b2_transcription.test.ts:58:5\n    at file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:40\n    at runWithSuite (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2258:8)\n    at Object.collect (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1889:10)\n    at Object.collect (file:///Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:54)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+          ],
+          "duration": 1124219.711542
+        }
+      ],
+      "exit": 0,
+      "seconds": 408.378,
+      "started": "2026-09-28T16:34:45.076531+08:00",
+      "finished": "2026-09-28T16:41:33.455480+08:00",
+      "passedTests": 21,
+      "failedTests": 0,
+      "changedInputs": []
+    }
+  ],
+  "originalFullExit": 1,
+  "inputCount": 985,
+  "changedInputs": [],
+  "expectedFiles": 225,
+  "actualFiles": 225,
+  "missingFiles": [],
+  "unexpectedFiles": [],
+  "fullFiles": 224,
+  "driftFiles": 1,
+  "tests": {
+    "numPassedTests": 4133,
+    "numFailedTests": 1,
+    "numPendingTests": 8,
+    "numTodoTests": 5
+  },
+  "driftTests": {
+    "numPassedTests": 1,
+    "numFailedTests": 0
+  },
+  "suiteFailures": [
+    {
+      "name": "/Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web/src/test/b2_transcription.test.ts",
+      "message": "",
+      "status": "failed"
+    }
+  ],
+  "protected": {
+    "ai_docs/reports/u-r2-trace.json": {
+      "sha256": "d4a298b2230d974688d8c23b9a6f01d7666b87898ffedb1f1dabcc1125f6e838",
+      "matchesHead": true
+    },
+    "ai_docs/reports/u-r3-trace.json.gz": {
+      "sha256": "7560d9aa5ebd8eb96dd06dbc411ad354196fb37830b35031b55cf83246f33ffb",
+      "matchesHead": true
+    },
+    "ai_docs/reports/u-r4-trace.json.gz": {
+      "sha256": "45ddb6327018250393b582b6ec6565ad4d8cf56aa7e605d252ab6366b90b0565",
+      "matchesHead": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "sha256": "8de4bb7a4f3fa40f72bd2f5b511699dff771b846131c65d72f4c3e6788ec8580",
+      "matchesHead": true
+    },
+    "src/test/fixtures/deep_generation_baseline.json": {
+      "sha256": "1360215b7bb2ab69528831f9b9b8f989ef9fa334af127b037598fbbed36b4a60",
+      "matchesHead": true
+    },
+    "package-lock.json": {
+      "sha256": "c3c782a87104a90608278062f925d43681d7c03a8c97f8ac4bfda5e0dfe0cd55",
+      "matchesHead": true
+    }
+  },
+  "modifiedExistingTests": [],
+  "CRLF": [],
+  "PNGCount": 7,
+  "allPNGIgnored": true,
+  "stagedFiles": [],
+  "diffCheckExit": 0,
+  "diffCheckOutput": ""
+}

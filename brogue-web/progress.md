@@ -1583,3 +1583,16 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 - X3-U1 最终完成：类型/构建、中档 42 文件 1014/1014（新增33）、drift 1/1 全绿，406 冻结输入零变化；UR2/3/4 原黄金未重录，U03/U03b 通过。浏览器六场景及自动停步11次原生confirm通过，0页面/控制台错误，整页截图已目视；测试环境字体请求空响应避开离线超时。报告 ai_docs/reports/x3-u1.report.md 已收口，UI-1 单条旧前提反事实证据交验收；不提交、不推送，PNG 本地忽略。
 
 - 最终核对：42/42执行覆盖、30/30引用覆盖、406输入零变化，trace/生成基线SHA与HEAD相同、CRLF=0、PNG13张全部忽略、未暂存；本任务浏览器和Vite服务已关闭。
+
+## 2026-09-28 X3-U2：盟友换位、释放俘虏
+
+- Original prompt: 严格按 ai_docs/tasks/x3-u2.prompt.md 完成 X3-U2；改代码、跑全量门禁、写报告；不提交、不推送，PNG 仅本地。
+- 已核对 CE Movement.c 的换位、回退、discordant 确认和俘虏释放顺序；复用 U1 requestConfirm/commandDecisions、monsterAvoids 与 qualifyingPathCandidates。
+- 实现和新增守卫进行中；随后完整运行类型、构建、npm test、drift，并验证本地 Playwright 与录像回放。
+- 新增32项守卫全过，普通换位/CE回退/discordant确认/俘虏释放均覆盖录像step及seek零OOS。新夹具的食物ID/堆叠、隐形盟友可见性和录像结束UI消息比较已修正；既有守卫未改。
+- 本地有头Playwright四场景、4次中文原生confirm全过，0页面/控制台/网络错误；6张整页截图已目视检查且仅本地忽略。技能客户端canvas黑图不作视觉依据，文本状态正常。
+- 最终冻结源码/测试，从15:08:18 CST串行运行类型、构建、完整npm test（4 workers）和drift；类型/构建通过，完整测试进行中。报告x3-u2.report.md待补最终结果，不提交、不推送。
+- 完整门禁已跑完：224文件，4133 passed / 1 B2 census超时 / 8既有skip / 5既有todo，原始exit1；类型、构建、drift均exit0，985输入零变化。UR2/3/4原黄金、新32项、U1的33项、U03/U27及深层基线通过。
+- B2原始日志明确900000ms超时（实测1124秒），未改断言/样本/门限，按任务书用1 worker单独复跑原21项文件；结果待收口。首轮完整记录保留，不将单项复验宣称为完整npm test exit0。
+- X3-U2 最终完成：B2原文件21/21复验通过（408.378秒，原超时census405.193秒），完整首轮唯一900秒超时如实保留；按任务书单独复验收口。最后生产/测试输入985项始终零变化，225/225文件覆盖，既有守卫修改0，trace/浅深基线/锁文件与HEAD一致。
+- ai_docs/reports/x3-u2.report.md 已收口；final-check通过，CRLF=0，7张PNG均本地忽略，未暂存/提交/推送。本任务浏览器与Vite已关闭，无剩余实现或验收TODO。

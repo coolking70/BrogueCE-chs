@@ -119,6 +119,18 @@ export function captiveItemDropCandidates(world: Pick<PlacementWorld, 'grid' | '
         (x, y) => !qualifies(x, y));
 }
 
+/** CE Movement.c:1451-1454: the player has moved and the ally's old
+ * HAS_MONSTER bit is cleared. Terrain blocks paths, but only occupied cells
+ * and stairs forbid destinations. Use permanent species flags, as CE does. */
+export function allySwapCandidates(world: PlacementWorld, ally: Monster): Pos[] {
+    return qualifyingPathCandidates(world.grid, world.player.loc, teleportForbiddenFlags(ally), 0, (x, y) => {
+        const cell = world.grid.getCell(x, y)!;
+        return (world.player.x === x && world.player.y === y)
+            || world.monsters.some(m => m !== ally && !m.isDormant && !m.deathProcessed && m.hp > 0 && m.x === x && m.y === y)
+            || cell.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL);
+    });
+}
+
 /** Grid.c:287, hallwaysAllowed=true. Origin gets cost 1 even if blocked;
  * destination restrictions do not block traversal. Only OBSTRUCTION blocks
  * diagonal corners. A pathless result falls back to the nearest square ring. */

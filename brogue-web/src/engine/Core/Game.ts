@@ -116,7 +116,7 @@ import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult
 import { traceBolt, type BoltWorld } from '../Combat/BoltTrajectory';
 import { CE_BOLT_CATALOG, CEBoltEffect, CEBoltType, resolveCEBoltMagnitude } from '../Combat/BoltCatalog';
 import { rollStaffDamage } from '../Combat/StaffDamage';
-import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates, qualifyingPathCandidates } from '../Movement/CreaturePlacement';
+import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates, qualifyingPathCandidates, allySwapCandidates } from '../Movement/CreaturePlacement';
 
 import { blinkTargetPreview } from '../Combat/BlinkTargeting';
 import { MONSTER_BLINK, monsterBlinkAvoids } from '../Combat/MonsterBlink';
@@ -3176,7 +3176,9 @@ export class Game {
                 // 不落回普通移动/攻击。CE 的 diagonalBlocked 起步守卫不移植（web 全局
                 // 无对角墙角判定，P4-5 起同口径，见报告）。
                 const destCell = this.grid.getCell(newX, newY);
-                const moveNotBlocked = !!destCell?.isPassable ||
+                const destinationKey = destCell && (cellTerrainMechFlags(this.grid, newX, newY) & TM_PROMOTES_WITH_KEY)
+                    ? this.keyInPackFor(newX, newY, destCell) : null;
+                const moveNotBlocked = (!!destCell && !(cellTerrainFlags(this.grid, newX, newY) & T_OBSTRUCTS_PASSABILITY)) || !!destinationKey ||
                     (!!blockingMonster && blockingMonster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'));
                 const geometryAttack = moveNotBlocked && this.tryPlayerWeaponGeometryAttack(dx, dy);
                 if (geometryAttack === 'aborted') return;
@@ -3186,12 +3188,30 @@ export class Game {
                     this.moveEntrancedMonsters(dx, dy);
                     spentTurn = true;
                     if (this.player.ticksUntilTurn !== -1) timeSystem.currentTick += this.player.attackSpeed;
-                } else if (blockingMonster) {
+                } else if (blockingMonster?.isCaged) {
+                    // CE Movement.c:1193-1215: a captive is released, never
+                    // attacked. Confusion has already committed the direction.
+                    if (!moveNotBlocked) return;
+                    if (!this.player.hasStatus('confused') && !this.requestConfirm(i18next.t('cage.free_confirm', {
+                        monster: this.monsterDisplayName(blockingMonster), defaultValue: 'Free the captive {{monster}}?'
+                    }))) return;
+                    if (destinationKey) {
+                        const disposable = this.keyMatchingEntry(destinationKey, newX, newY, destCell ?? undefined)?.disposableHere ?? true;
+                        promoteLayersWithMechFlag(this.grid, newX, newY, TM_PROMOTES_WITH_KEY);
+                        if (disposable) this.player.inventory.removeItem(destinationKey);
+                    }
+                    this.freeCaptive(blockingMonster);
+                    // This is not attack recovery: no weapon speed multiplier,
+                    // nausea roll, entrancement step or player displacement.
+                    this.player.ticksUntilTurn += this.player.attackSpeed;
+                    timeSystem.currentTick += this.player.attackSpeed;
+                    spentTurn = true;
+                } else if (blockingMonster && (!blockingMonster.isAlly || blockingMonster.hasStatus('discordant'))) {
                     // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
                     // （sweep = 武器带 ITEM_ATTACKS_ALL_ADJACENT，Combat.c:2049-2090）
                     // + 攻击循环（循环内复查目标存活，对应 CE MB_IS_DYING 复查）。
                     const hitList = this.buildPlayerMeleeHitList(blockingMonster);
-                    if (this.abortAcidicAttack(hitList)) return;
+                    if (this.abortPlayerAttack(hitList)) return;
                     if (this.playerVomitAttempt()) return;
                     let anyAttackHit = false;
                     for (const target of hitList) {
@@ -3275,7 +3295,7 @@ export class Game {
                         if (isItemCage && !this.getMonsterAt(newX, newY)) {
                             // CE Movement.c:1166: a matching key permits entering
                             // the cage; the key remains on that tile in the pack.
-                            this.player.loc = { x: newX, y: newY };
+                            if (!this.movePlayerPastAlly(newX, newY, blockingMonster)) return;
                             this.handleSpecialTileEntry();
                         }
                         this.needsRender = true;
@@ -3323,8 +3343,7 @@ export class Game {
                         // Empty altar is walkable
                         if (this.playerStruggle(dx, dy)) return;
                         if (this.playerVomitAttempt()) return;
-                        this.player.loc.x = newX;
-                        this.player.loc.y = newY;
+                        if (!this.movePlayerPastAlly(newX, newY, blockingMonster)) return;
                         this.moveEntrancedMonsters(dx, dy);
                         this.needsRender = true;
                         spentTurn = true;
@@ -3337,7 +3356,7 @@ export class Game {
                     // CE Movement.c:1368-1400: confirm the complete movement
                     // attack before struggling, nausea RNG or displacement.
                     const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
-                    if (this.abortAcidicAttack(specialTargets)) return;
+                    if (this.abortPlayerAttack(specialTargets)) return;
                     if (this.playerStruggle(dx, dy)) return;
 
                     // B-1：CE Movement.c:1368-1400 —— 突进/连枷目标在移动
@@ -3363,8 +3382,7 @@ export class Game {
                         return;
                     }
                     // Move
-                    this.player.loc.x = newX;
-                    this.player.loc.y = newY;
+                    if (!this.movePlayerPastAlly(newX, newY, blockingMonster)) return;
                     this.moveEntrancedMonsters(dx, dy);
                     this.needsRender = true;
 
@@ -6789,10 +6807,8 @@ export class Game {
      * 起点旋转遍历 8 邻格（CE 原文的 nbDirs/cDirs 表混用只影响命中顺序、覆盖
      * 集合即 8 邻格全覆盖——P4-6 §3.2 同口径，单表旋转），逐格要求
      * playerWillAttackTarget 且（格可通行 或 目标 MONST_ATTACKABLE_THRU_WALLS）。
-     * 偏离 CE 的一处保守取舍：sweep 过滤后为空的唯一情形是主目标本身不可攻击
-     * （盟友/被囚禁）——此时落回 [primary] 保留 web 既有"撞谁打谁"的行为
-     * （CE 该场景在 Movement.c:1155 就整体跳过攻击块，且误伤盟友要走
-     * abortAttack 确认提示，本轮明确不做），避免出现"穿过盟友走位"的回归。
+     * X3-U2：普通盟友和俘虏在调用前已分流；不再为不可攻击的主目标
+     * 回退到 [primary]。discordant 盟友由共同的 abortPlayerAttack 确认。
      */
     private buildPlayerMeleeHitList(primary: Monster): Monster[] {
         if (!this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_ALL_ADJACENT')) {
@@ -6816,7 +6832,7 @@ export class Game {
             if (!cell.isPassable && !defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) continue;
             hitList.push(defender);
         }
-        return hitList.length > 0 ? hitList : [primary];
+        return hitList;
     }
 
     /**
@@ -6867,7 +6883,7 @@ export class Game {
             }
         }
         if (!strike || !this.playerWillAttackTarget(strike)) return false;
-        if (this.abortAcidicAttack([strike])) return 'aborted';
+        if (this.abortPlayerAttack([strike])) return 'aborted';
         this.resolvePlayerMeleeAttackOn(strike);
         return true;
     }
@@ -6903,7 +6919,7 @@ export class Game {
             }
         }
         if (!proceed) return false;
-        if (this.abortAcidicAttack(hitList)) return 'aborted';
+        if (this.abortPlayerAttack(hitList)) return 'aborted';
         // CE Movement.c:1007-1009：先打远的、后打近的（倒序）
         for (let i = hitList.length - 1; i >= 0; i--) {
             this.resolvePlayerMeleeAttackOn(hitList[i]!);
@@ -7359,6 +7375,44 @@ export class Game {
         const decision = this.onConfirmRequest ? this.onConfirmRequest(message) : true;
         this.commandDecisions?.push(decision);
         return decision;
+    }
+
+    /** CE Movement.c:812-850: acid first, then the first visible discordant
+     * ally. Confirm the whole hit list before any damage, nausea or attack RNG. */
+    private abortPlayerAttack(hitList: Monster[]): boolean {
+        if (this.player.hasStatus('confused')
+            || (this.player.hasStatus('hallucinating') && !this.player.hasStatus('telepathy'))) return false;
+        if (this.abortAcidicAttack(hitList)) return true;
+        const target = hitList.find(monster => monster.isAlly && monster.hasStatus('discordant')
+            && (canSeeMonster(this.player, this.grid, monster)
+                || (!monsterHidden(this.grid, monster, this.player)
+                    && this.grid.getCell(monster.x, monster.y)?.isClairvoyantVisible)));
+        return !!target && !this.requestConfirm(i18next.t('combat.attack_ally_confirm', {
+            monster: this.monsterDisplayName(target), defaultValue: 'Are you sure you want to attack {{monster}}?'
+        }));
+    }
+
+    /** CE Movement.c:1440-1461: relocate before monsterAvoids, including its
+     * current-terrain exceptions. No monster turn/entry effects during a swap. */
+    private movePlayerPastAlly(x: number, y: number, ally?: Monster): boolean {
+        const origin = { ...this.player.loc };
+        this.player.loc = { x, y };
+        if (ally?.isAlly && !ally.hasStatus('discordant')) {
+            const allyOrigin = { ...ally.loc };
+            ally.loc = origin;
+            if (monsterBlinkAvoids(this, ally, origin)) {
+                const candidates = allySwapCandidates(this, ally);
+                // CE returns INVALID_POS on a pathological map with no legal
+                // cell. Keep both entities in bounds instead of overlapping.
+                if (!candidates.length) {
+                    this.player.loc = origin;
+                    ally.loc = allyOrigin;
+                    return false;
+                }
+                ally.loc = candidates[rng.randRange(0, candidates.length - 1)]!;
+            }
+        }
+        return true;
     }
 
     /** CE Movement.c:778-806,837-852: one question for the first visible

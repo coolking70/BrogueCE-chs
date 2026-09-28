@@ -1,0 +1,58 @@
+[
+  {
+    "name": "types",
+    "command": [
+      "npx",
+      "vue-tsc",
+      "-b"
+    ],
+    "exit": 0,
+    "seconds": 7.563,
+    "started": "2026-09-28T15:08:18.857780+08:00",
+    "finished": "2026-09-28T15:08:26.421957+08:00"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 11.854,
+    "started": "2026-09-28T15:08:26.422957+08:00",
+    "finished": "2026-09-28T15:08:38.278167+08:00"
+  },
+  {
+    "name": "full",
+    "command": [
+      "npm",
+      "test",
+      "--",
+      "--maxWorkers=4",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u2-evidence/full-results.json"
+    ],
+    "exit": 1,
+    "seconds": 5109.979,
+    "started": "2026-09-28T15:08:38.279211+08:00",
+    "finished": "2026-09-28T16:33:48.258864+08:00"
+  },
+  {
+    "name": "drift",
+    "command": [
+      "npm",
+      "run",
+      "test:drift",
+      "--",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u2-evidence/drift-results.json"
+    ],
+    "exit": 0,
+    "seconds": 47.114,
+    "started": "2026-09-28T16:33:48.260274+08:00",
+    "finished": "2026-09-28T16:34:35.374741+08:00"
+  }
+]

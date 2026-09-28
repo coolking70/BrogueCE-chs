@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c52e/brogue/brogue-web
+
+stdout | src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > undefined swaps a normal ally without attacking or confirming, using movementSpeed
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > undefined swaps a normal ally without attacking or confirming, using movementSpeed 339ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > axe swaps a normal ally without attacking or confirming, using movementSpeed 297ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > whip swaps a normal ally without attacking or confirming, using movementSpeed 672394ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > spear swaps a normal ally without attacking or confirming, using movementSpeed 273ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > rapier swaps a normal ally without attacking or confirming, using movementSpeed 281ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > flail swaps a normal ally without attacking or confirming, using movementSpeed 365ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > swap still picks up the destination item and respects the terrain confirmation before moving either creature 368ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > lava fallback excludes the player, another monster and stairs, choosing the nearest path ties 374ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > an enclosed landing uses CE square-ring fallback across blocked diagonal corners 187ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > temporary flight permits the original lava square without invoking fallback 159ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > applies CE current-terrain exception after relocation: deep water does not force fallback 163ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > undefined No changes no gameplay state; Yes attacks without swapping 157ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > axe No changes no gameplay state; Yes attacks without swapping 155ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > whip No changes no gameplay state; Yes attacks without swapping 152ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > spear No changes no gameplay state; Yes attacks without swapping 205ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > sweep confirms a secondary discordant ally before damaging the primary enemy; asks once for multiple allies 262ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > acid question precedes discordant question, with both answers in one command decision list 271ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 discordant attack confirmation > CE visibility/confusion/hallucination exemptions still apply; telepathy restores hallucination confirmation 286ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > undefined No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement 446ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > mace No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement 407ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > rapier No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement 397ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > matching cage key disposable=false is unchanged on No and promoted/consumed only on Yes 506ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > matching cage key disposable=true is unchanged on No and promoted/consumed only on Yes 500ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > a captive behind a closed cage without a matching key cannot be freed through the wall 300ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > uses existing freeCaptive relation and carried-item transition 282ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 D06 captive release > confused movement has already committed and releases the only reachable captive without another question 288ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > swap public commands replay and seek with zero OOS and no UI 811ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > fallback public commands replay and seek with zero OOS and no UI 357ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > discordant public commands replay and seek with zero OOS and no UI 349ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > captive public commands replay and seek with zero OOS and no UI 355ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > discordant request stops automation before asking, including on Yes 266ms
+ ✓ src/test/x3_u2_ally_captive.test.ts > X3-U2 recording and auto-travel > captive request stops automation before asking, including on Yes 267ms
+
+ Test Files  1 passed (1)
+      Tests  32 passed (32)
+   Start at  14:55:46
+   Duration  683.61s (transform 768ms, setup 0ms, import 1.24s, tests 682.22s, environment 0ms)
+
