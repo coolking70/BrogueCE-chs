@@ -1,0 +1,31 @@
+import { describe, it } from 'vitest';
+import { createHeadlessGame } from '../src/test/harness';
+import { Game } from '../src/engine/Core/Game';
+import { TerrainType } from '../src/engine/Map/Grid';
+import { logger } from '../src/engine/Systems/Logger';
+
+function room(game: Game) {
+    game.monsters.length = 0; game.items.length = 0;
+    for (let x = 1; x < 40; x++) for (let y = 1; y < 20; y++) game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
+    for (let x = 2; x <= 35; x++) for (let y = 2; y <= 14; y++) {
+        game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        const c = game.grid.getCell(x, y)!; c.isVisible = true; c.isExplored = true; c.hasMemory = true;
+    }
+    game.player.loc = { x: 4, y: 5 }; logger.reset();
+}
+describe('X-3 probes 3', () => {
+    for (const key of ['escape', 'cancel_target', 'discoveries', 'help']) {
+        it(`P13 ${key} during explore`, () => {
+            const g = createHeadlessGame(3201); room(g);
+            const it0 = g.player.inventory.items.find(i => i !== g.player.equippedWeapon && i !== g.player.equippedArmor)!;
+            g.player.inventory.removeItem(it0); it0.loc = { x: 30, y: 5 }; g.items.push(it0);
+            g.executeCommand('auto_explore');
+            g.stepAutoPath();
+            const before = { ...g.player.loc };
+            g.executeCommand(key);
+            const remainAfterKey = g.autoPath.length;
+            for (let i = 0; i < 3; i++) g.stepAutoPath();
+            console.log('P13', key, JSON.stringify({ before, remainAfterKey, after: g.player.loc, ref: (g as any).referenceScreen ?? null }));
+        });
+    }
+});

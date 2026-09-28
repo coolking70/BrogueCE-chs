@@ -1,0 +1,53 @@
+import { describe, it } from 'vitest';
+import { createHeadlessGame } from '../src/test/harness';
+import { Game } from '../src/engine/Core/Game';
+import { TerrainType } from '../src/engine/Map/Grid';
+import { logger } from '../src/engine/Systems/Logger';
+
+function room(game: Game) {
+    game.monsters.length = 0; game.items.length = 0;
+    for (let x = 1; x < 40; x++) for (let y = 1; y < 20; y++) game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
+    for (let x = 2; x <= 35; x++) for (let y = 2; y <= 14; y++) {
+        game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        const c = game.grid.getCell(x, y)!; c.isVisible = true; c.isExplored = true; c.hasMemory = true;
+    }
+    game.player.loc = { x: 4, y: 5 }; game.player.hp = game.player.maxHp = 200; logger.reset();
+}
+const texts = () => logger.messages.map(m => `${m.text}${m.count > 1 ? ' x' + m.count : ''}`);
+
+describe('X-3 probes 2', () => {
+    it('P10 hallucination stumble', () => {
+        const g = createHeadlessGame(3101); room(g);
+        g.player.applyStatus('hallucinating', 300);
+        let off = 0;
+        for (let i = 0; i < 40; i++) {
+            g.player.loc = { x: 18, y: 8 };
+            g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+            if (g.player.loc.x !== 19 || g.player.loc.y !== 8) off++;
+        }
+        console.log('P10', JSON.stringify({ moves: 40, offCourse: off, log: texts().slice(0, 3) }));
+    });
+    it('P11 explore returns to a dropped item', () => {
+        const g = createHeadlessGame(3102); room(g);
+        const it0 = g.player.inventory.items.find(i => i !== g.player.equippedWeapon && i !== g.player.equippedArmor)!;
+        g.dropItem(it0);
+        const dropAt = { ...it0.loc };
+        g.player.loc = { x: 10, y: 5 };
+        g.handlePlayerAction('auto_explore', undefined, 'system');
+        let steps = 0; while (g.autoPath.length && steps < 30) { g.stepAutoPath(); steps++; }
+        console.log('P11', JSON.stringify({ item: it0.name, dropAt, steps, player: g.player.loc, backInPack: g.player.inventory.items.includes(it0), log: texts().slice(-4) }));
+    });
+    it('P12 full pack walking onto item', () => {
+        const g = createHeadlessGame(3103); room(g);
+        const inv: any = g.player.inventory;
+        const spare = g.items; // empty room
+        const filler = g.player.inventory.items[0]!;
+        let guard = 0;
+        while (inv.addItem(Object.assign(Object.create(Object.getPrototypeOf(filler)), filler, { id: 'f' + guard, inventoryLetter: undefined, category: 99 + guard })) && guard < 40) guard++;
+        const floor = g.player.inventory.items.find(i => i.category !== filler.category) ?? filler;
+        const it = Object.assign(Object.create(Object.getPrototypeOf(filler)), filler, { id: 'floor-x', loc: { x: 5, y: 5 }, category: 555 });
+        spare.push(it);
+        g.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        console.log('P12', JSON.stringify({ packSize: g.player.inventory.items.length, onFloor: g.items.includes(it), log: texts() }));
+    });
+});
