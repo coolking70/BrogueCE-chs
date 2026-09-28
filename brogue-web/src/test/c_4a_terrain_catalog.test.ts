@@ -840,6 +840,9 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
                                           // 结构性不可达（web 无 wired 载体）；本轮九条 wired
                                           // 地形入列后真实可达，属本扫描器头注预告的
                                           // **扩清单时刻**（B-3 / ItemSpawnHeatMap 同款先例）。
+        'engine/UI/MonsterSidebar.ts',    // X3-U7：CE IO.c:3722-3900 refreshSideBar 的直译——
+                                          // TM_LIST_IN_SIDEBAR 决定地形是否列入侧栏；TM_ALLOWS_SUBMERGING
+                                          // 用于排除潜水不可见的怪物行。只读 mechFlags，属合法读者（扩清单时刻）。
         'engine/Movement/AutoTravelVisibility.ts', // X3-U4：CE Movement.c:2605-2616 的直译——
                                           // 自动行进中首次直视到 TM_INTERRUPT_EXPLORATION_WHEN_SEEN
                                           // 地形（楼梯/传送门/锁门/锁笼）即提示并置 disturbed。
