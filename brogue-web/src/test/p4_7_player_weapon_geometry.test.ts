@@ -104,11 +104,11 @@ function spawnAlly(game: Game, id: string, x: number, y: number, patch: Partial<
     return m;
 }
 
-/** 数一段日志里"敌人命中玩家"的消息条数（combat.monster_hits_you）。
+/** 数一段日志里"敌人命中玩家"的消息条数（CE 分级动词，不假定恒为 hits）。
  *  用消息计数而不是玩家 HP 算术：maxHp=500 时回血速率 500/300 ≈ 1.67/回合，
  *  1 点反击伤害会被回血立即抹平，HP 断言失真（实测踩过）。 */
 function countHitsYou(baseline: number): number {
-    return logger.messages.slice(baseline).filter(m => m.text.includes('hits you')).length;
+    return logger.messages.slice(baseline).filter(m => m.foldable && m.color === '#ff6666' && m.text.endsWith(' you') && !m.text.includes('misses')).length;
 }
 
 function move(game: Game, dx: number, dy: number): void {
@@ -193,8 +193,8 @@ describe('P4-7 玩家矛（ITEM_ATTACKS_PENETRATE）', () => {
         expect(near.hp).toBeLessThanOrEqual(0);        // 两个目标都挨打
         expect(far.hp).toBeLessThanOrEqual(0);
         const msgs = logger.messages.slice(baseline);
-        const farIdx = msgs.findIndex(m => m.text.includes(`hit the ${far.name}`));
-        const nearIdx = msgs.findIndex(m => m.text.includes(`hit the ${near.name}`));
+        const farIdx = msgs.findIndex(m => m.text.includes(`defeated the ${far.name}`));
+        const nearIdx = msgs.findIndex(m => m.text.includes(`defeated the ${near.name}`));
         expect(farIdx).toBeGreaterThanOrEqual(0);
         expect(nearIdx).toBeGreaterThanOrEqual(0);
         expect(farIdx).toBeLessThan(nearIdx);          // 关键断言：远端消息在前

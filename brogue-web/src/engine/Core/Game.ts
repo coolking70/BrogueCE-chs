@@ -41,7 +41,9 @@ import blueprintData from '../../data/blueprints.json';
 import { getMachineObservationHook, setMachineObservationSeed } from '../Generator/MachineObservation';
 import { Player, STOMACH_SIZE, type HungerState } from '../../entities/Player';
 import { Monster, monstersAreTeammates, monstersAreEnemies, avoidedFlagsForCaster } from '../../entities/Monster';
-import { CombatSystem } from '../Combat/Combat';
+import { CombatSystem, type AttackResult } from '../Combat/Combat';
+import { formatCombatText, type CombatantText } from '../Combat/CombatText';
+import { displaySettings } from '../Settings';
 import { staffPoison } from '../Combat/Poison';
 import { staffProtection } from '../Combat/Shielding';
 import { staffEntrancementDuration, ENTRANCEMENT_DIRECTIONS, entrancementPassable, entrancementDiagonalBlocked } from '../Movement/Entrancement';
@@ -364,7 +366,7 @@ export class Game {
 
     private needsRender: boolean = true;
     public isInventoryOpen: boolean = false;
-    public inventoryAction: 'equip' | 'unequip' | 'drop' | 'call' | null = null;
+    public inventoryAction: 'equip' | 'unequip' | 'drop' | 'call' | 'relabel' | null = null;
     public referenceScreen: 'discoveries' | 'help' | null = null;
 
     /**
@@ -2587,6 +2589,8 @@ export class Game {
                             : i18next.t('vision.sense_monster', { monster: name, defaultValue: 'You sense a {{monster}}.' }), '#ffccaa');
                     }
                 }
+                if (canDirectlySeeMonster(this.player, this.grid, monster)
+                    && !this.grid.getCell(monster.x, monster.y)?.isClairvoyantVisible) this.hintRunicEquipment(monster);
                 // Retain captive sightings for this automatic command.
                 if (monster.isCaged) this.everSeenMonsters.add(monster);
             }
@@ -2594,6 +2598,47 @@ export class Game {
         this.pendingDiscoveryMessages = [];
         this.visibleMonsters = current.monsters;
         this.visibleItems = current.items;
+    }
+
+    /** CE Time.c:2805-2825. Hint each equipped item once; never identify the rune. */
+    private hintRunicEquipment(monster: Monster): void {
+        for (const item of [this.player.equippedWeapon, this.player.equippedArmor]) {
+            const weapon = item === this.player.equippedWeapon;
+            if (!item || item.runicType !== (weapon ? 'slaying' : 'immunity')
+                || item.runicKnown || item.flags?.includes('ITEM_RUNIC_HINTED')
+                || !monsterIsInClass(monster.typeId, item.vorpalEnemy)) continue;
+            (item.flags ??= []).push('ITEM_RUNIC_HINTED');
+            logger.log(weapon
+                ? i18next.t('runic.hint.weapon', { name: item.name, defaultValue: 'The runes on your {{name}} gleam balefully.' })
+                : i18next.t('runic.hint.armor', { name: item.name, defaultValue: 'The runes on your {{name}} glow protectively.' }),
+                '#ffff80', { acknowledge: true });
+        }
+    }
+
+    /** Shared physical combat presentation for melee, geometry and ranged attacks. */
+    public reportAttack(attacker: Creature, defender: Creature, result: AttackResult): void {
+        if (result.kamikazeSelfDestruct || result.seized) return;
+        const describe = (creature: Creature): CombatantText => {
+            if (creature === this.player) return { player: true, name: '', visible: true,
+                typeId: 'player', unarmed: !this.player.equippedWeapon };
+            const monster = creature as Monster;
+            // canSeeMonster excludes corpses; combat names use the sight at impact.
+            const visible = !monsterHidden(this.grid, monster, this.player)
+                && (!!this.grid.getCell(monster.x, monster.y)?.isVisible || monsterRevealed(this.player, monster));
+            return { player: false, name: monster.name, visible, ally: monster.isAlly,
+                typeId: monster.typeId, inanimate: monster.hasBehavior('MONST_INANIMATE'),
+                gender: monster.hasBehavior('MONST_MALE') ? 'male' : monster.hasBehavior('MONST_FEMALE') ? 'female' : undefined };
+        };
+        const a = describe(attacker), d = describe(defender);
+        const lethal = result.hit && defender.hp <= 0;
+        const text = formatCombatText({ attacker: a, defender: d, hit: result.hit, damage: result.damage,
+            percentile: result.text?.percentile ?? 0, circumstance: result.text?.circumstance,
+            lethal, hallucinating: this.player.hasStatus('hallucinating') }, {
+            showDamage: displaySettings.showDamageNumbers,
+            translate: (key, english) => i18next.t('combat.ce.' + key, { defaultValue: english, skipInterpolation: true }),
+        });
+        if (!a.visible && !d.visible) logger.hearCombat(text, lethal);
+        else logger.combat(text, defender === this.player ? '#ff6666' : '#ffcc00', lethal);
     }
 
     public update() {
@@ -2710,6 +2755,8 @@ export class Game {
                 case 'identify': this.chooseIdentifyTarget(item!); break;
                 case 'enchant': this.chooseEnchantTarget(item!); break;
                 case 'call': this.callItem(item!, rest.join('|')); break;
+                case 'inscribe': this.inscribeItem(item!, rest.join('|')); break;
+                case 'relabel': this.relabelItem(item!, rest.join('|')); break;
                 case 'confirm': this.confirmPendingUse(); break;
                 case 'cancel': this.cancelPendingUse(); break;
                 default: throw new Error(`Unknown item command ${operation}`);
@@ -3021,7 +3068,7 @@ export class Game {
 
         if (action === 'inventory_action') {
             if (this.pendingIdentify || this.pendingUseConfirm) return;
-            if (data === 'equip' || data === 'unequip' || data === 'drop' || data === 'call') {
+            if (data === 'equip' || data === 'unequip' || data === 'drop' || data === 'call' || data === 'relabel') {
                 this.inventoryAction = data;
                 this.isInventoryOpen = true;
             }
@@ -5282,7 +5329,7 @@ export class Game {
                     if (isPlayer) {
                         this.spawnBlood(target.loc.x, target.loc.y);
                     }
-                    logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${result.damage} damage!`, '#ff8866');
+                    this.reportAttack(caster, target, result);
                     if (caster.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
                         this.applyMonsterOnHitStatus(target, caster.name, caster.onHitStatus!, caster.onHitDuration);
                     }
@@ -5301,7 +5348,7 @@ export class Game {
                         this.trySplitMonster(target as Monster, caster);
                     }
                 } else {
-                    logCast('bolt.monster_cast_miss', `${casterLabel} tries to hit ${targetName} with ${ceBoltName} but misses.`, '#aaaaaa');
+                    this.reportAttack(caster, target, result);
                 }
                 break;
             }
@@ -5424,14 +5471,56 @@ export class Game {
         return true;
     }
 
-    /**
-     * B-1b：call——给未识别的风味种类起绰号（CE call()，Items.c:1347-1437）。
-     * 只对五张风味种类表（药水/卷轴/法杖/魔杖/戒指）开放且种类未识别；
-     * 已识别 → "you already know what that is."（Items.c:1384/1440）。
-     * CE 对武器/护甲/护符/食物等的 call 转题字（inscribeItem，per-item
-     * inscription，Items.c:1373-1381）——web 尚无题字功能，Call 入口不对这些
-     * 类别开放（登记报告）。空/纯空白文本 = 清除绰号（Items.c:1429-1432）。
-     */
+    /** CE call() dispatch. Unidentified rings/wands/staves first offer a choice
+     * between the whole kind and this item. The UI asks before accepting text;
+     * the final recorded operation (call/inscribe) encodes that explicit choice. */
+    public itemCallMode(item: Item): 'kind' | 'inscribe' | 'choice' | null {
+        const kindId = item.consumableId ?? item.identityId;
+        const kindKnown = !!kindId && ItemLoader.identifiedItems.has(kindId);
+        if (item.category === ItemCategory.POTION || item.category === ItemCategory.SCROLL) {
+            return kindId && !kindKnown ? 'kind' : null;
+        }
+        if ([ItemCategory.WEAPON, ItemCategory.ARMOR, ItemCategory.CHARM].includes(item.category)) return 'inscribe';
+        if ([ItemCategory.RING, ItemCategory.WAND, ItemCategory.STAFF].includes(item.category)) {
+            return item.isIdentified || kindKnown ? 'inscribe' : 'choice';
+        }
+        return null;
+    }
+
+    public inscribeItem(item: Item, text: string): boolean {
+        if (!this.player.inventory.items.includes(item) || !['inscribe', 'choice'].includes(this.itemCallMode(item) ?? '')) return false;
+        // CE getInputTextString: at most 29 characters, no control characters.
+        item.inscription = Array.from(text.replace(/[\u0000-\u001f\u007f]/g, '')).slice(0, 29).join('');
+        logger.log(i18next.t('item.inscribed', { name: item.displayName,
+            interpolation: { escapeValue: false }, defaultValue: "It's {{name}}." }), '#ffff80');
+        this.needsRender = true;
+        return true;
+    }
+
+    /** CE Items.c:7176-7233: occupied letters swap, with zero turn/RNG cost. */
+    public relabelItem(item: Item, label: string): boolean {
+        if (!this.player.inventory.items.includes(item) || !item.inventoryLetter) return false;
+        const letter = label.toLowerCase();
+        if (!/^[a-z]$/.test(letter)) return false;
+        if (letter === item.inventoryLetter) {
+            logger.log(i18next.t('item.label_unchanged', { name: item.displayName, letter,
+                interpolation: { escapeValue: false }, defaultValue: '{{name}} is already labeled ({{letter}}).' }), '#ffff80');
+            return true;
+        }
+        const oldItem = this.player.inventory.items.find(other => other.inventoryLetter === letter);
+        if (oldItem) {
+            oldItem.inventoryLetter = item.inventoryLetter;
+            logger.log(i18next.t('item.relabeled', { name: oldItem.displayName, letter: oldItem.inventoryLetter,
+                interpolation: { escapeValue: false }, defaultValue: 'Relabeled {{name}} as ({{letter}}).' }), '#ffff80');
+        }
+        item.inventoryLetter = letter;
+        logger.log(i18next.t('item.relabeled', { name: item.displayName, letter,
+            interpolation: { escapeValue: false }, defaultValue: 'Relabeled {{name}} as ({{letter}}).' }), '#ffff80');
+        this.needsRender = true;
+        return true;
+    }
+
+    /** Name an unidentified kind; inscribeItem names only the selected instance. */
     public callItem(item: Item, title: string): boolean {
         const kindId = ((item as any).consumableId ?? (item as any).identityId) as string | undefined;
         const hasKindTable = item.category === ItemCategory.POTION || item.category === ItemCategory.SCROLL
@@ -7122,16 +7211,7 @@ export class Game {
         }
         if (res.hit) {
             if (res.damage === 0) this.disturbed = true; // CE Combat.c:1295
-            const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
-            if (res.backstab) {
-                logger.combat(i18next.t('combat.backstab', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${this.monsterDisplayName(target)} for ${res.damage} damage!` }), '#ff4444');
-            } else if (lungeAttack) {
-                // B-1 登记项由 P1-37 补齐：CE 对突进命中追加"（猛烈突刺）"
-                // 措辞（Combat.c:1298-1299），中文 UI 走专用文案。
-                logger.combat(i18next.t('combat.lunge_hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
-            } else {
-                logger.combat(i18next.t('combat.hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
-            }
+            this.reportAttack(this.player, target, res);
             this.spawnFloatingText(`-${res.damage}`, target.loc.x, target.loc.y, 0xff5555);
             // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
             if (res.triggeredRunic) {
@@ -7141,7 +7221,7 @@ export class Game {
             // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
             this.trySplitMonster(target, this.player);
         } else {
-            logger.combat(i18next.t('combat.miss', { monster: this.monsterDisplayName(target), defaultValue: `You missed the ${this.monsterDisplayName(target)}.` }), '#888888');
+            this.reportAttack(this.player, target, res);
             this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), target.loc.x, target.loc.y, 0xaaaaaa);
         }
 
@@ -7150,9 +7230,8 @@ export class Game {
         //   ① !(flags & ITEM_PROTECTED)——isProtected 置位则完全跳过，无消息
         //     （与 I-1 护甲侧 Combat.c:425-431 同口径）；
         //   ② 非"针对该防守方类别的 W_SLAYING 符文武器"（monsterIsInClass）——
-        //     web 无成员名册载体（CE 按monsterClassCatalog[].memberList 对
-        //     monsterID 逐一比对，Monsters.c:293-301；monsters.json 无 MK_/名册
-        //     数据），按 Game.ts:5974 A_IMMUNITY 类别门先例不落地，登记 ui-2 报告；
+        //     复用 Combat/MonsterClass.ts 的 CE 成员表（Monsters.c:293-301）；
+        //     X3-U8c 对照 Globals.c 的 15 类全量校验，也用于首见符文提示；
         //   ③ enchant1 >= -10（CE 字面含等号：-10 仍会再降到 -11，-11 才停）。
         // CE 降级后调 equipItem 刷新（:1443）——web 装备属性读取时即时推导，无需。
         // 位置对应 CE attack() 命中支尾部（splitMonster 之后、返回之前），故
@@ -7176,7 +7255,6 @@ export class Game {
 
         // Check if monster died
         if (target.hp <= 0) {
-            logger.log(i18next.t('combat.defeat', { monster: this.monsterDisplayName(target), defaultValue: `You defeated the ${this.monsterDisplayName(target)}!` }), '#ffaa00');
             this.stats.kills++;
 
             // B-1a：CE Combat.c:1427-1430——玩家近战击杀非无生命怪
@@ -8462,6 +8540,7 @@ export class Game {
         this.refreshVisibleEntities();
         this.updateFlavorText(); // CE Time.c:2876, including headless/animated turns.
         this.checkShoreWarning();
+        logger.endCombatTurn();
     }
 
     /** CE Time.c:2878-2911. Recomputed from current layers; no RNG or path changes. */

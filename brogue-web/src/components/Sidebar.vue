@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import i18next from 'i18next';
 import { activeGame } from '../engine/Core/Game';
-import { logger } from '../engine/Systems/Logger';
+import { foldCombatMessages, logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
 import { creatureStatusRows, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
@@ -80,7 +80,7 @@ onMounted(() => {
         activeGame['calculateStealthRange']());
     }
     // Clone array for Vue reactivity
-    logs.value = [...logger.messages].reverse(); 
+    logs.value = foldCombatMessages(logger.messages).reverse();
   }, 100);
 });
 

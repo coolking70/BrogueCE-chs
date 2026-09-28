@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9b81/brogue/brogue-web
+
+ ✓ src/test/w_4_bolt_reflection.test.ts (29 tests) 21ms
+stdout | src/test/x3_u8c_combat_items.test.ts > X3-U8c combat archive and real attack paths > startFighting suppresses nonlethal hits/misses, still reports lethal hits; distant sound once per turn
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u8c_combat_items.test.ts (14 tests) 3586ms
+     ✓ requires direct sight (not telepathy, clairvoyance, invisibility, dormancy or submerged location)  1133ms
+     ✓ new-game inscription and relabel recordings replay and seek with zero OOS  1121ms
+stdout | src/test/scroll_effects.test.ts > teleport_random 卷轴（Items.c:7803） > 读卷轴后玩家坐标改变，且新位置合法可站立、卷轴被消耗
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/scroll_effects.test.ts (20 tests) 8589ms
+     ✓ 读卷轴后玩家坐标改变，且新位置合法可站立、卷轴被消耗  453ms
+     ✓ protect_weapon：装备 isProtected=true；原诅咒则解除并额外打 malevolent 消息  387ms
+     ✓ protect_armor：装备 isProtected=true，未诅咒时无 malevolent 消息  363ms
+     ✓ toSnapshot → loadSnapshot 往返后装备 isProtected 保持 true  640ms
+     ✓ 读卷轴后玩家周围新增 1-3 只怪物，均为 HUNTING  389ms
+     ✓ 视野内怪物获得 discordant（30 回合）；无生命怪豁免  367ms
+     ✓ AI 侧生效：discordant 怪物把相邻的其他怪物选为攻击目标  358ms
+     ✓ AI 目标选择覆盖全部 8 个相邻方向（回归：右下 [1,1] 曾缺失）  2404ms
+     ✓ 视野内+距离内的怪被清魔法；diesIfNegated 的当场死；距离外的完全不受影响  340ms
+
+ Test Files  3 passed (3)
+      Tests  63 passed (63)
+   Start at  04:36:48
+   Duration  13.78s (transform 462ms, setup 0ms, import 1.34s, tests 12.20s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9b81/brogue/brogue-web/ai_docs/reports/x3-u8c-evidence/full-failure-recheck.json

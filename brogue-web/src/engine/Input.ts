@@ -110,6 +110,9 @@ export class InputManager {
                 case 'c':
                     this.onActionCallback('inventory_action', 'call');
                     break;
+                case 'R':
+                    this.onActionCallback('inventory_action', 'relabel');
+                    break;
                 case 'g':
                     this.onActionCallback('pickup');
                     break;

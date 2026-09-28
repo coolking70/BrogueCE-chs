@@ -51,7 +51,7 @@ describe('X3-U4 disturbed and CE startFighting', () => {
         log.log('same'); log.log('same'); expect(disturb).toHaveBeenCalledTimes(2);
         log.setState(log.getState()); expect(disturb).toHaveBeenCalledTimes(2);
         log.blockCombatText = true; log.combat('hit'); expect(disturb).toHaveBeenCalledTimes(2);
-        log.log('special effect'); log.combat('death', '#fff', true); expect(disturb).toHaveBeenCalledTimes(4);
+        log.log('special effect'); log.combat('death', '#fff', true); log.flushCombat(); expect(disturb).toHaveBeenCalledTimes(4);
     });
     it.each([100, 0])('already seen enemy attack (accuracy %s, including miss) interrupts the current travel step', accuracy => {
         const g = scene(), m = mob(g, 11, 11); m.accuracy = accuracy;
@@ -65,7 +65,7 @@ describe('X3-U4 disturbed and CE startFighting', () => {
         const g = scene(), m = mob(g); g.player.hp = g.player.maxHp = 16;
         g.executeCommand('auto_explore'); expect(g.stats.turns).toBe(1); expect(g.autoPath.length).toBe(1);
         walk(g); expect(g.stats.turns).toBe(3); expect(g.player.hp).toBe(1); expect(m.hp).toBeLessThan(500);
-        expect(logger.messages.some(m => /hits you|misses you|You hit|You missed/.test(m.text))).toBe(false);
+        expect(logger.messages.some(m => m.foldable)).toBe(false);
         expect(g.autoPath).toEqual([]); expect(logger.blockCombatText).toBe(false);
         g.stepAutoPath(); expect(g.stats.turns).toBe(3);
     });

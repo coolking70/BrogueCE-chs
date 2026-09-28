@@ -24,6 +24,7 @@ const pendingIdentify = ref(false);
 const pendingEnchantment = ref(false);
 const callTarget = ref<Item | null>(null);
 const callText = ref('');
+const callMode = ref<'kind' | 'inscribe' | 'choice' | 'relabel'>('kind');
 // B-1c：恶意品使用确认的待决态（引擎 Game.pendingUseConfirm 的镜像）
 const pendingUseConfirm = ref<Item | null>(null);
 const pendingUseConfirmText = ref('');
@@ -115,6 +116,7 @@ const actionPrompt = computed(() => {
         case 'unequip': return t('inventory.prompt.unequip');
         case 'drop': return t('inventory.prompt.drop');
         case 'call': return t('inventory.prompt.call');
+        case 'relabel': return t('inventory.prompt.relabel', { defaultValue: 'Relabel what?' });
         default: return '';
     }
 });
@@ -199,20 +201,8 @@ const isFood = (item: Item) => item.category === ItemCategory.FOOD;
 const isArcanaUsable = (item: Item) =>
     item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF || item.category === ItemCategory.CHARM;
 
-// B-1b：call 只对五张风味种类表开放（CE call() Items.c:1423-1425 的
-// tableForItemCategory 判定）；已识别种类与 CE 转题字的类别（武器/护甲/
-// 护符等）不出现 Call 按钮（web 无题字功能，登记报告）。
-const FLAVORED_CATEGORIES = new Set([
-    ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.WAND, ItemCategory.STAFF, ItemCategory.RING,
-]);
-const kindIdOf = (item: Item): string | undefined =>
-    (item as unknown as { consumableId?: string }).consumableId
-    ?? (item as unknown as { identityId?: string }).identityId;
-const isCallable = (item: Item) => {
-    const kindId = kindIdOf(item);
-    return !!kindId && FLAVORED_CATEGORIES.has(item.category)
-        && !ItemLoader.identifiedItems.has(kindId);
-};
+const kindIdOf = (item: Item): string | undefined => item.consumableId ?? item.identityId;
+const isCallable = (item: Item) => activeGame.itemCallMode(toRaw(item)) !== null;
 
 // ── B-1c：极性 sigil（CE Items.c:3611-3625 的背包列渲染）──────────────
 // CE：ITEM_MAGIC_DETECTED 且非护符时，在物品字符前插一个符号——
@@ -275,6 +265,7 @@ const selectItemOrIdentify = (item: Item) => {
         case 'unequip': performUnequip(item); return;
         case 'drop': performDrop(item); return;
         case 'call': openCallInput(item); return;
+        case 'relabel': openRelabelInput(item); return;
     }
     selectItem(item);
 };
@@ -352,7 +343,19 @@ const performIdentifySelect = (item: Item) => {
 
 const openCallInput = (item: Item) => {
     callTarget.value = item;
-    callText.value = ItemLoader.callTitles.get(kindIdOf(item) ?? '') ?? '';
+    callMode.value = activeGame.itemCallMode(toRaw(item)) ?? 'kind';
+    callText.value = callMode.value === 'inscribe' ? item.inscription ?? '' : ItemLoader.callTitles.get(kindIdOf(item) ?? '') ?? '';
+};
+
+const chooseCallScope = (inscribe: boolean) => {
+    callMode.value = inscribe ? 'inscribe' : 'kind';
+    callText.value = inscribe ? callTarget.value?.inscription ?? ''
+        : ItemLoader.callTitles.get(kindIdOf(callTarget.value!) ?? '') ?? '';
+};
+const openRelabelInput = (item: Item) => {
+    callTarget.value = item;
+    callMode.value = 'relabel';
+    callText.value = '';
 };
 
 const cancelCall = () => {
@@ -361,8 +364,8 @@ const cancelCall = () => {
 };
 
 const confirmCall = () => {
-    if (!callTarget.value) return;
-    activeGame.executeItemCommand('call', toRaw(callTarget.value), callText.value);
+    if (!callTarget.value || callMode.value === 'choice') return;
+    activeGame.executeItemCommand(callMode.value === 'kind' ? 'call' : callMode.value, toRaw(callTarget.value), callText.value);
     cancelCall();
     updateInventoryState();
 };
@@ -422,10 +425,13 @@ const confirmCall = () => {
                      <button v-if="isFood(entry.item)" @click="performEat(entry.item)" class="action-btn">{{ t('Eat') || 'Eat' }}</button>
                      <button v-if="isArcanaUsable(entry.item)" @click="performUse(entry.item)" class="action-btn">{{ t('Use') || 'Use' }}</button>
 
-                     <button v-if="isCallable(entry.item)" @click="openCallInput(entry.item)" class="action-btn">{{ t('Call') || 'Call' }}</button>
+                     <button v-if="isCallable(entry.item)" @click="openCallInput(entry.item)" class="action-btn">{{ t('item.call_or_inscribe', { defaultValue: 'Call / inscribe' }) }}</button>
 
                      <button @click="performThrow(entry.item)" class="action-btn">{{ t('Throw') || 'Throw' }}</button>
                      <button @click="performDrop(entry.item)" class="action-btn danger">{{ t('Drop') || 'Drop' }}</button>
+                  </div>
+                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify && !pendingEnchantment && !ringReplacementTarget" class="item-actions">
+                    <button @click="openRelabelInput(entry.item)" class="action-btn">{{ t('item.relabel', { defaultValue: 'Relabel' }) }}</button>
                   </div>
                   <!-- B-1c：恶意品使用确认（CE confirm()，Items.c:8054-8060） -->
                   <div v-if="pendingUseConfirm?.id === entry.item.id" class="item-actions confirm-row">
@@ -435,10 +441,17 @@ const confirmCall = () => {
                   </div>
                   <!-- B-1b：call 绰号输入（CE getInputTextString，Items.c:1423） -->
                   <div v-if="callTarget?.id === entry.item.id && !pendingEnchantment" class="item-actions call-input-row">
-                    <span class="call-label">{{ t('Call them:') || 'Call them:' }}</span>
-                    <input v-model="callText" class="call-input" maxlength="29"
-                           @keyup.enter="confirmCall" :placeholder="callPlaceholder" />
-                    <button @click="confirmCall" class="action-btn">{{ t('Name it') || 'Name it' }}</button>
+                    <template v-if="callMode === 'choice'">
+                      <span class="confirm-label">{{ t('item.inscribe_confirm', { defaultValue: 'Inscribe this particular item instead of all similar items?' }) }}</span>
+                      <button @click="chooseCallScope(true)" class="action-btn">{{ t('Yes') }}</button>
+                      <button @click="chooseCallScope(false)" class="action-btn">{{ t('No') }}</button>
+                    </template>
+                    <template v-else>
+                      <span class="call-label">{{ callMode === 'relabel' ? t('item.new_letter', { defaultValue: 'New letter? (a-z)' }) : callMode === 'inscribe' ? t('item.inscribe_prompt', { defaultValue: 'Inscribe:' }) : t('Call them:') }}</span>
+                      <input v-model="callText" class="call-input" :maxlength="callMode === 'relabel' ? 1 : 29"
+                             @keyup.enter="confirmCall" @keyup.esc.stop="cancelCall" :placeholder="callMode === 'relabel' ? 'a–z' : callPlaceholder" />
+                      <button @click="confirmCall" class="action-btn">{{ t('Name it') || 'Name it' }}</button>
+                    </template>
                     <button @click="cancelCall" class="action-btn danger">{{ t('Cancel') || 'Cancel' }}</button>
                   </div>
                 </li>
@@ -459,6 +472,11 @@ const confirmCall = () => {
   width: 1em;
   text-align: center;
   font-weight: bold;
+}
+
+.call-input-row .action-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .confirm-row {

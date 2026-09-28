@@ -58,6 +58,8 @@ export class Item implements Entity {
     public loc: Pos;
 
     // Identity and optional presentation payloads used by ItemLoader/inspectors.
+    /** CE per-instance inscription, independent of kind call titles. */
+    public inscription?: string;
     public identityId?: string;
     public consumableId?: string;
     public description?: string;
@@ -183,6 +185,11 @@ export class Item implements Entity {
     get isIdentified(): boolean { return this.identified !== false; }
 
     get displayName(): string {
+        const name = this.uninscribedName;
+        return this.inscription ? `${name} "${this.inscription}"` : name;
+    }
+
+    get uninscribedName(): string {
         // Here we hook into the static registry if the item is a consumables
         switch (this.category) {
             case ItemCategory.GEM:
@@ -226,7 +233,7 @@ export class Item implements Entity {
                     if (this.runicKnown) {
                           const runicName = i18next.t('runic.name.' + this.runicType, { defaultValue: '未知符文' });
                           outName += ` {${runicName}}`;
-                    } else if (this.isIdentified) {
+                    } else if (this.isIdentified || this.flags?.includes('ITEM_RUNIC_HINTED')) {
                         // 注意：t() 不能写进模板字符串的 ${} 里——i18n 门禁的扫描器
                         // 会整体跳过模板字面量（p1_30_i18n_gate），调用须在语句层。
                         const unknownRunic = i18next.t('item.unknown_runic', { defaultValue: '(unknown runic)' });

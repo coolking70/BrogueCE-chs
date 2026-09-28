@@ -20,7 +20,7 @@ const commands = computed(() => [
   ['Shift / Ctrl + ↔ ↕', t('reference.cmd.run')],
   ['i / I', t('reference.cmd.inventory')], ['a', t('reference.cmd.apply')],
   ['t', t('reference.cmd.throw')], ['g', t('reference.cmd.pickup')],
-  ['e / r / d / c', t('reference.cmd.inventory_action')],
+  ['e / r / d / c / R', t('reference.cmd.inventory_action')],
   ['s', t('reference.cmd.search')], ['Ctrl-S', t('reference.cmd.search_long')],
   ['z / . / 。 / Num 5', t('reference.cmd.rest')], ['Z', t('reference.cmd.auto_rest')],
   ['< / ,', t('reference.cmd.ascend')], ['>', t('reference.cmd.descend')],

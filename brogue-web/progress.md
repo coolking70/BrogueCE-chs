@@ -1657,3 +1657,17 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 - X3-U8b 最终完成：修正后类型/构建/drift 均 exit 0；24 文件复验 589 passed / 2 既有 skipped / 0 failed，新增守卫 32/32。完整首轮 exit 1 如实保留；合并去重覆盖 83 文件，1842 passed / 0 未解决 failed / 4 既有 skipped / 4 既有 todo，不把合并结果称为单次完整运行通过。
 - 两轮各 528 输入在运行期间零变化，收口仅 Game 命令/内部刷新区别及新守卫两文件；74 保护文件、UR2/3/4 黄金与生成基线同 HEAD，没有重录，没有修改既有测试。全部单 worker；最终浏览器 9 场景/0错误，整页图已核验，浏览器/Vite关闭。
 - 报告 ai_docs/reports/x3-u8b.report.md 与逐文件 actual-tests.md 收口；CRLF=0、diff检查通过、8张PNG均 ignored、暂存为空；不提交、不推送，无剩余实现或验证 TODO。
+
+## 2026-09-29 X3-U8c
+
+- 按 x3-u8c.prompt.md 落地 CE 战斗文字/符文提示/题字重标，默认关闭伤害数值显示；不提交、不推送。
+- 复用已有 monsterClassCatalog 成员表，新增完整 CE attackVerb 分级表（68 行），纯格式化，不加 RNG。
+- 避开 TimeCoordinator 与 Game 移动/麻痹/幻觉段；门禁单 worker，反查含所有源码扫描守卫。
+- 进行中：功能测试、浏览器、全量门禁与报告。
+- 新增 13 项专项守卫通过；UR2/3/4 原观察器隔离 HEAD/current 完全一致，黄金不改；浏览器功能场景与手机背包通过，0 错误，截图已核验。
+- 首轮预检 TS6133 失败，在全量完成 5 文件 94 项后主动停止以修正再完整重跑；该轮归档为 preflight-interrupted，不宣称全量完成，冻结输入零变化。
+- 9 个旧文案/即时入档断言均已在隔离 HEAD 证明通过（5+4），仅修观察前提；另强化两处负向守卫避免换文案后空转。单 worker 定向复验进行中，随后完整全量门禁。
+- 最终定向整组 11 文件 234/234 通过（含 p1_30、P2-6、B-1/P4-6/P4-7、X3-U2/U4/U6、新专项和 X4b）；干净 Vite 浏览器复验 0 错误，复选框尺寸已修并目视。正式全量门禁已从最终冻结源码启动，仍单 worker。
+- 首轮完整全量完成：234 文件，4433 passed / 5 failed / 8 skipped / 5 todo，7053 秒；类型/构建/drift 通过，1062 输入零变化，UR2/3/4 原黄金全过。失败为 scroll_effects 两项旧立即入档/turns on 前提，以及 W-4 三项翻译未初始化导致格式化器拿到 undefined。
+- scroll_effects 原 HEAD 反事实 2/2 通过后仅修前提；W-4 不改守卫，格式化器补英文回退，并新增专项。三整文件复验 63/63、类型通过。确认其他测试负载退出后，最终全量从头限 2 worker 重跑，drift 仍限 1；不省略完整门禁。
+- X3-U8c 最终完整重跑完成：类型/构建均 exit 0；234/234 文件，4439 passed / 0 failed / 8 skipped / 5 todo；drift 1/1。1062 冻结输入零变化；UR2/3/4 原黄金全过，14 项新专项、全部反查和 80 个读文件守卫通过。报告及逐文件覆盖清单完成；最终无源代码变动，仅补文档。浏览器/Vite关闭，不提交、不推送。

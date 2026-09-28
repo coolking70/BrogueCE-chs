@@ -145,7 +145,7 @@ describe('X3-U2 D06 captive release', () => {
         expect(g.player.loc).toEqual({ x: 10, y: 10 }); expect(timeSystem.currentTick - old.tick).toBe(200);
         expect(m.ticksUntilTurn).toBe(old.monsters[0]!.ticks - 200);
         expect(g.stats.turns).toBe(old.stats.turns + 1); expect(g.exportRecording().events[1]?.decisions).toEqual([true]);
-        expect(logger.messages.some(m => /vomit|backstab|hit the/.test(m.text))).toBe(false);
+        expect(logger.messages.some(m => m.foldable || /vomit/.test(m.text))).toBe(false);
     });
     it.each([false, true])('matching cage key disposable=%s is unchanged on No and promoted/consumed only on Yes', disposable => {
         const g = scene(), m = mob(g, 'captive'); g.grid.setTerrain(11, 10, T.MONSTER_CAGE_CLOSED);

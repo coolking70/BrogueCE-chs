@@ -1,5 +1,5 @@
 /** CE Globals.c:1416-1433 monsterClassCatalog membership (not generation weights). */
-const MEMBERS: Record<string, readonly string[]> = {
+export const MONSTER_CLASS_MEMBERS: Record<string, readonly string[]> = {
     abomination: ['bog_monster', 'underworm', 'kraken', 'tentacle_horror'],
     dar: ['dar_blademaster', 'dar_priestess', 'dar_battlemage'],
     animal: ['rat', 'monkey', 'jackal', 'eel', 'toad', 'vampire_bat', 'centipede', 'spider'],
@@ -18,5 +18,5 @@ const MEMBERS: Record<string, readonly string[]> = {
 };
 
 export function monsterIsInClass(typeId: string, className?: string): boolean {
-    return !!className && (MEMBERS[className]?.includes(typeId) ?? false);
+    return !!className && (MONSTER_CLASS_MEMBERS[className]?.includes(typeId) ?? false);
 }

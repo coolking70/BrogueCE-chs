@@ -121,7 +121,9 @@ function move(game: Game, dx: number, dy: number): void {
 }
 
 function countHitsYou(baseline: number): number {
-    return logger.messages.slice(baseline).filter(m => m.text.includes('hits you')).length;
+    // X3-U8c: CE verbs depend on monster type/damage, not a fixed "hits".
+    return logger.messages.slice(baseline).filter(m => m.foldable && m.color === '#ff6666'
+        && m.text.endsWith(' you') && !m.text.includes('misses')).length;
 }
 
 /**

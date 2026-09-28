@@ -1,0 +1,57 @@
+[
+  {
+    "name": "types",
+    "command": [
+      "npx",
+      "--no-install",
+      "vue-tsc",
+      "-b"
+    ],
+    "exit": 0,
+    "signal": null,
+    "seconds": 4.394
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "signal": null,
+    "seconds": 6.279
+  },
+  {
+    "name": "full",
+    "command": [
+      "npm",
+      "test",
+      "--",
+      "--maxWorkers=2",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u8c-evidence/full.json"
+    ],
+    "exit": 0,
+    "signal": null,
+    "seconds": 3097.911
+  },
+  {
+    "name": "drift",
+    "command": [
+      "npm",
+      "run",
+      "test:drift",
+      "--",
+      "--maxWorkers=1",
+      "--no-file-parallelism",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u8c-evidence/drift.json"
+    ],
+    "exit": 0,
+    "signal": null,
+    "seconds": 25.306
+  }
+]

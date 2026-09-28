@@ -1,0 +1,25 @@
+[
+  {
+    "name": "types",
+    "command": [
+      "npx",
+      "--no-install",
+      "vue-tsc",
+      "-b"
+    ],
+    "exit": 2,
+    "signal": null,
+    "seconds": 6.461
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 2,
+    "signal": null,
+    "seconds": 6.449
+  }
+]

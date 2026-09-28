@@ -541,6 +541,7 @@ onMounted(async () => {
         // ---- Floating texts ----
         let floatIdx = 0;
         for (const ft of game.floatingTexts) {
+            if (!displaySettings.showDamageNumbers && /^-\d+$/.test(ft.text)) continue;
             if (floatIdx >= MAX_FLOAT_SPRITES) break;
             const s = floatSprites[floatIdx]!;
             s.text = normalizeMapGlyph(ft.text);

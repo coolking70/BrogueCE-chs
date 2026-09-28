@@ -1,0 +1,605 @@
+{
+  "discoveredFiles": 235,
+  "fullFiles": 234,
+  "driftFiles": 1,
+  "reverseFiles": 157,
+  "sourceReaderFiles": 80,
+  "requiredFiles": 19,
+  "missing": {
+    "reverse": [],
+    "sourceReaders": [],
+    "required": []
+  },
+  "sourceReaders": {
+    "src/engine/Combat/BoltCatalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/b_1a_identification.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 34,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/blueprint_center.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/c_4a_0_layer_model.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/c_4a_terrain_catalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/c_4b_dungeon_feature.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 31,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/c_4c_promotion.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 21,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/c_7_lighting.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 28,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/fe_1_touch.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p1_30_i18n_gate.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p1_37_machine_flag_i18n.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p1_42_secret_door_search.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p2_0_seeded_rng.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p2_1_tick_architecture.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 4,
+      "todo": 0
+    },
+    "src/test/p2_2_real_speed.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 2,
+      "todo": 0
+    },
+    "src/test/p2_3_objective_time.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 2,
+      "todo": 0
+    },
+    "src/test/p2_4_animation_cadence.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p2_6_display_settings.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 19,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/r_1_appearance.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 45,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/repo_hygiene.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u24_hardcoded_text.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_01_instance_snapshot.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_02b_level_rng.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 22,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_03_whole_run_snapshot.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_05_machine_items.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 19,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_05a_item_ownership.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 51,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_06_monster_damage.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 37,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_09_learning_consumers.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 72,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_13_combat_math.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 40,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_14a_status_gaps.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 49,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_14b_status_gaps.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 97,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_15b2_ring_birth.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 15,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_15d3_runic_generation.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_17b_carriers.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_17c_triggers.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_17d_vents.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 31,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_17e_altars.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 25,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_17f_carriers.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_19a_machine_view.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 32,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_19d_machine_families.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_19e_machine_families.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_19f_autogen.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 28,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_26a_deep_levels.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_r2_trace.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_r3_trace.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u_r4_trace.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/ui_1_rendering.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 32,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/ui_2_protection.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_1a_blueprint_items.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 8,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_2b_4_altars.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 36,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_2b_7_features.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 22,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_2b_9b_environment.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 4,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_2b_9c_effects.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 10,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/v_2b_9d_dungeon_profile.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_10_poison.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 38,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_16_conjuration.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 45,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_17_domination.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 42,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_18_entrancement.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 67,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_19_polymorph.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 53,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_20_cloning.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 57,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_21_empowerment.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 29,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_23_negation.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 42,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_24_wand_catalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_25_staff_catalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 31,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/w_7_arcana_enchantment.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2b_terrain_derivation.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2e_charms.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2f_thrown_math.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2g_native_effects.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2i_i18n_flow.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2k_lifecycle.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2m_lighting.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x2o_horde_clump.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 8,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x3_u5_ui.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x3_u6_messages.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 51,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x3_u8c_combat_items.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x3a_live_iteration.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 23,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x4_r1_world_catalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 10,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x4a_movement_rendering.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 21,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/x4b_flavor_text.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "specifiedGuards": {
+    "src/test/c_4a_terrain_catalog.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/p1_30_i18n_gate.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/repo_hygiene.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0
+    },
+    "src/test/u24_hardcoded_text.test.ts": {
+      "group": "full",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 0
+    }
+  }
+}

@@ -7,7 +7,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import i18next from 'i18next';
 import { activeGame } from '../engine/Core/Game';
-import { logger, type LogMessage } from '../engine/Systems/Logger';
+import { foldCombatMessages, logger, type LogMessage } from '../engine/Systems/Logger';
 import { creatureStatusRows, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 
@@ -39,7 +39,7 @@ export function useGameHud(logCount = 3) {
         depth.value = game.depth;
         nutrition.value = game.player.nutrition;
         statuses.value = creatureStatusRows(game.player, isSidebarVisibleStatus);
-        const all = logger.messages;
+        const all = foldCombatMessages(logger.messages);
         logs.value = all.slice(Math.max(0, all.length - logCount)).reverse();
         hoverText.value = game.hoveredText || game.flavorText;
         replayActive.value = !!game.replayRecording;

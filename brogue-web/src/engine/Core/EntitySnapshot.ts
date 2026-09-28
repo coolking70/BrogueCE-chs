@@ -13,7 +13,7 @@ export const ITEM_FIELDS = [
     'charges', 'identified', 'canBeIdentified', 'maxChargesKnown', 'magicDetected',
     'timesUsed', 'staffRechargeRemaining', 'rechargeTurns', 'rechargeCounter',
     'cooldownTurns', 'cooldownRemaining', 'quiverNumber', 'vorpalEnemy', 'keyLoc',
-    'originDepth', 'identityId', 'consumableId', 'description', 'spawnTurnNumber',
+    'originDepth', 'identityId', 'consumableId', 'description', 'spawnTurnNumber', 'inscription',
 ] as const satisfies readonly (keyof Item)[];
 export const CREATURE_FIELDS = [
     'id', 'loc', 'hp', 'maxHp', 'name', 'color', 'char', 'statusDurations',

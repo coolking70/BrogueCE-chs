@@ -21,6 +21,23 @@ export const MAX_MESSAGE_REPEATS = 100;
 const disturbanceCallbacks = new WeakMap<Logger, () => void>();
 // UI wiring and pending clicks must never enter snapshots or recording hashes.
 const presentations = new WeakMap<Logger, { enabled: () => boolean; pending: LogMessage[] }>();
+const combatBuffers = new WeakMap<Logger, { text: string; color: string }[]>();
+const heardCombat = new WeakSet<Logger>();
+
+/** CE FOLDABLE presentation: preserve the individual archive entries/repeats. */
+export function foldCombatMessages(messages: readonly LogMessage[], width = 100): LogMessage[] {
+    const lines: LogMessage[] = [];
+    for (const message of messages) {
+        const last = lines[lines.length - 1];
+        if (last?.foldable && message.foldable && last.turn === message.turn
+            && last.count === 1 && message.count === 1 && last.color === message.color
+            && !last.acknowledge && !message.acknowledge
+            && last.text.length + message.text.length + 2 <= width) {
+            last.text = last.text.replace(/[.。]$/, '') + '; ' + message.text;
+        } else lines.push({ ...message });
+    }
+    return lines;
+}
 
 export class Logger {
     public messages: LogMessage[] = [];
@@ -51,18 +68,43 @@ export class Logger {
     }
 
     public combat(text: string, color = '#ffffff', lethal = false): void {
-        if (!this.blockCombatText || lethal) this.log(text, color, { foldable: true });
+        if (!text || (this.blockCombatText && !lethal)) return;
+        const buffer = combatBuffers.get(this) ?? [];
+        // CE COLS * 2 buffer; flush before an overflow, retaining message order.
+        if (buffer.reduce((n, m) => n + m.text.length + 1, 0) + text.length > 198) this.flushCombat();
+        const pending = combatBuffers.get(this) ?? [];
+        pending.push({ text, color });
+        combatBuffers.set(this, pending);
+    }
+    public hearCombat(text: string, lethal = false): void {
+        if (!lethal && (this.blockCombatText || heardCombat.has(this))) return;
+        if (!lethal) heardCombat.add(this);
+        this.combat(text, '#ffffff', lethal);
+    }
+    public flushCombat(): void {
+        const pending = combatBuffers.get(this) ?? [];
+        combatBuffers.delete(this); // log() flushes too; clear before recursion.
+        for (const message of pending) this.log(message.text, message.color, { foldable: true });
+    }
+    public endCombatTurn(): void {
+        this.flushCombat();
+        heardCombat.delete(this);
     }
     public getState() {
+        this.flushCombat();
         return { messages: this.messages.map(m => ({ ...m })), nextId: this.nextId, turn: this.turn };
     }
     public setState(state: ReturnType<Logger['getState']>): void {
+        combatBuffers.delete(this);
+        heardCombat.delete(this);
         this.messages = state.messages.map(m => ({ ...m }));
         this.nextId = state.nextId;
         this.turn = state.turn;
         this.clearAcknowledgments();
     }
     public reset(): void {
+        combatBuffers.delete(this);
+        heardCombat.delete(this);
         this.messages = [];
         this.nextId = 0;
         this.turn = 0;
@@ -72,6 +114,7 @@ export class Logger {
 
     public log(text: string, color = '#ffffff', options: MessageOptions = {}): void {
         if (!text) return;
+        this.flushCombat();
         this.disturb();
         let entry: LogMessage | undefined;
         // CE examines at most ARCHIVE_ENTRIES - 1 preceding entries. Stop at

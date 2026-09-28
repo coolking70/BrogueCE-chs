@@ -18,6 +18,7 @@ import { logger } from '../Systems/Logger';
 import i18next from 'i18next';
 import { rng } from '../Random';
 import { monsterIsInClass } from './MonsterClass';
+import type { AttackCircumstance } from './CombatText';
 import {
     netEnchant,
     hitProbability,
@@ -28,6 +29,8 @@ import {
 } from './CombatFormulas';
 
 export interface AttackResult {
+    /** Presentation metadata captured before wake/status changes; no RNG. */
+    text?: { percentile: number; circumstance: AttackCircumstance };
     damage: number;
     weaponName?: string;
     /** True if the attack hit, including a fully shielded hit */
@@ -343,7 +346,14 @@ export class CombatSystem {
                 || rng.randPercent(defender.seized && attacker.seizing ? 100 : hitProbability(attackerAccuracy, defenderDefense)), opts?.itemGenerationDepth ?? 1);
         }
         if (defender instanceof Monster) defender.enrageAfterAttack();
-        return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
+        const adjustment = attacker instanceof Player ? 1 : monsterDamageAdjustmentAmount(attacker.weaknessAmount);
+        const percentile = Math.trunc(Math.max(damage - Math.trunc(min * adjustment), 0) * 100
+            / Math.max(1, Math.trunc((max - min) * adjustment)));
+        const circumstance: AttackCircumstance = damage === 0 ? 'zero' : lungeAttack ? 'lunge'
+            : defenderStuck ? 'paralyzed' : defenderAsleep ? 'asleep' : sneakAttack ? 'sneak'
+            : defender.hasStatus('stuck') || (defender instanceof Monster && defender.isCaged) ? 'helpless' : 'none';
+        return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic,
+            text: { percentile, circumstance } };
     }
 
     /** CE inflictDamage (Combat.c:1847-1871), after shielding and before

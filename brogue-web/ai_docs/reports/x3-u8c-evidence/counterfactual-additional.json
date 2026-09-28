@@ -1,0 +1,21 @@
+{
+  "base": "929509f703670948a149166d03fa2b5444c891ea",
+  "command": [
+    "npx",
+    "--no-install",
+    "vitest",
+    "run",
+    "src/test/b_1_weapon_specials.test.ts",
+    "src/test/p4_6_attack_geometry.test.ts",
+    "src/test/x4b_flavor_text.test.ts",
+    "-t",
+    "QUICKLY 分支漏实现|分支优先级写反|攻击顺序写成正序|retains combat",
+    "--maxWorkers=1",
+    "--no-file-parallelism",
+    "--reporter=json",
+    "--outputFile=/Users/coolking70/.codex/worktrees/9b81/brogue/brogue-web/ai_docs/reports/x3-u8c-evidence/counterfactual-additional-head.json"
+  ],
+  "exit": 0,
+  "source": "isolated git-show HEAD source tree",
+  "files": 429
+}

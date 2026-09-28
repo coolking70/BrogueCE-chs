@@ -1,8 +1,8 @@
 /**
  * src/engine/Settings.ts — 显示设置（P2-6）
  *
- * 只管"显示观感"（地图缩放模式、侧栏宽度模式），不碰任何玩法状态。
- * 两项默认值即 P2-5 的现状行为：等比缩放 + 固定 340px 侧栏。
+ * 只管"显示观感"（地图缩放、侧栏宽度、可选伤害数值），不碰任何玩法状态。
+ * 地图默认等比缩放、侧栏默认固定 340px；伤害数值默认关闭（CE 文案）。
  * 老玩家不打开设置时观感必须完全不变。
  *
  * 持久化沿用项目的版本化键名惯例（brogue-web-save-v1 / brogue-web-replay-v1）。
@@ -17,6 +17,7 @@ export type MapScaleMode = 'uniform' | 'stretch';
 export type SidebarWidthMode = 'fixed' | 'proportional';
 
 export interface DisplaySettings {
+    showDamageNumbers: boolean;
     mapScaleMode: MapScaleMode;
     sidebarWidthMode: SidebarWidthMode;
 }
@@ -42,6 +43,7 @@ export const SIDEBAR_PROPORTION = 0.2;
 export const SIDEBAR_MIN_WIDTH = 272;
 
 export const DEFAULT_DISPLAY_SETTINGS: DisplaySettings = {
+    showDamageNumbers: false,
     mapScaleMode: 'uniform',
     sidebarWidthMode: 'fixed',
 };
@@ -61,6 +63,7 @@ export function loadDisplaySettings(): DisplaySettings {
         if (!raw) return { ...DEFAULT_DISPLAY_SETTINGS };
         const parsed = JSON.parse(raw) as Record<string, unknown>;
         return {
+            showDamageNumbers: typeof parsed.showDamageNumbers === 'boolean' ? parsed.showDamageNumbers : false,
             mapScaleMode: isMapScaleMode(parsed.mapScaleMode)
                 ? parsed.mapScaleMode
                 : DEFAULT_DISPLAY_SETTINGS.mapScaleMode,
@@ -75,7 +78,8 @@ export function loadDisplaySettings(): DisplaySettings {
 
 export function saveDisplaySettings(settings: DisplaySettings): void {
     try {
-        window.localStorage.setItem(DISPLAY_SETTINGS_KEY, JSON.stringify(settings));
+        window.localStorage.setItem(DISPLAY_SETTINGS_KEY, JSON.stringify({ mapScaleMode: settings.mapScaleMode, sidebarWidthMode: settings.sidebarWidthMode,
+            ...(settings.showDamageNumbers ? { showDamageNumbers: true } : {}) }));
     } catch {
         // headless / 隐私模式下无 localStorage：设置仅本次会话有效
     }

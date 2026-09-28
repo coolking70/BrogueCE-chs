@@ -160,6 +160,10 @@ const sidebarWidthModel = computed({
            拉伸铺满 / 按比例 = CE 口径（tiles.c:782-803、侧栏恒占 20%）。 -->
       <div class="display-group">
         <label class="field">
+          <span>{{ t('menu.display.damage_numbers', { defaultValue: 'Show damage numbers' }) }}</span>
+          <input class="damage-toggle" type="checkbox" v-model="displaySettings.showDamageNumbers" />
+        </label>
+        <label class="field">
           <span>{{ t('menu.display.map_scale', { defaultValue: '地图缩放' }) }}</span>
           <select v-model="mapScaleModel">
             <option value="uniform">{{ t('menu.display.map_scale.uniform', { defaultValue: '等比' }) }}</option>
@@ -283,6 +287,15 @@ input {
 .display-group .field {
   flex: 1;
   margin-bottom: 0;
+}
+
+input.damage-toggle {
+  width: 20px;
+  height: 20px;
+  margin: 8px 0;
+  padding: 0;
+  accent-color: #9cbe77;
+  cursor: pointer;
 }
 
 button {

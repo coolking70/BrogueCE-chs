@@ -42,7 +42,7 @@ describe('X3-U6 CE message archive', () => {
     it('CE !FOLDABLE allows latest cross-turn folding; combat FOLDABLE does not', () => {
         const log = new Logger(); log.log('a'); log.turn = 1; log.log('a');
         expect(log.messages).toHaveLength(1); expect(log.messages[0]).toMatchObject({ count: 2, turn: 1 });
-        log.turn = 2; log.combat('a'); expect(log.messages).toHaveLength(2);
+        log.turn = 2; log.combat('a'); log.flushCombat(); expect(log.messages).toHaveLength(2);
         log.turn = 3; log.log('b'); log.log('a'); expect(log.messages).toHaveLength(4);
     });
     it('caps repeats at 100 and history at 1360; skips empty text', () => {

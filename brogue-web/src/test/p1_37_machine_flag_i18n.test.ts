@@ -537,20 +537,24 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         // 抢在突进分支之前——CE 的突进对象本就是清醒怪（移动撞见）。
         const lungeTarget = new Monster(game.player.loc.x + 1, game.player.loc.y, ratData!);
         lungeTarget.state = MonsterState.HUNTING;
+        lungeTarget.hp = lungeTarget.maxHp = 1000; // C08: survivor text, not the CE lethal verb.
         game.monsters.push(lungeTarget);
         let restore = captureLog();
         (game as unknown as { resolvePlayerMeleeAttackOn(m: Monster, lunge?: boolean): boolean })
             .resolvePlayerMeleeAttackOn(lungeTarget, true);
+        logger.flushCombat(); // C08: inspect the archive after the explicit flush boundary.
         restore();
         const lungeMsg = messages.find(m => m.includes('猛烈突刺'));
         expect(lungeMsg, `突进命中应追加"猛烈突刺"措辞（CE Combat.c:1298），实际日志：${messages.join(' | ')}`).toBeDefined();
 
         const plainTarget = new Monster(game.player.loc.x + 1, game.player.loc.y, ratData!);
         plainTarget.state = MonsterState.HUNTING;
+        plainTarget.hp = plainTarget.maxHp = 1000;
         game.monsters.push(plainTarget);
         restore = captureLog();
         (game as unknown as { resolvePlayerMeleeAttackOn(m: Monster, lunge?: boolean): boolean })
             .resolvePlayerMeleeAttackOn(plainTarget, false);
+        logger.flushCombat();
         restore();
         const plainMsg = messages.find(m => m.includes('击中'));
         expect(plainMsg, `普通近战应有普通命中文案，实际日志：${messages.join(' | ')}`).toBeDefined();

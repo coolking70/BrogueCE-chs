@@ -218,11 +218,11 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
 
         attacker.takeTurn(game, 8);
 
-        // 无论命中与否，都会产生 "turns on / misses the <victim>" 的攻击日志；
-        // 若命中则 victim 掉血。二者必居其一，证明目标选择已转向相邻怪物。
-        const texts = logger.messages.map(m => m.text).join('\n');
-        const attacked = texts.includes(victim.name) &&
-            (texts.includes('turns on') || texts.includes('misses the'));
+        // X3-U8c: direct takeTurn callers flush CE combat text; both hits and
+        // misses name the selected victim, with a type/damage-dependent verb.
+        logger.flushCombat();
+        const attacked = logger.messages.some(m => m.foldable
+            && m.text.includes(attacker.name) && m.text.includes(victim.name));
         expect(attacked).toBe(true);
         if (victim.hp < victimHpBefore) {
             expect(victim.hp).toBeLessThan(victimHpBefore);
@@ -244,7 +244,7 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
 
         // 行为断言：每个方向单独构造场景——discordant 怪在中心，
         // 仅该方向相邻格有一只怪，takeTurn 后必须把它选为攻击目标
-        //（命中 "turns on" 或未命中 "misses the" 都算"选为目标"）。
+        //（命中或未命中的战斗消息都必须具名选中的目标）。
         for (const [dx, dy] of dirs) {
             const game = createHeadlessGame(20260914);
             for (let x = 2; x <= 8; x++) {
@@ -267,9 +267,9 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
 
             attacker.takeTurn(game, 8);
 
-            const texts = logger.messages.map(m => m.text).join('\n');
-            const targeted = texts.includes(victim.name) &&
-                (texts.includes('turns on') || texts.includes('misses the'));
+            logger.flushCombat();
+            const targeted = logger.messages.some(m => m.foldable
+                && m.text.includes(attacker.name) && m.text.includes(victim.name));
             if (!targeted) {
                 throw new Error(
                     `discordant 怪未把方向 (${dx},${dy}) 上的相邻怪选为攻击目标`

@@ -134,11 +134,11 @@ describe('P4-6 矛（MA_ATTACKS_PENETRATE）', () => {
 
         expect(far.hp).toBeLessThanOrEqual(0);      // 远处目标被打死
         expect(game.player.hp).toBe(195);            // 近处玩家照样挨打（5 点）
+        logger.flushCombat(); // X3-U8c: direct takeTurn callers flush the CE buffer.
         const msgs = logger.messages.slice(baseline);
-        // 用消息格式而非怪物名匹配（translateName 可能改变大小写）：
-        // 打怪物的消息是 "hits the <name>"，打玩家的是 "hits you"
-        const farIdx = msgs.findIndex(m => m.text.includes('hits the'));
-        const youIdx = msgs.findIndex(m => m.text.includes('hits you'));
+        // CE uses a lethal verb for the far ally and a graded verb for the player.
+        const farIdx = msgs.findIndex(m => m.foldable && m.text.includes('defeated your'));
+        const youIdx = msgs.findIndex(m => m.foldable && m.color === '#ff6666' && m.text.endsWith(' you'));
         expect(farIdx).toBeGreaterThanOrEqual(0);
         expect(youIdx).toBeGreaterThan(farIdx);      // 关键断言：远端消息在前
     });

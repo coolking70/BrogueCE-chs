@@ -1,0 +1,10 @@
+src/test/w_17_domination.test.ts:100: it('always reflection hits the player, who remains unchanged and cannot be dominated',()=>{
+src/test/p4_6_attack_geometry.test.ts:139:        // 打怪物的消息是 "hits the <name>"，打玩家的是 "hits you"
+src/test/p4_6_attack_geometry.test.ts:140:        const farIdx = msgs.findIndex(m => m.text.includes('hits the'));
+src/test/p4_6_attack_geometry.test.ts:141:        const youIdx = msgs.findIndex(m => m.text.includes('hits you'));
+src/test/b_1_weapon_specials.test.ts:124:    return logger.messages.slice(baseline).filter(m => m.text.includes('hits you')).length;
+src/test/w_4_bolt_reflection.test.ts:101:    it('piercing revisits an earlier hit, hits the player and a creature behind the caster; later reflectors remain relevant', () => {
+src/test/x4b_flavor_text.test.ts:100:        expect(log.mock.calls.some(([text]) => /You (hit|missed|backstab)/.test(text))).toBe(true);
+src/test/i18n_scan.ts:9: *  - 静态字面量：t('combat.hit', …) → 精确键，必须存在于资源文件；
+src/test/x3_u4_auto_travel.test.ts:68:        expect(logger.messages.some(m => /hits you|misses you|You hit|You missed/.test(m.text))).toBe(false);
+src/test/x3_u8c_combat_items.test.ts:70:        expect(formatCombatText({ ...event, hallucinating: true }, en)).toBe('the rat hits you');

@@ -97,7 +97,8 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         rat.state = MonsterState.HUNTING; rat.ticksUntilTurn = 100000; rat.hp = rat.maxHp = 100;
         g.monsters.push(rat);
         g.executeCommand('move', { x: 1, y: 0 });
-        expect(log.mock.calls.some(([text]) => /You (hit|missed|backstab)/.test(text))).toBe(true);
+        expect(log.mock.calls.some(([, , options]) => options?.foldable)).toBe(true);
+        expect(logger.messages.some(m => m.foldable)).toBe(true);
         g.monsters = [];
         const item = ItemLoader.spawnPotion('potion_of_strength', 10, 10)!;
         g.items.push(item);
