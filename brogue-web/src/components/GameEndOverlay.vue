@@ -141,8 +141,8 @@ function enchantLabel(ench: number): string {
 }
 
 .end-panel {
-    background: #111;
-    border: 2px solid #444;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
     padding: 32px 40px;
     min-width: 400px;
@@ -157,8 +157,6 @@ function enchantLabel(ench: number): string {
     font-size: 2.5rem;
     margin-top: 0;
     margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 .title-loss {
@@ -166,8 +164,6 @@ function enchantLabel(ench: number): string {
     font-size: 2.5rem;
     margin-top: 0;
     margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
 }
 
 .reason {
@@ -188,7 +184,6 @@ function enchantLabel(ench: number): string {
 .score-label {
     color: #888;
     font-size: 1rem;
-    text-transform: uppercase;
 }
 
 .score-value {
@@ -229,7 +224,6 @@ function enchantLabel(ench: number): string {
 .stat-label {
     color: #888;
     font-size: 0.8rem;
-    text-transform: uppercase;
     margin-bottom: 4px;
 }
 
@@ -247,7 +241,6 @@ function enchantLabel(ench: number): string {
 .inventory-title {
     color: #888;
     font-size: 0.8rem;
-    text-transform: uppercase;
     margin-bottom: 8px;
     text-align: center;
 }
@@ -306,5 +299,27 @@ function enchantLabel(ench: number): string {
 .return-btn:hover {
     background: #444;
     border-color: #777;
+}
+
+/* FE-1：紧凑模式——全屏面板、内部滚动、不再强制 400px 最小宽度 */
+@media (max-width: 1023px), (max-height: 599px) {
+    .game-end-overlay {
+        height: 100dvh;
+        align-items: flex-start;
+    }
+    .end-panel {
+        min-width: 0;
+        width: 100%;
+        max-width: 600px;
+        margin: 0;
+        padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+        border-radius: 0;
+        border-width: 0;
+        min-height: 100dvh;
+        box-sizing: border-box;
+    }
+    .title-win, .title-loss { font-size: 1.8rem; }
+    .stats-grid { gap: 10px; padding: 12px; }
+    .return-btn { width: 100%; min-height: 48px; }
 }
 </style>

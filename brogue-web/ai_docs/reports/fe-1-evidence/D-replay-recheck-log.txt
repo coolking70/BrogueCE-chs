@@ -1,0 +1,7 @@
+[D] events per recording: 460/460/460/460; identical to desktop: true/true/true/true
+[D] non-step commands (phone): toggle_inventory:null item:command:"quaff|f|" throw_item:null item:command:"throw|c|" mouse_travel:{"x":72,"y":12} mouse_travel:{"x":9,"y":20}
+[replay D-desktop-1440x900 on desktop] cursor 460/460 error=null player=9,21 d1 lastEvent=9,21 d1 OOS-free=true
+[replay D-tablet-768x1024 on desktop] cursor 460/460 error=null player=9,21 d1 lastEvent=9,21 d1 OOS-free=true
+[replay D-phone-390x844 on desktop] cursor 460/460 error=null player=9,21 d1 lastEvent=9,21 d1 OOS-free=true
+[replay D-phone-land-844x390 on desktop] cursor 460/460 error=null player=9,21 d1 lastEvent=9,21 d1 OOS-free=true
+[replay D-phone-390x844-TAMPERED-expect-OOS on desktop] cursor 199/460 error=回放在第 200 条命令处不同步：局面状态不一致 player=53,19 d1 lastEvent=9,21 d1 OOS-free=false

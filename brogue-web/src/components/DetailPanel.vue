@@ -62,7 +62,7 @@ function colorToCSS(color: number): string {
                 <div class="detail-header">
                     <span class="detail-char" :style="{ color: colorToCSS(detail.color) }">{{ detail.char }}</span>
                     <span class="detail-name">{{ detail.name }}</span>
-                    <button class="detail-close" @click="close" title="关闭 (Esc)">✕</button>
+                    <button class="detail-close" @click="close" :title="$t('detail.close_title')">✕</button>
                 </div>
 
                 <!-- Sections -->
@@ -108,8 +108,8 @@ function colorToCSS(color: number): string {
 }
 
 .detail-panel {
-    background: linear-gradient(135deg, rgba(15, 20, 45, 0.96), rgba(10, 15, 35, 0.98));
-    border: 1px solid rgba(80, 100, 160, 0.5);
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
     min-width: 320px;
     max-width: 480px;
@@ -189,8 +189,6 @@ function colorToCSS(color: number): string {
     font-size: 13px;
     font-weight: 600;
     color: rgba(140, 160, 220, 0.9);
-    text-transform: uppercase;
-    letter-spacing: 1px;
     margin-bottom: 4px;
     padding-bottom: 3px;
     border-bottom: 1px solid rgba(60, 80, 130, 0.4);
@@ -217,8 +215,23 @@ function colorToCSS(color: number): string {
 }
 
 .footer-hint {
-    font-size: 11px;
-    color: rgba(100, 120, 160, 0.6);
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* FE-1：紧凑模式——底部弹层、全宽、关闭钮 44px */
+@media (max-width: 1023px), (max-height: 599px) {
+    .detail-overlay { align-items: flex-end; }
+    .detail-panel {
+        min-width: 0;
+        width: 100%;
+        max-width: 640px;
+        max-height: 85dvh;
+        border-radius: 14px 14px 0 0;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    .detail-close { width: 44px; height: 44px; font-size: 18px; }
+    .section-line { font-size: 15px; }
 }
 
 /* Scrollbar styling */

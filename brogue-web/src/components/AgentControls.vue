@@ -6,6 +6,10 @@ import { iterateCreatures } from '../engine/Core/MonsterLifecycle';
 import { logger } from '../engine/Systems/Logger';
 import { Direction } from '../types';
 
+// FE-1：紧凑/触屏布局下由 TouchControls 提供可见的触控按钮，这里的
+// 近乎隐形的浮动按钮会遮挡背包与日志，故只隐藏按钮区（ai-agent-state 照常输出）。
+defineProps<{ hideControls?: boolean }>();
+
 const act = (action: string, data?: any) => {
     inputManager.triggerAction(action, data);
 };
@@ -71,7 +75,7 @@ const recentLogs = computed(() => {
         </div>
     </div>
 
-    <div class="agent-controls" :aria-label="$t('controls.title')">
+    <div v-if="!hideControls" class="agent-controls" :aria-label="$t('controls.title')">
       <div class="d-pad">
         <button @click="act('move', Direction.UPLEFT)" :aria-label="$t('controls.up_left')">↖</button>
         <button @click="act('move', Direction.UP)" :aria-label="$t('controls.up')">↑</button>
@@ -108,10 +112,12 @@ const recentLogs = computed(() => {
   white-space: nowrap;
   border-width: 0;
 }
+/* FE-1 D：原先 right: 20px 会盖住桌面侧栏的行动日志（审查 P-6）。改放地图区左下角——
+   桌面等比模式下地图上下都有留白，这里不遮挡任何内容；DOM 与可点击性不变。 */
 .agent-controls {
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   z-index: 5000;
   display: flex;
   flex-direction: column;
@@ -120,7 +126,7 @@ const recentLogs = computed(() => {
   transition: opacity 0.3s;
 }
 @media (max-width: 600px) {
-  .agent-controls { bottom: calc(48vh + 8px); right: 8px; }
+  .agent-controls { bottom: calc(48vh + 8px); left: 8px; }
 }
 
 .agent-controls:hover, .agent-controls:focus-within {
@@ -135,10 +141,10 @@ const recentLogs = computed(() => {
 }
 
 .d-pad button {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  background: var(--btn-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--btn-border);
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1.2rem;
   display: flex;
@@ -147,7 +153,7 @@ const recentLogs = computed(() => {
 }
 
 .d-pad button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--btn-bg-active);
 }
 
 .action-buttons {
@@ -157,16 +163,16 @@ const recentLogs = computed(() => {
 }
 
 .action-buttons button {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  background: var(--btn-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--btn-border);
+  border-radius: 6px;
   cursor: pointer;
   padding: 6px;
   font-size: 0.8rem;
 }
 
 .action-buttons button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--btn-bg-active);
 }
 </style>

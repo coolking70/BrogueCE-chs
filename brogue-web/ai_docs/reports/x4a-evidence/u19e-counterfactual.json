@@ -1,0 +1,11 @@
+{
+  "onlyProductionFile": "src/engine/Core/Game.ts",
+  "singleVariable": "Remove shared walking-pickup block only; all tests and fixtures unchanged",
+  "beforeHash": "e25123513da67cc4730b9c1f249ce34859b2250879d77e93b2abf4c263cc20c3",
+  "variantHash": "e9818eaa7fbf21173351f42fb4be03959bf6c1023ca93ee163b8c1115b4edfca",
+  "removed": "                    // CE Movement.c:1465: walking pickup belongs to the movement\n                    // turn, shared by keys, explore and travel (no extra pickup turn).\n                    if (this.player.loc.x !== origin.x || this.player.loc.y !== origin.y) {\n                        const foundItem = this.items.some(item => item.loc.x === this.player.x && item.loc.y === this.player.y);\n                        this.pickUpItemAfterDisplacement();\n                        // CE Items.c:838 pickUpItemAt disturbs even when the pack\n                        // is full. Do not loop between uncollectable loot goals.\n                        if (foundItem && this.inAutoTravelStep) this.stopAutoTravel();\n                    }\n",
+  "exitCode": 0,
+  "restoredHash": "e25123513da67cc4730b9c1f249ce34859b2250879d77e93b2abf4c263cc20c3",
+  "restoredExactly": true,
+  "seconds": 3.6602842807769775
+}

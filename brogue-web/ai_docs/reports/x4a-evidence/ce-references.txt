@@ -1,0 +1,286 @@
+../BrogueCE-master/src/brogue/Movement.c:1050-1065
+1050: boolean diagonalBlocked(const short x1, const short y1, const short x2,
+1051:                         const short y2, const boolean limitToPlayerKnowledge) {
+1052:   unsigned long tFlags;
+1053:   if (x1 == x2 || y1 == y2) {
+1054:     return false; // If it's not a diagonal, it's not diagonally blocked.
+1055:   }
+1056:   getLocationFlags(x1, y2, &tFlags, NULL, NULL, limitToPlayerKnowledge);
+1057:   if (tFlags & T_OBSTRUCTS_DIAGONAL_MOVEMENT) {
+1058:     return true;
+1059:   }
+1060:   getLocationFlags(x2, y1, &tFlags, NULL, NULL, limitToPlayerKnowledge);
+1061:   if (tFlags & T_OBSTRUCTS_DIAGONAL_MOVEMENT) {
+1062:     return true;
+1063:   }
+1064:   return false;
+1065: }
+
+../BrogueCE-master/src/brogue/Movement.c:1842-1886
+1842: void travelRoute(pos path[1000], short steps) {
+1843:   short i, j;
+1844:   short dir;
+1845: 
+1846:   brogueAssert(!rogue.playbackMode);
+1847: 
+1848:   rogue.disturbed = false;
+1849:   rogue.automationActive = true;
+1850: 
+1851:   for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {
+1852:     creature *monst = nextCreature(&it);
+1853:     if (canSeeMonster(monst)) {
+1854:       monst->bookkeepingFlags |= MB_ALREADY_SEEN;
+1855:     } else {
+1856:       monst->bookkeepingFlags &= ~MB_ALREADY_SEEN;
+1857:     }
+1858:   }
+1859: 
+1860:   for (i = 0; i < steps && !rogue.disturbed; i++) {
+1861:     for (j = i + 1; j < steps - 1; j++) {
+1862:       // Check to see if the path has become obstructed or avoided since the
+1863:       // last time we saw it.
+1864:       if (diagonalBlocked(path[j - 1].x, path[j - 1].y, path[j].x, path[j].y,
+1865:                           true) ||
+1866:           monsterAvoids(&player, path[j])) {
+1867: 
+1868:         rogue.disturbed = true;
+1869:         break;
+1870:       }
+1871:     }
+1872:     for (dir = 0; dir < DIRECTION_COUNT && !rogue.disturbed; dir++) {
+1873:       if (posEq(posNeighborInDirection(player.loc, dir), path[i])) {
+1874:         if (!playerMoves(dir)) {
+1875:           rogue.disturbed = true;
+1876:         }
+1877:         if (pauseAnimation(25, PAUSE_BEHAVIOR_DEFAULT)) {
+1878:           rogue.disturbed = true;
+1879:         }
+1880:         break;
+1881:       }
+1882:     }
+1883:   }
+1884:   rogue.disturbed = true;
+1885:   rogue.automationActive = false;
+1886:   updateFlavorText();
+
+../BrogueCE-master/src/brogue/Movement.c:2206-2369
+2206: void getExploreMap(short **map,
+2207:                    boolean headingToStairs) { // calculate explore map
+2208:   short i, j;
+2209:   short **costMap;
+2210:   item *theItem;
+2211: 
+2212:   costMap = allocGrid();
+2213:   populateCreatureCostMap(costMap, &player);
+2214: 
+2215:   for (i = 0; i < DCOLS; i++) {
+2216:     for (j = 0; j < DROWS; j++) {
+2217:       map[i][j] = 30000; // Can be overridden later.
+2218:       theItem = itemAtLoc((pos){i, j});
+2219:       if (!(pmap[i][j].flags & DISCOVERED)) {
+2220:         if ((pmap[i][j].flags & MAGIC_MAPPED) &&
+2221:             (tileCatalog[pmap[i][j].layers[DUNGEON]].flags |
+2222:              tileCatalog[pmap[i][j].layers[LIQUID]].flags) &
+2223:                 T_PATHING_BLOCKER) {
+2224:           // Magic-mapped cells revealed as obstructions should be treated as
+2225:           // such even though they're not discovered.
+2226:           costMap[i][j] =
+2227:               cellHasTerrainFlag((pos){i, j}, T_OBSTRUCTS_DIAGONAL_MOVEMENT)
+2228:                   ? PDS_OBSTRUCTION
+2229:                   : PDS_FORBIDDEN;
+2230:         } else {
+2231:           costMap[i][j] = 1;
+2232:           map[i][j] = exploreGoalValue(i, j);
+2233:         }
+2234:       } else if (theItem && !monsterAvoids(&player, (pos){i, j})) {
+2235:         if (theItem->flags & ITEM_PLAYER_AVOIDS) {
+2236:           costMap[i][j] = 20;
+2237:         } else {
+2238:           costMap[i][j] = 1;
+2239:           map[i][j] = exploreGoalValue(i, j) - 10;
+2240:         }
+2241:       }
+2242:     }
+2243:   }
+2244: 
+2245:   costMap[rogue.downLoc.x][rogue.downLoc.y] = 100;
+2246:   costMap[rogue.upLoc.x][rogue.upLoc.y] = 100;
+2247: 
+2248:   if (headingToStairs) {
+2249:     map[rogue.downLoc.x][rogue.downLoc.y] = 0; // head to the stairs
+2250:   }
+2251: 
+2252:   dijkstraScan(map, costMap, true);
+2253: 
+2254:   // displayGrid(costMap);
+2255:   freeGrid(costMap);
+2256: }
+2257: 
+2258: boolean explore(short frameDelay) {
+2259:   // Explore commands should never be written to a recording.
+2260:   // Instead, the elemental movement commands that compose it
+2261:   // should be written individually.
+2262:   brogueAssert(!rogue.playbackMode);
+2263: 
+2264:   clearCursorPath();
+2265: 
+2266:   boolean madeProgress = false;
+2267:   boolean headingToStairs = false;
+2268: 
+2269:   if (player.status[STATUS_CONFUSED]) {
+2270:     message("Not while you're confused.", 0);
+2271:     return false;
+2272:   }
+2273:   if (cellHasTerrainFlag(player.loc, T_OBSTRUCTS_PASSABILITY)) {
+2274:     message("Not while you're trapped.", 0);
+2275:     return false;
+2276:   }
+2277: 
+2278:   for (creatureIterator it = iterateCreatures(monsters); hasNextCreature(it);) {
+2279:     creature *monst = nextCreature(&it);
+2280:     if (canSeeMonster(monst)) {
+2281:       monst->bookkeepingFlags |= MB_ALREADY_SEEN;
+2282:     } else {
+2283:       monst->bookkeepingFlags &= ~MB_ALREADY_SEEN;
+2284:     }
+2285:   }
+2286: 
+2287:   // fight any adjacent enemies
+2288:   enum directions dir = adjacentFightingDir();
+2289:   if (dir != NO_DIRECTION &&
+2290:       startFighting(dir,
+2291:                     (player.status[STATUS_HALLUCINATING] ? true : false))) {
+2292: 
+2293:     return true;
+2294:   }
+2295: 
+2296:   if (!rogue.autoPlayingLevel) {
+2297:     message(KEYBOARD_LABELS ? "Exploring... press any key to stop."
+2298:                             : "Exploring... touch anywhere to stop.",
+2299:             0);
+2300:     // A little hack so the exploring message remains bright while exploring and
+2301:     // then auto-dims when another message is displayed:
+2302:     confirmMessages();
+2303:     printString(KEYBOARD_LABELS ? "Exploring... press any key to stop."
+2304:                                 : "Exploring... touch anywhere to stop.",
+2305:                 mapToWindowX(0), mapToWindowY(-1), &white, &black, NULL);
+2306:   }
+2307:   rogue.disturbed = false;
+2308:   rogue.automationActive = true;
+2309: 
+2310:   short **distanceMap = allocGrid();
+2311:   do {
+2312:     // fight any adjacent enemies
+2313:     dir = adjacentFightingDir();
+2314:     if (dir != NO_DIRECTION) {
+2315:       startFighting(dir, (player.status[STATUS_HALLUCINATING] ? true : false));
+2316:       if (rogue.disturbed) {
+2317:         madeProgress = true;
+2318:         continue;
+2319:       }
+2320:     }
+2321:     if (rogue.disturbed) {
+2322:       continue;
+2323:     }
+2324: 
+2325:     getExploreMap(distanceMap, headingToStairs);
+2326: 
+2327:     // hilite path
+2328:     pos path[1000];
+2329:     const int steps = getPlayerPathOnMap(path, distanceMap, player.loc);
+2330:     hilitePath(path, steps, false);
+2331: 
+2332:     // take a step
+2333:     dir = nextStep(distanceMap, player.loc, NULL, false);
+2334: 
+2335:     if (!headingToStairs && rogue.autoPlayingLevel && dir == NO_DIRECTION) {
+2336:       headingToStairs = true;
+2337:       continue;
+2338:     }
+2339: 
+2340:     refreshSideBar(-1, -1, false);
+2341: 
+2342:     if (dir == NO_DIRECTION) {
+2343:       rogue.disturbed = true;
+2344:     } else if (!playerMoves(dir)) {
+2345:       rogue.disturbed = true;
+2346:     } else {
+2347:       madeProgress = true;
+2348:       if (pauseAnimation(frameDelay, PAUSE_BEHAVIOR_DEFAULT)) {
+2349: 
+2350:         rogue.disturbed = true;
+2351:         rogue.autoPlayingLevel = false;
+2352:       }
+2353:     }
+2354:     hilitePath(path, steps, true);
+2355:   } while (!rogue.disturbed);
+2356:   // clearCursorPath();
+2357:   rogue.automationActive = false;
+2358:   refreshSideBar(-1, -1, false);
+2359:   freeGrid(distanceMap);
+2360:   return madeProgress;
+2361: }
+2362: 
+2363: void autoPlayLevel(boolean fastForward) {
+2364:   boolean madeProgress;
+2365: 
+2366:   rogue.autoPlayingLevel = true;
+2367: 
+2368:   confirmMessages();
+2369:   message(KEYBOARD_LABELS ? "Playing... press any key to stop."
+
+../BrogueCE-master/src/brogue/Movement.c:1464-1478
+1464: 
+1465:       if (pmapAt(player.loc)->flags & HAS_ITEM) {
+1466:         pickUpItemAt(player.loc);
+1467:         rogue.disturbed = true;
+1468:       }
+1469:       refreshDungeonCell((pos){x, y});
+1470:       refreshDungeonCell(player.loc);
+1471:       playerMoved = true;
+1472: 
+1473:       checkForMissingKeys(x, y);
+1474:       if (monsterShouldFall(&player)) {
+1475:         player.bookkeepingFlags |= MB_IS_FALLING;
+1476:       }
+1477:       moveEntrancedMonsters(direction);
+1478: 
+
+../BrogueCE-master/src/brogue/Items.c:7130-7152
+7130:     maxDistance = (12 + 2 * max(rogue.strength - player.weaknessAmount - 12, 2));
+7131: 
+7132:     pos zapTarget;
+7133:     if (autoThrow && canAutoTargetMonster(rogue.lastTarget, theItem, AUTOTARGET_MODE_THROW)) {
+7134:         zapTarget = rogue.lastTarget->loc;
+7135:     } else if (!chooseTarget(&zapTarget, maxDistance, AUTOTARGET_MODE_THROW, theItem)) {
+7136:         // player doesn't choose a target? return
+7137:         return;
+7138:     }
+7139: 
+7140:     if ((theItem->flags & ITEM_EQUIPPED) && theItem->quantity <= 1) {
+7141:         unequipItem(theItem, false);
+7142:     }
+7143:     command[2] = '\0';
+7144:     recordKeystrokeSequence(command);
+7145:     recordMouseClick(mapToWindowX(zapTarget.x), mapToWindowY(zapTarget.y), true, false);
+7146: 
+7147:     confirmMessages();
+7148: 
+7149:     thrownItem = generateItem(ALL_ITEMS, -1);   // generate item object in memory
+7150:     *thrownItem = *theItem;                     // clone the item
+7151:     thrownItem->flags &= ~ITEM_EQUIPPED;        // item not equiped
+7152:     thrownItem->quantity = 1;                   // item thrown, so quantity == 1
+
+../BrogueCE-master/src/platform/platformdependent.c:119-130
+119:         case G_LIQUID: return '~';
+120:         case G_FLOOR: return U_MIDDLE_DOT;
+121:         case G_CHASM: return U_FOUR_DOTS;
+122:         case G_TRAP: return U_DIAMOND;
+123:         case G_FIRE: return U_FLIPPED_V;
+124:         case G_FOLIAGE: return U_ARIES;
+125:         case G_AMULET: return U_ANKH;
+126:         case G_SCROLL: return U_MUSIC_NOTE;
+127:         case G_RING: return U_CIRCLE;
+128:         case G_WEAPON: return U_UP_ARROW;
+129:         case G_GEM: return U_FILLED_CIRCLE;
+130:         case G_TOTEM: return U_NEUTER;

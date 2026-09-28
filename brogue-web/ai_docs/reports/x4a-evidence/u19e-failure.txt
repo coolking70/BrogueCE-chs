@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web
+
+stdout | src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE1 seed31337/D2
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_19e_machine_families.test.ts (17 tests | 2 failed | 15 skipped) 5859ms
+     × natural CE1 seed31337/D2 2123ms
+     × natural CE26 seed424242/D5 3735ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE1 seed31337/D2
+Error: no second loan
+ ❯ runAltarActions src/test/fixtures/u19e-machine-actions.ts:102:103
+    100|   if(!adjacent)throw Error('library return unreachable');walk(adjacent…
+    101|   act('drop',{itemId:loan.id});walk(entry);state('replaced');
+    102|   const second=loans.find((i:any)=>i.id!==loan.id&&route(g,g.player.lo…
+       |                                                                                                       ^
+    103|   rewardId=second.id;walk(second.loc);act('pickup');walk(entry);state(…
+    104|  }else if(ce===47){
+ ❯ src/test/u_19e_machine_families.test.ts:56:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_19e_machine_families.test.ts > U19e natural machines: entrance → player commands → original payoff > natural CE26 seed424242/D5
+Error: CE26: no route {"x":14,"y":5} -> {"x":15,"y":4}
+ ❯ walk src/test/fixtures/u19e-machine-actions.ts:41:67
+     39|  };
+     40|  const walk=(to:Pos)=>{for(let n=0;n<300&&!same(g.player.loc,to);n++){
+     41|   const path=route(g,g.player.loc,to,true);if(!path?.length)throw Erro…
+       |                                                                   ^
+     42|   const p=path[0]!;if(g.grid.getCell(p.x,p.y).layers.includes(T.SECRET…
+     43|  }if(!same(g.player.loc,to))throw Error(`CE${ce}: walk did not finish`…
+ ❯ runAltarActions src/test/fixtures/u19e-machine-actions.ts:96:41
+ ❯ src/test/u_19e_machine_families.test.ts:56:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 15 skipped (17)
+   Start at  02:20:09
+   Duration  7.88s (transform 1.10s, setup 0ms, import 1.80s, tests 5.86s, environment 0ms)
+

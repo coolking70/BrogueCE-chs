@@ -1,0 +1,83 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web
+
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x3a_live_iteration.test.ts > X3a live roster, not physical unlinking > seed22013 fear and real wait match a swept control with corpse at index 0
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3a_live_iteration.test.ts (23 tests) 6500ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 0  467ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 1  389ms
+     ✓ seed22013 fear and real wait match a swept control with corpse at index 2  402ms
+     ✓ DF activation leaves completed dormant corpses linked and inert until the sweep  327ms
+     ✓ stale visible corpse at x=11 cannot divert or stop the next auto step  300ms
+     ✓ stale visible corpse at x=15 cannot divert or stop the next auto step  301ms
+     ✓ scent following uses the same direction and RNG through a completed death cell  409ms
+     ✓ invisible dead enemies do not affect ally selection/maps or draw target RNG  750ms
+     ✓ dead allies/followers do not count toward summoning or wake with the horde  697ms
+stdout | src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x4a_movement_rendering.test.ts (21 tests) 5086ms
+     ✓ stops in the revealing step itself, without requiring another auto_step  301ms
+     ✓ prioritizes a known adjacent enemy through the common attack entry  305ms
+     ✓ automatic movement runs the same special-tile entry exactly once  302ms
+     ✓ walking pickup, terrain entry and timing match manual movement and record only auto_step  587ms
+     ✓ retains exploration mode across a whole-run snapshot and clears it on manual interruption  310ms
+stdout | src/test/u_19e_machine_families.test.ts > U19e independent CE selection contract > exact integer selection tickets CE6/7 retain their original weights
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 16999ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2200ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2457ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2706ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1428ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  1368ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  1398ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  858ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  856ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  706ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1393ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  448ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  1114ms
+ ✓ src/test/u_19e_machine_families.test.ts (17 tests) 23310ms
+     ✓ natural CE1 seed31337/D2  1116ms
+     ✓ natural CE2 seed424242/D3  1268ms
+     ✓ natural CE6 seed777/D21  6786ms
+     ✓ natural CE7 seed1/D23  7954ms
+     ✓ natural CE26 seed424242/D5  1918ms
+     ✓ natural CE47 seed424242/D5  3307ms
+stdout | src/test/p1_20_item_placement.test.ts > 地面物品落格可通行性（全局扫描，P1-20） > 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[item-placement] seed=424242 D1..D26 substantive RNG 抽取总数: 2561613
+[item-placement] seed=777 D1..D26 substantive RNG 抽取总数: 2298900
+[item-placement] seed=20260913 D1..D26 substantive RNG 抽取总数: 2019310
+[item-placement] seed=1 D1..D26 substantive RNG 抽取总数: 2210386
+[item-placement] 扫描 4 seeds × 104 层，共 995 件地面物品，违例 0 条；地形分布：（无）
+
+ ✓ src/test/p1_20_item_placement.test.ts (1 test) 39006ms
+     ✓ 4 seeds × D1..D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出  39005ms
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 57447ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  401ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  365ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  365ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  354ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  1520ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  1509ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  2749ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  638ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  33643ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  12453ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  801ms
+
+ Test Files  6 passed (6)
+      Tests  110 passed (110)
+   Start at  02:28:40
+   Duration  58.42s (transform 1.61s, setup 0ms, import 4.37s, tests 148.35s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b77a/fe1-accept/brogue-web/ai_docs/reports/x4a-evidence/fix-targeted.json

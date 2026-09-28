@@ -228,8 +228,8 @@ const sidebarWidthModel = computed({
 
 .menu-card {
   width: min(480px, 92vw);
-  background: #101214;
-  border: 1px solid #2b2f33;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: 10px;
   padding: 20px;
 }
@@ -287,8 +287,8 @@ input {
 
 button {
   height: 34px;
-  border: 1px solid #4b5563;
-  background: #1f2937;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
   color: #e5e7eb;
   border-radius: 6px;
   padding: 0 12px;
@@ -296,7 +296,8 @@ button {
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
+  border-style: dashed;
   cursor: not-allowed;
 }
 
@@ -308,7 +309,7 @@ button:disabled {
 .save-meta {
   margin-top: 14px;
   padding: 10px;
-  border: 1px solid #2b2f33;
+  border: 1px solid var(--panel-border);
   border-radius: 6px;
   font-size: 13px;
   color: #c5ced9;
@@ -318,5 +319,27 @@ button:disabled {
 
 .file-input {
   display: none;
+}
+
+/* FE-1：矮视口/小屏——卡片可滚动（原先 body overflow:hidden 下横屏被裁且无法滚动），
+   按钮与输入框放大到触控尺寸。 */
+.menu-overlay {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  box-sizing: border-box;
+}
+.menu-card {
+  margin: auto;
+  box-sizing: border-box;
+}
+@media (max-width: 1023px), (max-height: 599px) {
+  .menu-overlay { align-items: flex-start; }
+  .menu-card { margin: 12px auto; }
+  button { height: 44px; padding: 0 14px; }
+  select, input { height: 44px; font-size: 16px; }
+}
+@media (max-height: 599px) and (min-width: 600px) {
+  .menu-card { width: min(720px, 94vw); }
 }
 </style>

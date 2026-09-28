@@ -61,16 +61,16 @@ const onSeek = (e: Event) => {
 </template>
 
 <style scoped>
-.replay-error { color: #ff7777; font-weight: 700; margin-bottom: 6px; }
+.replay-error { color: var(--color-danger); font-weight: 700; margin-bottom: 6px; }
 .replay-controls {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(16, 18, 20, 0.9);
-    border: 1px solid #3a4048;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: var(--panel-radius);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -85,23 +85,23 @@ const onSeek = (e: Event) => {
 }
 
 button {
-    background: #1f2937;
-    border: 1px solid #4b5563;
-    color: #e5e7eb;
+    background: var(--btn-bg);
+    border: 1px solid var(--btn-border);
+    color: var(--text-primary);
     padding: 4px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
 }
 
 button:hover {
-    background: #374151;
+    background: var(--btn-bg-active);
 }
 
 .progress-text {
-    color: #9ba3af;
+    color: var(--text-secondary);
     font-size: 14px;
-    font-family: monospace;
+    font-family: var(--font-mono);
     flex-grow: 1;
     text-align: right;
 }
@@ -109,5 +109,21 @@ button:hover {
 .slider {
     width: 100%;
     cursor: pointer;
+}
+
+/* FE-1：紧凑模式——贴底全宽（回放期间触控命令栏隐藏，由本条占位），按钮 44px */
+@media (max-width: 1023px), (max-height: 599px) {
+    .replay-controls {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: none;
+        min-width: 0;
+        border-radius: 12px 12px 0 0;
+        padding: 8px 12px max(8px, env(safe-area-inset-bottom));
+    }
+    button { min-height: 44px; min-width: 72px; }
+    .slider { height: 32px; }
 }
 </style>

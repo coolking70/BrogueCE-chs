@@ -147,6 +147,10 @@
     "kind": "reset",
     "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
   },
+  "isAutoExploring": {
+    "kind": "run",
+    "contract": "X4a：新局与自动行进中断置 false；探索期间随 run 同名键保存，非探索时省略；旧快照缺省 false。"
+  },
   "isExamining": {
     "kind": "reset",
     "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"

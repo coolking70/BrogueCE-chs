@@ -71,7 +71,7 @@ import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
-import { playerTravelTerrainAllowed } from '../Movement/PlayerTravel';
+import { playerTravelTerrainAllowed, playerTravelDiagonalBlocked } from '../Movement/PlayerTravel';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
@@ -286,6 +286,7 @@ export class Game {
     public minersLight: MinersLightState = { radiusHundredths: 0, radialFadeToPercent: 35 };
     private minersLightBaseFixpt: number = 0;
     public autoPath: Pos[] = [];
+    private isAutoExploring = false;
     private activeMonsterList = ownedMonsterList([], this);
     public get monsters(): Monster[] { return this.activeMonsterList; }
     public set monsters(value: Monster[]) { this.activeMonsterList = ownedMonsterList(value, this); }
@@ -550,6 +551,7 @@ export class Game {
         this.visibleMonsters = new Set();
         this.visibleItems = new Set();
         this.autoPath = [];
+        this.isAutoExploring = false;
         this.everSeenItems = new Set();
         this.everSeenMonsters = new Set();
         this.travelTargetItem = undefined;
@@ -2964,6 +2966,11 @@ export class Game {
             if (this.pendingIdentify) return;
             if (this.isInventoryOpen) {
                 this.isInventoryOpen = false;
+            } else if (this.isThrowing) {
+                // CE throwCommand: cancelling chooseTarget commits no turn/RNG.
+                this.isThrowing = false;
+                this.throwItemTarget = null;
+                this.needsRender = true;
             }
             return;
         }
@@ -3056,10 +3063,12 @@ export class Game {
             return;
         }
 
-        // Any manual action interrupts auto-pathing
-        this.autoPath = [];
-        this.everSeenMonsters.clear();
-        this.everSeenItems.clear();
+        // Automatic steps use this same movement entry without cancelling their route.
+        if (!this.inAutoTravelStep) {
+            this.stopAutoTravel();
+            this.everSeenMonsters.clear();
+            this.everSeenItems.clear();
+        }
 
         // P1-42：主动搜索命令（CE manualSearch，Time.c:2395-2430）。
         // 键位挂接被搁置：CE SEARCH_KEY='s'（Rogue.h:1177）与 web 既有
@@ -3129,6 +3138,7 @@ export class Game {
             }
 
             if ((dx !== 0 || dy !== 0) && this.player.hp > 0) {
+                const origin = { ...this.player.loc };
                 const newX = this.player.loc.x + dx;
                 const newY = this.player.loc.y + dy;
 
@@ -3395,6 +3405,15 @@ export class Game {
                 }
 
                 if (spentTurn) {
+                    // CE Movement.c:1465: walking pickup belongs to the movement
+                    // turn, shared by keys, explore and travel (no extra pickup turn).
+                    if (this.player.loc.x !== origin.x || this.player.loc.y !== origin.y) {
+                        const foundItem = this.items.some(item => item.loc.x === this.player.x && item.loc.y === this.player.y);
+                        this.pickUpItemAfterDisplacement();
+                        // CE Items.c:838 pickUpItemAt disturbs even when the pack
+                        // is full. Do not loop between uncollectable loot goals.
+                        if (foundItem && this.inAutoTravelStep) this.stopAutoTravel();
+                    }
                     this.playerTurnEnded();
                 }
 
@@ -4048,6 +4067,7 @@ export class Game {
         this.isThrowing = false;
         this.throwItemTarget = null;
         this.autoPath = [];
+        this.isAutoExploring = false;
         this.isMouseTraveling = false;
         this.needsRender = true;
     }
@@ -4252,6 +4272,7 @@ export class Game {
                 this.loopMap = analyzeLoopMap(this.grid);
                 this.updatedSafetyMapThisTurn = false;
                 this.autoPath = [];
+                this.isAutoExploring = false;
                 this.isMouseTraveling = false;
                 this.needsRender = true;
             }
@@ -7415,6 +7436,7 @@ export class Game {
         this.playerFalling = false;
         this.player.seized = false;
         this.autoPath = [];
+        this.isAutoExploring = false;
 
         if (this.depth < CE_DEEPEST_LEVEL) {
             this.depth++;
@@ -8009,7 +8031,7 @@ export class Game {
                     const carried = monster.carriedItem;
                     monster.takeTurn(game, stealthRange);
                     if (!carried && monster.carriedItem && monster.hasAbility('MA_HIT_STEAL_FLEE')) {
-                        game.autoPath = []; game.isMouseTraveling = false;
+                        game.autoPath = []; game.isAutoExploring = false; game.isMouseTraveling = false;
                     }
                 },
                 updateEnvironment: () => game.updateEnvironment(),
@@ -8229,11 +8251,9 @@ export class Game {
      * advancementLoop 的暂停点据此跳过 yield（双保险，位置对应 CE 循环内
      * `rogue.playbackFastForward ||` 短路项）。
      *
-     * 三个信号：inAutoTravelStep 是 stepAutoPath 调用栈内的显式标志——
-     * 路径最后一步会先 shift() 清空 autoPath 再结算回合，到达终点的拾取
-     * 回合同样发生在 autoPath 清空之后，仅靠 autoPath.length 会把这些步
-     * 误判成普通回合而重新引入卡顿；autoPath/isMouseTraveling 覆盖
-     * stepAutoPath 之外的状态（如路径已设好、步进还没开始的间隙）。
+     * inAutoTravelStep covers the entire shared movement/attack/pickup turn,
+     * even if a terrain effect clears the route during that turn. autoPath and
+     * isMouseTraveling also cover the interval before a queued step starts.
      */
     public isAutoTraveling(): boolean {
         return this.inAutoTravelStep || this.autoPath.length > 0 || this.isMouseTraveling;
@@ -8422,6 +8442,7 @@ export class Game {
             everSeenMonsterIds: [...this.everSeenMonsters].map(m => m.id),
             examinedEntityIds: [...this.examinedEntityIds],
             autoPath: this.autoPath, isMouseTraveling: this.isMouseTraveling, travelTargetItemId: this.travelTargetItem?.id ?? null,
+            isAutoExploring: this.isAutoExploring || undefined,
             recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,
             signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
             testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,
@@ -8548,6 +8569,7 @@ export class Game {
         this.everSeenMonsters = new Set(run.everSeenMonsterIds.map(id => entityGraph.monsters.get(id)!));
         this.examinedEntityIds = new Set(run.examinedEntityIds);
         this.autoPath = run.autoPath; this.isMouseTraveling = run.isMouseTraveling;
+        this.isAutoExploring = run.isAutoExploring ?? false;
         this.travelTargetItem = run.travelTargetItemId === null ? undefined : entityGraph.items.get(run.travelTargetItemId);
         this.recordedInputEvents = run.recordedInputEvents; this.recordedInputIndex = run.recordedInputIndex;
         this.recordingStartAt = Date.now();
@@ -9191,7 +9213,8 @@ export class Game {
             invalidatePathing: () => {
                 this.loopMap = analyzeLoopMap(this.grid);
                 this.updatedSafetyMapThisTurn = false;
-                this.autoPath = []; this.isMouseTraveling = false;
+                this.autoPath = [];
+                this.isAutoExploring = false; this.isMouseTraveling = false;
             },
             invalidateShore: () => { this.updatedSafetyMapThisTurn = false; },
             gameHasEnded: () => this.isGameOver === true,
@@ -9498,78 +9521,84 @@ export class Game {
     public hoveredCell: Pos | null = null;
     public hoveredText: string = '';
 
+    private stopAutoTravel() {
+        this.autoPath = [];
+        this.isAutoExploring = false;
+        this.isMouseTraveling = false;
+        this.travelTargetItem = undefined;
+        this.needsRender = true;
+    }
+
+    private exploreAllowed(): boolean {
+        if (this.player.hasStatus('confused')) {
+            logger.log(i18next.t('explore.confused', { defaultValue: "Not while you're confused." }), '#cccccc');
+            return false;
+        }
+        if (!this.grid.getCell(this.player.x, this.player.y)?.isPassable) {
+            logger.log(i18next.t('explore.trapped', { defaultValue: "Not while you're trapped." }), '#cccccc');
+            return false;
+        }
+        return true;
+    }
+
+    private adjacentExploreEnemy(): Monster | undefined {
+        return Array.from(iterateCreatures(this.visibleMonsters)).find(m =>
+            m.hp > 0 && !m.isAlly && !m.hasBehavior('MONST_IMMUNE_TO_WEAPONS') && !m.hasBehavior('MONST_INVULNERABLE')
+            && Math.max(Math.abs(m.x - this.player.x), Math.abs(m.y - this.player.y)) === 1
+            && (!playerTravelDiagonalBlocked(this.grid, this.player.loc, m.loc) || m.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')));
+    }
+
     private handleAutoExplore() {
         if (this.isInventoryOpen) return;
+        this.stopAutoTravel();
+        if (!this.exploreAllowed()) return;
+        this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
+        this.everSeenItems = new Set(this.visibleItems);
+        this.isAutoExploring = true;
+        const enemy = this.adjacentExploreEnemy();
+        if (enemy) {
+            this.autoPath = [{ ...enemy.loc }];
+            // Already inside auto_explore's command: no nested recorded event.
+            this.performAutoPathStep();
+        } else {
+            this.recomputeExplorePath();
+        }
+    }
 
-        // 1. Auto-Attack check
-        const adjacentMonsters = Array.from(iterateCreatures(this.visibleMonsters)).filter(m =>
-            Math.abs(m.loc.x - this.player.loc.x) <= 1 && Math.abs(m.loc.y - this.player.loc.y) <= 1
-        );
-
-        if (adjacentMonsters.length > 0) {
-            // Sort by HP ascending (lowest HP first)
-            adjacentMonsters.sort((a, b) => a.hp - b.hp);
-            const targetMob = adjacentMonsters[0];
-            if (targetMob) {
-                const dx = targetMob.loc.x - this.player.loc.x;
-                const dy = targetMob.loc.y - this.player.loc.y;
-                this.handlePlayerAction('move', { x: dx, y: dy }, 'system');
+    /** CE getExploreMap/nextStep cadence, with the existing nearest-frontier
+     * policy: rebuild the BFS on every step using only visible/remembered cells.
+     * Parent links also provide the route, avoiding a second A* scan.
+     */
+    private recomputeExplorePath() {
+        const queue: Pos[] = [{ ...this.player.loc }];
+        const key = (p: Pos) => `${p.x},${p.y}`;
+        const parents = new Map<string, Pos | null>([[key(this.player.loc), null]]);
+        for (let index = 0; index < queue.length; index++) {
+            const curr = queue[index]!;
+            const cell = this.grid.getCell(curr.x, curr.y)!;
+            const hasLoot = cell.isVisible
+                ? this.items.some(i => i.loc.x === curr.x && i.loc.y === curr.y)
+                : !!cell.rememberedItem;
+            if (index > 0 && (!cell.isExplored || hasLoot)) {
+                const path: Pos[] = [];
+                let step = curr;
+                while (parents.get(key(step))) {
+                    path.unshift(step);
+                    step = parents.get(key(step))!;
+                }
+                this.autoPath = path;
                 return;
             }
-        }
-
-        // 2. User explicitly pressed 'x', ignore currently visible monsters & items for pathing purposes
-        this.isMouseTraveling = false;
-        for (const m of iterateCreatures(this.visibleMonsters)) {
-            this.everSeenMonsters.add(m);
-        }
-        for (const i of this.visibleItems) {
-            this.everSeenItems.add(i);
-        }
-
-        const queue: Pos[] = [this.player.loc];
-        const visited = new Set<string>();
-        visited.add(`${this.player.loc.x},${this.player.loc.y}`);
-
-        let target: Pos | null = null;
-
-        while (queue.length > 0) {
-            const curr = queue.shift()!;
-            const cell = this.grid.getCell(curr.x, curr.y);
-
-            const hasLoot = cell?.isVisible
-                ? this.items.some(i => i.loc.x === curr.x && i.loc.y === curr.y)
-                : !!cell?.rememberedItem;
-            const isPlayerOnLoot = (curr.x === this.player.loc.x && curr.y === this.player.loc.y);
-
-            if (cell && (!cell.isExplored || (hasLoot && !isPlayerOnLoot))
-                && this.knownTravelTerrainAllowed(cell)) {
-                target = curr;
-                break;
-            }
-
-            const dirs: [number, number][] = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]];
-            for (const d of dirs) {
-                const nx = curr.x + d[0];
-                const ny = curr.y + d[1];
-                const nextCell = this.grid.getCell(nx, ny);
-                if (nextCell && this.grid.isValidPos(nx, ny) &&
-                    this.knownTravelTerrainAllowed(nextCell)) {
-                    const key = `${nx},${ny}`;
-                    if (!visited.has(key)) {
-                        visited.add(key);
-                        queue.push({ x: nx, y: ny });
-                    }
+            for (const [dx, dy] of ENTRANCEMENT_DIRECTIONS) {
+                const next = { x: curr.x + dx, y: curr.y + dy };
+                if (!parents.has(key(next)) && this.knownTravelStepAllowed(curr, next)) {
+                    parents.set(key(next), curr);
+                    queue.push(next);
                 }
             }
         }
-
-        if (target) {
-            this.setAutoPath(target.x, target.y);
-        } else {
-            logger.log(i18next.t('explore.nothing_more', { defaultValue: '这里没有什么可探索的了。' }), '#cccccc');
-            this.autoPath = [];
-        }
+        logger.log(i18next.t('explore.nothing_more', { defaultValue: '这里没有什么可探索的了。' }), '#cccccc');
+        this.stopAutoTravel();
     }
 
     public handleMouseTravel(x: number, y: number) {
@@ -9586,7 +9615,10 @@ export class Game {
             return;
         }
 
+        this.stopAutoTravel();
         this.isMouseTraveling = true;
+        this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
+        this.everSeenItems.clear();
 
         // Ignore currently visible items and remembered items
         for (const i of this.visibleItems) {
@@ -10387,15 +10419,24 @@ export class Game {
         return playerTravelTerrainAllowed(cell, this.grid.getCell(this.player.x, this.player.y)!, this.player);
     }
 
+    private knownTravelStepAllowed(from: Pos, to: Pos): boolean {
+        const cell = this.grid.getCell(to.x, to.y);
+        return !!cell && Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) === 1
+            && this.knownTravelTerrainAllowed(cell) && !playerTravelDiagonalBlocked(this.grid, from, to);
+    }
+
     public setAutoPath(x: number, y: number) {
+        this.isAutoExploring = false;
         const knownPassable = (px: number, py: number): boolean => {
             const cell = this.grid.getCell(px, py);
             return !!cell && this.knownTravelTerrainAllowed(cell);
         };
-        const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, knownPassable);
+        const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, knownPassable,
+            (from, to) => !playerTravelDiagonalBlocked(this.grid, from, to));
         if (path && path.length > 0) {
             this.autoPath = path;
         } else {
+            this.stopAutoTravel();
             logger.log(i18next.t('ui.no_path', { defaultValue: '无法到达该位置。' }), '#aaaaaa');
             this.needsRender = true;
         }
@@ -10422,112 +10463,73 @@ export class Game {
         }
     }
 
+    private autoTravelDisturbed(): boolean {
+        // CE disturbed: only observable new creatures/items stop automation.
+        for (const monster of iterateCreatures(this.visibleMonsters)) {
+            if (!this.everSeenMonsters.has(monster)) {
+                logger.log(i18next.t('explore.spot_monster_stop_exploring', { name: this.monsterDisplayName(monster), defaultValue: `You spot a ${this.monsterDisplayName(monster)} and stop exploring.` }), '#ffaaaa');
+                this.stopAutoTravel();
+                return true;
+            }
+        }
+        for (const item of this.visibleItems) {
+            if (!this.everSeenItems.has(item)) {
+                logger.log(this.isMouseTraveling
+                    ? i18next.t('explore.spot_item_stop_moving', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop moving.` })
+                    : i18next.t('explore.spot_item_stop_exploring', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop exploring.` }), '#aaaaff');
+                this.stopAutoTravel();
+                return true;
+            }
+        }
+        return false;
+    }
+
     private stepAutoPathInner() {
-        let shouldPause = false;
+        if (this.isAutoExploring && !this.exploreAllowed()) {
+            this.stopAutoTravel();
+            return;
+        }
+        if (this.autoTravelDisturbed()) return;
+        const enemy = this.isAutoExploring ? this.adjacentExploreEnemy() : undefined;
+        if (enemy) this.autoPath = [{ ...enemy.loc }];
+        else if (this.isAutoExploring) this.recomputeExplorePath();
+        else {
+            // CE travelRoute: revalidate the WHOLE remaining known route before
+            // committing even its first step. Unknown live terrain is not read.
+            let from = this.player.loc;
+            for (const to of this.autoPath) {
+                if (!this.knownTravelStepAllowed(from, to)) {
+                    this.stopAutoTravel();
+                    return;
+                }
+                from = to;
+            }
+        }
         const next = this.autoPath[0];
         if (!next) return;
-
-        if (this.isMouseTraveling) {
-            // Mouse travel logic:
-            // 1. Prioritize destination. ONLY fight if blocked by an enemy.
-            const blockMob = this.getMonsterAt(next.x, next.y);
-            if (blockMob) {
-                // Path blocked by monster, attack it!
-                // （回合推进由 handlePlayerAction 的移动=攻击分支完成；
-                //   原先此处再补一次 playerTurnEnded 属双重推进 bug，P2-2 修复）
-                this.handlePlayerAction('move', { x: next.x - this.player.loc.x, y: next.y - this.player.loc.y }, 'system');
-                // Do not clear autoPath, keep trying to move to destination unless user interrupts later.
-                return;
-            }
-
-            // 2. Pause ONLY on brand new items found.
-            for (const item of this.visibleItems) {
-                if (!this.everSeenItems.has(item)) {
-                    logger.log(i18next.t('explore.spot_item_stop_moving', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop moving.` }), '#aaaaff');
-                    shouldPause = true;
-                    this.everSeenItems.add(item); // So we don't endlessly spam it if re-traveling
-                    break;
-                }
-            }
-        } else {
-            // Explore 'x' logic:
-            // 1. Check adjacent monsters. Attack and clear path if any.
-            let adjacentMonster = null;
-            for (const m of iterateCreatures(this.visibleMonsters)) {
-                if (Math.abs(m.loc.x - this.player.loc.x) <= 1 && Math.abs(m.loc.y - this.player.loc.y) <= 1) {
-                    adjacentMonster = m;
-                    break;
-                }
-                if (!this.everSeenMonsters.has(m)) {
-                    logger.log(i18next.t('explore.spot_monster_stop_exploring', { name: this.monsterDisplayName(m), defaultValue: `You spot a ${this.monsterDisplayName(m)} and stop exploring.` }), '#ffaaaa');
-                    shouldPause = true;
-                    this.everSeenMonsters.add(m);
-                    break;
-                }
-            }
-
-            if (adjacentMonster && !shouldPause) {
-                // （回合推进由 handlePlayerAction 完成；原先的双重 playerTurnEnded
-                //   已修，理由同上）
-                this.handlePlayerAction('move', { x: adjacentMonster.loc.x - this.player.loc.x, y: adjacentMonster.loc.y - this.player.loc.y }, 'system');
-                this.autoPath = [];
-                return;
-            }
-
-            // 2. Check items
-            if (!shouldPause) {
-                for (const item of this.visibleItems) {
-                    if (!this.everSeenItems.has(item)) {
-                        logger.log(i18next.t('explore.spot_item_stop_exploring', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop exploring.` }), '#aaaaff');
-                        shouldPause = true;
-                        this.everSeenItems.add(item);
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (shouldPause) {
-            this.autoPath = [];
+        const depth = this.depth;
+        const turn = this.stats.turns;
+        const confused = this.player.hasStatus('confused');
+        this.handlePlayerAction('move', { x: next.x - this.player.x, y: next.y - this.player.y }, 'system');
+        // W-18: commit one randomized manual move, then discard the old route.
+        // Failed movement, level changes and displacement also end the route.
+        if (confused || this.depth !== depth || this.isGameOver || this.stats.turns === turn) {
+            this.stopAutoTravel();
             return;
         }
-
-        // Ensure path is still valid space
-        if (!this.grid.getCell(next.x, next.y)?.isPassable) {
-            this.autoPath = [];
-            logger.log(i18next.t('move.path_blocked', { defaultValue: 'Path blocked.' }), '#ffaa88');
-            this.needsRender = true;
+        if (this.player.x === next.x && this.player.y === next.y) this.autoPath.shift();
+        else if (!enemy) {
+            this.stopAutoTravel();
             return;
         }
-
-        // W-18: confused travel must use the same randomized direction as a key
-        // press, and stop the stale planned path after that committed action.
-        if (this.player.hasStatus('confused')) {
-            this.handlePlayerAction('move', { x: next.x-this.player.loc.x, y: next.y-this.player.loc.y }, 'system');
-            return;
-        }
-        this.autoPath.shift();
-        const dx = next.x-this.player.loc.x, dy = next.y-this.player.loc.y;
-
-        // Move
-        this.player.loc.x = next.x;
-        this.player.loc.y = next.y;
-        this.moveEntrancedMonsters(dx, dy);
-        this.handleSpecialTileEntry();
-        this.needsRender = true;
-
-        // Auto-pickup if path reached destination
-        if (this.autoPath.length === 0) {
-            const hasLoot = this.items.some(i => i.loc.x === this.player.loc.x && i.loc.y === this.player.loc.y);
-            if (hasLoot) {
-                if (!this.isMouseTraveling || this.travelTargetItem) {
-                    this.handlePlayerAction('pickup', undefined, 'system');
-                }
-            }
-        }
-
-        timeSystem.currentTick += this.player.movementSpeed;
-        this.playerTurnEnded();
+        // Vision/turn effects can reveal something during this very step.
+        // CE sets disturbed then; do not queue an extra auto_step to notice it.
+        if (this.autoTravelDisturbed()) return;
+        if (this.isAutoExploring) {
+            // Keep a frontier queued even after reaching the previous goal;
+            // the following auto_step will rebuild again after vision changes.
+            if (!enemy) this.recomputeExplorePath();
+        } else if (!this.autoPath.length) this.stopAutoTravel();
     }
 
     public triggerGameOver(won: boolean, reason?: string, superVictory: boolean = false) {
