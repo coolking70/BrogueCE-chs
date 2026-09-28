@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // FE-1：紧凑模式的最近消息条（替代桌面侧栏日志的常驻部分）。
-// 长按地图得到的格子描述（hoveredText）显示在首行。点击打开完整日志抽屉。
+// 首行优先显示长按描述，否则显示玩家位置描述（均不进入日志）。点击打开日志抽屉。
 import { useGameHud } from '../ui/useGameHud';
 
 const props = withDefaults(defineProps<{ lines?: number }>(), { lines: 3 });

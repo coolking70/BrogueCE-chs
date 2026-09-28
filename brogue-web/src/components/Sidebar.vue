@@ -59,7 +59,7 @@ onMounted(() => {
       playerMaxHp.value = activeGame.player.maxHp;
       playerDepth.value = activeGame.depth;
       playerNutrition.value = activeGame.player.nutrition;
-      hoverText.value = activeGame.hoveredText;
+      hoverText.value = activeGame.hoveredText || activeGame.flavorText;
       // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见
       // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
       playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);

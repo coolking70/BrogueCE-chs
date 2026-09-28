@@ -1,0 +1,456 @@
+{
+  "counterfactual": "Only Game.ts restored to HEAD: original UR4 passes; current Game.ts restored before capture.",
+  "beforeSha256": "9b2232aee7c97a9945fc32d62442f465d98408407a471ae708f93b8c0bb44e8c",
+  "afterSha256": "45ddb6327018250393b582b6ec6565ad4d8cf56aa7e605d252ab6366b90b0565",
+  "differences": [
+    {
+      "path": "/death/animated/rows/0/events",
+      "before": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        },
+        {
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa"
+        }
+      ],
+      "after": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/0/log/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/0/log/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/animated/rows/0/state/run/logger/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/0/state/run/logger/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/animated/rows/1/events",
+      "before": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        },
+        {
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa"
+        }
+      ],
+      "after": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/1/log/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/1/log/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/animated/rows/1/state/run/logger/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/animated/rows/1/state/run/logger/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/continuous/rows/0/events",
+      "before": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        },
+        {
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa"
+        }
+      ],
+      "after": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/0/log/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/0/log/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/continuous/rows/0/state/run/logger/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/0/state/run/logger/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/continuous/rows/1/events",
+      "before": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        },
+        {
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa"
+        }
+      ],
+      "after": [
+        {
+          "text": "You catch fire!",
+          "color": "#ff6644"
+        },
+        {
+          "text": "You have burned to death.",
+          "color": "#ff0000"
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/1/log/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/1/log/nextId",
+      "before": 3,
+      "after": 2
+    },
+    {
+      "path": "/death/continuous/rows/1/state/run/logger/messages",
+      "before": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        },
+        {
+          "id": 2,
+          "text": "You are standing on 地面.",
+          "color": "#aaaaaa",
+          "count": 1
+        }
+      ],
+      "after": [
+        {
+          "id": 0,
+          "text": "You catch fire!",
+          "color": "#ff6644",
+          "count": 1
+        },
+        {
+          "id": 1,
+          "text": "You have burned to death.",
+          "color": "#ff0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "/death/continuous/rows/1/state/run/logger/nextId",
+      "before": 3,
+      "after": 2
+    }
+  ],
+  "counterfactualGameSha256": "457cf40a8bfabd7a8636d14377c88245cd436e000904446ab8ec931bd5280a94",
+  "x4bGameSha256": "0e1e135903cb2bafc29603b1ceaa704c1e6622cc389af1cb0ffb7622a17006f0",
+  "captureCommand": "UR4_CAPTURE=1 npx vitest run src/test/u_r4_trace.test.ts --maxWorkers=1",
+  "counterfactualExitCode": 0,
+  "captureExitCode": 0
+}

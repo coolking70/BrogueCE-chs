@@ -597,6 +597,7 @@ export class Game {
         this.boltAnimStartTime = 0;
         this.hoveredCell = null;
         this.hoveredText = '';
+        this.flavorText = '';
         this.floatingTexts = [];
         this.recordingStartAt = Date.now();
         this.recordedInputEvents = [];
@@ -2559,6 +2560,7 @@ export class Game {
             this.onRenderRequested();
             this.needsRender = false;
         }
+        this.updateFlavorText();
     }
 
     /** CE monsterName: a hidden creature's identity is not available to messages. */
@@ -2629,6 +2631,7 @@ export class Game {
 
     /** Shared by live input, replay/seek and autonomous steps, before any dispatch. */
     private applyCommand(action: string, data?: unknown, perform?: () => void): void {
+        this.clearHover();
         if (!this.isAdvancing) this.finishTransientDisplay();
         if (perform) {
             perform();
@@ -8194,6 +8197,7 @@ export class Game {
     private finishTurnEpilogue() {
         finishTurnEpilogue(this.timePorts());
         this.prepareFlareKnowledge();
+        this.updateFlavorText(); // CE Time.c:2876, including headless/animated turns.
     }
 
     // ---- P2-4 CE 口径动画（决策 E1-修订）+ 输入锁 ----
@@ -8611,6 +8615,7 @@ export class Game {
         }
         this.needsRender = true;
         this.onRenderRequested?.();
+        this.updateFlavorText();
         rng.setState(snapshot.rngState);
         return true;
     }
@@ -9183,8 +9188,8 @@ export class Game {
             refreshCell: pos => this.refreshDungeonFeatureCell(pos),
             flavor: pos => {
                 if (this.player.x === pos.x && this.player.y === pos.y && !this.player.hasStatus('levitating')) {
-                    logger.log(i18next.t('df.flavor', { terrain: this.getTerrainName(this.grid.getCell(pos.x, pos.y)!.terrain),
-                        defaultValue: 'You are standing on {{terrain}}.' }), '#aaaaaa');
+                    // CE Architect.c:3252: flavorMessage, never message/archive.
+                    this.updateFlavorText();
                 }
             },
             instantEffects: pos => {
@@ -9520,6 +9525,27 @@ export class Game {
 
     public hoveredCell: Pos | null = null;
     public hoveredText: string = '';
+    /** CE IO.c:3425: display only; rebuilt, never saved or recorded. */
+    public flavorText: string = '';
+
+    public clearHover(): void {
+        this.hoveredCell = null;
+        this.hoveredText = '';
+    }
+
+    public updateFlavorText(): void {
+        const cell = this.grid.getCell(this.player.x, this.player.y);
+        if (!cell) { this.flavorText = ''; return; }
+        // CE Time.c:63-81: standing uses tileFlavor; levitation uses describeLocation.
+        // Reuse web's localized terrain text, including its gas-layer preference.
+        const gas = cell.layers[DungeonLayer.GAS] ?? TerrainType.NOTHING;
+        this.flavorText = this.player.hasStatus('levitating')
+            ? this.describeLocation(this.player.x, this.player.y)
+            : i18next.t('df.flavor', {
+                terrain: this.getTerrainName(gas !== TerrainType.NOTHING ? gas : cell.terrain),
+                defaultValue: 'You are standing on {{terrain}}.',
+            });
+    }
 
     private stopAutoTravel() {
         this.autoPath = [];
@@ -9527,6 +9553,7 @@ export class Game {
         this.isMouseTraveling = false;
         this.travelTargetItem = undefined;
         this.needsRender = true;
+        this.updateFlavorText(); // CE Movement.c:61,1886,1924: travel ended.
     }
 
     private exploreAllowed(): boolean {
@@ -10327,13 +10354,16 @@ export class Game {
 
     public updateHover(x: number, y: number) {
         this.hoveredCell = { x, y };
+        this.hoveredText = this.describeLocation(x, y);
+    }
+
+    private describeLocation(x: number, y: number): string {
         const cell = this.grid.getCell(x, y);
 
         const sensedMonster = this.getMonsterAt(x, y);
         if (!cell || (!cell.hasMemory && !cell.isMagicMapped && !cell.isVisible
             && !(sensedMonster && canDisplayMonster(this.player, this.grid, sensedMonster)))) {
-            this.hoveredText = i18next.t('hover.unknown', { defaultValue: '未知' });
-            return;
+            return i18next.t('hover.unknown', { defaultValue: '未知' });
         }
 
         const entities: string[] = [];
@@ -10363,8 +10393,7 @@ export class Game {
 
         // CE IO.c:1278-1281 draws only the location marker on undiscovered cells.
         if (!cell.isVisible && !cell.hasMemory && !cell.isMagicMapped) {
-            this.hoveredText = entities.join('、');
-            return;
+            return entities.join('、');
         }
 
         const separator = i18next.t('hover.separator', { defaultValue: '、' });
@@ -10393,26 +10422,25 @@ export class Game {
 
         if (!cell.isVisible && (cell.hasMemory || cell.isMagicMapped)) {
             if (entities.length > 0) {
-                this.hoveredText = i18next.t('hover.remember_entity', {
+                baseText = i18next.t('hover.remember_entity', {
                     entities: entities.join(separator),
                     defaultValue: `你记得在这里看到过${entities.join('、')}。`
                 });
             } else {
-                this.hoveredText = i18next.t('hover.remember_terrain', {
+                baseText = i18next.t('hover.remember_terrain', {
                     terrain: tName,
                     defaultValue: `你记得这里是${tName}。`
                 });
             }
-        } else {
-            this.hoveredText = baseText;
         }
 
         if (knownLayers.includes(TerrainType.SIGN)) {
             const signText = this.signTexts.get(this.posKey(x, y));
             if (signText) {
-                this.hoveredText = `${this.hoveredText} ${signText}`;
+                baseText = `${baseText} ${signText}`;
             }
         }
+        return baseText;
     }
 
     private knownTravelTerrainAllowed(cell: Cell): boolean {

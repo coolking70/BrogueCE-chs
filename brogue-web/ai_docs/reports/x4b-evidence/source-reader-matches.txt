@@ -1,0 +1,14 @@
+src/test/u_03_whole_run_snapshot.test.ts:39:        const source = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);
+src/test/x4a_movement_rendering.test.ts:230:        const canvas = readFileSync('src/components/GameCanvas.vue', 'utf8');
+src/test/x4a_movement_rendering.test.ts:235:        const game = readFileSync('src/engine/Core/Game.ts', 'utf8');
+src/test/p2_4_animation_cadence.test.ts:279:        const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/v_1a_blueprint_items.test.ts:121:        const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');
+src/test/x4b_flavor_text.test.ts:161:        const sidebar = readFileSync('src/components/Sidebar.vue', 'utf8');
+src/test/x4b_flavor_text.test.ts:162:        const hud = readFileSync('src/ui/useGameHud.ts', 'utf8');
+src/test/x4b_flavor_text.test.ts:163:        const strip = readFileSync('src/components/MessageStrip.vue', 'utf8');
+src/test/c_7_lighting.test.ts:926:        const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');
+src/test/p2_1_tick_architecture.test.ts:252:        const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');
+src/test/r_1_appearance.test.ts:508:    const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/blueprint_center.test.ts:104:    const gameSource = fs.readFileSync("src/engine/Core/Game.ts", "utf8");
+src/test/p2_6_display_settings.test.ts:305:        const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/p2_6_display_settings.test.ts:315:        const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');

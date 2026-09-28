@@ -1561,3 +1561,14 @@ canvas export is black. Final drift/deep/trace attribution and full npm test pen
 
 - X3a 最终完成：补齐休眠激活及旧可见缓存，共 23 项新增守卫；256 组原 C oracle、11 个故障变体、seed22013 实际浏览器等待对照通过，0 页面错误。D1–40 生成探针 165 次楼梯事务无完成死亡对象，原基线不变。
 - 2026-09-27 19:05:11–19:38:12 CST，构建、完整 npm test、浅层 drift、独立深层均退出 0。全量 217 文件、4006 passed、0 failed、8 既有 skip、5 既有 todo；R∪S 212/212、全部 218 发现文件覆盖。987 冻结输入及发现清单零变化，12 个保护文件 SHA 不变，既有测试未改，CRLF=0、diff 检查通过。UR2/3/4 原黄金通过且未重录；报告 `ai_docs/reports/x3a.report.md` 已收口，预览服务关闭，未暂存、未提交。
+
+## 2026-09-28 X4b：位置描述行
+
+- 按 `ai_docs/tasks/x4b.prompt.md` 执行；不提交、不推送、不运行全量 npm test。
+- DF flavor 改为显示态，桌面/手机悬停优先，否则显示当前位置；复用本地化地形/位置描述，新增 U03 reset 合同，离开地图/下次命令清除临时查看。
+- CE `Time.c:63-81` 实际普通站立走 tileFlavor、悬浮走 describeLocation，已按源码区分；中档门禁和报告进行中。
+- 新增 9 项守卫首次通过；初次类型检查发现测试访问 private 字段，已仅修测试类型装配，随后类型检查/构建通过。
+- UR2/UR3 原黄金通过；UR4 仅 death 场景地形日志移除。单独回退 Game.ts 到 HEAD，原 UR4 通过；恢复生产文件后按 UR4_CAPTURE 原法重录一次，20 个差异路径全部是日志/事件及 nextId，RNG/时钟/命令/其余快照不变。
+- 74 文件中档门禁正在运行。Playwright 桌面 1440×900、手机 390×844 踩植被/开门/悬停/长按/恢复/拾取归档断言通过，0 控制台和页面错误；有头整页截图已目视检查，技能 canvas 黑图不作为验收。
+
+- X4b 最终完成：类型检查、构建、中档 74 文件（1318 passed / 4 既有 skip / 1 既有 todo / 0 failed）、drift 全部退出 0；403 个冻结输入零变化。UR2/UR3 原黄金和已归因重录 UR4、U03、录像/触屏/i18n 全绿；没有运行全量 npm test。报告 `ai_docs/reports/x4b.report.md` 含 CE 对照、去向清单、全部执行文件与结果；浏览器/开发服务关闭，PNG 均在本地忽略目录，未暂存/提交/推送，无剩余 TODO。

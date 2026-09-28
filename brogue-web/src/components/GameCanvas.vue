@@ -669,8 +669,11 @@ onMounted(async () => {
         const mapY = Math.floor(localPt.y / TILE_SIZE);
         if (mapX >= 0 && mapX < DCOLS && mapY >= 0 && mapY < DROWS) {
            game.updateHover(mapX, mapY);
+        } else {
+           game.clearHover();
         }
     });
+    pixiApp.canvas.addEventListener('pointerleave', () => game.clearHover());
 
     // FE-1：触屏目标选择的命令落地（全部经 ui/commands 的录制边界）。
     const runTapCommand = (cmd: TapCommand) => {

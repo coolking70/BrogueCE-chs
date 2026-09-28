@@ -41,7 +41,7 @@ export function useGameHud(logCount = 3) {
         statuses.value = creatureStatusRows(game.player, isSidebarVisibleStatus);
         const all = logger.messages;
         logs.value = all.slice(Math.max(0, all.length - logCount)).reverse();
-        hoverText.value = game.hoveredText;
+        hoverText.value = game.hoveredText || game.flavorText;
         replayActive.value = !!game.replayRecording;
         targeting.value = game.pendingArcana ? 'arcana' : game.isThrowing ? 'throw' : 'none';
     };
