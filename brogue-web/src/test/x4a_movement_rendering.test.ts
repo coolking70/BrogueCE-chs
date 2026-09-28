@@ -5,7 +5,6 @@ import ts from 'typescript';
 import { createHeadlessGame } from './harness';
 import { TerrainType as T } from '../engine/Map/Grid';
 import { ItemLoader } from '../engine/Items/ItemLoader';
-import { Item, ItemCategory } from '../engine/Items/Item';
 import { Monster, type MonsterData } from '../entities/Monster';
 import monsters from '../data/monsters.json';
 import { rng } from '../engine/Random';
@@ -102,14 +101,25 @@ describe('X4a per-step known exploration/travel', () => {
         const g = scene(); markGoal(g); g.handlePlayerAction('auto_explore');
         if (kind === 'monster') {
             const m = new Monster(15, 10, (monsters as MonsterData[]).find(m => m.id === 'rat')!);
-            g.monsters.push(m); g.visibleMonsters.add(m);
-        } else { const i = new Item('gold', '*', 0xffffff, ItemCategory.GOLD); i.loc = { x: 15, y: 10 }; g.items.push(i); g.visibleItems.add(i); }
+            g.monsters.push(m); g.grid.getCell(15, 10)!.isVisible = true;
+        } else {
+            // X3-U4: CE only interrupts on a key in a newly discovered cell.
+            const i = ItemLoader.spawnKey('iron_key', 15, 10)!; g.items.push(i);
+            (g as any).updateFieldOfViewDisplay(() => 1000);
+        }
+        // Publish the simulated sighting before the next automatic command;
+        // the renderer no longer owns visible-set/discovery side effects.
+        (g as any).refreshVisibleEntities();
         g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(0);
     });
     it('stops in the revealing step itself, without requiring another auto_step', () => {
         const g = scene(); markGoal(g); g.handlePlayerAction('auto_explore');
-        const item = new Item('gold', '*', 0xffffff, ItemCategory.GOLD); item.loc = { x: 15, y: 11 };
-        vi.spyOn(g as any, 'updateVision').mockImplementation(() => { g.items.push(item); g.visibleItems.add(item); });
+        const item = ItemLoader.spawnKey('iron_key', 15, 11)!;
+        tile(g, 15, 11, T.FLOOR, true);
+        vi.spyOn(g as any, 'updateVision').mockImplementation(() => {
+            if (!g.items.includes(item)) g.items.push(item);
+            (g as any).updateFieldOfViewDisplay(() => 1000);
+        });
         g.stepAutoPath();
         expect(g.stats.turns).toBe(1); expect(g.autoPath).toEqual([]);
         expect(g.exportRecording().events.map(e => e.action)).toEqual(['auto_explore', 'auto_step']);

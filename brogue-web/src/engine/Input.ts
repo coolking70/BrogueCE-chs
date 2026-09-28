@@ -128,6 +128,9 @@ export class InputManager {
                 case '》':
                     this.onActionCallback('stairs_down');
                     break;
+                default:
+                    this.onActionCallback('interrupt_auto');
+                    break;
                 // null dir means rest
             }
         }

@@ -47,7 +47,7 @@ import { staffProtection } from '../Combat/Shielding';
 import { staffEntrancementDuration, ENTRANCEMENT_DIRECTIONS, entrancementPassable, entrancementDiagonalBlocked } from '../Movement/Entrancement';
 import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
-import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
+import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent, monsterDamageAdjustmentAmount } from '../Combat/CombatFormulas';
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
 import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, enchantingAutoIdentifiesTarget, invokeCharm } from '../Items/ItemUseCoordinator';
@@ -71,6 +71,7 @@ import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
+import { visibleEntities, firstSeenFeatures } from '../Movement/AutoTravelVisibility';
 import { playerTravelTerrainAllowed, playerTravelDiagonalBlocked } from '../Movement/PlayerTravel';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { ScentMap, obstructsScent } from '../Map/Scent';
@@ -287,6 +288,10 @@ export class Game {
     private minersLightBaseFixpt: number = 0;
     public autoPath: Pos[] = [];
     private isAutoExploring = false;
+    /** CE rogue.disturbed: latched until a new automatic command starts. */
+    public disturbed = false;
+    private autoFight: { targetId: number; loc: Pos; expectedDamage: number; tillDeath: boolean } | null = null;
+    private pendingDiscoveryMessages: Array<{ text: string; color: string }> = [];
     private activeMonsterList = ownedMonsterList([], this);
     public get monsters(): Monster[] { return this.activeMonsterList; }
     public set monsters(value: Monster[]) { this.activeMonsterList = ownedMonsterList(value, this); }
@@ -524,7 +529,11 @@ export class Game {
         this.levelSeeds = initializeLevelSeeds(rng, this.currentSeed);
 
         ItemLoader.initConsumables();
+        logger.onDisturb = () => { this.disturbed = true; };
         logger.reset();
+        this.disturbed = false;
+        this.autoFight = null;
+        this.pendingDiscoveryMessages = [];
         timeSystem.currentTick = 0;
 
         // V-1c：奖励房配额计数随新局清零（CE RogueMain.c:292）。必须先于首层
@@ -2398,7 +2407,7 @@ export class Game {
      * isExplored/hasMemory，保持 web 既有行为）→ 折算渲染馈送。
      * 除 depth 读取外全程零 RNG 消费（paintLight 确定性口径见 LightMap.ts 头注释）。
      */
-    private updateVision(): void {
+    private updateVision(remember = true): void {
         this.refreshMinersLight();
 
         const lm = this.lightMap;
@@ -2465,7 +2474,7 @@ export class Game {
             maintainShadows: true,
         });
 
-        this.updateFieldOfViewDisplay((x, y) => lm.lightSumAt(x, y));
+        this.updateFieldOfViewDisplay((x, y) => lm.lightSumAt(x, y), remember);
 
         // 5. 渲染馈送（GameCanvas 消费 getLight 接口不变——引擎数据升级，
         //    渲染层零改动）
@@ -2497,6 +2506,9 @@ export class Game {
                 const visible = directlyVisible || cell.isClairvoyantVisible;
                 cell.isVisible = visible;
                 if (visible && remember) {
+                    // Capture the pre-DISCOVERED condition; publish at turn end.
+                    // Render/flare playback uses remember=false and cannot queue messages.
+                    if (this.isAutoTraveling()) this.queueTravelDiscoveries(cell, directlyVisible);
                     cell.isExplored = true;
                     cell.hasMemory = true;
                     cell.rememberedTerrain = cell.terrain;
@@ -2515,6 +2527,55 @@ export class Game {
 
     }
 
+    private travelTerrainName(terrain: TerrainType): string {
+        // CE tileCatalog descriptions for every current INTERRUPT flag carrier.
+        switch (terrain) {
+            case TerrainType.STAIRS_DOWN: return i18next.t('terrain.stairs_down', { defaultValue: 'a downward staircase' });
+            case TerrainType.STAIRS_UP: return i18next.t('terrain.stairs_up', { defaultValue: 'an upward staircase' });
+            case TerrainType.DUNGEON_PORTAL: return i18next.t('terrain.crystal_portal', { defaultValue: 'a crystal portal' });
+            case TerrainType.LOCKED_DOOR: return i18next.t('terrain.locked_door', { defaultValue: 'a locked iron door' });
+            case TerrainType.MONSTER_CAGE_CLOSED: return i18next.t('terrain.monster_cage_closed', { defaultValue: 'a locked iron cage' });
+            default: return this.getTerrainName(terrain);
+        }
+    }
+
+    private queueTravelDiscoveries(cell: Cell, directlyVisible: boolean): void {
+        const { keys, terrain } = firstSeenFeatures(cell, directlyVisible, this.items);
+        for (const item of keys) this.pendingDiscoveryMessages.push({
+            text: i18next.t('vision.see_key', { item: item.displayName, defaultValue: 'You see {{item}}.' }), color: '#cccccc',
+        });
+        if (terrain !== undefined) this.pendingDiscoveryMessages.push({
+            text: i18next.t('vision.see_terrain', { terrain: this.travelTerrainName(terrain), defaultValue: 'You see {{terrain}}.' }), color: '#cccccc',
+        });
+    }
+
+    /** CE Time.c:2764-2797. Pure collection is independent of rendering;
+     * only this simulation boundary publishes discoveries and commits sets. */
+    private refreshVisibleEntities(announce = true): void {
+        const current = visibleEntities(this.player, this.grid, this.monsters, this.items);
+        if (announce) {
+            for (const message of this.pendingDiscoveryMessages) logger.log(message.text, message.color);
+            for (const monster of iterateCreatures(current.monsters)) {
+                if (!monster.isAlly && !this.visibleMonsters.has(monster) && !this.everSeenMonsters.has(monster)) {
+                    this.disturbed = true;
+                    if (this.isAutoTraveling()) {
+                        const name = this.monsterDisplayName(monster);
+                        const directlySeen = canDirectlySeeMonster(this.player, this.grid, monster)
+                            && !this.grid.getCell(monster.x, monster.y)?.isClairvoyantVisible;
+                        logger.log(directlySeen
+                            ? i18next.t('vision.see_monster', { monster: name, defaultValue: 'You see a {{monster}}.' })
+                            : i18next.t('vision.sense_monster', { monster: name, defaultValue: 'You sense a {{monster}}.' }), '#ffccaa');
+                    }
+                }
+                // Retain captive sightings for this automatic command.
+                if (monster.isCaged) this.everSeenMonsters.add(monster);
+            }
+        }
+        this.pendingDiscoveryMessages = [];
+        this.visibleMonsters = current.monsters;
+        this.visibleItems = current.items;
+    }
+
     public update() {
         // Run events until it's the player's turn
         // OR the queue is empty
@@ -2522,36 +2583,7 @@ export class Game {
         if (this.needsRender && this.onRenderRequested) {
             // Update FOV & Lighting before rendering
             // C-7：CE updateVision 全链（掩码→光照→VISIBLE 阈值→渲染馈送）
-            this.updateVision();
-
-            // Check discoveries
-            const currentVisMonsters = new Set<Monster>();
-            const currentVisItems = new Set<Item>();
-
-            for (const m of this.monsters) {
-                if (canSeeMonster(this.player, this.grid, m)) {
-                    currentVisMonsters.add(m);
-                    if (!this.visibleMonsters.has(m)) {
-                        const seeMsg = i18next.t('vision.see_monster', { monster: m.name, defaultValue: `You see a ${m.name}.` });
-                        const senseMsg = i18next.t('vision.sense_monster', { monster: m.name, defaultValue: `You sense a ${m.name}.` });
-                        logger.log(canDirectlySeeMonster(this.player, this.grid, m) ? seeMsg : senseMsg, '#ffccaa');
-                    }
-                }
-            }
-
-            for (const i of this.items) {
-                const cell = this.grid.getCell(i.loc.x, i.loc.y);
-                if (cell && cell.isVisible) {
-                    currentVisItems.add(i);
-                    if (!this.visibleItems.has(i)) {
-                        const iName = (i as any).displayName || i.name;
-                        logger.log(i18next.t('vision.notice_item', { item: iName, defaultValue: `You notice a ${iName}.` }), '#cccccc');
-                    }
-                }
-            }
-
-            this.visibleMonsters = currentVisMonsters;
-            this.visibleItems = currentVisItems;
+            this.updateVision(false);
 
             // C-7：动态光照已并入 updateVision（地形光/燃烧生物/矿灯按 CE
             // Light.c:208-240 顺序泼入，渲染馈送由 fillRenderFromLighting 折算）。
@@ -2631,6 +2663,10 @@ export class Game {
 
     /** Shared by live input, replay/seek and autonomous steps, before any dispatch. */
     private applyCommand(action: string, data?: unknown, perform?: () => void): void {
+        logger.onDisturb = () => { this.disturbed = true; };
+        // All explicit input, including modal/unknown keys, cancels automation.
+        // Nested movement from auto_step shares the same command boundary.
+        if (!this.inAutoTravelStep && action !== 'auto_step') this.stopAutoTravel();
         this.clearHover();
         if (!this.isAdvancing) this.finishTransientDisplay();
         if (perform) {
@@ -3910,6 +3946,7 @@ export class Game {
                                 const cell = this.grid.getCell(x, y);
                                 if (!cell) continue;
                                 if (discoverSecretsAt(this.grid, x, y)) { // CE discover()（Movement.c:2437）
+                                    this.disturbed = true;
                                     cell.isDiscovered = true;
                                     cell.isExplored = false;
                                 }
@@ -6120,7 +6157,7 @@ export class Game {
     public tryVomit(entity: Creature): boolean {
         if (!entity.hasStatus('nauseous') || !rng.randPercent(25)) return false;
         spawnDungeonFeature(this.grid, entity.x, entity.y, catalogFeature(DF.DF_VOMIT), false);
-        if (entity === this.player || this.visibleMonsters.has(entity as Monster)) {
+        if (!this.isAutoTraveling() && (entity === this.player || this.visibleMonsters.has(entity as Monster))) {
             logger.log(i18next.t('status.vomit', { name: entity === this.player ? '你' : entity.name,
                 defaultValue: `${entity === this.player ? '你' : entity.name}剧烈地呕吐。` }), '#b7a26b');
         }
@@ -6975,15 +7012,16 @@ export class Game {
             );
         }
         if (res.hit) {
+            if (res.damage === 0) this.disturbed = true; // CE Combat.c:1295
             const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
             if (res.backstab) {
-                logger.log(i18next.t('combat.backstab', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${this.monsterDisplayName(target)} for ${res.damage} damage!` }), '#ff4444');
+                logger.combat(i18next.t('combat.backstab', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${this.monsterDisplayName(target)} for ${res.damage} damage!` }), '#ff4444');
             } else if (lungeAttack) {
                 // B-1 登记项由 P1-37 补齐：CE 对突进命中追加"（猛烈突刺）"
                 // 措辞（Combat.c:1298-1299），中文 UI 走专用文案。
-                logger.log(i18next.t('combat.lunge_hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
+                logger.combat(i18next.t('combat.lunge_hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
             } else {
-                logger.log(i18next.t('combat.hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
+                logger.combat(i18next.t('combat.hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
             }
             this.spawnFloatingText(`-${res.damage}`, target.loc.x, target.loc.y, 0xff5555);
             // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
@@ -6994,7 +7032,7 @@ export class Game {
             // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
             this.trySplitMonster(target, this.player);
         } else {
-            logger.log(i18next.t('combat.miss', { monster: this.monsterDisplayName(target), defaultValue: `You missed the ${this.monsterDisplayName(target)}.` }), '#888888');
+            logger.combat(i18next.t('combat.miss', { monster: this.monsterDisplayName(target), defaultValue: `You missed the ${this.monsterDisplayName(target)}.` }), '#888888');
             this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), target.loc.x, target.loc.y, 0xaaaaaa);
         }
 
@@ -7579,6 +7617,7 @@ export class Game {
                 }
                 logger.log(i18next.t('fall.injured', { defaultValue: 'You are injured by the fall.' }), '#ff6666');
                 this.player.hp -= this.player.absorbShieldDamage(damage);
+                this.disturbed = true;
                 if (this.player.hp <= 0) {
                     // CE :1161-1163 killCreature + gameOver("Killed by a fall")
                     this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }));
@@ -8311,6 +8350,7 @@ export class Game {
     private finishTurnEpilogue() {
         finishTurnEpilogue(this.timePorts());
         this.prepareFlareKnowledge();
+        this.refreshVisibleEntities();
         this.updateFlavorText(); // CE Time.c:2876, including headless/animated turns.
     }
 
@@ -8561,6 +8601,9 @@ export class Game {
             examinedEntityIds: [...this.examinedEntityIds],
             autoPath: this.autoPath, isMouseTraveling: this.isMouseTraveling, travelTargetItemId: this.travelTargetItem?.id ?? null,
             isAutoExploring: this.isAutoExploring || undefined,
+            disturbed: this.isAutoTraveling() ? this.disturbed : undefined,
+            autoFight: this.autoFight ?? undefined,
+            pendingDiscoveryMessages: this.pendingDiscoveryMessages.length ? this.pendingDiscoveryMessages : undefined,
             recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,
             signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
             testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,
@@ -8688,6 +8731,11 @@ export class Game {
         this.examinedEntityIds = new Set(run.examinedEntityIds);
         this.autoPath = run.autoPath; this.isMouseTraveling = run.isMouseTraveling;
         this.isAutoExploring = run.isAutoExploring ?? false;
+        this.disturbed = run.disturbed ?? false;
+        this.autoFight = run.autoFight ?? null;
+        this.pendingDiscoveryMessages = run.pendingDiscoveryMessages ?? [];
+        logger.onDisturb = () => { this.disturbed = true; };
+        logger.blockCombatText = false;
         this.travelTargetItem = run.travelTargetItemId === null ? undefined : entityGraph.items.get(run.travelTargetItemId);
         this.recordedInputEvents = run.recordedInputEvents; this.recordedInputIndex = run.recordedInputIndex;
         this.recordingStartAt = Date.now();
@@ -8835,7 +8883,7 @@ export class Game {
         if (!entity.hasStatus('immune_fire')
             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
             if (entity instanceof Monster) entity.takeDamage(damage, true, this.grid);
-            else entity.hp -= damage; // CE burning bypasses shields.
+            else { entity.hp -= damage; this.disturbed = true; } // CE burning bypasses shields.
             if (entity === this.player) {
                 this.lastDamageSource = 'fire';
                 if (entity.hp <= 0) {
@@ -8920,6 +8968,7 @@ export class Game {
             }
             this.lastDamageSource = 'violent explosion';
             entity.hp -= entity.absorbShieldDamage(damage);
+            this.disturbed = true;
             return true;
         }
 
@@ -8969,10 +9018,10 @@ export class Game {
         this.player.setStatusDuration('stuck', this.player.getStatusDuration('stuck') - 1);
         if (!this.player.hasStatus('stuck')) {
             breakEntanglingTerrain(this.grid, this.player.x, this.player.y);
-            logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
+            if (!this.isAutoTraveling()) logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
             return false; // the final attempt also completes the move
         }
-        logger.log(i18next.t('env.stuck_web', { defaultValue: 'You struggle against the sticky web.' }), '#aaaaaa');
+        if (!this.isAutoTraveling()) logger.log(i18next.t('env.stuck_web', { defaultValue: 'You struggle against the sticky web.' }), '#aaaaaa');
         this.needsRender = true;
         timeSystem.currentTick += this.player.movementSpeed;
         this.moveEntrancedMonsters(dx, dy);
@@ -8990,6 +9039,7 @@ export class Game {
             return;
         }
         const first = !entity.hasStatus('nauseous');
+        if (entity === this.player) this.disturbed = true; // CE Time.c:425, even on a silent refresh.
         entity.applyStatus('nauseous', 20);
         if (first && entity instanceof Monster && this.visibleMonsters.has(entity)
             && entity.state === MonsterState.ASLEEP) entity.state = MonsterState.HUNTING;
@@ -9192,6 +9242,7 @@ export class Game {
                             // 为 0"（外层还有 canDirectlySeeMonster——web 对应
                             // visibleMonsters），不是"本次刷新生效"。
                             const wasConfused = entity.getStatusDuration('confused') > 0;
+                            if (entity === this.player) this.disturbed = true; // CE Time.c:446
                             const applied = entity === this.player
                                 ? entity.applyStatus('confused', 25)
                                 : this.applyStatusToMonster(entity as Monster, 'confused', 25, 'gas');
@@ -9214,6 +9265,7 @@ export class Game {
                             && ((entity as Monster).hasBehavior('MONST_INANIMATE')
                                 || (entity as Monster).isInvulnerable());
                         if (!exempt) {
+                            if (entity === this.player) this.disturbed = true; // CE Time.c:492
                             const applied = entity === this.player
                                 ? entity.applyStatus('paralyzed', 20)
                                 : this.applyStatusToMonster(entity as Monster, 'paralyzed', 20, 'gas');
@@ -9461,7 +9513,7 @@ export class Game {
         }
         if (this.player.x === origin.x && this.player.y === origin.y) this.player.applyStatus('aggravating', radius);
         if (distances[this.player.x]?.[this.player.y]! <= radius) {
-            discoverSecretsAt(this.grid, origin.x, origin.y);
+            if (discoverSecretsAt(this.grid, origin.x, origin.y)) this.disturbed = true;
             const cell = this.grid.getCell(origin.x, origin.y)!;
             cell.hasMemory = true; cell.isDiscovered = true; cell.isExplored = true;
             this.colorFlash('gray', radius, origin, 10, true);
@@ -9662,6 +9714,7 @@ export class Game {
     }
 
     private stopAutoTravel() {
+        this.autoFight = null;
         this.autoPath = [];
         this.isAutoExploring = false;
         this.isMouseTraveling = false;
@@ -9693,8 +9746,11 @@ export class Game {
         if (this.isInventoryOpen) return;
         this.stopAutoTravel();
         if (!this.exploreAllowed()) return;
+        this.refreshVisibleEntities(false);
         this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
         this.everSeenItems = new Set(this.visibleItems);
+        this.disturbed = false;
+        this.pendingDiscoveryMessages = [];
         this.isAutoExploring = true;
         const enemy = this.adjacentExploreEnemy();
         if (enemy) {
@@ -9757,7 +9813,10 @@ export class Game {
         }
 
         this.stopAutoTravel();
+        this.refreshVisibleEntities(false);
         this.isMouseTraveling = true;
+        this.disturbed = false;
+        this.pendingDiscoveryMessages = [];
         this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
         this.everSeenItems.clear();
 
@@ -9990,6 +10049,7 @@ export class Game {
         const wasDoor = cell.layers.includes(TerrainType.SECRET_DOOR);
         if (!discoverTerrain(this.grid, x, y)) return false;
         cell.isDiscovered = true;
+        this.disturbed = true;
         if (wasDoor) logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
         this.needsRender = true;
         return true;
@@ -10568,6 +10628,10 @@ export class Game {
     }
 
     public setAutoPath(x: number, y: number) {
+        this.disturbed = false;
+        this.autoFight = null;
+        this.pendingDiscoveryMessages = [];
+        this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
         this.isAutoExploring = false;
         const knownPassable = (px: number, py: number): boolean => {
             const cell = this.grid.getCell(px, py);
@@ -10606,24 +10670,21 @@ export class Game {
     }
 
     private autoTravelDisturbed(): boolean {
-        // CE disturbed: only observable new creatures/items stop automation.
-        for (const monster of iterateCreatures(this.visibleMonsters)) {
-            if (!this.everSeenMonsters.has(monster)) {
-                logger.log(i18next.t('explore.spot_monster_stop_exploring', { name: this.monsterDisplayName(monster), defaultValue: `You spot a ${this.monsterDisplayName(monster)} and stop exploring.` }), '#ffaaaa');
-                this.stopAutoTravel();
-                return true;
-            }
-        }
-        for (const item of this.visibleItems) {
-            if (!this.everSeenItems.has(item)) {
-                logger.log(this.isMouseTraveling
-                    ? i18next.t('explore.spot_item_stop_moving', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop moving.` })
-                    : i18next.t('explore.spot_item_stop_exploring', { name: item.displayName, defaultValue: `You spot a ${item.displayName} and stop exploring.` }), '#aaaaff');
-                this.stopAutoTravel();
-                return true;
-            }
-        }
-        return false;
+        if (!this.disturbed) return false;
+        this.stopAutoTravel();
+        return true;
+    }
+
+    /** CE startFighting, yielded between attacks to the existing auto_step
+     * scheduler so a browser key can interrupt. Damage/tillDeath are latched
+     * once, and ordinary combat text is blocked for the whole attack round. */
+    private beginAutoFight(enemy: Monster): void {
+        if (this.autoFight?.targetId === enemy.id) return;
+        let expectedDamage = Math.trunc(CombatSystem.parseDamageString(enemy.damageString).max
+            * monsterDamageAdjustmentAmount(enemy.weaknessAmount));
+        if (this.mode === 'easy') expectedDamage = Math.trunc(expectedDamage / 5);
+        this.autoFight = { targetId: enemy.id, loc: { ...enemy.loc }, expectedDamage,
+            tillDeath: this.player.hasStatus('hallucinating') };
     }
 
     private stepAutoPathInner() {
@@ -10633,7 +10694,10 @@ export class Game {
         }
         if (this.autoTravelDisturbed()) return;
         const enemy = this.isAutoExploring ? this.adjacentExploreEnemy() : undefined;
-        if (enemy) this.autoPath = [{ ...enemy.loc }];
+        if (enemy) {
+            this.beginAutoFight(enemy);
+            this.autoPath = [{ ...enemy.loc }];
+        }
         else if (this.isAutoExploring) this.recomputeExplorePath();
         else {
             // CE travelRoute: revalidate the WHOLE remaining known route before
@@ -10650,9 +10714,21 @@ export class Game {
         const next = this.autoPath[0];
         if (!next) return;
         const depth = this.depth;
+        const origin = { ...this.player.loc };
         const turn = this.stats.turns;
         const confused = this.player.hasStatus('confused');
-        this.handlePlayerAction('move', { x: next.x - this.player.x, y: next.y - this.player.y }, 'system');
+        const fight = enemy ? this.autoFight : null;
+        const oldBlock = logger.blockCombatText;
+        logger.blockCombatText = !!fight;
+        try {
+            this.handlePlayerAction('move', { x: next.x - this.player.x, y: next.y - this.player.y }, 'system');
+        } finally {
+            logger.blockCombatText = oldBlock;
+        }
+        // CE do/while allows the first attack, then checks HP before continuing.
+        // Latch the stop so the next frame cannot restart the same fight.
+        if (fight && !fight.tillDeath && this.player.hp <= fight.expectedDamage) this.disturbed = true;
+        if (fight && (enemy!.hp <= 0 || this.getMonsterAt(fight.loc.x, fight.loc.y) !== enemy)) this.autoFight = null;
         // W-18: commit one randomized manual move, then discard the old route.
         // Failed movement, level changes and displacement also end the route.
         if (confused || this.depth !== depth || this.isGameOver || this.stats.turns === turn) {
@@ -10660,7 +10736,7 @@ export class Game {
             return;
         }
         if (this.player.x === next.x && this.player.y === next.y) this.autoPath.shift();
-        else if (!enemy) {
+        else if (!enemy && (this.player.x !== origin.x || this.player.y !== origin.y)) {
             this.stopAutoTravel();
             return;
         }

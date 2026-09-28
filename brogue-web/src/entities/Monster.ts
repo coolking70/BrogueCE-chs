@@ -1332,11 +1332,11 @@ export class Monster extends Creature {
         } else if (target === game.player) {
             if (result.damage > 0) {
                 game.lastDamageSource = game.monsterDisplayName(this);
-                logger.log(i18next.t('combat.monster_hits_you', {
+                logger.combat(i18next.t('combat.monster_hits_you', {
                     monster: game.monsterDisplayName(this),
                     damage: result.damage,
                     defaultValue: `The ${game.monsterDisplayName(this)} hits you for ${result.damage} damage.`
-                }), '#ff6666');
+                }), '#ff6666', game.player.hp <= 0);
                 game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                 game.spawnBlood(game.player.loc.x, game.player.loc.y);
                 if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
@@ -1360,7 +1360,7 @@ export class Monster extends Creature {
                     }), '#ff0000');
                 }
             } else {
-                logger.log(i18next.t('combat.monster_misses_you', {
+                logger.combat(i18next.t('combat.monster_misses_you', {
                     monster: game.monsterDisplayName(this),
                     defaultValue: `The ${game.monsterDisplayName(this)} misses you.`
                 }), '#aaaaaa');
@@ -1381,12 +1381,12 @@ export class Monster extends Creature {
                 : voice === 'discordant' ? 'combat.discordant_misses'
                 : 'combat.geometry_misses_monster';
             if (result.damage > 0) {
-                logger.log(i18next.t(hitKey, {
+                logger.combat(i18next.t(hitKey, {
                     attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(target), damage: result.damage,
                     defaultValue: voice === 'discordant'
                         ? `The ${game.monsterDisplayName(this)} turns on the ${game.monsterDisplayName(target)} for ${result.damage} damage!`
                         : `The ${game.monsterDisplayName(this)} hits the ${game.monsterDisplayName(target)} for ${result.damage} damage.`
-                }), '#ff88aa');
+                }), '#ff88aa', target.hp <= 0);
                 game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
                 game.spawnBlood(target.loc.x, target.loc.y);
                 (game as any).trySplitMonster(target, this);
@@ -1397,7 +1397,7 @@ export class Monster extends Creature {
                     game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), 'hallucinating', 15);
                 }
             } else {
-                logger.log(i18next.t(missKey, {
+                logger.combat(i18next.t(missKey, {
                     attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(target),
                     defaultValue: `The ${game.monsterDisplayName(this)} misses the ${game.monsterDisplayName(target)}.`
                 }), '#aaaaaa');
@@ -1603,10 +1603,10 @@ export class Monster extends Creature {
                             defaultValue: `Your ${game.monsterDisplayName(this)} seizes the ${game.monsterDisplayName(target)}!`
                         }), '#ffcc88');
                     } else if (result.damage > 0) {
-                        logger.log(i18next.t('combat.ally_hits', {
+                        logger.combat(i18next.t('combat.ally_hits', {
                             ally: game.monsterDisplayName(this), target: game.monsterDisplayName(target), damage: result.damage,
                             defaultValue: `Your ${game.monsterDisplayName(this)} hits the ${game.monsterDisplayName(target)} for ${result.damage} damage.`
-                        }), '#88ff88');
+                        }), '#88ff88', target.hp <= 0);
                         game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
                         if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                             game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
@@ -1618,7 +1618,7 @@ export class Monster extends Creature {
                         // 命中后，若目标带 MA_CLONE_SELF_ON_DEFEND 且仍存活，尝试分裂。
                         (game as any).trySplitMonster(target, this);
                     } else {
-                        logger.log(i18next.t('combat.ally_misses', { ally: game.monsterDisplayName(this), target: game.monsterDisplayName(target), defaultValue: `Your ${game.monsterDisplayName(this)} misses the ${game.monsterDisplayName(target)}.` }), '#aaaaaa');
+                        logger.combat(i18next.t('combat.ally_misses', { ally: game.monsterDisplayName(this), target: game.monsterDisplayName(target), defaultValue: `Your ${game.monsterDisplayName(this)} misses the ${game.monsterDisplayName(target)}.` }), '#aaaaaa');
                     }
                     // P4-5：CE specialHit()（Combat.c:534）只在"命中且未被杀死"时
                     // 调用 processStaggerHit——kamikaze/seize 分支已经 return，不会
@@ -1758,14 +1758,14 @@ export class Monster extends Creature {
                         }), '#ffcc88');
                     } else if (result.damage > 0) {
                         game.lastDamageSource = game.monsterDisplayName(this);
-                        logger.log(i18next.t('combat.monster_hits_you', {
+                        logger.combat(i18next.t('combat.monster_hits_you', {
                             monster: game.monsterDisplayName(this), damage: result.damage,
                             defaultValue: `The ${game.monsterDisplayName(this)} hits you for ${result.damage} damage.`
-                        }), '#ff6666');
+                        }), '#ff6666', game.player.hp <= 0);
                         game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                         game.spawnBlood(game.player.loc.x, game.player.loc.y);
                     } else {
-                        logger.log(i18next.t('combat.monster_misses_you', {
+                        logger.combat(i18next.t('combat.monster_misses_you', {
                             monster: game.monsterDisplayName(this),
                             defaultValue: `The ${game.monsterDisplayName(this)} misses you.`
                         }), '#aaaaaa');
@@ -1844,10 +1844,10 @@ export class Monster extends Creature {
                                 defaultValue: `The ${game.monsterDisplayName(this)} seizes the ${game.monsterDisplayName(other)}!`
                             }), '#ffcc88');
                         } else if (result.damage > 0) {
-                            logger.log(i18next.t('combat.discordant_hits', {
+                            logger.combat(i18next.t('combat.discordant_hits', {
                                 attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(other), damage: result.damage,
                                 defaultValue: `The ${game.monsterDisplayName(this)} turns on the ${game.monsterDisplayName(other)} for ${result.damage} damage!`
-                            }), '#ff88aa');
+                            }), '#ff88aa', other.hp <= 0);
                             game.spawnFloatingText(`-${result.damage}`, other.loc.x, other.loc.y, 0xff5555);
                             game.spawnBlood(other.loc.x, other.loc.y);
                             if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
@@ -1858,7 +1858,7 @@ export class Monster extends Creature {
                             }
                             (game as any).trySplitMonster(other, this);
                         } else {
-                            logger.log(i18next.t('combat.discordant_misses', {
+                            logger.combat(i18next.t('combat.discordant_misses', {
                                 attacker: game.monsterDisplayName(this), target: game.monsterDisplayName(other),
                                 defaultValue: `The ${game.monsterDisplayName(this)} misses the ${game.monsterDisplayName(other)}.`
                             }), '#aaaaaa');
@@ -1920,11 +1920,11 @@ export class Monster extends Creature {
                     }), '#ffcc88');
                 } else if (result.damage > 0) {
                     game.lastDamageSource = game.monsterDisplayName(this);
-                    logger.log(i18next.t('combat.monster_hits_you', {
+                    logger.combat(i18next.t('combat.monster_hits_you', {
                         monster: game.monsterDisplayName(this),
                         damage: result.damage,
                         defaultValue: `The ${game.monsterDisplayName(this)} hits you for ${result.damage} damage.`
-                    }), '#ff6666');
+                    }), '#ff6666', game.player.hp <= 0);
                     game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                     game.spawnBlood(game.player.loc.x, game.player.loc.y);
                     if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
@@ -1948,7 +1948,7 @@ export class Monster extends Creature {
                         }), '#ff0000');
                     }
                 } else {
-                    logger.log(i18next.t('combat.monster_misses_you', {
+                    logger.combat(i18next.t('combat.monster_misses_you', {
                         monster: game.monsterDisplayName(this),
                         defaultValue: `The ${game.monsterDisplayName(this)} misses you.`
                     }), '#aaaaaa');
@@ -2165,11 +2165,11 @@ export class Monster extends Creature {
             && !this.hasCEBehavior('MONST_IMMUNE_TO_WEBS')) {
             if (!this.isInvulnerable()) this.setStatusDuration('stuck', this.getStatusDuration('stuck') - 1);
             if (!this.isInvulnerable() && this.hasStatus('stuck')) {
-                if (game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_stuck_web', { monster: game.monsterDisplayName(this), defaultValue: 'The {{monster}} struggles against the web.' }), '#aaaaaa');
+                if (!game.isAutoTraveling() && game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_stuck_web', { monster: game.monsterDisplayName(this), defaultValue: 'The {{monster}} struggles against the web.' }), '#aaaaaa');
                 this.ticksUntilTurn = this.movementSpeed;
                 return;
             }
-            if (game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_break_web', { monster: game.monsterDisplayName(this), defaultValue: 'The {{monster}} breaks the web.' }), '#aaaaaa');
+            if (!game.isAutoTraveling() && game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_break_web', { monster: game.monsterDisplayName(this), defaultValue: 'The {{monster}} breaks the web.' }), '#aaaaaa');
             breakEntanglingTerrain(game.grid, this.x, this.y);
         }
 

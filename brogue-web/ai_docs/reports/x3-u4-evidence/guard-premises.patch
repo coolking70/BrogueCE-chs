@@ -1,0 +1,120 @@
+diff --git a/brogue-web/src/test/p4_3_special_monster_flags.test.ts b/brogue-web/src/test/p4_3_special_monster_flags.test.ts
+index 404527d8..e05dd1d1 100644
+--- a/brogue-web/src/test/p4_3_special_monster_flags.test.ts
++++ b/brogue-web/src/test/p4_3_special_monster_flags.test.ts
+@@ -181,6 +181,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
+         const phantom = new Monster(6, 5, monsterDataById('phantom'));
+         game.monsters.push(phantom);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         expect(game.visibleMonsters.has(phantom)).toBe(false);
+@@ -194,6 +195,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
+         game.monsters.push(phantom);
+         game.player.setStatusDuration('telepathy', 50);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         // U21a/CE Monsters.c:203–237: invisible & not in gas ⇒ monsterIsHidden; telepathy cannot override it.
+@@ -207,6 +209,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
+         const goblin = new Monster(6, 5, monsterDataById('goblin'));
+         game.monsters.push(goblin);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         expect(game.visibleMonsters.has(goblin)).toBe(true);
+diff --git a/brogue-web/src/test/w_18_entrancement.test.ts b/brogue-web/src/test/w_18_entrancement.test.ts
+index d36569b4..c0e820ae 100644
+--- a/brogue-web/src/test/w_18_entrancement.test.ts
++++ b/brogue-web/src/test/w_18_entrancement.test.ts
+@@ -98,9 +98,9 @@ describe('W-18 required action-level chain and P2',()=>{
+   m.setStatusDuration('entranced',1);const before={...m.loc};wait(g);expect(m.hasStatus('entranced')).toBe(false);expect(m.loc).not.toEqual(before);
+  });
+  it('mouse/automatic path steps also drive one opposite step; confused path uses the actual direction',()=>{
+-  const g=scene(),m=mob(g);cast(g,m);g.isMouseTraveling=true;g.autoPath=[{x:5,y:5},{x:6,y:5}];g.visibleItems.clear();
++  const g=scene(),m=mob(g);cast(g,m);g.handleMouseTravel(6,5);g.visibleItems.clear();
+   g.stepAutoPath();expect(g.player.loc.x).toBe(5);expect(m.loc.x).toBe(9);g.stepAutoPath();expect(g.player.loc.x).toBe(6);expect(m.loc.x).toBe(8);
+-  g.player.setStatusDuration('confused',10);g.autoPath=[{x:7,y:5}];vi.spyOn(rng,'randRange').mockReturnValue(0);g.stepAutoPath();
++  g.player.setStatusDuration('confused',10);g.handleMouseTravel(7,5);vi.spyOn(rng,'randRange').mockReturnValue(0);g.stepAutoPath();
+   expect(g.player.loc).toEqual({x:6,y:4});expect(m.loc).toEqual({x:8,y:6});expect(g.autoPath).toEqual([]);
+  });
+  it('wait leaves an adjacent entranced enemy inert and player unharmed',()=>{
+diff --git a/brogue-web/src/test/x3b_display_recording.test.ts b/brogue-web/src/test/x3b_display_recording.test.ts
+index 26f7db48..148c8857 100644
+--- a/brogue-web/src/test/x3b_display_recording.test.ts
++++ b/brogue-web/src/test/x3b_display_recording.test.ts
+@@ -92,7 +92,7 @@ describe('X3b display frames at the shared command boundary', () => {
+                 expect(g.grid.getCell(rat.x, rat.y)!.isVisible).toBe(false);
+             });
+             // Re-enter through the public render-loop entry, not executeCommand.
+-            g.autoPath = [{ x: 11, y: 10 }];
++            g.handleMouseTravel(11, 10); // New travel command clears the preceding potion message's disturbance.
+             g.stepAutoPath();
+             expect(g.player.loc).toEqual({ x: 11, y: 10 });
+             expect(g.exportRecording().events.map(e => e.action)).toEqual(['item:command', 'help', 'auto_step']);
+diff --git a/brogue-web/src/test/x4a_movement_rendering.test.ts b/brogue-web/src/test/x4a_movement_rendering.test.ts
+index 21d01d25..c8a311bc 100644
+--- a/brogue-web/src/test/x4a_movement_rendering.test.ts
++++ b/brogue-web/src/test/x4a_movement_rendering.test.ts
+@@ -5,7 +5,6 @@ import ts from 'typescript';
+ import { createHeadlessGame } from './harness';
+ import { TerrainType as T } from '../engine/Map/Grid';
+ import { ItemLoader } from '../engine/Items/ItemLoader';
+-import { Item, ItemCategory } from '../engine/Items/Item';
+ import { Monster, type MonsterData } from '../entities/Monster';
+ import monsters from '../data/monsters.json';
+ import { rng } from '../engine/Random';
+@@ -102,14 +101,25 @@ describe('X4a per-step known exploration/travel', () => {
+         const g = scene(); markGoal(g); g.handlePlayerAction('auto_explore');
+         if (kind === 'monster') {
+             const m = new Monster(15, 10, (monsters as MonsterData[]).find(m => m.id === 'rat')!);
+-            g.monsters.push(m); g.visibleMonsters.add(m);
+-        } else { const i = new Item('gold', '*', 0xffffff, ItemCategory.GOLD); i.loc = { x: 15, y: 10 }; g.items.push(i); g.visibleItems.add(i); }
++            g.monsters.push(m); g.grid.getCell(15, 10)!.isVisible = true;
++        } else {
++            // X3-U4: CE only interrupts on a key in a newly discovered cell.
++            const i = ItemLoader.spawnKey('iron_key', 15, 10)!; g.items.push(i);
++            (g as any).updateFieldOfViewDisplay(() => 1000);
++        }
++        // Publish the simulated sighting before the next automatic command;
++        // the renderer no longer owns visible-set/discovery side effects.
++        (g as any).refreshVisibleEntities();
+         g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(0);
+     });
+     it('stops in the revealing step itself, without requiring another auto_step', () => {
+         const g = scene(); markGoal(g); g.handlePlayerAction('auto_explore');
+-        const item = new Item('gold', '*', 0xffffff, ItemCategory.GOLD); item.loc = { x: 15, y: 11 };
+-        vi.spyOn(g as any, 'updateVision').mockImplementation(() => { g.items.push(item); g.visibleItems.add(item); });
++        const item = ItemLoader.spawnKey('iron_key', 15, 11)!;
++        tile(g, 15, 11, T.FLOOR, true);
++        vi.spyOn(g as any, 'updateVision').mockImplementation(() => {
++            if (!g.items.includes(item)) g.items.push(item);
++            (g as any).updateFieldOfViewDisplay(() => 1000);
++        });
+         g.stepAutoPath();
+         expect(g.stats.turns).toBe(1); expect(g.autoPath).toEqual([]);
+         expect(g.exportRecording().events.map(e => e.action)).toEqual(['auto_explore', 'auto_step']);
+diff --git a/brogue-web/src/test/x4b_flavor_text.test.ts b/brogue-web/src/test/x4b_flavor_text.test.ts
+index 1c023629..7e554cb3 100644
+--- a/brogue-web/src/test/x4b_flavor_text.test.ts
++++ b/brogue-web/src/test/x4b_flavor_text.test.ts
+@@ -101,8 +101,14 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         g.monsters = [];
+         const item = ItemLoader.spawnPotion('potion_of_strength', 10, 10)!;
+         g.items.push(item);
+-        g.onRenderRequested = () => {}; (g as any).needsRender = true; g.update();
+-        expect(log.mock.calls.some(([text]) => text.includes('You notice a'))).toBe(true);
++        // X3-U4: discovery messages require an unseen key during automation;
++        // ordinary potion sighting/render refresh no longer emits a message.
++        g.items.push(ItemLoader.spawnKey('iron_key', 11, 9)!);
++        g.grid.getCell(11, 9)!.isExplored = false;
++        g.handleMouseTravel(12, 10);
++        (g as any).updateVision(); (g as any).refreshVisibleEntities();
++        expect(log.mock.calls.some(([text]) => text.includes('You see'))).toBe(true);
++        expect(logger.messages.some(m => m.text.includes('You see'))).toBe(true);
+         g.executeCommand('pickup');
+         expect(g.player.inventory.items).toContain(item);
+         expect(log.mock.calls.some(([text]) => text.includes('You picked up'))).toBe(true);

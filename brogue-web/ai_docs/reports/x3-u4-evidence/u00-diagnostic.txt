@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/66d3/brogue/brogue-web
+
+stdout | src/test/u_00_new_run.test.ts > U00 full new-run equivalence > title → normal: reused A→B equals fresh B, whole graph and both RNG streams
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_00_new_run.test.ts (17 tests | 1 failed | 16 skipped) 2455ms
+     × title → normal: reused A→B equals fresh B, whole graph and both RNG streams 2454ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_00_new_run.test.ts > U00 full new-run equivalence > title → normal: reused A→B equals fresh B, whole graph and both RNG streams
+Error: Unclassified callback in state graph
+ ❯ graph src/test/u_00_new_run.test.ts:18:44
+     16| function graph(value: unknown, seen = new Map<object, number>()): unkn…
+     17|     if (value === undefined) return { undefined: true };
+     18|     if (typeof value === 'function') throw new Error('Unclassified cal…
+       |                                            ^
+     19|     if (!value || typeof value !== 'object') return value;
+     20|     if (seen.has(value)) return { ref: seen.get(value) };
+ ❯ src/test/u_00_new_run.test.ts:28:13
+ ❯ graph src/test/u_00_new_run.test.ts:27:101
+ ❯ src/test/u_00_new_run.test.ts:28:13
+ ❯ graph src/test/u_00_new_run.test.ts:27:101
+ ❯ state src/test/u_00_new_run.test.ts:53:12
+ ❯ src/test/u_00_new_run.test.ts:166:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  18:12:18
+   Duration  4.94s (transform 1.30s, setup 0ms, import 2.26s, tests 2.46s, environment 0ms)
+

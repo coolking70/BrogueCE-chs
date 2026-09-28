@@ -181,6 +181,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
         const phantom = new Monster(6, 5, monsterDataById('phantom'));
         game.monsters.push(phantom);
         game.onRenderRequested = () => {};
+        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
         game.update();
 
         expect(game.visibleMonsters.has(phantom)).toBe(false);
@@ -194,6 +195,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
         game.monsters.push(phantom);
         game.player.setStatusDuration('telepathy', 50);
         game.onRenderRequested = () => {};
+        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
         game.update();
 
         // U21a/CE Monsters.c:203–237: invisible & not in gas ⇒ monsterIsHidden; telepathy cannot override it.
@@ -207,6 +209,7 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
         const goblin = new Monster(6, 5, monsterDataById('goblin'));
         game.monsters.push(goblin);
         game.onRenderRequested = () => {};
+        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
         game.update();
 
         expect(game.visibleMonsters.has(goblin)).toBe(true);

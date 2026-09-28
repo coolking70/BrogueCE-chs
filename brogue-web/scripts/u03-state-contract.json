@@ -426,5 +426,17 @@
   "monsterPathCache": {
     "kind": "run",
     "contract": "X2j: CE 玩家行动内共享的逃险/盟友安全图，null 表示尚未计算；逐玩家行动清空，新层重置，存档保持。"
+  },
+  "disturbed": {
+    "kind": "run",
+    "contract": "X3-U4：自动命令开始清零；消息/攻击/伤害/发现置位。自动路线存续时存入 run，闲置时归一为 false。"
+  },
+  "autoFight": {
+    "kind": "run",
+    "contract": "X3-U4：自动战斗跨 auto_step 的目标 ID/原格/预期伤害/tillDeath；新局、停止旅行、战斗结束清空。"
+  },
+  "pendingDiscoveryMessages": {
+    "kind": "run",
+    "contract": "X3-U4：模拟视野提交前采集、回合尾发布；渲染不写。普通命令边界为空，非空时随 run 保存。"
   }
 }

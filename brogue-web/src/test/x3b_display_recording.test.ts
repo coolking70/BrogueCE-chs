@@ -92,7 +92,7 @@ describe('X3b display frames at the shared command boundary', () => {
                 expect(g.grid.getCell(rat.x, rat.y)!.isVisible).toBe(false);
             });
             // Re-enter through the public render-loop entry, not executeCommand.
-            g.autoPath = [{ x: 11, y: 10 }];
+            g.handleMouseTravel(11, 10); // New travel command clears the preceding potion message's disturbance.
             g.stepAutoPath();
             expect(g.player.loc).toEqual({ x: 11, y: 10 });
             expect(g.exportRecording().events.map(e => e.action)).toEqual(['item:command', 'help', 'auto_step']);

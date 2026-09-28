@@ -1,0 +1,325 @@
+src/test/u_09_learning_consumers.test.ts:258:        (g as unknown as {applyEnvironmentalEffects():void}).applyEnvironmentalEffects();g.update();expect(m.hp).toBe(100);expect(g.visibleMonsters.has(m)).toBe(false);
+src/test/u_19f_autogen.test.ts:53:  if([15,22].includes(index)){expect(at('interacted').target).toContain(T.NETTING);expect(at('interacted').stuck).toBeGreaterThan(0);expect(at('escaped').player).toEqual(r.entry);expect(at('escaped').target).not.toContain(T.NETTING);}
+src/test/p1_30_i18n_gate.test.ts:31:import { logger } from '../engine/Systems/Logger';
+src/test/p1_30_i18n_gate.test.ts:193:            // 包装 logger 单例的实例方法捕获全部消息（runTurns 内部还有一层
+src/test/p1_30_i18n_gate.test.ts:195:            const prev = logger.log.bind(logger);
+src/test/p1_30_i18n_gate.test.ts:196:            logger.log = (text: string, color?: string) => { capture(text); prev(text, color); };
+src/test/p1_30_i18n_gate.test.ts:201:                delete (logger as { log?: unknown }).log;
+src/test/p4_6_attack_geometry.test.ts:28:import { logger } from '../engine/Systems/Logger';
+src/test/p4_6_attack_geometry.test.ts:131:        const baseline = logger.messages.length;
+src/test/p4_6_attack_geometry.test.ts:137:        const msgs = logger.messages.slice(baseline);
+src/test/w_15_shielding.test.ts:16:import { logger } from '../engine/Systems/Logger';
+src/test/w_15_shielding.test.ts:60:beforeEach(() => { rng.seedRandomGenerator(1515); logger.messages = []; });
+src/test/p1_42_secret_door_search.test.ts:32:import { logger } from '../engine/Systems/Logger';
+src/test/p1_42_secret_door_search.test.ts:86:/** 捕获 logger.log 的消息文本（harness 同款：实例属性包装，结束时删实例属性还原原型分发）。 */
+src/test/p1_42_secret_door_search.test.ts:89:    const original = logger.log.bind(logger);
+src/test/p1_42_secret_door_search.test.ts:90:    logger.log = (text: string, color?: string) => {
+src/test/p1_42_secret_door_search.test.ts:97:            delete (logger as { log?: unknown }).log;
+src/test/w_11_teleport_placement.test.ts:30:    g.visibleMonsters = new Set(); g.environment = new EnvironmentManager(g.grid);
+src/test/w_11_teleport_placement.test.ts:176:        g.pendingArcana = null; g.autoPath = []; g.isInventoryOpen = false;
+src/test/p1_31_35_placement_snapshot.test.ts:157:        const escape: Pos = { x: stair.x, y: stair.y - 2 };
+src/test/p1_31_35_placement_snapshot.test.ts:165:        game.grid.setTerrain(escape.x, escape.y, TerrainType.FLOOR, '.', 0x888888);
+src/test/p1_31_35_placement_snapshot.test.ts:168:        // 错误实现二：把 escape 直接当地板铺开 → 落点仍是楼梯格。
+src/test/p1_31_35_placement_snapshot.test.ts:170:        expect(game.player.loc.x).toBe(escape.x);
+src/test/p1_31_35_placement_snapshot.test.ts:171:        expect(game.player.loc.y).toBe(escape.y);
+src/test/u_14a_status_gaps.test.ts:114:        if(kind==='visible sleeper')g.visibleMonsters.add(m);
+src/test/u_07_monster_blink.test.ts:28:    g.visibleMonsters=new Set();g.environment=new EnvironmentManager(g.grid);
+src/test/u_07_monster_blink.test.ts:194:    it.each([true,false])('ally=%s escapes harmful terrain with no 30% lottery',ally=>{
+src/test/p2_4_animation_cadence.test.ts:15: * C. 自动寻路不暂停（验收 4）：slowed + autoPath / isMouseTraveling 时
+src/test/p2_4_animation_cadence.test.ts:16: *    playerTurnEnded 走同步路径——stepAutoPath 返回后 isAdvancing 恒 false、
+src/test/p2_4_animation_cadence.test.ts:19: *    忽略、autoPath 不推进；消费完毕解锁。D1（异常解锁）/D2（超时自解）
+src/test/p2_4_animation_cadence.test.ts:172:    it('C1 slowed + autoPath：stepAutoPath 同步完成，从未进入分步推进', () => {
+src/test/p2_4_animation_cadence.test.ts:182:        game.autoPath = [{ x: px + 1, y: py }, { x: px + 2, y: py }];
+src/test/p2_4_animation_cadence.test.ts:184:        game.stepAutoPath();
+src/test/p2_4_animation_cadence.test.ts:191:        game.stepAutoPath();                       // 锁未介入，路径继续
+src/test/p2_4_animation_cadence.test.ts:205:        game.autoPath = [{ x: px + 1, y: py }, { x: px + 2, y: py }];
+src/test/p2_4_animation_cadence.test.ts:207:        game.stepAutoPath();
+src/test/p2_4_animation_cadence.test.ts:217:    it('慢回合锁定期内玩家输入被忽略、autoPath 不推进；消费完毕解锁', () => {
+src/test/p2_4_animation_cadence.test.ts:233:        // 锁定期 autoPath：不得推进下一步
+src/test/p2_4_animation_cadence.test.ts:235:        game.autoPath = [{ x: px + 3, y: game.player.loc.y }, { x: px + 4, y: game.player.loc.y }];
+src/test/p2_4_animation_cadence.test.ts:236:        game.stepAutoPath();
+src/test/p2_4_animation_cadence.test.ts:237:        expect(game.autoPath.length).toBe(2);
+src/test/p1_27_remove_drowning.test.ts:31:import { logger } from '../engine/Systems/Logger';
+src/test/p1_27_remove_drowning.test.ts:69:/** 包装 logger.log 统计真实调用次数（Logger 会合并连续同文，不能靠 messages 数）。 */
+src/test/p1_27_remove_drowning.test.ts:72:    const original = logger.log.bind(logger);
+src/test/p1_27_remove_drowning.test.ts:73:    logger.log = (text: string, color?: string) => {
+src/test/p1_27_remove_drowning.test.ts:77:    return { calls, restore: () => { delete (logger as { log?: unknown }).log; } };
+src/test/w_23_negation.test.ts:20:import { logger } from '../engine/Systems/Logger';
+src/test/w_23_negation.test.ts:48:beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); vi.restoreAllMocks(); rng.seedRandomGenerator(2323); ItemLoader.identifiedItems.clear(); logger.messages = []; });
+src/test/w_23_negation.test.ts:74:        expect(logger.messages).toEqual([]);
+src/test/w_23_negation.test.ts:146:        expect(logger.messages[logger.messages.length - 1]?.text).toContain(kind === 'air' ? 'dissipates' : kind === 'inanimate' ? 'shatters' : 'lifeless');
+src/test/u_15f_food.test.ts:7:import { logger } from '../engine/Systems/Logger';
+src/test/u_15f_food.test.ts:66:        expect(logger.messages.some(m => m.text.includes('Unable to control your hunger'))).toBe(true);
+src/test/p4_3_special_monster_flags.test.ts:177:    it('phantom 站在玩家视野内也不会进入 visibleMonsters（无 telepathy 时）', () => {
+src/test/p4_3_special_monster_flags.test.ts:186:        expect(game.visibleMonsters.has(phantom)).toBe(false);
+src/test/p4_3_special_monster_flags.test.ts:189:    it('玩家有 telepathy 时，phantom 会出现在 visibleMonsters 中', () => {
+src/test/p4_3_special_monster_flags.test.ts:200:        expect(game.visibleMonsters.has(phantom)).toBe(false);
+src/test/p4_3_special_monster_flags.test.ts:212:        expect(game.visibleMonsters.has(goblin)).toBe(true);
+src/test/x3_u2_ally_captive.test.ts:10:import { logger } from '../engine/Systems/Logger';
+src/test/x3_u2_ally_captive.test.ts:15:    g.visibleMonsters.clear(); g.visibleItems.clear();
+src/test/x3_u2_ally_captive.test.ts:44:        layers: g.grid.getCell(11, 10)!.layers, messages: logger.getState() });
+src/test/x3_u2_ally_captive.test.ts:148:        expect(logger.messages.some(m => /vomit|backstab|hit the/.test(m.text))).toBe(false);
+src/test/x3_u2_ally_captive.test.ts:202:        const g = scene(); mob(g, kind); g.autoPath = [{ x: 11, y: 10 }, { x: 12, y: 10 }];
+src/test/x3_u2_ally_captive.test.ts:203:        (g as any).isAutoExploring = true; (g as any).inAutoTravelStep = true;
+src/test/x3_u2_ally_captive.test.ts:206:        expect(ask).toHaveBeenCalledTimes(1); expect(g.isAutoTraveling()).toBe(false); expect(g.autoPath).toEqual([]);
+src/test/x3b_display_recording.test.ts:95:            g.autoPath = [{ x: 11, y: 10 }];
+src/test/x3b_display_recording.test.ts:96:            g.stepAutoPath();
+src/test/x3b_display_recording.test.ts:215:    act('help'); act('escape'); act('toggle_inventory'); act('escape');
+src/test/x3b_display_recording.test.ts:220:    expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x3b_display_recording.test.ts:221:    while (g.autoPath.length) {
+src/test/x3b_display_recording.test.ts:222:        frames(g, schedule); g.stepAutoPath(); settle(g); rows.push(state(g));
+src/test/i_1_interaction.test.ts:29:import { logger } from '../engine/Systems/Logger';
+src/test/i_1_interaction.test.ts:97:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/i_1_interaction.test.ts:112:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/x2k_lifecycle.test.ts:1:import { logger } from '../engine/Systems/Logger';
+src/test/x2k_lifecycle.test.ts:185:    const messages = vi.spyOn(logger, 'log'); m.takeDamage(m.hp, true);
+src/test/w_2_arcana_submission.test.ts:14:import { logger } from '../engine/Systems/Logger';
+src/test/w_2_arcana_submission.test.ts:36:    game.autoPath = [];
+src/test/w_2_arcana_submission.test.ts:61:beforeEach(() => { ItemLoader.identifiedItems.clear(); ItemLoader.magicPolarityRevealed.clear(); logger.messages = []; });
+src/test/w_2_arcana_submission.test.ts:70:            g.autoPath = [{ x: 5, y: 5 }];
+src/test/w_2_arcana_submission.test.ts:74:            expect(g.autoPath).toEqual([]);
+src/test/w_2_arcana_submission.test.ts:79:            g.handlePlayerAction('escape');
+src/test/w_2_arcana_submission.test.ts:106:        expect(logger.messages.map(m => m.text).join(' ')).not.toContain(obj.name);
+src/test/u_10_absorption_snapshot.test.ts:168:        monsters:g.monsters,dormantMonsters:g.dormantMonsters,items:[],visibleMonsters:new Set(),visibleItems:new Set(),machineCells:new Set()});
+src/test/p2_2_real_speed.test.ts:39: *       不推进），autoPath 不在锁定期推进下一步。
+src/test/p2_2_real_speed.test.ts:309:    it('C1 锁定期内玩家输入被忽略（不录制、不推进），autoPath 不推进下一步', () => {
+src/test/p2_2_real_speed.test.ts:325:        // 锁定期 autoPath：不得推进下一步
+src/test/p2_2_real_speed.test.ts:327:        game.autoPath = [{ x: px + 3, y: game.player.loc.y }, { x: px + 4, y: game.player.loc.y }];
+src/test/p2_2_real_speed.test.ts:328:        game.stepAutoPath();
+src/test/p2_2_real_speed.test.ts:329:        expect(game.autoPath.length).toBe(2);
+src/test/x2a_recording_checkpoint.test.ts:47:        game.executeCommand('escape');
+src/test/x2a_recording_checkpoint.test.ts:51:        expect(recording.events.map(event => event.action)).toEqual(['discoveries', 'escape', 'wait']);
+src/test/x2a_recording_checkpoint.test.ts:95:            act('escape');
+src/test/x2a_recording_checkpoint.test.ts:103:            act('escape');
+src/test/x2a_recording_checkpoint.test.ts:105:            while (game.autoPath.length) game.stepAutoPath();
+src/test/w_12_blink_beckoning.test.ts:31:    g.visibleMonsters = new Set(); g.environment = new EnvironmentManager(g.grid);
+src/test/w_12_blink_beckoning.test.ts:267:    it('web escape keeps the web and grab bookkeeping; blink does not invoke a walking attack', () => {
+src/test/w_6_arcana_recharge.test.ts:8:import { logger } from '../engine/Systems/Logger';
+src/test/w_6_arcana_recharge.test.ts:187:        expect(logger.messages.some(m => m.text.includes('Test Staff'))).toBe(false);
+src/test/w_6_arcana_recharge.test.ts:232:        expect(logger.messages.some(m => m.text.includes('No staffs or charms'))).toBe(true);
+src/test/u_r2_trace.test.ts:6:import { logger } from '../engine/Systems/Logger';
+src/test/u_r2_trace.test.ts:31:        log: logger.getState(), tick: timeSystem.currentTick, turn: game.absoluteTurnNumber,
+src/test/u24_hardcoded_text.test.ts:63:  it('requires translated floating labels and logger messages', () => {
+src/test/u24_hardcoded_text.test.ts:75:          const isLog = name === 'log' && node.expression.expression.getText(source) === 'logger';
+src/test/w_16_conjuration.test.ts:206:  (g as any).levels.set(2,{grid:other,environment:new EnvironmentManager(other),fov:new FOVSys(other),lightMap:new LightMap(other),monsters:[],dormantMonsters:[],items:[],visibleMonsters:new Set(),visibleItems:new Set()});
+src/test/w_16_conjuration.test.ts:213:  const before=rng.randomNumbersGenerated;g.useArcanaItem(item);g.handlePlayerAction('escape');expect(item.charges).toBe(1);expect(blades(g)).toHaveLength(0);expect(rng.randomNumbersGenerated).toBe(before);
+src/test/p1_28_flag_channel.test.ts:32:import { logger } from '../engine/Systems/Logger';
+src/test/p1_28_flag_channel.test.ts:69:/** 包装 logger.log 统计真实调用次数（Logger 会合并连续同文，不能靠 messages 数）。 */
+src/test/p1_28_flag_channel.test.ts:72:    const original = logger.log.bind(logger);
+src/test/p1_28_flag_channel.test.ts:73:    logger.log = (text: string, color?: string) => {
+src/test/p1_28_flag_channel.test.ts:77:    return { calls, restore: () => { delete (logger as { log?: unknown }).log; } };
+src/test/fe_1_touch.test.ts:160:        dispatch('escape');
+src/test/fe_1_touch.test.ts:162:        dispatch('escape');
+src/test/fe_1_touch.test.ts:187:            while (game.autoPath.length && guard++ < 50) game.stepAutoPath();
+src/test/w_13_tunneling.test.ts:208:        g.loopMap = []; g.updatedSafetyMapThisTurn = true; g.autoPath = [{ x: 6, y: 5 }]; (g as any).isMouseTraveling = true;
+src/test/w_13_tunneling.test.ts:214:        expect(g.autoPath).toEqual([]); expect((g as any).isMouseTraveling).toBe(false); expect((g as any).updateVision).toHaveBeenCalled();
+src/test/scroll_effects.test.ts:24:import { logger } from '../engine/Systems/Logger';
+src/test/scroll_effects.test.ts:89:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/scroll_effects.test.ts:104:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/scroll_effects.test.ts:116:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/scroll_effects.test.ts:223:        const texts = logger.messages.map(m => m.text).join('\n');
+src/test/scroll_effects.test.ts:270:            const texts = logger.messages.map(m => m.text).join('\n');
+src/test/f_2b_creature_burning.test.ts:28:import { logger } from '../engine/Systems/Logger';
+src/test/f_2b_creature_burning.test.ts:109:/** 包装 logger.log 统计真实调用次数（Logger 会合并连续同文）。 */
+src/test/f_2b_creature_burning.test.ts:112:    const original = logger.log.bind(logger);
+src/test/f_2b_creature_burning.test.ts:113:    logger.log = (text: string, color?: string) => {
+src/test/f_2b_creature_burning.test.ts:117:    return { calls, restore: () => { delete (logger as { log?: unknown }).log; } };
+src/test/x4a_movement_rendering.test.ts:12:import { logger } from '../engine/Systems/Logger';
+src/test/x4a_movement_rendering.test.ts:21:    g.visibleMonsters.clear(); g.visibleItems.clear();
+src/test/x4a_movement_rendering.test.ts:44:        const oldNext = { ...g.autoPath[0]! };
+src/test/x4a_movement_rendering.test.ts:47:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:51:        expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x4a_movement_rendering.test.ts:54:        for (let i = 0; i < 10 && g.autoPath.length; i++) {
+src/test/x4a_movement_rendering.test.ts:55:            g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:60:        expect(logger.messages.map(m => m.text).join('\n')).not.toMatch(/此路不通|Path blocked/);
+src/test/x4a_movement_rendering.test.ts:65:        const before = { loc: { ...g.player.loc }, turn: g.stats.turns, rng: rng.getState(), log: logger.getState() };
+src/test/x4a_movement_rendering.test.ts:66:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:67:        expect(g.autoPath).toEqual([]);
+src/test/x4a_movement_rendering.test.ts:68:        expect({ loc: g.player.loc, turn: g.stats.turns, rng: rng.getState(), log: logger.getState() }).toEqual(before);
+src/test/x4a_movement_rendering.test.ts:74:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:76:        expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x4a_movement_rendering.test.ts:82:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:85:        expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
+src/test/x4a_movement_rendering.test.ts:90:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:91:        expect(g.player.loc).toEqual({ x: 10, y: 10 }); expect(g.autoPath).toEqual([]);
+src/test/x4a_movement_rendering.test.ts:98:        expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(0); expect(rng.getState()).toEqual(state);
+src/test/x4a_movement_rendering.test.ts:113:        g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(0);
+src/test/x4a_movement_rendering.test.ts:123:        g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:124:        expect(g.stats.turns).toBe(1); expect(g.autoPath).toEqual([]);
+src/test/x4a_movement_rendering.test.ts:131:        g.monsters.push(enemy); g.visibleMonsters.add(enemy);
+src/test/x4a_movement_rendering.test.ts:140:        g.handleMouseTravel(11, 10); g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:147:            g.items.push(item); g.visibleItems.add(item);
+src/test/x4a_movement_rendering.test.ts:148:            if (auto) { g.executeCommand('mouse_travel', { x: 11, y: 10 }); g.stepAutoPath(); }
+src/test/x4a_movement_rendering.test.ts:159:        const item = ItemLoader.spawnWeapon('dart', 11, 10)!; g.items.push(item); g.visibleItems.add(item);
+src/test/x4a_movement_rendering.test.ts:160:        g.handlePlayerAction('auto_explore'); g.stepAutoPath();
+src/test/x4a_movement_rendering.test.ts:162:        expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(1);
+src/test/x4a_movement_rendering.test.ts:166:        const save = g.toSnapshot(); expect(save.run.isAutoExploring).toBe(true);
+src/test/x4a_movement_rendering.test.ts:168:        expect(g.toSnapshot().run.isAutoExploring).toBe(true);
+src/test/x4a_movement_rendering.test.ts:169:        g.handlePlayerAction('wait'); expect(g.toSnapshot().run.isAutoExploring).toBeUndefined();
+src/test/x4a_movement_rendering.test.ts:173:        expect(logger.messages.some(m => m.text.includes('这里没有什么可探索'))).toBe(true);
+src/test/x4a_movement_rendering.test.ts:175:        expect(logger.messages.some(m => m.text.includes('无法到达'))).toBe(true);
+src/test/x4a_movement_rendering.test.ts:180:    it('escape clears targeting without using resources, a turn or either RNG stream; replays as escape', () => {
+src/test/x4a_movement_rendering.test.ts:185:        g.handlePlayerAction('escape');
+src/test/x4a_movement_rendering.test.ts:188:        const rec = g.exportRecording(); expect(rec.events.map(e => e.action)).toEqual(['item:command', 'escape']);
+src/test/x4a_movement_rendering.test.ts:193:    it('an open inventory takes precedence; the next escape cancels throwing', () => {
+src/test/x4a_movement_rendering.test.ts:195:        g.handlePlayerAction('escape'); expect(g.isInventoryOpen).toBe(false); expect(g.isThrowing).toBe(true);
+src/test/x4a_movement_rendering.test.ts:196:        g.handlePlayerAction('escape'); expect(g.isThrowing).toBe(false);
+src/test/x4a_movement_rendering.test.ts:243:        expect(target).toContain("dispatch('escape')"); expect(target).not.toContain('cancelUnsupported');
+src/test/x4a_movement_rendering.test.ts:246:        const step = game.slice(game.indexOf('private stepAutoPathInner'), game.indexOf('public triggerGameOver'));
+src/test/w_10_poison.test.ts:15:import { logger } from '../engine/Systems/Logger';
+src/test/w_10_poison.test.ts:55:beforeEach(() => { vi.restoreAllMocks(); rng.seedRandomGenerator(1010); logger.messages = []; });
+src/test/x2j_monster_ai.test.ts:15:import { logger } from '../engine/Systems/Logger';
+src/test/x2j_monster_ai.test.ts:52:        expect(logger.messages[logger.messages.length - 1]?.text).toContain('stole');
+src/test/x2j_monster_ai.test.ts:181:        g.autoPath = [{ x: 10, y: 11 }]; g.isMouseTraveling = true;
+src/test/x2j_monster_ai.test.ts:184:        expect(m.carriedItem).toBeTruthy(); expect(g.autoPath).toEqual([]); expect(g.isMouseTraveling).toBe(false);
+src/test/w_7_arcana_enchantment.test.ts:11:import { logger } from '../engine/Systems/Logger';
+src/test/w_7_arcana_enchantment.test.ts:122:        for (const action of ['escape', 'cancel_target', 'toggle_inventory', 'wait', 'move', 'apply_item', 'throw_item']) {
+src/test/w_7_arcana_enchantment.test.ts:140:        expect(logger.messages.some(m => m.text.includes('Hidden Lightning'))).toBe(false);
+src/test/w_7_arcana_enchantment.test.ts:141:        expect(logger.messages.every(m => !m.text.includes('&#x2F;'))).toBe(true);
+src/test/w_14_obstruction.test.ts:169:        g.autoPath = [{ x: 10, y: 5 }]; g.isMouseTraveling = true; g.updatedSafetyMapThisTurn = true;
+src/test/w_14_obstruction.test.ts:171:        expect(g.autoPath).toEqual([]); expect(g.isMouseTraveling).toBe(false); expect(g.updatedSafetyMapThisTurn).toBe(false);
+src/test/x2i_discovery_text.test.ts:11:import { logger } from '../engine/Systems/Logger';
+src/test/x2i_discovery_text.test.ts:81:        expect(logger.messages[logger.messages.length - 1]?.text).toBe(game.replayErrorDisplay);
+src/test/p1_37_machine_flag_i18n.test.ts:38:import { logger } from '../engine/Systems/Logger';
+src/test/p1_37_machine_flag_i18n.test.ts:459:        const prev = logger.log.bind(logger);
+src/test/p1_37_machine_flag_i18n.test.ts:460:        logger.log = (text: string, color?: string) => { messages.push(text); prev(text, color); };
+src/test/p1_37_machine_flag_i18n.test.ts:461:        return () => { delete (logger as { log?: unknown }).log; };
+src/test/p1_37_machine_flag_i18n.test.ts:575:    it('扫描器门：全仓 logger.log 裸字符串零英文；中文硬编码钉死在既有清单', () => {
+src/test/p1_37_machine_flag_i18n.test.ts:578:        expect(english, `logger.log 首参出现英文硬编码 ${english.length} 处（玩家会看到英文）：\n` +
+src/test/u_17a_df_transaction.test.ts:16:import { logger } from '../engine/Systems/Logger';
+src/test/u_17a_df_transaction.test.ts:194:        const c=a.grid.getCell(5,5)!;c.isVisible=true;const before=logger.messages.length;
+src/test/u_17a_df_transaction.test.ts:196:        expect(logger.messages.length).toBeGreaterThan(before);
+src/test/x3_u1_movement_safety.test.ts:10:import { logger } from '../engine/Systems/Logger';
+src/test/x3_u1_movement_safety.test.ts:16:    g.visibleMonsters.clear(); g.visibleItems.clear();
+src/test/x3_u1_movement_safety.test.ts:69:        expect(logger.messages.slice(-1)[0]?.text).toBe('that would be certain death!');
+src/test/x3_u1_movement_safety.test.ts:193:        g.stepAutoPath(); settle(g);
+src/test/x3_u1_movement_safety.test.ts:209:        g.autoPath = [{ x: 11, y: 10 }]; (g as any).isAutoExploring = true;
+src/test/x3_u1_movement_safety.test.ts:217:        expect(before(g)).toEqual(old); expect((g as any).isAutoExploring).toBe(false); expect(g.autoPath).toEqual([]);
+src/test/x3_u1_movement_safety.test.ts:227:        const ask = vi.fn(() => { expect(g.isAutoTraveling()).toBe(false); expect(g.autoPath).toEqual([]); return answer; });
+src/test/x3_u1_movement_safety.test.ts:228:        g.onConfirmRequest = ask; const old = before(g); g.stepAutoPath();
+src/test/x3_u1_movement_safety.test.ts:230:        expect(g.isAutoTraveling()).toBe(false); expect(g.autoPath).toEqual([]);
+src/test/x3_u1_movement_safety.test.ts:233:        const stopped = before(g); g.stepAutoPath(); expect(before(g)).toEqual(stopped);
+src/test/x2i_i18n_flow.test.ts:8:    it('follows a local template into logger.log without flagging translated values', () => {
+src/test/x2i_i18n_flow.test.ts:15:                '  logger.log(failure);',
+src/test/x2i_i18n_flow.test.ts:17:                '  logger.log(localized);',
+src/test/x3_u4_auto_travel.test.ts:9:import { logger, Logger } from '../engine/Systems/Logger';
+src/test/x3_u4_auto_travel.test.ts:16:    g.visibleMonsters.clear(); g.visibleItems.clear(); g.everSeenMonsters.clear(); g.everSeenItems.clear();
+src/test/x3_u4_auto_travel.test.ts:27:    (g as any).updateVision(); logger.reset(); g.disturbed = false;
+src/test/x3_u4_auto_travel.test.ts:39:    for (let i = 0; i < limit && g.autoPath.length; i++) { g.stepAutoPath(); if (render) g.update(); }
+src/test/x3_u4_auto_travel.test.ts:42:    return structuredClone({ loc: g.player.loc, hp: g.player.hp, turn: g.stats.turns, path: g.autoPath,
+src/test/x3_u4_auto_travel.test.ts:43:        exploring: g.toSnapshot().run.isAutoExploring, monsters: g.monsters.map(m => ({ id: m.id, hp: m.hp, loc: m.loc })),
+src/test/x3_u4_auto_travel.test.ts:44:        visible: [...g.visibleMonsters].map(m => m.id), items: [...g.visibleItems].map(i => i.id), rng: rng.getState(),
+src/test/x3_u4_auto_travel.test.ts:45:        log: logger.messages.filter(m => m.text !== 'Replay finished.') });
+src/test/x3_u4_auto_travel.test.ts:59:        expect(g.everSeenMonsters.has(m)).toBe(true);
+src/test/x3_u4_auto_travel.test.ts:60:        g.stepAutoPath(); expect(g.player.x).toBe(11); expect(g.stats.turns).toBe(1);
+src/test/x3_u4_auto_travel.test.ts:61:        expect(g.disturbed).toBe(true); expect(g.autoPath).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:62:        const old = state(g); g.stepAutoPath(); expect(state(g)).toEqual(old);
+src/test/x3_u4_auto_travel.test.ts:66:        g.executeCommand('auto_explore'); expect(g.stats.turns).toBe(1); expect(g.autoPath.length).toBe(1);
+src/test/x3_u4_auto_travel.test.ts:68:        expect(logger.messages.some(m => /hits you|misses you|You hit|You missed/.test(m.text))).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:69:        expect(g.autoPath).toEqual([]); expect(logger.blockCombatText).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:70:        g.stepAutoPath(); expect(g.stats.turns).toBe(3);
+src/test/x3_u4_auto_travel.test.ts:77:        g.executeCommand('escape'); g.mode = 'test'; g.monsters[0]!.weaknessAmount = 5;
+src/test/x3_u4_auto_travel.test.ts:84:        expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x3_u4_auto_travel.test.ts:88:        g.stepAutoPath(); expect(g.stats.turns).toBe(2); expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x3_u4_auto_travel.test.ts:92:        g.executeCommand('auto_explore'); logger.log('special status message'); g.stepAutoPath();
+src/test/x3_u4_auto_travel.test.ts:93:        expect(g.stats.turns).toBe(1); expect(g.autoPath).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:94:        g.executeCommand('auto_explore'); expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x3_u4_auto_travel.test.ts:95:        logger.blockCombatText = true; g.player.takeDamage(1); logger.blockCombatText = false;
+src/test/x3_u4_auto_travel.test.ts:96:        g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(2);
+src/test/x3_u4_auto_travel.test.ts:101:        expect(logger.messages).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:110:        const g = scene(); logger.log('old'); g.handleMouseTravel(50, 10); expect(g.disturbed).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:111:        g.player.takeDamage(1); g.stepAutoPath(); expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:114:        g.stepAutoPath(); expect(g.stats.turns).toBe(0);
+src/test/x3_u4_auto_travel.test.ts:117:        const g = scene(); g.handleMouseTravel(50, 10); logger.log('stop'); const save = g.toSnapshot();
+src/test/x3_u4_auto_travel.test.ts:118:        g.handleMouseTravel(50, 10); expect(g.loadSnapshot(save)).toBe(true); g.stepAutoPath();
+src/test/x3_u4_auto_travel.test.ts:119:        expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:132:        expect(g.player.x < 45, JSON.stringify({loc:g.player.loc, log:logger.messages, seen:[...g.everSeenMonsters].map(m=>m.id), monsters:g.monsters.map(m=>({id:m.id,loc:m.loc,ally:m.isAlly,hp:m.hp,visible:g.visibleMonsters.has(m)}))})).toBe(shouldStop);
+src/test/x3_u4_auto_travel.test.ts:134:        expect(logger.messages.filter(m => /You see|You sense/.test(m.text))).toHaveLength(shouldStop ? 1 : 0);
+src/test/x3_u4_auto_travel.test.ts:135:        expect(logger.messages.some(m => /You spot|You notice/.test(m.text))).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:151:        g.update(); expect(g.visibleMonsters.has(m)).toBe(false); expect(logger.messages).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:152:        g.executeCommand('wait'); expect(g.visibleMonsters.has(m)).toBe(true); expect(logger.messages).toEqual([]);
+src/test/x3_u4_auto_travel.test.ts:159:        expect(logger.messages.map(m => m.text)).toEqual(['You sense a Rat.']);
+src/test/x3_u4_auto_travel.test.ts:166:        expect(logger.messages.filter(m => /You see/.test(m.text))).toHaveLength(1);
+src/test/x3_u4_auto_travel.test.ts:187:    it.each(['escape', 'cancel_target', 'discoveries', 'help', 'toggle_inventory', 'interrupt_auto', 'confirm_target', 'cycle_target', 'apply_item'])('%s cancels before an early-return branch', action => {
+src/test/x3_u4_auto_travel.test.ts:189:        g.executeCommand(action); g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.stats.turns).toBe(0);
+src/test/x3_u4_auto_travel.test.ts:194:        g.handleMouseTravel(50, 10); g.stepAutoPath(); expect(g.player.x).toBe(10); expect(g.autoPath.length).toBeGreaterThan(0);
+src/test/x3_u4_auto_travel.test.ts:195:        g.stepAutoPath(); g.stepAutoPath(); expect(g.player.x).toBe(11); expect(g.stats.turns).toBe(3);
+src/test/x3_u4_auto_travel.test.ts:196:        expect(logger.messages.some(m => /web|struggle/.test(m.text))).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:201:        expect(g.tryVomit(g.player)).toBe(true); expect(logger.messages).toEqual([]); expect(g.disturbed).toBe(false);
+src/test/x3_u4_auto_travel.test.ts:202:        g.executeCommand('escape'); expect(g.tryVomit(g.player)).toBe(true); expect(logger.messages.length).toBeGreaterThan(0);
+src/test/u_27_recording.test.ts:55:        while (game.autoPath.length) game.stepAutoPath();
+src/test/u_11_corpse_learning.test.ts:17:import { logger } from '../engine/Systems/Logger';
+src/test/u_11_corpse_learning.test.ts:309:        const logs=logger.messages.map(l=>l.text).join('\n');expect(logs).toContain(lng==='en'?'begins gnawing at the fallen':'开始啃咬');expect(logs).toContain(lng==='en'?'finished gnawing at':'完毕');expect(logs).toContain(lng==='en'?'now saps strength':'现在造成伤害时会削弱');
+src/test/u_r3_trace.test.ts:7:import { logger } from '../engine/Systems/Logger';
+src/test/u_r3_trace.test.ts:22:        const hash = createHash('sha256').update(JSON.stringify({ snapshot, rng: rng.getState(), log: logger.getState(), observations })).digest('hex');
+src/test/u_r3_trace.test.ts:45:    const fall = createHash('sha256').update(JSON.stringify({ snapshot: fallSnapshot, rng: rng.getState(), log: logger.getState() })).digest('hex');
+src/test/u_15b2_ring_birth.test.ts:18:import {logger} from '../engine/Systems/Logger';
+src/test/u_15b2_ring_birth.test.ts:174:        CombatSystem.attack(p,m);expect(c.cooldownRemaining).toBe(0);expect(JSON.stringify(logger.getState())).toContain('recharged');
+src/test/p1_24_death_sink.test.ts:45:import { logger } from '../engine/Systems/Logger';
+src/test/p1_24_death_sink.test.ts:85:/** 包装 logger.log 统计真实调用次数（Logger 会合并连续同文，不能靠 messages 数）。 */
+src/test/p1_24_death_sink.test.ts:88:    const original = logger.log.bind(logger);
+src/test/p1_24_death_sink.test.ts:89:    logger.log = (text: string, color?: string) => {
+src/test/p1_24_death_sink.test.ts:93:    return { calls, restore: () => { delete (logger as { log?: unknown }).log; } };
+src/test/p1_24_death_sink.test.ts:185:        const entry = logger.messages.find(m => m.text.includes('drown'));
+src/test/p1_24_death_sink.test.ts:206:        const entry = logger.messages.find(m => m.text.includes('incinerated'));
+src/test/x4b_flavor_text.test.ts:12:import { logger } from '../engine/Systems/Logger';
+src/test/x4b_flavor_text.test.ts:19:    game.visibleMonsters.clear(); game.visibleItems.clear();
+src/test/x4b_flavor_text.test.ts:44:        const log = vi.spyOn(logger, 'log');
+src/test/x4b_flavor_text.test.ts:60:        const g = scene(), log = vi.spyOn(logger, 'log');
+src/test/x4b_flavor_text.test.ts:81:        g.stepAutoPath();
+src/test/x4b_flavor_text.test.ts:82:        expect(g.player.loc).toEqual({ x: 11, y: 10 }); expect(g.autoPath).toEqual([]);
+src/test/x4b_flavor_text.test.ts:85:        g.autoPath = [{ x: 12, y: 10 }];
+src/test/x4b_flavor_text.test.ts:89:        g.stepAutoPath();
+src/test/x4b_flavor_text.test.ts:90:        expect(g.autoPath).toEqual([]);
+src/test/x4b_flavor_text.test.ts:95:        const g = scene(), log = vi.spyOn(logger, 'log');
+src/test/x4b_flavor_text.test.ts:109:        expect(logger.messages.some(m => m.text.includes('You picked up'))).toBe(true);
+src/test/u_03b_level_travel.test.ts:26: g.monsters=[];g.dormantMonsters=[];g.items=[];g.machineCells.clear();g.visibleMonsters.clear();g.visibleItems.clear();
+src/test/v_2b_9b_environment.test.ts:10:  it('contains the nine literal CE blueprint rows and keeps 38/39 in-pool because their escape items are implemented', () => {
+src/test/ui_2_protection.test.ts:39:import { logger } from '../engine/Systems/Logger';
+src/test/ui_2_protection.test.ts:109:    return logger.messages.map(m => m.text).join('\n');
+src/test/b_1_weapon_specials.test.ts:36:import { logger } from '../engine/Systems/Logger';
+src/test/b_1_weapon_specials.test.ts:124:    return logger.messages.slice(baseline).filter(m => m.text.includes('hits you')).length;
+src/test/b_1_weapon_specials.test.ts:328:            const baseline = logger.messages.length;
+src/test/b_1_weapon_specials.test.ts:380:        const baseline2 = logger.messages.length;
+src/test/p4_7_player_weapon_geometry.test.ts:33:import { logger } from '../engine/Systems/Logger';
+src/test/p4_7_player_weapon_geometry.test.ts:110:    return logger.messages.slice(baseline).filter(m => m.text.includes('hits you')).length;
+src/test/p4_7_player_weapon_geometry.test.ts:190:        const baseline = logger.messages.length;
+src/test/p4_7_player_weapon_geometry.test.ts:194:        const msgs = logger.messages.slice(baseline);
+src/test/p4_7_player_weapon_geometry.test.ts:298:        const baseline = logger.messages.length;
+src/test/p4_7_player_weapon_geometry.test.ts:314:        const baseline = logger.messages.length;
+src/test/p4_7_player_weapon_geometry.test.ts:331:        const baseline = logger.messages.length;
+src/test/u_r4_trace.test.ts:7:import { logger } from '../engine/Systems/Logger';
+src/test/u_r4_trace.test.ts:40:    const originalLog = logger.log.bind(logger);
+src/test/u_r4_trace.test.ts:41:    logger.log = (text: string, color?: string) => { events.push({ text, color }); originalLog(text, color); };
+src/test/u_r4_trace.test.ts:53:                log: logger.getState(), events: [...events],
+src/test/u_r4_trace.test.ts:76:        delete (logger as { log?: unknown }).log;
+src/test/u_26b_endgame.test.ts:31:    it('Game settles death, escape and carried gem super victory fixtures', () => {
+src/test/u_r1_codec.test.ts:59:                items: g.items, player: g.player, everSeenMonsters: bridge.everSeenMonsters,
+src/test/u_r1_codec.test.ts:60:                everSeenItems: bridge.everSeenItems, visibleMonsters: g.visibleMonsters,
+src/test/u_r1_codec.test.ts:61:                visibleItems: g.visibleItems, travelTargetItem: bridge.travelTargetItem,
+src/test/x3a_live_iteration.test.ts:146:        g.visibleMonsters = new Set([corpse]); dead(corpse);
+src/test/x3a_live_iteration.test.ts:147:        g.autoPath = [{ x: 9, y: 10 }]; g.isMouseTraveling = false;
+src/test/x3a_live_iteration.test.ts:148:        g.stepAutoPath();
+src/test/x3a_live_iteration.test.ts:149:        expect(g.player.loc).toEqual({ x: 9, y: 10 }); expect(g.everSeenMonsters).not.toContain(corpse);
+src/test/x3a_live_iteration.test.ts:154:        g.visibleMonsters = new Set([corpse]); dead(corpse);
+src/test/x3a_live_iteration.test.ts:157:        expect(g.player.loc).toEqual(loc); expect(g.everSeenMonsters).not.toContain(corpse);
+src/test/w_18_entrancement.test.ts:101:  const g=scene(),m=mob(g);cast(g,m);g.handleMouseTravel(6,5);g.visibleItems.clear();
+src/test/w_18_entrancement.test.ts:102:  g.stepAutoPath();expect(g.player.loc.x).toBe(5);expect(m.loc.x).toBe(9);g.stepAutoPath();expect(g.player.loc.x).toBe(6);expect(m.loc.x).toBe(8);
+src/test/w_18_entrancement.test.ts:103:  g.player.setStatusDuration('confused',10);g.handleMouseTravel(7,5);vi.spyOn(rng,'randRange').mockReturnValue(0);g.stepAutoPath();
+src/test/w_18_entrancement.test.ts:104:  expect(g.player.loc).toEqual({x:6,y:4});expect(m.loc).toEqual({x:8,y:6});expect(g.autoPath).toEqual([]);
+src/test/u_06_monster_damage.test.ts:15:import { logger } from '../engine/Systems/Logger';
+src/test/u_06_monster_damage.test.ts:43:const messages = () => logger.messages.map(m => m.text).join('\n');
+src/test/u_19d_machine_families.test.ts:61:   expect(phase('escaped').paralyzed).toBe(0);expect(phase('escaped').player).not.toEqual(phase('paralyzed').player);expect(result.after.hp).toBe(result.before.hp);
+src/test/u_03_whole_run_snapshot.test.ts:14:import { logger } from '../engine/Systems/Logger';
+src/test/u_03_whole_run_snapshot.test.ts:166:        logger.log('retained history');
+src/test/u_03_whole_run_snapshot.test.ts:176:        expect(logger.messages[logger.messages.length - 1]!.text).toBe('retained history');
+src/test/u_00_new_run.test.ts:7:import { logger } from '../engine/Systems/Logger';
+src/test/u_00_new_run.test.ts:53:    return graph({ game: fields, rng, loader, logger, timeSystem,
+src/test/u_00_new_run.test.ts:95:        autoPath: [{ x: 3, y: 2 }], isMouseTraveling: true, inAutoTravelStep: true,
+src/test/u_00_new_run.test.ts:106:    g.visibleItems.add(oldItem); g.everSeenItems.add(oldItem);
+src/test/u_00_new_run.test.ts:107:    g.visibleMonsters.add(oldMonster); g.everSeenMonsters.add(oldMonster);
+src/test/x2d_scroll_equipment.test.ts:8:import { logger } from '../engine/Systems/Logger';
+src/test/x2d_scroll_equipment.test.ts:194:        expect(logger.messages.filter(m => m.text.includes('cleansing light'))).toHaveLength(1);
+src/test/x2d_scroll_equipment.test.ts:195:        expect(logger.messages.some(m => m.text.includes(cursed ? 'malevolent energy disperses' : 'nothing happens'))).toBe(true);
+src/test/x2d_scroll_equipment.test.ts:205:        game.executeCommand('escape'); game.executeCommand('cancel_target'); game.executeItemCommand('cancel');
+src/test/ui_1_rendering.test.ts:380:        expect(isSidebarVisibleStatus('some_future_escape_hatch_key')).toBe(true);

@@ -510,5 +510,8 @@ export function finishTurnEpilogue(ports: TimePorts): void {
             ports.effects.triggerGameOver(false, deathReason);
         }
 
+        // CE Time.c:2759: commit final vision after monsters/environment move.
+        // Game's epilogue then publishes first sightings, even without a renderer.
+        ports.effects.updateVision();
         ports.clock.needsRender = true;
     }

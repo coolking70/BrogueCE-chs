@@ -1,0 +1,5 @@
+{
+  "goldenComparison": "Immutable HEAD gzip fixture; remains reproducible after recapture",
+  "helperFix": "Raised child-process maxBuffer to 8 MiB for the 1.3 MiB compressed golden",
+  "productionInputsChanged": false
+}

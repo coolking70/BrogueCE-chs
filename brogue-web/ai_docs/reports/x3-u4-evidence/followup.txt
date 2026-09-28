@@ -1,0 +1,380 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/66d3/brogue/brogue-web
+
+stdout | src/test/x3b_display_recording.test.ts > X3b display frames at the shared command boundary > replays quaff -> flare -> use -> confirm without changing the default target or spending charges
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:62404) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/x3b_display_recording.test.ts (4 tests) 56988ms
+     ✓ replays quaff -> flare -> use -> confirm without changing the default target or spending charges  1198ms
+     ✓ normalizes callback commands and autonomous steps before their consumers run  4173ms
+     ✓ keeps item selection, confirmation, throwing and a real endgame equal in animated mirrored replay  1626ms
+     ✓ keeps each state equal with frames, automatic/animated playback, backward seek and strict OOS  49988ms
+stdout | src/test/u_00_new_run.test.ts > U00 full new-run equivalence > title → normal: reused A→B equals fresh B, whole graph and both RNG streams
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:62469) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_00_new_run.test.ts (17 tests) 60113ms
+     ✓ title → normal: reused A→B equals fresh B, whole graph and both RNG streams  3788ms
+     ✓ death → normal: reused A→B equals fresh B, whole graph and both RNG streams  4251ms
+     ✓ restart → normal: reused A→B equals fresh B, whole graph and both RNG streams  4740ms
+     ✓ seek → normal: reused A→B equals fresh B, whole graph and both RNG streams  4733ms
+     ✓ title → easy: reused A→B equals fresh B, whole graph and both RNG streams  4437ms
+     ✓ death → easy: reused A→B equals fresh B, whole graph and both RNG streams  3324ms
+     ✓ restart → easy: reused A→B equals fresh B, whole graph and both RNG streams  7634ms
+     ✓ seek → easy: reused A→B equals fresh B, whole graph and both RNG streams  1932ms
+     ✓ title → wizard: reused A→B equals fresh B, whole graph and both RNG streams  1734ms
+     ✓ death → wizard: reused A→B equals fresh B, whole graph and both RNG streams  3530ms
+     ✓ restart → wizard: reused A→B equals fresh B, whole graph and both RNG streams  3368ms
+     ✓ seek → wizard: reused A→B equals fresh B, whole graph and both RNG streams  3332ms
+     ✓ title → test: reused A→B equals fresh B, whole graph and both RNG streams  3252ms
+     ✓ death → test: reused A→B equals fresh B, whole graph and both RNG streams  2530ms
+     ✓ restart → test: reused A→B equals fresh B, whole graph and both RNG streams  3283ms
+     ✓ seek → test: reused A→B equals fresh B, whole graph and both RNG streams  2521ms
+     ✓ old grid cannot wake B; current grid wakes exactly once after repeated starts  1723ms
+stdout | src/test/p4_3_special_monster_flags.test.ts > P4-3 验收 1：MONST_INVULNERABLE — Warden of Yendor 打不死 > 玩家近战攻击 50 次，Warden 血量不变，也不会死亡
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_3_special_monster_flags.test.ts (12 tests) 13593ms
+     ✓ 玩家近战攻击 50 次，Warden 血量不变，也不会死亡  1220ms
+     ✓ revenant 受近战武器攻击 50 次，血量不变  1193ms
+     ✓ revenant 受怪物法术伤害（FIRE bolt，isWeaponAttack:false 出口）仍会掉血  1580ms
+     ✓ 怪物侧：另一只怪物对 stone guardian 施放 SPARK，伤害反弹到施法者身上，guardian 血量不变  950ms
+     ✓ 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变  1146ms
+     ✓ phantom 站在玩家视野内也不会进入 visibleMonsters（无 telepathy 时）  1263ms
+     ✓ 玩家有 telepathy 时，phantom 会出现在 visibleMonsters 中  1317ms
+     ✓ 对照组：非隐形怪物（goblin）在同样视野条件下正常出现  994ms
+     ✓ wisp（DIES_IF_NEGATED）被敌对怪物的 NEGATION bolt 命中后直接死亡，而不是只清状态  1547ms
+     ✓ 对照组：没有 DIES_IF_NEGATED 的 goblin 被 NEGATION 命中只清状态，不会死  950ms
+     ✓ stone guardian 带有该标志，但 web 没有 CE 的"机关/激活"子系统，因此它目前仍会像普通怪物一样每回合自主行动  1427ms
+stdout | src/test/u_r3_trace.test.ts > UR3 complete generation and revisit trace > matches HEAD for four drift seeds through D26 and cached/save return
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r3_trace.test.ts (1 test) 129080ms
+     ✓ matches HEAD for four drift seeds through D26 and cached/save return  129078ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 42954ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  6277ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  6185ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  6158ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  2900ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  4105ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  2939ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  3157ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  2524ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  1583ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  3290ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  1094ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  2587ms
+stdout | src/test/w_18_entrancement.test.ts > W-18 CE effect and trace > E=2, not charges/catalog magnitude; weaker recast replaces
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_18_entrancement.test.ts (67 tests) 45216ms
+     ✓ E=2, not charges/catalog magnitude; weaker recast replaces  534ms
+     ✓ E=3, not charges/catalog magnitude; weaker recast replaces  1232ms
+     ✓ E=8, not charges/catalog magnitude; weaker recast replaces  549ms
+     ✓ MONST_INANIMATE rejects without waking or changing budget  805ms
+     ✓ MONST_INVULNERABLE rejects without waking or changing budget  472ms
+     ✓ wakes recipient/teammates; applying to an ally retains allegiance  478ms
+     ✓ new entrancement does not reveal a hidden invisible recipient (CE monsterIsHidden precedes monsterRevealed)  601ms
+     ✓ real reflection confuses player, not reflector; actual confused direction drives all entranced monsters  619ms
+     ✓ random reflection affects actual bystander only  534ms
+     ✓ actual player direction 1,0 yields exactly opposite single step  513ms
+     ✓ actual player direction -1,0 yields exactly opposite single step  823ms
+     ✓ actual player direction 0,1 yields exactly opposite single step  794ms
+     ✓ actual player direction 0,-1 yields exactly opposite single step  787ms
+     ✓ actual player direction 1,1 yields exactly opposite single step  1026ms
+     ✓ actual player direction -1,-1 yields exactly opposite single step  598ms
+     ✓ actual player direction 1,-1 yields exactly opposite single step  774ms
+     ✓ actual player direction -1,1 yields exactly opposite single step  506ms
+     ✓ speed 50: one follow per player move, zero autonomous move/attack/cast/summon  521ms
+     ✓ speed 100: one follow per player move, zero autonomous move/attack/cast/summon  709ms
+     ✓ speed 200: one follow per player move, zero autonomous move/attack/cast/summon  702ms
+     ✓ haste player: follow occurs each action while duration decrements only at 100 objective ticks  505ms
+     ✓ slow player cannot induce multiple follow steps; expiry resumes real AI on that objective boundary  583ms
+     ✓ mouse/automatic path steps also drive one opposite step; confused path uses the actual direction  568ms
+     ✓ wait leaves an adjacent entranced enemy inert and player unharmed  858ms
+     ✓ follower wall collision does not sidestep/pathfind or attack; consumes player turn only  568ms
+     ✓ player wall collision with dirty render does not advance objective time or follower  535ms
+     ✓ non-turn action toggle_inventory leaves actual location and budget unchanged  732ms
+     ✓ non-turn action talk leaves actual location and budget unchanged  737ms
+     ✓ non-turn action nonsense leaves actual location and budget unchanged  560ms
+     ✓ non-turn action examine leaves actual location and budget unchanged  428ms
+     ✓ non-turn action stairs_up leaves actual location and budget unchanged  380ms
+     ✓ invalid movement and cancelled dive never trigger follower  2873ms
+     ✓ directional melee even a miss follows; struck recipient releases before follow and really attacks on the next wait  432ms
+     ✓ paralyzed blocks follow and leaves the actual monster in place  458ms
+     ✓ captive blocks follow and leaves the actual monster in place  472ms
+     ✓ web blocks follow and leaves the actual monster in place  395ms
+     ✓ dormant blocks follow and leaves the actual monster in place  384ms
+     ✓ confusion/flitting cannot override controlled direction  443ms
+     ✓ follows into same-faction enemy by attacking without swapping; target releases, caster remains entranced  447ms
+     ✓ hostile entranced creature can still attack ally (CE enemy fallback)  477ms
+     ✓ hostile entranced creature can still attack player (CE enemy fallback)  689ms
+     ✓ entranced ally neither attacks nor swaps with player teammate  490ms
+     ✓ controlled MA_ATTACKS_PENETRATE uses real P4-6 attack output  1019ms
+     ✓ controlled MA_ATTACKS_EXTEND uses real P4-6 attack output  831ms
+     ✓ controlled MA_ATTACKS_ALL_ADJACENT uses real P4-6 attack output  544ms
+     ✓ ally AI does not pursue/attack entranced enemy; damage bolt selection also skips it  557ms
+     ✓ CE enemy catalog gate rejects same-team entrancement; actual negation contact still frees it  523ms
+     ✓ entranced seizer cannot hold player; moving seizer clears its own grip  733ms
+     ✓ seized entranced monster spends movement budget but stays held  717ms
+     ✓ living immobile target is eligible: CE moveMonster itself has no immobile gate  651ms
+     ✓ restricted-liquid follower cannot step onto land  730ms
+     ✓ diagonal corner blocks follow and secret door admits it via placement  742ms
+     ✓ deep water is legal and does not drown; lava actually kills  880ms
+     ✓ fire immunity protects on lava; flight prevents chasm descent  915ms
+     ✓ follow onto gas pressure plate actually triggers terrain DF  561ms
+     ✓ chasm: W11 marks falling, C5 transfers survivor once and clears entrancement/grabs  542ms
+     ✓ thrown weapon miss releases; environmental/direct generic damage and poison do not  1128ms
+     ✓ fire staff damage breaks entrancement even fully absorbed by shielding  894ms
+     ✓ aquatic melee rejects a levitating target before release; kamikaze also leaves recipient entranced  1032ms
+     ✓ player-origin reflected fire damages a bystander without moralAttack release (CE Items5210)  526ms
+     ✓ fire immunity rejects before release  711ms
+     ✓ save/load preserves duration/timing and actual follow/wait; absent status remains absent  798ms
+     ✓ entranced jackal retains actual speed/traits after JSON load, then obeys physical movement rules  551ms
+     ✓ entranced eel retains actual speed/traits after JSON load, then obeys physical movement rules  1031ms
+     ✓ dormant and test-room snapshot carriers preserve the new payload  515ms
+     ✓ selection/cancel costs nothing; confirmed fixture consumes charge/time once without follow  473ms
+stdout | src/test/x3_u4_auto_travel.test.ts > X3-U4 disturbed and CE startFighting > already seen enemy attack (accuracy 100, including miss) interrupts the current travel step
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u4_auto_travel.test.ts (38 tests) 31532ms
+     ✓ already seen enemy attack (accuracy 100, including miss) interrupts the current travel step  601ms
+     ✓ already seen enemy attack (accuracy 0, including miss) interrupts the current travel step  739ms
+     ✓ continues ordinary attacks until HP <= expected damage, then cannot restart on another frame  708ms
+     ✓ easy expectedDamage /5 and weakness adjustment are latched with the combat target  565ms
+     ✓ hallucination latches tillDeath and does not apply the HP brake  853ms
+     ✓ special combat messages and environmental damage still interrupt blocked combat  799ms
+     ✓ direct combat misses disturb without relying on hit/miss text  492ms
+     ✓ a rejected aquatic attack on a levitating player is not an attack attempt  1151ms
+     ✓ new commands clear a stale disturbance; direct damage and secret discovery latch it again  642ms
+     ✓ a disturbed pending route survives snapshot restore and stops without an extra turn  868ms
+     ✓ new runs and command boundaries bind message disturbance to the active Game  1316ms
+     ✓ repeated terrain contact 192 disturbs even with unchanged status and no message  498ms
+     ✓ repeated terrain contact 35 disturbs even with unchanged status and no message  495ms
+     ✓ repeated terrain contact 39 disturbs even with unchanged status and no message  590ms
+     ✓ ordinary item first sight has the CE stop/message policy  857ms
+     ✓ key first sight has the CE stop/message policy  733ms
+     ✓ ally first sight has the CE stop/message policy  757ms
+     ✓ enemy first sight has the CE stop/message policy  770ms
+     ✓ stairs first sight has the CE stop/message policy  750ms
+     ✓ pure first-seen predicates exclude explored, mapped terrain and clairvoyance without changing RNG/state  501ms
+     ✓ manual sighting is silent, render does not commit visible sets or first sightings  513ms
+     ✓ clairvoyant sightings use the sense message, without pretending to be direct sight  507ms
+     ✓ a seen staircase never stops a second automatic command  817ms
+     ✓ key recording and replay stop at identical positions with and without render  2022ms
+     ✓ enemy recording and replay stop at identical positions with and without render  1977ms
+     ✓ stairs recording and replay stop at identical positions with and without render  1929ms
+     ✓ escape cancels before an early-return branch  366ms
+     ✓ cancel_target cancels before an early-return branch  6087ms
+     ✓ discoveries cancels before an early-return branch  374ms
+     ✓ help cancels before an early-return branch  339ms
+     ✓ toggle_inventory cancels before an early-return branch  509ms
+     ✓ interrupt_auto cancels before an early-return branch  512ms
+stdout | src/test/g_3_gas_effects.test.ts > G-3 对抗①：效果判定无阈值（CE Time.c:421-497 站进即判） > 体积 1 的蒸汽也结算：max(1,⌊30/15⌋)=2 伤害（阈值 >20 的实现 → 0 伤害翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/g_3_gas_effects.test.ts (26 tests) 26192ms
+     ✓ 体积 1 的蒸汽也结算：max(1,⌊30/15⌋)=2 伤害（阈值 >20 的实现 → 0 伤害翻红）  764ms
+     ✓ 体积 1 的麻痹气体也上状态（旧阈值实现 → 状态缺失翻红）  778ms
+     ✓ GAS 层 tile 在、体积为 0 的收层前窗口（Time.c:1361-1368 怪癖）同样命中  774ms
+     ✓ 蒸汽对玩家（maxHp 30）= 2/回合，不是旧定值 1（定值实现翻红）  805ms
+     ✓ 毒气对 zombie（maxHp 80）= 5/回合，不是 1（CE"大怪更怕毒气"）  1589ms
+     ✓ 毒气对 troll（maxHp 65）= 4/回合  963ms
+     ✓ 下限 1：rat（maxHp 6）受 1 点而不是 ⌊6/15⌋=0（漏钳制 → 0 伤害翻红）  1219ms
+     ✓ 连站两回合混乱不叠加：时长恒 25（stack 实现 → 50 翻红）  913ms
+     ✓ 更强的既有状态不被气体覆盖：先 confused 40，气体刷新后仍 40（覆盖实现 → 25 翻红）  926ms
+     ✓ 麻痹同式：先 paralyzed 30，气体刷新后仍 30；无状态时上 20  2055ms
+     ✓ 喝麻痹药水：脚下 GAS 层 = PARALYSIS_GAS、云真实铺开（直上状态的旧实现翻红）  898ms
+     ✓ 玩家喝下后自食其果：经效果判定上麻痹 20（旧直上 8 的实现翻红）  894ms
+     ✓ 玩家站毒气：hp −2 且无 poisoned 状态（CE 的毒状态走 addPoison，与气体无关）  947ms
+     ✓ 毒气致死玩家的死因归 tile description：lastDamageSource = caustic gas（Time.c:622-625）  903ms
+     ✓ 穿 respiration 符文甲站毒气：不掉血、符文自动鉴定（Time.c:617-622）  901ms
+     ✓ 同甲对混乱/麻痹也豁免（T_RESPIRATION_IMMUNITIES 全组，Rogue.h:1956）  1811ms
+     ✓ 无甲对照：同样的毒气掉 2 点（豁免分支误伤所有人的实现翻红）  900ms
+     ✓ 豁免前置是 T_RESPIRATION_IMMUNITIES 组旗标：甲烷（组外）不触发自动鉴定（CE Time.c:409-412 cellHasTerrainFlag 前置；越界鉴定在此翻红）  1070ms
+     ✓ PARALYSIS_GAS 携带 T_CAUSES_PARALYSIS 且效果可观测；无 T_CAUSES_DAMAGE/CONFUSION  1132ms
+     ✓ MONST_INANIMATE 怪不沾混乱/麻痹/伤害（CE Time.c:444/:474/:594 豁免）  1254ms
+     ✓ 火场 B（seed2026 场景流复位）逐位 = S-1 基线（效果重裁不烧火侧行为）  2210ms
+     ✓ 火场 C（seed777 场景流复位）逐位 = S-1 基线  1524ms
+     ✓ 效果结算零 RNG 消耗：站气回合前后实质抽取计数不动（同 seed 可复现旁证）  953ms
+stdout | src/test/x3_u2_ally_captive.test.ts > X3-U2 D05 ally swap > undefined swaps a normal ally without attacking or confirming, using movementSpeed
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u2_ally_captive.test.ts (32 tests) 19383ms
+     ✓ undefined swaps a normal ally without attacking or confirming, using movementSpeed  560ms
+     ✓ axe swaps a normal ally without attacking or confirming, using movementSpeed  854ms
+     ✓ whip swaps a normal ally without attacking or confirming, using movementSpeed  535ms
+     ✓ spear swaps a normal ally without attacking or confirming, using movementSpeed  519ms
+     ✓ rapier swaps a normal ally without attacking or confirming, using movementSpeed  517ms
+     ✓ flail swaps a normal ally without attacking or confirming, using movementSpeed  520ms
+     ✓ swap still picks up the destination item and respects the terrain confirmation before moving either creature  575ms
+     ✓ lava fallback excludes the player, another monster and stairs, choosing the nearest path ties  588ms
+     ✓ an enclosed landing uses CE square-ring fallback across blocked diagonal corners  660ms
+     ✓ temporary flight permits the original lava square without invoking fallback  809ms
+     ✓ applies CE current-terrain exception after relocation: deep water does not force fallback  784ms
+     ✓ undefined No changes no gameplay state; Yes attacks without swapping  475ms
+     ✓ axe No changes no gameplay state; Yes attacks without swapping  546ms
+     ✓ whip No changes no gameplay state; Yes attacks without swapping  533ms
+     ✓ spear No changes no gameplay state; Yes attacks without swapping  508ms
+     ✓ sweep confirms a secondary discordant ally before damaging the primary enemy; asks once for multiple allies  516ms
+     ✓ acid question precedes discordant question, with both answers in one command decision list  816ms
+     ✓ CE visibility/confusion/hallucination exemptions still apply; telepathy restores hallucination confirmation  515ms
+     ✓ undefined No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement  514ms
+     ✓ mace No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement  726ms
+     ✓ rapier No preserves state; Yes uses attackSpeed without attack recovery, nausea or movement  702ms
+     ✓ matching cage key disposable=false is unchanged on No and promoted/consumed only on Yes  528ms
+     ✓ matching cage key disposable=true is unchanged on No and promoted/consumed only on Yes  524ms
+     ✓ a captive behind a closed cage without a matching key cannot be freed through the wall  752ms
+     ✓ uses existing freeCaptive relation and carried-item transition  589ms
+     ✓ confused movement has already committed and releases the only reachable captive without another question  475ms
+     ✓ swap public commands replay and seek with zero OOS and no UI  523ms
+     ✓ fallback public commands replay and seek with zero OOS and no UI  797ms
+     ✓ discordant public commands replay and seek with zero OOS and no UI  572ms
+     ✓ captive public commands replay and seek with zero OOS and no UI  645ms
+     ✓ discordant request stops automation before asking, including on Yes  526ms
+     ✓ captive request stops automation before asking, including on Yes  680ms
+stdout | src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > refuses known lava (memory) without time, RNG, movement or an executed turn
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u1_movement_safety.test.ts (33 tests) 21126ms
+     ✓ refuses known lava (memory) without time, RNG, movement or an executed turn  656ms
+     ✓ refuses known lava (mapped) without time, RNG, movement or an executed turn  594ms
+     ✓ flame: No preserves the entire action state; Yes performs one move  985ms
+     ✓ confusion gas: No preserves the entire action state; Yes performs one move  916ms
+     ✓ paralysis gas: No preserves the entire action state; Yes performs one move  705ms
+     ✓ pressure plate: No preserves the entire action state; Yes performs one move  648ms
+     ✓ gas trap: No preserves the entire action state; Yes performs one move  475ms
+     ✓ lava: unknown, levitation/fire immunity >1, confused, entangled and secret exempt; duration 1 does not  455ms
+     ✓ fire/gas 31: visibility, confusion, burning and specific immunity gates  471ms
+     ✓ fire/gas 35: visibility, confusion, burning and specific immunity gates  464ms
+     ✓ fire/gas 39: visibility, confusion, burning and specific immunity gates  549ms
+     ✓ plates: mapped/clairvoyant count, memory alone does not; secret, depressed, levitation and respiration gates  546ms
+     ✓ questions are ordered fire -> gas -> plate, and stop at the first No  499ms
+     ✓ sword cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  511ms
+     ✓ whip cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  762ms
+     ✓ spear cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  679ms
+     ✓ axe cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  675ms
+     ✓ rapier cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  537ms
+     ✓ flail cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks  535ms
+     ✓ sweep checks every target before hurting any of them and asks only once  518ms
+     ✓ unarmed/protected, unseen, confused, hallucinating and known matching slaying exemptions  483ms
+     ✓ an animated auto step records answer=false and replay/seek stays stopped with zero OOS  640ms
+     ✓ an animated auto step records answer=true and replay/seek stays stopped with zero OOS  859ms
+     ✓ existing confused-lava confirmation also stops exploration before consuming movement RNG  470ms
+     ✓ stops an auto step before asking, and stays stopped after answer=false  462ms
+     ✓ stops an auto step before asking, and stays stopped after answer=true  555ms
+     ✓ flame replays rejected/accepted decisions and seeks without UI or OOS  742ms
+     ✓ confusion gas replays rejected/accepted decisions and seeks without UI or OOS  966ms
+     ✓ paralysis gas replays rejected/accepted decisions and seeks without UI or OOS  775ms
+     ✓ pressure plate replays rejected/accepted decisions and seeks without UI or OOS  679ms
+     ✓ gas trap replays rejected/accepted decisions and seeks without UI or OOS  682ms
+     ✓ acid attack replays rejected/accepted decisions and seeks without UI or OOS  920ms
+     ✓ lava refusal replays rejected/accepted decisions and seeks without UI or OOS  712ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 14782ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  14763ms
+stdout | src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_14a_status_gaps.test.ts (49 tests) 67787ms
+     ✓ strength potion clears layers immediately, keeps countdown one until tick  588ms
+     ✓ weakened runs on objective time for both actors  503ms
+     ✓ nauseous runs on objective time for both actors  492ms
+     ✓ darkness runs on objective time for both actors  563ms
+     ✓ magical_fear runs on objective time for both actors  559ms
+     ✓ U21b consumes the U14a darkness carrier in miner light  643ms
+     ✓ terrain exposure: player  712ms
+     ✓ terrain exposure: visible sleeper  655ms
+     ✓ terrain exposure: hidden sleeper  55857ms
+     ✓ terrain exposure: inanimate  409ms
+     ✓ terrain exposure: invulnerable  380ms
+     ✓ terrain exposure: respiration  356ms
+     ✓ fear cannot recover from full HP or attack when cornered; ordinary fleeing can  320ms
+     ✓ direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear  397ms
+     ✓ player, active/dormant monsters and clones round-trip amounts and independent maxStatus  1518ms
+     ✓ objective stench contact is before monster decay and after player decay  1797ms
+     ✓ magical fleeing permits summoning but cannot cast attack bolts  897ms
+stdout | src/test/x2a_recording_checkpoint.test.ts > X2a recording checkpoints > commits after the animated turn and matches synchronous recording, replay and seek
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2a_recording_checkpoint.test.ts (4 tests) 12644ms
+     ✓ commits after the animated turn and matches synchronous recording, replay and seek  5220ms
+     ✓ records reference screen closes through the command boundary  2856ms
+     ✓ keeps a slow-turn checkpoint pending through the intermediate animation frame  2142ms
+     ✓ keeps every checkpoint equal across a mixed animated and synchronous command sequence  2422ms
+stdout | src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x4a_movement_rendering.test.ts (21 tests) 12130ms
+     ✓ rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text  577ms
+     ✓ silently rejects a known obstruction later in the route BEFORE moving  539ms
+     ✓ uses remembered terrain, not hidden live walls/hazards, when validating the remaining route  520ms
+     ✓ does not read unknown next-cell passability before dispatching the shared movement entry  541ms
+     ✓ checks newly known diagonal corners throughout the route  538ms
+     ✓ refuses confused exploration with no turn/RNG consumption  699ms
+     ✓ refuses trapped exploration with no turn/RNG consumption  484ms
+     ✓ stops when a new monster becomes visible  477ms
+     ✓ stops when a new item becomes visible  485ms
+     ✓ stops in the revealing step itself, without requiring another auto_step  667ms
+     ✓ prioritizes a known adjacent enemy through the common attack entry  452ms
+     ✓ automatic movement runs the same special-tile entry exactly once  453ms
+     ✓ walking pickup, terrain entry and timing match manual movement and record only auto_step  1451ms
+     ✓ known-item pickup disturbs exploration in the movement turn  752ms
+     ✓ retains exploration mode across a whole-run snapshot and clears it on manual interruption  737ms
+     ✓ preserves no-target and no-initial-route messages  714ms
+     ✓ escape clears targeting without using resources, a turn or either RNG stream; replays as escape  838ms
+     ✓ an open inventory takes precedence; the next escape cancels throwing  709ms
+     ✓ normalizes every terrain/entity catalog glyph and short glyph literal in engine/entity sources  477ms
+stdout | src/test/u_27_recording.test.ts > U27 command recording > replays turns and inventory commands with both RNG streams checked
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_27_recording.test.ts (5 tests) 9608ms
+     ✓ replays turns and inventory commands with both RNG streams checked  1677ms
+     ✓ rejects legacy recordings and reports the first changed checkpoint  2838ms
+     ✓ rejects exporting a partial recording after a save is loaded  944ms
+     ✓ records mouse travel and its autonomous steps as separate checked events  1696ms
+     ✓ replays a refused then accepted food confirmation without asking again  2450ms
+stdout | src/test/u_r4_trace.test.ts > UR4 objective block trace > matches HEAD for complete snapshots, events, tick, both RNG streams and command log
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:62738) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/test/u_r4_trace.test.ts (1 test) 10204ms
+     ✓ matches HEAD for complete snapshots, events, tick, both RNG streams and command log  10202ms
+stdout | src/test/u_r2_trace.test.ts > UR2 fixed command traces > matches the pre-refactor state after each item command
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_r2_trace.test.ts (1 test) 5258ms
+     ✓ matches the pre-refactor state after each item command  5256ms
+stdout | src/test/x4b_flavor_text.test.ts > X4b CE flavorMessage display/archive boundary > tramples foliage and opens a door without log entries (animated=false)
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x4b_flavor_text.test.ts (9 tests) 6209ms
+     ✓ tramples foliage and opens a door without log entries (animated=false)  706ms
+     ✓ tramples foliage and opens a door without log entries (animated=true)  591ms
+     ✓ DF changes refresh immediately only under the grounded player; describe still logs  525ms
+     ✓ automatic travel clears inspection and finishes with the destination description  616ms
+     ✓ retains combat, pickup and item discovery messages in the archive  615ms
+     ✓ refresh/hover are read-only for saves, both RNG streams and recordings; load/new run rebuild display  900ms
+     ✓ uses gas terrain and reuses location description for levitation without overwriting hover  1265ms
+     ✓ replays terrain transitions with interleaved display refresh and hover at zero OOS  989ms
+stdout | src/test/u24_hardcoded_text.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u24_hardcoded_text.test.ts (3 tests) 547ms
+     ✓ requires translated floating labels and logger messages  530ms
+
+ Test Files  19 passed (19)
+      Tests  353 passed (353)
+   Start at  18:28:07
+   Duration  608.27s (transform 1.59s, setup 0ms, import 18.92s, tests 585.34s, environment 8ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/66d3/brogue/brogue-web/ai_docs/reports/x3-u4-evidence/followup-results.json

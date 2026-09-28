@@ -9,6 +9,8 @@ import { Inventory } from '../engine/Items/Inventory';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { rng } from '../engine/Random';
 import { ringBonus, turnsForFullRegenInThousandths } from '../engine/Items/RingBonuses';
+import { logger } from '../engine/Systems/Logger';
+import type { Grid } from '../engine/Map/Grid';
 
 // Hunger/regen constants aligned with Brogue CE (Rogue.h:1123-1127)
 export const TURNS_FOR_FULL_REGEN = 300; // Rogue.h:1123
@@ -54,6 +56,17 @@ export class Player extends Creature {
     }
 
     public snapshotHungerTransition(): HungerState | null { return this.hungerTransition; }
+
+    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+        if (amount > 0) logger.disturb();
+        super.takeDamage(amount, ignoresProtectionShield, grid);
+    }
+
+    /** Ordinary melee is the sole damage exception during CE startFighting. */
+    public takeCombatDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+        if (!logger.blockCombatText && amount > 0) logger.disturb();
+        super.takeDamage(amount, ignoresProtectionShield, grid);
+    }
     public restoreHungerTransition(value: HungerState | null): void { this.hungerTransition = value; }
 
     /** Tick down temporary immunities, returns list of expired ones. */
@@ -171,6 +184,7 @@ export class Player extends Creature {
         // Starvation: nutrition exhausted, 1 HP lost per turn (Time.c:2525-2530)
         if (this.nutrition <= 0) {
             this.hp -= 1;
+            logger.disturb();
             return 'starving';
         }
 
@@ -214,6 +228,7 @@ export class Player extends Creature {
         // Starvation: nutrition exhausted, 1 HP lost per turn (Time.c:2525-2530)
         if (this.nutrition <= 0) {
             this.hp -= 1;
+            logger.disturb();
             return 'starving';
         }
 

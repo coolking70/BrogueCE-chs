@@ -98,9 +98,9 @@ describe('W-18 required action-level chain and P2',()=>{
   m.setStatusDuration('entranced',1);const before={...m.loc};wait(g);expect(m.hasStatus('entranced')).toBe(false);expect(m.loc).not.toEqual(before);
  });
  it('mouse/automatic path steps also drive one opposite step; confused path uses the actual direction',()=>{
-  const g=scene(),m=mob(g);cast(g,m);g.isMouseTraveling=true;g.autoPath=[{x:5,y:5},{x:6,y:5}];g.visibleItems.clear();
+  const g=scene(),m=mob(g);cast(g,m);g.handleMouseTravel(6,5);g.visibleItems.clear();
   g.stepAutoPath();expect(g.player.loc.x).toBe(5);expect(m.loc.x).toBe(9);g.stepAutoPath();expect(g.player.loc.x).toBe(6);expect(m.loc.x).toBe(8);
-  g.player.setStatusDuration('confused',10);g.autoPath=[{x:7,y:5}];vi.spyOn(rng,'randRange').mockReturnValue(0);g.stepAutoPath();
+  g.player.setStatusDuration('confused',10);g.handleMouseTravel(7,5);vi.spyOn(rng,'randRange').mockReturnValue(0);g.stepAutoPath();
   expect(g.player.loc).toEqual({x:6,y:4});expect(m.loc).toEqual({x:8,y:6});expect(g.autoPath).toEqual([]);
  });
  it('wait leaves an adjacent entranced enemy inert and player unharmed',()=>{

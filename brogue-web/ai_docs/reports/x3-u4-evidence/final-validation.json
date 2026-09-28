@@ -1,0 +1,102 @@
+[
+  {
+    "name": "typecheck-final",
+    "command": "npx",
+    "args": [
+      "vue-tsc",
+      "-b"
+    ],
+    "env": {},
+    "started": "2026-09-28T10:26:26.084Z",
+    "seconds": 13.137,
+    "code": 0
+  },
+  {
+    "name": "build-final",
+    "command": "npm",
+    "args": [
+      "run",
+      "build"
+    ],
+    "env": {},
+    "started": "2026-09-28T10:26:39.222Z",
+    "seconds": 19.594,
+    "code": 0
+  },
+  {
+    "name": "trace-audit",
+    "command": "node",
+    "args": [
+      "scripts/x3-u4-trace-audit.mjs"
+    ],
+    "env": {},
+    "started": "2026-09-28T10:26:58.816Z",
+    "seconds": 20.756,
+    "code": 0
+  },
+  {
+    "name": "ur4-capture",
+    "command": "npx",
+    "args": [
+      "vitest",
+      "run",
+      "src/test/u_r4_trace.test.ts",
+      "--maxWorkers=1"
+    ],
+    "env": {
+      "UR4_CAPTURE": "1"
+    },
+    "started": "2026-09-28T10:27:19.574Z",
+    "seconds": 46.296,
+    "code": 0
+  },
+  {
+    "name": "followup",
+    "command": "npx",
+    "args": [
+      "vitest",
+      "run",
+      "src/test/u_00_new_run.test.ts",
+      "src/test/u_03_whole_run_snapshot.test.ts",
+      "src/test/x3b_display_recording.test.ts",
+      "src/test/p4_3_special_monster_flags.test.ts",
+      "src/test/x3_u4_auto_travel.test.ts",
+      "src/test/g_3_gas_effects.test.ts",
+      "src/test/u_14a_status_gaps.test.ts",
+      "src/test/x3_u1_movement_safety.test.ts",
+      "src/test/x3_u2_ally_captive.test.ts",
+      "src/test/u_27_recording.test.ts",
+      "src/test/x2a_recording_checkpoint.test.ts",
+      "src/test/x4a_movement_rendering.test.ts",
+      "src/test/x4b_flavor_text.test.ts",
+      "src/test/w_18_entrancement.test.ts",
+      "src/test/u_r2_trace.test.ts",
+      "src/test/u_r3_trace.test.ts",
+      "src/test/u_r4_trace.test.ts",
+      "src/test/p1_30_i18n_gate.test.ts",
+      "src/test/u24_hardcoded_text.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u4-evidence/followup-results.json"
+    ],
+    "env": {},
+    "started": "2026-09-28T10:28:06.896Z",
+    "seconds": 609.308,
+    "code": 0
+  },
+  {
+    "name": "drift",
+    "command": "npm",
+    "args": [
+      "run",
+      "test:drift",
+      "--",
+      "--maxWorkers=1"
+    ],
+    "env": {},
+    "started": "2026-09-28T10:38:16.204Z",
+    "seconds": 188.243,
+    "code": 0
+  }
+]

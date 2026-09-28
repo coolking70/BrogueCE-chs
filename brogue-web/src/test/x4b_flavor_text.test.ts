@@ -101,8 +101,14 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         g.monsters = [];
         const item = ItemLoader.spawnPotion('potion_of_strength', 10, 10)!;
         g.items.push(item);
-        g.onRenderRequested = () => {}; (g as any).needsRender = true; g.update();
-        expect(log.mock.calls.some(([text]) => text.includes('You notice a'))).toBe(true);
+        // X3-U4: discovery messages require an unseen key during automation;
+        // ordinary potion sighting/render refresh no longer emits a message.
+        g.items.push(ItemLoader.spawnKey('iron_key', 11, 9)!);
+        g.grid.getCell(11, 9)!.isExplored = false;
+        g.handleMouseTravel(12, 10);
+        (g as any).updateVision(); (g as any).refreshVisibleEntities();
+        expect(log.mock.calls.some(([text]) => text.includes('You see'))).toBe(true);
+        expect(logger.messages.some(m => m.text.includes('You see'))).toBe(true);
         g.executeCommand('pickup');
         expect(g.player.inventory.items).toContain(item);
         expect(log.mock.calls.some(([text]) => text.includes('You picked up'))).toBe(true);

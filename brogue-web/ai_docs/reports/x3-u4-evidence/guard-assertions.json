@@ -1,0 +1,47 @@
+[
+  {
+    "file": "src/test/x4a_movement_rendering.test.ts",
+    "before": 71,
+    "after": 71,
+    "identical": true,
+    "removed": [],
+    "added": []
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "before": 185,
+    "after": 185,
+    "identical": true,
+    "removed": [],
+    "added": []
+  },
+  {
+    "file": "src/test/x3b_display_recording.test.ts",
+    "before": 55,
+    "after": 55,
+    "identical": true,
+    "removed": [],
+    "added": []
+  },
+  {
+    "file": "src/test/p4_3_special_monster_flags.test.ts",
+    "before": 25,
+    "after": 25,
+    "identical": true,
+    "removed": [],
+    "added": []
+  },
+  {
+    "file": "src/test/x4b_flavor_text.test.ts",
+    "before": 49,
+    "after": 50,
+    "identical": false,
+    "removed": [
+      "expect(log.mock.calls.some(([text]) => text.includes('You notice a'))).toBe(true)"
+    ],
+    "added": [
+      "expect(log.mock.calls.some(([text]) => text.includes('You see'))).toBe(true)",
+      "expect(logger.messages.some(m => m.text.includes('You see'))).toBe(true)"
+    ]
+  }
+]

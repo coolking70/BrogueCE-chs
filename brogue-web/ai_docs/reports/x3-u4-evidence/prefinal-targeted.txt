@@ -1,0 +1,131 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/66d3/brogue/brogue-web
+
+ ❯ src/test/w_18_entrancement.test.ts (67 tests | 1 failed) 28686ms
+     × mouse/automatic path steps also drive one opposite step; confused path uses the actual direction 416ms
+ ❯ src/test/x4a_movement_rendering.test.ts (21 tests | 3 failed) 7144ms
+     × stops when a new monster becomes visible 268ms
+     × stops when a new item becomes visible 265ms
+     × stops in the revealing step itself, without requiring another auto_step 265ms
+ ❯ src/test/x3_u4_auto_travel.test.ts (32 tests | 1 failed) 16194ms
+     × enemy first sight has the CE stop/message policy 484ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_18_entrancement.test.ts > W-18 required action-level chain and P2 > mouse/automatic path steps also drive one opposite step; confused path uses the actual direction
+AssertionError: expected 4 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 4
+
+ ❯ src/test/w_18_entrancement.test.ts:102:43
+    100|  it('mouse/automatic path steps also drive one opposite step; confused…
+    101|   const g=scene(),m=mob(g);cast(g,m);g.isMouseTraveling=true;g.autoPat…
+    102|   g.stepAutoPath();expect(g.player.loc.x).toBe(5);expect(m.loc.x).toBe…
+       |                                           ^
+    103|   g.player.setStatusDuration('confused',10);g.autoPath=[{x:7,y:5}];vi.…
+    104|   expect(g.player.loc).toEqual({x:6,y:4});expect(m.loc).toEqual({x:8,y…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/test/x3_u4_auto_travel.test.ts > X3-U4 first sightings in simulation, never rendering > enemy first sight has the CE stop/message policy
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/x3_u4_auto_travel.test.ts:125:33
+    123|         g.executeCommand('mouse_travel', { x: 50, y: 10 }); walk(g);
+    124|         const shouldStop = kind === 'key' || kind === 'enemy' || kind …
+    125|         expect(g.player.x < 45).toBe(shouldStop);
+       |                                 ^
+    126|         if (!shouldStop) expect(g.player.loc).toEqual({ x: 50, y: 10 }…
+    127|         expect(logger.messages.filter(m => /You see|You sense/.test(m.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > stops when a new monster becomes visible
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > stops when a new item becomes visible
+AssertionError: expected [ { x: 12, y: 10 }, …(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 12,
++     "y": 10,
++   },
++   {
++     "x": 13,
++     "y": 10,
++   },
++   {
++     "x": 14,
++     "y": 10,
++   },
++   {
++     "x": 15,
++     "y": 10,
++   },
++ ]
+
+ ❯ src/test/x4a_movement_rendering.test.ts:107:46
+    105|             g.monsters.push(m); g.visibleMonsters.add(m);
+    106|         } else { const i = new Item('gold', '*', 0xffffff, ItemCategor…
+    107|         g.stepAutoPath(); expect(g.autoPath).toEqual([]); expect(g.sta…
+       |                                              ^
+    108|     });
+    109|     it('stops in the revealing step itself, without requiring another …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > stops in the revealing step itself, without requiring another auto_step
+AssertionError: expected [ { x: 12, y: 10 }, …(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "x": 12,
++     "y": 10,
++   },
++   {
++     "x": 13,
++     "y": 10,
++   },
++   {
++     "x": 14,
++     "y": 10,
++   },
++   {
++     "x": 15,
++     "y": 10,
++   },
++ ]
+
+ ❯ src/test/x4a_movement_rendering.test.ts:114:59
+    112|         vi.spyOn(g as any, 'updateVision').mockImplementation(() => { …
+    113|         g.stepAutoPath();
+    114|         expect(g.stats.turns).toBe(1); expect(g.autoPath).toEqual([]);
+       |                                                           ^
+    115|         expect(g.exportRecording().events.map(e => e.action)).toEqual(…
+    116|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  5 failed | 180 passed (185)
+   Start at  17:17:48
+   Duration  88.23s (transform 1.02s, setup 0ms, import 4.92s, tests 82.40s, environment 2ms)
+

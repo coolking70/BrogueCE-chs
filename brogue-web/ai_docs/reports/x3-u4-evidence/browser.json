@@ -1,0 +1,792 @@
+{
+  "results": [
+    {
+      "scene": "HP brake via X key",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 10,
+            "y": 10,
+            "hp": 1,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 997
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 11,
+              "y": 10,
+              "hp": 497,
+              "maxHp": 500,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 100,
+              "defense": 0,
+              "damage": "1d1+4",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 3,
+        "path": [],
+        "disturbed": true,
+        "log": []
+      },
+      "debug": {
+        "hp": 1,
+        "mode": "test",
+        "monsters": [
+          {
+            "damage": "1d1+4",
+            "hp": 497,
+            "state": 2,
+            "loc": {
+              "x": 11,
+              "y": 10
+            }
+          }
+        ]
+      }
+    },
+    {
+      "scene": "Escape stops ticker travel",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 12,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 998
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 2,
+        "path": [],
+        "disturbed": false,
+        "log": []
+      }
+    },
+    {
+      "scene": "Space stops ticker travel",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 12,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 998
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 2,
+        "path": [],
+        "disturbed": false,
+        "log": []
+      }
+    },
+    {
+      "scene": "q stops ticker travel",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 12,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 998
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 2,
+        "path": [],
+        "disturbed": false,
+        "log": []
+      }
+    },
+    {
+      "scene": "item first sight",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 24,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2136,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 986
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 15,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": -69,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 14,
+        "path": [],
+        "disturbed": false,
+        "log": []
+      }
+    },
+    {
+      "scene": "ally first sight",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 24,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2136,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 986
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 15,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": -69,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 14,
+        "path": [],
+        "disturbed": false,
+        "log": []
+      }
+    },
+    {
+      "scene": "key first sight",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 14,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2146,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 996
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 5,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 16,
+              "y": 9
+            }
+          ]
+        },
+        "turns": 4,
+        "path": [],
+        "disturbed": true,
+        "log": [
+          "你看到了铁钥匙。"
+        ]
+      }
+    },
+    {
+      "scene": "stairs first sight",
+      "state": {
+        "text": {
+          "seed": "33004",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {
+              "darkness": 1000
+            },
+            "x": 14,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2146,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "darkness": 996
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 5,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 5,
+              "y": 14
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "口粮",
+              "category": 4
+            },
+            {
+              "letter": "b",
+              "name": "匕首",
+              "category": 0
+            },
+            {
+              "letter": "c",
+              "name": "飞镖",
+              "category": 0
+            },
+            {
+              "letter": "d",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 131,
+            "scaleX": 1.375,
+            "scaleY": 1.375,
+            "tile": 16,
+            "follow": true
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        },
+        "turns": 4,
+        "path": [],
+        "disturbed": true,
+        "log": [
+          "你看到了下行楼梯。"
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

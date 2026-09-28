@@ -1,0 +1,20 @@
+
+> brogue-web@0.1.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' --maxWorkers=1 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/x3-u4-evidence/full-results.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/66d3/brogue/brogue-web
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_7_features.test.ts (22 tests) 1542163ms
+     ✓ D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录  18299ms
+     ✓ D2 落点记录带诊断字段（featureIndex/terrain/featureDF），且位置与网格机器格一致  2180ms
+     ✓ E3 Game 段（确定性）：finalizeBlueprintMonster 消费 fleeing；dormant 分支按 CE 顺序覆盖它  616ms
+     ✓ F1 携钥匙怪的出生态可达、不在致死地形上，且携带品带 keyLoc 绑定  281676ms
+     ✓ F2 携带指令：钥匙有绑定；CE8 非钥匙奖励有完整的外包/领养来源  838032ms
+     ✓ G2 U19f: both CE47 and CE52 closed-cage adoption machines occur naturally  401336ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+

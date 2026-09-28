@@ -1,0 +1,141 @@
+--- before/src/engine/Systems/Logger.ts
++++ after/src/engine/Systems/Logger.ts
+@@ -10,12 +10,20 @@
+     count: number;
+ }
+ 
++// Session wiring, like the grid effect callbacks: never part of the run graph
++// or log history. New/load/command boundaries bind the active Game explicitly.
++const disturbanceCallbacks = new WeakMap<Logger, () => void>();
++
+ export class Logger {
+     public messages: LogMessage[] = [];
+     private nextId: number = 0;
+     /** CE message() always disturbs, including folded messages. The active
+      * Game owns the latch; loading history must not emit a new message. */
+-    public onDisturb: (() => void) | null = null;
++    public get onDisturb(): (() => void) | null { return disturbanceCallbacks.get(this) ?? null; }
++    public set onDisturb(callback: (() => void) | null) {
++        if (callback) disturbanceCallbacks.set(this, callback);
++        else disturbanceCallbacks.delete(this);
++    }
+     public blockCombatText = false;
+ 
+     public disturb(): void { this.onDisturb?.(); }
+--- before/src/engine/Core/Game.ts
++++ after/src/engine/Core/Game.ts
+@@ -2567,7 +2567,7 @@
+                             : i18next.t('vision.sense_monster', { monster: name, defaultValue: 'You sense a {{monster}}.' }), '#ffccaa');
+                     }
+                 }
+-                // CE MB_WAS_VISIBLE is never cleared for captives.
++                // Retain captive sightings for this automatic command.
+                 if (monster.isCaged) this.everSeenMonsters.add(monster);
+             }
+         }
+@@ -9039,6 +9039,7 @@
+             return;
+         }
+         const first = !entity.hasStatus('nauseous');
++        if (entity === this.player) this.disturbed = true; // CE Time.c:425, even on a silent refresh.
+         entity.applyStatus('nauseous', 20);
+         if (first && entity instanceof Monster && this.visibleMonsters.has(entity)
+             && entity.state === MonsterState.ASLEEP) entity.state = MonsterState.HUNTING;
+@@ -9241,6 +9242,7 @@
+                             // 为 0"（外层还有 canDirectlySeeMonster——web 对应
+                             // visibleMonsters），不是"本次刷新生效"。
+                             const wasConfused = entity.getStatusDuration('confused') > 0;
++                            if (entity === this.player) this.disturbed = true; // CE Time.c:446
+                             const applied = entity === this.player
+                                 ? entity.applyStatus('confused', 25)
+                                 : this.applyStatusToMonster(entity as Monster, 'confused', 25, 'gas');
+@@ -9263,6 +9265,7 @@
+                             && ((entity as Monster).hasBehavior('MONST_INANIMATE')
+                                 || (entity as Monster).isInvulnerable());
+                         if (!exempt) {
++                            if (entity === this.player) this.disturbed = true; // CE Time.c:492
+                             const applied = entity === this.player
+                                 ? entity.applyStatus('paralyzed', 20)
+                                 : this.applyStatusToMonster(entity as Monster, 'paralyzed', 20, 'gas');
+--- before/src/test/x3_u4_auto_travel.test.ts
++++ after/src/test/x3_u4_auto_travel.test.ts
+@@ -118,6 +118,23 @@
+         g.handleMouseTravel(50, 10); expect(g.loadSnapshot(save)).toBe(true); g.stepAutoPath();
+         expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
+     });
++    it('new runs and command boundaries bind message disturbance to the active Game', () => {
++        const first = scene(), second = scene();
++        logger.log('second run'); expect(first.disturbed).toBe(false); expect(second.disturbed).toBe(true);
++        second.disturbed = false; first.executeCommand('help'); logger.log('first command');
++        expect(first.disturbed).toBe(true); expect(second.disturbed).toBe(false);
++    });
++    it.each([
++        [T.ROT_GAS, 'nauseous'], [T.CONFUSION_GAS, 'confused'], [T.PARALYSIS_GAS, 'paralyzed'],
++    ] as const)('repeated terrain contact %s disturbs even with unchanged status and no message', (tile, status) => {
++        const g = scene(); g.handleMouseTravel(50, 10);
++        g.player.setStatusDuration(status, 40); g.grid.setTerrain(g.player.x, g.player.y, tile);
++        const random = rng.getState(); logger.blockCombatText = true;
++        try { (g as any).applyEnvironmentalEffects(g.player); } finally { logger.blockCombatText = false; }
++        expect(g.player.getStatusDuration(status)).toBe(40); expect(logger.messages).toEqual([]);
++        expect(g.disturbed).toBe(true); expect(rng.getState()).toEqual(random);
++        g.stepAutoPath(); expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
++    });
+ });
+ 
+ describe('X3-U4 first sightings in simulation, never rendering', () => {
+--- before/src/test/x3b_display_recording.test.ts
++++ after/src/test/x3b_display_recording.test.ts
+@@ -92,7 +92,7 @@
+                 expect(g.grid.getCell(rat.x, rat.y)!.isVisible).toBe(false);
+             });
+             // Re-enter through the public render-loop entry, not executeCommand.
+-            g.autoPath = [{ x: 11, y: 10 }];
++            g.handleMouseTravel(11, 10); // New travel command clears the preceding potion message's disturbance.
+             g.stepAutoPath();
+             expect(g.player.loc).toEqual({ x: 11, y: 10 });
+             expect(g.exportRecording().events.map(e => e.action)).toEqual(['item:command', 'help', 'auto_step']);
+--- before/src/test/p4_3_special_monster_flags.test.ts
++++ after/src/test/p4_3_special_monster_flags.test.ts
+@@ -181,6 +181,7 @@
+         const phantom = new Monster(6, 5, monsterDataById('phantom'));
+         game.monsters.push(phantom);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         expect(game.visibleMonsters.has(phantom)).toBe(false);
+@@ -194,6 +195,7 @@
+         game.monsters.push(phantom);
+         game.player.setStatusDuration('telepathy', 50);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         // U21a/CE Monsters.c:203–237: invisible & not in gas ⇒ monsterIsHidden; telepathy cannot override it.
+@@ -207,6 +209,7 @@
+         const goblin = new Monster(6, 5, monsterDataById('goblin'));
+         game.monsters.push(goblin);
+         game.onRenderRequested = () => {};
++        game.handlePlayerAction('wait'); // E05 commits visible sets at turn end.
+         game.update();
+ 
+         expect(game.visibleMonsters.has(goblin)).toBe(true);
+--- before/src/test/x4b_flavor_text.test.ts
++++ after/src/test/x4b_flavor_text.test.ts
+@@ -101,8 +101,14 @@
+         g.monsters = [];
+         const item = ItemLoader.spawnPotion('potion_of_strength', 10, 10)!;
+         g.items.push(item);
+-        g.onRenderRequested = () => {}; (g as any).needsRender = true; g.update();
+-        expect(log.mock.calls.some(([text]) => text.includes('You notice a'))).toBe(true);
++        // X3-U4: discovery messages require an unseen key during automation;
++        // ordinary potion sighting/render refresh no longer emits a message.
++        g.items.push(ItemLoader.spawnKey('iron_key', 11, 9)!);
++        g.grid.getCell(11, 9)!.isExplored = false;
++        g.handleMouseTravel(12, 10);
++        (g as any).updateVision(); (g as any).refreshVisibleEntities();
++        expect(log.mock.calls.some(([text]) => text.includes('You see'))).toBe(true);
++        expect(logger.messages.some(m => m.text.includes('You see'))).toBe(true);
+         g.executeCommand('pickup');
+         expect(g.player.inventory.items).toContain(item);
+         expect(log.mock.calls.some(([text]) => text.includes('You picked up'))).toBe(true);

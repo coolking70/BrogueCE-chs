@@ -1,0 +1,24 @@
+[
+  {
+    "name": "types",
+    "command": "npx",
+    "args": [
+      "vue-tsc",
+      "-b"
+    ],
+    "started": "2026-09-28T09:33:24.183Z",
+    "seconds": 8.601,
+    "exitCode": 2
+  },
+  {
+    "name": "build",
+    "command": "npm",
+    "args": [
+      "run",
+      "build"
+    ],
+    "started": "2026-09-28T09:33:32.784Z",
+    "seconds": 24.028,
+    "exitCode": 2
+  }
+]

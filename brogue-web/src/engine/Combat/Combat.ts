@@ -172,6 +172,7 @@ export class CombatSystem {
         // defender 完全不受影响。三只膨胀怪的 damage 都是 0d1，真正的杀伤来自
         // 死亡时触发的 DF（Game.triggerDeathFeatures），不是这次攻击本身。
         if (attacker instanceof Monster && attacker.hasAbility('MA_KAMIKAZE')) {
+            if (defender instanceof Player && !logger.blockCombatText) logger.disturb();
             attacker.takeDamage(attacker.hp, true);
             return { damage: 0, weaponName, hit: true, backstab: false, kamikazeSelfDestruct: true };
         }
@@ -183,6 +184,9 @@ export class CombatSystem {
             && (defender.hasStatus('levitating') || defender.hasStatus('flying'))) {
             return { damage: 0, weaponName, hit: false, backstab: false };
         }
+
+        // CE Combat.c:1179: attempts involving the player disturb even on a miss.
+        if (!logger.blockCombatText && (attacker instanceof Player || defender instanceof Player)) logger.disturb();
 
         // W-18 CE Combat.c:1183: attempts release entrancement even on a miss.
         // U06 handles BE_DAMAGE aggression in its separate damage path.
@@ -293,7 +297,8 @@ export class CombatSystem {
         if (damage > 0) {
             const hpDamage = applyTo.absorbShieldDamage(damage);
             CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
-            applyTo.takeDamage(hpDamage, true, opts?.grid); // already passed through the shield exactly once
+            if (applyTo instanceof Player) applyTo.takeCombatDamage(hpDamage, true, opts?.grid);
+            else applyTo.takeDamage(hpDamage, true, opts?.grid); // shield applied exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         } else {
             // CE inflictDamage still applies the ring's minimum ±1 on a hit
