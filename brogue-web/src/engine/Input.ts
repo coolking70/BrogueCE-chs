@@ -8,6 +8,10 @@ import { Direction } from '../types';
 export class InputManager {
     private keybMap: Record<string, boolean> = {};
     private onActionCallback: ((action: string, data?: any) => void) | null = null;
+    /** CE: any keystroke interrupts automation (Movement.c:2345-2351, IO.c:2366-2375).
+     *  Unbound keys are not game commands (P1-46); the host decides whether an
+     *  automation is running and only then issues `interrupt_auto`. */
+    private onUnboundKeyCallback: (() => void) | null = null;
 
     constructor() {
         window.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -16,6 +20,10 @@ export class InputManager {
 
     public setCallback(cb: (action: string, data?: any) => void) {
         this.onActionCallback = cb;
+    }
+
+    public setUnboundKeyCallback(cb: (() => void) | null) {
+        this.onUnboundKeyCallback = cb;
     }
 
     public triggerAction(action: string, data?: any) {
@@ -129,7 +137,7 @@ export class InputManager {
                     this.onActionCallback('stairs_down');
                     break;
                 default:
-                    this.onActionCallback('interrupt_auto');
+                    this.onUnboundKeyCallback?.();
                     break;
                 // null dir means rest
             }

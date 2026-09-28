@@ -322,6 +322,11 @@ onMounted(async () => {
         game.handlePlayerAction(action, data);
         game.update();
     });
+    inputManager.setUnboundKeyCallback(() => {
+        if (!game.isAutoTraveling()) return;
+        game.handlePlayerAction('interrupt_auto');
+        game.update();
+    });
 
     const render = () => {
         // FE-1：玩家移动后相机回到跟随（清掉临时平移）并重算视口

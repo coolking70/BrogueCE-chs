@@ -839,6 +839,10 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
                                           // 结构性不可达（web 无 wired 载体）；本轮九条 wired
                                           // 地形入列后真实可达，属本扫描器头注预告的
                                           // **扩清单时刻**（B-3 / ItemSpawnHeatMap 同款先例）。
+        'engine/Movement/AutoTravelVisibility.ts', // X3-U4：CE Movement.c:2605-2616 的直译——
+                                          // 自动行进中首次直视到 TM_INTERRUPT_EXPLORATION_WHEN_SEEN
+                                          // 地形（楼梯/传送门/锁门/锁笼）即提示并置 disturbed。
+                                          // 只读 mechFlags 判定该旗标，属合法首读者（扩清单时刻，同上先例）。
     ]);
     it('留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
