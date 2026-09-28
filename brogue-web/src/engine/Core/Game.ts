@@ -272,6 +272,9 @@ interface TestRoomState {
 
 const superVictoryState = new WeakMap<Game, boolean>();
 
+/** CE Rogue.h:1123 TURNS_FOR_FULL_REGEN (autoRest recovery cap). */
+const TURNS_FOR_FULL_REGEN = 300;
+
 export class Game {
     public grid!: Grid;
     public environment!: EnvironmentManager;
@@ -291,6 +294,15 @@ export class Game {
     /** CE rogue.disturbed: latched until a new automatic command starts. */
     public disturbed = false;
     private autoFight: { targetId: number; loc: Pos; expectedDamage: number; tillDeath: boolean } | null = null;
+    /** Yielded CE autoRest/manualSearch/playerRuns state; every step is recorded. */
+    private autoAction: {
+        kind: 'auto_rest' | 'search_long' | 'run';
+        remaining: number;
+        direction?: Direction;
+        cardinalPassability: boolean[];
+        untilRecovered: boolean;
+        initiallyEmbedded: boolean;
+    } | null = null;
     private pendingDiscoveryMessages: Array<{ text: string; color: string }> = [];
     private activeMonsterList = ownedMonsterList([], this);
     public get monsters(): Monster[] { return this.activeMonsterList; }
@@ -350,6 +362,7 @@ export class Game {
 
     private needsRender: boolean = true;
     public isInventoryOpen: boolean = false;
+    public inventoryAction: 'equip' | 'unequip' | 'drop' | 'call' | null = null;
     public referenceScreen: 'discoveries' | 'help' | null = null;
 
     /**
@@ -533,6 +546,7 @@ export class Game {
         logger.reset();
         this.disturbed = false;
         this.autoFight = null;
+        this.autoAction = null;
         this.pendingDiscoveryMessages = [];
         timeSystem.currentTick = 0;
 
@@ -586,6 +600,7 @@ export class Game {
         this.gameOverScore = 0;
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
+        this.inventoryAction = null;
         this.pendingIdentify = false;
         this.pendingEnchantment = false;
         this.pendingEnchantmentScrollWasKnown = false;
@@ -2998,6 +3013,16 @@ export class Game {
             // 强制选到合法目标，ESC 会重新进入提示）
             if (this.pendingIdentify) return;
             this.isInventoryOpen = !this.isInventoryOpen;
+            this.inventoryAction = null;
+            return;
+        }
+
+        if (action === 'inventory_action') {
+            if (this.pendingIdentify || this.pendingUseConfirm) return;
+            if (data === 'equip' || data === 'unequip' || data === 'drop' || data === 'call') {
+                this.inventoryAction = data;
+                this.isInventoryOpen = true;
+            }
             return;
         }
 
@@ -3005,6 +3030,7 @@ export class Game {
             if (this.pendingIdentify) return;
             if (this.isInventoryOpen) {
                 this.isInventoryOpen = false;
+                this.inventoryAction = null;
             } else if (this.isThrowing) {
                 // CE throwCommand: cancelling chooseTarget commits no turn/RNG.
                 this.isThrowing = false;
@@ -3015,11 +3041,13 @@ export class Game {
         }
 
         if (action === 'apply_item') {
+            this.inventoryAction = null;
             if (!this.pendingIdentify) this.isInventoryOpen = true;
             return;
         }
 
         if (action === 'throw_item') {
+            this.inventoryAction = null;
             // B-2：CE THROW_KEY（Rogue.h:1183）。CE 是同步的"扔什么?→扔哪里?"
             // 双提示；web 无同步提示层，近似为打开背包由玩家点物品的 Throw
             // 按钮再点目标格（B-1b identify 异步偏差的同款架构代价，登记）。
@@ -3086,19 +3114,18 @@ export class Game {
             return;
         }
 
-        if (action === 'wait_or_stairs_down') {
-            const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && (cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL))) { // F-1 跨层判定
-                this.handlePlayerAction('stairs_down', undefined, 'system');
-            } else {
-                this.handlePlayerAction('wait', undefined, 'system');
-            }
-            return;
-        }
-
         // Intercept inputs if inventory is open (except toggle)
         // B-1b：鉴定目标待选期间同样封锁（双保险；待选时 isInventoryOpen 恒 true）
         if (this.isInventoryOpen || this.pendingIdentify) {
+            return;
+        }
+
+        if (action === 'travel_stairs') {
+            if (!this.isThrowing && (data === 'up' || data === 'down')) this.travelToStairs(data);
+            return;
+        }
+        if (action === 'auto_rest' || action === 'search_long' || action === 'run') {
+            if (!this.isThrowing) this.beginAutoAction(action, data);
             return;
         }
 
@@ -3109,11 +3136,8 @@ export class Game {
             this.everSeenItems.clear();
         }
 
-        // P1-42：主动搜索命令（CE manualSearch，Time.c:2395-2430）。
-        // 键位挂接被搁置：CE SEARCH_KEY='s'（Rogue.h:1177）与 web 既有
-        // 's'=向下移动冲突（Input.ts），任务书明令冲突时只报告、不擅自改键位。
-        // 引擎侧动作名定为 'search'；UI 键位决定后一行 Input.ts 即可接上
-        // （onActionCallback('search')）。
+        // CE manualSearch (Time.c:2395-2430): both s and each yielded Ctrl-S
+        // iteration use this entry, preserving the existing five-search charge.
         if (action === 'search') {
             this.manualSearch();
             return;
@@ -8445,10 +8469,10 @@ export class Game {
      *
      * inAutoTravelStep covers the entire shared movement/attack/pickup turn,
      * even if a terrain effect clears the route during that turn. autoPath and
-     * isMouseTraveling also cover the interval before a queued step starts.
+     * isMouseTraveling/autoAction also cover the interval before a queued step starts.
      */
     public isAutoTraveling(): boolean {
-        return this.inAutoTravelStep || this.autoPath.length > 0 || this.isMouseTraveling;
+        return this.inAutoTravelStep || this.autoAction !== null || this.autoPath.length > 0 || this.isMouseTraveling;
     }
 
     /** stepAutoPath 调用栈内为 true（try/finally 保证复位），见 isAutoTraveling。 */
@@ -8637,6 +8661,7 @@ export class Game {
             isAutoExploring: this.isAutoExploring || undefined,
             disturbed: this.isAutoTraveling() ? this.disturbed : undefined,
             autoFight: this.autoFight ?? undefined,
+            autoAction: this.autoAction ?? undefined,
             pendingDiscoveryMessages: this.pendingDiscoveryMessages.length ? this.pendingDiscoveryMessages : undefined,
             recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,
             signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
@@ -8767,6 +8792,8 @@ export class Game {
         this.isAutoExploring = run.isAutoExploring ?? false;
         this.disturbed = run.disturbed ?? false;
         this.autoFight = run.autoFight ?? null;
+        this.autoAction = run.autoAction ?? null;
+        this.inventoryAction = null;
         this.pendingDiscoveryMessages = run.pendingDiscoveryMessages ?? [];
         logger.onDisturb = () => { this.disturbed = true; };
         logger.blockCombatText = false;
@@ -9749,6 +9776,7 @@ export class Game {
 
     private stopAutoTravel() {
         this.autoFight = null;
+        this.autoAction = null;
         this.autoPath = [];
         this.isAutoExploring = false;
         this.isMouseTraveling = false;
@@ -10664,6 +10692,7 @@ export class Game {
     public setAutoPath(x: number, y: number) {
         this.disturbed = false;
         this.autoFight = null;
+        this.autoAction = null;
         this.pendingDiscoveryMessages = [];
         this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
         this.isAutoExploring = false;
@@ -10683,12 +10712,12 @@ export class Game {
     }
 
     public stepAutoPath() {
-        if (this.autoPath.length === 0 || this.isInventoryOpen) return;
+        if ((!this.autoPath.length && !this.autoAction) || this.isInventoryOpen) return;
         this.executeCommand('auto_step');
     }
 
     private performAutoPathStep() {
-        if (this.autoPath.length === 0 || this.isInventoryOpen) return;
+        if ((!this.autoPath.length && !this.autoAction) || this.isInventoryOpen) return;
         // P2-2 输入锁：怪物行动动画播完之前，自动探索/寻路不得推进下一步
         // （GameCanvas 的 ticker 会持续重试，解锁后自然继续）
         if (this.isInputLocked()) return;
@@ -10697,7 +10726,8 @@ export class Game {
         // 异常路径也复位。
         this.inAutoTravelStep = true;
         try {
-            this.stepAutoPathInner();
+            if (this.autoAction) this.stepAutoAction();
+            else this.stepAutoPathInner();
         } finally {
             this.inAutoTravelStep = false;
         }
@@ -10707,6 +10737,114 @@ export class Game {
         if (!this.disturbed) return false;
         this.stopAutoTravel();
         return true;
+    }
+
+    /** CE proposeOrConfirmLocation/travel. The web's single-input travel policy
+     * also applies to stairs. Only discovered/mapped terrain supplies a target. */
+    private travelToStairs(direction: 'up' | 'down'): void {
+        const matches = (layers: TerrainType[]) => direction === 'up'
+            ? layers.includes(TerrainType.STAIRS_UP)
+            : layers.includes(TerrainType.STAIRS_DOWN) || layers.includes(TerrainType.DUNGEON_PORTAL);
+        const level = this.levelSeeds[this.depth - 1];
+        const target = direction === 'up' ? level?.upStairsLoc : level?.downStairsLoc;
+        if (target && this.player.x === target.x && this.player.y === target.y) {
+            logger.log(i18next.t('travel.already_there', { defaultValue: 'you are already there.' }), '#aaaaaa');
+            return;
+        }
+        const cell = target && this.grid.getCell(target.x, target.y);
+        if (target && cell && (cell.isExplored || cell.isMagicMapped) && matches(cell.isVisible ? cell.layers : cell.rememberedLayers)) {
+            this.refreshVisibleEntities(false);
+            this.setAutoPath(target.x, target.y);
+            return;
+        }
+        logger.log(direction === 'up'
+            ? i18next.t('travel.no_way_up', { defaultValue: 'I see no way up.' })
+            : i18next.t('travel.no_way_down', { defaultValue: 'I see no way down.' }), '#aaaaaa');
+    }
+
+    private cardinalPassability(): boolean[] {
+        return [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT].map(direction => {
+            const delta = this.directionToVec(direction);
+            const cell = this.grid.getCell(this.player.x + delta.x, this.player.y + delta.y);
+            return !!cell && this.knownTravelTerrainAllowed(cell);
+        });
+    }
+
+    private embeddedInTerrain(): boolean {
+        return !!(cellTerrainFlags(this.grid, this.player.x, this.player.y) & T_OBSTRUCTS_PASSABILITY);
+    }
+
+    private needsAutoRest(): boolean {
+        return this.player.hp < this.player.maxHp || this.embeddedInTerrain()
+            || (['hallucinating', 'confused', 'nauseous', 'poisoned', 'darkness'] as const)
+                .some(status => this.player.hasStatus(status));
+    }
+
+    private beginAutoAction(kind: 'auto_rest' | 'search_long' | 'run', data: unknown): void {
+        this.stopAutoTravel();
+        if (this.isGameOver) return;
+        if (kind === 'run' && (typeof data !== 'number' || !Number.isInteger(data)
+            || data < Direction.UP || data > Direction.DOWNRIGHT || this.player.hasStatus('confused'))) return;
+        this.refreshVisibleEntities(false);
+        // CE autoRest clears MB_ALREADY_SEEN, so even an already visible enemy
+        // interrupts the first rest turn. Travel/run retain existing sightings.
+        this.everSeenMonsters = kind === 'auto_rest' ? new Set() : new Set(iterateCreatures(this.visibleMonsters));
+        this.disturbed = false;
+        this.pendingDiscoveryMessages = [];
+        const untilRecovered = kind === 'auto_rest' && this.needsAutoRest();
+        const initiallyEmbedded = kind === 'auto_rest' && this.embeddedInTerrain();
+        // CE Time.c:2361-2388: recovering rest runs up to TURNS_FOR_FULL_REGEN (300,
+        // Rogue.h:1123); a plain rest (nothing to recover) runs 100 turns.
+        const restCap = untilRecovered || initiallyEmbedded ? TURNS_FOR_FULL_REGEN : 100;
+        this.autoAction = {
+            kind, remaining: kind === 'search_long' ? 5 : kind === 'auto_rest' ? restCap : 100,
+            direction: kind === 'run' ? data as Direction : undefined,
+            cardinalPassability: this.cardinalPassability(),
+            untilRecovered,
+            initiallyEmbedded,
+        };
+        // First turn belongs to the initiating command; later turns to auto_step.
+        this.performAutoPathStep();
+    }
+
+    /** CE Movement.c:2419-2436: nearby items and observable non-allies stop runs. */
+    private runIsDisturbed(): boolean {
+        const adjacent = (pos: Pos) => Math.max(Math.abs(pos.x - this.player.x), Math.abs(pos.y - this.player.y)) === 1;
+        return this.items.some(item => adjacent(item.loc))
+            || Array.from(iterateCreatures(this.visibleMonsters)).some(monster => monster.hp > 0 && !monster.isAlly && adjacent(monster.loc));
+    }
+
+    private stepAutoAction(): void {
+        if (this.autoTravelDisturbed() || !this.autoAction) return;
+        const state = this.autoAction;
+        const origin = { ...this.player.loc }, depth = this.depth, turn = this.stats.turns;
+        const delta = state.kind === 'run' ? this.directionToVec(state.direction!) : { x: 0, y: 0 };
+        this.handlePlayerAction(state.kind === 'run' ? 'move' : state.kind === 'search_long' ? 'search' : 'wait',
+            state.kind === 'run' ? state.direction : undefined, 'system');
+        // Pickup, rejected confirmations and terrain effects may have ended it.
+        if (this.autoAction !== state) return;
+        if (this.depth !== depth || this.isGameOver || this.stats.turns === turn
+            || this.player.x !== origin.x + delta.x || this.player.y !== origin.y + delta.y) {
+            this.stopAutoTravel();
+            return;
+        }
+        if (this.autoTravelDisturbed()) return;
+        if (state.kind === 'run') {
+            const next = { x: this.player.x + delta.x, y: this.player.y + delta.y };
+            const cardinal = this.cardinalPassability();
+            const changed = state.direction! < 4 && cardinal.some((passable, dir) => {
+                const side = this.directionToVec(dir);
+                return !(side.x === -delta.x && side.y === -delta.y) && passable !== state.cardinalPassability[dir];
+            });
+            if (!this.knownTravelStepAllowed(this.player.loc, next) || this.runIsDisturbed() || changed) this.stopAutoTravel();
+        } else {
+            state.remaining--;
+            const restFinished = state.kind === 'auto_rest' && (
+                (state.untilRecovered && !this.needsAutoRest())
+                || (state.initiallyEmbedded && !this.embeddedInTerrain())
+                || this.cardinalPassability().some((passable, dir) => passable !== state.cardinalPassability[dir]));
+            if (state.remaining <= 0 || restFinished) this.stopAutoTravel();
+        }
     }
 
     /** CE startFighting, yielded between attacks to the existing auto_step

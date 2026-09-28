@@ -438,5 +438,13 @@
   "pendingDiscoveryMessages": {
     "kind": "run",
     "contract": "X3-U4：模拟视野提交前采集、回合尾发布；渲染不写。普通命令边界为空，非空时随 run 保存。"
+  },
+  "autoAction": {
+    "kind": "run",
+    "contract": "X3-U5：逐步长休息/长搜索/奔跑的剩余回合、初始恢复/嵌墙与四邻通行状态；新局/停止清空，快照深拷贝并恢复。"
+  },
+  "inventoryAction": {
+    "kind": "reset",
+    "contract": "X3-U5：未提交的背包预选操作；新局、读档、关闭及普通背包/使用/投掷入口清空，不入世界快照。"
   }
 }

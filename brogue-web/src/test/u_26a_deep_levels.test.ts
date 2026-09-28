@@ -241,7 +241,9 @@ describe('U26a natural maps and real player commands', () => {
         expect(deathLumenstoneEntryCount(g.player.inventory.items)).toBe(14);
         expect(g.monsters).toHaveLength(0);
         g.player.loc = terminal(g, T.DUNGEON_PORTAL);
-        g.handlePlayerAction('wait_or_stairs_down');
+        // X3-A05 removes the period compound command. This guard tests terminal
+        // victory, so use the existing stair-entry command, not a rest alias.
+        g.handlePlayerAction('stairs_down');
         expect(g.depth).toBe(40);
         expect(g.gameOverWon).toBe(true);
         expect(g.gameOverSuperVictory).toBe(true);

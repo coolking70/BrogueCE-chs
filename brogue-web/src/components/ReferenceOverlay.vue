@@ -16,12 +16,16 @@ const labels = computed<Record<string, string>>(() => ({
   staffs: t('reference.group.staffs'), wands: t('reference.group.wands'),
 }));
 const commands = computed(() => [
-  ['h j k l y u b n / ↑ ↓ ← →', t('reference.cmd.move')],
+  ['h j k l y u b n / ↑ ↓ ← → / Num 1–9', t('reference.cmd.move')],
+  ['Shift / Ctrl + ↔ ↕', t('reference.cmd.run')],
   ['i / I', t('reference.cmd.inventory')], ['a', t('reference.cmd.apply')],
   ['t', t('reference.cmd.throw')], ['g', t('reference.cmd.pickup')],
-  ['s / S', t('reference.cmd.search')], ['. / 。', t('reference.cmd.rest_or_descend')],
+  ['e / r / d / c', t('reference.cmd.inventory_action')],
+  ['s', t('reference.cmd.search')], ['Ctrl-S', t('reference.cmd.search_long')],
+  ['z / . / 。 / Num 5', t('reference.cmd.rest')], ['Z', t('reference.cmd.auto_rest')],
   ['< / ,', t('reference.cmd.ascend')], ['>', t('reference.cmd.descend')],
-  ['x', t('reference.cmd.examine')], ['X', t('reference.cmd.explore')],
+  ['x / X', t('reference.cmd.explore')],
+  [t('reference.mouse.inspect_key'), t('reference.cmd.examine')],
   ['D', t('reference.cmd.discoveries')], ['?', t('reference.cmd.help')],
   ['Esc', t('reference.cmd.cancel')],
 ]);

@@ -562,7 +562,7 @@ onMounted(async () => {
         const steps = Math.max(1, Math.round(ms / 100));
         for (let i = 0; i < steps; i++) {
             game.tickReplay();
-            if (!game.replayRecording && !game.isTimePaused() && game.autoPath.length > 0) {
+            if (!game.replayRecording && !game.isTimePaused() && game.isAutoTraveling()) {
                 game.stepAutoPath();
             }
             game.update();
@@ -864,7 +864,7 @@ onMounted(async () => {
         if (lightChanged) { colorTimer %= 50; game.lightMap.dance(); }
         if (boltChanged || flareChanged || terrainChanged || lightChanged) render();
 
-        if (!game.replayRecording && game.autoPath.length > 0) {
+        if (!game.replayRecording && game.isAutoTraveling()) {
             pathingTimer++;
             if (pathingTimer > 4) { // 60/4 = 15 moves per second
                 game.stepAutoPath();

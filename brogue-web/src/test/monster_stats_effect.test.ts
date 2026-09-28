@@ -164,7 +164,7 @@ function makeSampler(agg: Agg, mode: 'legacy' | 'wired'): { policy: TurnPolicy; 
             privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)
         );
         if (movable.length === 0) {
-            return { action: 'wait_or_stairs_down' };
+            return { action: 'wait' }; // X3-A05: no-move fallback is pure rest.
         }
         if (stairs) {
             let best: readonly [number, number] | null = null;

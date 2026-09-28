@@ -39,45 +39,35 @@ export class InputManager {
         this.keybMap[e.key] = true;
 
         if (this.onActionCallback) {
+            // CE IO.c:2700-2711: modifiers run in all eight directions.
+            // Use code for the numeric keypad, including when NumLock is off.
+            const directions: Record<string, Direction> = {
+                ArrowUp: Direction.UP, k: Direction.UP, K: Direction.UP,
+                ArrowDown: Direction.DOWN, j: Direction.DOWN, J: Direction.DOWN,
+                ArrowLeft: Direction.LEFT, h: Direction.LEFT, H: Direction.LEFT,
+                ArrowRight: Direction.RIGHT, l: Direction.RIGHT, L: Direction.RIGHT,
+                y: Direction.UPLEFT, Y: Direction.UPLEFT, u: Direction.UPRIGHT, U: Direction.UPRIGHT,
+                b: Direction.DOWNLEFT, B: Direction.DOWNLEFT, n: Direction.DOWNRIGHT, N: Direction.DOWNRIGHT,
+                Numpad1: Direction.DOWNLEFT, Numpad2: Direction.DOWN, Numpad3: Direction.DOWNRIGHT,
+                Numpad4: Direction.LEFT, Numpad6: Direction.RIGHT,
+                Numpad7: Direction.UPLEFT, Numpad8: Direction.UP, Numpad9: Direction.UPRIGHT,
+            };
+            const direction = directions[e.code?.startsWith('Numpad') ? e.code : e.key];
+            if (direction !== undefined) {
+                e.preventDefault?.();
+                this.onActionCallback(e.shiftKey || e.ctrlKey ? 'run' : 'move', direction);
+                return;
+            }
+            if (e.code === 'Numpad5') {
+                e.preventDefault?.();
+                this.onActionCallback('wait');
+                return;
+            }
             switch (e.key) {
-                // ── 移动：纯 vi 键 + 方向键（P1-46，2026-09-17 用户裁决）──
-                //
-                // 原先 web 在 vi 键之上还绑了一套 WASD，那**一次性占掉了四个
-                // CE 命令键**——CE 只用 vi 键移动（`Rogue.h:1161-1172`），
-                // 而 `w`/`a`/`s`/`d` 在 CE 里全是命令：
-                //   w = SWAP_KEY(:1186)   a = APPLY_KEY(:1182)
-                //   s = SEARCH_KEY(:1177) d = DROP_KEY(:1189)
-                // P1-42 的主动搜索就是因此无处安放。"使用"与"丢弃"是 Phase B
-                // 必然要接的，再拖下去每轮都要重撞一次，故本次一并让出。
-                //
-                // 方向键不是 CE 的东西，但不与任何 CE 命令冲突，保留。
-                // 键位自定义功能留给二次开发（用户裁决时明确延后）。
-                case 'ArrowUp':
-                case 'k':
-                    this.onActionCallback('move', Direction.UP);
-                    break;
-                case 'ArrowDown':
-                case 'j':
-                    this.onActionCallback('move', Direction.DOWN);
-                    break;
-                case 'ArrowLeft':
-                case 'h':
-                    this.onActionCallback('move', Direction.LEFT);
-                    break;
-                case 'ArrowRight':
-                case 'l':
-                    this.onActionCallback('move', Direction.RIGHT);
-                    break;
-                // Diagonals (vim keys)
-                case 'y': this.onActionCallback('move', Direction.UPLEFT); break;
-                case 'u': this.onActionCallback('move', Direction.UPRIGHT); break;
-                case 'b': this.onActionCallback('move', Direction.DOWNLEFT); break;
-                case 'n': this.onActionCallback('move', Direction.DOWNRIGHT); break;
-                // CE SEARCH_KEY（`Rogue.h:1177`）。P1-42 把引擎侧动作接好了，
-                // 一直缺的就是这一行——`s` 让出来之后终于能接上。
+                // P1-46: WASD stays free for CE commands; w/T/M/S remain unbound.
                 case 's':
-                case 'S':
-                    this.onActionCallback('search');
+                    e.preventDefault?.(); // Ctrl-S must not open the browser Save dialog.
+                    this.onActionCallback(e.ctrlKey ? 'search_long' : 'search');
                     break;
                 // B-2：CE THROW_KEY（`Rogue.h:1183`）。P1-46 把移动键回归纯 vi 键
                 // 后 `t` 空闲，接上投掷入口。CE 的大写 `T` 是 RETHROW_KEY
@@ -102,7 +92,23 @@ export class InputManager {
                     break;
                 case '.':
                 case '。':
-                    this.onActionCallback('wait_or_stairs_down');
+                case 'z':
+                    this.onActionCallback('wait');
+                    break;
+                case 'Z':
+                    this.onActionCallback('auto_rest');
+                    break;
+                case 'e':
+                    this.onActionCallback('inventory_action', 'equip');
+                    break;
+                case 'r':
+                    this.onActionCallback('inventory_action', 'unequip');
+                    break;
+                case 'd':
+                    this.onActionCallback('inventory_action', 'drop');
+                    break;
+                case 'c':
+                    this.onActionCallback('inventory_action', 'call');
                     break;
                 case 'g':
                     this.onActionCallback('pickup');
@@ -121,8 +127,6 @@ export class InputManager {
                     this.onActionCallback('escape');
                     break;
                 case 'x':
-                    this.onActionCallback('examine');
-                    break;
                 case 'X':
                     this.onActionCallback('auto_explore');
                     break;
@@ -130,11 +134,11 @@ export class InputManager {
                 case ',':
                 case '，':
                 case '《':
-                    this.onActionCallback('stairs_up');
+                    this.onActionCallback('travel_stairs', 'up');
                     break;
                 case '>':
                 case '》':
-                    this.onActionCallback('stairs_down');
+                    this.onActionCallback('travel_stairs', 'down');
                     break;
                 default:
                     this.onUnboundKeyCallback?.();

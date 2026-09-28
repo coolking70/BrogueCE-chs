@@ -74,11 +74,9 @@ describe('P1-46 键位：移动回到纯 vi 键，CE 命令键让出', () => {
         }
     });
 
-    it('AD3：s / S 触发 search（CE SEARCH_KEY，P1-42 一直缺的那一行）', () => {
-        for (const key of ['s', 'S']) {
-            const acts = press(key).map(([a]) => a);
-            expect(acts, `按 '${key}' 没有触发 search`).toContain('search');
-        }
+    it('AD3：s 触发 search；X3-A06 的 S 留给 CE 存档退出、不冒充搜索', () => {
+        expect(press('s').map(([a]) => a)).toContain('search');
+        expect(press('S')).toEqual([]);
     });
 
     it('AD4：方向键保留（不与任何 CE 命令冲突）', () => {
@@ -91,9 +89,10 @@ describe('P1-46 键位：移动回到纯 vi 键，CE 命令键让出', () => {
         }
     });
 
-    it('W-2 留痕反转：a 已接 APPLY（CE Rogue.h:1182）；w/d 继续空闲', () => {
+    it('X3-U5 留痕：a 已接 APPLY，d 预选 DROP；w/T/M 仍未接', () => {
         expect(press('a')).toEqual([['apply_item', undefined]]);
-        for (const key of ['w', 'd']) {
+        expect(press('d')).toEqual([['inventory_action', 'drop']]);
+        for (const key of ['w', 'T', 'M']) {
             expect(press(key), `'${key}' 已被占用——接 CE 命令时请更新本留痕`).toEqual([]);
         }
     });

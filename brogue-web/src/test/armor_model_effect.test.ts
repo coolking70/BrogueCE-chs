@@ -232,7 +232,7 @@ function combatPolicy(game: Game): TurnAction {
     const movable = DIRS8.filter(([dx, dy]) =>
         privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)
     );
-    if (movable.length === 0) return { action: 'wait_or_stairs_down' };
+    if (movable.length === 0) return { action: 'wait' }; // X3-A05: no-move fallback is pure rest.
     if (stairs) {
         let best: readonly [number, number] | null = null;
         let bestDist = Math.abs(px - stairs.x) + Math.abs(py - stairs.y);

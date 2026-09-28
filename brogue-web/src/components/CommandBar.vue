@@ -12,14 +12,15 @@ const { t } = useTranslation();
 // i18n 键必须是字面量（p1_30 扫描器要求首参可静态解析）
 const commands = computed(() => [
   { action: 'search', label: t('mobile.cmd.search'), glyph: 's' },
-  { action: 'wait', label: t('mobile.cmd.rest'), glyph: '' },
+  { action: 'search_long', label: t('mobile.cmd.search_long'), glyph: 'Ctrl-S' },
+  { action: 'wait', label: t('mobile.cmd.rest'), glyph: 'z' },
+  { action: 'auto_rest', label: t('mobile.cmd.auto_rest'), glyph: 'Z' },
   { action: 'pickup', label: t('mobile.cmd.pickup'), glyph: 'g' },
   { action: 'toggle_inventory', label: t('mobile.cmd.inventory'), glyph: 'i' },
   { action: 'throw_item', label: t('mobile.cmd.throw'), glyph: 't' },
-  { action: 'auto_explore', label: t('mobile.cmd.explore'), glyph: 'X' },
-  { action: 'stairs_up', label: t('mobile.cmd.stairs_up'), glyph: '<' },
-  { action: 'stairs_down', label: t('mobile.cmd.stairs_down'), glyph: '>' },
-  { action: 'examine', label: t('mobile.cmd.examine'), glyph: 'x' },
+  { action: 'auto_explore', label: t('mobile.cmd.explore'), glyph: 'x' },
+  { action: 'travel_stairs', data: 'up', label: t('mobile.cmd.stairs_up'), glyph: '<' },
+  { action: 'travel_stairs', data: 'down', label: t('mobile.cmd.stairs_down'), glyph: '>' },
   { action: 'discoveries', label: t('mobile.cmd.discoveries'), glyph: 'D' },
   { action: 'help', label: t('mobile.cmd.help'), glyph: '?' },
   { action: 'escape', label: t('mobile.cmd.cancel'), glyph: 'Esc' },
@@ -28,8 +29,8 @@ const commands = computed(() => [
 
 <template>
   <nav class="command-bar" :class="`cmd-${mode}`" :aria-label="$t('controls.title')">
-    <button v-for="cmd in commands" :key="cmd.action" class="cmd-btn" :data-action="cmd.action"
-            @click="dispatch(cmd.action)">
+    <button v-for="cmd in commands" :key="cmd.action + (cmd.data ?? '')" class="cmd-btn" :data-action="cmd.action"
+            :data-direction="cmd.data" @click="dispatch(cmd.action, cmd.data)">
       <span class="cmd-label">{{ cmd.label }}</span>
       <kbd v-if="cmd.glyph" class="cmd-key" aria-hidden="true">{{ cmd.glyph }}</kbd>
     </button>
@@ -70,7 +71,7 @@ const commands = computed(() => [
   position: relative;
   min-height: 44px;
   min-width: 0;
-  padding: 2px 4px;
+  padding: 11px 3px 3px;
   border-radius: 10px;
   border: 1px solid var(--panel-border, #ffffff26);
   background: var(--btn-bg, #1f2430);
@@ -84,8 +85,9 @@ const commands = computed(() => [
   user-select: none;
 }
 .cmd-landscape .cmd-btn { min-height: 40px; font-size: 0.8rem; }
+.cmd-portrait .cmd-btn { font-size: 0.8rem; }
 .cmd-btn:active { background: var(--btn-bg-active, #2d3445); transform: translateY(1px); }
-.cmd-label { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmd-label { display: block; white-space: normal; overflow-wrap: anywhere; }
 .cmd-key {
   position: absolute;
   top: 2px;

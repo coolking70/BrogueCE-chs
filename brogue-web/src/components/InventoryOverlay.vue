@@ -13,6 +13,7 @@ import { createItemDetailContext } from '../engine/UI/ItemDetailContext';
 const isVisible = ref(false);
 const inventoryItems = ref<Item[]>([]);
 const selectedItem = ref<Item | null>(null);
+const inventoryAction = ref<typeof activeGame.inventoryAction>(null);
 // B-1b：鉴定目标待选态与 call 输入态（引擎态是普通单例，沿用本组件 100ms
 // 轮询的既有模式镜像进 ref）
 const pendingIdentify = ref(false);
@@ -24,6 +25,12 @@ const pendingUseConfirm = ref<Item | null>(null);
 const pendingUseConfirmText = ref('');
 
 const updateInventoryState = () => {
+    if (inventoryAction.value !== activeGame.inventoryAction || !activeGame.isInventoryOpen) {
+        selectedItem.value = null;
+        callTarget.value = null;
+        callText.value = '';
+    }
+    inventoryAction.value = activeGame.inventoryAction;
     isVisible.value = activeGame.isInventoryOpen;
     pendingIdentify.value = activeGame.pendingIdentify;
     pendingEnchantment.value = activeGame.pendingEnchantment;
@@ -92,6 +99,15 @@ const categoryLabel = (category: string) => {
 };
 const callPlaceholder = computed(() => t('max 29 chars'));
 const enchantPrompt = computed(() => i18next.t('scroll.enchant_prompt'));
+const actionPrompt = computed(() => {
+    switch (inventoryAction.value) {
+        case 'equip': return t('inventory.prompt.equip');
+        case 'unequip': return t('inventory.prompt.unequip');
+        case 'drop': return t('inventory.prompt.drop');
+        case 'call': return t('inventory.prompt.call');
+        default: return '';
+    }
+});
 
 // Group items into categories
 const groupedItems = computed(() => {
@@ -116,6 +132,11 @@ const groupedItems = computed(() => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     
     inventoryItems.value.forEach((item, index) => {
+        if (!pendingIdentify.value && !pendingEnchantment.value) {
+            if (inventoryAction.value === 'equip' && (!isEquippable(item) || isEquipped(item))) return;
+            if (inventoryAction.value === 'unequip' && !isEquipped(item)) return;
+            if (inventoryAction.value === 'call' && !isCallable(item)) return;
+        }
         const letter = item.inventoryLetter ?? alphabet[index] ?? '?';
         const entry = { letter, item };
         
@@ -231,6 +252,13 @@ const selectItemOrIdentify = (item: Item) => {
         if (item.canBeIdentified) performIdentifySelect(item);
         return;
     }
+    if (pendingUseConfirm.value) return;
+    switch (inventoryAction.value) {
+        case 'equip': performEquip(item); return;
+        case 'unequip': performUnequip(item); return;
+        case 'drop': performDrop(item); return;
+        case 'call': openCallInput(item); return;
+    }
     selectItem(item);
 };
 
@@ -323,6 +351,9 @@ const confirmCall = () => {
       </div>
       
       <div class="modal-content">
+        <div v-if="actionPrompt && !pendingIdentify && !pendingEnchantment" class="identify-banner">
+          {{ actionPrompt }}
+        </div>
         <div v-if="pendingEnchantment" class="identify-banner enchant-banner">
           {{ enchantPrompt }}
         </div>
