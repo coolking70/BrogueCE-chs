@@ -33,6 +33,7 @@
  */
 
 import { DungeonLayer, TerrainType } from './Grid';
+import zhContent from '../../locales/zh_CN.content.json';
 
 // ── DFF_* 旗标（CE Rogue.h:1811-1821，逐条行号）────────────────────────────
 export const DFF_EVACUATE_CREATURES_FIRST     = 1 << 0;  // :1811 DF 区域内生物先被搬走
@@ -1508,12 +1509,16 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_REMNANT]: { id: DF.DF_REMNANT, ceLine: 912, ceTile: 'CARPET', tile: TerrainType.CARPET, layer: DungeonLayer.DUNGEON, startProbability: 110, probabilityDecrement: 20, flags: DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_REMNANT_ASH, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_REMNANT_ASH]: { id: DF.DF_REMNANT_ASH, ceLine: 913, ceTile: 'BURNED_CARPET', tile: TerrainType.BURNED_CARPET, layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     // V-2b-9a：八个起点及 subsequentDF 闭包（Globals.c:827-848/891-892/916-921）。
-    [DF.DF_SPREADABLE_WATER]: df(158, 827, 'MACHINE_FLOOD_WATER_SPREADING', TerrainType.MACHINE_FLOOD_WATER_SPREADING, DungeonLayer.LIQUID, 0, 0),
+    // X4-R5: CE :827 flooding warning. Localized here so Game's existing
+    // localized-description passthrough works before R6 integration. Message
+    // eligibility/visibility stays in DungeonFeature.ts and Game's describe hook.
+    [DF.DF_SPREADABLE_WATER]: df(158, 827, 'MACHINE_FLOOD_WATER_SPREADING', TerrainType.MACHINE_FLOOD_WATER_SPREADING, DungeonLayer.LIQUID, 0, 0, 0, '', null, null, zhContent.dungeonFeature['158']),
     [DF.DF_SHALLOW_WATER]: df(159, 828, 'SHALLOW_WATER', TerrainType.WATER_SHALLOW, DungeonLayer.LIQUID, 0, 0),
     [DF.DF_WATER_SPREADS]: df(160, 829, 'MACHINE_FLOOD_WATER_SPREADING', TerrainType.MACHINE_FLOOD_WATER_SPREADING, DungeonLayer.LIQUID, 100, 100, 0, 'FLOOR_FLOODABLE', TerrainType.FLOOR_FLOODABLE, DF.DF_SHALLOW_WATER),
     [DF.DF_SPREADABLE_WATER_POOL]: df(161, 830, 'MACHINE_FLOOD_WATER_DORMANT', TerrainType.MACHINE_FLOOD_WATER_DORMANT, DungeonLayer.LIQUID, 250, 100, DFF_TREAT_AS_BLOCKING, '', null, DF.DF_SPREADABLE_DEEP_WATER_POOL),
     [DF.DF_SPREADABLE_DEEP_WATER_POOL]: df(162, 831, 'DEEP_WATER', TerrainType.WATER_DEEP, DungeonLayer.LIQUID, 90, 100, DFF_CLEAR_OTHER_TERRAIN | DFF_PERMIT_BLOCKING),
-    [DF.DF_SPREADABLE_COLLAPSE]: df(163, 834, 'MACHINE_COLLAPSE_EDGE_SPREADING', TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING, DungeonLayer.LIQUID, 0, 0),
+    // X4-R5: CE :834 floor-collapse warning; same per-DF message gate.
+    [DF.DF_SPREADABLE_COLLAPSE]: df(163, 834, 'MACHINE_COLLAPSE_EDGE_SPREADING', TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING, DungeonLayer.LIQUID, 0, 0, 0, '', null, null, zhContent.dungeonFeature['163']),
     [DF.DF_COLLAPSE]: df(164, 835, 'CHASM', TerrainType.CHASM, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN, '', null, DF.DF_SHOW_TRAPDOOR_HALO),
     [DF.DF_COLLAPSE_SPREADS]: df(165, 836, 'MACHINE_COLLAPSE_EDGE_SPREADING', TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING, DungeonLayer.LIQUID, 100, 100, 0, 'FLOOR_FLOODABLE', TerrainType.FLOOR_FLOODABLE, DF.DF_COLLAPSE),
     [DF.DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT]: df(166, 837, 'MACHINE_COLLAPSE_EDGE_DORMANT', TerrainType.MACHINE_COLLAPSE_EDGE_DORMANT, DungeonLayer.LIQUID, 0, 0),

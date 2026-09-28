@@ -1,0 +1,1156 @@
+{
+  "terrain": {
+    "NOTHING": {
+      "description": "一个寒冷的虚空",
+      "flavor": ""
+    },
+    "GRANITE": {
+      "description": "一堵粗糙的花岗岩墙",
+      "flavor": "花岗岩裂开了，岩石碎片以奇怪的角度突出。"
+    },
+    "FLOOR": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "FLOOR_FLOODABLE": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "CARPET": {
+      "description": "地毯",
+      "flavor": "华丽的地毯铺满了整个房间，是往昔岁月留下的遗物。"
+    },
+    "MARBLE_FLOOR": {
+      "description": "大理石地面",
+      "flavor": "附近水晶的光芒映照着奢华大理石地板的纹理。"
+    },
+    "WALL": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "DOOR": {
+      "description": "一扇木门",
+      "flavor": "你穿过了门口。"
+    },
+    "OPEN_DOOR": {
+      "description": "一扇敞开的门",
+      "flavor": "你穿过了门口。"
+    },
+    "SECRET_DOOR": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "LOCKED_DOOR": {
+      "description": "一扇上锁的铁门",
+      "flavor": "你搜索背包，但没有匹配的钥匙。"
+    },
+    "OPEN_IRON_DOOR_INERT": {
+      "description": "一扇敞开的铁门",
+      "flavor": "你穿过了门口。"
+    },
+    "DOWN_STAIRS": {
+      "description": "一个向下的楼梯",
+      "flavor": "楼梯螺旋向下进入深处。"
+    },
+    "UP_STAIRS": {
+      "description": "一个向上的楼梯",
+      "flavor": "楼梯螺旋向上。"
+    },
+    "DUNGEON_EXIT": {
+      "description": "地牢出口",
+      "flavor": "通向地牢外的镀金门被一股无形的力量封住了。"
+    },
+    "DUNGEON_PORTAL": {
+      "description": "一个水晶传送门",
+      "flavor": "流光在这座璀璨水晶传送门的平面上舞动。"
+    },
+    "TORCH_WALL": {
+      "description": "一支壁挂式火炬",
+      "flavor": "火炬牢牢地固定在墙上，在昏暗中安静地噼啪作响。"
+    },
+    "CRYSTAL_WALL": {
+      "description": "一个水晶簇",
+      "flavor": "你触摸着水晶光滑的表面，欣赏着其下舞动的光芒。"
+    },
+    "PORTCULLIS_CLOSED": {
+      "description": "一道沉重的铁闸门",
+      "flavor": "铁栅栏咔哒作响，但纹丝不动；它们被牢牢锁住。"
+    },
+    "PORTCULLIS_DORMANT": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "WOODEN_BARRICADE": {
+      "description": "一个干燥的木制路障",
+      "flavor": "木制路障放置得很牢固，但经年累月已经干燥。它可能烧得着吗？"
+    },
+    "PILOT_LIGHT_DORMANT": {
+      "description": "一支壁挂式火炬",
+      "flavor": "火炬牢牢地固定在墙上，在昏暗中安静地噼啪作响。"
+    },
+    "PILOT_LIGHT": {
+      "description": "一个倒下的火炬",
+      "flavor": "火炬躺在墙脚，随意地喷吐着火焰。"
+    },
+    "HAUNTED_TORCH_DORMANT": {
+      "description": "一支壁挂式火炬",
+      "flavor": "火炬牢牢地固定在墙上，在昏暗中安静地噼啪作响。"
+    },
+    "HAUNTED_TORCH_TRANSITIONING": {
+      "description": "一支壁挂式火炬",
+      "flavor": "火炬牢牢地固定在墙上，在昏暗中安静地噼啪作响。"
+    },
+    "HAUNTED_TORCH": {
+      "description": "一支噼啪作响的火炬",
+      "flavor": "这支壁挂火炬上，一束暗淡的紫色火焰噼啪作响，火星四溅。"
+    },
+    "WALL_LEVER_HIDDEN": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "WALL_LEVER": {
+      "description": "一个拉杆",
+      "flavor": "拉杆移动了。"
+    },
+    "WALL_LEVER_PULLED": {
+      "description": "一个未激活的拉杆",
+      "flavor": "拉杆纹丝不动。"
+    },
+    "WALL_LEVER_HIDDEN_DORMANT": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "STATUE_INERT": {
+      "description": "一尊大理石雕像",
+      "flavor": "冰冷的大理石雕像优雅地经受住了岁月的考验。"
+    },
+    "STATUE_DORMANT": {
+      "description": "一尊大理石雕像",
+      "flavor": "冰冷的大理石雕像优雅地经受住了岁月的考验。"
+    },
+    "STATUE_CRACKING": {
+      "description": "一尊正在裂开的雕像",
+      "flavor": "就在你注视时，深深的裂缝仍在雕像侧面蔓延。"
+    },
+    "STATUE_INSTACRACK": {
+      "description": "一尊大理石雕像",
+      "flavor": "冰冷的大理石雕像优雅地经受住了岁月的考验。"
+    },
+    "PORTAL": {
+      "description": "一个石拱门",
+      "flavor": "这个古老的、布满苔藓的石拱门散发着一种奇异的、异界的能量。"
+    },
+    "TURRET_DORMANT": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "WALL_MONSTER_DORMANT": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "DARK_FLOOR_DORMANT": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "DARK_FLOOR_DARKENING": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "DARK_FLOOR": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "MACHINE_TRIGGER_FLOOR": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "ALTAR_INERT": {
+      "description": "一个点着蜡烛的祭坛",
+      "flavor": "一个鎏金祭坛装饰着在微风中闪烁的蜡烛。"
+    },
+    "ALTAR_KEYHOLE": {
+      "description": "一个点着蜡烛的祭坛",
+      "flavor": "华丽的镀金纹饰环绕着祭坛顶部的球形凹槽。"
+    },
+    "ALTAR_CAGE_OPEN": {
+      "description": "一个点着蜡烛的祭坛",
+      "flavor": "一个底部开口的笼子，通过可伸缩的链条悬挂在这个祭坛上方。"
+    },
+    "ALTAR_CAGE_CLOSED": {
+      "description": "一个铁笼",
+      "flavor": "必须放回取走的物品，才能拿到剩下的物品。"
+    },
+    "ALTAR_SWITCH": {
+      "description": "一个点着蜡烛的祭坛",
+      "flavor": "一个饱经风霜的石祭坛装饰着在微风中闪烁的蜡烛。"
+    },
+    "ALTAR_SWITCH_RETRACTING": {
+      "description": "一个点着蜡烛的祭坛",
+      "flavor": "一个饱经风霜的石祭坛装饰着在微风中闪烁的蜡烛。"
+    },
+    "ALTAR_CAGE_RETRACTABLE": {
+      "description": "一个铁笼",
+      "flavor": "笼子纹丝不动。也许附近有办法把它升起来..."
+    },
+    "PEDESTAL": {
+      "description": "一个石台座",
+      "flavor": "精美的雕刻环绕着这座古老的石台座。"
+    },
+    "MONSTER_CAGE_OPEN": {
+      "description": "一个打开的笼子",
+      "flavor": "笼子内部肮脏不堪，散发着腐朽的臭味。"
+    },
+    "MONSTER_CAGE_CLOSED": {
+      "description": "一个上锁的铁笼",
+      "flavor": "笼子的栏杆固定得很牢固，纹丝不动。"
+    },
+    "COFFIN_CLOSED": {
+      "description": "一个密封的棺材",
+      "flavor": "一个由厚木板制成的棺材安放在一片苔藓上。"
+    },
+    "COFFIN_OPEN": {
+      "description": "一个空棺材",
+      "flavor": "一个敞开的木制棺材安放在一片苔藓上。"
+    },
+    "GAS_TRAP_POISON_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "GAS_TRAP_POISON": {
+      "description": "一个腐蚀性瓦斯陷阱",
+      "flavor": "在腐蚀性瓦斯储备上方的地板中有一个隐藏的压力板。"
+    },
+    "TRAP_DOOR_HIDDEN": {
+      "description": "地面",
+      "flavor": "你掉入了隐藏的活板门！"
+    },
+    "TRAP_DOOR": {
+      "description": "一个洞",
+      "flavor": "你掉入了地面上的一个洞！"
+    },
+    "GAS_TRAP_PARALYSIS_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "GAS_TRAP_PARALYSIS": {
+      "description": "一个麻痹触发器",
+      "flavor": "地板中有一个隐藏的压力板。"
+    },
+    "MACHINE_PARALYSIS_VENT_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "MACHINE_PARALYSIS_VENT": {
+      "description": "一个未激活的瓦斯通风口",
+      "flavor": "一个休眠的瓦斯通风口连接着一处麻痹瓦斯储备。"
+    },
+    "GAS_TRAP_CONFUSION_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "GAS_TRAP_CONFUSION": {
+      "description": "一个混乱陷阱",
+      "flavor": "一个隐藏的压力板连接着一处迷幻瓦斯储备。"
+    },
+    "FLAMETHROWER_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "FLAMETHROWER": {
+      "description": "一个火焰陷阱",
+      "flavor": "一个隐藏的压力板连接着一个简陋的火焰喷射装置。"
+    },
+    "FLOOD_TRAP_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "FLOOD_TRAP": {
+      "description": "一个洪水陷阱",
+      "flavor": "一个隐藏的压力板连接着墙壁和天花板上的水闸。"
+    },
+    "NET_TRAP_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "NET_TRAP": {
+      "description": "一个网陷阱",
+      "flavor": "你看到天花板有一张网巧妙地隐藏在隐藏的压力板上方。"
+    },
+    "ALARM_TRAP_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "ALARM_TRAP": {
+      "description": "一个警报陷阱",
+      "flavor": "一个隐藏的压力板连接着一个响亮的警报装置。"
+    },
+    "MACHINE_POISON_GAS_VENT_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "MACHINE_POISON_GAS_VENT_DORMANT": {
+      "description": "一个未激活的瓦斯通风口",
+      "flavor": "一个未激活的瓦斯通风口隐藏在地面的裂缝中。"
+    },
+    "MACHINE_POISON_GAS_VENT": {
+      "description": "一个瓦斯通风口",
+      "flavor": "腐蚀性瓦斯云正从地板上的隐藏通风口飘出。"
+    },
+    "MACHINE_METHANE_VENT_HIDDEN": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "MACHINE_METHANE_VENT_DORMANT": {
+      "description": "一个未激活的瓦斯通风口",
+      "flavor": "一个未激活的瓦斯通风口隐藏在地面的裂缝中。"
+    },
+    "MACHINE_METHANE_VENT": {
+      "description": "一个瓦斯通风口",
+      "flavor": "爆炸性瓦斯云正从地板上的隐藏通风口飘出。"
+    },
+    "STEAM_VENT": {
+      "description": "一个蒸汽通风口",
+      "flavor": "地板上的一道天然裂缝会周期性地喷出滚烫的蒸汽。"
+    },
+    "MACHINE_PRESSURE_PLATE": {
+      "description": "一个压力板",
+      "flavor": "这里有一个暴露的压力板。投掷物品可能会触发它。"
+    },
+    "MACHINE_PRESSURE_PLATE_USED": {
+      "description": "一个未激活的压力板",
+      "flavor": "这个压力板已经被压下过了。"
+    },
+    "MACHINE_GLYPH": {
+      "description": "一个魔法符文",
+      "flavor": "地板上雕刻的奇异符文闪烁着魔法光芒。"
+    },
+    "MACHINE_GLYPH_INACTIVE": {
+      "description": "一个发光符文",
+      "flavor": "地板上雕刻的奇异符文散发出魔法光芒。"
+    },
+    "DEWAR_CAUSTIC_GAS": {
+      "description": "一个装有腐蚀性瓦斯的玻璃杜瓦瓶",
+      "flavor": ""
+    },
+    "DEWAR_CONFUSION_GAS": {
+      "description": "一个装有混乱瓦斯的玻璃杜瓦瓶",
+      "flavor": ""
+    },
+    "DEWAR_PARALYSIS_GAS": {
+      "description": "一个装有麻痹瓦斯的玻璃杜瓦瓶",
+      "flavor": ""
+    },
+    "DEWAR_METHANE_GAS": {
+      "description": "一个装有甲烷瓦斯的玻璃杜瓦瓶",
+      "flavor": ""
+    },
+    "DEEP_WATER": {
+      "description": "浑浊的水域",
+      "flavor": "水流从各个方向拉扯着你。"
+    },
+    "SHALLOW_WATER": {
+      "description": "浅水",
+      "flavor": "水很冷，齐膝深。"
+    },
+    "MUD": {
+      "description": "一片泥潭",
+      "flavor": "你深陷齐膝的恶臭烂泥中。"
+    },
+    "CHASM": {
+      "description": "一个深渊",
+      "flavor": "你坠入了深渊！"
+    },
+    "CHASM_EDGE": {
+      "description": "深渊的边缘",
+      "flavor": "寒风从幽冥深处向上吹。"
+    },
+    "MACHINE_COLLAPSE_EDGE_DORMANT": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "MACHINE_COLLAPSE_EDGE_SPREADING": {
+      "description": "正在崩塌的地面",
+      "flavor": "你脚下的地面出现裂缝！"
+    },
+    "LAVA": {
+      "description": "熔岩",
+      "flavor": "灼热从熔岩中升腾而起。"
+    },
+    "LAVA_RETRACTABLE": {
+      "description": "熔岩",
+      "flavor": "灼热从熔岩中升腾而起。"
+    },
+    "LAVA_RETRACTING": {
+      "description": "冷却中的熔岩",
+      "flavor": "灼热从熔岩中升腾而起。"
+    },
+    "SUNLIGHT_POOL": {
+      "description": "一片阳光",
+      "flavor": "阳光从天花板的裂缝中倾泻而下。"
+    },
+    "DARKNESS_PATCH": {
+      "description": "一片阴影",
+      "flavor": "这个区域恰好被阴影所掩蔽 —— 也许是个安全的藏身之处。"
+    },
+    "ACTIVE_BRIMSTONE": {
+      "description": "嘶嘶作响的硫磺矿",
+      "flavor": "嶙峋的硫磺矿在你脚下嘎吱作响，嘶嘶地喷溅着，透出不祥的气息。"
+    },
+    "INERT_BRIMSTONE": {
+      "description": "嘶嘶作响的硫磺矿",
+      "flavor": "嶙峋的硫磺矿在你脚下嘎吱作响，嘶嘶地喷溅着，透出不祥的气息。"
+    },
+    "OBSIDIAN": {
+      "description": "黑曜石地面",
+      "flavor": "地面已经熔合成了黑曜石。"
+    },
+    "BRIDGE": {
+      "description": "一座摇摇晃晃的绳索桥",
+      "flavor": "摇摇晃晃的绳索桥在脚下嘎吱作响。"
+    },
+    "BRIDGE_FALLING": {
+      "description": "一座正在坠落的桥",
+      "flavor": "桥在你眼前坠入了深渊！"
+    },
+    "BRIDGE_EDGE": {
+      "description": "一座摇摇晃晃的绳索桥",
+      "flavor": "摇摇晃晃的绳索桥被固定在深渊边缘。"
+    },
+    "STONE_BRIDGE": {
+      "description": "一座石桥",
+      "flavor": "狭窄的石桥险险地蜿蜒横跨深渊。"
+    },
+    "MACHINE_FLOOD_WATER_DORMANT": {
+      "description": "浅水",
+      "flavor": "水很冷，齐膝深。"
+    },
+    "MACHINE_FLOOD_WATER_SPREADING": {
+      "description": "浅水",
+      "flavor": "水很冷，齐膝深。"
+    },
+    "MACHINE_MUD_DORMANT": {
+      "description": "一片泥潭",
+      "flavor": "你深陷齐膝的恶臭烂泥中。"
+    },
+    "ICE_DEEP": {
+      "description": "冰面",
+      "flavor": "一片冰延伸到水中，涟漪冻结在其光滑的表面。"
+    },
+    "ICE_DEEP_MELT": {
+      "description": "融化的冰",
+      "flavor": "随着冰在你眼前融化，裂缝遍布其表面。"
+    },
+    "ICE_SHALLOW": {
+      "description": "冰面",
+      "flavor": "一片冰延伸到水中，涟漪冻结在其光滑的表面。"
+    },
+    "ICE_SHALLOW_MELT": {
+      "description": "融化的冰",
+      "flavor": "随着冰在你眼前融化，裂缝遍布其表面。"
+    },
+    "HOLE": {
+      "description": "一个洞",
+      "flavor": "你坠入了洞中！"
+    },
+    "HOLE_GLOW": {
+      "description": "一个洞",
+      "flavor": "你坠入了洞中！"
+    },
+    "HOLE_EDGE": {
+      "description": "半透明的地面",
+      "flavor": "寒冷的气流向上吹过半透明的地板。"
+    },
+    "FLOOD_WATER_DEEP": {
+      "description": "激荡的水流",
+      "flavor": "翻涌的水流淹没了房间。"
+    },
+    "FLOOD_WATER_SHALLOW": {
+      "description": "浅水",
+      "flavor": "齐膝深的水慢慢流入地板上的洞里。"
+    },
+    "GRASS": {
+      "description": "草状真菌",
+      "flavor": "草状真菌在脚下嘎吱作响。"
+    },
+    "DEAD_GRASS": {
+      "description": "枯萎真菌",
+      "flavor": "枯死的真菌覆盖着地面。"
+    },
+    "GRAY_FUNGUS": {
+      "description": "枯萎真菌",
+      "flavor": "苍白色真菌的摸索触手从烂泥中升起。"
+    },
+    "LUMINESCENT_FUNGUS": {
+      "description": "发光真菌",
+      "flavor": "发光真菌投下苍白、诡异的光芒。"
+    },
+    "LICHEN": {
+      "description": "致命地衣",
+      "flavor": "这种生长迅速的地衣伸出颤动的卷须，上面布满带毒的倒刺。"
+    },
+    "HAY": {
+      "description": "肮脏的干草",
+      "flavor": "一堆沾满污秽的干草被堆在这里，充当临时床铺。"
+    },
+    "RED_BLOOD": {
+      "description": "一滩血",
+      "flavor": "地板上溅有血迹。"
+    },
+    "GREEN_BLOOD": {
+      "description": "一滩绿色的血",
+      "flavor": "地板上溅有绿色血迹。"
+    },
+    "PURPLE_BLOOD": {
+      "description": "一滩紫色的血",
+      "flavor": "地板上溅有紫色血迹。"
+    },
+    "ACID_SPLATTER": {
+      "description": "一滩酸液",
+      "flavor": "地板上溅有酸液。"
+    },
+    "VOMIT": {
+      "description": "一滩呕吐物",
+      "flavor": "地板上沾满了呕吐物。"
+    },
+    "URINE": {
+      "description": "一滩尿液",
+      "flavor": "一滩尿液覆盖着地面。"
+    },
+    "UNICORN_POOP": {
+      "description": "独角兽粪便",
+      "flavor": "一堆散发薰衣草香味的独角兽粪便闪耀着彩虹色的光芒。"
+    },
+    "WORM_BLOOD": {
+      "description": "一滩虫子内脏",
+      "flavor": "虫子内脏覆盖着地面。"
+    },
+    "ASH": {
+      "description": "一堆灰烬",
+      "flavor": "木炭和灰烬在脚下嘎吱作响。"
+    },
+    "BURNED_CARPET": {
+      "description": "烧焦的地毯",
+      "flavor": "地毯被一场远古大火烧焦了。"
+    },
+    "PUDDLE": {
+      "description": "一滩水",
+      "flavor": "一滩水覆盖着地面。"
+    },
+    "BONES": {
+      "description": "一堆骨头",
+      "flavor": "辨不出来源的骨头散落一地，早已因年久而泛黄。"
+    },
+    "RUBBLE": {
+      "description": "一堆瓦砾",
+      "flavor": "岩石碎砂覆盖着地面。"
+    },
+    "JUNK": {
+      "description": "一堆肮脏的杂物",
+      "flavor": "原始工具、雕刻和小饰品散落在该区域。"
+    },
+    "BROKEN_GLASS": {
+      "description": "碎玻璃",
+      "flavor": "破碎杜瓦瓶留下的尖锐玻璃碎片散落一地。"
+    },
+    "ECTOPLASM": {
+      "description": "灵质残留物",
+      "flavor": "一种粘稠的、发光的物质凝固在地上。"
+    },
+    "EMBERS": {
+      "description": "噼啪作响的余烬",
+      "flavor": "噼啪作响的余烬覆盖着地面。"
+    },
+    "SPIDERWEB": {
+      "description": "一张蜘蛛网",
+      "flavor": "浓密黏稠的蜘蛛网布满了这里。"
+    },
+    "NETTING": {
+      "description": "一张网",
+      "flavor": "密集的网布满了该区域。"
+    },
+    "FOLIAGE": {
+      "description": "茂密植被",
+      "flavor": "茂密的植被充满了该区域，依靠渗入的微弱阳光茁壮成长。"
+    },
+    "DEAD_FOLIAGE": {
+      "description": "枯叶",
+      "flavor": "真菌腐朽的残骸布满了这里。"
+    },
+    "TRAMPLED_FOLIAGE": {
+      "description": "踩踏植被",
+      "flavor": "茂密的植被充满了该区域，依靠渗入的微弱阳光茁壮成长。"
+    },
+    "FUNGUS_FOREST": {
+      "description": "一片发光的真菌森林",
+      "flavor": "发光的真菌布满了这里，从肥沃的土壤中向上伸展。"
+    },
+    "TRAMPLED_FUNGUS_FOREST": {
+      "description": "踩踏真菌植被",
+      "flavor": "发光的真菌布满了这里，从肥沃的土壤中向上伸展。"
+    },
+    "FORCEFIELD": {
+      "description": "一个绿色水晶",
+      "flavor": "半透明的绿色水晶在你眼前熔化消失。"
+    },
+    "FORCEFIELD_MELT": {
+      "description": "一个正在溶解的水晶",
+      "flavor": "半透明的绿色水晶在你眼前熔化消失。"
+    },
+    "SACRED_GLYPH": {
+      "description": "一个神圣符文",
+      "flavor": "一个神圣符文装饰着地板，闪烁着强大的防护附魔光芒。"
+    },
+    "MANACLE_TL": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在天花板上。"
+    },
+    "MANACLE_BR": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在地板上。"
+    },
+    "MANACLE_TR": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在天花板上。"
+    },
+    "MANACLE_BL": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在地板上。"
+    },
+    "MANACLE_T": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在墙上。"
+    },
+    "MANACLE_B": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在墙上。"
+    },
+    "MANACLE_L": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在墙上。"
+    },
+    "MANACLE_R": {
+      "description": "一个铁手铐",
+      "flavor": "一个粗铁手铐锚定在墙上。"
+    },
+    "PORTAL_LIGHT": {
+      "description": "刺眼的光芒",
+      "flavor": "刺眼的光芒从拱门中涌出。"
+    },
+    "GUARDIAN_GLOW": {
+      "description": "一道红光",
+      "flavor": "红色光芒笼罩了这里。"
+    },
+    "PLAIN_FIRE": {
+      "description": "翻腾的火焰",
+      "flavor": "火焰向上翻腾。"
+    },
+    "BRIMSTONE_FIRE": {
+      "description": "硫磺火焰",
+      "flavor": "硫磺火焰从不稳定的硫磺床上迸出。"
+    },
+    "FLAMEDANCER_FIRE": {
+      "description": "地狱火焰云",
+      "flavor": "翻腾的地狱火焰侵蚀着地板。"
+    },
+    "GAS_FIRE": {
+      "description": "一团燃烧的瓦斯云",
+      "flavor": "燃烧的瓦斯使空气中充满了火焰。"
+    },
+    "GAS_EXPLOSION": {
+      "description": "猛烈的爆炸",
+      "flavor": "爆炸的力量把你猛击了一下。"
+    },
+    "DART_EXPLOSION": {
+      "description": "一闪而起的火光",
+      "flavor": "火焰从燃烧飞镖中迸发而出。"
+    },
+    "ITEM_FIRE": {
+      "description": "噼啪作响的火焰",
+      "flavor": "噼啪作响的火焰从变黑的物品上升起。"
+    },
+    "CREATURE_FIRE": {
+      "description": "油腻的火焰",
+      "flavor": "油腻的火焰从尸体上升起。"
+    },
+    "POISON_GAS": {
+      "description": "一团腐蚀性瓦斯云",
+      "flavor": "你能感觉到紫色瓦斯在侵蚀你的肉体。"
+    },
+    "CONFUSION_GAS": {
+      "description": "一团混乱瓦斯云",
+      "flavor": "彩虹色的气体撩拨着你的头脑。"
+    },
+    "ROT_GAS": {
+      "description": "一团腐烂恶臭云",
+      "flavor": "腐烂的肉体恶臭令人窒息。"
+    },
+    "STENCH_SMOKE_GAS": {
+      "description": "一团腐臭烟雾",
+      "flavor": "你闻到油腻的烟味剧烈干呕。"
+    },
+    "PARALYSIS_GAS": {
+      "description": "一团麻痹瓦斯云",
+      "flavor": "苍白气体使你的肌肉僵硬。"
+    },
+    "METHANE_GAS": {
+      "description": "一团爆炸性瓦斯云",
+      "flavor": "爆炸性沼泽瓦斯的气味充满了空气。"
+    },
+    "STEAM": {
+      "description": "一团滚烫蒸汽云",
+      "flavor": "滚烫的蒸汽充满了空气！"
+    },
+    "DARKNESS_CLOUD": {
+      "description": "一团超自然黑暗云",
+      "flavor": "超自然的黑暗光环遮蔽了一切。"
+    },
+    "HEALING_CLOUD": {
+      "description": "一团治疗孢子云",
+      "flavor": "以其治疗特性而闻名的血根草孢子充满了空气。"
+    },
+    "BLOODFLOWER_STALK": {
+      "description": "一根血根草茎",
+      "flavor": "这种细长的植物会长出果荚，以其治疗功效闻名。"
+    },
+    "BLOODFLOWER_POD": {
+      "description": "血根草果荚",
+      "flavor": "血根草果荚爆裂，释放出一团治疗孢子。"
+    },
+    "HAVEN_BEDROLL": {
+      "description": "一个被遗弃的睡袋",
+      "flavor": "一个睡袋躺在角落里，因年久而腐烂。"
+    },
+    "DEEP_WATER_ALGAE_WELL": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "DEEP_WATER_ALGAE_1": {
+      "description": "发光的水域",
+      "flavor": "繁盛的藻类让水中充满流转的荧光。"
+    },
+    "DEEP_WATER_ALGAE_2": {
+      "description": "发光的水域",
+      "flavor": "繁盛的藻类让水中充满流转的荧光。"
+    },
+    "ANCIENT_SPIRIT_VINES": {
+      "description": "带刺的藤蔓",
+      "flavor": "带刺的藤蔓不安地颤抖时，发出沙沙声。"
+    },
+    "ANCIENT_SPIRIT_GRASS": {
+      "description": "一丛草",
+      "flavor": "一丛丛茂盛的青草竟然穿透石地，向上生长。"
+    },
+    "AMULET_SWITCH": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "COMMUTATION_ALTAR": {
+      "description": "一个置换祭坛",
+      "flavor": "这座祭坛和另一座配对祭坛上的简陋图案，示意你在上面放置物品。"
+    },
+    "COMMUTATION_ALTAR_INERT": {
+      "description": "一个烧焦的祭坛",
+      "flavor": "焦痕覆盖着祭坛表面，但摸起来是冷的。"
+    },
+    "PIPE_GLOWING": {
+      "description": "发光的玻璃管",
+      "flavor": "玻璃管嵌入地板，发出颜色变化的柔和光芒。"
+    },
+    "PIPE_INERT": {
+      "description": "烧焦的玻璃管",
+      "flavor": "玻璃管内部已经烧焦了。"
+    },
+    "RESURRECTION_ALTAR": {
+      "description": "一个复活祭坛",
+      "flavor": "死者的灵魂环绕着你。死去的盟友也许可以被召唤回来。"
+    },
+    "RESURRECTION_ALTAR_INERT": {
+      "description": "一个烧焦的祭坛",
+      "flavor": "焦痕覆盖着祭坛表面，但摸起来是冷的。"
+    },
+    "MACHINE_TRIGGER_FLOOR_REPEATING": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "SACRIFICE_ALTAR_DORMANT": {
+      "description": "一个献祭祭坛",
+      "flavor": "恶魔符号装饰着这座祭坛。"
+    },
+    "SACRIFICE_ALTAR": {
+      "description": "一个献祭祭坛",
+      "flavor": "恶魔符号装饰着这座祭坛。"
+    },
+    "SACRIFICE_LAVA": {
+      "description": "一个献祭坑",
+      "flavor": "烧焦血肉的气味萦绕在这处熔岩坑上方。"
+    },
+    "SACRIFICE_CAGE_DORMANT": {
+      "description": "一个铁笼",
+      "flavor": "笼子纹丝不动。也许附近有办法把它升起来..."
+    },
+    "DEMONIC_STATUE": {
+      "description": "一尊恶魔雕像",
+      "flavor": "一尊狞笑恶魔的黑曜石雕像赫然耸立在房间里。"
+    },
+    "STATUE_INERT_DOORWAY": {
+      "description": "一尊破损的雕像",
+      "flavor": "曾经宏伟的雕像已碎裂得面目全非。"
+    },
+    "STATUE_DORMANT_DOORWAY": {
+      "description": "一尊大理石雕像",
+      "flavor": "冰冷的大理石雕像优雅地经受住了岁月的考验。"
+    },
+    "CHASM_WITH_HIDDEN_BRIDGE": {
+      "description": "一个深渊",
+      "flavor": "你坠入了深渊！"
+    },
+    "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE": {
+      "description": "一座石桥",
+      "flavor": "窄石桥正在向深渊对面延伸。"
+    },
+    "MACHINE_CHASM_EDGE": {
+      "description": "深渊的边缘",
+      "flavor": "寒风从幽冥深处向上吹。"
+    },
+    "RAT_TRAP_WALL_DORMANT": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "RAT_TRAP_WALL_CRACKING": {
+      "description": "一堵正在裂开的墙",
+      "flavor": "裂缝不祥地在这面粗糙石墙的底部蔓延。"
+    },
+    "ELECTRIC_CRYSTAL_OFF": {
+      "description": "一个变暗的水晶球",
+      "flavor": "你触碰暗淡的水晶球时，被轻微的电击吓了一跳。"
+    },
+    "ELECTRIC_CRYSTAL_ON": {
+      "description": "一个闪亮的水晶球",
+      "flavor": "噼啪作响的光芒从水晶球中涌出。"
+    },
+    "TURRET_LEVER": {
+      "description": "一个拉杆",
+      "flavor": "拉杆移动了。"
+    },
+    "WORM_TUNNEL_MARKER_DORMANT": {
+      "description": "地面",
+      "flavor": ""
+    },
+    "WORM_TUNNEL_MARKER_ACTIVE": {
+      "description": "一堵粗糙的花岗岩墙",
+      "flavor": "花岗岩裂开了，岩石碎片以奇怪的角度突出。"
+    },
+    "WORM_TUNNEL_OUTER_WALL": {
+      "description": "一堵石墙",
+      "flavor": "粗糙的石墙坚固而不可动摇。"
+    },
+    "BRAZIER": {
+      "description": "仪式火盆",
+      "flavor": "古老的火盆里燃着深红色的火焰。"
+    },
+    "MUD_FLOOR": {
+      "description": "泥泞的地面",
+      "flavor": "腐烂的动物残骸已被碾入泥泞的地面；恶臭难当。"
+    },
+    "MUD_WALL": {
+      "description": "一堵泥泞的墙",
+      "flavor": "一层恶臭的粘土和排泄物覆盖着墙壁。"
+    },
+    "MUD_DOORWAY": {
+      "description": "悬挂的兽皮",
+      "flavor": "你推开了挂在门口的兽皮。"
+    }
+  },
+  "webTerrain": {
+    "CHARRED_FLOOR": {
+      "description": "烧焦的地面",
+      "flavor": ""
+    },
+    "SIGN": {
+      "description": "告示牌",
+      "flavor": ""
+    },
+    "RESET_PLATE": {
+      "description": "复位踏板",
+      "flavor": ""
+    },
+    "TRAP": {
+      "description": "陷阱",
+      "flavor": ""
+    }
+  },
+  "monster": {
+    "rat": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "kobold": {
+      "absorbStatus": "查看",
+      "summonMessage": ""
+    },
+    "jackal": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "eel": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "monkey": {
+      "absorbStatus": "查看",
+      "summonMessage": ""
+    },
+    "bloat": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "pit_bloat": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "goblin": {
+      "absorbStatus": "吟唱",
+      "summonMessage": ""
+    },
+    "goblin_conjurer": {
+      "absorbStatus": "正在进行仪式",
+      "summonMessage": "做出了不祥的手势！"
+    },
+    "goblin_mystic": {
+      "absorbStatus": "正在进行仪式",
+      "summonMessage": ""
+    },
+    "goblin_totem": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "pink_jelly": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "toad": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "vampire_bat": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "arrow_turret": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "acid_mound": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "centipede": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "ogre": {
+      "absorbStatus": "研究",
+      "summonMessage": ""
+    },
+    "bog_monster": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "ogre_totem": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "spider": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "spark_turret": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "wisp": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "wraith": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "zombie": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "troll": {
+      "absorbStatus": "进食",
+      "summonMessage": ""
+    },
+    "ogre_shaman": {
+      "absorbStatus": "正在进行仪式",
+      "summonMessage": "用粗厉低沉的喉音吟唱！"
+    },
+    "naga": {
+      "absorbStatus": "研究",
+      "summonMessage": ""
+    },
+    "salamander": {
+      "absorbStatus": "研究",
+      "summonMessage": ""
+    },
+    "explosive_bloat": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "dar_blademaster": {
+      "absorbStatus": "研究",
+      "summonMessage": ""
+    },
+    "dar_priestess": {
+      "absorbStatus": "祈祷",
+      "summonMessage": ""
+    },
+    "dar_battlemage": {
+      "absorbStatus": "转化",
+      "summonMessage": ""
+    },
+    "acidic_jelly": {
+      "absorbStatus": "转化",
+      "summonMessage": ""
+    },
+    "centaur": {
+      "absorbStatus": "研究",
+      "summonMessage": ""
+    },
+    "underworm": {
+      "absorbStatus": "吞噬",
+      "summonMessage": ""
+    },
+    "sentinel": {
+      "absorbStatus": "专注",
+      "summonMessage": ""
+    },
+    "dart_turret": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "kraken": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "lich": {
+      "absorbStatus": "附魔",
+      "summonMessage": "嘶哑地念出恐怖的咒语！"
+    },
+    "phylactery": {
+      "absorbStatus": "附魔",
+      "summonMessage": "周围黑暗魔法旋绕，巫妖重新凝聚成形！"
+    },
+    "pixie": {
+      "absorbStatus": "撒粉",
+      "summonMessage": ""
+    },
+    "phantom": {
+      "absorbStatus": "渗透",
+      "summonMessage": ""
+    },
+    "flame_turret": {
+      "absorbStatus": "焚烧",
+      "summonMessage": ""
+    },
+    "imp": {
+      "absorbStatus": "解剖",
+      "summonMessage": ""
+    },
+    "fury": {
+      "absorbStatus": "鞭笞",
+      "summonMessage": ""
+    },
+    "revenant": {
+      "absorbStatus": "亵渎",
+      "summonMessage": ""
+    },
+    "tentacle_horror": {
+      "absorbStatus": "吞噬",
+      "summonMessage": ""
+    },
+    "golem": {
+      "absorbStatus": "怀抱",
+      "summonMessage": ""
+    },
+    "dragon": {
+      "absorbStatus": "吞噬",
+      "summonMessage": ""
+    },
+    "goblin_warlord": {
+      "absorbStatus": "吟唱",
+      "summonMessage": "发出了震耳欲聋的战吼！"
+    },
+    "black_jelly": {
+      "absorbStatus": "摄食",
+      "summonMessage": ""
+    },
+    "vampire": {
+      "absorbStatus": "饮血",
+      "summonMessage": "展开斗篷，化作一群蝙蝠！"
+    },
+    "flamedancer": {
+      "absorbStatus": "吞噬",
+      "summonMessage": ""
+    },
+    "spectral_blade": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "spectral_sword": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "stone_guardian": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "winged_guardian": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "guardian_spirit": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "warden_of_yendor": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "eldritch_totem": {
+      "absorbStatus": "凝视",
+      "summonMessage": "在你触碰符文时迸出噼啪作响的能量！"
+    },
+    "mirrored_totem": {
+      "absorbStatus": "凝视",
+      "summonMessage": ""
+    },
+    "unicorn": {
+      "absorbStatus": "祝圣",
+      "summonMessage": ""
+    },
+    "ifrit": {
+      "absorbStatus": "吸收",
+      "summonMessage": ""
+    },
+    "phoenix": {
+      "absorbStatus": "火葬",
+      "summonMessage": ""
+    },
+    "phoenix_egg": {
+      "absorbStatus": "火葬",
+      "summonMessage": "破裂了，一只新生的凤凰从灰烬中升起！"
+    },
+    "mangrove_dryad": {
+      "absorbStatus": "吸收",
+      "summonMessage": ""
+    }
+  },
+  "dungeonFeature": {
+    "158": "你听到一声沉重的咔哒声，附近的水开始涌入这片区域！",
+    "163": "你听到低沉的隆隆声，地板开始坍塌！"
+  }
+}

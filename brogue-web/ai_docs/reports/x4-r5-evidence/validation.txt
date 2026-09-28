@@ -1,0 +1,85 @@
+X4-R5 validation - 2026-09-29 Asia/Shanghai
+All commands ran in brogue-web unless noted in the report.
+
+COMMAND: npx vue-tsc -b
+EXIT: 0
+
+
+COMMAND: npm run build
+EXIT: 0
+> brogue-web@0.1.0 build
+> vue-tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 904 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.84 kB │ gzip:   0.50 kB
+dist/assets/index-CT9CKFJI.css                 36.96 kB │ gzip:   7.82 kB
+dist/assets/Filter-tC_6ryyw.js                  0.90 kB │ gzip:   0.48 kB
+dist/assets/BufferResource-DKib3U7M.js         10.60 kB │ gzip:   2.79 kB
+dist/assets/webworkerAll-CV5VnoZO.js           11.88 kB │ gzip:   3.92 kB
+dist/assets/CanvasRenderer-DxOlIpvW.js         22.67 kB │ gzip:   7.08 kB
+dist/assets/WebGPURenderer-CGpueJie.js         38.19 kB │ gzip:  10.65 kB
+dist/assets/browserAll-DmMDNg_5.js             41.30 kB │ gzip:  10.82 kB
+dist/assets/RenderTargetSystem-BaKPquvg.js     45.60 kB │ gzip:  12.57 kB
+dist/assets/WebGLRenderer-BtitSVQK.js          68.42 kB │ gzip:  18.75 kB
+dist/assets/index-B4eLavO-.js               1,499.83 kB │ gzip: 438.66 kB
+node.exe : 
+At line:1 char:1
++ & "D:\Program Files\nodejs/node.exe" "D:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-m
+anualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.09s
+
+COMMAND: npx vitest run src/test/x4_r5_content_text.test.ts
+EXIT: 0
+RUN  v4.1.11 E:/bench/work/x4r5/brogue-web
+
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  03:15:27
+   Duration  2.32s (transform 1.20s, setup 0ms, import 2.04s, tests 83ms, environment 0ms)
+
+COMMAND: npx vitest run <114 main files> --maxWorkers=2 --no-file-parallelism
+EXIT: 0
+RUN  v4.1.11 E:/bench/work/x4r5/brogue-web
+
+
+ Test Files  114 passed (114)
+      Tests  2745 passed | 8 skipped | 1 todo (2754)
+   Start at  03:09:04
+   Duration  2839.15s (transform 3.61s, setup 0ms, import 57.54s, tests 2762.14s, environment 19ms)
+
+COMMAND: npx vitest run <3 supplemental files> --maxWorkers=2 --no-file-parallelism
+EXIT: 0
+RUN  v4.1.11 E:/bench/work/x4r5/brogue-web
+
+
+ Test Files  3 passed (3)
+      Tests  37 passed (37)
+   Start at  03:18:52
+   Duration  1.00s (transform 322ms, setup 0ms, import 429ms, tests 54ms, environment 0ms)
+
+COMMAND: npm run test:drift
+EXIT: 0
+> brogue-web@0.1.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 E:/bench/work/x4r5/brogue-web
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  03:10:13
+   Duration  37.38s (transform 1.14s, setup 0ms, import 1.61s, tests 35.59s, environment 0ms)

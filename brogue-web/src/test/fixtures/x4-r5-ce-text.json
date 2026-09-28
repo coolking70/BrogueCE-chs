@@ -1,0 +1,2420 @@
+{
+  "tiles": [
+    {
+      "id": "NOTHING",
+      "line": 321,
+      "priority": 100,
+      "description": "a chilly void",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GRANITE",
+      "line": 322,
+      "priority": 0,
+      "description": "a rough granite wall",
+      "flavor": "The granite is split open with splinters of rock jutting out at odd angles.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLOOR",
+      "line": 323,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLOOR_FLOODABLE",
+      "line": 324,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CARPET",
+      "line": 325,
+      "priority": 85,
+      "description": "the carpet",
+      "flavor": "Ornate carpeting fills this room, a relic of ages past.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MARBLE_FLOOR",
+      "line": 326,
+      "priority": 85,
+      "description": "the marble ground",
+      "flavor": "Light from the nearby crystals catches the grain of the lavish marble floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WALL",
+      "line": 327,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DOOR",
+      "line": 328,
+      "priority": 8,
+      "description": "a wooden door",
+      "flavor": "you pass through the doorway.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "OPEN_DOOR",
+      "line": 329,
+      "priority": 25,
+      "description": "an open door",
+      "flavor": "you pass through the doorway.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SECRET_DOOR",
+      "line": 330,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": true,
+      "revealed": "DOOR"
+    },
+    {
+      "id": "LOCKED_DOOR",
+      "line": 331,
+      "priority": 15,
+      "description": "a locked iron door",
+      "flavor": "you search your pack but do not have a matching key.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "OPEN_IRON_DOOR_INERT",
+      "line": 332,
+      "priority": 90,
+      "description": "an open iron door",
+      "flavor": "you pass through the doorway.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DOWN_STAIRS",
+      "line": 333,
+      "priority": 30,
+      "description": "a downward staircase",
+      "flavor": "stairs spiral downward into the depths.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "UP_STAIRS",
+      "line": 334,
+      "priority": 30,
+      "description": "an upward staircase",
+      "flavor": "stairs spiral upward.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DUNGEON_EXIT",
+      "line": 335,
+      "priority": 30,
+      "description": "the dungeon exit",
+      "flavor": "the gilded doors leading out of the dungeon are sealed by an invisible force.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DUNGEON_PORTAL",
+      "line": 336,
+      "priority": 30,
+      "description": "a crystal portal",
+      "flavor": "dancing lights play across the plane of this sparkling crystal portal.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TORCH_WALL",
+      "line": 337,
+      "priority": 0,
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CRYSTAL_WALL",
+      "line": 338,
+      "priority": 0,
+      "description": "a crystal formation",
+      "flavor": "You feel the crystal's glossy surface and admire the dancing lights beneath.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PORTCULLIS_CLOSED",
+      "line": 339,
+      "priority": 10,
+      "description": "a heavy portcullis",
+      "flavor": "The iron bars rattle but will not budge; they are firmly locked in place.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PORTCULLIS_DORMANT",
+      "line": 340,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WOODEN_BARRICADE",
+      "line": 341,
+      "priority": 8,
+      "description": "a dry wooden barricade",
+      "flavor": "The wooden barricade is firmly set but has dried over the years. Might it burn?",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PILOT_LIGHT_DORMANT",
+      "line": 342,
+      "priority": 0,
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall, and sputters quietly in the gloom.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PILOT_LIGHT",
+      "line": 343,
+      "priority": 0,
+      "description": "a fallen torch",
+      "flavor": "The torch lies at the foot of the wall, spouting gouts of flame haphazardly.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HAUNTED_TORCH_DORMANT",
+      "line": 344,
+      "priority": 0,
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HAUNTED_TORCH_TRANSITIONING",
+      "line": 345,
+      "priority": 0,
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HAUNTED_TORCH",
+      "line": 346,
+      "priority": 0,
+      "description": "a sputtering torch",
+      "flavor": "A dim purple flame sputters and spits atop this wall-mounted torch.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WALL_LEVER_HIDDEN",
+      "line": 347,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": true,
+      "revealed": "WALL_LEVER"
+    },
+    {
+      "id": "WALL_LEVER",
+      "line": 348,
+      "priority": 0,
+      "description": "a lever",
+      "flavor": "The lever moves.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WALL_LEVER_PULLED",
+      "line": 349,
+      "priority": 0,
+      "description": "an inactive lever",
+      "flavor": "The lever won't budge.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WALL_LEVER_HIDDEN_DORMANT",
+      "line": 350,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_INERT",
+      "line": 351,
+      "priority": 0,
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_DORMANT",
+      "line": 352,
+      "priority": 0,
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_CRACKING",
+      "line": 353,
+      "priority": 0,
+      "description": "a cracking statue",
+      "flavor": "Deep cracks ramble down the side of the statue even as you watch.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_INSTACRACK",
+      "line": 354,
+      "priority": 0,
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PORTAL",
+      "line": 355,
+      "priority": 17,
+      "description": "a stone archway",
+      "flavor": "This ancient moss-covered stone archway radiates a strange, alien energy.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TURRET_DORMANT",
+      "line": 356,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WALL_MONSTER_DORMANT",
+      "line": 357,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DARK_FLOOR_DORMANT",
+      "line": 358,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DARK_FLOOR_DARKENING",
+      "line": 359,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DARK_FLOOR",
+      "line": 360,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_TRIGGER_FLOOR",
+      "line": 361,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_INERT",
+      "line": 362,
+      "priority": 17,
+      "description": "a candle-lit altar",
+      "flavor": "a gilded altar is adorned with candles that flicker in the breeze.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_KEYHOLE",
+      "line": 363,
+      "priority": 17,
+      "description": "a candle-lit altar",
+      "flavor": "ornate gilding spirals around a spherical depression in the top of the altar.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_CAGE_OPEN",
+      "line": 364,
+      "priority": 17,
+      "description": "a candle-lit altar",
+      "flavor": "a cage, open on the bottom, hangs over this altar on a retractable chain.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_CAGE_CLOSED",
+      "line": 365,
+      "priority": 17,
+      "description": "an iron cage",
+      "flavor": "the missing item must be replaced before you can access the remaining items.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_SWITCH",
+      "line": 366,
+      "priority": 17,
+      "description": "a candle-lit altar",
+      "flavor": "a weathered stone altar is adorned with candles that flicker in the breeze.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_SWITCH_RETRACTING",
+      "line": 367,
+      "priority": 17,
+      "description": "a candle-lit altar",
+      "flavor": "a weathered stone altar is adorned with candles that flicker in the breeze.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALTAR_CAGE_RETRACTABLE",
+      "line": 368,
+      "priority": 17,
+      "description": "an iron cage",
+      "flavor": "the cage won't budge. Perhaps there is a way to raise it nearby...",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PEDESTAL",
+      "line": 369,
+      "priority": 17,
+      "description": "a stone pedestal",
+      "flavor": "elaborate carvings wind around this ancient pedestal.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MONSTER_CAGE_OPEN",
+      "line": 370,
+      "priority": 17,
+      "description": "an open cage",
+      "flavor": "the interior of the cage is filthy and reeks of decay.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MONSTER_CAGE_CLOSED",
+      "line": 371,
+      "priority": 17,
+      "description": "a locked iron cage",
+      "flavor": "the bars of the cage are firmly set and will not budge.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "COFFIN_CLOSED",
+      "line": 372,
+      "priority": 17,
+      "description": "a sealed coffin",
+      "flavor": "a coffin made from thick wooden planks rests in a bed of moss.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "COFFIN_OPEN",
+      "line": 373,
+      "priority": 17,
+      "description": "an empty coffin",
+      "flavor": "an open wooden coffin rests in a bed of moss.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GAS_TRAP_POISON_HIDDEN",
+      "line": 377,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "GAS_TRAP_POISON"
+    },
+    {
+      "id": "GAS_TRAP_POISON",
+      "line": 378,
+      "priority": 30,
+      "description": "a caustic gas trap",
+      "flavor": "there is a hidden pressure plate in the floor above a reserve of caustic gas.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TRAP_DOOR_HIDDEN",
+      "line": 379,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "you plunge through a hidden trap door!",
+      "secret": true,
+      "revealed": "TRAP_DOOR"
+    },
+    {
+      "id": "TRAP_DOOR",
+      "line": 380,
+      "priority": 30,
+      "description": "a hole",
+      "flavor": "you plunge through a hole in the ground!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GAS_TRAP_PARALYSIS_HIDDEN",
+      "line": 381,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "GAS_TRAP_PARALYSIS"
+    },
+    {
+      "id": "GAS_TRAP_PARALYSIS",
+      "line": 382,
+      "priority": 30,
+      "description": "a paralysis trigger",
+      "flavor": "there is a hidden pressure plate in the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "line": 383,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "MACHINE_PARALYSIS_VENT"
+    },
+    {
+      "id": "MACHINE_PARALYSIS_VENT",
+      "line": 384,
+      "priority": 30,
+      "description": "an inactive gas vent",
+      "flavor": "A dormant gas vent is connected to a reserve of paralytic gas.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GAS_TRAP_CONFUSION_HIDDEN",
+      "line": 385,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "GAS_TRAP_CONFUSION"
+    },
+    {
+      "id": "GAS_TRAP_CONFUSION",
+      "line": 386,
+      "priority": 30,
+      "description": "a confusion trap",
+      "flavor": "A hidden pressure plate accompanies a reserve of psychotropic gas.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLAMETHROWER_HIDDEN",
+      "line": 387,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "FLAMETHROWER"
+    },
+    {
+      "id": "FLAMETHROWER",
+      "line": 388,
+      "priority": 30,
+      "description": "a fire trap",
+      "flavor": "A hidden pressure plate is connected to a crude flamethrower mechanism.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLOOD_TRAP_HIDDEN",
+      "line": 389,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "FLOOD_TRAP"
+    },
+    {
+      "id": "FLOOD_TRAP",
+      "line": 390,
+      "priority": 58,
+      "description": "a flood trap",
+      "flavor": "A hidden pressure plate is connected to floodgates in the walls and ceiling.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "NET_TRAP_HIDDEN",
+      "line": 391,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "NET_TRAP"
+    },
+    {
+      "id": "NET_TRAP",
+      "line": 392,
+      "priority": 30,
+      "description": "a net trap",
+      "flavor": "you see netting subtly concealed in the ceiling over a hidden pressure plate.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ALARM_TRAP_HIDDEN",
+      "line": 393,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "ALARM_TRAP"
+    },
+    {
+      "id": "ALARM_TRAP",
+      "line": 394,
+      "priority": 30,
+      "description": "an alarm trap",
+      "flavor": "a hidden pressure plate is connected to a loud alarm mechanism.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_POISON_GAS_VENT_HIDDEN",
+      "line": 395,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "MACHINE_POISON_GAS_VENT_DORMANT"
+    },
+    {
+      "id": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "line": 396,
+      "priority": 30,
+      "description": "an inactive gas vent",
+      "flavor": "An inactive gas vent is hidden in a crevice in the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_POISON_GAS_VENT",
+      "line": 397,
+      "priority": 30,
+      "description": "a gas vent",
+      "flavor": "Clouds of caustic gas are wafting out of a hidden vent in the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_METHANE_VENT_HIDDEN",
+      "line": 398,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": true,
+      "revealed": "MACHINE_METHANE_VENT_DORMANT"
+    },
+    {
+      "id": "MACHINE_METHANE_VENT_DORMANT",
+      "line": 399,
+      "priority": 30,
+      "description": "an inactive gas vent",
+      "flavor": "An inactive gas vent is hidden in a crevice in the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_METHANE_VENT",
+      "line": 400,
+      "priority": 30,
+      "description": "a gas vent",
+      "flavor": "Clouds of explosive gas are wafting out of a hidden vent in the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STEAM_VENT",
+      "line": 401,
+      "priority": 15,
+      "description": "a steam vent",
+      "flavor": "A natural crevice in the floor periodically vents scalding gouts of steam.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_PRESSURE_PLATE",
+      "line": 402,
+      "priority": 15,
+      "description": "a pressure plate",
+      "flavor": "There is an exposed pressure plate here. A thrown item might trigger it.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_PRESSURE_PLATE_USED",
+      "line": 403,
+      "priority": 15,
+      "description": "an inactive pressure plate",
+      "flavor": "This pressure plate has already been depressed.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_GLYPH",
+      "line": 404,
+      "priority": 42,
+      "description": "a magical glyph",
+      "flavor": "A strange glyph, engraved into the floor, flickers with magical light.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_GLYPH_INACTIVE",
+      "line": 405,
+      "priority": 42,
+      "description": "a glowing glyph",
+      "flavor": "A strange glyph, engraved into the floor, radiates magical light.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEWAR_CAUSTIC_GAS",
+      "line": 406,
+      "priority": 10,
+      "description": "a glass dewar of caustic gas",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEWAR_CONFUSION_GAS",
+      "line": 407,
+      "priority": 10,
+      "description": "a glass dewar of confusion gas",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEWAR_PARALYSIS_GAS",
+      "line": 408,
+      "priority": 10,
+      "description": "a glass dewar of paralytic gas",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEWAR_METHANE_GAS",
+      "line": 409,
+      "priority": 10,
+      "description": "a glass dewar of methane gas",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEEP_WATER",
+      "line": 413,
+      "priority": 40,
+      "description": "the murky waters",
+      "flavor": "the current tugs you in all directions.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SHALLOW_WATER",
+      "line": 414,
+      "priority": 55,
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MUD",
+      "line": 415,
+      "priority": 55,
+      "description": "a bog",
+      "flavor": "you are knee-deep in thick, foul-smelling mud.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CHASM",
+      "line": 416,
+      "priority": 40,
+      "description": "a chasm",
+      "flavor": "you plunge downward into the chasm!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CHASM_EDGE",
+      "line": 417,
+      "priority": 80,
+      "description": "the brink of a chasm",
+      "flavor": "chilly winds blow upward from the stygian depths.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_COLLAPSE_EDGE_DORMANT",
+      "line": 418,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "line": 419,
+      "priority": 45,
+      "description": "the crumbling ground",
+      "flavor": "cracks are appearing in the ground beneath your feet!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "LAVA",
+      "line": 420,
+      "priority": 40,
+      "description": "lava",
+      "flavor": "searing heat rises from the lava.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "LAVA_RETRACTABLE",
+      "line": 421,
+      "priority": 40,
+      "description": "lava",
+      "flavor": "searing heat rises from the lava.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "LAVA_RETRACTING",
+      "line": 422,
+      "priority": 40,
+      "description": "cooling lava",
+      "flavor": "searing heat rises from the lava.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SUNLIGHT_POOL",
+      "line": 423,
+      "priority": 90,
+      "description": "a patch of sunlight",
+      "flavor": "sunlight streams through cracks in the ceiling.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DARKNESS_PATCH",
+      "line": 424,
+      "priority": 90,
+      "description": "a patch of shadows",
+      "flavor": "this area happens to be cloaked in shadows -- perhaps a safe place to hide.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ACTIVE_BRIMSTONE",
+      "line": 425,
+      "priority": 40,
+      "description": "hissing brimstone",
+      "flavor": "the jagged brimstone hisses and spits ominously as it crunches under your feet.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "INERT_BRIMSTONE",
+      "line": 426,
+      "priority": 40,
+      "description": "hissing brimstone",
+      "flavor": "the jagged brimstone hisses and spits ominously as it crunches under your feet.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "OBSIDIAN",
+      "line": 427,
+      "priority": 50,
+      "description": "the obsidian ground",
+      "flavor": "the ground has fused into obsidian.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BRIDGE",
+      "line": 428,
+      "priority": 45,
+      "description": "a rickety rope bridge",
+      "flavor": "the rickety rope bridge creaks underfoot.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BRIDGE_FALLING",
+      "line": 429,
+      "priority": 45,
+      "description": "a plummeting bridge",
+      "flavor": "the bridge is plunging into the chasm before your eyes!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BRIDGE_EDGE",
+      "line": 430,
+      "priority": 45,
+      "description": "a rickety rope bridge",
+      "flavor": "the rickety rope bridge is staked to the edge of the chasm.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STONE_BRIDGE",
+      "line": 431,
+      "priority": 20,
+      "description": "a stone bridge",
+      "flavor": "the narrow stone bridge winds precariously across the chasm.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_FLOOD_WATER_DORMANT",
+      "line": 432,
+      "priority": 60,
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_FLOOD_WATER_SPREADING",
+      "line": 433,
+      "priority": 60,
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_MUD_DORMANT",
+      "line": 434,
+      "priority": 55,
+      "description": "a bog",
+      "flavor": "you are knee-deep in thick, foul-smelling mud.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ICE_DEEP",
+      "line": 435,
+      "priority": 35,
+      "description": "ice",
+      "flavor": "a sheet of ice extends into the water, ripples frozen into its glossy surface.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ICE_DEEP_MELT",
+      "line": 436,
+      "priority": 35,
+      "description": "melting ice",
+      "flavor": "cracks extend across the surface of the ice as it melts before your eyes.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ICE_SHALLOW",
+      "line": 437,
+      "priority": 35,
+      "description": "ice",
+      "flavor": "a sheet of ice extends into the water, ripples frozen into its glossy surface.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ICE_SHALLOW_MELT",
+      "line": 438,
+      "priority": 35,
+      "description": "melting ice",
+      "flavor": "cracks extend across the surface of the ice as it melts before your eyes.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HOLE",
+      "line": 442,
+      "priority": 9,
+      "description": "a hole",
+      "flavor": "you plunge downward into the hole!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HOLE_GLOW",
+      "line": 443,
+      "priority": 9,
+      "description": "a hole",
+      "flavor": "you plunge downward into the hole!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HOLE_EDGE",
+      "line": 444,
+      "priority": 50,
+      "description": "translucent ground",
+      "flavor": "chilly gusts of air blow upward through the translucent floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLOOD_WATER_DEEP",
+      "line": 445,
+      "priority": 41,
+      "description": "sloshing water",
+      "flavor": "roiling water floods the room.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLOOD_WATER_SHALLOW",
+      "line": 446,
+      "priority": 50,
+      "description": "shallow water",
+      "flavor": "knee-deep water drains slowly into holes in the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GRASS",
+      "line": 447,
+      "priority": 60,
+      "description": "grass-like fungus",
+      "flavor": "grass-like fungus crunches underfoot.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEAD_GRASS",
+      "line": 448,
+      "priority": 60,
+      "description": "withered fungus",
+      "flavor": "dead fungus covers the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GRAY_FUNGUS",
+      "line": 449,
+      "priority": 51,
+      "description": "withered fungus",
+      "flavor": "groping tendrils of pale fungus rise from the muck.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "LUMINESCENT_FUNGUS",
+      "line": 450,
+      "priority": 60,
+      "description": "luminescent fungus",
+      "flavor": "luminescent fungus casts a pale, eerie glow.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "LICHEN",
+      "line": 451,
+      "priority": 60,
+      "description": "deadly lichen",
+      "flavor": "venomous barbs cover the quivering tendrils of this fast-growing lichen.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HAY",
+      "line": 452,
+      "priority": 57,
+      "description": "filthy hay",
+      "flavor": "a pile of hay, matted with filth, has been arranged here as a makeshift bed.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RED_BLOOD",
+      "line": 453,
+      "priority": 80,
+      "description": "a pool of blood",
+      "flavor": "the floor is splattered with blood.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GREEN_BLOOD",
+      "line": 454,
+      "priority": 80,
+      "description": "a pool of green blood",
+      "flavor": "the floor is splattered with green blood.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PURPLE_BLOOD",
+      "line": 455,
+      "priority": 80,
+      "description": "a pool of purple blood",
+      "flavor": "the floor is splattered with purple blood.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ACID_SPLATTER",
+      "line": 456,
+      "priority": 80,
+      "description": "a puddle of acid",
+      "flavor": "the floor is splattered with acid.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "VOMIT",
+      "line": 457,
+      "priority": 80,
+      "description": "a puddle of vomit",
+      "flavor": "the floor is caked with vomit.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "URINE",
+      "line": 458,
+      "priority": 80,
+      "description": "a puddle of urine",
+      "flavor": "a puddle of urine covers the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "UNICORN_POOP",
+      "line": 459,
+      "priority": 80,
+      "description": "unicorn poop",
+      "flavor": "a pile of lavender-scented unicorn poop sparkles with rainbow light.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WORM_BLOOD",
+      "line": 460,
+      "priority": 80,
+      "description": "a pool of worm entrails",
+      "flavor": "worm viscera cover the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ASH",
+      "line": 461,
+      "priority": 80,
+      "description": "a pile of ashes",
+      "flavor": "charcoal and ash crunch underfoot.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BURNED_CARPET",
+      "line": 462,
+      "priority": 87,
+      "description": "burned carpet",
+      "flavor": "the carpet has been scorched by an ancient fire.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PUDDLE",
+      "line": 463,
+      "priority": 80,
+      "description": "a puddle of water",
+      "flavor": "a puddle of water covers the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BONES",
+      "line": 464,
+      "priority": 70,
+      "description": "a pile of bones",
+      "flavor": "unidentifiable bones, yellowed with age, litter the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RUBBLE",
+      "line": 465,
+      "priority": 70,
+      "description": "a pile of rubble",
+      "flavor": "rocky rubble covers the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "JUNK",
+      "line": 466,
+      "priority": 70,
+      "description": "a pile of filthy effects",
+      "flavor": "primitive tools, carvings and trinkets are strewn about the area.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BROKEN_GLASS",
+      "line": 467,
+      "priority": 70,
+      "description": "shattered glass",
+      "flavor": "jagged chunks of glass from the broken dewar litter the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ECTOPLASM",
+      "line": 468,
+      "priority": 70,
+      "description": "ectoplasmic residue",
+      "flavor": "a thick, glowing substance has congealed on the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "EMBERS",
+      "line": 469,
+      "priority": 70,
+      "description": "sputtering embers",
+      "flavor": "sputtering embers cover the ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SPIDERWEB",
+      "line": 470,
+      "priority": 19,
+      "description": "a spiderweb",
+      "flavor": "thick, sticky spiderwebs fill the area.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "NETTING",
+      "line": 471,
+      "priority": 19,
+      "description": "a net",
+      "flavor": "a dense tangle of netting fills the area.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FOLIAGE",
+      "line": 472,
+      "priority": 45,
+      "description": "dense foliage",
+      "flavor": "dense foliage fills the area, thriving on what sunlight trickles in.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEAD_FOLIAGE",
+      "line": 473,
+      "priority": 45,
+      "description": "dead foliage",
+      "flavor": "the decaying husk of a fungal growth fills the area.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TRAMPLED_FOLIAGE",
+      "line": 474,
+      "priority": 60,
+      "description": "trampled foliage",
+      "flavor": "dense foliage fills the area, thriving on what sunlight trickles in.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FUNGUS_FOREST",
+      "line": 475,
+      "priority": 45,
+      "description": "a luminescent fungal forest",
+      "flavor": "luminescent fungal growth fills the area, groping upward from the rich soil.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TRAMPLED_FUNGUS_FOREST",
+      "line": 476,
+      "priority": 60,
+      "description": "trampled fungal foliage",
+      "flavor": "luminescent fungal growth fills the area, groping upward from the rich soil.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FORCEFIELD",
+      "line": 477,
+      "priority": 0,
+      "description": "a green crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FORCEFIELD_MELT",
+      "line": 478,
+      "priority": 0,
+      "description": "a dissolving crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SACRED_GLYPH",
+      "line": 479,
+      "priority": 7,
+      "description": "a sacred glyph",
+      "flavor": "a sacred glyph adorns the floor, glowing with a powerful warding enchantment.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_TL",
+      "line": 480,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the ceiling.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_BR",
+      "line": 481,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_TR",
+      "line": 482,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the ceiling.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_BL",
+      "line": 483,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_T",
+      "line": 484,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_B",
+      "line": 485,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_L",
+      "line": 486,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MANACLE_R",
+      "line": 487,
+      "priority": 20,
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PORTAL_LIGHT",
+      "line": 488,
+      "priority": 1,
+      "description": "blinding light",
+      "flavor": "blinding light streams out of the archway.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GUARDIAN_GLOW",
+      "line": 489,
+      "priority": 100,
+      "description": "a red glow",
+      "flavor": "a red glow fills the area.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PLAIN_FIRE",
+      "line": 492,
+      "priority": 10,
+      "description": "billowing flames",
+      "flavor": "flames billow upward.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BRIMSTONE_FIRE",
+      "line": 493,
+      "priority": 10,
+      "description": "sulfurous flames",
+      "flavor": "sulfurous flames leap from the unstable bed of brimstone.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "FLAMEDANCER_FIRE",
+      "line": 494,
+      "priority": 10,
+      "description": "clouds of infernal flame",
+      "flavor": "billowing infernal flames eat at the floor.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GAS_FIRE",
+      "line": 495,
+      "priority": 10,
+      "description": "a cloud of burning gas",
+      "flavor": "burning gas fills the air with flame.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "GAS_EXPLOSION",
+      "line": 496,
+      "priority": 10,
+      "description": "a violent explosion",
+      "flavor": "the force of the explosion slams into you.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DART_EXPLOSION",
+      "line": 497,
+      "priority": 10,
+      "description": "a flash of fire",
+      "flavor": "flames burst out of the incendiary dart.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ITEM_FIRE",
+      "line": 498,
+      "priority": 10,
+      "description": "crackling flames",
+      "flavor": "crackling flames rise from the blackened item.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CREATURE_FIRE",
+      "line": 499,
+      "priority": 10,
+      "description": "greasy flames",
+      "flavor": "greasy flames rise from the corpse.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "POISON_GAS",
+      "line": 502,
+      "priority": 35,
+      "description": "a cloud of caustic gas",
+      "flavor": "you can feel the purple gas eating at your flesh.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CONFUSION_GAS",
+      "line": 503,
+      "priority": 35,
+      "description": "a cloud of confusion gas",
+      "flavor": "the rainbow-colored gas tickles your brain.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ROT_GAS",
+      "line": 504,
+      "priority": 35,
+      "description": "a cloud of putrescence",
+      "flavor": "the stench of rotting flesh is overpowering.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STENCH_SMOKE_GAS",
+      "line": 505,
+      "priority": 35,
+      "description": "a cloud of putrid smoke",
+      "flavor": "you retch violently at the smell of the greasy smoke.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PARALYSIS_GAS",
+      "line": 506,
+      "priority": 35,
+      "description": "a cloud of paralytic gas",
+      "flavor": "the pale gas causes your muscles to stiffen.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "METHANE_GAS",
+      "line": 507,
+      "priority": 35,
+      "description": "a cloud of explosive gas",
+      "flavor": "the smell of explosive swamp gas fills the air.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STEAM",
+      "line": 508,
+      "priority": 35,
+      "description": "a cloud of scalding steam",
+      "flavor": "scalding steam fills the air!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DARKNESS_CLOUD",
+      "line": 509,
+      "priority": 35,
+      "description": "a cloud of supernatural darkness",
+      "flavor": "everything is obscured by an aura of supernatural darkness.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HEALING_CLOUD",
+      "line": 510,
+      "priority": 35,
+      "description": "a cloud of healing spores",
+      "flavor": "bloodwort spores, renowned for their healing properties, fill the air.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BLOODFLOWER_STALK",
+      "line": 513,
+      "priority": 10,
+      "description": "a bloodwort stalk",
+      "flavor": "this spindly plant grows seed pods famous for their healing properties.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BLOODFLOWER_POD",
+      "line": 514,
+      "priority": 11,
+      "description": "a bloodwort pod",
+      "flavor": "the bloodwort seed pod bursts, releasing a cloud of healing spores.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "HAVEN_BEDROLL",
+      "line": 517,
+      "priority": 57,
+      "description": "an abandoned bedroll",
+      "flavor": "a bedroll lies in the corner, disintegrating with age.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEEP_WATER_ALGAE_WELL",
+      "line": 520,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEEP_WATER_ALGAE_1",
+      "line": 521,
+      "priority": 40,
+      "description": "luminescent waters",
+      "flavor": "blooming algae fills the waters with a swirling luminescence.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEEP_WATER_ALGAE_2",
+      "line": 522,
+      "priority": 39,
+      "description": "luminescent waters",
+      "flavor": "blooming algae fills the waters with a swirling luminescence.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ANCIENT_SPIRIT_VINES",
+      "line": 525,
+      "priority": 19,
+      "description": "thorned vines",
+      "flavor": "thorned vines make a rustling noise as they quiver restlessly.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ANCIENT_SPIRIT_GRASS",
+      "line": 526,
+      "priority": 60,
+      "description": "a tuft of grass",
+      "flavor": "tufts of lush grass have improbably pushed upward through the stone ground.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "AMULET_SWITCH",
+      "line": 529,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "COMMUTATION_ALTAR",
+      "line": 532,
+      "priority": 17,
+      "description": "a commutation altar",
+      "flavor": "crude diagrams on this altar and its twin invite you to place items upon them.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "COMMUTATION_ALTAR_INERT",
+      "line": 533,
+      "priority": 17,
+      "description": "a scorched altar",
+      "flavor": "scorch marks cover the surface of the altar, but it is cold to the touch.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PIPE_GLOWING",
+      "line": 534,
+      "priority": 45,
+      "description": "glowing glass pipes",
+      "flavor": "glass pipes are set into the floor and emit a soft glow of shifting color.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "PIPE_INERT",
+      "line": 535,
+      "priority": 45,
+      "description": "charred glass pipes",
+      "flavor": "the inside of the glass pipes are charred.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RESURRECTION_ALTAR",
+      "line": 538,
+      "priority": 17,
+      "description": "a resurrection altar",
+      "flavor": "the souls of the dead surround you. A deceased ally might be called back.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RESURRECTION_ALTAR_INERT",
+      "line": 539,
+      "priority": 16,
+      "description": "a scorched altar",
+      "flavor": "scorch marks cover the surface of the altar, but it is cold to the touch.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_TRIGGER_FLOOR_REPEATING",
+      "line": 540,
+      "priority": 95,
+      "description": "the ground",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SACRIFICE_ALTAR_DORMANT",
+      "line": 543,
+      "priority": 17,
+      "description": "a sacrificial altar",
+      "flavor": "demonological symbols decorate this altar.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SACRIFICE_ALTAR",
+      "line": 544,
+      "priority": 17,
+      "description": "a sacrifice altar",
+      "flavor": "demonological symbols decorate this altar.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SACRIFICE_LAVA",
+      "line": 545,
+      "priority": 40,
+      "description": "a sacrificial pit",
+      "flavor": "the smell of burnt flesh lingers over this pit of lava.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "SACRIFICE_CAGE_DORMANT",
+      "line": 546,
+      "priority": 17,
+      "description": "an iron cage",
+      "flavor": "the cage won't budge. Perhaps there is a way to raise it nearby...",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "DEMONIC_STATUE",
+      "line": 547,
+      "priority": 0,
+      "description": "a demonic statue",
+      "flavor": "An obsidian statue of a leering demon looms over the room.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_INERT_DOORWAY",
+      "line": 550,
+      "priority": 0,
+      "description": "a broken statue",
+      "flavor": "Once magnificent, the statue has crumbled beyond recognition.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "STATUE_DORMANT_DOORWAY",
+      "line": 551,
+      "priority": 0,
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CHASM_WITH_HIDDEN_BRIDGE",
+      "line": 554,
+      "priority": 40,
+      "description": "a chasm",
+      "flavor": "you plunge downward into the chasm!",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "line": 555,
+      "priority": 40,
+      "description": "a stone bridge",
+      "flavor": "the narrow stone bridge is extending across the chasm.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MACHINE_CHASM_EDGE",
+      "line": 556,
+      "priority": 80,
+      "description": "the brink of a chasm",
+      "flavor": "chilly winds blow upward from the stygian depths.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RAT_TRAP_WALL_DORMANT",
+      "line": 559,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "RAT_TRAP_WALL_CRACKING",
+      "line": 560,
+      "priority": 0,
+      "description": "a cracking wall",
+      "flavor": "Cracks are running ominously across the base of this rough stone wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ELECTRIC_CRYSTAL_OFF",
+      "line": 563,
+      "priority": 0,
+      "description": "a darkened crystal globe",
+      "flavor": "A slight electric shock startles you when you touch the inert crystal globe.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "ELECTRIC_CRYSTAL_ON",
+      "line": 564,
+      "priority": 0,
+      "description": "a shining crystal globe",
+      "flavor": "Crackling light streams out of the crystal globe.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "TURRET_LEVER",
+      "line": 565,
+      "priority": 0,
+      "description": "a lever",
+      "flavor": "The lever moves.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WORM_TUNNEL_MARKER_DORMANT",
+      "line": 568,
+      "priority": 100,
+      "description": "",
+      "flavor": "",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WORM_TUNNEL_MARKER_ACTIVE",
+      "line": 569,
+      "priority": 100,
+      "description": "a rough granite wall",
+      "flavor": "The granite is split open with splinters of rock jutting out at odd angles.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "WORM_TUNNEL_OUTER_WALL",
+      "line": 570,
+      "priority": 0,
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "BRAZIER",
+      "line": 573,
+      "priority": 0,
+      "description": "a ceremonial brazier",
+      "flavor": "The ancient brazier smolders with a deep crimson flame.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MUD_FLOOR",
+      "line": 576,
+      "priority": 85,
+      "description": "the mud floor",
+      "flavor": "Rotting animal matter has been ground into the mud floor; the stench is awful.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MUD_WALL",
+      "line": 577,
+      "priority": 0,
+      "description": "a mud-covered wall",
+      "flavor": "A malodorous layer of clay and fecal matter coats the wall.",
+      "secret": false,
+      "revealed": null
+    },
+    {
+      "id": "MUD_DOORWAY",
+      "line": 578,
+      "priority": 25,
+      "description": "hanging animal skins",
+      "flavor": "you push through the animal skins that hang across the threshold.",
+      "secret": false,
+      "revealed": null
+    }
+  ],
+  "monsters": [
+    {
+      "id": "MK_RAT",
+      "line": 1171,
+      "verb": "gnawing at",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_KOBOLD",
+      "line": 1174,
+      "verb": "poking at",
+      "status": "Examining",
+      "summon": ""
+    },
+    {
+      "id": "MK_JACKAL",
+      "line": 1177,
+      "verb": "tearing at",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_EEL",
+      "line": 1180,
+      "verb": "eating",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_MONKEY",
+      "line": 1183,
+      "verb": "examining",
+      "status": "Examining",
+      "summon": ""
+    },
+    {
+      "id": "MK_BLOAT",
+      "line": 1186,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_PIT_BLOAT",
+      "line": 1190,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_GOBLIN",
+      "line": 1194,
+      "verb": "chanting over",
+      "status": "Chanting",
+      "summon": ""
+    },
+    {
+      "id": "MK_GOBLIN_CONJURER",
+      "line": 1197,
+      "verb": "performing a ritual on",
+      "status": "Performing ritual",
+      "summon": "gestures ominously!"
+    },
+    {
+      "id": "MK_GOBLIN_MYSTIC",
+      "line": 1202,
+      "verb": "performing a ritual on",
+      "status": "Performing ritual",
+      "summon": ""
+    },
+    {
+      "id": "MK_GOBLIN_TOTEM",
+      "line": 1205,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_PINK_JELLY",
+      "line": 1208,
+      "verb": "absorbing",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_TOAD",
+      "line": 1211,
+      "verb": "eating",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_VAMPIRE_BAT",
+      "line": 1214,
+      "verb": "draining",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_ARROW_TURRET",
+      "line": 1217,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_ACID_MOUND",
+      "line": 1220,
+      "verb": "liquefying",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_CENTIPEDE",
+      "line": 1223,
+      "verb": "eating",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_OGRE",
+      "line": 1226,
+      "verb": "examining",
+      "status": "Studying",
+      "summon": ""
+    },
+    {
+      "id": "MK_BOG_MONSTER",
+      "line": 1229,
+      "verb": "draining",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_OGRE_TOTEM",
+      "line": 1232,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_SPIDER",
+      "line": 1235,
+      "verb": "draining",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_SPARK_TURRET",
+      "line": 1238,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_WILL_O_THE_WISP",
+      "line": 1241,
+      "verb": "consuming",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_WRAITH",
+      "line": 1244,
+      "verb": "devouring",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_ZOMBIE",
+      "line": 1247,
+      "verb": "rending",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_TROLL",
+      "line": 1250,
+      "verb": "eating",
+      "status": "Eating",
+      "summon": ""
+    },
+    {
+      "id": "MK_OGRE_SHAMAN",
+      "line": 1253,
+      "verb": "performing a ritual on",
+      "status": "Performing ritual",
+      "summon": "chants in a harsh, guttural tongue!"
+    },
+    {
+      "id": "MK_NAGA",
+      "line": 1258,
+      "verb": "studying",
+      "status": "Studying",
+      "summon": ""
+    },
+    {
+      "id": "MK_SALAMANDER",
+      "line": 1261,
+      "verb": "studying",
+      "status": "Studying",
+      "summon": ""
+    },
+    {
+      "id": "MK_EXPLOSIVE_BLOAT",
+      "line": 1264,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_DAR_BLADEMASTER",
+      "line": 1268,
+      "verb": "studying",
+      "status": "Studying",
+      "summon": ""
+    },
+    {
+      "id": "MK_DAR_PRIESTESS",
+      "line": 1271,
+      "verb": "praying over",
+      "status": "Praying",
+      "summon": ""
+    },
+    {
+      "id": "MK_DAR_BATTLEMAGE",
+      "line": 1274,
+      "verb": "transmuting",
+      "status": "Transmuting",
+      "summon": ""
+    },
+    {
+      "id": "MK_ACID_JELLY",
+      "line": 1277,
+      "verb": "transmuting",
+      "status": "Transmuting",
+      "summon": ""
+    },
+    {
+      "id": "MK_CENTAUR",
+      "line": 1280,
+      "verb": "studying",
+      "status": "Studying",
+      "summon": ""
+    },
+    {
+      "id": "MK_UNDERWORM",
+      "line": 1283,
+      "verb": "consuming",
+      "status": "Consuming",
+      "summon": ""
+    },
+    {
+      "id": "MK_SENTINEL",
+      "line": 1286,
+      "verb": "focusing on",
+      "status": "Focusing",
+      "summon": ""
+    },
+    {
+      "id": "MK_DART_TURRET",
+      "line": 1289,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_KRAKEN",
+      "line": 1292,
+      "verb": "devouring",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_LICH",
+      "line": 1295,
+      "verb": "enchanting",
+      "status": "Enchanting",
+      "summon": "rasps a terrifying incantation!"
+    },
+    {
+      "id": "MK_PHYLACTERY",
+      "line": 1300,
+      "verb": "enchanting",
+      "status": "Enchanting",
+      "summon": "swirls with dark sorcery as the lich regenerates its form!"
+    },
+    {
+      "id": "MK_PIXIE",
+      "line": 1305,
+      "verb": "sprinkling dust on",
+      "status": "Dusting",
+      "summon": ""
+    },
+    {
+      "id": "MK_PHANTOM",
+      "line": 1308,
+      "verb": "permeating",
+      "status": "Permeating",
+      "summon": ""
+    },
+    {
+      "id": "MK_FLAME_TURRET",
+      "line": 1311,
+      "verb": "incinerating",
+      "status": "Incinerating",
+      "summon": ""
+    },
+    {
+      "id": "MK_IMP",
+      "line": 1314,
+      "verb": "dissecting",
+      "status": "Dissecting",
+      "summon": ""
+    },
+    {
+      "id": "MK_FURY",
+      "line": 1317,
+      "verb": "flagellating",
+      "status": "Flagellating",
+      "summon": ""
+    },
+    {
+      "id": "MK_REVENANT",
+      "line": 1320,
+      "verb": "desecrating",
+      "status": "Desecrating",
+      "summon": ""
+    },
+    {
+      "id": "MK_TENTACLE_HORROR",
+      "line": 1323,
+      "verb": "sucking on",
+      "status": "Consuming",
+      "summon": ""
+    },
+    {
+      "id": "MK_GOLEM",
+      "line": 1326,
+      "verb": "cradling",
+      "status": "Cradling",
+      "summon": ""
+    },
+    {
+      "id": "MK_DRAGON",
+      "line": 1329,
+      "verb": "consuming",
+      "status": "Consuming",
+      "summon": ""
+    },
+    {
+      "id": "MK_GOBLIN_CHIEFTAN",
+      "line": 1333,
+      "verb": "chanting over",
+      "status": "Chanting",
+      "summon": "lets loose a deafening war cry!"
+    },
+    {
+      "id": "MK_BLACK_JELLY",
+      "line": 1338,
+      "verb": "absorbing",
+      "status": "Feeding",
+      "summon": ""
+    },
+    {
+      "id": "MK_VAMPIRE",
+      "line": 1341,
+      "verb": "draining",
+      "status": "Drinking",
+      "summon": "spreads his cloak and bursts into a cloud of bats!"
+    },
+    {
+      "id": "MK_FLAMEDANCER",
+      "line": 1346,
+      "verb": "immolating",
+      "status": "Consuming",
+      "summon": ""
+    },
+    {
+      "id": "MK_SPECTRAL_BLADE",
+      "line": 1350,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_SPECTRAL_IMAGE",
+      "line": 1353,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_GUARDIAN",
+      "line": 1356,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_WINGED_GUARDIAN",
+      "line": 1359,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_CHARM_GUARDIAN",
+      "line": 1362,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_WARDEN_OF_YENDOR",
+      "line": 1365,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_ELDRITCH_TOTEM",
+      "line": 1368,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": "crackles with energy as you touch the glyph!"
+    },
+    {
+      "id": "MK_MIRRORED_TOTEM",
+      "line": 1373,
+      "verb": "gazing at",
+      "status": "Gazing",
+      "summon": ""
+    },
+    {
+      "id": "MK_UNICORN",
+      "line": 1377,
+      "verb": "consecrating",
+      "status": "Consecrating",
+      "summon": ""
+    },
+    {
+      "id": "MK_IFRIT",
+      "line": 1380,
+      "verb": "absorbing",
+      "status": "Absorbing",
+      "summon": ""
+    },
+    {
+      "id": "MK_PHOENIX",
+      "line": 1383,
+      "verb": "cremating",
+      "status": "Cremating",
+      "summon": ""
+    },
+    {
+      "id": "MK_PHOENIX_EGG",
+      "line": 1386,
+      "verb": "cremating",
+      "status": "Cremating",
+      "summon": "bursts as a newborn phoenix rises from the ashes!"
+    },
+    {
+      "id": "MK_ANCIENT_SPIRIT",
+      "line": 1391,
+      "verb": "absorbing",
+      "status": "Absorbing",
+      "summon": ""
+    }
+  ],
+  "features": {
+    "158": {
+      "ceDescription": "you hear a heavy click, and the nearby water begins flooding the area!",
+      "description": "你听到一声沉重的咔哒声，附近的水开始涌入这片区域！"
+    },
+    "163": {
+      "ceDescription": "you hear a deep rumbling noise as the floor begins to collapse!",
+      "description": "你听到低沉的隆隆声，地板开始坍塌！"
+    }
+  }
+}

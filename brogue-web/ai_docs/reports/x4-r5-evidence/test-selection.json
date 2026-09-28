@@ -1,0 +1,869 @@
+{
+  "referencePattern": "getTerrainName|terrain\\.|flavor|summon|absorb|DungeonFeatureCatalog (case insensitive)",
+  "sourceReadPattern": "readFileSync|readFile\\s*\\(",
+  "files": [
+    {
+      "file": "src/test/armor_runic_effect.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/b_1b_identification_persistence.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "reasons": [
+        "source-read",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_6_autogenerators.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/f_2a_fire_mechanics.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/f_2c_explosion.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/fe_1_touch.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/horde_selection.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p1_28_flag_channel.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "reasons": [
+        "reference",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/p4_2_monster_summoning.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "reasons": [
+        "reference",
+        "source-read",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "reasons": [
+        "source-read",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/smoke.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "reasons": [
+        "source-read",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_00_new_run.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_02a_rng_snapshot.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_02b_level_rng.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_07_monster_blink.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_08_terrain_bolts.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_10_absorption_snapshot.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_15d3_runic_generation.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_16_lifecycle.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17a_df_transaction.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "reasons": [
+        "reference",
+        "source-read",
+        "required-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_18a_3_generation.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_19b_pending_occupancy.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_r1_codec.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_3_wired.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_5_dormant.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_9a_carriers.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2f_thrown_math.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2g_native_effects.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2k_lifecycle.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2m_lighting.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x2o_horde_clump.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x3_u3_cursed_equipment.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x3_u5_ui.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x3_u6_messages.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x3_u7_sidebar.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x3a_live_iteration.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x4_r1_world_catalog.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x4_r4_item_details.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x4_r5_content_text.test.ts",
+      "reasons": [
+        "reference",
+        "source-read",
+        "new-guard"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x4a_movement_rendering.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/test/x4b_flavor_text.test.ts",
+      "reasons": [
+        "reference",
+        "source-read"
+      ],
+      "batch": "main"
+    },
+    {
+      "file": "src/data/hordes.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "supplemental"
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "reasons": [
+        "source-read"
+      ],
+      "batch": "supplemental"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "reasons": [
+        "reference"
+      ],
+      "batch": "supplemental"
+    }
+  ]
+}
