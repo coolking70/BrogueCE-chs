@@ -1,0 +1,107 @@
+src/test/w_20_cloning.test.ts:136: it('cancel costs nothing; real confirmation spends charge/turn, newborn waits 101 then acts',()=>{
+src/test/w_20_cloning.test.ts:139:  const attack=vi.spyOn(CombatSystem,'attack');g.useArcanaItem(wand);g.setArcanaTarget(5,5);g.confirmArcanaTarget();const c=g.monsters[1]!;expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(c.ticksUntilTurn).toBe(1);expect(attack).not.toHaveBeenCalled();const turn=vi.spyOn(c,'takeTurn');g.handlePlayerAction('wait');expect(turn).toHaveBeenCalled();
+src/test/w_11_teleport_placement.test.ts:180:        g.useArcanaItem(item); g.setArcanaTarget(8, 5); const result = g.confirmArcanaTarget();
+src/test/u_18_water_cage.test.ts:12:    it('allows a player to step into deep water without a hazard confirmation or damage', () => {
+src/test/w_26_arcana_closure.test.ts:62:        g.useArcanaItem(item);g.setArcanaTarget(20,5);const result=g.confirmArcanaTarget();
+src/test/w_26_arcana_closure.test.ts:90:        const committed=[item.charges,g.stats.turns,JSON.stringify(rng)];expect(g.confirmArcanaTarget()).toBeNull();expect([item.charges,g.stats.turns,JSON.stringify(rng)]).toEqual(committed);
+src/test/w_26_arcana_closure.test.ts:120:    it('obstruction has no blink risk confirmation; discord/protection reject inanimate automatic candidates',()=>{
+src/test/w_26_arcana_closure.test.ts:123:        expect(g.getArcanaPreview()).toBeNull();expect(g.confirmArcanaTarget()).not.toBeNull();expect(g.onConfirmRequest).not.toHaveBeenCalled();
+src/test/c_5_fall_subsystem.test.ts:180:        let confirmCalls = 0;
+src/test/c_5_fall_subsystem.test.ts:181:        game.onConfirmRequest = () => { confirmCalls++; return false; };
+src/test/c_5_fall_subsystem.test.ts:188:        expect(confirmCalls, '悬浮时踩已知渊格不得弹确认（Movement.c:1305 前置条件）').toBe(0);
+src/test/c_5_fall_subsystem.test.ts:393:        expect(prompts[0], '确认文案缺失（i18n fall.confirm）').toBeTruthy();
+src/test/c_5_fall_subsystem.test.ts:411:        let confirmCalls = 0;
+src/test/c_5_fall_subsystem.test.ts:412:        game.onConfirmRequest = () => { confirmCalls++; return false; };
+src/test/c_5_fall_subsystem.test.ts:415:        expect(confirmCalls, '未知渊格不得弹确认').toBe(0);
+src/test/w_24_wand_catalog.test.ts:121:    it.each(added)('%s: normal use/cancel/confirm runs the existing effect with no substitute config', id => {
+src/test/w_24_wand_catalog.test.ts:129:        g.useArcanaItem(wand); g.setArcanaTarget(m.x,m.y); const result = g.confirmArcanaTarget();
+src/test/w_16_conjuration.test.ts:214:  g.useArcanaItem(item);g.setArcanaTarget(10,5);const result=g.confirmArcanaTarget();
+src/test/u_27_recording.test.ts:63:    it('replays a refused then accepted food confirmation without asking again', () => {
+src/test/u_27_recording.test.ts:74:        game.onConfirmRequest = () => { throw new Error('replay opened a confirmation dialog'); };
+src/test/w_17_domination.test.ts:233: it.each([19,100])('explicit pending fixture: cancel costs zero; confirmation at HP=%i consumes one charge/turn and visible result autoIDs',hp=>{
+src/test/w_17_domination.test.ts:238:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const r=g.confirmArcanaTarget();
+src/test/u_15f_food.test.ts:21:        const confirm = vi.fn((_message: string) => false);
+src/test/u_15f_food.test.ts:22:        game.onConfirmRequest = confirm;
+src/test/u_15f_food.test.ts:25:        expect(confirm).toHaveBeenCalledOnce();
+src/test/u_15f_food.test.ts:26:        expect(confirm.mock.calls[0]?.[0]).toContain('food');
+src/test/u_15f_food.test.ts:41:        const confirm = vi.fn(() => false);
+src/test/u_15f_food.test.ts:42:        game.onConfirmRequest = confirm;
+src/test/u_15f_food.test.ts:44:        expect(confirm).not.toHaveBeenCalled();
+src/test/u_15f_food.test.ts:57:        const confirm = vi.fn(() => false);
+src/test/u_15f_food.test.ts:58:        game.onConfirmRequest = confirm;
+src/test/u_15f_food.test.ts:60:        expect(confirm).not.toHaveBeenCalled();
+src/test/u_00_new_run.test.ts:130:                const confirm = () => false;
+src/test/u_00_new_run.test.ts:132:                g.onConfirmRequest = confirm;
+src/test/u_00_new_run.test.ts:157:                expect(g.onConfirmRequest).toBe(confirm);
+src/test/u_00_new_run.test.ts:168:                fresh.onConfirmRequest = confirm; fresh.onRenderRequested = render;
+src/test/w_18_entrancement.test.ts:249: it('selection/cancel costs nothing; confirmed fixture consumes charge/time once without follow',()=>{
+src/test/w_18_entrancement.test.ts:253:  g.useArcanaItem(staff);g.setArcanaTarget(10,5);g.confirmArcanaTarget();expect(staff.charges).toBe(2);expect(m.loc).toEqual({x:10,y:5});expect(m.getStatusDuration('entranced')).toBe(8);
+src/test/w_2_arcana_submission.test.ts:59:    return game.confirmArcanaTarget();
+src/test/w_2_arcana_submission.test.ts:90:    it.each([50, 100, 200])('confirm spends one existing charge and exactly movementSpeed=%s ticks once', speed => {
+src/test/w_2_arcana_submission.test.ts:103:        expect(g.confirmArcanaTarget()).toBeNull();
+src/test/w_2_arcana_submission.test.ts:110:    it('known empty instance is free; kind-known/max-known but instance-unknown empty requires confirmation and costs a turn', () => {
+src/test/w_2_arcana_submission.test.ts:140:        g.confirmArcanaTarget(); // origin cancels
+src/test/w_2_arcana_submission.test.ts:147:        g.handlePlayerAction('confirm_target');
+src/test/w_2_arcana_submission.test.ts:158:        expect(g.confirmArcanaTarget()).toBeNull();
+src/test/w_2_arcana_submission.test.ts:363:    it('confirmed slow-speed casting runs real P2 advancement and locks repeated UI entry until completion', () => {
+src/test/w_2_arcana_submission.test.ts:372:        const result = g.confirmArcanaTarget() as BoltResult;
+src/test/w_19_polymorph.test.ts:179: it('cancel is zero cost; actual confirm spends one charge/turn and transforms in place',()=>{
+src/test/w_19_polymorph.test.ts:183:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const original=rng.randRange.bind(rng);vi.spyOn(rng,'randRange').mockImplementation((lo,hi)=>lo===1&&hi===67?index('jackal'):original(lo,hi));g.confirmArcanaTarget();expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(m.typeId).toBe('jackal');expect(g.monsters).toContain(m);
+src/test/w_19_polymorph.test.ts:189:  const attack=vi.spyOn(CombatSystem,'attack'),turn=vi.spyOn(m,'takeTurn');g.useArcanaItem(wand);g.setArcanaTarget(5,5);g.confirmArcanaTarget();expect(m.typeId).toBe('jackal');expect(m.ticksUntilTurn).toBe(1);expect(turn).not.toHaveBeenCalled();
+src/test/u_17c_triggers.test.ts:82: it('17 manual search clears hidden base and surface, creates liquid hole + halo/flare, then confirmed player falls',()=>{
+src/test/u_17c_triggers.test.ts:85:  const confirm=vi.fn(()=>false);g.onConfirmRequest=confirm;move(g,1,0);expect(confirm).toHaveBeenCalled();expect(g.depth).toBe(1);expect(g.player.loc).toEqual({x:10,y:10});
+src/test/u_17c_triggers.test.ts:88: it('17 search has no forged discovery behind a wall; hidden trapdoor falls without confirmation and levitation prevents falling',()=>{
+src/test/u_17c_triggers.test.ts:90:  mark(g,11,10,T.TRAP_DOOR_HIDDEN,0);const confirm=vi.fn(()=>true);g.onConfirmRequest=confirm;g.player.applyStatus('levitating',30);move(g,1,0);expect(g.depth).toBe(1);g.player.statusDurations.levitating=0;g.handlePlayerAction('wait',undefined,'system');expect(g.depth).toBe(2);expect(confirm).not.toHaveBeenCalled();
+src/test/w_12_blink_beckoning.test.ts:273:    it('real P2 confirmation consumes one charge/action; the beckoned monster cannot act immediately', () => {
+src/test/w_12_blink_beckoning.test.ts:280:        g.useArcanaItem(item); g.setArcanaTarget(12, 5); const result = g.confirmArcanaTarget()!;
+src/test/u_15e_potions.test.ts:50:    it('known darkness is confirmable and cancellation preserves item and RNG', () => {
+src/test/w_21_empowerment.test.ts:111:  g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;g.confirmArcanaTarget();expect(item.charges).toBe(0);expect(item.timesUsed).toBe(1);expect(item.isIdentified).toBe(true);expect(g.stats.turns).toBe(before+1);expect(m.totalPowerCount).toBe(1);expect(m.maxHp).toBe(18);
+src/test/ui_1_rendering.test.ts:60:// App.vue 的模块依赖链（GameCanvas → Input 单例）在模块加载期访问 window——
+src/test/ui_1_rendering.test.ts:62:// 不依赖 window 存在；各用例按需重 stub 带 confirm 的 window。
+src/test/ui_1_rendering.test.ts:66:    const mod = await import('../App.vue');
+src/test/ui_1_rendering.test.ts:407:    it('常规对局：问题原样转给模态框，答案映射为返回值（Enter=Yes/Esc=No 由原生 confirm 承载，≙ CE RETURN/ESCAPE_KEY）', () => {
+src/test/ui_1_rendering.test.ts:408:        const confirmSpy = vi.fn(() => true);
+src/test/ui_1_rendering.test.ts:409:        vi.stubGlobal('window', { confirm: confirmSpy });
+src/test/ui_1_rendering.test.ts:414:        expect(confirmSpy).toHaveBeenCalledWith('潜入深渊？');
+src/test/ui_1_rendering.test.ts:416:        confirmSpy.mockReturnValue(false);
+src/test/ui_1_rendering.test.ts:421:        const confirmSpy = vi.fn(() => true);
+src/test/ui_1_rendering.test.ts:422:        vi.stubGlobal('window', { confirm: confirmSpy });
+src/test/ui_1_rendering.test.ts:426:        expect(confirmSpy).not.toHaveBeenCalled();
+src/test/ui_1_rendering.test.ts:430:        const confirmSpy = vi.fn(() => false);
+src/test/ui_1_rendering.test.ts:431:        vi.stubGlobal('window', { confirm: confirmSpy });
+src/test/ui_1_rendering.test.ts:435:        expect(confirmSpy).toHaveBeenCalledWith('潜入深渊？');
+src/test/ui_1_rendering.test.ts:438:    it('结构守卫：App.vue 挂载时真的接线（谁把 wireConfirmRequest(activeGame) 删了谁红）', () => {
+src/test/ui_1_rendering.test.ts:439:        const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');
+src/test/u_r2_trace.test.ts:32:        pending: { confirm: game.pendingUseConfirm?.id ?? null, identify: game.pendingIdentify,
+src/test/u_r2_trace.test.ts:57:                g.executeCommand('confirm_target'); snap('confirm');
+src/test/u_r2_trace.test.ts:79:                g.executeCommand('confirm_target'); snap('empty');
+src/test/u_r2_trace.test.ts:88:                g.executeCommand('confirm_target'); snap('reflected');
+src/test/p1_46_keybindings.test.ts:103:        expect(press('Enter')).toEqual([['confirm_target', undefined]]);
+src/test/b_1a_identification.test.ts:199:        game.confirmArcanaTarget();
+src/test/b_1a_identification.test.ts:228:        expect(staff.maxChargesKnown).toBe(false); // W-2: cancellation is free, discovery follows confirmation.
+src/test/b_1a_identification.test.ts:230:        game.confirmArcanaTarget();
+src/test/w_10_poison.test.ts:247:    it('UI staff submission consumes once; cancel never poisons, confirms tick once and save keeps E separate', () => {
+src/test/w_10_poison.test.ts:251:        g.useArcanaItem(item); g.setArcanaTarget(8, 5); g.grid.getCell(8, 5)!.isVisible = true; g.confirmArcanaTarget();
+src/test/x3b_display_recording.test.ts:50:        selection: { identify: g.pendingIdentify, enchant: g.pendingEnchantment, confirm: g.pendingUseConfirm?.id ?? null },
+src/test/x3b_display_recording.test.ts:61:    it('replays quaff -> flare -> use -> confirm without changing the default target or spending charges', () => {
+src/test/x3b_display_recording.test.ts:68:        g.executeCommand('confirm_target');
+src/test/x3b_display_recording.test.ts:102:    it('keeps item selection, confirmation, throwing and a real endgame equal in animated mirrored replay', () => {
+src/test/x3b_display_recording.test.ts:130:        use('quaff', darkness); use('confirm'); expect(g.player.inventory.items).not.toContain(darkness);
+src/test/x3b_display_recording.test.ts:131:        use('use', wand); act('move', { x: 1, y: 0 }); act('confirm_target');
+src/test/x3b_display_recording.test.ts:211:    use('use', wand); act('move', { x: 1, y: 0 }); act('confirm_target');
+src/test/w_6_arcana_recharge.test.ts:183:        game.confirmArcanaTarget(); // spends a charge then 100 objective ticks restores it
+src/test/b_1c_detect_magic.test.ts:259:        expect(game.confirmPendingUse()).toBe(true);
+src/test/w_25_staff_catalog.test.ts:106:    it.each(added)('%s: real selection, cancel, confirmation, resource/time/autoID and actual effect', id=>{
+src/test/w_25_staff_catalog.test.ts:114:        g.useArcanaItem(item);g.setArcanaTarget(20,5);const result=g.confirmArcanaTarget();
+src/test/w_25_staff_catalog.test.ts:175:        g.confirmArcanaTarget();expect(g.player.loc.x).toBe(6+2*e);
+src/test/w_25_staff_catalog.test.ts:181:        expect(g.getArcanaPreview()?.risk).toBe('certain');expect(g.confirmArcanaTarget()).toBeNull();expect(g.pendingArcana).toBeNull();
+src/test/w_25_staff_catalog.test.ts:183:        g.player.setStatusDuration('immune_fire',20);g.useArcanaItem(item);g.setArcanaTarget(25,5);expect(g.confirmArcanaTarget()).not.toBeNull();expect(g.player.loc.x).toBe(10);
+src/test/w_25_staff_catalog.test.ts:195:        expect(g.confirmArcanaTarget()).toBeNull();expect(g.onConfirmRequest).toHaveBeenCalledOnce();expect([item.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual(before);
+src/test/w_9_directed_status.test.ts:241:    it.each([false, true])('real P2 confirmation with haste reflected=%s charges once; caster ticks follow actual recipient', reflected => {
+src/test/w_9_directed_status.test.ts:252:        g.useArcanaItem(item); g.setArcanaTarget(8, 5); const r = g.confirmArcanaTarget()!;
+src/test/x3_u1_movement_safety.test.ts:87:        const allowed = () => (g as any).confirmPlayerMove(11, 10);
+src/test/x3_u1_movement_safety.test.ts:102:        const allowed = () => (g as any).confirmPlayerMove(11, 10);
+src/test/x3_u1_movement_safety.test.ts:121:        const allowed = () => (g as any).confirmPlayerMove(11, 10);
+src/test/x3_u1_movement_safety.test.ts:146:describe('X3-U1 D07 acidic attack confirmation', () => {
+src/test/fe_1_touch.test.ts:129:    it('法杖：点别处 = move 光标增量；点光标所在格 = confirm_target', () => {
+src/test/fe_1_touch.test.ts:133:            .toEqual({ kind: 'dispatch', action: 'confirm_target' });

@@ -1,0 +1,23 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
++   x: 43,
+-   x: 40,
+    y: 15
+  }
+
+    at file:///Users/coolking70/.codex/worktrees/a771/brogue/brogue-web/ai_docs/reports/x3-u1-evidence/browser-check.mjs:88:41 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: { x: 43, y: 15 },
+  expected: { x: 40, y: 15 },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

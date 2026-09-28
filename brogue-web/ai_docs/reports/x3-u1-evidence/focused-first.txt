@@ -1,0 +1,184 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a771/brogue/brogue-web
+
+ ❯ src/test/x3_u1_movement_safety.test.ts (30 tests | 9 failed) 11557ms
+     × flame: No preserves the entire action state; Yes performs one move 317ms
+     × lava: unknown, levitation/fire immunity >1, confused, entangled and secret exempt; duration 1 does not 324ms
+     × fire/gas undefined: visibility, confusion, burning and specific immunity gates 414ms
+     × questions are ordered fire -> gas -> plate, and stop at the first No 314ms
+     × rapier cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks 467ms
+     × unarmed/protected, unseen, confused, hallucinating and known matching slaying exemptions 297ms
+     × stops an auto step before asking, and stays stopped after answer=false 299ms
+     × stops an auto step before asking, and stays stopped after answer=true 591ms
+     × flame replays rejected/accepted decisions and seeks without UI or OOS 579ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > flame: No preserves the entire action state; Yes performs one move
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'Venture into flame?' ]
+
+Number of calls: 0
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:76:21
+     74|         const g = scene(); terrain(g, t); const ask = vi.fn(() => fals…
+     75|         const old = before(g); move(g);
+     76|         expect(ask).toHaveBeenCalledExactlyOnceWith(message); expect(b…
+       |                     ^
+     77|         expect(g.exportRecording().events.at(-1)).toMatchObject({ turn…
+     78|         ask.mockReturnValue(true); move(g);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > lava: unknown, levitation/fire immunity >1, confused, entangled and secret exempt; duration 1 does not
+TypeError: Cannot read properties of undefined (reading 'flags')
+ ❯ Cell.refreshTerrainProperties src/engine/Map/Grid.ts:818:58
+    816|         let flags = 0;
+    817|         for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+    818|             flags |= TERRAIN_FLAGS[this.layers[layer]!]!.flags;
+       |                                                          ^
+    819|         }
+    820|         this.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+ ❯ Grid.setTerrainLayer src/engine/Map/Grid.ts:960:18
+ ❯ src/test/x3_u1_movement_safety.test.ts:95:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > fire/gas undefined: visibility, confusion, burning and specific immunity gates
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:104:58
+    102|         const allowed = () => (g as any).confirmPlayerMove(11, 10);
+    103|         c.isVisible = false; c.isMagicMapped = true; expect(allowed())…
+    104|         c.isClairvoyantVisible = true; expect(allowed()).toBe(false); …
+       |                                                          ^
+    105|         g.player.setStatusDuration('confused', 2); expect(allowed()).t…
+    106|         (g as any).setBurningDuration(g.player, 2); expect(allowed()).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D01-D04 terrain refusal and CE exemptions > questions are ordered fire -> gas -> plate, and stop at the first No
+TypeError: Cannot read properties of undefined (reading 'flags')
+ ❯ Cell.refreshTerrainProperties src/engine/Map/Grid.ts:818:58
+    816|         let flags = 0;
+    817|         for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+    818|             flags |= TERRAIN_FLAGS[this.layers[layer]!]!.flags;
+       |                                                          ^
+    819|         }
+    820|         this.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+ ❯ Grid.setTerrainLayer src/engine/Map/Grid.ts:960:18
+ ❯ src/test/x3_u1_movement_safety.test.ts:138:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D07 acidic attack confirmation > rapier cancels the whole attack/movement before nausea, damage and RNG; Yes still attacks
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:157:38
+    155|         expect(before(g)).toEqual(old); expect(g.exportRecording().eve…
+    156|         g.player.setStatusDuration('nauseous', 0); ask.mockReturnValue…
+    157|         expect(g.absoluteTurnNumber).toBe(old.turn + 1); expect(m.hp).…
+       |                                      ^
+    158|     });
+    159|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D07 acidic attack confirmation > unarmed/protected, unseen, confused, hallucinating and known matching slaying exemptions
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:179:46
+    177|         g.player.applyStatus('telepathy', 5); expect(abort()).toBe(tru…
+    178|         w.runicType = 'slaying'; w.vorpalEnemy = 'acid_mound'; w.runic…
+    179|         w.runicKnown = true; expect(abort()).toBe(false);
+       |                                              ^
+    180|         w.vorpalEnemy = 'rat'; expect(abort()).toBe(true);
+    181|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D10 automation and recording > stops an auto step before asking, and stays stopped after answer=false
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D10 automation and recording > stops an auto step before asking, and stays stopped after answer=true
+AssertionError: expected "vi.fn()" to be called once with arguments: [ 'Venture into flame?' ]
+
+Number of calls: 0
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:194:21
+    192|         const ask = vi.fn(() => { expect(g.isAutoTraveling()).toBe(fal…
+    193|         g.onConfirmRequest = ask; const old = before(g); g.stepAutoPat…
+    194|         expect(ask).toHaveBeenCalledExactlyOnceWith('Venture into flam…
+       |                     ^
+    195|         expect(g.isAutoTraveling()).toBe(false); expect(g.autoPath).to…
+    196|         if (!answer) expect(before(g)).toEqual(old);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  src/test/x3_u1_movement_safety.test.ts > X3-U1 D10 automation and recording > flame replays rejected/accepted decisions and seeks without UI or OOS
+AssertionError: expected { Object (loc, hp, ...) } to deeply equal { Object (loc, hp, ...) }
+
+- Expected
++ Received
+
+@@ -5,11 +5,11 @@
+      0,
+      0,
+      0,
+    ],
+    "loc": {
+-     "x": 10,
++     "x": 11,
+      "y": 10,
+    },
+    "monsters": [],
+    "rng": {
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+@@ -34,12 +34,12 @@
+    },
+    "stats": {
+      "gold": 0,
+      "kills": 0,
+      "maxDepth": 1,
+-     "turns": 0,
++     "turns": 1,
+    },
+    "statuses": {},
+-   "tick": 0,
+-   "turn": 0,
++   "tick": 100,
++   "turn": 1,
+    "weapon": undefined,
+  }
+
+ ❯ src/test/x3_u1_movement_safety.test.ts:206:27
+    204|     ] as const)('%s replays rejected/accepted decisions and seeks with…
+    205|         const g = scene(setup), old = before(g); g.onConfirmRequest = …
+    206|         expect(before(g)).toEqual(old);
+       |                           ^
+    207|         g.onConfirmRequest = () => true; move(g);
+    208|         const final = before(g), recording = g.exportRecording();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  9 failed | 53 passed (62)
+   Start at  14:08:39
+   Duration  13.53s (transform 2.07s, setup 0ms, import 2.70s, tests 13.08s, environment 1ms)
+

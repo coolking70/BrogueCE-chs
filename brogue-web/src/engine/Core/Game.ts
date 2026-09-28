@@ -3178,7 +3178,9 @@ export class Game {
                 const destCell = this.grid.getCell(newX, newY);
                 const moveNotBlocked = !!destCell?.isPassable ||
                     (!!blockingMonster && blockingMonster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'));
-                if (moveNotBlocked && this.tryPlayerWeaponGeometryAttack(dx, dy)) {
+                const geometryAttack = moveNotBlocked && this.tryPlayerWeaponGeometryAttack(dx, dy);
+                if (geometryAttack === 'aborted') return;
+                if (geometryAttack) {
                     this.needsRender = true;
                     this.playerRecoversFromAttacking(true);
                     this.moveEntrancedMonsters(dx, dy);
@@ -3188,8 +3190,9 @@ export class Game {
                     // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
                     // （sweep = 武器带 ITEM_ATTACKS_ALL_ADJACENT，Combat.c:2049-2090）
                     // + 攻击循环（循环内复查目标存活，对应 CE MB_IS_DYING 复查）。
-                    if (this.playerVomitAttempt()) return;
                     const hitList = this.buildPlayerMeleeHitList(blockingMonster);
+                    if (this.abortAcidicAttack(hitList)) return;
+                    if (this.playerVomitAttempt()) return;
                     let anyAttackHit = false;
                     for (const target of hitList) {
                         if (target.hp <= 0) continue;
@@ -3221,6 +3224,8 @@ export class Game {
                     spentTurn = true;
                     timeSystem.currentTick += this.player.movementSpeed;
                     this.moveEntrancedMonsters(dx, dy);
+                } else if (moveNotBlocked && !this.confirmPlayerMove(newX, newY)) {
+                    return;
                 } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR) // F-1 跨层判定
                     || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.MONSTER_CAGE_CLOSED)
                     || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.ALTAR_CAGE_CLOSED)) {
@@ -3329,16 +3334,10 @@ export class Game {
                 } else if (this.canMoveTo(newX, newY)
                     || (this.grid.getCell(newX, newY)?.layers.some(isDeepWater)
                         && !this.grid.getCell(newX, newY)?.layers.some(blocksPassability))) {
-                    // C-5：CE Movement.c:1303-1322——踩**已发现**的渊格前的确认。
-                    // 前置条件逐条照抄：目标格已发现（DISCOVERED|MAGIC_MAPPED）、
-                    // 玩家非悬浮（STATUS_LEVITATING<=1）、非混乱（STATUS_CONFUSED）、
-                    // 目标带 T_AUTO_DESCENT、(未被缠 || TM_PROMOTES_ON_PLAYER_ENTRY)、
-                    // 非 TM_IS_SECRET。拒绝即取消按键（cancelKeystroke）——不移动、
-                    // 不耗回合。未知渊格无提示（蒙眼跳坑是 CE 原味）。
-                    if (this.diveConfirmationNeeded(newX, newY)
-                        && !this.requestConfirm(i18next.t('fall.confirm', { defaultValue: 'Dive into the depths?' }))) {
-                        return;
-                    }
+                    // CE Movement.c:1368-1400: confirm the complete movement
+                    // attack before struggling, nausea RNG or displacement.
+                    const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
+                    if (this.abortAcidicAttack(specialTargets)) return;
                     if (this.playerStruggle(dx, dy)) return;
 
                     // B-1：CE Movement.c:1368-1400 —— 突进/连枷目标在移动
@@ -3363,8 +3362,6 @@ export class Game {
                         if (this.depth === oldDepth) this.player.loc = origin;
                         return;
                     }
-                    const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
-
                     // Move
                     this.player.loc.x = newX;
                     this.player.loc.y = newY;
@@ -6751,8 +6748,7 @@ export class Game {
      * !invisible 近似（web 无照明级 targeting 视野）；敌我判定走
      * playerWillAttackTarget（存活+非被囚禁+敌对）再显式排除 isAlly
      *（对应 CE 的 creatureState != MONSTER_ALLY，web 两维度独立）。
-     * abortAttack 确认提示（误伤盟友/酸怪）本轮明确不做——盟友根本进不了
-     * 名单（见上），酸怪照打。hitList 顺序：突进目标占首、连枷随后（CE 同）。
+     * X3-U1 在调用方对名单做酸性怪确认；hitList 顺序：突进目标占首、连枷随后（CE 同）。
      */
     private buildLungeFlailHitList(dx: number, dy: number, newX: number, newY: number): Monster[] {
         const flags = this.player.equippedWeapon?.flags;
@@ -6829,14 +6825,17 @@ export class Game {
      * 合，不落回普通移动）。斧不在其中：CE 的横扫只挂在"目标格有怪"的普通
      * 近战分支（buildHitList sweep）。dx/dy 统一取符号归一成 8 向单位步。
      */
-    private tryPlayerWeaponGeometryAttack(dx: number, dy: number): boolean {
+    private tryPlayerWeaponGeometryAttack(dx: number, dy: number): boolean | 'aborted' {
         const flags = this.player.equippedWeapon?.flags;
         if (!flags?.length) return false;
         const ux = Math.sign(dx);
         const uy = Math.sign(dy);
         if (ux === 0 && uy === 0) return false;
-        if (flags.includes('ITEM_ATTACKS_EXTEND') && this.playerWhipAttack(ux, uy)) return true;
-        if (flags.includes('ITEM_ATTACKS_PENETRATE') && this.playerSpearAttack(ux, uy)) return true;
+        if (flags.includes('ITEM_ATTACKS_EXTEND')) {
+            const result = this.playerWhipAttack(ux, uy);
+            if (result) return result;
+        }
+        if (flags.includes('ITEM_ATTACKS_PENETRATE')) return this.playerSpearAttack(ux, uy);
         return false;
     }
 
@@ -6849,7 +6848,7 @@ export class Game {
      *（Movement.c:893）与怪物侧同款简化：web 无照明级可见性 targeting，
      * 只按 invisible 状态近似 monsterIsHidden（P4-1b 起同口径）。
      */
-    private playerWhipAttack(dirX: number, dirY: number): boolean {
+    private playerWhipAttack(dirX: number, dirY: number): boolean | 'aborted' {
         let strike: Monster | undefined;
         for (let i = 0; i < 5; i++) {
             const tx = this.player.loc.x + (1 + i) * dirX;
@@ -6868,6 +6867,7 @@ export class Game {
             }
         }
         if (!strike || !this.playerWillAttackTarget(strike)) return false;
+        if (this.abortAcidicAttack([strike])) return 'aborted';
         this.resolvePlayerMeleeAttackOn(strike);
         return true;
     }
@@ -6881,7 +6881,7 @@ export class Game {
      *   "Artificially reverse the order of the attacks, so that spears of
      *   force can send both monsters flying."——照实现，测试锁死。
      */
-    private playerSpearAttack(dirX: number, dirY: number): boolean {
+    private playerSpearAttack(dirX: number, dirY: number): boolean | 'aborted' {
         const hitList: Monster[] = [];
         let proceed = false;
         for (let i = 0; i < 2; i++) {
@@ -6903,6 +6903,7 @@ export class Game {
             }
         }
         if (!proceed) return false;
+        if (this.abortAcidicAttack(hitList)) return 'aborted';
         // CE Movement.c:1007-1009：先打远的、后打近的（倒序）
         for (let i = hitList.length - 1; i >= 0; i--) {
             this.resolvePlayerMeleeAttackOn(hitList[i]!);
@@ -7344,6 +7345,12 @@ export class Game {
 
     /** CE confirm() 的 web 钩子转发；未接线时按"确认"处理（见字段注记）。 */
     private requestConfirm(message: string): boolean {
+        // CE's automationActive is distinct from autoPlayingLevel. Stop before
+        // consulting either the live UI or recorded decision, even on Yes.
+        if (this.isAutoTraveling()) {
+            this.stopAutoTravel();
+            this.inAutoTravelStep = false;
+        }
         if (this.replayRecording) {
             const decision = this.commandDecisions?.[this.replayDecisionCursor++];
             if (typeof decision !== 'boolean') throw new Error('missing confirmation decision');
@@ -7352,6 +7359,59 @@ export class Game {
         const decision = this.onConfirmRequest ? this.onConfirmRequest(message) : true;
         this.commandDecisions?.push(decision);
         return decision;
+    }
+
+    /** CE Movement.c:778-806,837-852: one question for the first visible
+     * acidic target, before any attack RNG or side effect. */
+    private abortAcidicAttack(hitList: Monster[]): boolean {
+        const weapon = this.player.equippedWeapon;
+        if (!weapon || weapon.isProtected || this.player.hasStatus('confused')
+            || (this.player.hasStatus('hallucinating') && !this.player.hasStatus('telepathy'))) return false;
+        const target = hitList.find(monster => monster.hasBehavior('MONST_DEFEND_DEGRADE_WEAPON')
+            && (canSeeMonster(this.player, this.grid, monster)
+                || (!monsterHidden(this.grid, monster, this.player)
+                    && this.grid.getCell(monster.x, monster.y)?.isClairvoyantVisible))
+            && !(weapon.runicKnown && weapon.runicType === 'slaying'
+                && monsterIsInClass(monster.typeId, weapon.vorpalEnemy)));
+        return !!target && !this.requestConfirm(i18next.t('combat.degrade_weapon_confirm', {
+            weapon: weapon.displayName, monster: this.monsterDisplayName(target),
+            defaultValue: 'Degrade your {{weapon}} by attacking {{monster}}?'
+        }));
+    }
+
+    /** CE Movement.c:1297-1365. Knowledge, durations and flags are read only;
+     * refusing a move never enters the turn/terrain/attack pipeline. */
+    private confirmPlayerMove(x: number, y: number): boolean {
+        const cell = this.grid.getCell(x, y)!;
+        const flags = cellTerrainFlags(this.grid, x, y);
+        const mech = cellTerrainMechFlags(this.grid, x, y);
+        const confused = this.player.hasStatus('confused');
+        const grounded = Math.max(this.player.getStatusDuration('levitating'), this.player.getStatusDuration('flying')) <= 1;
+        const fireVulnerable = this.player.getStatusDuration('immune_fire') <= 1;
+        const visible = cell.isVisible || cell.isClairvoyantVisible;
+        const respiration = this.player.equippedArmor?.runicType === 'respiration'
+            && this.player.equippedArmor.runicKnown;
+        if ((cell.hasMemory || cell.isMagicMapped) && grounded && !confused && fireVulnerable
+            && (flags & T_LAVA_INSTA_DEATH) && !(flags & T_ENTANGLES) && !(mech & TM_IS_SECRET)) {
+            this.stopAutoTravel();
+            logger.log(i18next.t('move.certain_death', { defaultValue: 'that would be certain death!' }), '#ff8888');
+            return false;
+        }
+        if (this.diveConfirmationNeeded(x, y)
+            && !this.requestConfirm(i18next.t('fall.confirm', { defaultValue: 'Dive into the depths?' }))) return false;
+        if (visible && !confused && !this.burningDuration(this.player) && fireVulnerable
+            && (flags & T_IS_FIRE) && !(mech & TM_EXTINGUISHES_FIRE)
+            && !this.requestConfirm(i18next.t('move.flame_confirm', { defaultValue: 'Venture into flame?' }))) return false;
+        if (visible && !confused && !this.burningDuration(this.player)
+            && (flags & (T_CAUSES_CONFUSION | T_CAUSES_PARALYSIS)) && !respiration
+            && !this.requestConfirm(i18next.t('move.gas_confirm', { defaultValue: 'Venture into dangerous gas?' }))) return false;
+        const depressed = this.displacementTrapDepressions?.get(this.grid)?.has(y * this.grid.width + x);
+        const respirationTrap = cell.layers.some(t => t === TerrainType.GAS_TRAP_POISON
+            || t === TerrainType.GAS_TRAP_PARALYSIS || t === TerrainType.GAS_TRAP_CONFUSION);
+        if ((visible || cell.isMagicMapped) && grounded && !confused && (flags & T_IS_DF_TRAP)
+            && !depressed && !(mech & TM_IS_SECRET) && !(respiration && respirationTrap)
+            && !this.requestConfirm(i18next.t('move.plate_confirm', { defaultValue: 'Step onto the pressure plate?' }))) return false;
+        return true;
     }
 
     /**

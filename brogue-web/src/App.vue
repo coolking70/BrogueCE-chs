@@ -5,14 +5,14 @@
 // 且按键语义与 CE 完全同构：Enter = OK = Yes（CE RETURN_KEY 挂在 Yes 钮，
 // IO.c:2956）、Esc = Cancel = No（CE ESCAPE_KEY 挂在 No 钮，IO.c:2966；
 // ACKNOWLEDGE_KEY = ' ' 同样映射 No，Rogue.h:1179）。
-// 纯逻辑（回放/自动寻路旁路）拆成可单测的导出函数；测试见 ui_1_rendering.test.ts。
+// 纯逻辑（回放旁路）拆成可单测的导出函数；测试见 ui_1_rendering.test.ts。
 import type { Game } from './engine/Core/Game';
 
 export function wireConfirmRequest(game: Game): void {
     game.onConfirmRequest = (message: string): boolean => {
-        // CE IO.c:2941-2943：回放/自动演示期间 confirm 一律放行（"oh yes he did"），
-        // 否则回放会在对话框上卡死、自动化会被阻塞。
-        if (game.replayStatus === 'playing' || game.isAutoTraveling()) return true;
+        // CE IO.c:2944：autoPlayingLevel 是自动演示，不是旅行/探索。
+        // 引擎在提问前停止自动行进；回放决策由 requestConfirm 消费。
+        if (game.replayStatus === 'playing') return true;
         return window.confirm(message);
     };
 }

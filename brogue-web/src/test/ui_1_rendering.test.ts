@@ -426,13 +426,13 @@ describe('UI-1 第 6 条：Game.onConfirmRequest 生产侧接线', () => {
         expect(confirmSpy).not.toHaveBeenCalled();
     });
 
-    it('自动寻路期间直接放行（CE rogue.autoPlayingLevel 的 web 等价 = isAutoTraveling）', () => {
+    it('自动寻路仍询问（CE autoPlayingLevel 是自动演示；X3-U1 D10）', () => {
         const confirmSpy = vi.fn(() => false);
         vi.stubGlobal('window', { confirm: confirmSpy });
         const game = stubGame({ autoTraveling: true });
         wireConfirmRequest(game);
-        expect(game.onConfirmRequest!('潜入深渊？')).toBe(true);
-        expect(confirmSpy).not.toHaveBeenCalled();
+        expect(game.onConfirmRequest!('潜入深渊？')).toBe(false);
+        expect(confirmSpy).toHaveBeenCalledWith('潜入深渊？');
     });
 
     it('结构守卫：App.vue 挂载时真的接线（谁把 wireConfirmRequest(activeGame) 删了谁红）', () => {
