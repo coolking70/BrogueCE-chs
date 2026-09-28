@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u8a-counterfactual
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts (15 tests | 1 failed | 13 skipped) 481ms
+   × DF description remains once per command across paralysis, animation=true 234ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > DF description remains once per command across paralysis, animation=true
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:185:77
+    183|  vi.spyOn(g as any,'objectiveTimeBlock').mockImplementation(()=>{origi…
+    184|  g.executeCommand('wait');settle(g);
+    185|  expect(logger.messages.find(m=>m.text==='Paralysis turn feature.')?.c…
+       |                                                                             ^
+    186| });
+    187|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 13 skipped (15)
+   Start at  23:41:09
+   Duration  1.30s (transform 448ms, setup 0ms, import 728ms, tests 481ms, environment 0ms)
+

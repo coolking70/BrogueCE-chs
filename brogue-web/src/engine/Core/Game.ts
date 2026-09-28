@@ -3001,12 +3001,8 @@ export class Game {
         if (action === 'confirm_target' || action === 'cycle_target' || action === 'cancel_target') return;
 
         if (this.player.hasStatus('paralyzed') && action !== 'toggle_inventory' && action !== 'escape') {
-            logger.log(
-                i18next.t('status.player.paralyzed_cannot_act', {
-                    defaultValue: 'You are paralyzed and cannot act!'
-                }),
-                '#ff9999'
-            );
+            // Loaded/test states may already be paralyzed. The scheduler drains
+            // the entire forced wait; the attempted action is not performed.
             timeSystem.currentTick += this.player.movementSpeed;
             this.playerTurnEnded();
             return;
@@ -3186,22 +3182,6 @@ export class Game {
                             && !this.getMonsterAt(this.player.loc.x+x, this.player.loc.y+y);
                     }) && !this.requestConfirm(i18next.t('bolt.confused_lava', { defaultValue: 'Risk stumbling into lava?' }))) return;
                 [dx,dy] = choices[rng.randRange(0, choices.length-1)]!;
-            }
-
-            if ((dx !== 0 || dy !== 0) && !this.player.hasStatus('confused') && this.player.hasStatus('hallucinating') && rng.randPercent(35)) {
-                const dirs: Array<[number, number]> = [
-                    [0, -1], [0, 1], [-1, 0], [1, 0],
-                    [-1, -1], [1, -1], [-1, 1], [1, 1]
-                ];
-                const dir = dirs[rng.randRange(0, dirs.length - 1)]!;
-                dx = dir[0];
-                dy = dir[1];
-                logger.log(
-                    i18next.t('status.player.hallucinating_stumble', {
-                        defaultValue: 'You stumble in a random direction!'
-                    }),
-                    '#cc99ff'
-                );
             }
 
             if ((dx !== 0 || dy !== 0) && this.player.hp > 0) {
@@ -8651,6 +8631,13 @@ export class Game {
             this.player.ticksUntilTurn = 0;
         }
         this.finishTurnEpilogue();
+        // CE Time.c:2872: paralysis acquired during an animated action belongs
+        // to that same command. Drain forced turns synchronously (P2-4), before
+        // recording/replay commits its final checkpoint. An aborted advancement
+        // (including falling) keeps its existing early-return semantics.
+        if (!aborted && !this.isGameOver && this.player.hp > 0 && this.player.hasStatus('paralyzed')) {
+            playerTurnEnded(this.timePorts(), true);
+        }
         const pending = recordingState(this).pendingCommand;
         recordingState(this).pendingCommand = null;
         if (pending?.kind === 'record') {

@@ -1,0 +1,113 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u8a-counterfactual
+
+stdout | src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=false, without executing the attempted move
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts (15 tests | 7 failed | 8 skipped) 1459ms
+     × drains N turns synchronously with animation=false, without executing the attempted move 390ms
+     × drains N turns synchronously with animation=true, without executing the attempted move 156ms
+     × rat acts throughout five paralyzed turns 162ms
+     × jackal acts throughout five paralyzed turns 163ms
+     × hasted preserves subjective/objective clocks 161ms
+     × slowed preserves subjective/objective clocks 161ms
+     × automatic travel drains gas paralysis in the triggering step and stays disturbed 266ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=false, without executing the attempted move
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=true, without executing the attempted move
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:52:53
+     50|             g.executeCommand('move', { x: 1, y: 0 });
+     51|             expect(g.player.loc).toEqual({ x: 10, y: 10 });
+     52|             expect(g.player.hasStatus('paralyzed')).toBe(false);
+       |                                                     ^
+     53|             expect(g.stats.turns).toBe(duration); expect(g.absoluteTur…
+     54|             // CE nutrition pauses during paralysis; only the recovery…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > rat acts throughout five paralyzed turns
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > jackal acts throughout five paralyzed turns
+AssertionError: expected "takeTurn" to be called 5 times, but got 1 times
+ ❯ src/test/x3_u8a_forced_turns.test.ts:75:26
+     73|         const hp = g.player.hp;
+     74|         g.executeCommand('wait');
+     75|         expect(takeTurn).toHaveBeenCalledTimes(actions);
+       |                          ^
+     76|         expect(g.player.hp).toBeLessThan(hp); expect(g.stats.turns).to…
+     77|         expect(g.recordedInputEvents).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > hasted preserves subjective/objective clocks
+AssertionError: expected +0 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ 0
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:84:31
+     82|         g.player.setStatusDuration(status, 100); g.player.setStatusDur…
+     83|         g.executeCommand('wait');
+     84|         expect(g.stats.turns).toBe(turns); expect(g.absoluteTurnNumber…
+       |                               ^
+     85|         expect(g.player.hasStatus('paralyzed')).toBe(false); expect(g.…
+     86|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > slowed preserves subjective/objective clocks
+AssertionError: expected +0 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 0
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:84:31
+     82|         g.player.setStatusDuration(status, 100); g.player.setStatusDur…
+     83|         g.executeCommand('wait');
+     84|         expect(g.stats.turns).toBe(turns); expect(g.absoluteTurnNumber…
+       |                               ^
+     85|         expect(g.player.hasStatus('paralyzed')).toBe(false); expect(g.…
+     86|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > automatic travel drains gas paralysis in the triggering step and stays disturbed
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:133:49
+    131|         g.autoPath = [{ x: 11, y: 10 }, { x: 12, y: 10 }];
+    132|         g.stepAutoPath();
+    133|         expect(g.player.hasStatus('paralyzed')).toBe(false); expect(g.…
+       |                                                 ^
+    134|         expect(g.player.loc).toEqual({ x: 11, y: 10 }); expect(g.stats…
+    135|         expect(g.autoPath).toEqual([]); expect(g.recordedInputEvents).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 8 skipped (15)
+   Start at  23:42:57
+   Duration  2.26s (transform 415ms, setup 0ms, import 720ms, tests 1.46s, environment 0ms)
+

@@ -23,7 +23,7 @@ export function runMachineActions(game:Game,trace:MachineTrace,explicitEntry?:Po
  const cells:Cell[]=g.grid.cells.flat(),owned=cells.filter(c=>c.machineNumber===number);
  const find=(...types:T[])=>owned.find(c=>types.some(t=>c.layers.includes(t)));
  const commands:Action[]=[],phases:any[]=[];
- const state=(label:string)=>{const s={label,player:{...g.player.loc},hp:g.player.hp,paralyzed:g.player.getStatusDuration('paralyzed'),depth:g.depth,
+ const state=(label:string)=>{const s={label,player:{...g.player.loc},hp:g.player.hp,paralyzed:g.player.getStatusDuration('paralyzed'),depth:g.depth,turns:g.stats.turns,
   tiles:owned.map(c=>({x:c.x,y:c.y,layers:[...c.layers],volume:c.volume})),inventory:g.player.inventory.items.map((i:any)=>i.id),
   residents:[...g.monsters,...g.dormantMonsters].filter((m:any)=>m.machineHome===number).map((m:any)=>({id:m.id,dormant:m.isDormant,hp:m.hp})),commands:commands.length};phases.push(s);return s;};
  const act=(action:string,data?:any)=>{commands.push({action,data});g.handlePlayerAction(action,data);if(g.isGameOver)throw Error('player died');};
@@ -68,11 +68,16 @@ export function runMachineActions(game:Game,trace:MachineTrace,explicitEntry?:Po
   if(reward){walk(reward.loc);act('pickup');state('reward');walk(entry);}else if(gate)walk(gate);
  }else if([67,68].includes(ce)){
   const trap=find(T.GAS_TRAP_PARALYSIS,T.GAS_TRAP_PARALYSIS_HIDDEN)!;if(!trap)throw Error('no paralysis plate');
-  walk(trap,true);state('triggered');
-  // Stay in the cloud long enough to observe the actual player status, then
-  // request movement until the transient cloud dissipates and movement resumes.
-  for(let n=0;n<40&&!g.player.hasStatus('paralyzed');n++)act('wait');state('paralyzed');
-  act('move',{x:1,y:0});state('blocked-move');
+  // X3-U8a: the triggering command now owns all forced turns. Observe actual
+  // paralysis inside its objective block, then verify the same command returns
+  // recovered in the same position; no synthetic extra input during paralysis.
+  const objective=g.objectiveTimeBlock;
+  g.objectiveTimeBlock=()=>{objective.call(g);if(g.player.hasStatus('paralyzed')&&!phases.some(p=>p.label==='paralyzed'))state('paralyzed');};
+  try {
+   walk(trap,true);state('triggered');
+   for(let n=0;n<40&&!phases.some(p=>p.label==='paralyzed');n++)act('wait');
+  } finally {g.objectiveTimeBlock=objective;}
+  state('recovered');
   const escape=cells.filter(c=>safe(g,c)&&!c.machineNumber&&route(g,g.player.loc,c,true)).sort((a,b)=>Math.abs(a.x-trap.x)+Math.abs(a.y-trap.y)-Math.abs(b.x-trap.x)-Math.abs(b.y-trap.y))[0];
   if(!escape)throw Error('no escape');walk(escape,true);state('escaped');
  }else if([21,69].includes(ce)){

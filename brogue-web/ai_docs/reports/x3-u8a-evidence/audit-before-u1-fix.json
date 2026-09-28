@@ -1,0 +1,135 @@
+{
+  "full": {
+    "success": false,
+    "fileCount": 231,
+    "expectedFileCount": 231,
+    "missingFiles": [],
+    "extraFiles": [],
+    "duplicateFiles": [],
+    "assertionStatusCounts": {
+      "passed": 4376,
+      "skipped": 8,
+      "todo": 5,
+      "failed": 1
+    },
+    "reportedTotals": {
+      "numTotalTestSuites": 986,
+      "numPassedTestSuites": 984,
+      "numFailedTestSuites": 2,
+      "numPendingTestSuites": 0,
+      "numTotalTests": 4390,
+      "numPassedTests": 4376,
+      "numFailedTests": 1,
+      "numPendingTests": 8,
+      "numTodoTests": 5
+    },
+    "failedSuites": [
+      "/Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/src/test/x3_u1_movement_safety.test.ts"
+    ],
+    "failedCases": [
+      {
+        "ancestorTitles": [
+          "X3-U1 D01-D04 terrain refusal and CE exemptions"
+        ],
+        "fullName": "X3-U1 D01-D04 terrain refusal and CE exemptions paralysis gas: No preserves the entire action state; Yes performs one move",
+        "status": "failed",
+        "title": "paralysis gas: No preserves the entire action state; Yes performs one move",
+        "duration": 428.2935420000001,
+        "failureMessages": [
+          "AssertionError: expected 20 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/src/test/x3_u1_movement_safety.test.ts:79:86\n    at file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2025:60\n    at file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/7976/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)"
+        ],
+        "meta": {},
+        "tags": []
+      }
+    ],
+    "unhandledErrors": []
+  },
+  "drift": {
+    "success": true,
+    "fileCount": 1,
+    "expectedFileCount": 1,
+    "missingFiles": [],
+    "extraFiles": [],
+    "duplicateFiles": [],
+    "assertionStatusCounts": {
+      "passed": 1
+    },
+    "reportedTotals": {
+      "numTotalTestSuites": 2,
+      "numPassedTestSuites": 2,
+      "numFailedTestSuites": 0,
+      "numPendingTestSuites": 0,
+      "numTotalTests": 1,
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0
+    },
+    "failedSuites": [],
+    "failedCases": [],
+    "unhandledErrors": []
+  },
+  "gates": [
+    {
+      "name": "types",
+      "command": [
+        "npx",
+        "vue-tsc",
+        "-b"
+      ],
+      "started": "2026-09-28T23:45:00.599991+08:00",
+      "finished": "2026-09-28T23:45:04.766187+08:00",
+      "exitCode": 0,
+      "seconds": 4.166
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started": "2026-09-28T23:45:04.766821+08:00",
+      "finished": "2026-09-28T23:45:10.749963+08:00",
+      "exitCode": 0,
+      "seconds": 5.983
+    },
+    {
+      "name": "npm-test",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile.json=/tmp/x3-u8a-evidence/full-results.json"
+      ],
+      "started": "2026-09-28T23:45:10.750560+08:00",
+      "finished": "2026-09-29T01:07:28.493374+08:00",
+      "exitCode": 1,
+      "seconds": 4935.627
+    },
+    {
+      "name": "drift",
+      "command": [
+        "npm",
+        "run",
+        "test:drift",
+        "--",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile.json=/tmp/x3-u8a-evidence/drift-results.json"
+      ],
+      "started": "2026-09-29T01:07:28.494251+08:00",
+      "finished": "2026-09-29T01:07:53.601664+08:00",
+      "exitCode": 0,
+      "seconds": 25.108
+    }
+  ],
+  "inputCheck": {
+    "count": 424,
+    "changed": []
+  }
+}

@@ -351,118 +351,134 @@ export function updateEnvironment(ports: TimePorts): void {
         ports.effects.commuteFloorItems();
     }
 
-export function playerTurnEnded(ports: TimePorts): void {
-        resetDFMessageEligibility(ports.world.grid);
-        ports.clock.poisonedDuringTurn = ports.world.player.hasStatus('poisoned');
-        ports.effects.killOrphanedBoundFollowers();
-        ports.effects.removeDeadMonsters(false);
+export function playerTurnEnded(ports: TimePorts, continuingParalysis = false): void {
+        // An animated action resumes inside CE's do/while, not at the function
+        // entry: in particular its DF message eligibility must not be reset.
+        if (!continuingParalysis) {
+            resetDFMessageEligibility(ports.world.grid);
+            ports.effects.killOrphanedBoundFollowers();
+            ports.effects.removeDeadMonsters(false);
 
-        // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
-        //（handleXPXP 之后、monstersFall 与推进循环之前）。playerFalls 内部
-        // 会先让怪物随落（monstersFall，Time.c:1124），随后整段 return：
-        // 坠落回合没有气味刷新、没有怪物推进。
-        if (ports.clock.playerFalling) {
-            ports.effects.playerFalls();
-            return;
-        }
-
-        // C-5：CE Time.c:2486-2492——每个玩家回合末怪物坠落（注释原文：
-        // 走得比环境更新更快的怪物不能悬在渊上行动）。CE :2492 位于
-        // updateSafetyMap/气味等主观块之前；web 对应插在此处。
-        ports.effects.monstersFall();
-
-        // CE Time.c:2500: messages in the advancing turn have its new number.
-        if (!ports.world.player.hasStatus('paralyzed')) logger.turn++;
-
-        ports.effects.syncEquipmentStatuses();
-
-        // C-7 收尾轮补的每回合视野刷新：CE 里 updateVision 由每个动作结算
-        // 路径 eager 调用（Movement.c:1942 移动 / Combat.c:802,968 攻击 /
-        // Items.c:5509,5551 等），故 Time.c:2610 主观块读 currentStealthRange
-        // 时 pmap 光照/IS_IN_SHADOW 恒新鲜。web 旧状只挂渲染钩子，headless
-        // 或"动作已提交、渲染未跑"的窗口里光照是陈旧的——潜行会按玩家旧
-        // 位置的暗态误判（p4_9 T1/T5 实证）。全程零 RNG 消费，不动生成流。
-        ports.effects.updateVision();
-
-        const stealthRange = ports.effects.calculateStealthRange();
-
-        // CE Time.c:2604-2609：== 0 时累加 movementSpeed（攻击路径已在
-        // playerRecoversFromAttacking 里累加过 attackSpeed，不会进此分支）；
-        // < 0 分支对应 CE 的免费回合残留（player.ticksUntilTurn = -1）。
-        ports.world.player.refreshSpeeds();
-        if (ports.world.player.ticksUntilTurn === 0) {
-            ports.world.player.ticksUntilTurn += ports.world.player.movementSpeed;
-        } else if (ports.world.player.ticksUntilTurn < 0) {
-            ports.world.player.ticksUntilTurn = 0;
-        }
-
-        // ---- P4-8：气味（CE Time.c:2506-2510 + Time.c:2610，主观玩家时间块）----
-        // 每玩家回合恰好一次：先推进 scentTurnNumber（隐身 +10，否则 +3，对应
-        // Time.c:2506-2509），再整图重刷气味（updateScent，Time.c:2610——CE 里
-        // 两处都在 playerTurnEnded 内、怪物推进循环之前）。挂在 100-tick 客观块
-        // 是错误实现：haste（50 tick/动作）下会漏刷、slowed（200 tick/动作）下
-        // 会一回合刷两次。
-        ports.world.scent.turnNumber += ports.world.player.hasStatus('invisible') ? 10 : 3;
-        if (ports.world.scent.turnNumber > 20000) {
-            ports.world.scent.resetTurnNumber();
-            // CE Time.c:2924: roll back every visited floor's values as well.
-            for (const [depth, level] of ports.world.levels) {
-                if (depth !== ports.clock.currentLevelDepth) level.scent?.resetTurnNumber();
+            // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
+            //（handleXPXP 之后、monstersFall 与推进循环之前）。playerFalls 内部
+            // 会先让怪物随落（monstersFall，Time.c:1124），随后整段 return：
+            // 坠落回合没有气味刷新、没有怪物推进。
+            if (ports.clock.playerFalling) {
+                ports.effects.playerFalls();
+                return;
             }
-        }
-        ports.world.scent.update(
-            ports.world.grid,
-            ports.world.player.loc.x,
-            ports.world.player.loc.y,
-            // CE 半径为 DCOLS * FP_FACTOR（Time.c:770-771，等效无圆形截断）；
-            // web 取 DCOLS + DROWS ≥ 地图对角线，同样不截断任何格。
-            ports.world.fov.computeFOVMask(ports.world.player.loc.x, ports.world.player.loc.y, DCOLS + DROWS, obstructsScent)
-        );
 
-        // ---- P4-9：safety map 的回合期管理（CE Time.c:2616-2626，主观玩家块、
-        // 怪物推进之前）----先清"本回合已重算"闩锁；再扫描怪物表，若存在所在格
-        // 在玩家 FOV 内的逃跑怪则主动预更新一次并停（break）——本回合内其余
-        // 逃跑怪（含看不见玩家的）都复用这张图，getSafetyMap 不再重算。
-        ports.clock.updatedSafetyMapThisTurn = false;
-        ports.clock.monsterPathCache.safeTerrain = null;
-        ports.clock.monsterPathCache.allySafety = null;
-        for (const m of ports.world.monsters) {
-            if (m.hp > 0 && m.state === MonsterState.FLEEING &&
-                ports.world.grid.getCell(m.loc.x, m.loc.y)?.isVisible) {
-                ports.effects.updateSafetyMap();
-                break;
+            // C-5：CE Time.c:2486-2492——每个玩家回合末怪物坠落（注释原文：
+            // 走得比环境更新更快的怪物不能悬在渊上行动）。CE :2492 位于
+            // updateSafetyMap/气味等主观块之前；web 对应插在此处。
+            ports.effects.monstersFall();
+        }
+
+        // CE Time.c:2494-2872: one input owns all forced paralysis turns.
+        // Keep subjective setup/epilogue and objective scheduling on every pass;
+        // never recurse or manufacture additional input/recording events.
+        do {
+            if (ports.clock.isGameOver) return;
+            const depth = ports.clock.currentLevelDepth;
+            ports.clock.poisonedDuringTurn = ports.world.player.hasStatus('poisoned');
+            // CE Time.c:2500: messages in the advancing turn have its new number.
+            if (!ports.world.player.hasStatus('paralyzed')) logger.turn++;
+
+            ports.effects.syncEquipmentStatuses();
+
+            // C-7 收尾轮补的每回合视野刷新：CE 里 updateVision 由每个动作结算
+            // 路径 eager 调用（Movement.c:1942 移动 / Combat.c:802,968 攻击 /
+            // Items.c:5509,5551 等），故 Time.c:2610 主观块读 currentStealthRange
+            // 时 pmap 光照/IS_IN_SHADOW 恒新鲜。web 旧状只挂渲染钩子，headless
+            // 或"动作已提交、渲染未跑"的窗口里光照是陈旧的——潜行会按玩家旧
+            // 位置的暗态误判（p4_9 T1/T5 实证）。全程零 RNG 消费，不动生成流。
+            ports.effects.updateVision();
+
+            const stealthRange = ports.effects.calculateStealthRange();
+
+            // CE Time.c:2604-2609：== 0 时累加 movementSpeed（攻击路径已在
+            // playerRecoversFromAttacking 里累加过 attackSpeed，不会进此分支）；
+            // < 0 分支对应 CE 的免费回合残留（player.ticksUntilTurn = -1）。
+            ports.world.player.refreshSpeeds();
+            if (ports.world.player.ticksUntilTurn === 0) {
+                ports.world.player.ticksUntilTurn += ports.world.player.movementSpeed;
+            } else if (ports.world.player.ticksUntilTurn < 0) {
+                ports.world.player.ticksUntilTurn = 0;
             }
-        }
 
-        // ---- P1-42：每步低强度自动搜索（CE Time.c:2544-2552，主观玩家块、
-        // 怪物推进之前）----
-        // 站上任何一格只搜一次（Cell.autoSearched = CE SEARCHED_FROM_HERE，
-        // Rogue.h:1090）；awarenessBonus 由戒指有效附魔给出，基础强度 30、
-        // 半径 3。其后的充能清零：主动搜索只在连续回合累积，上一动作不是
-        // 搜索（justSearched 为 false）则充能作废——CE Time.c:2550-2552。
-        {
-            const playerCell = ports.world.grid.getCell(ports.world.player.loc.x, ports.world.player.loc.y);
-            if (ports.effects.awarenessBonus() > -30 && playerCell && !playerCell.autoSearched) {
-                ports.effects.searchForSecrets(ports.effects.awarenessBonus() + 30);
-                playerCell.autoSearched = true;
+            // ---- P4-8：气味（CE Time.c:2506-2510 + Time.c:2610，主观玩家时间块）----
+            // 每玩家回合恰好一次：先推进 scentTurnNumber（隐身 +10，否则 +3，对应
+            // Time.c:2506-2509），再整图重刷气味（updateScent，Time.c:2610——CE 里
+            // 两处都在 playerTurnEnded 内、怪物推进循环之前）。挂在 100-tick 客观块
+            // 是错误实现：haste（50 tick/动作）下会漏刷、slowed（200 tick/动作）下
+            // 会一回合刷两次。
+            ports.world.scent.turnNumber += ports.world.player.hasStatus('invisible') ? 10 : 3;
+            if (ports.world.scent.turnNumber > 20000) {
+                ports.world.scent.resetTurnNumber();
+                // CE Time.c:2924: roll back every visited floor's values as well.
+                for (const [depth, level] of ports.world.levels) {
+                    if (depth !== ports.clock.currentLevelDepth) level.scent?.resetTurnNumber();
+                }
             }
-            if (!ports.clock.justSearched && ports.clock.searchingCharge > 0) {
-                ports.clock.searchingCharge = 0;
+            ports.world.scent.update(
+                ports.world.grid,
+                ports.world.player.loc.x,
+                ports.world.player.loc.y,
+                // CE 半径为 DCOLS * FP_FACTOR（Time.c:770-771，等效无圆形截断）；
+                // web 取 DCOLS + DROWS ≥ 地图对角线，同样不截断任何格。
+                ports.world.fov.computeFOVMask(ports.world.player.loc.x, ports.world.player.loc.y, DCOLS + DROWS, obstructsScent)
+            );
+
+            // ---- P4-9：safety map 的回合期管理（CE Time.c:2616-2626，主观玩家块、
+            // 怪物推进之前）----先清"本回合已重算"闩锁；再扫描怪物表，若存在所在格
+            // 在玩家 FOV 内的逃跑怪则主动预更新一次并停（break）——本回合内其余
+            // 逃跑怪（含看不见玩家的）都复用这张图，getSafetyMap 不再重算。
+            ports.clock.updatedSafetyMapThisTurn = false;
+            ports.clock.monsterPathCache.safeTerrain = null;
+            ports.clock.monsterPathCache.allySafety = null;
+            for (const m of ports.world.monsters) {
+                if (m.hp > 0 && m.state === MonsterState.FLEEING &&
+                    ports.world.grid.getCell(m.loc.x, m.loc.y)?.isVisible) {
+                    ports.effects.updateSafetyMap();
+                    break;
+                }
             }
-        }
 
-        // CE Time.c:2635: gradual terrain follows search/scent/safety setup,
-        // immediately before the objective-time advancement loop.
-        ports.effects.sweepDeepWaterItem(ports.world.player, ports.world.player.ticksUntilTurn);
-        if (ports.clock.animationEnabled && !ports.effects.isAutoTraveling()) {
-            ports.effects.beginAdvancement(stealthRange);
-            return;
-        }
+            // ---- P1-42：每步低强度自动搜索（CE Time.c:2544-2552，主观玩家块、
+            // 怪物推进之前）----
+            // 站上任何一格只搜一次（Cell.autoSearched = CE SEARCHED_FROM_HERE，
+            // Rogue.h:1090）；awarenessBonus 由戒指有效附魔给出，基础强度 30、
+            // 半径 3。其后的充能清零：主动搜索只在连续回合累积，上一动作不是
+            // 搜索（justSearched 为 false）则充能作废——CE Time.c:2550-2552。
+            {
+                const playerCell = ports.world.grid.getCell(ports.world.player.loc.x, ports.world.player.loc.y);
+                if (ports.effects.awarenessBonus() > -30 && playerCell && !playerCell.autoSearched) {
+                    ports.effects.searchForSecrets(ports.effects.awarenessBonus() + 30);
+                    playerCell.autoSearched = true;
+                }
+                if (!ports.clock.justSearched && ports.clock.searchingCharge > 0) {
+                    ports.clock.searchingCharge = 0;
+                }
+            }
 
-        const iter = ports.effects.advancementLoop(stealthRange);
-        let step = iter.next();
-        while (!step.done) step = iter.next();
-        ports.effects.finishTurnEpilogue();
+            // CE Time.c:2635: gradual terrain follows search/scent/safety setup,
+            // immediately before the objective-time advancement loop.
+            ports.effects.sweepDeepWaterItem(ports.world.player, ports.world.player.ticksUntilTurn);
+            if (ports.clock.animationEnabled && !ports.effects.isAutoTraveling()
+                && !ports.world.player.hasStatus('paralyzed')) {
+                ports.effects.beginAdvancement(stealthRange);
+                return;
+            }
+
+            const iter = ports.effects.advancementLoop(stealthRange);
+            let step = iter.next();
+            while (!step.done) step = iter.next();
+            ports.effects.finishTurnEpilogue();
+            // CE ends this invocation immediately on a fall or death.
+            if (ports.clock.currentLevelDepth !== depth) return;
+        } while (!ports.clock.isGameOver && ports.world.player.hp > 0
+            && ports.world.player.hasStatus('paralyzed'));
+
     }
 
 export function finishTurnEpilogue(ports: TimePorts): void {

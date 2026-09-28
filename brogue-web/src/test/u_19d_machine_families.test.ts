@@ -57,7 +57,9 @@ describe('U19d whole natural machines: entrance → actual commands → payoff',
   }
   if([67,68].includes(row.ce)){
    expect(phase('triggered').tiles.filter((c:any)=>c.layers.includes(T.MACHINE_PARALYSIS_VENT)).length).toBeGreaterThanOrEqual(2);
-   expect(phase('paralyzed').paralyzed).toBeGreaterThan(0);expect(phase('blocked-move').player).toEqual(phase('paralyzed').player);
+   expect(phase('paralyzed').paralyzed).toBeGreaterThan(0);expect(phase('recovered').player).toEqual(phase('paralyzed').player);
+   expect(phase('recovered').paralyzed).toBe(0);expect(phase('recovered').commands).toBe(phase('paralyzed').commands);
+   expect(phase('recovered').turns).toBeGreaterThan(phase('paralyzed').turns);
    expect(phase('escaped').paralyzed).toBe(0);expect(phase('escaped').player).not.toEqual(phase('paralyzed').player);expect(result.after.hp).toBe(result.before.hp);
   }
   if([21,43,69].includes(row.ce)){

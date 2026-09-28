@@ -76,7 +76,12 @@ describe('X3-U1 D01-D04 terrain refusal and CE exemptions', () => {
         expect(ask).toHaveBeenCalledExactlyOnceWith(message); expect(before(g)).toEqual(old);
         expect(g.exportRecording().events.slice(-1)[0]).toMatchObject({ turn: old.turn, tick: old.tick, rng: old.rng, decisions: [false] });
         ask.mockReturnValue(true); move(g);
-        expect(g.player.loc).toEqual({ x: 11, y: 10 }); expect(g.absoluteTurnNumber).toBe(old.turn + 1);
+        expect(g.player.loc).toEqual({ x: 11, y: 10 });
+        // CE Time.c:489-490, 2872: accepting this move also owns the full
+        // 20-turn paralysis wait; the other hazards still take one turn.
+        expect(g.absoluteTurnNumber).toBe(old.turn + (t === T.PARALYSIS_GAS ? 20 : 1));
+        expect(g.player.hasStatus('paralyzed')).toBe(false);
+        expect(g.exportRecording().events).toHaveLength(2); // rejected input, then one accepted move
         expect(g.exportRecording().events.slice(-1)[0]?.decisions).toEqual([true]);
     });
 

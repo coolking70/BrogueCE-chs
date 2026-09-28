@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7976/brogue/brogue-web
+
+(node:74505) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/x3_u8a_forced_turns.test.ts (13 tests | 2 failed) 4964ms
+     × gas onset during an action, animation=false: final checkpoint, replay and seek are identical 692ms
+     × gas onset during an action, animation=true: final checkpoint, replay and seek are identical 667ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > gas onset during an action, animation=false: final checkpoint, replay and seek are identical
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > gas onset during an action, animation=true: final checkpoint, replay and seek are identical
+AssertionError: expected { depth: 1, width: 79, …(41) } to deeply equal { depth: 1, width: 79, …(41) }
+
+Compared values have no visual difference.
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:113:92
+    111|         vi.spyOn(g, 'startNewGame').mockImplementation(options => { st…
+    112|         expect(g.loadReplay(recording)).toBe(true); g.replayStep(true)…
+    113|         expect(g.replayCursor).toBe(1); expect(g.replayError).toBeNull…
+       |                                                                                            ^
+    114|         g.replaySeek(0); g.replaySeek(1);
+    115|         expect(g.replayCursor).toBe(1); expect(g.replayError).toBeNull…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  2 failed | 61 passed (63)
+   Start at  23:22:17
+   Duration  47.79s (transform 432ms, setup 0ms, import 1.29s, tests 46.27s, environment 0ms)
+

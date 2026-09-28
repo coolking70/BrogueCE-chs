@@ -1,0 +1,2258 @@
+{
+  "results": [
+    {
+      "scene": "one key, five turns, rat attacks",
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "hp": 986,
+        "paralyzed": 0,
+        "turns": 5,
+        "objective": 5,
+        "events": [
+          {
+            "index": 0,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 5,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 1493160255,
+                  "b": 370897102,
+                  "c": 1349210443,
+                  "d": 4211356307
+                },
+                {
+                  "a": 960454558,
+                  "b": 3738719986,
+                  "c": 2184591319,
+                  "d": 1117976912
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2634,
+              "cosmeticNumbersGenerated": 161
+            }
+          }
+        ],
+        "rng": {
+          "a": 1493160255,
+          "b": 370897102,
+          "c": 1349210443,
+          "d": 4211356307
+        },
+        "draws": 2634,
+        "messages": [
+          "老鼠 对你造成了 9 点伤害。",
+          "老鼠 对你造成了 6 点伤害。",
+          "老鼠 对你造成了 3 点伤害。",
+          "你恢复了行动能力。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 986,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 11,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": -1,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "animated gas onset drains within wait, acknowledgment adds no command",
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "hp": 1000,
+        "paralyzed": 0,
+        "turns": 20,
+        "objective": 20,
+        "events": [
+          {
+            "index": 0,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "wait",
+            "data": null,
+            "decisions": [],
+            "turn": 20,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 63887300,
+                  "b": 176638673,
+                  "c": 3277721332,
+                  "d": 3622505838
+                },
+                {
+                  "a": 960454558,
+                  "b": 3738719986,
+                  "c": 2184591319,
+                  "d": 1117976912
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 3538,
+              "cosmeticNumbersGenerated": 161
+            }
+          }
+        ],
+        "rng": {
+          "a": 63887300,
+          "b": 176638673,
+          "c": 3277721332,
+          "d": 3622505838
+        },
+        "draws": 3538,
+        "messages": [
+          "你被麻痹了！",
+          "你恢复了行动能力。"
+        ],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": "你被麻痹了！",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 1000,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "scene": "browser replay and seek",
+      "animated": {
+        "cursor": 1,
+        "error": null
+      },
+      "seek": {
+        "cursor": 1,
+        "error": null
+      }
+    },
+    {
+      "scene": "40 real movement keys under hallucination match sober directions and substantive RNG",
+      "trace": [
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 11,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 11
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        },
+        {
+          "player": {
+            "x": 10,
+            "y": 10
+          },
+          "rng": {
+            "a": 2622608817,
+            "b": 1416493066,
+            "c": 1831664774,
+            "d": 2462605287
+          },
+          "draws": 2620
+        }
+      ],
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "hp": 1000,
+        "paralyzed": 0,
+        "turns": 40,
+        "objective": 40,
+        "events": [
+          {
+            "index": 0,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 1,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 4129914667,
+                  "b": 2048674923,
+                  "c": 424687607,
+                  "d": 1218971388
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 874
+            }
+          },
+          {
+            "index": 1,
+            "tick": 200,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 2,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1026643978,
+                  "b": 601399580,
+                  "c": 74462757,
+                  "d": 2710281235
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 3009
+            }
+          },
+          {
+            "index": 2,
+            "tick": 300,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 3,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1352356846,
+                  "b": 2890906808,
+                  "c": 497269602,
+                  "d": 2210981293
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 5184
+            }
+          },
+          {
+            "index": 3,
+            "tick": 400,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 4,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1730191874,
+                  "b": 2592215852,
+                  "c": 3679707338,
+                  "d": 2526195786
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 7317
+            }
+          },
+          {
+            "index": 4,
+            "tick": 500,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 5,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2444925469,
+                  "b": 16934327,
+                  "c": 2616029394,
+                  "d": 1077869209
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 9492
+            }
+          },
+          {
+            "index": 5,
+            "tick": 600,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 6,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3116178262,
+                  "b": 821947012,
+                  "c": 3027201956,
+                  "d": 4275945336
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 11635
+            }
+          },
+          {
+            "index": 6,
+            "tick": 700,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 7,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 162763207,
+                  "b": 1668841727,
+                  "c": 830631268,
+                  "d": 3398594084
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 13802
+            }
+          },
+          {
+            "index": 7,
+            "tick": 800,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 8,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2061838983,
+                  "b": 725820051,
+                  "c": 3382142471,
+                  "d": 720020534
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 15989
+            }
+          },
+          {
+            "index": 8,
+            "tick": 900,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 9,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2423374535,
+                  "b": 1190066453,
+                  "c": 2739038099,
+                  "d": 1112002041
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 18130
+            }
+          },
+          {
+            "index": 9,
+            "tick": 1000,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 10,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3023764720,
+                  "b": 2965662840,
+                  "c": 2439810570,
+                  "d": 4204152737
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 20221
+            }
+          },
+          {
+            "index": 10,
+            "tick": 1100,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 11,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1308286145,
+                  "b": 237025369,
+                  "c": 2978577477,
+                  "d": 1726423939
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 22338
+            }
+          },
+          {
+            "index": 11,
+            "tick": 1200,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 12,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3386164076,
+                  "b": 3512278459,
+                  "c": 1689225457,
+                  "d": 3769722649
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 24431
+            }
+          },
+          {
+            "index": 12,
+            "tick": 1300,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 13,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1438868525,
+                  "b": 1670261760,
+                  "c": 1775012065,
+                  "d": 3848605511
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 26564
+            }
+          },
+          {
+            "index": 13,
+            "tick": 1400,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 14,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1910856959,
+                  "b": 170498176,
+                  "c": 3263811883,
+                  "d": 1570604380
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 28685
+            }
+          },
+          {
+            "index": 14,
+            "tick": 1500,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 15,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 4190245704,
+                  "b": 4080355758,
+                  "c": 3614719656,
+                  "d": 4118611056
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 30834
+            }
+          },
+          {
+            "index": 15,
+            "tick": 1600,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 16,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 347994329,
+                  "b": 209265652,
+                  "c": 3619502277,
+                  "d": 3076695802
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 32995
+            }
+          },
+          {
+            "index": 16,
+            "tick": 1700,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 17,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 146952308,
+                  "b": 2508235839,
+                  "c": 2790827598,
+                  "d": 4118195632
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 35160
+            }
+          },
+          {
+            "index": 17,
+            "tick": 1800,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 18,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2915837449,
+                  "b": 1891196767,
+                  "c": 3782746669,
+                  "d": 3635266972
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 37317
+            }
+          },
+          {
+            "index": 18,
+            "tick": 1900,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 19,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3963512793,
+                  "b": 2090718433,
+                  "c": 3314062980,
+                  "d": 3193573808
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 39452
+            }
+          },
+          {
+            "index": 19,
+            "tick": 2000,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 20,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1919192885,
+                  "b": 2991694342,
+                  "c": 2576060141,
+                  "d": 2383117246
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 41595
+            }
+          },
+          {
+            "index": 20,
+            "tick": 2100,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 21,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2912676737,
+                  "b": 358370814,
+                  "c": 931032354,
+                  "d": 2503255145
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 43806
+            }
+          },
+          {
+            "index": 21,
+            "tick": 2200,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 22,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1540848216,
+                  "b": 2444185822,
+                  "c": 425346696,
+                  "d": 762033397
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 45927
+            }
+          },
+          {
+            "index": 22,
+            "tick": 2300,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 23,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3324619317,
+                  "b": 372966446,
+                  "c": 4233500038,
+                  "d": 4067066767
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 48072
+            }
+          },
+          {
+            "index": 23,
+            "tick": 2400,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 24,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1993064390,
+                  "b": 1036179629,
+                  "c": 2637154939,
+                  "d": 3603915968
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 50195
+            }
+          },
+          {
+            "index": 24,
+            "tick": 2500,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 25,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3321948181,
+                  "b": 3730510960,
+                  "c": 3911746523,
+                  "d": 960090760
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 52350
+            }
+          },
+          {
+            "index": 25,
+            "tick": 2600,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 26,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2143004361,
+                  "b": 2545984946,
+                  "c": 982936566,
+                  "d": 2036808038
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 54485
+            }
+          },
+          {
+            "index": 26,
+            "tick": 2700,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 27,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2346378617,
+                  "b": 1788412427,
+                  "c": 1362295502,
+                  "d": 2713013254
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 56622
+            }
+          },
+          {
+            "index": 27,
+            "tick": 2800,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 28,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 10792651,
+                  "b": 2821256403,
+                  "c": 3607866861,
+                  "d": 1658299539
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 58771
+            }
+          },
+          {
+            "index": 28,
+            "tick": 2900,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 29,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 900910326,
+                  "b": 711255611,
+                  "c": 1079133653,
+                  "d": 2702960553
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 60894
+            }
+          },
+          {
+            "index": 29,
+            "tick": 3000,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 30,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3180499614,
+                  "b": 1069296936,
+                  "c": 4244852963,
+                  "d": 210424994
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 63063
+            }
+          },
+          {
+            "index": 30,
+            "tick": 3100,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 31,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 4144644100,
+                  "b": 662293903,
+                  "c": 1182662332,
+                  "d": 1494014039
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 65216
+            }
+          },
+          {
+            "index": 31,
+            "tick": 3200,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 32,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1657356768,
+                  "b": 4230834019,
+                  "c": 4267465844,
+                  "d": 1715726571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 67381
+            }
+          },
+          {
+            "index": 32,
+            "tick": 3300,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 33,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 3253468320,
+                  "b": 1627950953,
+                  "c": 1366884969,
+                  "d": 1380495795
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 69540
+            }
+          },
+          {
+            "index": 33,
+            "tick": 3400,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 34,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 4111985404,
+                  "b": 3510091473,
+                  "c": 2813483734,
+                  "d": 886978141
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 71693
+            }
+          },
+          {
+            "index": 34,
+            "tick": 3500,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 35,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 92025320,
+                  "b": 1863385049,
+                  "c": 1105098676,
+                  "d": 3775538588
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 73846
+            }
+          },
+          {
+            "index": 35,
+            "tick": 3600,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 36,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2731537842,
+                  "b": 2362979065,
+                  "c": 960137125,
+                  "d": 2057520273
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 75951
+            }
+          },
+          {
+            "index": 36,
+            "tick": 3700,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 37,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2725908859,
+                  "b": 2716905070,
+                  "c": 2418064247,
+                  "d": 1824292443
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 78106
+            }
+          },
+          {
+            "index": 37,
+            "tick": 3800,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 11
+            },
+            "action": "move",
+            "data": 1,
+            "decisions": [],
+            "turn": 38,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1778043295,
+                  "b": 3096779766,
+                  "c": 3612623766,
+                  "d": 1893372329
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 80279
+            }
+          },
+          {
+            "index": 38,
+            "tick": 3900,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 11
+            },
+            "action": "move",
+            "data": 2,
+            "decisions": [],
+            "turn": 39,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 1968538908,
+                  "b": 3477968610,
+                  "c": 2475155225,
+                  "d": 1547937603
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 82430
+            }
+          },
+          {
+            "index": 39,
+            "tick": 4000,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "move",
+            "data": 0,
+            "decisions": [],
+            "turn": 40,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 2622608817,
+                  "b": 1416493066,
+                  "c": 1831664774,
+                  "d": 2462605287
+                },
+                {
+                  "a": 2746765607,
+                  "b": 732080949,
+                  "c": 1295218983,
+                  "d": 2030120864
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2620,
+              "cosmeticNumbersGenerated": 84589
+            }
+          }
+        ],
+        "rng": {
+          "a": 2622608817,
+          "b": 1416493066,
+          "c": 1831664774,
+          "d": 2462605287
+        },
+        "draws": 2620,
+        "messages": [],
+        "text": {
+          "seed": "33008",
+          "acknowledgment": null,
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 1000,
+            "nutrition": 2110,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "hallucinating": 60
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 40,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 9,
+              "y": 24
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

@@ -21,7 +21,7 @@
  * 哨兵（任务书 §六.1/2）：对抗⑨ 火侧曲线（FIRE-NAT seed2026/777 逐位）、
  * 对抗⑩ G-1 扩散守恒 + G-2 蒸汽气源（+15/回合）。
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createHeadlessGame } from './harness';
 import type { Game } from '../engine/Core/Game';
 import { Grid, TerrainType, DungeonLayer } from '../engine/Map/Grid';
@@ -207,33 +207,46 @@ describe('G-3 对抗④：每回合 max() 刷新（CE status = max(status, N)）
 // 对抗⑤：麻痹药水改线（CE Items.c:8117-8120，云而非直上状态）
 // ---------------------------------------------------------------------------
 describe('G-3 对抗⑤：potion_of_paralysis 改产 PARALYSIS_GAS 云', () => {
+    // X3-U8a drains paralysis before quaff returns. Observe the same first
+    // objective block as before, without replacing gas/status/scheduling logic.
+    function quaffFirstBlock(game: Game) {
+        const potion = ItemLoader.spawnPotion('potion_of_paralysis', -1, -1)!;
+        game.player.inventory.addItem(potion);
+        let first: { tile: number; volume: number; gas: GasType; duration: number } | undefined;
+        const original = priv(game).objectiveTimeBlock.bind(game);
+        const observe = vi.spyOn(priv(game), 'objectiveTimeBlock').mockImplementation(() => {
+            original();
+            const cell = game.grid.getCell(4, 4)!;
+            first ??= { tile: cell.layers[L.GAS]!, volume: cell.volume,
+                gas: game.environment.gasGrid[4]![4]!.type, duration: game.player.getStatusDuration('paralyzed') };
+        });
+        try { game.quaffItem(potion); } finally { observe.mockRestore(); }
+        expect(first).toBeDefined();
+        expect(game.player.hasStatus('paralyzed')).toBe(false);
+        return first!;
+    }
     it('喝麻痹药水：脚下 GAS 层 = PARALYSIS_GAS、云真实铺开（直上状态的旧实现翻红）', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
-        const potion = ItemLoader.spawnPotion('potion_of_paralysis', -1, -1)!;
-        game.player.inventory.addItem(potion);
-        game.quaffItem(potion);
-        const cell = game.grid.getCell(4, 4)!;
-        expect(cell.layers[L.GAS], 'CE DF_PARALYSIS_GAS_CLOUD_POTION：麻痹气云落在脚下').toBe(C.PARALYSIS_GAS);
+        const first = quaffFirstBlock(game);
+        expect(first.tile, 'CE DF_PARALYSIS_GAS_CLOUD_POTION：麻痹气云落在脚下').toBe(C.PARALYSIS_GAS);
         // 注：quaff 是完整回合（CE Items.c:7633 → playerTurnEnded），回合末
         // updateGases 跑了两轮——QUICK 档消散 + 8 邻均分后中心格体积必然
         // 小于注入值 1000（种子 42 实测 110），这里锁"体积已扩散但真实在场"
         // 的窗口，体积 1000 的注入断言放在验收组（不走完整回合）。
-        expect(cell.volume, '扩散后中心格仍有真实体积（G-1 量纲）').toBeGreaterThan(0);
-        expect(game.environment.gasGrid[4]![4]!.type).toBe(GasType.PARALYSIS);
+        expect(first.volume, '扩散后中心格仍有真实体积（G-1 量纲）').toBeGreaterThan(0);
+        expect(first.gas).toBe(GasType.PARALYSIS);
     });
 
     it('玩家喝下后自食其果：经效果判定上麻痹 20（旧直上 8 的实现翻红）', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
-        const potion = ItemLoader.spawnPotion('potion_of_paralysis', -1, -1)!;
-        game.player.inventory.addItem(potion);
-        game.quaffItem(potion);
+        const first = quaffFirstBlock(game);
         // quaff 是完整回合（CE Items.c:7633 → playerTurnEnded）：客观块里的
         // applyEnvironmentalEffects 命中脚下云。时长必须是效果判定的 20，
         // 不是旧直上路径的 8（递减后 7/19 都算旧路径残留）。
-        expect([19, 20]).toContain(game.player.getStatusDuration('paralyzed'));
-        expect(game.player.getStatusDuration('paralyzed'), '旧直上 8 的实现在此翻红（8−1=7 ∉ {19,20}）')
+        expect([19, 20]).toContain(first.duration);
+        expect(first.duration, '旧直上 8 的实现在此翻红（8−1=7 ∉ {19,20}）')
             .not.toBe(7);
     });
 });

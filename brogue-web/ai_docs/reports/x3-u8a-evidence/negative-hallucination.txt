@@ -1,0 +1,40 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u8a-counterfactual
+
+stdout | src/test/x3_u8a_forced_turns.test.ts > X3-U8a D11: hallucination never changes movement or substantive RNG > all eight requested directions and forty RNG checkpoints match the sober control
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts (15 tests | 1 failed | 12 skipped) 990ms
+     × all eight requested directions and forty RNG checkpoints match the sober control 217ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a D11: hallucination never changes movement or substantive RNG > all eight requested directions and forty RNG checkpoints match the sober control
+AssertionError: expected { x: 10, y: 11 } to deeply equal { x: 9, y: 11 }
+
+- Expected
++ Received
+
+  {
+-   "x": 9,
++   "x": 10,
+    "y": 11,
+  }
+
+ ❯ walk src/test/x3_u8a_forced_turns.test.ts:151:49
+    149|             const d = dirs[i % dirs.length]!;
+    150|             g.executeCommand('move', d);
+    151|             if (!confused) expect(g.player.loc).toEqual({ x: 10 + d.x,…
+       |                                                 ^
+    152|             const random = rng.getState();
+    153|             trace.push({ player: { ...g.player.loc }, rng: random.stre…
+ ❯ src/test/x3_u8a_forced_turns.test.ts:159:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed | 12 skipped (15)
+   Start at  23:42:34
+   Duration  1.77s (transform 414ms, setup 0ms, import 701ms, tests 990ms, environment 0ms)
+

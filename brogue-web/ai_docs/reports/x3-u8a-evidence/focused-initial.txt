@@ -1,0 +1,121 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7976/brogue/brogue-web
+
+ ❯ src/test/g_3_gas_effects.test.ts (26 tests | 2 failed) 8715ms
+     × 喝麻痹药水：脚下 GAS 层 = PARALYSIS_GAS、云真实铺开（直上状态的旧实现翻红） 508ms
+     × 玩家喝下后自食其果：经效果判定上麻痹 20（旧直上 8 的实现翻红） 495ms
+ ❯ src/test/u_19d_machine_families.test.ts (24 tests | 2 failed) 32318ms
+     × natural CE67 seed424242/D3: natural action chain 1163ms
+     × natural CE68 seed424242/D7: natural action chain 2021ms
+stdout | src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=false, without executing the attempted move
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+(node:74400) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/x3_u8a_forced_turns.test.ts (13 tests | 5 failed) 4678ms
+     × drains N turns synchronously with animation=false, without executing the attempted move 447ms
+     × drains N turns synchronously with animation=true, without executing the attempted move 414ms
+     × jackal acts throughout five paralyzed turns 176ms
+     × gas onset during an action, animation=false: final checkpoint, replay and seek are identical 732ms
+     × gas onset during an action, animation=true: final checkpoint, replay and seek are identical 652ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/g_3_gas_effects.test.ts > G-3 对抗⑤：potion_of_paralysis 改产 PARALYSIS_GAS 云 > 喝麻痹药水：脚下 GAS 层 = PARALYSIS_GAS、云真实铺开（直上状态的旧实现翻红）
+AssertionError: CE DF_PARALYSIS_GAS_CLOUD_POTION：麻痹气云落在脚下: expected +0 to be 39 // Object.is equality
+
+- Expected
++ Received
+
+- 39
++ 0
+
+ ❯ src/test/g_3_gas_effects.test.ts:217:81
+    215|         game.quaffItem(potion);
+    216|         const cell = game.grid.getCell(4, 4)!;
+    217|         expect(cell.layers[L.GAS], 'CE DF_PARALYSIS_GAS_CLOUD_POTION：麻…
+       |                                                                                 ^
+    218|         // 注：quaff 是完整回合（CE Items.c:7633 → playerTurnEnded），回合末
+    219|         // updateGases 跑了两轮——QUICK 档消散 + 8 邻均分后中心格体积必然
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/test/g_3_gas_effects.test.ts > G-3 对抗⑤：potion_of_paralysis 改产 PARALYSIS_GAS 云 > 玩家喝下后自食其果：经效果判定上麻痹 20（旧直上 8 的实现翻红）
+AssertionError: expected [ 19, 20 ] to include +0
+ ❯ src/test/g_3_gas_effects.test.ts:235:26
+    233|         // applyEnvironmentalEffects 命中脚下云。时长必须是效果判定的 20，
+    234|         // 不是旧直上路径的 8（递减后 7/19 都算旧路径残留）。
+    235|         expect([19, 20]).toContain(game.player.getStatusDuration('para…
+       |                          ^
+    236|         expect(game.player.getStatusDuration('paralyzed'), '旧直上 8 的实现在…
+    237|             .not.toBe(7);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE67 seed424242/D3: natural action chain
+ FAIL  src/test/u_19d_machine_families.test.ts > U19d whole natural machines: entrance → actual commands → payoff > natural CE68 seed424242/D7: natural action chain
+AssertionError: expected 0 to be greater than 0
+ ❯ src/test/u_19d_machine_families.test.ts:60:41
+     58|   if([67,68].includes(row.ce)){
+     59|    expect(phase('triggered').tiles.filter((c:any)=>c.layers.includes(T…
+     60|    expect(phase('paralyzed').paralyzed).toBeGreaterThan(0);expect(phas…
+       |                                         ^
+     61|    expect(phase('escaped').paralyzed).toBe(0);expect(phase('escaped').…
+     62|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=false, without executing the attempted move
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > drains N turns synchronously with animation=true, without executing the attempted move
+AssertionError: expected 2149 to be 2145 // Object.is equality
+
+- Expected
++ Received
+
+- 2145
++ 2149
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:48:40
+     46|             expect(g.player.hasStatus('paralyzed')).toBe(false);
+     47|             expect(g.stats.turns).toBe(duration); expect(g.absoluteTur…
+     48|             expect(g.player.nutrition).toBe(nutrition - duration);
+       |                                        ^
+     49|             expect(g.scent.turnNumber).toBe(scent + 3 * duration);
+     50|             expect(logger.turn).toBe(0); expect(g.isAdvancing).toBe(fa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > jackal acts throughout five paralyzed turns
+AssertionError: expected "takeTurn" to be called 10 times, but got 5 times
+ ❯ src/test/x3_u8a_forced_turns.test.ts:67:26
+     65|         const hp = g.player.hp;
+     66|         g.executeCommand('wait');
+     67|         expect(takeTurn).toHaveBeenCalledTimes(actions);
+       |                          ^
+     68|         expect(g.player.hp).toBeLessThan(hp); expect(g.stats.turns).to…
+     69|         expect(g.recordedInputEvents).toHaveLength(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > gas onset during an action, animation=false: final checkpoint, replay and seek are identical
+ FAIL  src/test/x3_u8a_forced_turns.test.ts > X3-U8a B06: one command owns the complete forced wait > gas onset during an action, animation=true: final checkpoint, replay and seek are identical
+AssertionError: expected { depth: 1, width: 79, …(41) } to deeply equal { depth: 1, width: 79, …(41) }
+
+Compared values have no visual difference.
+
+ ❯ src/test/x3_u8a_forced_turns.test.ts:111:92
+    109|         vi.spyOn(g, 'startNewGame').mockImplementation(options => { st…
+    110|         expect(g.loadReplay(recording)).toBe(true); g.replayStep(true)…
+    111|         expect(g.replayCursor).toBe(1); expect(g.replayError).toBeNull…
+       |                                                                                            ^
+    112|         g.replaySeek(0); g.replaySeek(1);
+    113|         expect(g.replayCursor).toBe(1); expect(g.replayError).toBeNull…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  9 failed | 71 passed (80)
+   Start at  23:19:36
+   Duration  53.68s (transform 492ms, setup 0ms, import 1.79s, tests 51.50s, environment 1ms)
+

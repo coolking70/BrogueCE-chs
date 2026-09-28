@@ -1,0 +1,13 @@
+
+> brogue-web@0.1.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/x3_u1_movement_safety.test.ts --maxWorkers=1 -t paralysis gas: No preserves
+
+
+ RUN  v4.1.11 /private/tmp/x3-u8a-u1-counterfactual
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 32 skipped (33)
+   Start at  01:08:04
+   Duration  929ms (transform 413ms, setup 0ms, import 667ms, tests 186ms, environment 0ms)
+
