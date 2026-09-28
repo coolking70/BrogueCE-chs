@@ -446,5 +446,9 @@
   "inventoryAction": {
     "kind": "reset",
     "contract": "X3-U5：未提交的背包预选操作；新局、读档、关闭及普通背包/使用/投掷入口清空，不入世界快照。"
+  },
+  "receivedLevitationWarning": {
+    "kind": "run",
+    "contract": "X3-U6 / CE Time.c:2878-2911：危险地形预警闩锁；新局 false，run 快照保存 true，返回安全地面复位。"
   }
 }

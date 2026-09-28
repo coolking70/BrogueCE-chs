@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/13b1/brogue/brogue-web
+
+ ❯ src/test/x4b_flavor_text.test.ts (9 tests | 1 failed) 2119ms
+     × retains combat, pickup and item discovery messages in the archive 250ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x4b_flavor_text.test.ts > X4b CE flavorMessage display/archive boundary > retains combat, pickup and item discovery messages in the archive
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/x4b_flavor_text.test.ts:114:81
+    112|         g.executeCommand('pickup');
+    113|         expect(g.player.inventory.items).toContain(item);
+    114|         expect(log.mock.calls.some(([text]) => text.includes('You pick…
+       |                                                                                 ^
+    115|         expect(logger.messages.some(m => m.text.includes('You picked u…
+    116|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 24 passed (25)
+   Start at  21:58:12
+   Duration  7.73s (transform 417ms, setup 0ms, import 1.18s, tests 6.40s, environment 0ms)
+

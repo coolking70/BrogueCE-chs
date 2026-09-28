@@ -43,6 +43,11 @@ export class Inventory {
             && a.quiverNumber === b.quiverNumber;
     }
 
+    /** The retained object after addItem, also used for CE pickup naming. */
+    public stackFor(item: Item): Item | undefined {
+        return this.items.find(other => other === item || this.stacksWith(other, item));
+    }
+
     private nextLetter(): string | undefined {
         return 'abcdefghijklmnopqrstuvwxyz'.split('').find(letter =>
             !this.items.some(item => item.inventoryLetter === letter));

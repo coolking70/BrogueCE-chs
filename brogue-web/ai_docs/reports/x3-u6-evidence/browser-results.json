@@ -1,0 +1,395 @@
+{
+  "results": [
+    {
+      "scene": "desktop key acknowledgment, held-repeat and next move",
+      "before": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "turn": 0,
+        "events": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "你饿得虚弱无力，而且你没有食物。",
+              "color": "#ff9900",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 1,
+          "turn": 0
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      },
+      "after": {
+        "player": {
+          "x": 11,
+          "y": 10
+        },
+        "turn": 1,
+        "events": [
+          {
+            "index": 0,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "move",
+            "data": 3,
+            "decisions": [],
+            "turn": 1,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 369682083,
+                  "b": 2357117219,
+                  "c": 2422437258,
+                  "d": 1895640441
+                },
+                {
+                  "a": 2446725043,
+                  "b": 4122755527,
+                  "c": 3425743323,
+                  "d": 4284546381
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2583,
+              "cosmeticNumbersGenerated": 159
+            }
+          }
+        ],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "你饿得虚弱无力，而且你没有食物。",
+              "color": "#ff9900",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 1,
+          "turn": 1
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      }
+    },
+    {
+      "scene": "two queued warnings, Space then Escape, no commands",
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "turn": 0,
+        "events": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "你饿得虚弱无力，而且你没有食物。",
+              "color": "#ff9900",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            },
+            {
+              "id": 1,
+              "text": "你饿得快昏过去了，而且你没有食物。",
+              "color": "#ff6600",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 2,
+          "turn": 0
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      }
+    },
+    {
+      "scene": "automatic travel stops at shore warning and stays stopped after click",
+      "state": {
+        "player": {
+          "x": 12,
+          "y": 10
+        },
+        "turn": 2,
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 13,
+              "y": 10
+            },
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 369682083,
+                  "b": 2357117219,
+                  "c": 2422437258,
+                  "d": 1895640441
+                },
+                {
+                  "a": 2446725043,
+                  "b": 4122755527,
+                  "c": 3425743323,
+                  "d": 4284546381
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2583,
+              "cosmeticNumbersGenerated": 159
+            }
+          },
+          {
+            "index": 1,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 11,
+              "y": 10
+            },
+            "action": "auto_step",
+            "data": null,
+            "decisions": [],
+            "turn": 1,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 369682083,
+                  "b": 2357117219,
+                  "c": 2422437258,
+                  "d": 1895640441
+                },
+                {
+                  "a": 2446725043,
+                  "b": 4122755527,
+                  "c": 3425743323,
+                  "d": 4284546381
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2583,
+              "cosmeticNumbersGenerated": 159
+            }
+          },
+          {
+            "index": 2,
+            "tick": 200,
+            "depth": 1,
+            "player": {
+              "x": 12,
+              "y": 10
+            },
+            "action": "auto_step",
+            "data": null,
+            "decisions": [],
+            "turn": 2,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 369682083,
+                  "b": 2357117219,
+                  "c": 2422437258,
+                  "d": 1895640441
+                },
+                {
+                  "a": 2446725043,
+                  "b": 4122755527,
+                  "c": 3425743323,
+                  "d": 4284546381
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2583,
+              "cosmeticNumbersGenerated": 159
+            }
+          }
+        ],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "最好赶快返回坚实的地面！",
+              "color": "#ffcc44",
+              "count": 1,
+              "turn": 2,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 1,
+          "turn": 2
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      }
+    },
+    {
+      "scene": "mobile point-of-no-return warning, click, persistent strip highlight",
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "turn": 0,
+        "events": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "你已经来不及返回安全地面了！",
+              "color": "#ffcc44",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 1,
+          "turn": 0
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      }
+    },
+    {
+      "scene": "identify self-description precedes target selection, no extra recorded input",
+      "state": {
+        "player": {
+          "x": 10,
+          "y": 10
+        },
+        "turn": 1,
+        "events": [
+          {
+            "index": 0,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 10,
+              "y": 10
+            },
+            "action": "item:command",
+            "data": "read|a|",
+            "decisions": [],
+            "turn": 1,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 369682083,
+                  "b": 2357117219,
+                  "c": 2422437258,
+                  "d": 1895640441
+                },
+                {
+                  "a": 2446725043,
+                  "b": 4122755527,
+                  "c": 3425743323,
+                  "d": 4284546381
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2583,
+              "cosmeticNumbersGenerated": 159
+            }
+          }
+        ],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "你朗读了题为「妙法玉简妙法玉简」的卷轴。",
+              "color": "#cccccc",
+              "count": 1,
+              "turn": 0
+            },
+            {
+              "id": 1,
+              "text": "这是一张鉴定卷轴。",
+              "color": "#00ffff",
+              "count": 1,
+              "turn": 0,
+              "acknowledge": true
+            }
+          ],
+          "nextId": 2,
+          "turn": 1
+        },
+        "rng": {
+          "a": 369682083,
+          "b": 2357117219,
+          "c": 2422437258,
+          "d": 1895640441
+        },
+        "rngCount": 2583,
+        "path": []
+      }
+    },
+    {
+      "scene": "replay seek passes acknowledgment automatically with zero OOS",
+      "cursor": 2
+    }
+  ],
+  "errors": []
+}

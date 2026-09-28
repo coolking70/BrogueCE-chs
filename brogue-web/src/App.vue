@@ -24,6 +24,7 @@ import { saveSnapshot, readSnapshot, readSaveSummary, deleteSnapshot, type SaveS
 import i18next from 'i18next';
 import GameCanvas from './components/GameCanvas.vue';
 import Sidebar from './components/Sidebar.vue';
+import MessageAcknowledgment from './components/MessageAcknowledgment.vue';
 import InventoryOverlay from './components/InventoryOverlay.vue';
 import GameEndOverlay from './components/GameEndOverlay.vue';
 import MainMenu from './components/MainMenu.vue';
@@ -279,6 +280,7 @@ const handleReturnToTitle = async () => {
     </template>
     <div v-else class="blank-stage"></div>
 
+    <MessageAcknowledgment />
     <MainMenu
       v-if="menuOpen"
       :has-save="hasSave"

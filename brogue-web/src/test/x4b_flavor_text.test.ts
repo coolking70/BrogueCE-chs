@@ -111,8 +111,8 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         expect(logger.messages.some(m => m.text.includes('You see'))).toBe(true);
         g.executeCommand('pickup');
         expect(g.player.inventory.items).toContain(item);
-        expect(log.mock.calls.some(([text]) => text.includes('You picked up'))).toBe(true);
-        expect(logger.messages.some(m => m.text.includes('You picked up'))).toBe(true);
+        expect(log.mock.calls.some(([text]) => text.includes('you now have'))).toBe(true);
+        expect(logger.messages.some(m => m.text.includes('you now have'))).toBe(true);
     });
 
     it('refresh/hover are read-only for saves, both RNG streams and recordings; load/new run rebuild display', () => {

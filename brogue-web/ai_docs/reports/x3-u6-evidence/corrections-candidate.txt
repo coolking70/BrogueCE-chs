@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u6-candidate/brogue-web
+
+No test files found, exiting with code 1
+
+filter: src/test/x3_u6_messages.test.ts, src/test/x4a_movement_rendering.test.ts, src/test/w_2_arcana_submission.test.ts, src/test/u_r2_trace.test.ts, src/test/u_r4_trace.test.ts
+include: **/*.{test,spec}.?(c|m)[jt]s?(x)
+exclude:  **/node_modules/**, **/.git/**
+

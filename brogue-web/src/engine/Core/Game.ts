@@ -70,6 +70,7 @@ import { ensureEntityIdAbove, resetEntityIds, getNextEntityId, restoreNextEntity
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
+import { buildMapToShore, SHORE_HAZARDS, shoreWarning } from '../Map/MapToShore';
 import { Pathfind } from '../Map/Pathfind';
 import { visibleEntities, firstSeenFeatures } from '../Movement/AutoTravelVisibility';
 import { playerTravelTerrainAllowed, playerTravelDiagonalBlocked } from '../Movement/PlayerTravel';
@@ -293,6 +294,7 @@ export class Game {
     private isAutoExploring = false;
     /** CE rogue.disturbed: latched until a new automatic command starts. */
     public disturbed = false;
+    public receivedLevitationWarning = false;
     private autoFight: { targetId: number; loc: Pos; expectedDamage: number; tillDeath: boolean } | null = null;
     /** Yielded CE autoRest/manualSearch/playerRuns state; every step is recorded. */
     private autoAction: {
@@ -544,6 +546,7 @@ export class Game {
         ItemLoader.initConsumables();
         logger.onDisturb = () => { this.disturbed = true; };
         logger.reset();
+        this.receivedLevitationWarning = false;
         this.disturbed = false;
         this.autoFight = null;
         this.autoAction = null;
@@ -2662,7 +2665,7 @@ export class Game {
 
     /** Every user command, including inventory and modal choices, crosses this boundary. */
     public executeCommand(action: string, data?: unknown, perform?: () => void): void {
-        if (this.replayRecording || this.isAdvancing || this.isInputLocked()) return;
+        if (this.replayRecording || this.isAdvancing || this.isInputLocked() || logger.pendingAcknowledgment) return;
         const decisions: boolean[] = [];
         this.commandDecisions = decisions;
         try {
@@ -3525,7 +3528,7 @@ export class Game {
                     if (item.category === ItemCategory.GOLD) {
                         this.stats.gold += item.quantity;
                     }
-                    logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
+                    this.logPickup(item);
                     this.items.splice(itemIndex, 1);
                     // C-4c：TM_PROMOTES_ON_ITEM_PICKUP（CE Items.c:819-829
                     // removeItemAt）。当前 31 地形零载体，调用为结构性忠实；
@@ -3913,7 +3916,7 @@ export class Game {
                         this.applyDetectMagic(item);
                         break;
                     default:
-                        logger.log(i18next.t('potion.unknown', { defaultValue: 'It tastes weird.' }), '#aaaaaa');
+                        logger.log(i18next.t('potion.unknown', { defaultValue: "you feel very strange, as though your body doesn't know how to react!" }), '#aaaaaa', { acknowledge: true });
                         break;
                 }
 
@@ -4036,7 +4039,7 @@ export class Game {
                         if (!ItemLoader.identifiedItems.has(trueId)) {
                             ItemLoader.identifyItemKind(item);
                         }
-                        logger.log(i18next.t('scroll.reveal_identify', { defaultValue: 'This is a scroll of identify.' }), '#00ffff');
+                        logger.log(i18next.t('scroll.reveal_identify', { defaultValue: 'This is a scroll of identify.' }), '#00ffff', { acknowledge: true });
                         if (!this.beginIdentifySelection()) {
                             logger.log(i18next.t('scroll.identify_fail', { defaultValue: 'Everything in your pack is already identified.' }), '#aaaaaa');
                         }
@@ -4045,7 +4048,7 @@ export class Game {
                         // Items.c:7817-7818: reveal the scroll BEFORE selecting.
                         // The generic auto-ID exclusion below is not "never ID".
                         ItemLoader.identifyItemKind(item);
-                        logger.log(i18next.t('scroll.reveal_enchantment', { defaultValue: 'This is a scroll of enchanting.' }), '#00ffff');
+                        logger.log(i18next.t('scroll.reveal_enchantment', { defaultValue: 'This is a scroll of enchanting.' }), '#00ffff', { acknowledge: true });
                         if (this.player.inventory.items.some(target => this.canEnchantTarget(target))) {
                             this.pendingEnchantment = true;
                             this.pendingEnchantmentScrollWasKnown = scrollKindWasKnown;
@@ -4964,7 +4967,7 @@ export class Game {
                     case BoltEffect.ENTRANCEMENT:
                         logger.log(target === this.player
                             ? i18next.t('bolt.entrancement_reflected', { defaultValue: 'The bolt hits you and you suddenly feel disoriented.' })
-                            : i18next.t('bolt.entrancement_hit', { ...args, defaultValue: '{{target}} is entranced!' }), '#ffff88');
+                            : i18next.t('bolt.entrancement_hit', { ...args, defaultValue: '{{target}} is entranced!' }), '#ffff88', { acknowledge: target === this.player });
                         break;
                     case BoltEffect.SLOW: logger.log(i18next.t('bolt.slow_hit', { ...args, defaultValue: '{{name}} slows {{target}}!' }), '#888888'); break;
                     case BoltEffect.HEALING: logger.log(i18next.t('bolt.healing', { ...args, defaultValue: '{{name}} restores {{heal}} HP to {{target}}!' }), '#44ff88'); break;
@@ -5429,7 +5432,11 @@ export class Game {
 
     public chooseEnchantTarget(item: Item): boolean {
         if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
-            || this.player.hp <= 0 || !this.canEnchantTarget(item)) return false;
+            || this.player.hp <= 0) return false;
+        if (!this.canEnchantTarget(item)) {
+            logger.log(i18next.t('scroll.cannot_enchant', { defaultValue: "Can't enchant that." }), '#aaaaaa', { acknowledge: true });
+            return false;
+        }
         this.enchantEquippedItem(item);
         this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_ENCHANTMENT_LIGHT);
         if (!this.pendingEnchantmentScrollWasKnown && enchantingAutoIdentifiesTarget(item)) {
@@ -6216,8 +6223,8 @@ export class Game {
         if (!entity.hasStatus('nauseous') || !rng.randPercent(25)) return false;
         spawnDungeonFeature(this.grid, entity.x, entity.y, catalogFeature(DF.DF_VOMIT), false);
         if (!this.isAutoTraveling() && (entity === this.player || this.visibleMonsters.has(entity as Monster))) {
-            logger.log(i18next.t('status.vomit', { name: entity === this.player ? '你' : entity.name,
-                defaultValue: `${entity === this.player ? '你' : entity.name}剧烈地呕吐。` }), '#b7a26b');
+            logger.log(i18next.t('status.vomit', { name: entity === this.player ? i18next.t('entity.you', { defaultValue: 'you' }) : entity.name,
+                defaultValue: '{{name}} vomits profusely.' }), '#b7a26b');
         }
         if (entity instanceof Monster) entity.ticksUntilTurn = entity.movementSpeed;
         this.needsRender = true;
@@ -6235,7 +6242,7 @@ export class Game {
         const applied = entity.applyStatus(status, duration, 'refresh');
         if (!applied) return false;
         if (entity === this.player) {
-            if (status === 'paralyzed') logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999');
+            if (status === 'paralyzed') logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999', { acknowledge: true });
             if (status === 'confused' || status === 'hallucinating') {
                 logger.log(i18next.t('status.player.disoriented', { defaultValue: 'Your senses become unstable.' }), '#cc99ff');
             }
@@ -6711,9 +6718,10 @@ export class Game {
             return remainingDamage * 2;
         }
         if (armor.runicType === 'immolation' && rng.randPercent(10)) {
+            const wasKnown = armor.runicKnown;
             armor.runicKnown = true;
             logger.log(i18next.t('runic.armor.immolation', { name: armor.displayName,
-                defaultValue: `Flames suddenly explode out of your ${armor.displayName}!` }), '#ff8844');
+                defaultValue: `Flames suddenly explode out of your ${armor.displayName}!` }), '#ff8844', { acknowledge: !wasKnown });
             // CE Combat.c:1086-1088: catalog DF_ARMOR_IMMOLATION, refresh on, no blocking abort.
             spawnDungeonFeature(this.grid, this.player.loc.x, this.player.loc.y,
                 catalogFeature(DF.DF_ARMOR_IMMOLATION), false);
@@ -6764,17 +6772,18 @@ export class Game {
             this.synchronizePlayerTimeState();
         }
         for (const status of playerExpired) {
-            if (status === 'weakened') logger.log(i18next.t('status.player.weakened_off', { defaultValue: 'Your strength returns.' }), '#cccccc');
+            if (status === 'weakened') logger.log(i18next.t('status.player.weakened_off', { defaultValue: 'strength returns to your muscles as the weakening toxin wears off.' }), '#cccccc');
             if (status === 'nauseous') logger.log(i18next.t('status.player.nauseous_off', { defaultValue: 'You feel less nauseous.' }), '#cccccc');
-            if (status === 'darkness') logger.log(i18next.t('status.player.darkness_off', { defaultValue: 'The cloak of darkness lifts.' }), '#cccccc');
+            if (status === 'darkness') logger.log(i18next.t('status.player.darkness_off', { defaultValue: 'the cloak of darkness lifts from your vision.' }), '#cccccc');
             if (status === 'invisible') logger.log(i18next.t('status.player.invisible_off', { defaultValue: 'You are no longer invisible.' }), '#cccccc');
-            if (status === 'telepathy') logger.log(i18next.t('status.player.telepathy_off', { defaultValue: 'Your telepathic sense fades.' }), '#cccccc');
-            if (status === 'levitating') logger.log(i18next.t('status.player.levitating_off', { defaultValue: 'You touch ground again.' }), '#cccccc');
-            if (status === 'regenerating') logger.log(i18next.t('status.player.regenerating_off', { defaultValue: 'Your regenerative aura fades.' }), '#cccccc');
+            if (status === 'telepathy') logger.log(i18next.t('status.player.telepathy_off', { defaultValue: 'your preternatural mental sensitivity fades.' }), '#cccccc');
+            if (status === 'levitating') logger.log(i18next.t('status.player.levitating_off', { defaultValue: 'you are no longer levitating.' }), '#cccccc');
             if (status === 'paralyzed') logger.log(i18next.t('status.player.paralyzed_off', { defaultValue: 'You can move again.' }), '#cccccc');
-            if (status === 'confused' || status === 'hallucinating') {
-                logger.log(i18next.t('status.player.disoriented_off', { defaultValue: 'Your thoughts become clear again.' }), '#cccccc');
-            }
+            if (status === 'confused') logger.log(i18next.t('status.player.confused_off', { defaultValue: 'you no longer feel confused.' }), '#cccccc');
+            if (status === 'hallucinating') logger.log(i18next.t('status.player.hallucinating_off', { defaultValue: 'your hallucinations fade.' }), '#cccccc');
+            if (status === 'haste' || status === 'hasted') logger.log(i18next.t('status.player.haste_off', { defaultValue: 'your supernatural speed fades.' }), '#cccccc');
+            if (status === 'slowed') logger.log(i18next.t('status.player.slowed_off', { defaultValue: 'your normal speed resumes.' }), '#cccccc');
+            if (status === 'immune_fire') logger.log(i18next.t('status.player.immune_fire_off', { defaultValue: 'you no longer feel immune to fire.' }), '#cccccc');
             // F-2b：燃烧自然燃尽（CE Time.c:2588 !--status → extinguishFireOnCreature
             // 的 "you are no longer on fire."）；蹚水灭火走 extinguishCreatureFire，
             // 不经过这条。（tickStatuses 返回类型是 StatusId[]，但逃生舱键
@@ -6805,18 +6814,20 @@ export class Game {
 
     /** CE Time.c:937-948 — one message per hunger-tier crossing, no repeat while it persists. */
     private logHungerTransition(state: HungerState) {
+        const noFood = !this.player.inventory.items.some(item => item.category === ItemCategory.FOOD);
+        const foodWarning = noFood ? i18next.t('status.player.no_food_suffix', { defaultValue: ' and have no food' }) : '';
         switch (state) {
             case 'hungry':
-                logger.log(i18next.t('status.player.hungry', { defaultValue: 'You are hungry.' }), '#ffcc00');
+                logger.log(i18next.t('status.player.hungry', { foodWarning, defaultValue: 'you are hungry{{foodWarning}}.' }), '#ffcc00', { acknowledge: noFood });
                 break;
             case 'weak':
-                logger.log(i18next.t('status.player.weak_with_hunger', { defaultValue: 'You feel weak with hunger.' }), '#ff9900');
+                logger.log(i18next.t('status.player.weak_with_hunger', { foodWarning, defaultValue: 'you feel weak with hunger{{foodWarning}}.' }), '#ff9900', { acknowledge: true });
                 break;
             case 'faint':
-                logger.log(i18next.t('status.player.faint_with_hunger', { defaultValue: 'You feel faint with hunger.' }), '#ff6600');
+                logger.log(i18next.t('status.player.faint_with_hunger', { foodWarning, defaultValue: 'you feel faint with hunger{{foodWarning}}.' }), '#ff6600', { acknowledge: true });
                 break;
             case 'starving':
-                logger.log(i18next.t('status.player.starving_to_death', { defaultValue: 'You are starving to death!' }), '#ff0000');
+                logger.log(i18next.t('status.player.starving_to_death', { defaultValue: 'you are starving to death!' }), '#ff0000', { acknowledge: true });
                 break;
             default:
                 break;
@@ -7633,13 +7644,13 @@ export class Game {
         // CHASM 在 LIQUID、HOLE 在 SURFACE，CE layerWithFlag 层序即此）。
         const cell = this.grid.getCell(px, py);
         if (cell?.layers.includes(TerrainType.CHASM)) {
-            logger.log(i18next.t('fall.flavor_chasm', { defaultValue: 'You plunge downward into the chasm!' }), '#ff8844');
+            logger.log(i18next.t('fall.flavor_chasm', { defaultValue: 'You plunge downward into the chasm!' }), '#ff8844', { acknowledge: true });
         } else if (cell?.layers.includes(TerrainType.TRAP_DOOR_HIDDEN)) {
-            logger.log(i18next.t('fall.flavor_trapdoor', { defaultValue: 'You plunge through a hidden trap door!' }), '#ff8844');
+            logger.log(i18next.t('fall.flavor_trapdoor', { defaultValue: 'You plunge through a hidden trap door!' }), '#ff8844', { acknowledge: true });
         } else if (cell?.layers.includes(TerrainType.HOLE) || cell?.layers.includes(TerrainType.TRAP_DOOR)) {
-            logger.log(i18next.t('fall.flavor_hole', { defaultValue: 'You plunge downward into the hole!' }), '#ff8844');
+            logger.log(i18next.t('fall.flavor_hole', { defaultValue: 'You plunge downward into the hole!' }), '#ff8844', { acknowledge: true });
         } else {
-            logger.log(i18next.t('fall.plunge', { defaultValue: 'You plunge downward!' }), '#ff8844');
+            logger.log(i18next.t('fall.plunge', { defaultValue: 'You plunge downward!' }), '#ff8844', { acknowledge: true });
         }
 
         // CE :1124：怪物随落（换层之前——幸存者入下一层，亡者不留）。
@@ -8410,6 +8421,29 @@ export class Game {
         this.prepareFlareKnowledge();
         this.refreshVisibleEntities();
         this.updateFlavorText(); // CE Time.c:2876, including headless/animated turns.
+        this.checkShoreWarning();
+    }
+
+    /** CE Time.c:2878-2911. Recomputed from current layers; no RNG or path changes. */
+    private checkShoreWarning(): void {
+        const flags = cellTerrainFlags(this.grid, this.player.x, this.player.y);
+        const levitation = this.player.getStatusDuration('levitating');
+        const fireImmunity = this.player.getStatusDuration('immune_fire');
+        const overLava = !!(flags & T_LAVA_INSTA_DEATH);
+        if (!(levitation && (flags & SHORE_HAZARDS)) && !(fireImmunity && overLava)) {
+            this.receivedLevitationWarning = false;
+            return;
+        }
+        if (this.receivedLevitationWarning) return;
+        const distance = buildMapToShore(this.grid)[this.player.x]![this.player.y]!;
+        const warning = shoreWarning(distance, this.player.movementSpeed,
+            overLava ? Math.max(levitation, fireImmunity) : levitation);
+        if (!warning) return;
+        logger.log(warning === 'return'
+            ? i18next.t('status.player.shore_return', { defaultValue: 'better head back to solid ground!' })
+            : i18next.t('status.player.shore_past', { defaultValue: "you're past the point of no return!" }),
+            '#ffcc44', { acknowledge: true });
+        this.receivedLevitationWarning = true;
     }
 
     // ---- P2-4 CE 口径动画（决策 E1-修订）+ 输入锁 ----
@@ -8666,6 +8700,7 @@ export class Game {
             recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,
             signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
             testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,
+            receivedLevitationWarning: this.receivedLevitationWarning || undefined,
             logger: logger.getState(),
         });
     }
@@ -8806,6 +8841,7 @@ export class Game {
         this.signTexts = new Map(run.signTexts); this.resetPlateRoomByPos = new Map(run.resetPlateRoomByPos);
         this.testRooms = new Map(run.testRooms); this.currentTestCategory = run.currentTestCategory;
         logger.setState(run.logger);
+        this.receivedLevitationWarning = run.receivedLevitationWarning ?? false;
         ItemLoader.restoreFlavors(snapshot.flavors);
         ItemLoader.identifiedItems = new Set(snapshot.identifiedItems);
         ItemLoader.callTitles = new Map(Object.entries(snapshot.callTitles));
@@ -9162,7 +9198,7 @@ export class Game {
                 // web 按地形类型分支即等价。
                 if (entity === this.player) {
                     this.lastDamageSource = '';
-                    logger.log(i18next.t('env.player_incinerated', { defaultValue: 'You are incinerated by the lava!' }), '#ff4400');
+                    logger.log(i18next.t('env.player_incinerated', { defaultValue: 'You are incinerated by the lava!' }), '#ff4400', { acknowledge: true });
                     this.triggerGameOver(false, i18next.t('death.lava', { defaultValue: 'Incinerated by lava.' }));
                 } else {
                     logger.log(i18next.t('env.monster_incinerated', { name: name, defaultValue: `The ${name} is incinerated.` }), '#aa6666');
@@ -9331,7 +9367,7 @@ export class Game {
                                 ? entity.applyStatus('paralyzed', 20)
                                 : this.applyStatusToMonster(entity as Monster, 'paralyzed', 20, 'gas');
                             if (entity === this.player && applied) {
-                                logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999');
+                                logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999', { acknowledge: true });
                             }
                         }
                     }
@@ -9820,6 +9856,14 @@ export class Game {
             // Already inside auto_explore's command: no nested recorded event.
             this.performAutoPathStep();
         } else {
+            if (ENTRANCEMENT_DIRECTIONS.some(([dx, dy]) => {
+                const cell = this.grid.getCell(this.player.x + dx, this.player.y + dy);
+                return cell && !cell.isExplored;
+            })) {
+                logger.log(i18next.t('explore.too_dark', { defaultValue: "It's too dark to explore!" }), '#cccccc');
+                this.stopAutoTravel();
+                return;
+            }
             this.recomputeExplorePath();
         }
     }
@@ -9856,7 +9900,7 @@ export class Game {
                 }
             }
         }
-        logger.log(i18next.t('explore.nothing_more', { defaultValue: '这里没有什么可探索的了。' }), '#cccccc');
+        logger.log(i18next.t('explore.nothing_more', { defaultValue: 'I see no path for further exploration.' }), '#cccccc');
         this.stopAutoTravel();
     }
 
@@ -10108,11 +10152,9 @@ export class Game {
     private discoverSecretAt(x: number, y: number): boolean {
         const cell = this.grid.getCell(x, y);
         if (!cell) return false;
-        const wasDoor = cell.layers.includes(TerrainType.SECRET_DOOR);
         if (!discoverTerrain(this.grid, x, y)) return false;
         cell.isDiscovered = true;
         this.disturbed = true;
-        if (wasDoor) logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
         this.needsRender = true;
         return true;
     }
@@ -10181,10 +10223,20 @@ export class Game {
         this.needsRender = true;
     }
 
+    private logPressurePlate(x: number, y: number, target: Creature): void {
+        if (target === this.player || canSeeMonster(this.player, this.grid, target as Monster)) {
+            const name = target === this.player ? i18next.t('entity.you', { defaultValue: 'you' }) : this.monsterDisplayName(target as Monster);
+            logger.log(i18next.t('trap.pressure_plate_under', { name,
+                defaultValue: 'a pressure plate clicks underneath {{name}}!' }), '#ffcc44', { acknowledge: true });
+        } else if (this.grid.getCell(x, y)?.isVisible) {
+            logger.log(i18next.t('trap.pressure_plate', { defaultValue: 'a pressure plate clicks!' }), '#ffcc44');
+        }
+    }
+
     /** CE Time.c:240-274: machine pressure plates promote and power their
      * machine; spatially nearby traps with another machine number are unrelated. */
-    private triggerPressurePlate(px: number, py: number, _target: Creature = this.player) {
-        logger.log(i18next.t('trap.pressure_plate', { defaultValue: 'A pressure plate clicks!' }), '#ffcc44');
+    private triggerPressurePlate(px: number, py: number, target: Creature = this.player) {
+        this.logPressurePlate(px, py, target);
         triggerCreatureTrapLayers(this.grid, px, py);
         this.needsRender = true;
     }
@@ -10407,6 +10459,7 @@ export class Game {
                     if (cell.isVisible && (cellTerrainMechFlags(this.grid, x, y) & TM_IS_SECRET)) {
                         this.discoverSecretAt(x, y);
                     }
+                    this.logPressurePlate(x, y, target);
                     triggerCreatureTrapLayers(this.grid, x, y);
                 }
             }
@@ -10415,6 +10468,20 @@ export class Game {
         if (target.loc.x !== x || target.loc.y !== y) return;
         const mask = TM_PROMOTES_ON_CREATURE | (target === this.player ? TM_PROMOTES_ON_PLAYER_ENTRY : 0);
         promoteLayersWithMechFlag(this.grid, target.loc.x, target.loc.y, mask);
+    }
+
+    private logPickup(item: Item): void {
+        if (item.category === ItemCategory.GOLD) {
+            logger.log(i18next.t('item.pickup_gold', { quantity: item.quantity,
+                defaultValue: 'you found {{quantity}} pieces of gold.' }), '#ffffff');
+            return;
+        }
+        const packed = this.player.inventory.stackFor(item) ?? item;
+        const name = packed.quantity > 1
+            ? i18next.t('item.pickup_stack', { quantity: packed.quantity, name: packed.displayName,
+                defaultValue: '{{quantity}} {{name}}' }) : packed.displayName;
+        logger.log(i18next.t('item.pickup', { name, letter: packed.inventoryLetter,
+            interpolation: { escapeValue: false }, defaultValue: 'you now have {{name}} ({{letter}}).' }), '#ffffff');
     }
 
     /** CE setMonsterLocation picks up without a second player action/turn. */
@@ -10428,7 +10495,7 @@ export class Game {
         else if (!this.player.inventory.addItem(item)) return;
         this.items.splice(index, 1);
         promoteOnItemPickup(this.grid, this.player.loc.x, this.player.loc.y);
-        logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
+        this.logPickup(item);
     }
 
     /** CE scroll/final-depth fall teleport: use the existing terrain-aware
@@ -10463,50 +10530,50 @@ export class Game {
             case TerrainType.DEWAR_PARALYSIS_GAS: return i18next.t('terrain.dewar_paralysis_gas', { defaultValue: "a glass dewar of paralytic gas" });
             case TerrainType.DEWAR_METHANE_GAS: return i18next.t('terrain.dewar_methane_gas', { defaultValue: "a glass dewar of methane gas" });
             case TerrainType.BROKEN_GLASS: return i18next.t('terrain.broken_glass', { defaultValue: "shattered glass" });
-            case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: '铁笼祭坛' });
-            case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: '置换祭坛' });
-            case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: '烧焦的置换祭坛' });
-            case TerrainType.RESURRECTION_ALTAR: return i18next.t('terrain.resurrection_altar', { defaultValue: '复活祭坛' });
-            case TerrainType.RESURRECTION_ALTAR_INERT: return i18next.t('terrain.resurrection_inert', { defaultValue: '烧焦的复活祭坛' });
-            case TerrainType.PIPE_GLOWING: return i18next.t('terrain.pipe_glowing', { defaultValue: '发光的玻璃管道' });
-            case TerrainType.PIPE_INERT: return i18next.t('terrain.pipe_inert', { defaultValue: '烧焦的玻璃管道' });
-            case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: '献祭祭坛' });
-            case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: '休眠的献祭祭坛' });
-            case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: '献祭熔岩坑' });
-            case TerrainType.RAT_TRAP_WALL_CRACKING: return i18next.t('terrain.rat_trap_wall_cracking', { defaultValue: '开裂的鼠陷阱墙' });
-            case TerrainType.STATUE_CRACKING: return i18next.t('terrain.statue_cracking', { defaultValue: '开裂的雕像' });
-            case TerrainType.COFFIN_OPEN: return i18next.t('terrain.coffin_open', { defaultValue: '空棺木' });
-            case TerrainType.WORM_TUNNEL_MARKER_ACTIVE: return i18next.t('terrain.worm_tunnel_marker_active', { defaultValue: '开裂的花岗岩墙' });
-            case TerrainType.PORTAL_LIGHT: return i18next.t('terrain.portal_light', { defaultValue: '耀眼的光芒' });
+            case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: 'an iron cage altar' });
+            case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: 'a commutation altar' });
+            case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: 'a burnt commutation altar' });
+            case TerrainType.RESURRECTION_ALTAR: return i18next.t('terrain.resurrection_altar', { defaultValue: 'a resurrection altar' });
+            case TerrainType.RESURRECTION_ALTAR_INERT: return i18next.t('terrain.resurrection_inert', { defaultValue: 'a burnt resurrection altar' });
+            case TerrainType.PIPE_GLOWING: return i18next.t('terrain.pipe_glowing', { defaultValue: 'a glowing glass pipe' });
+            case TerrainType.PIPE_INERT: return i18next.t('terrain.pipe_inert', { defaultValue: 'a burnt glass pipe' });
+            case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: 'a sacrificial altar' });
+            case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: 'a dormant sacrificial altar' });
+            case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: 'a sacrificial lava pit' });
+            case TerrainType.RAT_TRAP_WALL_CRACKING: return i18next.t('terrain.rat_trap_wall_cracking', { defaultValue: 'a cracking wall' });
+            case TerrainType.STATUE_CRACKING: return i18next.t('terrain.statue_cracking', { defaultValue: 'a cracking statue' });
+            case TerrainType.COFFIN_OPEN: return i18next.t('terrain.coffin_open', { defaultValue: 'an empty coffin' });
+            case TerrainType.WORM_TUNNEL_MARKER_ACTIVE: return i18next.t('terrain.worm_tunnel_marker_active', { defaultValue: 'a cracking granite wall' });
+            case TerrainType.PORTAL_LIGHT: return i18next.t('terrain.portal_light', { defaultValue: 'a brilliant light' });
 
             case TerrainType.GRANITE:
-                return i18next.t('terrain.granite', { defaultValue: '花岗岩墙壁' });
+                return i18next.t('terrain.granite', { defaultValue: 'a granite wall' });
             case TerrainType.WALL:
-                return i18next.t('terrain.wall', { defaultValue: '墙壁' });
+                return i18next.t('terrain.wall', { defaultValue: 'a wall' });
             case TerrainType.DOOR:
-                return i18next.t('terrain.door', { defaultValue: '关闭的门' });
+                return i18next.t('terrain.door', { defaultValue: 'a closed door' });
             case TerrainType.OPEN_DOOR:
-                return i18next.t('terrain.open_door', { defaultValue: '打开的门' });
+                return i18next.t('terrain.open_door', { defaultValue: 'an open door' });
             case TerrainType.WATER_SHALLOW:
-                return i18next.t('terrain.shallow_water', { defaultValue: '浅水' });
+                return i18next.t('terrain.shallow_water', { defaultValue: 'shallow water' });
             case TerrainType.WATER_DEEP:
-                return i18next.t('terrain.deep_water', { defaultValue: '深水' });
+                return i18next.t('terrain.deep_water', { defaultValue: 'deep water' });
             case TerrainType.CHASM:
-                return i18next.t('terrain.chasm', { defaultValue: '深渊' });
+                return i18next.t('terrain.chasm', { defaultValue: 'a chasm' });
             case TerrainType.LAVA:
-                return i18next.t('terrain.lava', { defaultValue: '熔岩' });
+                return i18next.t('terrain.lava', { defaultValue: 'lava' });
             case TerrainType.GRASS:
-                return i18next.t('terrain.grass', { defaultValue: '草地' });
+                return i18next.t('terrain.grass', { defaultValue: 'grass' });
             case TerrainType.FOLIAGE:
-                return i18next.t('terrain.foliage', { defaultValue: '植被' });
+                return i18next.t('terrain.foliage', { defaultValue: 'foliage' });
             case TerrainType.BOG:
-                return i18next.t('terrain.bog', { defaultValue: '沼泽' });
+                return i18next.t('terrain.bog', { defaultValue: 'a bog' });
             case TerrainType.STAIRS_UP:
-                return i18next.t('terrain.stairs_up', { defaultValue: '上行楼梯' });
+                return i18next.t('terrain.stairs_up', { defaultValue: 'the upward staircase' });
             case TerrainType.DUNGEON_PORTAL:
-                return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
+                return i18next.t('terrain.crystal_portal', { defaultValue: 'a crystal portal' });
             case TerrainType.STAIRS_DOWN:
-                return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+                return i18next.t('terrain.stairs_down', { defaultValue: 'the downward staircase' });
             case TerrainType.MACHINE_METHANE_VENT_DORMANT:
             case TerrainType.MACHINE_POISON_GAS_VENT_DORMANT:
             case TerrainType.MACHINE_PARALYSIS_VENT:
@@ -10527,7 +10594,7 @@ export class Game {
             case TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN:
             case TerrainType.GAS_TRAP_POISON_HIDDEN:
             case TerrainType.FLAMETHROWER_HIDDEN:
-                return i18next.t('terrain.floor', { defaultValue: '地板' });
+                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
             case TerrainType.MACHINE_PRESSURE_PLATE_USED:
                 return i18next.t('terrain.pressure_plate_used', { defaultValue: 'An inactive pressure plate' });
             case TerrainType.TRAP_DOOR:
@@ -10537,10 +10604,10 @@ export class Game {
             case TerrainType.WALL_LEVER_PULLED:
                 return i18next.t('terrain.wall_lever_pulled', { defaultValue: 'An inactive lever' });
             case TerrainType.WALL_LEVER_HIDDEN:
-                return i18next.t('terrain.wall', { defaultValue: '墙壁' });
+                return i18next.t('terrain.wall', { defaultValue: 'a wall' });
             case TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING:
             case TerrainType.TRAP_DOOR_HIDDEN:
-                return i18next.t('terrain.floor', { defaultValue: '地板' });
+                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
             case TerrainType.TRAMPLED_FOLIAGE:
                 return i18next.t('terrain.trampled_foliage', { defaultValue: 'Trampled foliage' });
             case TerrainType.ACTIVE_BRIMSTONE:
@@ -10556,35 +10623,35 @@ export class Game {
             case TerrainType.ITEM_FIRE:
                 return i18next.t('terrain.item_fire', { defaultValue: 'Crackling flames' });
             case TerrainType.CHARRED_FLOOR:
-                return i18next.t('terrain.charred_floor', { defaultValue: '烧焦的地面' });
+                return i18next.t('terrain.charred_floor', { defaultValue: 'the charred floor' });
             case TerrainType.SIGN:
-                return i18next.t('terrain.sign', { defaultValue: '标牌' });
+                return i18next.t('terrain.sign', { defaultValue: 'a sign' });
             case TerrainType.RESET_PLATE:
-                return i18next.t('terrain.reset_plate', { defaultValue: '重置压板' });
+                return i18next.t('terrain.reset_plate', { defaultValue: 'a reset plate' });
             case TerrainType.TRAP:
-                return i18next.t('terrain.trap', { defaultValue: '陷阱' });
+                return i18next.t('terrain.trap', { defaultValue: 'a trap' });
             case TerrainType.SECRET_DOOR:
-                return i18next.t('terrain.secret_door', { defaultValue: '暗门' });
+                return i18next.t('terrain.secret_door', { defaultValue: 'a secret door' });
             case TerrainType.PRESSURE_PLATE:
-                return i18next.t('terrain.pressure_plate', { defaultValue: '压力板' });
+                return i18next.t('terrain.pressure_plate', { defaultValue: 'a pressure plate' });
             case TerrainType.LOCKED_DOOR:
-                return i18next.t('terrain.locked_door', { defaultValue: '锁住的门' });
+                return i18next.t('terrain.locked_door', { defaultValue: 'a locked door' });
             case TerrainType.ALTAR:
-                return i18next.t('terrain.altar', { defaultValue: '祭坛' });
+                return i18next.t('terrain.altar', { defaultValue: 'an altar' });
             case TerrainType.ANCIENT_SPIRIT_VINES:
                 return 'thorned vines';
             case TerrainType.ANCIENT_SPIRIT_GRASS:
                 return 'a tuft of grass';
             case TerrainType.WEB:
-                return i18next.t('terrain.web', { defaultValue: '蛛网' });
+                return i18next.t('terrain.web', { defaultValue: 'a spiderweb' });
             case TerrainType.BLOOD:
-                return i18next.t('terrain.blood', { defaultValue: '血迹' });
+                return i18next.t('terrain.blood', { defaultValue: 'blood' });
             case TerrainType.MUD:
-                return i18next.t('terrain.mud', { defaultValue: '泥浆' });
+                return i18next.t('terrain.mud', { defaultValue: 'mud' });
             case TerrainType.FLOOR:
             case TerrainType.NOTHING:
             default:
-                return i18next.t('terrain.floor', { defaultValue: '地面' });
+                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
         }
     }
 
@@ -10599,7 +10666,7 @@ export class Game {
         const sensedMonster = this.getMonsterAt(x, y);
         if (!cell || (!cell.hasMemory && !cell.isMagicMapped && !cell.isVisible
             && !(sensedMonster && canDisplayMonster(this.player, this.grid, sensedMonster)))) {
-            return i18next.t('hover.unknown', { defaultValue: '未知' });
+            return i18next.t('hover.unknown', { defaultValue: 'Unknown' });
         }
 
         const entities: string[] = [];
@@ -10624,15 +10691,15 @@ export class Game {
 
         // Check player
         if (this.player.loc.x === x && this.player.loc.y === y && cell.isVisible) {
-            entities.push(i18next.t('hover.you', { defaultValue: '你' }));
+            entities.push(i18next.t('hover.you', { defaultValue: 'you' }));
         }
 
         // CE IO.c:1278-1281 draws only the location marker on undiscovered cells.
         if (!cell.isVisible && !cell.hasMemory && !cell.isMagicMapped) {
-            return entities.join('、');
+            return entities.join(i18next.t('hover.separator', { defaultValue: ', ' }));
         }
 
-        const separator = i18next.t('hover.separator', { defaultValue: '、' });
+        const separator = i18next.t('hover.separator', { defaultValue: ', ' });
         // G-1：hover 的地形名优先取 GAS 层（CE tileText/tileFlavor 走
         // highestPriorityLayer(x,y,false)——含气层，Movement.c:106/113；
         // 站进毒气时 CE 悬浮提示显示"a cloud of caustic gas"）。
@@ -10650,7 +10717,7 @@ export class Game {
             baseText = i18next.t('hover.entity_on_terrain', {
                 entities: entities.join(separator),
                 terrain: tName,
-                defaultValue: `${entities.join('、')}，位于${tName}`
+                defaultValue: '{{entities}} on {{terrain}}'
             });
         } else {
             baseText = tName;
@@ -10660,12 +10727,12 @@ export class Game {
             if (entities.length > 0) {
                 baseText = i18next.t('hover.remember_entity', {
                     entities: entities.join(separator),
-                    defaultValue: `你记得在这里看到过${entities.join('、')}。`
+                    defaultValue: 'You remember seeing {{entities}} here.'
                 });
             } else {
                 baseText = i18next.t('hover.remember_terrain', {
                     terrain: tName,
-                    defaultValue: `你记得这里是${tName}。`
+                    defaultValue: 'You remember {{terrain}} here.'
                 });
             }
         }
@@ -10696,6 +10763,15 @@ export class Game {
         this.pendingDiscoveryMessages = [];
         this.everSeenMonsters = new Set(iterateCreatures(this.visibleMonsters));
         this.isAutoExploring = false;
+        const destination = this.grid.getCell(x, y);
+        // CE Movement.c:1946-1955: a cardinal neighbor is a movement attempt,
+        // even if unseen; let the shared move entry determine passability.
+        const cardinalNeighbor = Math.abs(x - this.player.x) + Math.abs(y - this.player.y) === 1;
+        if (!cardinalNeighbor && destination && !destination.isExplored && !destination.isMagicMapped && !destination.isVisible && !destination.hasMemory) {
+            this.stopAutoTravel();
+            logger.log(i18next.t('ui.unexplored_location', { defaultValue: 'You have not explored that location.' }), '#aaaaaa');
+            return;
+        }
         const knownPassable = (px: number, py: number): boolean => {
             const cell = this.grid.getCell(px, py);
             return !!cell && this.knownTravelTerrainAllowed(cell);
@@ -10706,7 +10782,7 @@ export class Game {
             this.autoPath = path;
         } else {
             this.stopAutoTravel();
-            logger.log(i18next.t('ui.no_path', { defaultValue: '无法到达该位置。' }), '#aaaaaa');
+            logger.log(i18next.t('ui.no_path', { defaultValue: 'No path is available.' }), '#aaaaaa');
             this.needsRender = true;
         }
     }

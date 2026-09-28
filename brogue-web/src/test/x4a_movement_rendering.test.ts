@@ -170,9 +170,9 @@ describe('X4a per-step known exploration/travel', () => {
     });
     it('preserves no-target and no-initial-route messages', () => {
         const g = scene(); g.handlePlayerAction('auto_explore');
-        expect(logger.messages.some(m => m.text.includes('这里没有什么可探索'))).toBe(true);
+        expect(logger.messages.some(m => m.text.includes('I see no path for further exploration.'))).toBe(true);
         g.handleMouseTravel(0, 0);
-        expect(logger.messages.some(m => m.text.includes('无法到达'))).toBe(true);
+        expect(logger.messages.some(m => m.text.includes('No path is available.'))).toBe(true);
     });
 });
 

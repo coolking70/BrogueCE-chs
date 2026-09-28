@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/13b1/brogue/brogue-web
+
+ ❯ src/test/w_2_arcana_submission.test.ts (30 tests | 2 failed) 1353ms
+     × 11 existing CE items enter selection without charge, turn, identity or RNG changes; Escape cancels 40ms
+     × Tab cycles eligible candidates in both directions, and missing candidates leave the cursor unchanged 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_2_arcana_submission.test.ts > W-2 choose / cancel / commit (CE Items.c:6361-6516,7340-7440) > 11 existing CE items enter selection without charge, turn, identity or RNG changes; Escape cancels
+TypeError: Cannot read properties of undefined (reading 'turns')
+ ❯ Game.applyCommand src/engine/Core/Game.ts:2669:34
+    2667|     /** Shared by live input, replay/seek and autonomous steps, before…
+    2668|     private applyCommand(action: string, data?: unknown, perform?: () …
+    2669|         logger.turn = this.stats.turns;
+       |                                  ^
+    2670|         logger.onDisturb = () => { this.disturbed = true; };
+    2671|         // All explicit input, including modal/unknown keys, cancels a…
+ ❯ Game.executeCommand src/engine/Core/Game.ts:2657:18
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:2943:39
+ ❯ src/test/w_2_arcana_submission.test.ts:75:131
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/w_2_arcana_submission.test.ts > W-2 choose / cancel / commit (CE Items.c:6361-6516,7340-7440) > Tab cycles eligible candidates in both directions, and missing candidates leave the cursor unchanged
+TypeError: Cannot read properties of undefined (reading 'turns')
+ ❯ Game.applyCommand src/engine/Core/Game.ts:2669:34
+    2667|     /** Shared by live input, replay/seek and autonomous steps, before…
+    2668|     private applyCommand(action: string, data?: unknown, perform?: () …
+    2669|         logger.turn = this.stats.turns;
+       |                                  ^
+    2670|         logger.onDisturb = () => { this.disturbed = true; };
+    2671|         // All explicit input, including modal/unknown keys, cancels a…
+ ❯ Game.executeCommand src/engine/Core/Game.ts:2657:18
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:2943:39
+ ❯ src/test/w_2_arcana_submission.test.ts:171:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 28 passed (30)
+   Start at  22:11:00
+   Duration  3.59s (transform 1.05s, setup 0ms, import 2.03s, tests 1.35s, environment 0ms)
+

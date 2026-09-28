@@ -11,13 +11,14 @@ const { logs, hoverText } = useGameHud(props.lines);
 <template>
   <div class="message-strip" role="log" aria-live="polite" @click="emit('open-panel')">
     <div v-if="hoverText" class="strip-hover">{{ hoverText }}</div>
-    <div v-for="(msg, index) in logs" :key="msg.id" class="strip-line" :class="{ latest: index === 0 }" :style="{ color: msg.color }">
+    <div v-for="(msg, index) in logs" :key="msg.id" class="strip-line" :class="{ latest: index === 0, acknowledge: msg.acknowledge }" :style="{ color: msg.color }">
       {{ msg.text }}<span v-if="msg.count > 1" class="strip-count">×{{ msg.count }}</span>
     </div>
   </div>
 </template>
 
 <style scoped>
+.strip-line.acknowledge { border-left: 2px solid #facc15; padding-left: 6px; font-weight: 600; }
 .message-strip {
   box-sizing: border-box;
   padding: 4px max(10px, env(safe-area-inset-left));

@@ -1,0 +1,131 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/13b1/brogue/brogue-web
+
+(node:69420) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69597) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69611) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/w_2_arcana_submission.test.ts (30 tests | 2 failed) 1520ms
+     × 11 existing CE items enter selection without charge, turn, identity or RNG changes; Escape cancels 16ms
+     × Tab cycles eligible candidates in both directions, and missing candidates leave the cursor unchanged 1ms
+(node:69916) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69938) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69981) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69979) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70063) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x4a_movement_rendering.test.ts (21 tests | 3 failed) 11298ms
+     × rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text 600ms
+     × does not read unknown next-cell passability before dispatching the shared movement entry 497ms
+     × preserves no-target and no-initial-route messages 502ms
+(node:70143) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70205) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70146) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_2_arcana_submission.test.ts > W-2 choose / cancel / commit (CE Items.c:6361-6516,7340-7440) > 11 existing CE items enter selection without charge, turn, identity or RNG changes; Escape cancels
+TypeError: Cannot read properties of undefined (reading 'turns')
+ ❯ Game.applyCommand src/engine/Core/Game.ts:2669:34
+    2667|     /** Shared by live input, replay/seek and autonomous steps, before…
+    2668|     private applyCommand(action: string, data?: unknown, perform?: () …
+    2669|         logger.turn = this.stats.turns;
+       |                                  ^
+    2670|         logger.onDisturb = () => { this.disturbed = true; };
+    2671|         // All explicit input, including modal/unknown keys, cancels a…
+ ❯ Game.executeCommand src/engine/Core/Game.ts:2657:18
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:2943:39
+ ❯ src/test/w_2_arcana_submission.test.ts:75:131
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/test/w_2_arcana_submission.test.ts > W-2 choose / cancel / commit (CE Items.c:6361-6516,7340-7440) > Tab cycles eligible candidates in both directions, and missing candidates leave the cursor unchanged
+TypeError: Cannot read properties of undefined (reading 'turns')
+ ❯ Game.applyCommand src/engine/Core/Game.ts:2669:34
+    2667|     /** Shared by live input, replay/seek and autonomous steps, before…
+    2668|     private applyCommand(action: string, data?: unknown, perform?: () …
+    2669|         logger.turn = this.stats.turns;
+       |                                  ^
+    2670|         logger.onDisturb = () => { this.disturbed = true; };
+    2671|         // All explicit input, including modal/unknown keys, cancels a…
+ ❯ Game.executeCommand src/engine/Core/Game.ts:2657:18
+ ❯ Game.handlePlayerAction src/engine/Core/Game.ts:2943:39
+ ❯ src/test/w_2_arcana_submission.test.ts:171:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > rebuilds after a wall is revealed, detours and continues past the old frontier without path-blocked text
+AssertionError: expected { x: 15, y: 11 } to deeply equal { x: 16, y: 12 }
+
+- Expected
++ Received
+
+  {
+-   "x": 16,
+-   "y": 12,
++   "x": 15,
++   "y": 11,
+  }
+
+ ❯ src/test/x4a_movement_rendering.test.ts:59:30
+     57|             at.isExplored = true; at.hasMemory = true; at.isVisible = …
+     58|         }
+     59|         expect(g.player.loc).toEqual({ x: 16, y: 12 });
+       |                              ^
+     60|         expect(logger.messages.map(m => m.text).join('\n')).not.toMatc…
+     61|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > does not read unknown next-cell passability before dispatching the shared movement entry
+AssertionError: expected "handlePlayerAction" to be called with arguments: [ 'move', { x: 1, y: +0 }, 'system' ]
+
+Number of calls: 0
+
+ ❯ src/test/x4a_movement_rendering.test.ts:83:22
+     81|         const move = vi.spyOn(g, 'handlePlayerAction');
+     82|         g.stepAutoPath();
+     83|         expect(move).toHaveBeenCalledWith('move', { x: 1, y: 0 }, 'sys…
+       |                      ^
+     84|         expect(g.player.loc).toEqual({ x: 10, y: 10 });
+     85|         expect(g.stats.turns).toBe(0); expect(g.autoPath).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/test/x4a_movement_rendering.test.ts > X4a per-step known exploration/travel > preserves no-target and no-initial-route messages
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/x4a_movement_rendering.test.ts:173:73
+    171|     it('preserves no-target and no-initial-route messages', () => {
+    172|         const g = scene(); g.handlePlayerAction('auto_explore');
+    173|         expect(logger.messages.some(m => m.text.includes('这里没有什么可探索'))…
+       |                                                                         ^
+    174|         g.handleMouseTravel(0, 0);
+    175|         expect(logger.messages.some(m => m.text.includes('无法到达'))).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed | 52 passed (54)
+      Tests  5 failed | 1170 passed (1175)
+   Start at  22:07:31
+   Duration  652.65s (transform 1.92s, setup 0ms, import 41.14s, tests 1151.96s, environment 16ms)
+

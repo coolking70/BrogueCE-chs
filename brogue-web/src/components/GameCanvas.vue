@@ -114,6 +114,7 @@ import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterInGas }
 // 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
 import { Direction } from '../types';
 import { activeGame } from '../engine/Core/Game';
+import { logger } from '../engine/Systems/Logger';
 import { inputManager } from '../engine/Input';
 import i18next from 'i18next';
 import { displaySettings } from '../engine/Settings';
@@ -595,6 +596,7 @@ onMounted(async () => {
 
         return JSON.stringify({
             seed: game.currentSeed,
+            acknowledgment: logger.pendingAcknowledgment?.text ?? null,
             mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
             enchantmentTargets: game.pendingEnchantment
                 ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],

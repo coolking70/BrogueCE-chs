@@ -1,0 +1,60 @@
+{
+  "protectedFiles": [
+    "src/engine/Input.ts",
+    "src/components/CommandBar.vue",
+    "src/components/ReferenceOverlay.vue",
+    "src/components/DPad.vue",
+    "package-lock.json"
+  ],
+  "protectedMethods": [
+    "manualSearch",
+    "searchForSecrets"
+  ],
+  "performPlayerAction": "only pickup logging changed; protected prefix byte-identical",
+  "changedMethods": [
+    "startNewGame",
+    "executeCommand",
+    "performPlayerAction",
+    "quaffItem",
+    "readItem",
+    "applyBoltEffect",
+    "chooseEnchantTarget",
+    "tryVomit",
+    "applyTimedStatus",
+    "tryTriggerArmorRunic",
+    "tickCreatureStatuses",
+    "logHungerTransition",
+    "playerFalls",
+    "finishTurnEpilogue",
+    "checkShoreWarning",
+    "snapshotRunState",
+    "loadSnapshot",
+    "applyEnvironmentalEffects",
+    "handleAutoExplore",
+    "recomputeExplorePath",
+    "discoverSecretAt",
+    "logPressurePlate",
+    "triggerPressurePlate",
+    "applyDisplacementTileEntry",
+    "logPickup",
+    "pickUpItemAfterDisplacement",
+    "getTerrainName",
+    "describeLocation",
+    "setAutoPath"
+  ],
+  "selectedTests": 54,
+  "referenceTests": 50,
+  "missing": [],
+  "crlf": [],
+  "pngsIgnored": 6,
+  "staged": [],
+  "generationBaselinesUnchanged": {
+    "src/test/fixtures/generation_baseline.json": true,
+    "src/test/fixtures/deep_generation_baseline.json": true
+  },
+  "golden": {
+    "ai_docs/reports/u-r2-trace.json": "30d3d259904ae42eddd52b961d6a2e0845708bd950fb2ec5bf5547dc015296bb",
+    "ai_docs/reports/u-r3-trace.json.gz": "212a6649ace6aa7f7709712d0b0126c8489e5bfb5716b0f67dcefc5c58206829",
+    "ai_docs/reports/u-r4-trace.json.gz": "f358b4f07c8e33dcccc40001a82ebfd397ea67e27f3cf08cdffa1f3a5649e444"
+  }
+}

@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/13b1/brogue/brogue-web
+
+(node:68794) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/x3_u6_messages.test.ts (48 tests | 1 failed) 8050ms
+     × native plate entry warns for a visible creature; invisible occupant only clicks; unseen stays silent 257ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u6_messages.test.ts > X3-U6 CE prose and acknowledgment producers > native plate entry warns for a visible creature; invisible occupant only clicks; unseen stays silent
+AssertionError: expected { id: +0, …(5) } to match object { text: 'a pressure plate clicks!' }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "text": "a pressure plate clicks!",
++   "text": "a pressure plate clicks underneath Rat!",
+  }
+
+ ❯ src/test/x3_u6_messages.test.ts:200:36
+    198|         privateGame(g).applyDisplacementTileEntry(rat); expect(logger.…
+    199|         logger.reset(); rat.setStatusDuration('invisible',5); privateG…
+    200|         expect(logger.messages[0]).toMatchObject({ text: 'a pressure p…
+       |                                    ^
+    201|         logger.reset(); g.grid.getCell(12,10)!.isVisible = false; priv…
+    202|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 47 passed (48)
+   Start at  22:01:57
+   Duration  8.85s (transform 415ms, setup 0ms, import 721ms, tests 8.05s, environment 0ms)
+

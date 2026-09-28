@@ -151,7 +151,7 @@ onUnmounted(() => {
           v-for="(msg, index) in logs" 
           :key="msg.id" 
           class="log-message"
-          :class="{ 'log-latest': index === 0 }"
+          :class="{ 'log-latest': index === 0, 'log-acknowledge': msg.acknowledge }"
           :style="{ color: msg.color }"
         >
           <span class="log-bullet">›</span> 
@@ -164,6 +164,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.log-acknowledge { border-left: 2px solid #facc15; padding-left: 6px; font-weight: 600; }
 .monster-panel { max-height: 28vh; overflow-y: auto; margin-bottom: 1rem; padding: .65rem; background: rgba(0,0,0,.3); border-radius: 8px; }
 .monster-heading { font-size: .75rem; color: var(--text-secondary); margin-bottom: .5rem; }
 .monster-entry { margin-bottom: .55rem; font-family: var(--font-mono); font-size: .8rem; }

@@ -248,10 +248,11 @@ export function objectiveTimeBlock(ports: TimePorts): void {
             const food = ports.world.player.inventory.items.find(i => i.category === ItemCategory.FOOD);
             if (food) {
                 const name = (food as Item & { consumableId?: string }).consumableId === 'mango'
-                    ? 'mango' : 'ration of food';
+                    ? i18next.t('name.Mango', { defaultValue: 'mango' })
+                    : i18next.t('name.Ration of Food', { defaultValue: 'ration of food' });
                 logger.log(i18next.t('food.auto_eat', {
                     food: name, defaultValue: `Unable to control your hunger, you eat a ${name}.`,
-                }), '#ffcc44');
+                }), '#ffcc44', { acknowledge: true });
                 if (ports.effects.consumeFood(food, false)) {
                     // CE calls playerTurnEnded within checkNutrition. The pending player
                     // ticks are consumed by that nested turn, with no new action delay.
@@ -369,6 +370,9 @@ export function playerTurnEnded(ports: TimePorts): void {
         // 走得比环境更新更快的怪物不能悬在渊上行动）。CE :2492 位于
         // updateSafetyMap/气味等主观块之前；web 对应插在此处。
         ports.effects.monstersFall();
+
+        // CE Time.c:2500: messages in the advancing turn have its new number.
+        if (!ports.world.player.hasStatus('paralyzed')) logger.turn++;
 
         ports.effects.syncEquipmentStatuses();
 

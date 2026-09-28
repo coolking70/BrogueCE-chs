@@ -1,0 +1,68 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/13b1/brogue/brogue-web
+
+(node:68690) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ src/test/x3_u6_messages.test.ts (48 tests | 3 failed) 6121ms
+     × uses all layers, diagonal obstruction, secret shores, and no RNG 3ms
+     × native plate entry warns for a visible creature; invisible occupant only clicks; unseen stays silent 195ms
+     × distinguishes dark exploration, exhausted exploration, unexplored destination and no path 249ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u6_messages.test.ts > X3-U6 mapToShore and warning latch > uses all layers, diagonal obstruction, secret shores, and no RNG
+AssertionError: expected 2 to be 30000 // Object.is equality
+
+- Expected
++ Received
+
+- 30000
++ 2
+
+ ❯ src/test/x3_u6_messages.test.ts:122:46
+    120|         grid.setTerrain(4, 3, T.TRAP_DOOR_HIDDEN); expect(buildMapToSh…
+    121|         grid.setTerrain(4, 3, T.GRANITE); grid.setTerrain(1, 4, T.GRAN…
+    122|         expect(buildMapToShore(grid)[4]![4]).toBe(30000);
+       |                                              ^
+    123|         grid.setTerrain(4, 3, T.DOOR); expect(buildMapToShore(grid)[4]…
+    124|         expect(rng.getState()).toEqual(random);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/x3_u6_messages.test.ts > X3-U6 CE prose and acknowledgment producers > native plate entry warns for a visible creature; invisible occupant only clicks; unseen stays silent
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/x3_u6_messages.test.ts:198:139
+    196|         const g = scene(), rat = new Monster(12,10,monsters.find(m => …
+    197|         g.monsters.push(rat); g.grid.setTerrain(12,10,T.GAS_TRAP_POISO…
+    198|         privateGame(g).handleSpecialTileEntry(rat); expect(logger.mess…
+       |                                                                                                                                           ^
+    199|         logger.reset(); rat.setStatusDuration('invisible',5); privateG…
+    200|         expect(logger.messages[0]).toMatchObject({ text: 'a pressure p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/x3_u6_messages.test.ts > X3-U6 CE prose and acknowledgment producers > distinguishes dark exploration, exhausted exploration, unexplored destination and no path
+TypeError: Cannot read properties of undefined (reading 'text')
+ ❯ src/test/x3_u6_messages.test.ts:227:36
+    225|         expect(logger.messages[0]!.text).toBe('You have not explored t…
+    226|         g.grid.getCell(25,10)!.isMagicMapped = true; g.grid.setTerrain…
+    227|         expect(logger.messages[0]!.text).toBe('No path is available.');
+       |                                    ^
+    228|     });
+    229|     it('C13 leaves no Chinese defaults in Game and C04 flags every exi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 45 passed (48)
+   Start at  22:00:50
+   Duration  6.91s (transform 435ms, setup 0ms, import 715ms, tests 6.12s, environment 0ms)
+
