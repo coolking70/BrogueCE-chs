@@ -1,0 +1,60 @@
+import {test} from 'vitest';
+import fs from 'node:fs';
+import * as DFMod from '../src/engine/Map/DungeonFeatureCatalog';
+import {AUTO_GENERATOR_CATALOG} from '../src/engine/Map/AutoGenerator';
+import {TerrainType} from '../src/engine/Map/TerrainType';
+import {TERRAIN_FLAGS} from '../src/engine/Map/TerrainCatalog';
+import {ItemLoader} from '../src/engine/Items/ItemLoader';
+import {ItemCategory} from '../src/engine/Items/Item';
+import {generateItemDetail} from '../src/engine/UI/DetailGenerator';
+import {itemKnowledge} from '../src/engine/UI/ItemKnowledge';
+import {rng} from '../src/engine/Random';
+import {Game} from '../src/engine/Core/Game';
+import i18next from 'i18next';
+import zh from '../src/locales/zh_CN.json';
+import {CEBoltType,CE_BOLT_CATALOG,CE_ITEM_BOLT_TYPES} from '../src/engine/Combat/BoltCatalog';
+import {MONSTER_BOLT_TABLE} from '../src/engine/Combat/Bolt';
+const dir='ai_docs/reports/x-4-evidence';
+const save=(name:string,v:any)=>fs.writeFileSync(`${dir}/${name}.txt`,JSON.stringify(v,null,2)+'\n');
+test('X4 runtime catalog and item text matrix',()=>{
+ i18next.init({lng:'zh_CN',resources:{zh_CN:{translation:zh}},initImmediate:false});rng.seedRandomGenerator(400000);ItemLoader.initConsumables();
+ const df=Object.values(DFMod.DUNGEON_FEATURE_CATALOG).map((v:any)=>({...v,name:DFMod.DF[v.id],tileName:TerrainType[v.tile],propagationName:TerrainType[v.propagationTerrain],subsequentName:DFMod.DF[v.subsequentDF],localized:(Game.prototype as any).dungeonFeatureDescription(v.description)}));
+ const ag=AUTO_GENERATOR_CATALOG.map(v=>({...v,tileName:TerrainType[v.terrain!],dfName:DFMod.DF[v.df!]}));
+ save('web-catalogs',{DF:DFMod.DF,df,dfMissingTiles:DFMod.DF_MISSING_TILES,ag,terrain:TerrainType,terrainFlags:TERRAIN_FLAGS,terrainNames:Object.fromEntries(Object.entries(TerrainType).filter(([,v])=>typeof v==='number').map(([k,v])=>[k,(Game.prototype as any).getTerrainName(v)])),metered:ItemLoader.CE_METERED_ITEMS_TABLE,weaponRunics:(ItemLoader as any).WEAPON_RUNIC_BY_CE_INDEX,armorRunics:(ItemLoader as any).ARMOR_RUNIC_BY_CE_INDEX});
+ save('bolt-identities',{types:CEBoltType,catalog:CE_BOLT_CATALOG,items:CE_ITEM_BOLT_TYPES,monsters:MONSTER_BOLT_TABLE});
+ const specs=[['weapons','spawnWeapon'],['armors','spawnArmor'],['potions','spawnPotion'],['scrolls','spawnScroll'],['food','spawnFood'],['wands','spawnWand'],['staffs','spawnStaff'],['rings','spawnRing'],['charms','spawnCharm'],['keys','spawnKey'],['amulets','spawnAmulet']];
+ const rows:any[]=[];const spawnFailures:any[]=[];
+ for(const [group,method] of [...specs,['gold','spawnGold'],['gem','spawnGem']]){
+  const configs=(ItemLoader as any)[group]??[{id:group}];
+  for(const config of configs){
+   for(const state of ['unknown','kind_known','fully_known','magic_detected','curse_known']){
+    rng.seedRandomGenerator(98765);ItemLoader.identifiedItems.clear();ItemLoader.magicPolarityRevealed.clear();
+    const item=(ItemLoader as any)[method](group==='gold'?23:group==='gem'?8:config.id,1,1);
+    if(!item){spawnFailures.push({group,id:config.id,state});continue;}
+    const id=item.identityId??item.consumableId;
+    const nominalState=state;
+    const curseApplicable=['weapons','armors','rings'].includes(group)&&!['dart','incendiary_dart','javelin'].includes(config.id);
+    const alwaysKnown=['food','charms','keys','amulets','gold','gem'].includes(group);
+    const effectiveState=alwaysKnown?'fully_known':state==='curse_known'&&!curseApplicable?'kind_known':state;
+    // The five requested state columns collapse to natural known state for non-identifiable categories.
+    if(alwaysKnown||['kind_known','fully_known'].includes(effectiveState)){if(id)ItemLoader.identifiedItems.add(id);}
+    item.identified=alwaysKnown||effectiveState==='fully_known';
+    item.originDepth=8;item.enchantment=effectiveState==='curse_known'?-2:2;
+    item.isCursed=effectiveState==='curse_known'&&curseApplicable;item.magicDetected=['magic_detected','curse_known'].includes(effectiveState);
+    if(effectiveState==='magic_detected'&&id)ItemLoader.magicPolarityRevealed.add(id);
+    item.runicKnown=effectiveState==='fully_known';
+    if(group==='staffs'){item.maxCharges=2;item.charges=2;}
+    const detail=generateItemDetail(item,14);const lines=detail.sections.flatMap(s=>s.lines).map(l=>l.text).filter(Boolean);
+    rows.push({group,id:config.id,excluded:!!config.excludeFromGeneration,state,applicability:alwaysKnown?'non-identifiable; normalized known':state==='curse_known'&&!curseApplicable?'curse not applicable; normalized kind-known':'applicable',knowledge:itemKnowledge(item),instanceDescription:item.description??null,catalogDescription:config.description??null,empty:lines.length===0,lineCount:lines.length,detail});
+   }
+  }
+ }
+ const runics:any[]=[];
+ for(const [category,method,id,kinds] of [['weapon','spawnWeapon','dagger',(ItemLoader as any).WEAPON_RUNIC_BY_CE_INDEX],['armor','spawnArmor','leather_armor',(ItemLoader as any).ARMOR_RUNIC_BY_CE_INDEX]])for(const kind of kinds){
+  const item=(ItemLoader as any)[method as string](id,1,1);if(!item)continue;
+  item.runicType=kind;item.runicKnown=true;item.identified=true;item.enchantment=3;ItemLoader.identifiedItems.add(id as string);
+  runics.push({category,kind,detail:generateItemDetail(item,14)});
+ }
+ save('item-details',{rows,spawnFailures,runics,summary:{combinations:rows.length,empty:rows.filter(r=>r.empty).length,activeCombinations:rows.filter(r=>!r.excluded).length,activeEmpty:rows.filter(r=>!r.excluded&&r.empty).length,byGroup:Object.fromEntries([...specs.map(s=>s[0]),'gold','gem'].map(g=>[g,Object.fromEntries(['unknown','kind_known','fully_known','magic_detected','curse_known'].map(s=>{const rs=rows.filter(r=>r.group===g&&r.state===s&&!r.excluded);return [s,{total:rs.length,empty:rs.filter(r=>r.empty).length}]}))]))}});
+ console.log(JSON.stringify({rows:rows.length,empty:rows.filter(r=>r.empty).length,spawnFailures:spawnFailures.length}));
+});

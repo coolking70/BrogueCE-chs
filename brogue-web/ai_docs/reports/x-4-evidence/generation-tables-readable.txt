@@ -1,0 +1,516 @@
+自动生成行：CE期望是抽取/请求次数，不是CE实际成功次数。
+index	CE target	depth	freq	CE expected requests	web requests	web built	location misses
+0	DF_GRANITE_COLUMN	[1, 40]	60	0	0	0	0
+1	DF_CRYSTAL_WALL	[14, 40]	15	4161.42	4160	1848	0
+2	DF_LUMINESCENT_FUNGUS	[7, 40]	15	18005.913	18022	18022	0
+3	DF_GRASS	[0, 10]	0	2600.0	2600	2600	0
+4	DF_DEAD_GRASS	[4, 9]	0	850.0	850	850	0
+5	DF_DEAD_GRASS	[9, 14]	0	700.0	700	700	0
+6	DF_BONES	[12, 39]	30	595.14	591	591	0
+7	DF_RUBBLE	[0, 39]	30	828.945	875	875	0
+8	DF_FOLIAGE	[0, 8]	15	476.496	485	485	0
+9	DF_FUNGUS_FOREST	[13, 40]	30	10074.49	10075	10075	0
+10	DF_BUILD_ALGAE_WELL	[10, 40]	50	1162.5	1176	0	1176
+11	STATUE_INERT	[6, 39]	5	4665.375	4659	4659	0
+12	STATUE_INERT	[10, 39]	50	1312.5	1432	1306	0
+13	TORCH_WALL	[6, 39]	5	16436.703	16441	16441	0
+14	GAS_TRAP_POISON	[2, 4]	20	30.0	28	24	0
+15	NET_TRAP	[2, 5]	20	40.0	44	41	0
+16	MT_PARALYSIS_TRAP_AREA	[2, 6]	20	50.0	49	49	0
+17	ALARM_TRAP	[4, 7]	20	40.0	39	35	0
+18	GAS_TRAP_CONFUSION	[2, 10]	20	90.0	90	81	0
+19	FLAMETHROWER	[4, 12]	20	90.0	75	69	0
+20	FLOOD_TRAP	[10, 14]	20	50.0	54	48	0
+21	GAS_TRAP_POISON_HIDDEN	[5, 39]	20	2170.0	2175	1994	0
+22	NET_TRAP_HIDDEN	[6, 39]	20	2108.0	2091	1902	0
+23	MT_PARALYSIS_TRAP_HIDDEN_AREA	[7, 39]	20	2046.0	2037	2037	0
+24	ALARM_TRAP_HIDDEN	[8, 39]	20	1920.0	1929	1735	0
+25	TRAP_DOOR_HIDDEN	[9, 39]	20	1860.0	1857	1697	0
+26	GAS_TRAP_CONFUSION_HIDDEN	[11, 39]	20	1798.0	1792	1636	0
+27	FLAMETHROWER_HIDDEN	[13, 39]	20	1674.0	1683	1512	0
+28	FLOOD_TRAP_HIDDEN	[15, 39]	20	1550.0	1582	1436	0
+29	MT_SWAMP_AREA	[1, 39]	30	760.5	756	756	0
+30	DF_SUNLIGHT	[0, 5]	15	277.993	277	277	0
+31	DF_DARKNESS	[1, 15]	15	1100.103	1106	1106	0
+32	STEAM_VENT	[16, 39]	30	1668.0	1686	1686	0
+33	CRYSTAL_WALL	[40, 40]	100	30000.0	30000	25577	4423
+34	DF_CARPET_AREA	[8, 39]	2	32.64	40	40	0
+35	DF_CARPET_AREA	[8, 39]	2	32.64	24	24	0
+36	DF_CARPET_AREA	[8, 39]	2	32.64	37	37	0
+37	DF_CARPET_AREA	[8, 39]	2	32.64	33	33	0
+38	DF_LUMINESCENT_FUNGUS	[40, 40]	100	10000.0	10000	10000	0
+39	MT_BLOODFLOWER_AREA	[1, 30]	25	602.93	595	592	0
+40	MT_SHRINE_AREA	[5, 26]	7	77.0	91	82	0
+41	MT_IDYLL_AREA	[1, 5]	15	37.5	40	40	0
+42	MT_REMNANT_AREA	[10, 40]	15	267.375	271	271	0
+43	MT_DISMAL_AREA	[7, 40]	12	231.812	237	237	0
+44	MT_BRIDGE_TURRET_AREA	[5, 39]	6	111.3	111	39	0
+45	MT_LAKE_PATH_TURRET_AREA	[5, 39]	6	111.3	118	42	0
+46	MT_TRICK_STATUE_AREA	[6, 39]	15	298.987	290	290	0
+47	MT_SENTINEL_AREA	[12, 39]	10	154.0	132	132	0
+48	MT_WORM_AREA	[12, 39]	12	190.579	201	201	0
+
+所有蓝图：CE frequency=0 仍可能有强制入口。
+id	name	depth	freq	web built
+1	reward_mixed_library	[1, 12]	30	62
+2	reward_single_category_library	[1, 12]	15	30
+3	reward_treasure_room	[8, 26]	20	24
+4	reward_pedestal_permanent	[5, 16]	30	42
+5	reward_pedestal_consumable	[10, 26]	30	44
+6	reward_commutation	[13, 26]	50	54
+7	reward_resurrection_altar	[13, 26]	30	28
+8	reward_outsourced_item	[5, 17]	20	25
+9	reward_chained_allies	[5, 26]	12	24
+10	reward_kennel	[5, 26]	12	10
+11	reward_vampire_lair	[10, 26]	5	9
+12	reward_legendary_ally	[8, 26]	15	16
+13	reward_goblin_warren	[5, 15]	15	7
+14	reward_sentinel_sanctuary	[10, 23]	15	9
+15	reward_statuary	[10, 26]	0	0
+16	vestibule_locked	[1, 26]	100	267
+17	vestibule_secret_door	[2, 26]	1	2
+18	vestibule_secret_lever	[4, 26]	8	19
+19	vestibule_flammable_barricade	[1, 6]	10	6
+20	vestibule_statue_doorway	[1, 26]	6	19
+21	vestibule_statue_monster	[5, 26]	6	10
+22	vestibule_throwing_tutorial	[1, 4]	8	6
+23	vestibule_pit_trap_field	[1, 26]	8	22
+24	vestibule_beckoning_obstacle	[5, 26]	8	12
+25	vestibule_guardian_obstacle	[6, 26]	8	14
+26	key_nested_library	[1, 26]	35	69
+27	key_secret_room	[1, 26]	1	4
+28	key_throwing_tutorial_cage	[1, 4]	8	6
+29	key_rat_trap_dormant	[1, 8]	7	7
+30	key_fun_with_fire	[3, 10]	10	2
+31	ce_31_environment	[3, 26]	10	4
+32	key_fire_trap_room	[4, 26]	6	5
+33	key_thief_area	[3, 26]	10	24
+34	ce_34_environment	[1, 26]	13	26
+35	key_pit_trap	[1, 26]	10	14
+36	ce_36_environment	[1, 13]	10	8
+37	ce_37_environment	[7, 26]	10	6
+38	ce_38_environment	[3, 13]	7	3
+39	ce_39_environment	[3, 13]	3	8
+40	key_poison_gas	[4, 26]	7	7
+41	key_explosive_trap	[7, 26]	10	1
+42	key_burning_grass	[1, 7]	10	6
+43	key_statuary	[10, 26]	10	18
+44	ce_44_environment	[4, 26]	8	10
+45	key_guardian_gauntlet	[6, 26]	10	10
+46	key_guardian_corridor	[4, 26]	5	0
+47	key_sacrifice_altar	[4, 26]	12	20
+49	key_beckoning_obstacle	[5, 26]	10	4
+50	key_worm_trap	[12, 26]	7	0
+51	key_mud_pit	[12, 26]	10	7
+52	key_electric_crystals	[6, 26]	10	5
+53	key_zombie_crypt	[12, 26]	10	1
+54	key_haunted_house	[16, 26]	10	3
+55	key_worm_tunnels	[8, 26]	10	5
+56	key_turret_trap	[5, 24]	10	31
+57	key_boss_secret_room	[5, 26]	18	23
+58	ce_58_bloodwort	[1, 40]	0	592
+59	ce_59_shrine	[1, 40]	0	82
+60	ce_60_idyll	[1, 40]	0	40
+61	ce_61_swamp	[1, 40]	0	756
+62	ce_62_camp	[1, 40]	0	0
+63	ce_63_remnant	[1, 40]	0	271
+64	ce_64_dismal	[1, 40]	0	237
+65	ce_65_environment	[1, 39]	0	39
+66	ce_66_environment	[1, 40]	0	42
+67	trap_paralysis_revealed	[1, 40]	0	49
+68	trap_paralysis_hidden	[1, 40]	0	2037
+69	area_trick_statue	[1, 40]	0	290
+70	area_worm	[1, 40]	0	201
+71	ce_71_sentinels	[1, 40]	0	132
+
+所有物品种类：floor + carried instances; stack is one instance, gold counts piles.
+CE kind	web kind	CE frequency	web instances
+DAGGER	dagger	10	59
+SWORD	sword	10	53
+BROADSWORD	broadsword	10	46
+WHIP	whip	10	33
+RAPIER	rapier	10	45
+FLAIL	flail	10	41
+MACE	mace	10	50
+HAMMER	war_hammer	10	38
+SPEAR	spear	10	50
+PIKE	war_pike	10	33
+AXE	axe	10	43
+WAR_AXE	war_axe	10	53
+DART	dart	0	0
+INCENDIARY_DART	incendiary_dart	10	41
+JAVELIN	javelin	10	36
+LEATHER_ARMOR	leather_armor	10	94
+SCALE_MAIL	scale_mail	10	84
+CHAIN_MAIL	chain_mail	10	77
+BANDED_MAIL	banded_mail	10	85
+SPLINT_MAIL	splint_mail	10	85
+PLATE_MAIL	plate_mail	10	84
+RATION	ration_of_food	3	722
+FRUIT	mango	1	212
+KEY_DOOR	iron_key	1	267
+KEY_CAGE	cage_key	1	27
+KEY_PORTAL	crystal_orb	1	16
+POTION_LIFE	potion_of_life	0	332
+POTION_STRENGTH	potion_of_strength	0	431
+POTION_TELEPATHY	potion_of_telepathy	20	183
+POTION_LEVITATION	potion_of_levitation	15	149
+POTION_DETECT_MAGIC	potion_of_detect_magic	20	200
+POTION_HASTE_SELF	potion_of_haste	10	86
+POTION_FIRE_IMMUNITY	potion_of_fire_immunity	15	143
+POTION_INVISIBILITY	potion_of_invisibility	15	143
+POTION_POISON	potion_of_poison	15	144
+POTION_PARALYSIS	potion_of_paralysis	10	87
+POTION_HALLUCINATION	potion_of_hallucination	10	89
+POTION_CONFUSION	potion_of_confusion	15	152
+POTION_INCINERATION	potion_of_incineration	15	171
+POTION_DARKNESS	potion_of_darkness	7	55
+POTION_DESCENT	potion_of_descent	15	153
+POTION_LICHEN	potion_of_creeping_death	7	72
+SCROLL_ENCHANTING	scroll_of_enchantment	0	749
+SCROLL_IDENTIFY	scroll_of_identify	30	241
+SCROLL_TELEPORT	scroll_of_teleportation	10	88
+SCROLL_REMOVE_CURSE	scroll_of_remove_curse	15	116
+SCROLL_RECHARGING	scroll_of_recharging	12	98
+SCROLL_PROTECT_ARMOR	scroll_of_protect_armor	10	67
+SCROLL_PROTECT_WEAPON	scroll_of_protect_weapon	10	84
+SCROLL_SANCTUARY	scroll_of_sanctuary	10	104
+SCROLL_MAGIC_MAPPING	scroll_of_magic_mapping	12	105
+SCROLL_NEGATION	scroll_of_negation	8	70
+SCROLL_SHATTERING	scroll_of_shattering	8	86
+SCROLL_DISCORD	scroll_of_discord	8	87
+SCROLL_AGGRAVATE_MONSTER	scroll_of_aggravate_monsters	15	0
+SCROLL_SUMMON_MONSTER	scroll_of_summon_monsters	10	83
+WAND_TELEPORT	wand_of_teleportation	3	41
+WAND_SLOW	wand_of_slowness	3	22
+WAND_POLYMORPH	wand_of_polymorphism	3	30
+WAND_NEGATION	wand_of_negation	3	30
+WAND_DOMINATION	wand_of_domination	1	8
+WAND_BECKONING	wand_of_beckoning	3	32
+WAND_PLENTY	wand_of_plenty	2	19
+WAND_INVISIBILITY	wand_of_invisibility	3	40
+WAND_EMPOWERMENT	wand_of_empowerment	1	13
+STAFF_LIGHTNING	staff_of_lightning	15	44
+STAFF_FIRE	staff_of_fire	15	44
+STAFF_POISON	staff_of_poison	10	26
+STAFF_TUNNELING	staff_of_tunneling	10	30
+STAFF_BLINKING	staff_of_blinking	11	40
+STAFF_ENTRANCEMENT	staff_of_entrancement	6	20
+STAFF_OBSTRUCTION	staff_of_obstruction	10	37
+STAFF_DISCORD	staff_of_discord	10	36
+STAFF_CONJURATION	staff_of_conjuration	8	34
+STAFF_HEALING	staff_of_healing	5	17
+STAFF_HASTE	staff_of_haste	5	15
+STAFF_PROTECTION	staff_of_protection	5	11
+RING_CLAIRVOYANCE	ring_of_clairvoyance	1	31
+RING_STEALTH	ring_of_stealth	1	39
+RING_REGENERATION	ring_of_regeneration	1	38
+RING_TRANSFERENCE	ring_of_transference	1	29
+RING_LIGHT	ring_of_light	1	33
+RING_AWARENESS	ring_of_awareness	1	31
+RING_WISDOM	ring_of_wisdom	1	28
+RING_REAPING	ring_of_reaping	1	29
+CHARM_HEALTH	charm_of_health	5	13
+CHARM_PROTECTION	charm_of_protection	5	26
+CHARM_HASTE	charm_of_speed	5	12
+CHARM_FIRE_IMMUNITY	charm_of_fire_immunity	3	12
+CHARM_INVISIBILITY	charm_of_invisibility	5	16
+CHARM_TELEPATHY	charm_of_telepathy	3	8
+CHARM_LEVITATION	charm_of_levitation	1	6
+CHARM_SHATTERING	charm_of_shattering	1	7
+CHARM_GUARDIAN	charm_of_guardian	5	20
+CHARM_TELEPORTATION	charm_of_teleportation	4	4
+CHARM_RECHARGING	charm_of_recharging	5	17
+CHARM_NEGATION	charm_of_negation	5	25
+GOLD	金币	category/forced	5445
+AMULET	amulet_of_yendor	category/forced	50
+GEM	lumenstone	category/forced	1246
+
+所有怪物：active + dormant, spawn snapshot only.
+CE species	web species	instances	CE horde references
+MK_YOU	@Player	0	[]
+MK_RAT	rat	523	[{'line': 746, 'min': '1', 'max': '5', 'frequency': '150', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_KOBOLD	kobold	608	[{'line': 747, 'min': '1', 'max': '6', 'frequency': '150', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 825, 'min': '1', 'max': '5', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 828, 'min': '5', 'max': '11', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}]
+MK_JACKAL	jackal	614	[{'line': 748, 'min': '1', 'max': '3', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 749, 'min': '3', 'max': '7', 'frequency': '50', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 767, 'min': '6', 'max': '12', 'frequency': '40', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 945, 'min': '6', 'max': '12', 'frequency': '40', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'member'}]
+MK_EEL	eel	599	[{'line': 750, 'min': '2', 'max': '17', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 772, 'min': '8', 'max': '22', 'frequency': '70', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 853, 'min': '2', 'max': '7', 'frequency': '100', 'flags': 'HORDE_MACHINE_WATER_MONSTER', 'machine': '0', 'role': 'leader'}, {'line': 854, 'min': '5', 'max': '15', 'frequency': '100', 'flags': 'HORDE_MACHINE_WATER_MONSTER', 'machine': '0', 'role': 'leader'}, {'line': 856, 'min': '12', 'max': 'DEEPEST_LEVEL', 'frequency': '80', 'flags': 'HORDE_MACHINE_WATER_MONSTER', 'machine': '0', 'role': 'member'}]
+MK_MONKEY	monkey	357	[{'line': 751, 'min': '2', 'max': '9', 'frequency': '50', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 763, 'min': '5', 'max': '13', 'frequency': '20', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 825, 'min': '1', 'max': '5', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 891, 'min': '1', 'max': '5', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 906, 'min': '1', 'max': '5', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 920, 'min': '1', 'max': '14', 'frequency': '100', 'flags': 'HORDE_MACHINE_THIEF', 'machine': '0', 'role': 'leader'}, {'line': 924, 'min': '1', 'max': '5', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_BLOAT	bloat	323	[{'line': 752, 'min': '2', 'max': '13', 'frequency': '30', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 754, 'min': '14', 'max': '26', 'frequency': '30', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_PIT_BLOAT	pit_bloat	92	[{'line': 753, 'min': '2', 'max': '13', 'frequency': '10', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 755, 'min': '14', 'max': '26', 'frequency': '10', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_GOBLIN	goblin	2137	[{'line': 757, 'min': '3', 'max': '10', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 761, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 767, 'min': '6', 'max': '12', 'frequency': '40', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 778, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 819, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_SUMMONED_AT_DISTANCE', 'machine': '0', 'role': 'member'}, {'line': 826, 'min': '3', 'max': '7', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 827, 'min': '4', 'max': '10', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 847, 'min': '2', 'max': '10', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'member'}, {'line': 871, 'min': '1', 'max': '6', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 892, 'min': '1', 'max': '8', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 907, 'min': '1', 'max': '8', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 925, 'min': '3', 'max': '10', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}, {'line': 942, 'min': '1', 'max': '10', 'frequency': '100', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'leader'}, {'line': 944, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 945, 'min': '6', 'max': '12', 'frequency': '40', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'leader'}, {'line': 947, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 948, 'min': '3', 'max': '7', 'frequency': '10', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}]
+MK_GOBLIN_CONJURER	goblin_conjurer	535	[{'line': 758, 'min': '3', 'max': '10', 'frequency': '60', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 768, 'min': '7', 'max': '15', 'frequency': '40', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 778, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 813, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'leader'}, {'line': 819, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_SUMMONED_AT_DISTANCE', 'machine': '0', 'role': 'member'}, {'line': 893, 'min': '2', 'max': '9', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 908, 'min': '2', 'max': '9', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 943, 'min': '1', 'max': '10', 'frequency': '60', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'leader'}, {'line': 946, 'min': '7', 'max': '15', 'frequency': '40', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'leader'}, {'line': 947, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}]
+MK_GOBLIN_MYSTIC	goblin_mystic	452	[{'line': 767, 'min': '6', 'max': '12', 'frequency': '40', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 768, 'min': '7', 'max': '15', 'frequency': '40', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 778, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}, {'line': 828, 'min': '5', 'max': '11', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 847, 'min': '2', 'max': '10', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'member'}, {'line': 861, 'min': '2', 'max': '8', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 894, 'min': '2', 'max': '9', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 909, 'min': '2', 'max': '9', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 945, 'min': '6', 'max': '12', 'frequency': '40', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'member'}, {'line': 946, 'min': '7', 'max': '15', 'frequency': '40', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': '0', 'role': 'member'}, {'line': 947, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'member'}]
+MK_GOBLIN_TOTEM	goblin_totem	683	[{'line': 761, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'leader'}, {'line': 778, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': 'MT_CAMP_AREA', 'role': 'leader'}, {'line': 944, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'leader'}, {'line': 947, 'min': '10', 'max': '17', 'frequency': '80', 'flags': 'HORDE_MACHINE_GOBLIN_WARREN', 'machine': 'MT_CAMP_AREA', 'role': 'leader'}]
+MK_PINK_JELLY	pink_jelly	488	[{'line': 760, 'min': '4', 'max': '13', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 793, 'min': '17', 'max': '23', 'frequency': '70', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_TOAD	toad	230	[{'line': 759, 'min': '4', 'max': '11', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_VAMPIRE_BAT	vampire_bat	384	[{'line': 764, 'min': '6', 'max': '13', 'frequency': '30', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 765, 'min': '6', 'max': '13', 'frequency': '70', 'flags': 'HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 815, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}]
+MK_ARROW_TURRET	arrow_turret	99	[{'line': 762, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'leader'}, {'line': 881, 'min': '5', 'max': '13', 'frequency': '100', 'flags': 'HORDE_MACHINE_TURRET', 'machine': '0', 'role': 'leader'}]
+MK_ACID_MOUND	acid_mound	409	[{'line': 766, 'min': '6', 'max': '13', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 773, 'min': '9', 'max': '13', 'frequency': '30', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_CENTIPEDE	centipede	185	[{'line': 769, 'min': '7', 'max': '14', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_OGRE	ogre	1108	[{'line': 771, 'min': '7', 'max': '13', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 782, 'min': '12', 'max': '19', 'frequency': '60', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'member'}, {'line': 786, 'min': '14', 'max': '20', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 814, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}, {'line': 827, 'min': '4', 'max': '10', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 829, 'min': '8', 'max': '15', 'frequency': '20', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 832, 'min': '17', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 859, 'min': '4', 'max': '13', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 872, 'min': '6', 'max': '12', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 895, 'min': '7', 'max': '17', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 910, 'min': '5', 'max': '15', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 926, 'min': '7', 'max': '13', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_BOG_MONSTER	bog_monster	1435	[{'line': 770, 'min': '7', 'max': '14', 'frequency': '80', 'flags': 'HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 783, 'min': '12', 'max': '26', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 887, 'min': '12', 'max': '26', 'frequency': '100', 'flags': 'HORDE_MACHINE_MUD', 'machine': '0', 'role': 'leader'}]
+MK_OGRE_TOTEM	ogre_totem	123	[{'line': 782, 'min': '12', 'max': '19', 'frequency': '60', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'leader'}]
+MK_SPIDER	spider	193	[{'line': 774, 'min': '9', 'max': '16', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_SPARK_TURRET	spark_turret	70	[{'line': 779, 'min': '11', 'max': '18', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'leader'}, {'line': 882, 'min': '11', 'max': '18', 'frequency': '100', 'flags': 'HORDE_MACHINE_TURRET', 'machine': '0', 'role': 'leader'}]
+MK_WILL_O_THE_WISP	wisp	174	[{'line': 776, 'min': '10', 'max': '17', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_WRAITH	wraith	815	[{'line': 777, 'min': '10', 'max': '17', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 796, 'min': '16', 'max': '23', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 865, 'min': '11', 'max': '20', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 873, 'min': '10', 'max': '17', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 928, 'min': '10', 'max': '17', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_ZOMBIE	zombie	177	[{'line': 780, 'min': '11', 'max': '18', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_TROLL	troll	341	[{'line': 781, 'min': '12', 'max': '19', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 830, 'min': '14', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 831, 'min': '12', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 832, 'min': '17', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 833, 'min': '12', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 836, 'min': '13', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 862, 'min': '10', 'max': '20', 'frequency': '50', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 875, 'min': '14', 'max': '21', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 896, 'min': '12', 'max': '21', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 911, 'min': '10', 'max': '19', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 927, 'min': '12', 'max': '19', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_OGRE_SHAMAN	ogre_shaman	168	[{'line': 786, 'min': '14', 'max': '20', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 814, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}, {'line': 832, 'min': '17', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}]
+MK_NAGA	naga	174	[{'line': 784, 'min': '13', 'max': '20', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 834, 'min': '14', 'max': '20', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 835, 'min': '13', 'max': '20', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 860, 'min': '12', 'max': '20', 'frequency': '50', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 874, 'min': '12', 'max': '19', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 897, 'min': '13', 'max': '23', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 912, 'min': '9', 'max': '20', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 929, 'min': '13', 'max': '20', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_SALAMANDER	salamander	122	[{'line': 785, 'min': '13', 'max': '20', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 834, 'min': '14', 'max': '20', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 835, 'min': '13', 'max': '20', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 836, 'min': '13', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 898, 'min': '9', 'max': '20', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}]
+MK_EXPLOSIVE_BLOAT	explosive_bloat	52	[{'line': 756, 'min': '10', 'max': '26', 'frequency': '10', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_DAR_BLADEMASTER	dar_blademaster	1010	[{'line': 775, 'min': '10', 'max': '14', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 792, 'min': '15', 'max': '17', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 798, 'min': '18', 'max': '25', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 833, 'min': '12', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 839, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 840, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 843, 'min': '20', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 844, 'min': '18', 'max': '25', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 863, 'min': '8', 'max': '16', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 901, 'min': '9', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 915, 'min': '9', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 930, 'min': '10', 'max': '20', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_DAR_PRIESTESS	dar_priestess	1713	[{'line': 792, 'min': '15', 'max': '17', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 793, 'min': '17', 'max': '23', 'frequency': '70', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 798, 'min': '18', 'max': '25', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 806, 'min': '27', 'max': 'DEEPEST_LEVEL-1', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 841, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 843, 'min': '20', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 844, 'min': '18', 'max': '25', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 864, 'min': '8', 'max': '14', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 902, 'min': '12', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 916, 'min': '12', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}]
+MK_DAR_BATTLEMAGE	dar_battlemage	1391	[{'line': 798, 'min': '18', 'max': '25', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 806, 'min': '27', 'max': 'DEEPEST_LEVEL-1', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 842, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 843, 'min': '20', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 844, 'min': '18', 'max': '25', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 903, 'min': '13', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 917, 'min': '13', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}]
+MK_ACID_JELLY	acidic_jelly	220	[{'line': 788, 'min': '14', 'max': '21', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}]
+MK_CENTAUR	centaur	362	[{'line': 787, 'min': '14', 'max': '21', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 831, 'min': '12', 'max': '19', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}]
+MK_UNDERWORM	underworm	392	[]
+MK_SENTINEL	sentinel	548	[]
+MK_DART_TURRET	dart_turret	27	[{'line': 789, 'min': '15', 'max': '22', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'leader'}, {'line': 883, 'min': '15', 'max': '22', 'frequency': '100', 'flags': 'HORDE_MACHINE_TURRET', 'machine': '0', 'role': 'leader'}]
+MK_KRAKEN	kraken	2129	[{'line': 794, 'min': '15', 'max': '30', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 808, 'min': '30', 'max': 'DEEPEST_LEVEL-1', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 855, 'min': '12', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_WATER_MONSTER', 'machine': '0', 'role': 'leader'}, {'line': 856, 'min': '12', 'max': 'DEEPEST_LEVEL', 'frequency': '80', 'flags': 'HORDE_MACHINE_WATER_MONSTER', 'machine': '0', 'role': 'leader'}, {'line': 888, 'min': '17', 'max': '26', 'frequency': '30', 'flags': 'HORDE_MACHINE_MUD', 'machine': '0', 'role': 'leader'}]
+MK_LICH	lich	0	[{'line': 816, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}, {'line': 817, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}, {'line': 818, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}]
+MK_PHYLACTERY	phylactery	2929	[{'line': 803, 'min': '22', 'max': 'DEEPEST_LEVEL-1', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 818, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}]
+MK_PIXIE	pixie	157	[{'line': 790, 'min': '14', 'max': '21', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 838, 'min': '14', 'max': '21', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 900, 'min': '11', 'max': '21', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 914, 'min': '11', 'max': '21', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}]
+MK_PHANTOM	phantom	231	[{'line': 795, 'min': '16', 'max': '23', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 816, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}]
+MK_FLAME_TURRET	flame_turret	49	[{'line': 791, 'min': '14', 'max': '24', 'frequency': '100', 'flags': 'HORDE_NO_PERIODIC_SPAWN', 'machine': '0', 'role': 'leader'}, {'line': 884, 'min': '17', 'max': '24', 'frequency': '100', 'flags': 'HORDE_MACHINE_TURRET', 'machine': '0', 'role': 'leader'}]
+MK_IMP	imp	415	[{'line': 797, 'min': '17', 'max': '24', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 837, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 838, 'min': '14', 'max': '21', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 840, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 842, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 899, 'min': '15', 'max': '26', 'frequency': '100', 'flags': 'HORDE_MACHINE_KENNEL | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 913, 'min': '15', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_VAMPIRE_FODDER | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 921, 'min': '15', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_THIEF', 'machine': '0', 'role': 'leader'}]
+MK_FURY	fury	1243	[{'line': 799, 'min': '18', 'max': '26', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 817, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}, {'line': 822, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'member'}, {'line': 837, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 839, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}, {'line': 841, 'min': '18', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'member'}]
+MK_REVENANT	revenant	1605	[{'line': 800, 'min': '19', 'max': '27', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 809, 'min': '32', 'max': 'DEEPEST_LEVEL-1', 'frequency': '20', 'flags': '0', 'machine': '0', 'role': 'member'}, {'line': 932, 'min': '21', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_TENTACLE_HORROR	tentacle_horror	4136	[{'line': 802, 'min': '22', 'max': 'DEEPEST_LEVEL-1', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 809, 'min': '32', 'max': 'DEEPEST_LEVEL-1', 'frequency': '20', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 843, 'min': '20', 'max': '26', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 867, 'min': '20', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 878, 'min': '29', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 933, 'min': '21', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_GOLEM	golem	10366	[{'line': 801, 'min': '21', 'max': '30', 'frequency': '100', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 806, 'min': '27', 'max': 'DEEPEST_LEVEL-1', 'frequency': '80', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 807, 'min': '30', 'max': 'DEEPEST_LEVEL-1', 'frequency': '20', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 844, 'min': '18', 'max': '25', 'frequency': '10', 'flags': 'HORDE_LEADER_CAPTIVE | HORDE_NEVER_OOD', 'machine': '0', 'role': 'leader'}, {'line': 866, 'min': '17', 'max': '23', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 876, 'min': '21', 'max': '30', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}, {'line': 931, 'min': '21', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_SACRIFICE_TARGET', 'machine': '0', 'role': 'leader'}]
+MK_DRAGON	dragon	5161	[{'line': 804, 'min': '24', 'max': 'DEEPEST_LEVEL-1', 'frequency': '70', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 805, 'min': '27', 'max': 'DEEPEST_LEVEL-1', 'frequency': '30', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 810, 'min': '34', 'max': 'DEEPEST_LEVEL-1', 'frequency': '20', 'flags': '0', 'machine': '0', 'role': 'leader'}, {'line': 868, 'min': '23', 'max': 'AMULET_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_CAPTIVE | HORDE_LEADER_CAPTIVE', 'machine': '0', 'role': 'leader'}, {'line': 877, 'min': '29', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_STATUE', 'machine': '0', 'role': 'leader'}]
+MK_GOBLIN_CHIEFTAN	goblin_warlord	13	[{'line': 819, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_SUMMONED_AT_DISTANCE', 'machine': '0', 'role': 'leader'}, {'line': 847, 'min': '2', 'max': '10', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'leader'}]
+MK_BLACK_JELLY	black_jelly	4	[{'line': 848, 'min': '5', 'max': '15', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'leader'}]
+MK_VAMPIRE	vampire	17	[{'line': 815, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}, {'line': 849, 'min': '10', 'max': 'DEEPEST_LEVEL', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'leader'}]
+MK_FLAMEDANCER	flamedancer	5	[{'line': 850, 'min': '10', 'max': 'DEEPEST_LEVEL', 'frequency': '50', 'flags': 'HORDE_MACHINE_BOSS', 'machine': '0', 'role': 'leader'}]
+MK_SPECTRAL_BLADE	spectral_blade	0	[{'line': 813, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'member'}, {'line': 821, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'member'}]
+MK_SPECTRAL_IMAGE	spectral_sword	0	[]
+MK_GUARDIAN	stone_guardian	80	[]
+MK_WINGED_GUARDIAN	winged_guardian	28	[]
+MK_CHARM_GUARDIAN	guardian_spirit	0	[]
+MK_WARDEN_OF_YENDOR	Warden_of_Yendor	0	[]
+MK_ELDRITCH_TOTEM	eldritch_totem	0	[{'line': 821, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'leader'}, {'line': 822, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED | HORDE_DIES_ON_LEADER_DEATH', 'machine': '0', 'role': 'leader'}]
+MK_MIRRORED_TOTEM	mirrored_totem	16	[]
+MK_UNICORN	unicorn	5	[{'line': 936, 'min': '1', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER', 'machine': '0', 'role': 'leader'}]
+MK_IFRIT	ifrit	3	[{'line': 937, 'min': '1', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER', 'machine': '0', 'role': 'leader'}]
+MK_PHOENIX	phoenix	0	[{'line': 820, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'member'}]
+MK_PHOENIX_EGG	phoenix_egg	5	[{'line': 820, 'min': '0', 'max': '0', 'frequency': '100', 'flags': 'HORDE_IS_SUMMONED', 'machine': '0', 'role': 'leader'}, {'line': 938, 'min': '1', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER', 'machine': '0', 'role': 'leader'}]
+MK_ANCIENT_SPIRIT	mangrove_dryad	3	[{'line': 939, 'min': '1', 'max': 'DEEPEST_LEVEL', 'frequency': '100', 'flags': 'HORDE_MACHINE_LEGENDARY_ALLY | HORDE_ALLIED_WITH_PLAYER', 'machine': '0', 'role': 'leader'}]
+
+所有地形：four layers, final entry snapshot; CE absent types explicitly zero.
+CE terrain	web terrain	status	cells
+NOTHING	NOTHING	exact	13247307
+GRANITE	GRANITE	exact	1237907
+FLOOR	FLOOR	exact	1215273
+FLOOR_FLOODABLE	FLOOR_FLOODABLE	exact	1775
+CARPET	CARPET	exact	37220
+MARBLE_FLOOR	MARBLE_FLOOR	exact	1150
+WALL	WALL	exact	1393909
+DOOR	DOOR	exact	11510
+OPEN_DOOR	OPEN_DOOR	exact	3
+SECRET_DOOR	SECRET_DOOR	exact	10534
+LOCKED_DOOR	LOCKED_DOOR	exact	267
+OPEN_IRON_DOOR_INERT	OPEN_IRON_DOOR_INERT	exact	0
+DOWN_STAIRS	STAIRS_DOWN	alias	1950
+UP_STAIRS	STAIRS_UP	alias	2000
+DUNGEON_EXIT	STAIRS_UP	alias	2000
+DUNGEON_PORTAL	DUNGEON_PORTAL	exact	50
+TORCH_WALL	TORCH_WALL	exact	24649
+CRYSTAL_WALL	CRYSTAL_WALL	exact	49229
+PORTCULLIS_CLOSED	PORTCULLIS_CLOSED	exact	13
+PORTCULLIS_DORMANT	PORTCULLIS_DORMANT	exact	7
+WOODEN_BARRICADE	WOODEN_BARRICADE	exact	21
+PILOT_LIGHT_DORMANT	PILOT_LIGHT_DORMANT	exact	7
+PILOT_LIGHT	PILOT_LIGHT	exact	0
+HAUNTED_TORCH_DORMANT	HAUNTED_TORCH_DORMANT	exact	27
+HAUNTED_TORCH_TRANSITIONING	HAUNTED_TORCH_TRANSITIONING	exact	0
+HAUNTED_TORCH	HAUNTED_TORCH	exact	0
+WALL_LEVER_HIDDEN	WALL_LEVER_HIDDEN	exact	28
+WALL_LEVER	WALL_LEVER	exact	0
+WALL_LEVER_PULLED	WALL_LEVER_PULLED	exact	0
+WALL_LEVER_HIDDEN_DORMANT	WALL_LEVER_HIDDEN_DORMANT	exact	7
+STATUE_INERT	STATUE_INERT	exact	8708
+STATUE_DORMANT	STATUE_DORMANT	exact	366
+STATUE_CRACKING	STATUE_CRACKING	exact	0
+STATUE_INSTACRACK	STATUE_INSTACRACK	exact	20
+PORTAL	PORTAL	exact	16
+TURRET_DORMANT	TURRET_DORMANT	exact	273
+WALL_MONSTER_DORMANT	WALL_MONSTER_DORMANT	exact	376
+DARK_FLOOR_DORMANT	DARK_FLOOR_DORMANT	exact	162
+DARK_FLOOR_DARKENING	DARK_FLOOR_DARKENING	exact	0
+DARK_FLOOR	DARK_FLOOR	exact	0
+MACHINE_TRIGGER_FLOOR	MACHINE_TRIGGER_FLOOR	exact	2619
+ALTAR_INERT	ALTAR	alias	68
+ALTAR_KEYHOLE	ALTAR_KEYHOLE	exact	16
+ALTAR_CAGE_OPEN	ALTAR_CAGE_OPEN	exact	798
+ALTAR_CAGE_CLOSED	ALTAR_CAGE_CLOSED	exact	0
+ALTAR_SWITCH	ALTAR_SWITCH	exact	104
+ALTAR_SWITCH_RETRACTING	ALTAR_SWITCH_RETRACTING	exact	32
+ALTAR_CAGE_RETRACTABLE	ALTAR_CAGE_RETRACTABLE	exact	11
+PEDESTAL	PEDESTAL	exact	126
+MONSTER_CAGE_OPEN	MONSTER_CAGE_OPEN	exact	0
+MONSTER_CAGE_CLOSED	MONSTER_CAGE_CLOSED	exact	70
+COFFIN_CLOSED	COFFIN_CLOSED	exact	17
+COFFIN_OPEN	COFFIN_OPEN	exact	0
+GAS_TRAP_POISON_HIDDEN	GAS_TRAP_POISON_HIDDEN	exact	1926
+GAS_TRAP_POISON	GAS_TRAP_POISON	exact	23
+TRAP_DOOR_HIDDEN	TRAP_DOOR_HIDDEN	exact	3198
+TRAP_DOOR	TRAP_DOOR	exact	69
+GAS_TRAP_PARALYSIS_HIDDEN	GAS_TRAP_PARALYSIS_HIDDEN	exact	3008
+GAS_TRAP_PARALYSIS	GAS_TRAP_PARALYSIS	exact	66
+MACHINE_PARALYSIS_VENT_HIDDEN	MACHINE_PARALYSIS_VENT_HIDDEN	exact	6401
+MACHINE_PARALYSIS_VENT	MACHINE_PARALYSIS_VENT	exact	0
+GAS_TRAP_CONFUSION_HIDDEN	GAS_TRAP_CONFUSION_HIDDEN	exact	1587
+GAS_TRAP_CONFUSION	GAS_TRAP_CONFUSION	exact	78
+FLAMETHROWER_HIDDEN	FLAMETHROWER_HIDDEN	exact	1681
+FLAMETHROWER	FLAMETHROWER	exact	68
+FLOOD_TRAP_HIDDEN	FLOOD_TRAP_HIDDEN	exact	1398
+FLOOD_TRAP	FLOOD_TRAP	exact	58
+NET_TRAP_HIDDEN	NET_TRAP_HIDDEN	exact	1841
+NET_TRAP	NET_TRAP	exact	40
+ALARM_TRAP_HIDDEN	ALARM_TRAP_HIDDEN	exact	1695
+ALARM_TRAP	ALARM_TRAP	exact	33
+MACHINE_POISON_GAS_VENT_HIDDEN	MACHINE_POISON_GAS_VENT_HIDDEN	exact	11
+MACHINE_POISON_GAS_VENT_DORMANT	MACHINE_POISON_GAS_VENT_DORMANT	exact	0
+MACHINE_POISON_GAS_VENT	MACHINE_POISON_GAS_VENT	exact	0
+MACHINE_METHANE_VENT_HIDDEN	MACHINE_METHANE_VENT_HIDDEN	exact	1
+MACHINE_METHANE_VENT_DORMANT	MACHINE_METHANE_VENT_DORMANT	exact	0
+MACHINE_METHANE_VENT	MACHINE_METHANE_VENT	exact	0
+STEAM_VENT	STEAM_VENT	exact	1659
+MACHINE_PRESSURE_PLATE	PRESSURE_PLATE	alias	1781
+MACHINE_PRESSURE_PLATE_USED	MACHINE_PRESSURE_PLATE_USED	exact	0
+MACHINE_GLYPH	MACHINE_GLYPH	exact	1171
+MACHINE_GLYPH_INACTIVE	MACHINE_GLYPH_INACTIVE	exact	0
+DEWAR_CAUSTIC_GAS	DEWAR_CAUSTIC_GAS	exact	33
+DEWAR_CONFUSION_GAS	DEWAR_CONFUSION_GAS	exact	22
+DEWAR_PARALYSIS_GAS	DEWAR_PARALYSIS_GAS	exact	30
+DEWAR_METHANE_GAS	DEWAR_METHANE_GAS	exact	30
+DEEP_WATER	WATER_DEEP	alias	14085
+SHALLOW_WATER	WATER_SHALLOW	alias	123224
+MUD	MUD	exact	91164
+CHASM	CHASM	exact	12836
+CHASM_EDGE	CHASM_EDGE	exact	4181
+MACHINE_COLLAPSE_EDGE_DORMANT	MACHINE_COLLAPSE_EDGE_DORMANT	exact	56
+MACHINE_COLLAPSE_EDGE_SPREADING	MACHINE_COLLAPSE_EDGE_SPREADING	exact	0
+LAVA	LAVA	exact	8106
+LAVA_RETRACTABLE	LAVA_RETRACTABLE	exact	283
+LAVA_RETRACTING	LAVA_RETRACTING	exact	0
+SUNLIGHT_POOL	SUNLIGHT_POOL	exact	4287
+DARKNESS_PATCH	DARKNESS_PATCH	exact	9690
+ACTIVE_BRIMSTONE	ACTIVE_BRIMSTONE	exact	3330
+INERT_BRIMSTONE	INERT_BRIMSTONE	exact	1341
+OBSIDIAN	OBSIDIAN	exact	4172
+BRIDGE	BRIDGE	exact	106
+BRIDGE_FALLING	BRIDGE_FALLING	exact	0
+BRIDGE_EDGE	BRIDGE_EDGE	exact	44
+STONE_BRIDGE	STONE_BRIDGE	exact	759
+MACHINE_FLOOD_WATER_DORMANT	MACHINE_FLOOD_WATER_DORMANT	exact	66
+MACHINE_FLOOD_WATER_SPREADING	MACHINE_FLOOD_WATER_SPREADING	exact	0
+MACHINE_MUD_DORMANT	MACHINE_MUD_DORMANT	exact	102
+ICE_DEEP	None	missing	0
+ICE_DEEP_MELT	None	missing	0
+ICE_SHALLOW	None	missing	0
+ICE_SHALLOW_MELT	None	missing	0
+HOLE	HOLE	exact	0
+HOLE_GLOW	None	missing	0
+HOLE_EDGE	HOLE_EDGE	exact	0
+FLOOD_WATER_DEEP	FLOOD_WATER_DEEP	exact	0
+FLOOD_WATER_SHALLOW	FLOOD_WATER_SHALLOW	exact	0
+GRASS	GRASS	exact	218500
+DEAD_GRASS	DEAD_GRASS	exact	33444
+GRAY_FUNGUS	GRAY_FUNGUS	exact	18488
+LUMINESCENT_FUNGUS	LUMINESCENT_FUNGUS	exact	159087
+LICHEN	LICHEN	exact	0
+HAY	None	missing	0
+RED_BLOOD	BLOOD	alias	3493
+GREEN_BLOOD	None	missing	0
+PURPLE_BLOOD	None	missing	0
+ACID_SPLATTER	None	missing	0
+VOMIT	VOMIT	exact	76
+URINE	None	missing	0
+UNICORN_POOP	None	missing	0
+WORM_BLOOD	None	missing	0
+ASH	ASH	exact	19033
+BURNED_CARPET	None	missing	0
+PUDDLE	PUDDLE	exact	0
+BONES	BONES	exact	7862
+RUBBLE	RUBBLE	exact	1802
+JUNK	None	missing	0
+BROKEN_GLASS	BROKEN_GLASS	exact	0
+ECTOPLASM	ECTOPLASM	exact	0
+EMBERS	EMBERS	exact	256
+SPIDERWEB	WEB	alias	116244
+NETTING	NETTING	exact	0
+FOLIAGE	FOLIAGE	exact	80717
+DEAD_FOLIAGE	DEAD_FOLIAGE	exact	4695
+TRAMPLED_FOLIAGE	TRAMPLED_FOLIAGE	exact	512
+FUNGUS_FOREST	FUNGUS_FOREST	exact	73706
+TRAMPLED_FUNGUS_FOREST	TRAMPLED_FUNGUS_FOREST	exact	395
+FORCEFIELD	FORCEFIELD	exact	0
+FORCEFIELD_MELT	FORCEFIELD_MELT	exact	0
+SACRED_GLYPH	SACRED_GLYPH	exact	87
+MANACLE_TL	None	missing	0
+MANACLE_BR	None	missing	0
+MANACLE_TR	None	missing	0
+MANACLE_BL	None	missing	0
+MANACLE_T	MANACLE_T	exact	31
+MANACLE_B	None	missing	0
+MANACLE_L	MANACLE_L	exact	33
+MANACLE_R	None	missing	0
+PORTAL_LIGHT	PORTAL_LIGHT	exact	0
+GUARDIAN_GLOW	None	missing	0
+PLAIN_FIRE	PLAIN_FIRE	exact	416
+BRIMSTONE_FIRE	BRIMSTONE_FIRE	exact	432
+FLAMEDANCER_FIRE	None	missing	0
+GAS_FIRE	GAS_FIRE	exact	0
+GAS_EXPLOSION	GAS_EXPLOSION	exact	0
+DART_EXPLOSION	None	missing	0
+ITEM_FIRE	ITEM_FIRE	exact	0
+CREATURE_FIRE	None	missing	0
+POISON_GAS	POISON_GAS	exact	0
+CONFUSION_GAS	CONFUSION_GAS	exact	0
+ROT_GAS	ROT_GAS	exact	0
+STENCH_SMOKE_GAS	STENCH_SMOKE_GAS	exact	0
+PARALYSIS_GAS	PARALYSIS_GAS	exact	0
+METHANE_GAS	METHANE_GAS	exact	6501
+STEAM	STEAM	exact	12709
+DARKNESS_CLOUD	DARKNESS_CLOUD	exact	0
+HEALING_CLOUD	None	missing	0
+BLOODFLOWER_STALK	BLOODFLOWER_STALK	exact	1665
+BLOODFLOWER_POD	None	missing	0
+HAVEN_BEDROLL	HAVEN_BEDROLL	exact	82
+DEEP_WATER_ALGAE_WELL	DEEP_WATER_ALGAE_WELL	exact	0
+DEEP_WATER_ALGAE_1	DEEP_WATER_ALGAE_1	exact	0
+DEEP_WATER_ALGAE_2	DEEP_WATER_ALGAE_2	exact	0
+ANCIENT_SPIRIT_VINES	ANCIENT_SPIRIT_VINES	exact	0
+ANCIENT_SPIRIT_GRASS	ANCIENT_SPIRIT_GRASS	exact	0
+AMULET_SWITCH	AMULET_SWITCH	exact	0
+COMMUTATION_ALTAR	COMMUTATION_ALTAR	exact	108
+COMMUTATION_ALTAR_INERT	COMMUTATION_ALTAR_INERT	exact	0
+PIPE_GLOWING	PIPE_GLOWING	exact	526
+PIPE_INERT	PIPE_INERT	exact	0
+RESURRECTION_ALTAR	RESURRECTION_ALTAR	exact	28
+RESURRECTION_ALTAR_INERT	RESURRECTION_ALTAR_INERT	exact	0
+MACHINE_TRIGGER_FLOOR_REPEATING	MACHINE_TRIGGER_FLOOR_REPEATING	exact	256
+SACRIFICE_ALTAR_DORMANT	SACRIFICE_ALTAR_DORMANT	exact	20
+SACRIFICE_ALTAR	SACRIFICE_ALTAR	exact	0
+SACRIFICE_LAVA	SACRIFICE_LAVA	exact	0
+SACRIFICE_CAGE_DORMANT	SACRIFICE_CAGE_DORMANT	exact	20
+DEMONIC_STATUE	DEMONIC_STATUE	exact	20
+STATUE_INERT_DOORWAY	STATUE_INERT_DOORWAY	exact	19
+STATUE_DORMANT_DOORWAY	STATUE_DORMANT_DOORWAY	exact	10
+CHASM_WITH_HIDDEN_BRIDGE	CHASM_WITH_HIDDEN_BRIDGE	exact	192
+CHASM_WITH_HIDDEN_BRIDGE_ACTIVE	CHASM_WITH_HIDDEN_BRIDGE_ACTIVE	exact	0
+MACHINE_CHASM_EDGE	MACHINE_CHASM_EDGE	exact	211
+RAT_TRAP_WALL_DORMANT	RAT_TRAP_WALL_DORMANT	exact	103
+RAT_TRAP_WALL_CRACKING	RAT_TRAP_WALL_CRACKING	exact	0
+ELECTRIC_CRYSTAL_OFF	ELECTRIC_CRYSTAL_OFF	exact	17
+ELECTRIC_CRYSTAL_ON	ELECTRIC_CRYSTAL_ON	exact	0
+TURRET_LEVER	TURRET_LEVER	exact	30
+WORM_TUNNEL_MARKER_DORMANT	WORM_TUNNEL_MARKER_DORMANT	exact	436
+WORM_TUNNEL_MARKER_ACTIVE	WORM_TUNNEL_MARKER_ACTIVE	exact	0
+WORM_TUNNEL_OUTER_WALL	WORM_TUNNEL_OUTER_WALL	exact	17
+BRAZIER	BRAZIER	exact	1
+MUD_FLOOR	MUD_FLOOR	exact	1362
+MUD_WALL	MUD_WALL	exact	1081
+MUD_DOORWAY	MUD_DOORWAY	exact	7

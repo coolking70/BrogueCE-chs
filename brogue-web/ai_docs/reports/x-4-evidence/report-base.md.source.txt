@@ -1,0 +1,144 @@
+# X-4 内容完整性只读勘察报告
+
+基线：`f8f6377d0102a3dbc311dac774c710adc4dc4b26`，本机工作树，2026-09-28（Asia/Shanghai）。依照 `ai_docs/tasks/x-4-survey.prompt.md`，执行环境、临时目录和交付方式以用户本轮说明为准。CE 指本工作树 `BrogueCE-master/src/` 的 Brogue 变体；web 路径以下从 `brogue-web/` 起算。
+
+**结论：存在“目录有名／carrier=wired／机器能建成，但实际内容缺失”的系统性问题。** 确认及目录完整性登记共 **26 条：S1 10 条、S2 9 条、S3 7 条**。编号按可修复问题计数；同一问题涉及的枚举、种类和状态组合不重复计数。稀有蓝图的样本零值另列观察表，不在没有因果证据时算成确认缺陷。上游停用内容在 A10 中登记为 S3 目录差异，不主张激活。
+
+## 1. 总表
+
+CE 出处前缀为上述 CE `src/`；web 出处前缀为 `brogue-web/`。表中“全量”表示未来修复所需门禁，**本次只读勘察没有运行完整测试**。
+
+| 编号 | 类别 | 严重度 | CE 出处 | web 出处 | 现象与建议修法 | 门禁 |
+|---|---|---|---|---|---|---|
+| X4-A01 | 替身／缺实体 | S1 | `brogue/Globals.c:510,513–514,699–701` | `src/engine/Map/DungeonFeatureCatalog.ts:1460`；`TerrainCatalog.ts:1175` | 两个果荚生长 DF 实际落茎秆；缺 POD、HEALING_CLOUD 和爆裂 DF；茎秆着火率 100 而非 20、生长率 0 而非 100。补齐生长→踩爆／燃烧→治疗孢子全过程。 | 全量 |
+| X4-A02 | 替身 | S2 | `brogue/Globals.c:452,908,930` | `DungeonFeatureCatalog.ts:1464` | HAY→GRASS，丢失污秽干草形态及燃烧释放恶臭烟的 DF_STENCH_BURN。补真实 HAY／燃烧链。 | 全量 |
+| X4-A03 | 替身 | S3 | `brogue/Globals.c:458,669` | `DungeonFeatureCatalog.ts:1459` | URINE→BLOOD；独立地形、颜色、描述应恢复。 | 全量 |
+| X4-A04 | 替身 | S3 | `brogue/Globals.c:466,909` | `DungeonFeatureCatalog.ts:1465` | JUNK→BONES，营地／遗迹杂物被骨头替代。补独立实体。 | 全量 |
+| X4-A05 | 替身 | S3 | `brogue/Globals.c:462,913` | `DungeonFeatureCatalog.ts:1467` | BURNED_CARPET→ASH，残毯形态和层上表现被普通灰烬替代。补真实实体。 | 全量 |
+| X4-A06 | 怪物血迹内容 | S2 | `brogue/Globals.c:640–648,1024–1164`；`brogue/Combat.c:1827` | `src/engine/Core/Game.ts:2318`；`src/entities/Monster.ts` | 9 个血迹 DF 缺目录；普通受击只调用不接收物种／伤害的 60% 红血 helper，绿色／紫色／酸液／虫血／灰烬／余烬／灵质／碎石血迹及按伤害扩散未移植。僵尸腐气是另行实现，不能推导全物种已覆盖。补物种 bloodType 和统一受击接线。 | 全量 |
+| X4-A07 | 怪物周期 DF | S1 | `brogue/Globals.c:1080–1155`；`brogue/Time.c:2685`；`brogue/Monsters.c:3341` | `Game.ts:6687`；`Monster.ts` | 周期 DF 只硬接了僵尸；娜迦水迹、火蜥蜴火迹、幻影灵质、火舞者火环、独角兽遗留物，以及守卫／镜像图腾激活步的专属 DF 未形成 CE 通用 DFChance/DFType 管线。补目录字段、客观 tick 和激活行动两个消费点。 | 全量 |
+| X4-A08 | 有物品无核心效果 | S1 | `brogue/Items.c:7049–7057`；`brogue/Globals.c:743` | `Game.ts:5825–6001`；`src/data/weapons.json` | 燃烧飞镖定义及生成存在，但投掷无 INCENDIARY_DART 分支，缺 DF_DART_EXPLOSION；空地落点保留普通飞镖、无爆燃。补 CE 点燃、目标曝火和销毁分支。 | 全量 |
+| X4-A09 | 缺物品 | S1 | `variants/GlobalsBrogue.c:697`；`brogue/Rogue.h:978` | `src/data/consumables.json`；`ItemLoader.ts:173,559` | SCROLL_AGGRAVATE_MONSTER 基频 15，却无 web 实体，计量映射为 null；有害卷轴种类和权重缺失。补数据、极性、使用效果、文本和生成映射。 | 全量 |
+| X4-A10 | 枚举目录未齐 | S3 | `brogue/Rogue.h:439,1469,2668` | `TerrainType.ts`；`DungeonFeatureCatalog.ts`；`src/data/blueprints.json` | A 节列全 26 个缺同等地形、38 个缺名 DF、2 个缺机器枚举。其余问题已归入相应编号；冰／旧法杖洞／调试 DF、停用 CE48、仅 Bullet 的 CE72 应标注有效范围，禁止为凑表擅自激活。保留显式缺位账本。 | 中（仅账本）；激活须全量 |
+| X4-A11 | CE 名登记错误 | S3 | `brogue/Rogue.h:797` | `ItemLoader.ts:181` | `ceKind:'POTION_SPEED'` 不是本基线枚举，正确为 POTION_HASTE_SELF；web haste 实体存在，属来源标签错误。修元数据并按真实枚举核验。 | 中 |
+| X4-A12 | 蓝图内容简化 | S2 | `variants/GlobalsBrogue.c:309–313` | `src/data/blueprints.json` 的 CE19 | CE 的“燃烧飞镖／焚化药水”二选一变为只有药水；3 features→2，MF_ALTERNATIVE 消失。恢复两条替代项，并与 A08 的物品效果一起验收。 | 全量 |
+| X4-B01 | 结构性零生成 | S1 | `variants/GlobalsBrogue.c:124`；`brogue/Architect.c:2555,3824` | `LakeSystem.ts:183`；`Grid.ts:724`；`AutoGenerator.ts:559` | 藻井行要求 FLOOR＋DEEP_WATER；湖泊用 setTerrain 清空其它层，深水底层成为 NOTHING，全部选点失败。改湖泊按层写入，验收真实自然层藻井／两种藻水。 | 全量 |
+| X4-B02 | 结构性零生成 | S1 | `brogue/Architect.c:1749–1754` | `BlueprintEngine.ts:792`；`Game.ts:1113` | CE15 护符房 frequency=0，本应 D26 强制最多尝试 50 次；web 无调用，只在普通地面另放护符，房间、机关和 Warden 均遗漏。接强制入口，协调普通护符兜底避免重复。 | 全量 |
+| X4-B03 | 结构性零生成 | S2 | `brogue/Monsters.c:860–862`；`variants/GlobalsBrogue.c:761,778` | `src/data/hordes.json`；`Game.ts:1557–1640` | 四条怪群保留 machine=62，spawnHordeAt 不读它；营地始终不建。接随怪群生成的机器入口和产物回收；不能以“不在 autogen 表中”豁免。 | 全量 |
+| X4-C01 | 物品介绍／空详情 | S1 | `brogue/Items.c:1989–2152`；各 itemTable | `DetailGenerator.ts:337–345`；`ItemLoader.ts:1225–1561` | Loader 未传 description，详情仅戒指／护符查表兜底；药水、卷轴等有描述数据却不显示，未知五类也无外观段。按 CE introductory switch 和鉴定条件移植，不能仅放开 kindKnown 而泄露真效果。 | 中 |
+| X4-C02 | 知识状态／上下文缺失 | S1 | `brogue/Items.c:2139–2159,2240–2340,2907–2930,3355–3378` | `DetailGenerator.ts:330–562`；`ItemKnowledge.ts` | 缺发现层数／宝库来源、已探测正负魔法、装备状态／已知诅咒等段落；`polarityKnown` 取得却未使用，详情“CE 无诅咒分支”的注释与源码矛盾。新增只读上下文及正确知识门控。 | 中；新增持久状态须全量 |
+| X4-C03 | 法器数值缺失 | S1 | `brogue/Items.c:2938–3226` | `DetailGenerator.ts:442–472` | 缺法杖实际回电回合／近期使用记录、除瞬移外 11 种效果和 E→E+1 数值、魔杖出生充能范围及附魔增加量；capacityKnown 与 instanceKnown 的部分分支不等价。移植逐种类数值分支并复用规则公式。 | 中；补历史字段须全量 |
+| X4-C04 | 装备／符文详情简化 | S2 | `brogue/Items.c:2178–2934` | `DetailGenerator.ts:347–440` | 仅基础／实际数值及短句，缺自动鉴定杀敌／穿戴剩余量、与当前装备的命中／伤害／防御比较、再附魔预测和各符文触发概率／幅度／目标类别。10 武器＋11 护甲符文均有短句，不等于 CE 分支齐全。 | 中 |
+| X4-C05 | 其它类别段落缺失 | S2 | `brogue/Items.c:2107–2176,3228–3480` | `DetailGenerator.ts:474–554` | 食物的当前饥饿适用性缺失；宝石、钥匙、金币、护符石正文为空；戒指未鉴定 +上限提示条件被简化，护符缺部分持续／限制说明。按 C 节逐类矩阵补齐，保留当前已实现公式。 | 中 |
+| X4-D01 | 地形名称兜底错误 | S1 | `brogue/Globals.c:321–578` | `Game.ts:10204–10355` | 89 个 CE 映射返回“地面”且 CE 描述不是 ground，其中 NOTHING 哨兵单列；其余 88 个含火、毒气、麻痹气、洞、力场、机关等。以真实／记忆地形和秘密状态选择 CE description，补完整本地化目录。 | 中 |
+| X4-D02 | 地形风味文本缺失 | S2 | `brogue/Globals.c:321–578`；`brogue/Time.c:63–81` | `Game.ts:9536–9548` | CE 188 条非空 flavorText，已有 web 映射的 162 条也未作为目录移植；当前位置统一“你正站在…上”。单独的坠落／锁门消息不等于完整风味目录。补 tileFlavor 选择和逐条本地化。 | 中 |
+| X4-D03 | 英文直出 | S3 | `brogue/Globals.c:525–526` | `Game.ts:10338–10341` | ANCIENT_SPIRIT_VINES / GRASS 直接返回英文，未经过 i18n；移到 terrain 文本键。 | 中 |
+| X4-D04 | 怪物专属文字简化 | S3 | `brogue/Globals.c:1167–1376`；`brogue/Rogue.h:2194–2200` | `Game.ts:1773`；`DetailGenerator.ts:203` | 8 种非空 summonMessage 被统一召唤句替代，67 个非玩家物种 absorbStatus 在详情统一成“吸收”。吸收动作动词已有完整映射及译文，应保留；补物种专属召唤／状态词。 | 中 |
+| X4-D05 | DF 机关警报缺文 | S2 | `brogue/Globals.c:827,834` | `DungeonFeatureCatalog.ts:1469,1473` | DF_SPREADABLE_WATER / DF_SPREADABLE_COLLAPSE 本体存在，但 CE 的洪水起动／地板开始坍塌警报 description 被置空。补文本和可见／一次性消息门控；其余 3 条缺 DF 消息在 A07/A10 追踪。 | 中 |
+| X4-E01 | 有效特征边界错误 | S2 | `variants/GlobalsBrogue.c:239–252` | `src/data/blueprints.json` CE9/10；`BlueprintEngine.ts:1480` | CE9 存6条但 featureCount=5，CE10 存5条但 count=4；web 分别执行6/5条，激活 CE 不执行的前厅／火把特征。按本基线的有效 count 截断或显式登记上游差异；不要只比较数组存量。 | 全量 |
+
+## 2. A：目录、映射与实际接线
+
+机器可建、引用可解析、DF_MISSING_TILES 为空，都不能证明内容同一。完整逐行证据见 [catalog-audit.txt](x-4-evidence/catalog-audit.txt)、[web-catalogs.txt](x-4-evidence/web-catalogs.txt)、[ce-catalogs.txt](x-4-evidence/ce-catalogs.txt)。前者包含 CE 原始字段、实际 web 实体、所有别名、每条蓝图 feature 的引用、缺失 DF 的 CE 调用点；后两者保留实际运行时目录与 CE C 初始化数据。所有 autogen 的 carrier/note 原文都在证据中。
+
+- CE tileType 215 项（含 NOTHING）；26 项无同等 web 地形，9 项名称别名，其余同名。DUNGEON_EXIT 合并到 D1 STAIRS_UP 是层入口实现方式，本次不称“退出功能缺失”。RED_BLOOD→BLOOD、SPIDERWEB→WEB、两种水／两种楼梯、ALTAR_INERT、MACHINE_PRESSURE_PLATE 等正常别名已从替身缺陷中剔除。
+- CE 218 个非零 DF，web 180 个。有 20 条 tile 字面名称不同、1 条 propagation 名称不同；经正常别名消歧后只有上述 **6 条有害替身**，传播地形无额外错接，已有 subsequentDF 链无悬空。缺 DF 不等于功能完全缺失，下面逐项分流。
+- autogen 49 行，48 行 wired；48 行的 CE terrain/DF/machine 名和数值映射、频率／深度／数量公式均对上；index0 的 null DF／dead-index0 与 CE 从 AG=1 开始一致，不列生成缺陷。index10 虽 wired，真正候选条件却不可满足。index39 的血根草可成功建机器，内容仍是替身。
+- 72 个机器枚举中，web 有70个 CE 对应蓝图。CE48 为 Brogue 表 frequency=0 且明确 DISABLED，无有效生成入口；CE72 仅供 Bullet 变体，本 Brogue 表不含其条目。这两个是范围登记，不列本变体游玩缺陷。所有现有蓝图命名 terrain/DF/item/monster 引用均能解析；CE19 是“引用能解析但用了别的内容”。CE24 的第4个存储特征被 featureCount=3 排除，web 只列3条正确。
+- 68 个怪物枚举全部有载体（67 个怪物＋Player）；名称别名如 wisp、acidic_jelly、goblin_warlord、spectral_sword、stone_guardian、guardian_spirit、mangrove_dryad 均已消歧。97 个 CE 物品种类中只有激怒卷轴缺失，另单列单种类 AMULET/GEM/GOLD。武器／护甲／法杖／魔杖／戒指／护符及 10＋11 个符文定义齐全。钥匙的 excludeFromGeneration 不代表自创：KEY_CAGE/KEY_PORTAL 均是 CE 内容，机器显式生成仍可用。
+
+### 缺地形全集（26）
+
+`ICE_DEEP, ICE_DEEP_MELT, ICE_SHALLOW, ICE_SHALLOW_MELT, HOLE_GLOW, HAY, GREEN_BLOOD, PURPLE_BLOOD, ACID_SPLATTER, URINE, UNICORN_POOP, WORM_BLOOD, BURNED_CARPET, JUNK, MANACLE_TL, MANACLE_BR, MANACLE_TR, MANACLE_BL, MANACLE_B, MANACLE_R, GUARDIAN_GLOW, FLAMEDANCER_FIRE, DART_EXPLOSION, CREATURE_FIRE, HEALING_CLOUD, BLOODFLOWER_POD`。
+
+其中 6 个未用镣铐方向、4 个冰态、HOLE_GLOW 等没有当前 Brogue 正常生成根；应登记，不用为达到覆盖数字扩充生成池。一般燃烧已有其它载体，但这不表示 CREATURE_FIRE 这个独立目录实体存在。
+
+### 缺 DF 全集（38）与处置归属
+
+| 分类 | 全部缺名项 | 判断 |
+|---|---|---|
+| 血迹9 | DF_RED_BLOOD、DF_GREEN_BLOOD、DF_PURPLE_BLOOD、DF_WORM_BLOOD、DF_ACID_BLOOD、DF_ASH_BLOOD、DF_EMBER_BLOOD、DF_ECTOPLASM_BLOOD、DF_RUBBLE_BLOOD | A06；红血有简化 helper，其它物种形态未保真 |
+| 周期／激活6 | DF_FLAMEDANCER_CORONA、DF_SALAMANDER_FLAME、DF_UNICORN_POOP、DF_SILENT_GLYPH_GLOW、DF_GUARDIAN_STEP、DF_MIRROR_TOTEM_STEP | A07；既有 DF_PUDDLE/DF_ECTOPLASM_DROPLET 也没有对应物种周期读者 |
+| 果荚／飞镖／干草3 | DF_BLOODFLOWER_POD_BURST、DF_DART_EXPLOSION、DF_STENCH_BURN | A01/A08/A02；缺实际内容链 |
+| 已有其它入口6 | DF_BLOAT_DEATH、DF_CREATURE_FIRE、DF_POISON_GAS_CLOUD_POTION、DF_PARALYSIS_GAS_CLOUD_POTION、DF_CONFUSION_GAS_CLOUD_POTION、DF_INCINERATION_POTION | bloat／燃烧／药水使用或投掷有专门实现；登记缺目录，不把整种效果误报为缺失；本次不对其规则等价性作全量结论 |
+| 冰链8 | DF_DEEP_WATER_FREEZE、DF_ALGAE_1_FREEZE、DF_ALGAE_2_FREEZE、DF_DEEP_WATER_MELTING、DF_DEEP_WATER_THAW、DF_SHALLOW_WATER_FREEZE、DF_SHALLOW_WATER_MELTING、DF_SHALLOW_WATER_THAW | 冻结根无当前正常调用，已有冰链内部引用不等于活跃根 |
+| 上游死行／调试／遗留6 | DF_GRANITE_COLUMN、DF_METHANE_GAS_ARMAGEDDON、DF_STAFF_HOLE、DF_STAFF_HOLE_EDGE、DF_MEDIUM_LAVA_POND、DF_WALL_OPEN | 首项 AG=0；甲烷项只有注释 DEBUG 入口；其余未找到当前正常调用根。逐项 CE 引用清单见证据 |
+
+## 3. B：生成普查
+
+<!-- GENERATION_SUMMARY -->
+
+采用真实 `Game.startNewGame`→`generateDepth(false,false)`，顺序 D1–D40，保留单局的奖励房／计量物品状态；读取最后成功 Architect 的 autogen 统计、最终地图四层、地面与怪物持有物、活动与休眠怪物。机器按 machineNumber 去重，并递归收集已提交机器、feature 落位及 item/monster/terrain/DF 产物。回滚 trace 仅作诊断，不计产物。各层详细数据在 [generation-levels-100.txt](x-4-evidence/generation-levels-100.txt)，所有自动生成行／蓝图／地形／物品／怪物（含显式0）在 [generation-tables-readable.txt](x-4-evidence/generation-tables-readable.txt)；完整机器特征和产物分布在 [generation-tables.txt](x-4-evidence/generation-tables.txt)。
+
+“CE 期望请求”由原数量公式加截断几何概率计算，**不是 CE 成功建成台数**。未执行 CE 生成器，不能把抽签 frequency 当绝对建成率，也不能给低频成功率差异伪造显著性。瞬态地形、召唤、受伤、死亡、使用物品后的实体在入层快照中为0是正常的；本任务没有用未发生的交互证明这些实体不存在。
+
+<!-- GENERATION_TABLES -->
+
+## 4. C：逐类别、逐状态物品详情
+
+探针对所有105个 web 定义／单种类资产生成5列文本，共525组合；CE 对应的99个现存种类共495组合，缺少的激怒卷轴无法构造。退休自创6种保留在原始输出，未计入 CE 缺陷统计；两种特殊钥匙仍计入 CE。状态列是未知、种类已知、完全已知、探测极性、诅咒已知；食物／护符／钥匙／护符石／金币／宝石没有五套合法鉴定状态，探针明确归一到天然已知；其它非诅咒类别的诅咒列也标为不适用、归一到种类已知。不能把这些重复列当作495个独立可达游戏状态。
+
+原始 DetailInfo、knowledge、目录描述、实例 description、空正文标志及全部符文样本见 [item-details.txt](x-4-evidence/item-details.txt)。空详情定义为所有 sections 中没有一条非空 line，故标题外完全空白；“只有充能通用句”不算空，但仍可缺核心效果。CE 对应组合的空正文 **185/495**；有描述不等于描述被消费。
+
+| 类别 | CE现存种类 | 未知 空/总 | 种类已知 | 完全已知 | 探测极性 | 诅咒已知 | CE 分支对照／缺口 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 武器 | 15 | 0/15 | 0/15 | 0/15 | 0/15 | 0/15 | 基础伤害／力量已有；类型叙述、剩余击杀鉴定量、装备比较、极性／诅咒、再附魔及符文数值缺；CE 2178–2670 |
+| 护甲 | 6 | 0/6 | 0/6 | 0/6 | 0/6 | 0/6 | 基础防御／力量已有；穿戴鉴定剩余量、装备比较、极性／诅咒、符文具体数值缺；CE 2670–2934 |
+| 药水 | 16 | 16/16 | 16/16 | 16/16 | 16/16 | —（16/16归一列） | 未知外观段和已知效果段全无；生命药水依当前最大HP计算的增长百分比缺；CE 1989–2080 |
+| 卷轴 | 13 | 13/13 | 13/13 | 13/13 | 13/13 | —（13/13） | 未知标题／纸张叙述和已知法术说明全无；第14种激怒卷轴实体缺失 |
+| 食物 | 2 | —（2/2） | —（2/2） | 2/2 | —（2/2） | —（2/2） | 食物说明及“是否足够饥饿充分利用”缺；CE 2163–2176 |
+| 法杖 | 12 | 0/12 | 0/12 | 0/12 | 0/12 | —（0/12） | 未知材质段、已知类型介绍缺；只剩回电通用句／部分充能，12种中只有瞬移有距离预测；capacity-known 也应能显示对应效果；CE 2938–3161 |
+| 魔杖 | 9 | 0/9 | 0/9 | 0/9 | 0/9 | —（0/9） | 材质／已知效果缺；充能余量／已用次数部分存在，但种类范围、附魔补充量缺；CE 3163–3226 |
+| 戒指 | 8 | 0/8 | 0/8 | 0/8 | 0/8 | 0/8 | 已知简介和多种公式已接；未知宝石外观、已知诅咒、佩戴状态缺；未鉴定正附魔上限文字未按熟悉度／魔法探测条件分支；CE 3228–3378 |
+| 护符（CHARM） | 12 | —（0/12） | —（0/12） | 0/12 | —（0/12） | —（0/12） | 简介、效果、冷却、E+1预测已有；仍缺保护持续上限、隐形两格追踪等分支完整说明；CE 3383起 |
+| 宝石 | 1 | —（1/1） | —（1/1） | 1/1 | —（1/1） | —（1/1） | 标题有发现层数，不能替代 CE 荧光／财富正文 |
+| 钥匙 | 3 | —（3/3） | —（3/3） | 3/3 | —（3/3） | —（3/3） | 三种目录描述均存在但不进入 ItemDetail；KEY_CAGE/PORTAL 不能按退休自创排除 |
+| 金币 | 1 | —（1/1） | —（1/1） | 1/1 | —（1/1） | —（1/1） | CE “一堆N枚闪亮金币”数量正文缺 |
+| 护符石（AMULET） | 1 | —（1/1） | —（1/1） | 1/1 | —（1/1） | —（1/1） | CE 背景与携回地表目标说明缺 |
+
+发现层数（carried 且 originDepth>0）、宝库来源、是否装备、当前装备、HP、营养、智慧加成、回合／使用历史等，均不是 `generateItemDetail(item, playerStrength)` 当前参数能完整表达的。修复需要只读上下文，不应临时读取隐藏真值绕过鉴定门控。已知诅咒分支应依据 CE 的 ITEM_IDENTIFIED／ITEM_MAGIC_DETECTED／ITEM_EQUIPPED；web 没有独立 curseKnown 字段，不能凭造一个布尔量当作移植完成。
+
+## 5. D：文本目录全量结果
+
+<!-- TEXT_TABLES -->
+
+数据文字的语言检查与消费链检查分开：所有 CE 对应物品数据已有非空中文 description、67个怪物有非空中文 description，**这两项并非“内容都没有录入”**。但物品实例没有复制该字段、详情又只兜底戒指和护符，导致正文消失。未对67篇怪物简介做逐字文学等价认证；明确确认的是专属召唤／吸收状态字段被通用句替代。
+
+45条现存非空 DF description 虽以英文作键值保存，真实 `Game.dungeonFeatureDescription()` 在 zh_CN 下全部转成中文，故不误报为45条英文直出。蓝图英文 name 用于诊断／识别，未当作面向玩家的英文泄漏。CE 源码有5条消息在web缺失：已有 DF 的洪水／坍塌两条为 D05；守卫／镜像图腾两条随 A07；DF_WALL_OPEN 没有活跃根，列 A10。
+
+## 6. E：额外发现与“绿测试”证据
+
+- 燃烧飞镖是“可生成、可投掷、没有应有效果”的明确实例（A08），不应只测普通投掷命中或目录频率。
+- `v_2b_8_autogen.test.ts` 主要要求机器 id wired 和机器总数大于0；旧报告把 Bloodwort、Sentinels 的零值归因于样本。本次证明两者已可建成，Bloodwort 的实际果荚／治疗链仍缺，因此应以目标内容验收，不能以总建成数代替。
+- `v_2b_4_altars.test.ts:706` 明确把 CE15 在自然生成中恒0当预期；`BlueprintEngine.ts:786` 仍声称无对应蓝图，而 JSON 已存在该蓝图。应移除这个错误前提，以 D26 强制尝试及产物验收替代。
+- 旧 V-2b-8 报告对 Camp “无 autogen 行→生产必0”的推论忽略了 CE `spawnHorde` 的入口；数据中的 machine=62 没有读者。此类字段存在测试不能替代消费链检查。
+- CE9/10 的额外存储 feature 被 web 激活（E01）。CE24 恰相反，web 尊重有效计数；此次解析同时检查 C 存储数量和 featureCount，避免把两个方向混淆。
+
+## 7. 修复单元与文件所有权
+
+以下按文件所有权分组，**组间不共同编辑同一文件**；逻辑依赖通过新增模块接口交接，Game.ts 等共享入口由最后一个集成单元独占。不会为了并行给同一大文件多组写者。
+
+| 单元 | 所有文件／主要职责 | 问题范围 | 验收与依赖 |
+|---|---|---|---|
+| R1 世界目录 | `src/engine/Map/{TerrainType,TerrainCatalog,DungeonFeatureCatalog,Grid}.ts`、`src/engine/Map/LightCatalog.ts`、`src/engine/UI/{TerrainAppearanceCatalog,TerrainColorCatalog}.ts`；可新增内容目录审计表 | A01–A08/A10 的实体、规则字段、真实DF闭包 | 全量；逐实体行为断言，替身名单清零，活跃／停用根分开 |
+| R2 生成内容 | `src/engine/Generator/{Architect,BlueprintEngine}.ts`、`src/engine/Map/{LakeSystem,AutoGenerator}.ts`、`src/engine/Core/GenerationCoordinator.ts`、`src/data/{blueprints,hordes}.json` | A12、B01–B03、E01；稀有零值观察 | 全量；依赖 R1，D26/营地/藻井用真实入口验收；不只断言总机器数 |
+| R3 物品／生物规则 | `src/engine/Items/{Item,ItemLoader,ItemUseCoordinator}.ts`、`src/entities/Monster.ts`、`src/engine/Combat/Combat.ts`、`src/data/{consumables,weapons,armors,arcana,monsters}.json`；新增周期DF/投掷效果模块 | A06–A09/A11 的状态、物品与物种接线 | 全量；依赖 R1；持久字段由 R6 统一接序列化 |
+| R4 详情移植 | `src/engine/UI/{DetailGenerator,ItemKnowledge}.ts`、`src/components/InventoryOverlay.vue`；新增 `ItemDetailContext.ts`／逐种类详情模块 | C01–C05，D04 的详情状态展示 | 中；复用 R3 公式，不自行发明规则，所需 Game 适配交给 R6 |
+| R5 内容文字 | 新增 `TerrainTextCatalog.ts`、`MonsterTextCatalog.ts`（放 UI 目录）、新增分域 locale 文件及 `src/i18n.ts`／`src/locales/zh_CN.json`；全项目新增译键统一由本单元落文件 | D01–D05、R1/R3/R4 所需文案 | 中；目录全量不空和真实显示入口取值检查，秘密／记忆地形防泄漏 |
+| R6 共享入口集成 | **独占** `src/engine/Core/Game.ts`、`src/engine/Core/EntitySnapshot.ts` 及需要的快照合同；不重复修改 R1–R5 文件 | 生成入口、受击／tick／投掷／召唤消费、上下文装配、位置文字、必要的新状态保存 | 最后集成，全量；串接各单元，处理跨层／回放／RNG／存档影响 |
+
+各单元只新增自己前缀的测试文件；既有共用测试变更由 R6 汇总，避免共享断言冲突。报告提及的“中”指只读显示改动；如果补使用历史等需要新规则或持久状态，不能沿用中档。
+
+### “按 CE itemDetails 移植”的具体单元方案（R4）
+
+1. 以 `Items.c:1941` 起的函数分支建立逐项清单：名字／intro、未知外观、发现层数、FOOD、WEAPON/ARMOR、runic、装备/诅咒、STAFF、WAND、RING、CHARM、尾部通用提示。每个 CE 分支对应明确输入、知识门控、输出 section；保留现有 DetailInfo 供 UI 使用。
+2. 新建只读上下文：当前／最大HP、有效力量、营养、当前装备的可知属性、表观戒指加成、携带/装备状态、当前回合与已知使用记录、回放全知开关（若支持）。不得把隐藏附魔／剩余充能直接塞进未知分支。
+3. 统一从种类目录读取简介，按 CE 选择 unknown flavor 或 known description。恢复97种目录＋3个单种类类别的显示入口，缺失实体按R3接口对接。非装备类的符文／诅咒列应标不适用。
+4. 所有预测引用当前规则的同一公式：伤害／命中／力量、护甲、runic触发、staff效果、回电、wand充能增量、ring与charm效果。纯显示函数不得消耗 substantive/cosmetic RNG，不得变更识别、回合或物品。
+5. 验收使用“合法状态→应有关键段落／数值＋不应泄漏字段”矩阵，而非正文非空这一条。补未知5类、kind-known但instance未知、capacity-known、负附魔／已探测诅咒、已装备、熟悉度临界、E/E+1、食物利用率、来源层数、3类特殊资产。最终经实际背包／检视入口确认相同文本。
+
+## 8. 覆盖、边界与复现
+
+<!-- RUN_DETAILS -->
+
+不以同种子逐骰相等作为差异；不涉及 `.broguerec`、旧存档迁移、无障碍。退休 web 自创条目仍保留定义且不要求重新生成。本报告是只读勘察，不声称完成修复或通过完整游戏门禁。

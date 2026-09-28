@@ -1,0 +1,48 @@
+from pathlib import Path
+import json,re,importlib.machinery
+D=Path('brogue-web/ai_docs/reports/x-4-evidence');S=Path('brogue-web/src')
+p=importlib.machinery.SourceFileLoader('ceparser',str(Path(__file__).with_name('ce-audit.py'))).load_module()
+ce=json.loads((D/'ce-catalogs.txt').read_text());w=json.loads((D/'web-catalogs.txt').read_text());a=json.loads((D/'catalog-audit.txt').read_text());b=json.loads((D/'bolt-identities.txt').read_text())
+mon=json.loads((S/'data/monsters.json').read_text());bps=json.loads((S/'data/blueprints.json').read_text())
+res={'boltEnums':[],'itemBolts':[],'monsterBolts':[],'runics':[],'autogenFoundations':[],'blueprintFeatures':[]}
+for name,id in ce['enums']['boltType'].items():res['boltEnums'].append({'ce':name,'ceId':id,'webId':b['types'].get(name.removeprefix('BOLT_')),'catalogExists':str(id) in b['catalog']})
+for r in a['items']:
+ if r['group'] not in ['wands','staffs']:continue
+ f=ce['arrays']['wandTable_Brogue' if r['group']=='wands' else 'staffTable'][r['id']]['fields'];bid=b['items'].get(r['web']);expected=f[6]
+ res['itemBolts'].append({'item':r['ce'],'ceBolt':expected,'webBolt':'BOLT_'+b['types'][str(bid)] if bid is not None else None,'same':bid==ce['enums']['boltType'][expected]})
+for r in a['monsters']:
+ if r['web']=='@Player':continue
+ f=ce['arrays']['monsterCatalog'][r['id']]['fields'];expected=[n.removeprefix('BOLT_') for n in p.parts(f[16][1:-1]) if n!='0'];wr=next(m for m in mon if m['id']==r['web']);actual=wr.get('bolts',[])
+ res['monsterBolts'].append({'species':r['ce'],'ce':expected,'web':actual,'same':expected==actual,'unresolved':[n for n in actual if n not in b['monsters'] or b['types'].get(n)!=b['monsters'][n]['ceType']]})
+for ek,wk,prefix in [('weaponEnchants','weaponRunics','W_'),('armorEnchants','armorRunics','A_')]:
+ for name,id in ce['enums'][ek].items():
+  if not name.startswith(prefix):continue
+  expected='paralyzing' if name=='W_PARALYSIS' else name[2:].lower();res['runics'].append({'ce':name,'id':id,'web':w[wk][id],'same':w[wk][id]==expected})
+for r in w['ag']:
+ f=ce['arrays']['autoGeneratorCatalog_Brogue'][r['index']]['fields'];checks=[]
+ for field,index in [('requiredDungeonFoundationType',4),('requiredLiquidFoundationType',5)]:
+  expected=a['aliases']['terrain'].get(f[index],f[index]) if f[index]!='0' else 'NOTHING';actual=w['terrain'].get(str(r[field]));checks.append({'field':field,'ce':f[index],'web':actual,'same':actual==expected})
+ res['autogenFoundations'].append({'index':r['index'],'checks':checks})
+for bp in bps:
+ id=bp.get('ceBlueprintId')
+ if not id:continue
+ cf=ce['arrays']['blueprintCatalog_Brogue'][id]['fields'];features=[p.parts(f.strip()[1:-1]) for f in p.parts(cf[7][1:-1])]
+ for i in range(max(len(features),len(bp['features']))):
+  res['blueprintFeatures'].append({'blueprint':id,'index':i,'ceEffective':i<int(cf[4]),'ce':features[i] if i<len(features) else None,'web':bp['features'][i] if i<len(bp['features']) else None})
+res['summary']={'boltEnumDifferences':[r for r in res['boltEnums'] if r['ceId']!=r['webId'] or not r['catalogExists']], 'itemBoltDifferences':[r for r in res['itemBolts'] if not r['same']], 'monsterBoltDifferences':[r for r in res['monsterBolts'] if not r['same'] or r['unresolved']], 'runicDifferences':[r for r in res['runics'] if not r['same']], 'autogenFoundationDifferences':[r for r in res['autogenFoundations'] if any(not c['same'] for c in r['checks'])]}
+res['blueprintFrequencyDepth']=[]
+for bp in bps:
+ id=bp.get('ceBlueprintId')
+ if not id:continue
+ f=ce['arrays']['blueprintCatalog_Brogue'][id]['fields'];depth=[eval(x,{'__builtins__':{}},{'AMULET_LEVEL':26,'DEEPEST_LEVEL':40}) for x in p.parts(f[1][1:-1])]
+ res['blueprintFrequencyDepth'].append({'id':id,'ceDepth':depth,'webDepth':bp['depthRange'],'ceFrequency':int(f[3]),'webFrequency':bp['frequency'],'same':depth==bp['depthRange'] and int(f[3])==bp['frequency']})
+res['summary']['blueprintFrequencyDepthDifferences']=[r for r in res['blueprintFrequencyDepth'] if not r['same']]
+res['summary']['autogenCeDfIdDifferences']=[{'index':r['index'],'ceDfId':r['ceDfId'],'expected':ce['enums']['dungeonFeatureTypes'].get(r['ceDf'],0)} for r in w['ag'] if r['ceDfId']!=ce['enums']['dungeonFeatureTypes'].get(r['ceDf'],0)]
+res['blueprintItemCategoryDifferences']=[{'blueprint':r['blueprint'],'index':r['index'],'ce':r['ce'][5],'web':r['web'].get('itemCategory')} for r in res['blueprintFeatures'] if r['ceEffective'] and r['ce'] and r['web'] and re.sub('[() ]','',r['ce'][5])!=(r['web'].get('itemCategory') or '0')]
+(D/'supplemental-identities.txt').write_text(json.dumps(res,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(res['summary'],ensure_ascii=False,indent=2))
+# CE membership is distinct from random-pool eligibility: special CE keys remain CE.
+details=json.loads((D/'item-details.txt').read_text());ids={(r['group'],r['web']) for r in a['items'] if r['exists']};canonical=[r for r in details['rows'] if (r['group'],r['id']) in ids or r['group'] in ['amulets','gem','gold']]
+matrix={'definition':'Empty means all section lines are empty; five requested columns include explicitly normalized non-applicable states.','canonicalKinds':len(set((r['group'],r['id']) for r in canonical)),'combinations':len(canonical),'empty':sum(r['empty'] for r in canonical),'groups':{}}
+for group in dict.fromkeys(r['group'] for r in canonical):matrix['groups'][group]={st:{'total':sum(r['group']==group and r['state']==st for r in canonical),'empty':sum(r['group']==group and r['state']==st and r['empty'] for r in canonical)} for st in ['unknown','kind_known','fully_known','magic_detected','curse_known']}
+(D/'item-detail-matrix.txt').write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n');print('MATRIX',matrix['canonicalKinds'],matrix['combinations'],matrix['empty'])

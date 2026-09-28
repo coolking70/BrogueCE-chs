@@ -1,0 +1,106 @@
+from pathlib import Path
+import json,re,collections
+D=Path('brogue-web/ai_docs/reports/x-4-evidence');P=Path('brogue-web/tmp-x4')
+read=lambda n:json.loads((D/n).read_text())
+a=read('catalog-audit.txt');g=read('generation-tables.txt');raw=read('generation-summary-100.txt');sel=read('natural-selection.txt');matrix=read('item-detail-matrix.txt')
+report=(P/'report-base.md').read_text()
+report=report.replace('ANCIENT_SPIRIT_VINES / GRASS','ANCIENT_SPIRIT_VINES / ANCIENT_SPIRIT_GRASS')
+report=report.replace('所有 CE 对应物品数据已有非空中文 description','96 个现存 CE 多种类物品目录项均有非空中文 description')
+report=report.replace('完整机器特征和产物分布','已观测的机器特征和产物分布')
+report=report.replace('其它非诅咒类别的诅咒列也标为不适用','其它非诅咒类别及三种投掷武器（dart/incendiary_dart/javelin）的诅咒列也标为不适用')
+report=report.replace('前者包含 CE 原始字段、实际 web 实体、所有别名、每条蓝图 feature 的引用、缺失 DF 的 CE 调用点；','前者包含 CE 原始字段、实际 web 实体、所有别名和缺失 DF 的 CE 调用点；逐条蓝图 feature 对照另见 [supplemental-identities.txt](x-4-evidence/supplemental-identities.txt)；')
+report=report.replace('### 缺地形全集（26）','额外核验全部带 CE 身份字段的法术目录：30 个 bolt 枚举（含 NONE）、21 个物品→bolt 映射、67 个物种 bolt 列表与运行时 `ceType` 消费表均能按真实 CE 身份解析；10 个武器／11 个护甲符文逐索引一致（W_PARALYSIS→paralyzing 是正常别名）。49 行 autogen 的地板／液体基础类型也逐行相符；问题在地图写入后的实际候选。补充证据中的差异数组均为空；这只证明身份与引用完整，不宣称所有法术规则都已等价。\n\n### 缺地形全集（26）')
+summary=f'''正式样本 **50 个种子 × D1–D40＝2,000 层**，每个深度恰好50层；种子 `400000 + s × 7919`，`s=100…149`（{g['seeds'][0]}…{g['seeds'][-1]}）。探针主体耗时 **{g['elapsedSeconds']:.3f}秒（约18分15秒）**，错误0。另有2种子80层试跑及2种子80层选址诊断，均不并入正式频率统计。
+
+48条可执行 autogen 中47条建成数大于0，唯一零行为藻井；70个已实现 CE 蓝图中66个出现、4个为0。100个 CE 物品种类／单类别资产中98个出现，2个为0；68个 CE 怪物身份中60个出现在入层实体快照，8个为0。215个CE地形映射中{sum(r['cells']>0 for r in g['terrain'])}项在最终地图出现、{sum(r['cells']==0 for r in g['terrain'])}项为0（含缺实体与瞬态；别名不是独立实体计数）。'''
+report=report.replace('<!-- GENERATION_SUMMARY -->',summary)
+b='''### 零值、稀有值与因果定位
+
+| 目标 | CE 频率／深度或触发入口 | web 观察 | 判断与原因 |
+|---|---|---|---|
+| AG10 藻井 | freq50%，D10–40；CE期望请求1162.5 | 请求1176、建成0、选址失败1176 | B01。真实 LakeSystem 写法生成 NOTHING+DEEP_WATER；定点同图使用按液体层写入的对照能选到 FLOOR+DEEP_WATER。藻井、两种藻水最终格数全为0。 |
+| BP58 Bloodwort／AG39 | D1–30，AG期望请求602.93 | 请求595、建成592 | 不再是零生成；机器成功掩盖 A01。真实初始生长DF成功，但落2格STALK，POD／治疗云／爆裂DF无实体。 |
+| BP71 Sentinels／AG47 | D20–40，AG期望请求154 | 请求132、建成132 | 现已可生成；不能沿用旧报告的“零生成”结论。未运行CE基准，未认定这一次样本差距显著。 |
+| BP15 Amulet | freq0，D26强制最多50次尝试 | 房间0、Warden0；普通护符石另有生成 | B02，缺强制入口。强制fixture构造成功并实际得到护符石与Warden；AMULET物品 materializer 已实现，不能误报为未实现。 |
+| BP62 Camp | freq0；4条horde的machine=62，其中D5–13/freq100、D10–17/freq80 | 自然0；定点GoblinTotem怪群成功，buildAMachine调用0 | B03，缺horde.machine消费者；强制fixture能建营地。 |
+| BP46 Guardian corridor | freq5，D4–26，仅递归领养；要求gate区域85–100格 | 正式0；2种子诊断没有抽到它；强制fixture成功 | 观察，不计缺陷。诊断46次D4–26奖励房阶段有33次没有合格gate，13次有1个；不是“条件永不满足”。深度、递归抽签与大房间选址共同限制，需要CE成功率基准进一步校准。 |
+| BP50 Worm wall trap | freq7，D12–26，仅递归领养；区域7格、至少5个合格墙位 | 正式0；回滚记录2次，墙位分别仅3/1个，要求≥5 | 观察，不计缺陷。补充80层诊断复现“区域成功→feature1仅3格→回滚”；强制fixture可生成6只underworm。定位到墙位最低数约束，尚不能证明相对CE显著异常或应改参数。 |
+| 其它稀有蓝图 | CE17/27/30/31/38/41/49/53/54 | 分别2/4/2/4/3/1/4/1/3 | 已有正例；详见下表深度／频率。不把不同条件池的freq直接换算成建成率。 |
+| SCROLL_AGGRAVATE_MONSTER | 基频15 | 0，实体缺失 | A09，明确应有却没有。 |
+| DART | 随机基础频率0，开局背包 | 地面／怪物持有0 | 正常，入层普查不计玩家开局背包；不是飞镖实体缺失。 |
+
+定点原始结果见 [focused-causes.txt](x-4-evidence/focused-causes.txt)、[natural-selection.txt](x-4-evidence/natural-selection.txt)。强制fixture直接走 `applyBlueprint`，绕开自然资格／选址，**只能证明内容能构造**。正式回滚诊断会包含后来被楼梯失败丢弃的整层尝试，不与最终成功层分母混算。
+
+怪物零值完整清单：`MK_YOU`（玩家不在怪物数组）；`MK_LICH`／`MK_PHOENIX`（匣／蛋后续变化）；`MK_SPECTRAL_BLADE`／`MK_SPECTRAL_IMAGE`／`MK_CHARM_GUARDIAN`（召唤、符文、使用护符）；`MK_ELDRITCH_TOTEM`（本变体停用CE48相关）；`MK_WARDEN_OF_YENDOR`（B02）。不存在其它“正频普通怪群应该入层却完全缺种”的零值。各怪物全部 CE horde 行的深度、frequency、角色与召唤flag已附在统计表。
+
+地形零值逐项和 CE source/DF/蓝图引用见 [zero-terrain-inventory.txt](x-4-evidence/zero-terrain-inventory.txt)。已确认生成遗漏是藻井三态、护符房 AMULET_SWITCH；26个缺地形归A。其它大量0是开门／拉杆／点燃／开笼／气体／坍塌／激活的后继态，没有执行玩家动作不能要求在初始快照出现。没有足够CE成功率数据，未把其它低格数武断标为失衡。
+
+### 全49行自动生成统计
+
+`请求`为本次真实抽取数量，`建成`为该行生成器记录的成功次数，`选址失败`仅是其中一类失败。CE期望与web请求同口径；机器建成还要经过房间／feature限制。
+
+| AG | CE目标 | 深度 | freq% | CE期望请求 | web请求 | web建成 | 选址失败 |
+|---:|---|---|---:|---:|---:|---:|---:|
+'''
+for r in g['autogen']:
+ target=r['machine'] if r['machine']!='0' else r['df'] if r['df']!='0' else r['terrain']
+ b+=f"| {r['index']} | {target} | {r['depth'][0]}–{r['depth'][1]} | {r['frequency']} | {r['expectedRequests']} | {r['count']} | {r['built']} | {r['locationMisses']} |\n"
+b+='\n### 全70个已实现CE蓝图建成数\n\nfrequency为同资格池中的权重；0不排除强制／怪群入口。CE48/72缺位及范围见A10。机器内部feature、每种item/monster产物另有逐行证据，零值同样保留。\n\n| CE编号 | web蓝图 | 深度 | CE frequency | 建成 |\n|---:|---|---|---:|---:|\n'
+for r in g['blueprints']:b+=f"| {r['id']} | {r['name']} | {r['depth'][0]}–{r['depth'][1]} | {r['frequency']} | {r['built']} |\n"
+report=report.replace('<!-- GENERATION_TABLES -->',b)
+# All zero terrains retain source fields and inbound definitions so zero != missing.
+ce=read('ce-catalogs.txt');zs=[]
+for r in g['terrain']:
+ if r['cells']:continue
+ name=r['ce'];item={**r,'tileDefinition':next(t for t in a['terrain'] if t['ce']==name),'dfWriters':[d['ce'] for d in a['df'] if d['ceFields'][0]==name],'sourceReferences':[]}
+ for file in ['BrogueCE-master/src/variants/GlobalsBrogue.c','BrogueCE-master/src/brogue/Globals.c']:
+  for ln,line in enumerate(Path(file).read_text().splitlines(),1):
+   if re.search(r'\b'+name+r'\b',line):item['sourceReferences'].append({'file':file,'line':ln,'text':line.strip()})
+ zs.append(item)
+(D/'zero-terrain-inventory.txt').write_text(json.dumps(zs,ensure_ascii=False,indent=2)+'\n')
+fallback=[r for r in a['text']['terrainNameFallback'] if r['ce']!='NOTHING'];flavors=a['text']['terrainFlavorNonempty'];summons=[r for r in a['text']['monsterSummonMessages'] if r['text']]
+textinv={'terrainDescriptionFallback':fallback,'sentinelNotAPlayerTile':['NOTHING'],'terrainFlavorNotInCatalog':flavors,'terrainEnglishNames':a['text']['terrainNameEnglish'],'itemDescriptions':a['items'],'monsterDescriptions':a['monsters'],'missingSummonMessages':summons,'genericAbsorptionStatuses':[r for r in a['text']['monsterAbsorbingStatus'] if r['ce']!='MK_YOU'],'dfMessagesAbsent':a['text']['dfMessagesAbsent'],'dfMessagesTranslated':a['text']['dfMessagesLocalized']}
+(D/'text-inventory.txt').write_text(json.dumps(textinv,ensure_ascii=False,indent=2)+'\n')
+texttable='''各目录按条目计，不把同一类型在多处被消费重复计数。清单和 CE 原文／web 实际文本见 [text-inventory.txt](x-4-evidence/text-inventory.txt)。
+
+| 目录／消费点 | 覆盖数量 | 缺失／空／英文结果 | 归属 |
+|---|---:|---|---|
+| 地形 description 名称 | CE215，web运行时193 | 26缺同等地形；88个已有映射错误兜底“地面”，另1个NOTHING哨兵；2条英文直出 | A10/D01/D03 |
+| 地形 flavorText | CE188条非空 | 162已有实体但未移植flavor目录，26随实体缺失；全部条目清单附证据 | D02/A10 |
+| 物品种类 description 数据 | CE97个多种类项 | 96项存在且非空中文；1项随激怒卷轴缺失；纯英文0；消费者丢文见C矩阵 | A09/C01 |
+| 怪物 flavor/description | 非玩家67 | 67个web简介均非空中文；不是67篇正文缺失 | 无新缺陷 |
+| 怪物 absorbingVerb | 非玩家67 | 67项均有映射且有译文 | 已实现 |
+| 怪物 absorbingStatus | 非玩家67 | CE专属状态词未逐项移植，详情统一“吸收” | D04 |
+| 怪物 summonMessage | CE8条非空 | 8条专属句未移植，统一通用召唤句 | D04 |
+| DF description／机关警报 | CE50条非空 | 45条现有且zh_CN运行输出为中文；5条缺失，其中2条现有DF留空、3条连DF缺失 | D05/A07/A10 |
+
+88个错误兜底的 CE 地形名：
+
+'''+', '.join('`'+r['ce']+'`' for r in fallback)+'.\n\n专属召唤句缺项8种：'+', '.join('`'+r['ce']+'`' for r in summons)+'.\n\n缺DF消息5条：'+', '.join('`'+r['df']+'`' for r in a['text']['dfMessagesAbsent'])+'.'
+report=report.replace('<!-- TEXT_TABLES -->',texttable)
+run='''- 未改 `src/`、`scripts/` 或CE源文件。执行前后对这些目录全文件作SHA-256比对，并核对HEAD／工作区；详见 [input-manifest.txt](x-4-evidence/input-manifest.txt) 与 [final-audit.txt](x-4-evidence/final-audit.txt)。报告及证据留工作区，未提交、未推送、未建分支。
+- 探针均在未跟踪 `tmp-x4/`，只运行单文件Vitest、单worker，无file parallelism。先后运行目录/详情探针、80层试跑、2,000层正式普查、定点行为探针、自然选址诊断；没有并发生成任务，没有完整 `npm test`。试跑种子为400000/407919；选址诊断使用正式前两个种子1191900/1199819，80层，增加gate计数后重跑一次，保留最终版本源码与输出，不增加统计独立样本数。
+- 当前工作树没有依赖目录，临时链接到同机已有 `node_modules`；没有安装／更新依赖。初次默认配置因试图向共享依赖 `.vite-temp` 写缓存而遇到EPERM，改用临时原生配置和 `tmp-x4/cache` 后运行通过。链接和临时目录均已删除，目标依赖目录未删除。
+- CE解析器识别字符串／注释与嵌套初始化器，保留源码行号，以 `featureCount` 限制有效特征；不是简单按逗号拆分。身份核对使用显式语义别名，不把重命名当缺失。枚举计数排除NUMBER/MT_NONE等计数哨兵，地形保留NOTHING、DF另报非零数、怪物保留Player。
+- 文本探针使用真实spawn方法、真实 `generateItemDetail` 和zh_CN翻译器；不向实例人为补description。535?状态计数以机器生成的 [item-detail-matrix.txt](x-4-evidence/item-detail-matrix.txt) 为准：原始525，CE投影495，空185。原始文件的active统计是 `excludeFromGeneration` 过滤，**不是CE身份过滤**，两种特殊钥匙应以CE投影表计入。
+- 生成普查不移动、不拾取、不消费物品、不推进战斗／环境回合；每种子初始化一次，之后逐深度生成，保留跨层奖励与计量状态。统计是生成内容供给普查，不等同真实玩家路径、完整交互覆盖或CE概率等价证明。堆叠物品算1个实例、金币算堆数；玩家开局装备不计；地形算最终四层格数，正常别名可能共享一个web计数，不能跨CE行直接求独立实体总数。
+- 定点fixture只改进程内对象，未修改生产文件；燃烧飞镖暂停回合尾部以观察即时落点，藻井对照只改变临时网格的写层方法。所有原型监听在finally中恢复。被测源文件摘录附 [source-excerpts.txt](x-4-evidence/source-excerpts.txt)。
+
+在 `brogue-web/` 下可复现的运行命令（先将 `.source.txt` 按原名还原到临时目录，并提供现有依赖；正式JSONL输出须先清空，避免append重复）：
+
+```sh
+./node_modules/.bin/vitest run tmp-x4/catalog-detail.test.ts --config tmp-x4/vitest.config.mjs --configLoader native --maxWorkers=1 --no-file-parallelism
+X4_START=0 X4_SEEDS=2 ./node_modules/.bin/vitest run tmp-x4/generation.test.ts --config tmp-x4/vitest.config.mjs --configLoader native --maxWorkers=1 --no-file-parallelism
+X4_START=100 X4_SEEDS=50 ./node_modules/.bin/vitest run tmp-x4/generation.test.ts --config tmp-x4/vitest.config.mjs --configLoader native --maxWorkers=1 --no-file-parallelism
+./node_modules/.bin/vitest run tmp-x4/focused.test.ts --config tmp-x4/vitest.config.mjs --configLoader native --maxWorkers=1 --no-file-parallelism
+./node_modules/.bin/vitest run tmp-x4/selection.test.ts --config tmp-x4/vitest.config.mjs --configLoader native --maxWorkers=1 --no-file-parallelism
+```
+
+静态脚本在仓库根目录顺序运行 `ce-audit.py → analyze.py → supplement.py → statistics.py → build-report.py`；所有脚本及临时配置的最终版本原文均以 `.source.txt` 附证据。`build-report.py` 同时生成零地形和文本清单，需同目录的report-base原文。主普查Vitest总耗时1096.89秒，单测试1095.48秒（探针内部计时1095.419秒）；详情矩阵约几十毫秒，定点行为约482毫秒，补充选址80层约40.11秒。日志原样保留，正式普查1个测试通过、错误列表为空。
+'''.replace('535?状态计数','状态计数')
+report=report.replace('<!-- RUN_DETAILS -->',run)
+assert '<!--' not in report
+counts=collections.Counter(re.findall(r'^\| X4-\w+ \|[^\n]*?\| (S[123]) \|',report,re.M));assert counts=={'S1':10,'S2':9,'S3':7},counts
+assert matrix['combinations']==495 and matrix['empty']==185
+Path('brogue-web/ai_docs/reports/x-4-survey.report.md').write_text(report)
+print('REPORT',len(report.splitlines()),dict(counts))

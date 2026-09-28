@@ -1,0 +1,108 @@
+from pathlib import Path
+import json,re,sys
+sys.path.insert(0,str(Path(__file__).parent))
+from importlib.machinery import SourceFileLoader
+parser=SourceFileLoader('ceparser',str(Path(__file__).with_name('ce-audit.py'))).load_module()
+parts=parser.parts
+D=Path('brogue-web/ai_docs/reports/x-4-evidence');S=Path('brogue-web/src')
+ce=json.loads((D/'ce-catalogs.txt').read_text());w=json.loads((D/'web-catalogs.txt').read_text());E=ce['enums'];A=ce['arrays']
+read=lambda p:json.loads((S/p).read_text())
+bps=read('data/blueprints.json');mons=read('data/monsters.json');cons=read('data/consumables.json');arc=read('data/arcana.json')
+items={'weapons':read('data/weapons.json'),'armors':read('data/armors.json'),**cons,**arc}
+def enums(k):return {n:v for n,v in E[k].items() if not n.startswith('NUMBER_') and n not in ['MT_NONE']}
+def cstr(s):
+ try:return json.loads(s)
+ except:return s
+aliases={'UP_STAIRS':'STAIRS_UP','DOWN_STAIRS':'STAIRS_DOWN','DEEP_WATER':'WATER_DEEP','SHALLOW_WATER':'WATER_SHALLOW','RED_BLOOD':'BLOOD','SPIDERWEB':'WEB','ALTAR_INERT':'ALTAR','MACHINE_PRESSURE_PLATE':'PRESSURE_PLATE','DUNGEON_EXIT':'STAIRS_UP'}
+terrain=[]
+for n,v in enums('tileType').items():
+ mapped=aliases.get(n,n);row=A['tileCatalog'][v];f=row['fields']
+ terrain.append({'ce':n,'id':v,'ceLine':row['line'],'web':mapped if mapped in w['terrain'] else None,'status':'exact' if mapped==n and mapped in w['terrain'] else 'alias' if mapped in w['terrain'] else 'missing','description':cstr(f[12]),'flavor':cstr(f[13]),'webName':w['terrainNames'].get(mapped),'ceFields':f})
+# Explicit mapping is semantic, not spelling-only.
+mi={'MK_YOU':'@Player','MK_WILL_O_THE_WISP':'wisp','MK_ACID_JELLY':'acidic_jelly','MK_GOBLIN_CHIEFTAN':'goblin_warlord','MK_SPECTRAL_IMAGE':'spectral_sword','MK_GUARDIAN':'stone_guardian','MK_CHARM_GUARDIAN':'guardian_spirit','MK_WARDEN_OF_YENDOR':'Warden_of_Yendor','MK_ANCIENT_SPIRIT':'mangrove_dryad'}
+monster=[]
+for n,v in enums('monsterTypes').items():
+ web=mi.get(n,n[3:].lower());row=next((m for m in mons if m['id']==web),None)
+ monster.append({'ce':n,'id':v,'web':web,'exists':row is not None or web=='@Player','ceLine':A['monsterCatalog'][v]['line'],'textLine':A['monsterText'][v]['line'],'ceWords':A['monsterText'][v]['fields'],'description':row.get('description') if row else None})
+# Item-table names normalize all named types; exceptional known aliases documented.
+iAliases={'HAMMER':'war_hammer','PIKE':'war_pike','RATION':'ration_of_food','FRUIT':'mango','POTION_LICHEN':'potion_of_creeping_death','SCROLL_ENCHANTING':'scroll_of_enchantment','KEY_DOOR':'iron_key','KEY_CAGE':'cage_key','KEY_PORTAL':'crystal_orb','CHARM_HASTE':'charm_of_speed','PLATE_MAIL':'plate_mail','POTION_HASTE_SELF':'potion_of_haste','POTION_POISON':'potion_of_poison','STAFF_FIRE':'staff_of_fire'}
+specs=[('weaponKind','weaponTable','weapons',''),('armorKind','armorTable','armors',''),('foodKind','foodTable','food',''),('keyKind','keyTable','keys',''),('potionKind','potionTable_Brogue','potions','potion_of_'),('scrollKind','scrollTable_Brogue','scrolls','scroll_of_'),('wandKind','wandTable_Brogue','wands','wand_of_'),('staffKind','staffTable','staffs','staff_of_'),('ringKind','ringTable','rings','ring_of_'),('charmKind','charmTable_Brogue','charms','charm_of_')]
+itemrows=[];itemMap={}
+for enum,table,group,prefix in specs:
+ for n,v in enums(enum).items():
+  r=A[table][v];f=r['fields'];name=cstr(f[0]);web=iAliases.get(n,prefix+name.replace(' ','_'));row=next((i for i in items[group] if i['id']==web),None);itemMap[n]=web
+  itemrows.append({'ce':n,'group':group,'id':v,'ceLine':r['line'],'web':web if row else None,'candidate':web,'exists':row is not None,'excluded':row.get('excludeFromGeneration',False) if row else None,'frequency':f[3],'ceDescription':cstr(f[-1]),'webDescription':row.get('description') if row else None})
+dfs=[]
+for n,v in enums('dungeonFeatureTypes').items():
+ r=A['dungeonFeatureCatalog'][v];f=r['fields'];wr=next((d for d in w['df'] if d['name']==n),None)
+ dfs.append({'ce':n,'id':v,'ceLine':r['line'],'exists':wr is not None,'ceFields':f,'web':wr})
+dfMismatch=[]
+for r in dfs:
+ wr=r['web'];f=r['ceFields']
+ if not wr:continue
+ for field,webfield,actualfield,ci in [('tile','ceTile','tileName',0),('propagationTerrain','cePropagationTerrain','propagationName',9)]:
+  cn=f[ci] if len(f)>ci else '0';reported=wr[webfield];actual=wr.get(actualfield);expected=aliases.get(cn,cn)
+  if cn=='0':expected=None if field=='propagationTerrain' else 'NOTHING'
+  if cn!=reported and not(cn=='0' and reported in ['','0','NOTHING']):dfMismatch.append({'df':r['ce'],'field':webfield,'ce':cn,'web':reported,'type':'ce-label-drift','line':wr['ceLine']})
+  if (actual or None)!=expected:dfMismatch.append({'df':r['ce'],'field':field,'ce':cn,'web':actual,'expectedAlias':expected,'type':'substitute','line':wr['ceLine']})
+ if len(f)>10 and f[10]!='0' and f[10]!=wr.get('subsequentName'):dfMismatch.append({'df':r['ce'],'field':'subsequentDF','ce':f[10],'web':wr.get('subsequentName'),'type':'chain','line':wr['ceLine']})
+# Full blueprint reference resolution and CE-field comparison.
+bpSource=(S/'engine/Generator/BlueprintEngine.ts').read_text();mp=re.search(r'const TERRAIN_MAP:.*?=\s*{(.*?)\n};',bpSource,re.S)[1]
+bpMap=dict(re.findall(r'(\w+): TerrainType\.(\w+)',mp));bpMissing=[];bpDiff=[];bpEnums=[]
+monMap={m['ce']:m['web'] for m in monster}
+for name,id in enums('machineTypes').items():
+ bp=next((b for b in bps if b.get('ceBlueprintId')==id),None)
+ bpEnums.append({'ce':name,'id':id,'web':bp['id'] if bp else None})
+ if not bp or id>=len(A['blueprintCatalog_Brogue']):continue
+ ceBP=A['blueprintCatalog_Brogue'][id];fields=ceBP['fields'];features=[parts(f.strip()[1:-1]) for f in parts(fields[7][1:-1])][:int(fields[4])]
+ if len(features)!=len(bp['features']):bpDiff.append({'bp':id,'field':'featureCount','ce':len(features),'web':len(bp['features'])})
+ for i,f in enumerate(bp['features']):
+  for k in ['terrain','featureDF','itemId','monsterId']:
+   v=f.get(k)
+   if not v:continue
+   good={'terrain':v in bpMap,'featureDF':v in w['DF'],'itemId':any(v==a['id'] for rows in items.values() for a in rows),'monsterId':v in [m['id'] for m in mons]}[k]
+   # Monster ids in JSON may be CE suffix, runtime normalizes these.
+   if k=='monsterId' and 'MK_'+v in monMap:good=True
+   if not good:bpMissing.append({'bp':id,'feature':i,'field':k,'value':v})
+  if i>=len(features):continue
+  cf=features[i];checks={'terrain':aliases.get(cf[1],cf[1]) if cf[1]!='0' else None,'featureDF':cf[0] if cf[0]!='0' else None,'monsterId':monMap.get(cf[7]) if cf[7]!='0' else None}
+  for k,expected in checks.items():
+   actual=f.get(k);actual=bpMap.get(actual,actual) if k=='terrain' else monMap.get('MK_'+actual,actual) if k=='monsterId' and actual else actual
+   if expected!=actual:bpDiff.append({'bp':id,'feature':i,'field':k,'ce':cf[{'terrain':1,'featureDF':0,'monsterId':7}[k]],'expected':expected,'web':actual,'ceLine':ceBP['line']})
+  if cf[6] not in ['0','-1'] or (cf[5]=='KEY' and cf[6]=='KEY_DOOR'):
+   expected=itemMap.get(cf[6],cf[6]);actual=f.get('itemId')
+   if expected!=actual:bpDiff.append({'bp':id,'feature':i,'field':'itemId','ce':cf[6],'expected':expected,'web':actual,'ceLine':ceBP['line']})
+# Text audit: static exact inventory + executed localized fallback results.
+verbs=read('data/monsterAbsorptionVerbs.json');game=(S/'engine/Core/Game.ts').read_text();local=read('locales/zh_CN.json');absrc=(S/'engine/Combat/MonsterAbsorption.ts').read_text()
+textAudit={'terrainFlavorNonempty':[{'ce':r['ce'],'line':r['ceLine'],'web':r['web'],'text':r['flavor']} for r in terrain if r['flavor']], 'terrainNameFallback':[r for r in terrain if r['web'] and (not r['webName'] or (r['webName']=='地面' and r['description']!='the ground'))], 'itemDescriptionMissing':[r for r in itemrows if r['exists'] and not r['webDescription']], 'itemDescriptionEnglish':[r for r in itemrows if r['webDescription'] and re.search('[a-zA-Z]',r['webDescription']) and not re.search('[\u4e00-\u9fff]',r['webDescription'])], 'monsterDescriptionMissing':[r['web'] for r in monster if r['web']!='@Player' and not r['description']], 'monsterDescriptionEnglish':[r['web'] for r in monster if r['description'] and not re.search('[\u4e00-\u9fff]',r['description'])], 'dfMessagesEnglish':[{'id':r['name'],'description':r['description'],'localized':r['localized']} for r in w['df'] if r['description'] and r['localized']==r['description']], 'dfMessagesLocalized':[r['name'] for r in w['df'] if r['description'] and r['localized']!=r['description']], 'monsterAbsorbingStatus': [{'ce':r['ce'],'web':r['web'],'ceText':cstr(r['ceWords'][2])} for r in monster if len(r['ceWords'])>2], 'monsterSummon': [{'ce':r['ce'],'web':r['web'],'fields':r['ceWords'][4:]} for r in monster if len(r['ceWords'])>4]}
+# Persist every CE row, not just failures; counts are reproducible.
+result={'terrain':terrain,'df':dfs,'dfMismatch':dfMismatch,'blueprints':bpEnums,'blueprintReferencesMissing':bpMissing,'blueprintDifferences':bpDiff,'monsters':monster,'items':itemrows,'runics':{'weapon':w['weaponRunics'],'armor':w['armorRunics']},'text':textAudit,'aliases':{'terrain':aliases,'monster':mi,'item':iAliases}}
+(D/'catalog-audit.txt').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print('MISSING TERRAIN',[(r['ce'],r['ceLine']) for r in terrain if r['status']=='missing'])
+print('DF DIFFERENCES',dfMismatch)
+print('BP MISSING',bpMissing,'BP DIFF',bpDiff)
+print('ITEM MISSING',[(r['ce'],r['candidate']) for r in itemrows if not r['exists']]);print('MONSTER MISSING',[r['ce'] for r in monster if not r['exists']]);print('TEXT COUNTS',{k:len(v) for k,v in textAudit.items()})
+# Supplemental resolved references, source-level names and independent CE values.
+agDiff=[]
+constants={'DEEPEST_LEVEL':40,'AMULET_LEVEL':26,'DUNGEON':0,'LIQUID':1,'GAS':2,'SURFACE':3,**E['machineTypes'],**E['dungeonFeatureTypes']}
+for ag in w['ag']:
+ f=A['autoGeneratorCatalog_Brogue'][ag['index']]['fields'];f=f+['0']*(12-len(f))
+ for k,idx in [('ceTerrain',0),('ceDf',2),('ceMachine',3)]:
+  if ag[k]!=f[idx]:agDiff.append({'index':ag['index'],'field':k,'ce':f[idx],'web':ag[k]})
+ for k,idx in [('minDepth',6),('maxDepth',7),('frequency',8),('minNumberIntercept',9),('minNumberSlope',10),('maxNumber',11)]:
+  expected=eval(f[idx],{'__builtins__':{}},constants)
+  if ag[k]!=expected:agDiff.append({'index':ag['index'],'field':k,'ce':expected,'web':ag[k]})
+ for name,actual,expected in [('terrain',ag.get('tileName'),aliases.get(f[0],f[0]) if f[0]!='0' else None),('df',ag.get('dfName'),f[2] if f[2]!='0' else None),('machine',ag['machine'],constants.get(f[3],0))]:
+  if actual!=expected:agDiff.append({'index':ag['index'],'field':name,'ce':expected,'web':actual,'carrier':ag['carrier'],'note':ag['note']})
+result['autoGeneratorDifferences']=agDiff
+result['meteredDifferences']=[r for r in w['metered'] if r['ceKind'] not in E['potionKind'] and r['ceKind'] not in E['scrollKind'] or r['webId'] is None]
+result['hordeMachineRows']=[{'webIndex':i,**h} for i,h in enumerate(read('data/hordes.json')) if h.get('machine')]
+result['hordeReferencesMissing']=[{'index':i,'role':role,'name':name} for i,h in enumerate(read('data/hordes.json')) for role,name in [('leader',h['leader'])]+[('member',m['type']) for m in h['members']] if name.lower() not in {m['id'].lower() for m in mons}]
+result['text']['terrainNameEnglish']=[{'ce':r['ce'],'web':r['web'],'text':r['webName']} for r in terrain if r['webName'] and re.search('[a-zA-Z]',r['webName'])]
+result['text']['dfMessagesAbsent']=[{'df':r['ce'],'ceLine':r['ceLine'],'text':cstr(r['ceFields'][5]),'exists':r['exists']} for r in dfs if len(r['ceFields'])>5 and r['ceFields'][5] not in ['""','0'] and (not r['exists'] or not r['web']['description'])]
+result['text']['monsterSummonMessages']=[{'ce':r['ce'],'web':r['web'],'text':cstr(r['ceWords'][5])} for r in monster if len(r['ceWords'])>5]
+result['text']['absorptionVerbUntranslated']=[{'id':id,'verb':v} for id,v in verbs.items() if 'learning.verbs.'+v not in local and v not in local.get('learning',{}).get('verbs',{})]
+result['sourceMetadataFields']={str(p.relative_to(S)):sorted(set(re.findall(r'\b(ce[A-Z]\w*)\s*[:?]',p.read_text()))) for p in [*S.rglob('*.ts'),*S.rglob('*.json')] if '/test/' not in str(p) and not p.name.endswith('.test.ts') and re.search(r'\bce[A-Z]\w*\s*[:?]',p.read_text())}
+result['missingDfReferences']={r['ce']:[{'file':str(p),'line':i,'text':line.strip()} for p in Path('BrogueCE-master/src').rglob('*.c') for i,line in enumerate(p.read_text().splitlines(),1) if re.search(r'\b'+r['ce']+r'\b',line)] for r in dfs if not r['exists']}
+(D/'catalog-audit.txt').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print('AUTOGEN_DIFF',agDiff);print('METERED_DIFF',result['meteredDifferences']);print('HORDE_MACHINE',len(result['hordeMachineRows']));print('NAME_ENGLISH',result['text']['terrainNameEnglish']);print('ABSORB_UNTRANSLATED',result['text']['absorptionVerbUntranslated'])

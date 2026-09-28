@@ -1,0 +1,6199 @@
+{
+  "terrainDescriptionFallback": [
+    {
+      "ce": "CARPET",
+      "id": 4,
+      "ceLine": 325,
+      "web": "CARPET",
+      "status": "exact",
+      "description": "the carpet",
+      "flavor": "Ornate carpeting fills this room, a relic of ages past.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CARPET",
+        "&carpetForeColor",
+        "&carpetBackColor",
+        "85",
+        "0",
+        "DF_EMBERS",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"the carpet\"",
+        "\"Ornate carpeting fills this room, a relic of ages past.\""
+      ]
+    },
+    {
+      "ce": "MARBLE_FLOOR",
+      "id": 5,
+      "ceLine": 326,
+      "web": "MARBLE_FLOOR",
+      "status": "exact",
+      "description": "the marble ground",
+      "flavor": "Light from the nearby crystals catches the grain of the lavish marble floor.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CARPET",
+        "&marbleForeColor",
+        "&marbleBackColor",
+        "85",
+        "0",
+        "DF_EMBERS",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"the marble ground\"",
+        "\"Light from the nearby crystals catches the grain of the lavish marble floor.\""
+      ]
+    },
+    {
+      "ce": "TORCH_WALL",
+      "id": 16,
+      "ceLine": 337,
+      "web": "TORCH_WALL",
+      "status": "exact",
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&torchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE)",
+        "\"a wall-mounted torch\"",
+        "\"The torch is anchored firmly to the wall and sputters quietly in the gloom.\""
+      ]
+    },
+    {
+      "ce": "CRYSTAL_WALL",
+      "id": 17,
+      "ceLine": 338,
+      "web": "CRYSTAL_WALL",
+      "status": "exact",
+      "description": "a crystal formation",
+      "flavor": "You feel the crystal's glossy surface and admire the dancing lights beneath.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRYSTAL",
+        "&wallCrystalColor",
+        "&wallCrystalColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "CRYSTAL_WALL_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_DIAGONAL_MOVEMENT)",
+        "(TM_STAND_IN_TILE | TM_REFLECTS_BOLTS)",
+        "\"a crystal formation\"",
+        "\"You feel the crystal's glossy surface and admire the dancing lights beneath.\""
+      ]
+    },
+    {
+      "ce": "PORTCULLIS_CLOSED",
+      "id": 18,
+      "ceLine": 339,
+      "web": "PORTCULLIS_CLOSED",
+      "status": "exact",
+      "description": "a heavy portcullis",
+      "flavor": "The iron bars rattle but will not budge; they are firmly locked in place.",
+      "webName": "地面",
+      "ceFields": [
+        "G_PORTCULLIS",
+        "&gray",
+        "&floorBackColor",
+        "10",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_OPEN_PORTCULLIS",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL)",
+        "\"a heavy portcullis\"",
+        "\"The iron bars rattle but will not budge; they are firmly locked in place.\""
+      ]
+    },
+    {
+      "ce": "WOODEN_BARRICADE",
+      "id": 20,
+      "ceLine": 341,
+      "web": "WOODEN_BARRICADE",
+      "status": "exact",
+      "description": "a dry wooden barricade",
+      "flavor": "The wooden barricade is firmly set but has dried over the years. Might it burn?",
+      "webName": "地面",
+      "ceFields": [
+        "G_BARRICADE",
+        "&doorForeColor",
+        "&floorBackColor",
+        "8",
+        "100",
+        "DF_WOODEN_BARRICADE_BURN",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL)",
+        "\"a dry wooden barricade\"",
+        "\"The wooden barricade is firmly set but has dried over the years. Might it burn?\""
+      ]
+    },
+    {
+      "ce": "HAUNTED_TORCH_DORMANT",
+      "id": 23,
+      "ceLine": 344,
+      "web": "HAUNTED_TORCH_DORMANT",
+      "status": "exact",
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&torchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HAUNTED_TORCH_TRANSITION",
+        "0",
+        "TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a wall-mounted torch\"",
+        "\"The torch is anchored firmly to the wall and sputters quietly in the gloom.\""
+      ]
+    },
+    {
+      "ce": "HAUNTED_TORCH_TRANSITIONING",
+      "id": 24,
+      "ceLine": 345,
+      "web": "HAUNTED_TORCH_TRANSITIONING",
+      "status": "exact",
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&torchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HAUNTED_TORCH",
+        "2000",
+        "TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a wall-mounted torch\"",
+        "\"The torch is anchored firmly to the wall and sputters quietly in the gloom.\""
+      ]
+    },
+    {
+      "ce": "HAUNTED_TORCH",
+      "id": 25,
+      "ceLine": 346,
+      "web": "HAUNTED_TORCH",
+      "status": "exact",
+      "description": "a sputtering torch",
+      "flavor": "A dim purple flame sputters and spits atop this wall-mounted torch.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&hauntedTorchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "HAUNTED_TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE)",
+        "\"a sputtering torch\"",
+        "\"A dim purple flame sputters and spits atop this wall-mounted torch.\""
+      ]
+    },
+    {
+      "ce": "WALL_LEVER_HIDDEN_DORMANT",
+      "id": 29,
+      "ceLine": 350,
+      "web": "WALL_LEVER_HIDDEN_DORMANT",
+      "status": "exact",
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_CREATE_LEVER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_IS_WIRED)",
+        "\"a stone wall\"",
+        "\"The rough stone wall is firm and unyielding.\""
+      ]
+    },
+    {
+      "ce": "STATUE_INERT",
+      "id": 30,
+      "ceLine": 351,
+      "web": "STATUE_INERT",
+      "status": "exact",
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "webName": "地面",
+      "ceFields": [
+        "G_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE)",
+        "\"a marble statue\"",
+        "\"The cold marble statue has weathered the years with grace.\""
+      ]
+    },
+    {
+      "ce": "STATUE_DORMANT",
+      "id": 31,
+      "ceLine": 352,
+      "web": "STATUE_DORMANT",
+      "status": "exact",
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "webName": "地面",
+      "ceFields": [
+        "G_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_CRACKING_STATUE",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a marble statue\"",
+        "\"The cold marble statue has weathered the years with grace.\""
+      ]
+    },
+    {
+      "ce": "STATUE_INSTACRACK",
+      "id": 33,
+      "ceLine": 354,
+      "web": "STATUE_INSTACRACK",
+      "status": "exact",
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "webName": "地面",
+      "ceFields": [
+        "G_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_STATUE_SHATTER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a marble statue\"",
+        "\"The cold marble statue has weathered the years with grace.\""
+      ]
+    },
+    {
+      "ce": "PORTAL",
+      "id": 34,
+      "ceLine": 355,
+      "web": "PORTAL",
+      "status": "exact",
+      "description": "a stone archway",
+      "flavor": "This ancient moss-covered stone archway radiates a strange, alien energy.",
+      "webName": "地面",
+      "ceFields": [
+        "G_DOORWAY",
+        "&wallBackColor",
+        "&floorBackColor",
+        "17",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_PORTAL_ACTIVATE",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_ITEMS)",
+        "(TM_STAND_IN_TILE | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a stone archway\"",
+        "\"This ancient moss-covered stone archway radiates a strange, alien energy.\""
+      ]
+    },
+    {
+      "ce": "TURRET_DORMANT",
+      "id": 35,
+      "ceLine": 356,
+      "web": "TURRET_DORMANT",
+      "status": "exact",
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_TURRET_EMERGE",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a stone wall\"",
+        "\"The rough stone wall is firm and unyielding.\""
+      ]
+    },
+    {
+      "ce": "WALL_MONSTER_DORMANT",
+      "id": 36,
+      "ceLine": 357,
+      "web": "WALL_MONSTER_DORMANT",
+      "status": "exact",
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_WALL_SHATTER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a stone wall\"",
+        "\"The rough stone wall is firm and unyielding.\""
+      ]
+    },
+    {
+      "ce": "ALTAR_KEYHOLE",
+      "id": 42,
+      "ceLine": 363,
+      "web": "ALTAR_KEYHOLE",
+      "status": "exact",
+      "description": "a candle-lit altar",
+      "flavor": "ornate gilding spirals around a spherical depression in the top of the altar.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ORB_ALTAR",
+        "&altarForeColor",
+        "&altarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR)",
+        "\"a candle-lit altar\"",
+        "\"ornate gilding spirals around a spherical depression in the top of the altar.\""
+      ]
+    },
+    {
+      "ce": "ALTAR_CAGE_OPEN",
+      "id": 43,
+      "ceLine": 364,
+      "web": "ALTAR_CAGE_OPEN",
+      "status": "exact",
+      "description": "a candle-lit altar",
+      "flavor": "a cage, open on the bottom, hangs over this altar on a retractable chain.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ALTAR",
+        "&altarForeColor",
+        "&altarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_ITEM_CAGE_CLOSE",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_WITHOUT_KEY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a candle-lit altar\"",
+        "\"a cage, open on the bottom, hangs over this altar on a retractable chain.\""
+      ]
+    },
+    {
+      "ce": "ALTAR_SWITCH",
+      "id": 45,
+      "ceLine": 366,
+      "web": "ALTAR_SWITCH",
+      "status": "exact",
+      "description": "a candle-lit altar",
+      "flavor": "a weathered stone altar is adorned with candles that flicker in the breeze.",
+      "webName": "地面",
+      "ceFields": [
+        "G_SAC_ALTAR",
+        "&altarForeColor",
+        "&altarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_ALTAR_INERT",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a candle-lit altar\"",
+        "\"a weathered stone altar is adorned with candles that flicker in the breeze.\""
+      ]
+    },
+    {
+      "ce": "ALTAR_SWITCH_RETRACTING",
+      "id": 46,
+      "ceLine": 367,
+      "web": "ALTAR_SWITCH_RETRACTING",
+      "status": "exact",
+      "description": "a candle-lit altar",
+      "flavor": "a weathered stone altar is adorned with candles that flicker in the breeze.",
+      "webName": "地面",
+      "ceFields": [
+        "G_SAC_ALTAR",
+        "&altarForeColor",
+        "&altarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_ALTAR_RETRACT",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a candle-lit altar\"",
+        "\"a weathered stone altar is adorned with candles that flicker in the breeze.\""
+      ]
+    },
+    {
+      "ce": "ALTAR_CAGE_RETRACTABLE",
+      "id": 47,
+      "ceLine": 368,
+      "web": "ALTAR_CAGE_RETRACTABLE",
+      "status": "exact",
+      "description": "an iron cage",
+      "flavor": "the cage won't budge. Perhaps there is a way to raise it nearby...",
+      "webName": "地面",
+      "ceFields": [
+        "G_CLOSED_CAGE",
+        "&altarBackColor",
+        "&veryDarkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_CAGE_DISAPPEARS",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an iron cage\"",
+        "\"the cage won't budge. Perhaps there is a way to raise it nearby...\""
+      ]
+    },
+    {
+      "ce": "PEDESTAL",
+      "id": 48,
+      "ceLine": 369,
+      "web": "PEDESTAL",
+      "status": "exact",
+      "description": "a stone pedestal",
+      "flavor": "elaborate carvings wind around this ancient pedestal.",
+      "webName": "地面",
+      "ceFields": [
+        "G_PEDESTAL",
+        "&altarForeColor",
+        "&pedestalBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "0",
+        "\"a stone pedestal\"",
+        "\"elaborate carvings wind around this ancient pedestal.\""
+      ]
+    },
+    {
+      "ce": "MONSTER_CAGE_OPEN",
+      "id": 49,
+      "ceLine": 370,
+      "web": "MONSTER_CAGE_OPEN",
+      "status": "exact",
+      "description": "an open cage",
+      "flavor": "the interior of the cage is filthy and reeks of decay.",
+      "webName": "地面",
+      "ceFields": [
+        "G_OPEN_CAGE",
+        "&floorBackColor",
+        "&veryDarkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"an open cage\"",
+        "\"the interior of the cage is filthy and reeks of decay.\""
+      ]
+    },
+    {
+      "ce": "MONSTER_CAGE_CLOSED",
+      "id": 50,
+      "ceLine": 371,
+      "web": "MONSTER_CAGE_CLOSED",
+      "status": "exact",
+      "description": "a locked iron cage",
+      "flavor": "the bars of the cage are firmly set and will not budge.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CLOSED_CAGE",
+        "&gray",
+        "&darkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_MONSTER_CAGE_OPENS",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_LIST_IN_SIDEBAR | TM_INTERRUPT_EXPLORATION_WHEN_SEEN)",
+        "\"a locked iron cage\"",
+        "\"the bars of the cage are firmly set and will not budge.\""
+      ]
+    },
+    {
+      "ce": "COFFIN_CLOSED",
+      "id": 51,
+      "ceLine": 372,
+      "web": "COFFIN_CLOSED",
+      "status": "exact",
+      "description": "a sealed coffin",
+      "flavor": "a coffin made from thick wooden planks rests in a bed of moss.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CLOSED_COFFIN",
+        "&bridgeFrontColor",
+        "&bridgeBackColor",
+        "17",
+        "20",
+        "DF_COFFIN_BURNS",
+        "0",
+        "DF_COFFIN_BURSTS",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_IS_WIRED | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR)",
+        "\"a sealed coffin\"",
+        "\"a coffin made from thick wooden planks rests in a bed of moss.\""
+      ]
+    },
+    {
+      "ce": "GAS_TRAP_PARALYSIS",
+      "id": 58,
+      "ceLine": 382,
+      "web": "GAS_TRAP_PARALYSIS",
+      "status": "exact",
+      "description": "a paralysis trigger",
+      "flavor": "there is a hidden pressure plate in the floor.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TRAP",
+        "&pink",
+        "0",
+        "30",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_DF_TRAP)",
+        "(TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a paralysis trigger\"",
+        "\"there is a hidden pressure plate in the floor.\""
+      ]
+    },
+    {
+      "ce": "FLOOD_TRAP",
+      "id": 66,
+      "ceLine": 390,
+      "web": "FLOOD_TRAP",
+      "status": "exact",
+      "description": "a flood trap",
+      "flavor": "A hidden pressure plate is connected to floodgates in the walls and ceiling.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TRAP",
+        "&blue",
+        "0",
+        "58",
+        "0",
+        "DF_FLOOD",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_DF_TRAP)",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a flood trap\"",
+        "\"A hidden pressure plate is connected to floodgates in the walls and ceiling.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_GLYPH",
+      "id": 80,
+      "ceLine": 404,
+      "web": "MACHINE_GLYPH",
+      "status": "exact",
+      "description": "a magical glyph",
+      "flavor": "A strange glyph, engraved into the floor, flickers with magical light.",
+      "webName": "地面",
+      "ceFields": [
+        "G_MAGIC_GLYPH",
+        "&glyphColor",
+        "0",
+        "42",
+        "0",
+        "0",
+        "0",
+        "DF_INACTIVE_GLYPH",
+        "0",
+        "GLYPH_LIGHT_DIM",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT)",
+        "\"a magical glyph\"",
+        "\"A strange glyph, engraved into the floor, flickers with magical light.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_GLYPH_INACTIVE",
+      "id": 81,
+      "ceLine": 405,
+      "web": "MACHINE_GLYPH_INACTIVE",
+      "status": "exact",
+      "description": "a glowing glyph",
+      "flavor": "A strange glyph, engraved into the floor, radiates magical light.",
+      "webName": "地面",
+      "ceFields": [
+        "G_MAGIC_GLYPH",
+        "&glyphColor",
+        "0",
+        "42",
+        "0",
+        "0",
+        "0",
+        "DF_ACTIVE_GLYPH",
+        "10000",
+        "GLYPH_LIGHT_BRIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a glowing glyph\"",
+        "\"A strange glyph, engraved into the floor, radiates magical light.\""
+      ]
+    },
+    {
+      "ce": "CHASM_EDGE",
+      "id": 90,
+      "ceLine": 417,
+      "web": "CHASM_EDGE",
+      "status": "exact",
+      "description": "the brink of a chasm",
+      "flavor": "chilly winds blow upward from the stygian depths.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"the brink of a chasm\"",
+        "\"chilly winds blow upward from the stygian depths.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "id": 92,
+      "ceLine": 419,
+      "web": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "status": "exact",
+      "description": "the crumbling ground",
+      "flavor": "cracks are appearing in the ground beneath your feet!",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "45",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_COLLAPSE_SPREADS",
+        "2500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"the crumbling ground\"",
+        "\"cracks are appearing in the ground beneath your feet!\""
+      ]
+    },
+    {
+      "ce": "LAVA_RETRACTABLE",
+      "id": 94,
+      "ceLine": 421,
+      "web": "LAVA_RETRACTABLE",
+      "status": "exact",
+      "description": "lava",
+      "flavor": "searing heat rises from the lava.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LIQUID",
+        "&fireForeColor",
+        "&lavaBackColor",
+        "40",
+        "0",
+        "DF_OBSIDIAN",
+        "0",
+        "DF_RETRACTING_LAVA",
+        "0",
+        "LAVA_LIGHT",
+        "(T_LAVA_INSTA_DEATH)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_ALLOWS_SUBMERGING)",
+        "\"lava\"",
+        "\"searing heat rises from the lava.\""
+      ]
+    },
+    {
+      "ce": "LAVA_RETRACTING",
+      "id": 95,
+      "ceLine": 422,
+      "web": "LAVA_RETRACTING",
+      "status": "exact",
+      "description": "cooling lava",
+      "flavor": "searing heat rises from the lava.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LIQUID",
+        "&fireForeColor",
+        "&lavaBackColor",
+        "40",
+        "0",
+        "DF_OBSIDIAN",
+        "0",
+        "DF_OBSIDIAN_WITH_STEAM",
+        "-1500",
+        "LAVA_LIGHT",
+        "(T_LAVA_INSTA_DEATH)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_ALLOWS_SUBMERGING)",
+        "\"cooling lava\"",
+        "\"searing heat rises from the lava.\""
+      ]
+    },
+    {
+      "ce": "OBSIDIAN",
+      "id": 100,
+      "ceLine": 427,
+      "web": "OBSIDIAN",
+      "status": "exact",
+      "description": "the obsidian ground",
+      "flavor": "the ground has fused into obsidian.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&darkGray",
+        "&obsidianBackColor",
+        "50",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"the obsidian ground\"",
+        "\"the ground has fused into obsidian.\""
+      ]
+    },
+    {
+      "ce": "BRIDGE",
+      "id": 101,
+      "ceLine": 428,
+      "web": "BRIDGE",
+      "status": "exact",
+      "description": "a rickety rope bridge",
+      "flavor": "the rickety rope bridge creaks underfoot.",
+      "webName": "地面",
+      "ceFields": [
+        "G_BRIDGE",
+        "&bridgeFrontColor",
+        "&bridgeBackColor",
+        "45",
+        "50",
+        "DF_BRIDGE_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a rickety rope bridge\"",
+        "\"the rickety rope bridge creaks underfoot.\""
+      ]
+    },
+    {
+      "ce": "BRIDGE_EDGE",
+      "id": 103,
+      "ceLine": 430,
+      "web": "BRIDGE_EDGE",
+      "status": "exact",
+      "description": "a rickety rope bridge",
+      "flavor": "the rickety rope bridge is staked to the edge of the chasm.",
+      "webName": "地面",
+      "ceFields": [
+        "G_BRIDGE",
+        "&bridgeFrontColor",
+        "&bridgeBackColor",
+        "45",
+        "50",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a rickety rope bridge\"",
+        "\"the rickety rope bridge is staked to the edge of the chasm.\""
+      ]
+    },
+    {
+      "ce": "STONE_BRIDGE",
+      "id": 104,
+      "ceLine": 431,
+      "web": "STONE_BRIDGE",
+      "status": "exact",
+      "description": "a stone bridge",
+      "flavor": "the narrow stone bridge winds precariously across the chasm.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "20",
+        "50",
+        "DF_BRIDGE_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"a stone bridge\"",
+        "\"the narrow stone bridge winds precariously across the chasm.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_FLOOD_WATER_DORMANT",
+      "id": 105,
+      "ceLine": 432,
+      "web": "MACHINE_FLOOD_WATER_DORMANT",
+      "status": "exact",
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "&shallowWaterForeColor",
+        "&shallowWaterBackColor",
+        "60",
+        "0",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_SPREADABLE_WATER",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"shallow water\"",
+        "\"the water is cold and reaches your knees.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_FLOOD_WATER_SPREADING",
+      "id": 106,
+      "ceLine": 433,
+      "web": "MACHINE_FLOOD_WATER_SPREADING",
+      "status": "exact",
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "&shallowWaterForeColor",
+        "&shallowWaterBackColor",
+        "60",
+        "0",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_WATER_SPREADS",
+        "2500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"shallow water\"",
+        "\"the water is cold and reaches your knees.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_MUD_DORMANT",
+      "id": 107,
+      "ceLine": 434,
+      "web": "MACHINE_MUD_DORMANT",
+      "status": "exact",
+      "description": "a bog",
+      "flavor": "you are knee-deep in thick, foul-smelling mud.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&mudForeColor",
+        "&mudBackColor",
+        "55",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_MUD_ACTIVATE",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_ALLOWS_SUBMERGING)",
+        "\"a bog\"",
+        "\"you are knee-deep in thick, foul-smelling mud.\""
+      ]
+    },
+    {
+      "ce": "HOLE",
+      "id": 112,
+      "ceLine": 442,
+      "web": "HOLE",
+      "status": "exact",
+      "description": "a hole",
+      "flavor": "you plunge downward into the hole!",
+      "webName": "地面",
+      "ceFields": [
+        "G_CHASM",
+        "&chasmForeColor",
+        "&black",
+        "9",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HOLE_DRAIN",
+        "-1000",
+        "NO_LIGHT",
+        "(T_AUTO_DESCENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a hole\"",
+        "\"you plunge downward into the hole!\""
+      ]
+    },
+    {
+      "ce": "HOLE_EDGE",
+      "id": 114,
+      "ceLine": 444,
+      "web": "HOLE_EDGE",
+      "status": "exact",
+      "description": "translucent ground",
+      "flavor": "chilly gusts of air blow upward through the translucent floor.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "50",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "-500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"translucent ground\"",
+        "\"chilly gusts of air blow upward through the translucent floor.\""
+      ]
+    },
+    {
+      "ce": "FLOOD_WATER_DEEP",
+      "id": 115,
+      "ceLine": 445,
+      "web": "FLOOD_WATER_DEEP",
+      "status": "exact",
+      "description": "sloshing water",
+      "flavor": "roiling water floods the room.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LIQUID",
+        "&deepWaterForeColor",
+        "&deepWaterBackColor",
+        "41",
+        "100",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_FLOOD_DRAIN",
+        "-200",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_IS_DEEP_WATER)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"sloshing water\"",
+        "\"roiling water floods the room.\""
+      ]
+    },
+    {
+      "ce": "FLOOD_WATER_SHALLOW",
+      "id": 116,
+      "ceLine": 446,
+      "web": "FLOOD_WATER_SHALLOW",
+      "status": "exact",
+      "description": "shallow water",
+      "flavor": "knee-deep water drains slowly into holes in the floor.",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "&shallowWaterForeColor",
+        "&shallowWaterBackColor",
+        "50",
+        "0",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_PUDDLE",
+        "-100",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"shallow water\"",
+        "\"knee-deep water drains slowly into holes in the floor.\""
+      ]
+    },
+    {
+      "ce": "DEAD_GRASS",
+      "id": 118,
+      "ceLine": 448,
+      "web": "DEAD_GRASS",
+      "status": "exact",
+      "description": "withered fungus",
+      "flavor": "dead fungus covers the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_GRASS",
+        "&deadGrassColor",
+        "0",
+        "60",
+        "40",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"withered fungus\"",
+        "\"dead fungus covers the ground.\""
+      ]
+    },
+    {
+      "ce": "GRAY_FUNGUS",
+      "id": 119,
+      "ceLine": 449,
+      "web": "GRAY_FUNGUS",
+      "status": "exact",
+      "description": "withered fungus",
+      "flavor": "groping tendrils of pale fungus rise from the muck.",
+      "webName": "地面",
+      "ceFields": [
+        "G_GRASS",
+        "&grayFungusColor",
+        "0",
+        "51",
+        "10",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"withered fungus\"",
+        "\"groping tendrils of pale fungus rise from the muck.\""
+      ]
+    },
+    {
+      "ce": "LUMINESCENT_FUNGUS",
+      "id": 120,
+      "ceLine": 450,
+      "web": "LUMINESCENT_FUNGUS",
+      "status": "exact",
+      "description": "luminescent fungus",
+      "flavor": "luminescent fungus casts a pale, eerie glow.",
+      "webName": "地面",
+      "ceFields": [
+        "G_GRASS",
+        "&fungusColor",
+        "0",
+        "60",
+        "10",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "FUNGUS_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"luminescent fungus\"",
+        "\"luminescent fungus casts a pale, eerie glow.\""
+      ]
+    },
+    {
+      "ce": "VOMIT",
+      "id": 127,
+      "ceLine": 457,
+      "web": "VOMIT",
+      "status": "exact",
+      "description": "a puddle of vomit",
+      "flavor": "the floor is caked with vomit.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&vomitColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a puddle of vomit\"",
+        "\"the floor is caked with vomit.\""
+      ]
+    },
+    {
+      "ce": "ASH",
+      "id": 131,
+      "ceLine": 461,
+      "web": "ASH",
+      "status": "exact",
+      "description": "a pile of ashes",
+      "flavor": "charcoal and ash crunch underfoot.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ASHES",
+        "&ashForeColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pile of ashes\"",
+        "\"charcoal and ash crunch underfoot.\""
+      ]
+    },
+    {
+      "ce": "PUDDLE",
+      "id": 133,
+      "ceLine": 463,
+      "web": "PUDDLE",
+      "status": "exact",
+      "description": "a puddle of water",
+      "flavor": "a puddle of water covers the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&shallowWaterBackColor",
+        "0",
+        "80",
+        "20",
+        "0",
+        "0",
+        "0",
+        "100",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a puddle of water\"",
+        "\"a puddle of water covers the ground.\""
+      ]
+    },
+    {
+      "ce": "BONES",
+      "id": 134,
+      "ceLine": 464,
+      "web": "BONES",
+      "status": "exact",
+      "description": "a pile of bones",
+      "flavor": "unidentifiable bones, yellowed with age, litter the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_BONES",
+        "&bonesForeColor",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pile of bones\"",
+        "\"unidentifiable bones, yellowed with age, litter the ground.\""
+      ]
+    },
+    {
+      "ce": "RUBBLE",
+      "id": 135,
+      "ceLine": 465,
+      "web": "RUBBLE",
+      "status": "exact",
+      "description": "a pile of rubble",
+      "flavor": "rocky rubble covers the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_RUBBLE",
+        "&gray",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pile of rubble\"",
+        "\"rocky rubble covers the ground.\""
+      ]
+    },
+    {
+      "ce": "ECTOPLASM",
+      "id": 138,
+      "ceLine": 468,
+      "web": "ECTOPLASM",
+      "status": "exact",
+      "description": "ectoplasmic residue",
+      "flavor": "a thick, glowing substance has congealed on the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&ectoplasmColor",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "ECTOPLASM_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"ectoplasmic residue\"",
+        "\"a thick, glowing substance has congealed on the ground.\""
+      ]
+    },
+    {
+      "ce": "EMBERS",
+      "id": 139,
+      "ceLine": 469,
+      "web": "EMBERS",
+      "status": "exact",
+      "description": "sputtering embers",
+      "flavor": "sputtering embers cover the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ASHES",
+        "&fireForeColor",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_ASH",
+        "300",
+        "EMBER_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"sputtering embers\"",
+        "\"sputtering embers cover the ground.\""
+      ]
+    },
+    {
+      "ce": "DEAD_FOLIAGE",
+      "id": 143,
+      "ceLine": 473,
+      "web": "DEAD_FOLIAGE",
+      "status": "exact",
+      "description": "dead foliage",
+      "flavor": "the decaying husk of a fungal growth fills the area.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FOLIAGE",
+        "&deadFoliageColor",
+        "0",
+        "45",
+        "80",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_SMALL_DEAD_GRASS",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_VISION | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP)",
+        "\"dead foliage\"",
+        "\"the decaying husk of a fungal growth fills the area.\""
+      ]
+    },
+    {
+      "ce": "FORCEFIELD",
+      "id": 147,
+      "ceLine": 477,
+      "web": "FORCEFIELD",
+      "status": "exact",
+      "description": "a green crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRYSTAL",
+        "&forceFieldColor",
+        "&forceFieldColor",
+        "0",
+        "0",
+        "0",
+        "0",
+        "DF_FORCEFIELD_MELT",
+        "-200",
+        "FORCEFIELD_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE)",
+        "\"a green crystal\"",
+        "\"The translucent green crystal is melting away in front of your eyes.\""
+      ]
+    },
+    {
+      "ce": "FORCEFIELD_MELT",
+      "id": 148,
+      "ceLine": 478,
+      "web": "FORCEFIELD_MELT",
+      "status": "exact",
+      "description": "a dissolving crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRYSTAL",
+        "&black",
+        "&forceFieldColor",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-10000",
+        "FORCEFIELD_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE)",
+        "\"a dissolving crystal\"",
+        "\"The translucent green crystal is melting away in front of your eyes.\""
+      ]
+    },
+    {
+      "ce": "SACRED_GLYPH",
+      "id": 149,
+      "ceLine": 479,
+      "web": "SACRED_GLYPH",
+      "status": "exact",
+      "description": "a sacred glyph",
+      "flavor": "a sacred glyph adorns the floor, glowing with a powerful warding enchantment.",
+      "webName": "地面",
+      "ceFields": [
+        "G_MAGIC_GLYPH",
+        "&sacredGlyphColor",
+        "0",
+        "7",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "SACRED_GLYPH_LIGHT",
+        "(T_SACRED)",
+        "0",
+        "\"a sacred glyph\"",
+        "\"a sacred glyph adorns the floor, glowing with a powerful warding enchantment.\""
+      ]
+    },
+    {
+      "ce": "MANACLE_T",
+      "id": 154,
+      "ceLine": 484,
+      "web": "MANACLE_T",
+      "status": "exact",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CHAIN_TOP",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the wall.\""
+      ]
+    },
+    {
+      "ce": "MANACLE_L",
+      "id": 156,
+      "ceLine": 486,
+      "web": "MANACLE_L",
+      "status": "exact",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CHAIN_LEFT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the wall.\""
+      ]
+    },
+    {
+      "ce": "PLAIN_FIRE",
+      "id": 160,
+      "ceLine": 492,
+      "web": "PLAIN_FIRE",
+      "status": "exact",
+      "description": "billowing flames",
+      "flavor": "flames billow upward.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_EMBERS",
+        "500",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"billowing flames\"",
+        "\"flames billow upward.\""
+      ]
+    },
+    {
+      "ce": "GAS_FIRE",
+      "id": 163,
+      "ceLine": 495,
+      "web": "GAS_FIRE",
+      "status": "exact",
+      "description": "a cloud of burning gas",
+      "flavor": "burning gas fills the air with flame.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "8000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a cloud of burning gas\"",
+        "\"burning gas fills the air with flame.\""
+      ]
+    },
+    {
+      "ce": "GAS_EXPLOSION",
+      "id": 164,
+      "ceLine": 496,
+      "web": "GAS_EXPLOSION",
+      "status": "exact",
+      "description": "a violent explosion",
+      "flavor": "the force of the explosion slams into you.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&yellow",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "EXPLOSION_LIGHT",
+        "(T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a violent explosion\"",
+        "\"the force of the explosion slams into you.\""
+      ]
+    },
+    {
+      "ce": "POISON_GAS",
+      "id": 168,
+      "ceLine": 502,
+      "web": "POISON_GAS",
+      "status": "exact",
+      "description": "a cloud of caustic gas",
+      "flavor": "you can feel the purple gas eating at your flesh.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&poisonGasColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_DAMAGE)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES)",
+        "\"a cloud of caustic gas\"",
+        "\"you can feel the purple gas eating at your flesh.\""
+      ]
+    },
+    {
+      "ce": "CONFUSION_GAS",
+      "id": 169,
+      "ceLine": 503,
+      "web": "CONFUSION_GAS",
+      "status": "exact",
+      "description": "a cloud of confusion gas",
+      "flavor": "the rainbow-colored gas tickles your brain.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&confusionGasColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "CONFUSION_GAS_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_CONFUSION)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of confusion gas\"",
+        "\"the rainbow-colored gas tickles your brain.\""
+      ]
+    },
+    {
+      "ce": "STENCH_SMOKE_GAS",
+      "id": 171,
+      "ceLine": 505,
+      "web": "STENCH_SMOKE_GAS",
+      "status": "exact",
+      "description": "a cloud of putrid smoke",
+      "flavor": "you retch violently at the smell of the greasy smoke.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&vomitColor",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_CAUSES_NAUSEA)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of putrid smoke\"",
+        "\"you retch violently at the smell of the greasy smoke.\""
+      ]
+    },
+    {
+      "ce": "PARALYSIS_GAS",
+      "id": 172,
+      "ceLine": 506,
+      "web": "PARALYSIS_GAS",
+      "status": "exact",
+      "description": "a cloud of paralytic gas",
+      "flavor": "the pale gas causes your muscles to stiffen.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&pink",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_PARALYSIS)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of paralytic gas\"",
+        "\"the pale gas causes your muscles to stiffen.\""
+      ]
+    },
+    {
+      "ce": "METHANE_GAS",
+      "id": 173,
+      "ceLine": 507,
+      "web": "METHANE_GAS",
+      "status": "exact",
+      "description": "a cloud of explosive gas",
+      "flavor": "the smell of explosive swamp gas fills the air.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&methaneColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "DF_EXPLOSION_FIRE",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE)",
+        "\"a cloud of explosive gas\"",
+        "\"the smell of explosive swamp gas fills the air.\""
+      ]
+    },
+    {
+      "ce": "STEAM",
+      "id": 174,
+      "ceLine": 508,
+      "web": "STEAM",
+      "status": "exact",
+      "description": "a cloud of scalding steam",
+      "flavor": "scalding steam fills the air!",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&white",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_CAUSES_DAMAGE)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of scalding steam\"",
+        "\"scalding steam fills the air!\""
+      ]
+    },
+    {
+      "ce": "BLOODFLOWER_STALK",
+      "id": 177,
+      "ceLine": 513,
+      "web": "BLOODFLOWER_STALK",
+      "status": "exact",
+      "description": "a bloodwort stalk",
+      "flavor": "this spindly plant grows seed pods famous for their healing properties.",
+      "webName": "地面",
+      "ceFields": [
+        "G_BLOODWORT_STALK",
+        "&bloodflowerForeColor",
+        "&bloodflowerBackColor",
+        "10",
+        "20",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_BLOODFLOWER_PODS_GROW",
+        "100",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE)",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a bloodwort stalk\"",
+        "\"this spindly plant grows seed pods famous for their healing properties.\""
+      ]
+    },
+    {
+      "ce": "HAVEN_BEDROLL",
+      "id": 179,
+      "ceLine": 517,
+      "web": "HAVEN_BEDROLL",
+      "status": "exact",
+      "description": "an abandoned bedroll",
+      "flavor": "a bedroll lies in the corner, disintegrating with age.",
+      "webName": "地面",
+      "ceFields": [
+        "G_BEDROLL",
+        "&black",
+        "&bedrollBackColor",
+        "57",
+        "50",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"an abandoned bedroll\"",
+        "\"a bedroll lies in the corner, disintegrating with age.\""
+      ]
+    },
+    {
+      "ce": "SACRIFICE_CAGE_DORMANT",
+      "id": 196,
+      "ceLine": 546,
+      "web": "SACRIFICE_CAGE_DORMANT",
+      "status": "exact",
+      "description": "an iron cage",
+      "flavor": "the cage won't budge. Perhaps there is a way to raise it nearby...",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&altarBackColor",
+        "&veryDarkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_SACRIFICE_CAGE_ACTIVE",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an iron cage\"",
+        "\"the cage won't budge. Perhaps there is a way to raise it nearby...\""
+      ]
+    },
+    {
+      "ce": "DEMONIC_STATUE",
+      "id": 197,
+      "ceLine": 547,
+      "web": "DEMONIC_STATUE",
+      "status": "exact",
+      "description": "a demonic statue",
+      "flavor": "An obsidian statue of a leering demon looms over the room.",
+      "webName": "地面",
+      "ceFields": [
+        "G_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "DEMONIC_STATUE_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE)",
+        "\"a demonic statue\"",
+        "\"An obsidian statue of a leering demon looms over the room.\""
+      ]
+    },
+    {
+      "ce": "STATUE_INERT_DOORWAY",
+      "id": 198,
+      "ceLine": 550,
+      "web": "STATUE_INERT_DOORWAY",
+      "status": "exact",
+      "description": "a broken statue",
+      "flavor": "Once magnificent, the statue has crumbled beyond recognition.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRACKED_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_CONNECTS_LEVEL)",
+        "\"a broken statue\"",
+        "\"Once magnificent, the statue has crumbled beyond recognition.\""
+      ]
+    },
+    {
+      "ce": "STATUE_DORMANT_DOORWAY",
+      "id": 199,
+      "ceLine": 551,
+      "web": "STATUE_DORMANT_DOORWAY",
+      "status": "exact",
+      "description": "a marble statue",
+      "flavor": "The cold marble statue has weathered the years with grace.",
+      "webName": "地面",
+      "ceFields": [
+        "G_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_CRACKING_STATUE",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_CONNECTS_LEVEL)",
+        "\"a marble statue\"",
+        "\"The cold marble statue has weathered the years with grace.\""
+      ]
+    },
+    {
+      "ce": "CHASM_WITH_HIDDEN_BRIDGE",
+      "id": 200,
+      "ceLine": 554,
+      "web": "CHASM_WITH_HIDDEN_BRIDGE",
+      "status": "exact",
+      "description": "a chasm",
+      "flavor": "you plunge downward into the chasm!",
+      "webName": "地面",
+      "ceFields": [
+        "G_CHASM",
+        "&chasmForeColor",
+        "&black",
+        "40",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_AUTO_DESCENT)",
+        "(TM_STAND_IN_TILE)",
+        "\"a chasm\"",
+        "\"you plunge downward into the chasm!\""
+      ]
+    },
+    {
+      "ce": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "id": 201,
+      "ceLine": 555,
+      "web": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "status": "exact",
+      "description": "a stone bridge",
+      "flavor": "the narrow stone bridge is extending across the chasm.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "40",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_BRIDGE_ACTIVATE",
+        "6000",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a stone bridge\"",
+        "\"the narrow stone bridge is extending across the chasm.\""
+      ]
+    },
+    {
+      "ce": "MACHINE_CHASM_EDGE",
+      "id": 202,
+      "ceLine": 556,
+      "web": "MACHINE_CHASM_EDGE",
+      "status": "exact",
+      "description": "the brink of a chasm",
+      "flavor": "chilly winds blow upward from the stygian depths.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_BRIDGE_ACTIVATE_ANNOUNCE",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_IS_WIRED)",
+        "\"the brink of a chasm\"",
+        "\"chilly winds blow upward from the stygian depths.\""
+      ]
+    },
+    {
+      "ce": "RAT_TRAP_WALL_DORMANT",
+      "id": 203,
+      "ceLine": 559,
+      "web": "RAT_TRAP_WALL_DORMANT",
+      "status": "exact",
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_WALL_CRACK",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"a stone wall\"",
+        "\"The rough stone wall is firm and unyielding.\""
+      ]
+    },
+    {
+      "ce": "ELECTRIC_CRYSTAL_OFF",
+      "id": 205,
+      "ceLine": 563,
+      "web": "ELECTRIC_CRYSTAL_OFF",
+      "status": "exact",
+      "description": "a darkened crystal globe",
+      "flavor": "A slight electric shock startles you when you touch the inert crystal globe.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ELECTRIC_CRYSTAL",
+        "&wallCrystalColor",
+        "&graniteBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_ELECTRIC_CRYSTAL_ON",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_PROMOTES_ON_ELECTRICITY | TM_IS_CIRCUIT_BREAKER | TM_IS_WIRED | TM_LIST_IN_SIDEBAR)",
+        "\"a darkened crystal globe\"",
+        "\"A slight electric shock startles you when you touch the inert crystal globe.\""
+      ]
+    },
+    {
+      "ce": "ELECTRIC_CRYSTAL_ON",
+      "id": 206,
+      "ceLine": 564,
+      "web": "ELECTRIC_CRYSTAL_ON",
+      "status": "exact",
+      "description": "a shining crystal globe",
+      "flavor": "Crackling light streams out of the crystal globe.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ELECTRIC_CRYSTAL",
+        "&white",
+        "&wallCrystalColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "CRYSTAL_WALL_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR)",
+        "\"a shining crystal globe\"",
+        "\"Crackling light streams out of the crystal globe.\""
+      ]
+    },
+    {
+      "ce": "TURRET_LEVER",
+      "id": 207,
+      "ceLine": 565,
+      "web": "TURRET_LEVER",
+      "status": "exact",
+      "description": "a lever",
+      "flavor": "The lever moves.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LEVER",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_TURRET_LEVER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED)",
+        "\"a lever\"",
+        "\"The lever moves.\""
+      ]
+    },
+    {
+      "ce": "WORM_TUNNEL_MARKER_DORMANT",
+      "id": 208,
+      "ceLine": 568,
+      "web": "WORM_TUNNEL_MARKER_DORMANT",
+      "status": "exact",
+      "description": "",
+      "flavor": "",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "0",
+        "0",
+        "100",
+        "0",
+        "0",
+        "0",
+        "DF_WORM_TUNNEL_MARKER_ACTIVE",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED)",
+        "\"\"",
+        "\"\""
+      ]
+    },
+    {
+      "ce": "WORM_TUNNEL_OUTER_WALL",
+      "id": 210,
+      "ceLine": 570,
+      "web": "WORM_TUNNEL_OUTER_WALL",
+      "status": "exact",
+      "description": "a stone wall",
+      "flavor": "The rough stone wall is firm and unyielding.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_WALL_SHATTER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_CONNECTS_LEVEL)",
+        "\"a stone wall\"",
+        "\"The rough stone wall is firm and unyielding.\""
+      ]
+    },
+    {
+      "ce": "BRAZIER",
+      "id": 211,
+      "ceLine": 573,
+      "web": "BRAZIER",
+      "status": "exact",
+      "description": "a ceremonial brazier",
+      "flavor": "The ancient brazier smolders with a deep crimson flame.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "BURNING_CREATURE_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR)",
+        "\"a ceremonial brazier\"",
+        "\"The ancient brazier smolders with a deep crimson flame.\""
+      ]
+    },
+    {
+      "ce": "MUD_FLOOR",
+      "id": 212,
+      "ceLine": 576,
+      "web": "MUD_FLOOR",
+      "status": "exact",
+      "description": "the mud floor",
+      "flavor": "Rotting animal matter has been ground into the mud floor; the stench is awful.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&mudBackColor",
+        "&refuseBackColor",
+        "85",
+        "0",
+        "DF_STENCH_SMOLDER",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"the mud floor\"",
+        "\"Rotting animal matter has been ground into the mud floor; the stench is awful.\""
+      ]
+    },
+    {
+      "ce": "MUD_WALL",
+      "id": 213,
+      "ceLine": 577,
+      "web": "MUD_WALL",
+      "status": "exact",
+      "description": "a mud-covered wall",
+      "flavor": "A malodorous layer of clay and fecal matter coats the wall.",
+      "webName": "地面",
+      "ceFields": [
+        "G_WALL",
+        "&mudWallForeColor",
+        "&mudWallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE)",
+        "\"a mud-covered wall\"",
+        "\"A malodorous layer of clay and fecal matter coats the wall.\""
+      ]
+    },
+    {
+      "ce": "MUD_DOORWAY",
+      "id": 214,
+      "ceLine": 578,
+      "web": "MUD_DOORWAY",
+      "status": "exact",
+      "description": "hanging animal skins",
+      "flavor": "you push through the animal skins that hang across the threshold.",
+      "webName": "地面",
+      "ceFields": [
+        "G_DOORWAY",
+        "&mudWallForeColor",
+        "&refuseBackColor",
+        "25",
+        "50",
+        "DF_EMBERS",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT)",
+        "\"hanging animal skins\"",
+        "\"you push through the animal skins that hang across the threshold.\""
+      ]
+    }
+  ],
+  "sentinelNotAPlayerTile": [
+    "NOTHING"
+  ],
+  "terrainFlavorNotInCatalog": [
+    {
+      "ce": "GRANITE",
+      "line": 322,
+      "web": "GRANITE",
+      "text": "The granite is split open with splinters of rock jutting out at odd angles."
+    },
+    {
+      "ce": "CARPET",
+      "line": 325,
+      "web": "CARPET",
+      "text": "Ornate carpeting fills this room, a relic of ages past."
+    },
+    {
+      "ce": "MARBLE_FLOOR",
+      "line": 326,
+      "web": "MARBLE_FLOOR",
+      "text": "Light from the nearby crystals catches the grain of the lavish marble floor."
+    },
+    {
+      "ce": "WALL",
+      "line": 327,
+      "web": "WALL",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "DOOR",
+      "line": 328,
+      "web": "DOOR",
+      "text": "you pass through the doorway."
+    },
+    {
+      "ce": "OPEN_DOOR",
+      "line": 329,
+      "web": "OPEN_DOOR",
+      "text": "you pass through the doorway."
+    },
+    {
+      "ce": "SECRET_DOOR",
+      "line": 330,
+      "web": "SECRET_DOOR",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "LOCKED_DOOR",
+      "line": 331,
+      "web": "LOCKED_DOOR",
+      "text": "you search your pack but do not have a matching key."
+    },
+    {
+      "ce": "OPEN_IRON_DOOR_INERT",
+      "line": 332,
+      "web": "OPEN_IRON_DOOR_INERT",
+      "text": "you pass through the doorway."
+    },
+    {
+      "ce": "DOWN_STAIRS",
+      "line": 333,
+      "web": "STAIRS_DOWN",
+      "text": "stairs spiral downward into the depths."
+    },
+    {
+      "ce": "UP_STAIRS",
+      "line": 334,
+      "web": "STAIRS_UP",
+      "text": "stairs spiral upward."
+    },
+    {
+      "ce": "DUNGEON_EXIT",
+      "line": 335,
+      "web": "STAIRS_UP",
+      "text": "the gilded doors leading out of the dungeon are sealed by an invisible force."
+    },
+    {
+      "ce": "DUNGEON_PORTAL",
+      "line": 336,
+      "web": "DUNGEON_PORTAL",
+      "text": "dancing lights play across the plane of this sparkling crystal portal."
+    },
+    {
+      "ce": "TORCH_WALL",
+      "line": 337,
+      "web": "TORCH_WALL",
+      "text": "The torch is anchored firmly to the wall and sputters quietly in the gloom."
+    },
+    {
+      "ce": "CRYSTAL_WALL",
+      "line": 338,
+      "web": "CRYSTAL_WALL",
+      "text": "You feel the crystal's glossy surface and admire the dancing lights beneath."
+    },
+    {
+      "ce": "PORTCULLIS_CLOSED",
+      "line": 339,
+      "web": "PORTCULLIS_CLOSED",
+      "text": "The iron bars rattle but will not budge; they are firmly locked in place."
+    },
+    {
+      "ce": "WOODEN_BARRICADE",
+      "line": 341,
+      "web": "WOODEN_BARRICADE",
+      "text": "The wooden barricade is firmly set but has dried over the years. Might it burn?"
+    },
+    {
+      "ce": "PILOT_LIGHT_DORMANT",
+      "line": 342,
+      "web": "PILOT_LIGHT_DORMANT",
+      "text": "The torch is anchored firmly to the wall, and sputters quietly in the gloom."
+    },
+    {
+      "ce": "PILOT_LIGHT",
+      "line": 343,
+      "web": "PILOT_LIGHT",
+      "text": "The torch lies at the foot of the wall, spouting gouts of flame haphazardly."
+    },
+    {
+      "ce": "HAUNTED_TORCH_DORMANT",
+      "line": 344,
+      "web": "HAUNTED_TORCH_DORMANT",
+      "text": "The torch is anchored firmly to the wall and sputters quietly in the gloom."
+    },
+    {
+      "ce": "HAUNTED_TORCH_TRANSITIONING",
+      "line": 345,
+      "web": "HAUNTED_TORCH_TRANSITIONING",
+      "text": "The torch is anchored firmly to the wall and sputters quietly in the gloom."
+    },
+    {
+      "ce": "HAUNTED_TORCH",
+      "line": 346,
+      "web": "HAUNTED_TORCH",
+      "text": "A dim purple flame sputters and spits atop this wall-mounted torch."
+    },
+    {
+      "ce": "WALL_LEVER_HIDDEN",
+      "line": 347,
+      "web": "WALL_LEVER_HIDDEN",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "WALL_LEVER",
+      "line": 348,
+      "web": "WALL_LEVER",
+      "text": "The lever moves."
+    },
+    {
+      "ce": "WALL_LEVER_PULLED",
+      "line": 349,
+      "web": "WALL_LEVER_PULLED",
+      "text": "The lever won't budge."
+    },
+    {
+      "ce": "WALL_LEVER_HIDDEN_DORMANT",
+      "line": 350,
+      "web": "WALL_LEVER_HIDDEN_DORMANT",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "STATUE_INERT",
+      "line": 351,
+      "web": "STATUE_INERT",
+      "text": "The cold marble statue has weathered the years with grace."
+    },
+    {
+      "ce": "STATUE_DORMANT",
+      "line": 352,
+      "web": "STATUE_DORMANT",
+      "text": "The cold marble statue has weathered the years with grace."
+    },
+    {
+      "ce": "STATUE_CRACKING",
+      "line": 353,
+      "web": "STATUE_CRACKING",
+      "text": "Deep cracks ramble down the side of the statue even as you watch."
+    },
+    {
+      "ce": "STATUE_INSTACRACK",
+      "line": 354,
+      "web": "STATUE_INSTACRACK",
+      "text": "The cold marble statue has weathered the years with grace."
+    },
+    {
+      "ce": "PORTAL",
+      "line": 355,
+      "web": "PORTAL",
+      "text": "This ancient moss-covered stone archway radiates a strange, alien energy."
+    },
+    {
+      "ce": "TURRET_DORMANT",
+      "line": 356,
+      "web": "TURRET_DORMANT",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "WALL_MONSTER_DORMANT",
+      "line": 357,
+      "web": "WALL_MONSTER_DORMANT",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "ALTAR_INERT",
+      "line": 362,
+      "web": "ALTAR",
+      "text": "a gilded altar is adorned with candles that flicker in the breeze."
+    },
+    {
+      "ce": "ALTAR_KEYHOLE",
+      "line": 363,
+      "web": "ALTAR_KEYHOLE",
+      "text": "ornate gilding spirals around a spherical depression in the top of the altar."
+    },
+    {
+      "ce": "ALTAR_CAGE_OPEN",
+      "line": 364,
+      "web": "ALTAR_CAGE_OPEN",
+      "text": "a cage, open on the bottom, hangs over this altar on a retractable chain."
+    },
+    {
+      "ce": "ALTAR_CAGE_CLOSED",
+      "line": 365,
+      "web": "ALTAR_CAGE_CLOSED",
+      "text": "the missing item must be replaced before you can access the remaining items."
+    },
+    {
+      "ce": "ALTAR_SWITCH",
+      "line": 366,
+      "web": "ALTAR_SWITCH",
+      "text": "a weathered stone altar is adorned with candles that flicker in the breeze."
+    },
+    {
+      "ce": "ALTAR_SWITCH_RETRACTING",
+      "line": 367,
+      "web": "ALTAR_SWITCH_RETRACTING",
+      "text": "a weathered stone altar is adorned with candles that flicker in the breeze."
+    },
+    {
+      "ce": "ALTAR_CAGE_RETRACTABLE",
+      "line": 368,
+      "web": "ALTAR_CAGE_RETRACTABLE",
+      "text": "the cage won't budge. Perhaps there is a way to raise it nearby..."
+    },
+    {
+      "ce": "PEDESTAL",
+      "line": 369,
+      "web": "PEDESTAL",
+      "text": "elaborate carvings wind around this ancient pedestal."
+    },
+    {
+      "ce": "MONSTER_CAGE_OPEN",
+      "line": 370,
+      "web": "MONSTER_CAGE_OPEN",
+      "text": "the interior of the cage is filthy and reeks of decay."
+    },
+    {
+      "ce": "MONSTER_CAGE_CLOSED",
+      "line": 371,
+      "web": "MONSTER_CAGE_CLOSED",
+      "text": "the bars of the cage are firmly set and will not budge."
+    },
+    {
+      "ce": "COFFIN_CLOSED",
+      "line": 372,
+      "web": "COFFIN_CLOSED",
+      "text": "a coffin made from thick wooden planks rests in a bed of moss."
+    },
+    {
+      "ce": "COFFIN_OPEN",
+      "line": 373,
+      "web": "COFFIN_OPEN",
+      "text": "an open wooden coffin rests in a bed of moss."
+    },
+    {
+      "ce": "GAS_TRAP_POISON",
+      "line": 378,
+      "web": "GAS_TRAP_POISON",
+      "text": "there is a hidden pressure plate in the floor above a reserve of caustic gas."
+    },
+    {
+      "ce": "TRAP_DOOR_HIDDEN",
+      "line": 379,
+      "web": "TRAP_DOOR_HIDDEN",
+      "text": "you plunge through a hidden trap door!"
+    },
+    {
+      "ce": "TRAP_DOOR",
+      "line": 380,
+      "web": "TRAP_DOOR",
+      "text": "you plunge through a hole in the ground!"
+    },
+    {
+      "ce": "GAS_TRAP_PARALYSIS",
+      "line": 382,
+      "web": "GAS_TRAP_PARALYSIS",
+      "text": "there is a hidden pressure plate in the floor."
+    },
+    {
+      "ce": "MACHINE_PARALYSIS_VENT",
+      "line": 384,
+      "web": "MACHINE_PARALYSIS_VENT",
+      "text": "A dormant gas vent is connected to a reserve of paralytic gas."
+    },
+    {
+      "ce": "GAS_TRAP_CONFUSION",
+      "line": 386,
+      "web": "GAS_TRAP_CONFUSION",
+      "text": "A hidden pressure plate accompanies a reserve of psychotropic gas."
+    },
+    {
+      "ce": "FLAMETHROWER",
+      "line": 388,
+      "web": "FLAMETHROWER",
+      "text": "A hidden pressure plate is connected to a crude flamethrower mechanism."
+    },
+    {
+      "ce": "FLOOD_TRAP",
+      "line": 390,
+      "web": "FLOOD_TRAP",
+      "text": "A hidden pressure plate is connected to floodgates in the walls and ceiling."
+    },
+    {
+      "ce": "NET_TRAP",
+      "line": 392,
+      "web": "NET_TRAP",
+      "text": "you see netting subtly concealed in the ceiling over a hidden pressure plate."
+    },
+    {
+      "ce": "ALARM_TRAP",
+      "line": 394,
+      "web": "ALARM_TRAP",
+      "text": "a hidden pressure plate is connected to a loud alarm mechanism."
+    },
+    {
+      "ce": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "line": 396,
+      "web": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "text": "An inactive gas vent is hidden in a crevice in the ground."
+    },
+    {
+      "ce": "MACHINE_POISON_GAS_VENT",
+      "line": 397,
+      "web": "MACHINE_POISON_GAS_VENT",
+      "text": "Clouds of caustic gas are wafting out of a hidden vent in the floor."
+    },
+    {
+      "ce": "MACHINE_METHANE_VENT_DORMANT",
+      "line": 399,
+      "web": "MACHINE_METHANE_VENT_DORMANT",
+      "text": "An inactive gas vent is hidden in a crevice in the ground."
+    },
+    {
+      "ce": "MACHINE_METHANE_VENT",
+      "line": 400,
+      "web": "MACHINE_METHANE_VENT",
+      "text": "Clouds of explosive gas are wafting out of a hidden vent in the floor."
+    },
+    {
+      "ce": "STEAM_VENT",
+      "line": 401,
+      "web": "STEAM_VENT",
+      "text": "A natural crevice in the floor periodically vents scalding gouts of steam."
+    },
+    {
+      "ce": "MACHINE_PRESSURE_PLATE",
+      "line": 402,
+      "web": "PRESSURE_PLATE",
+      "text": "There is an exposed pressure plate here. A thrown item might trigger it."
+    },
+    {
+      "ce": "MACHINE_PRESSURE_PLATE_USED",
+      "line": 403,
+      "web": "MACHINE_PRESSURE_PLATE_USED",
+      "text": "This pressure plate has already been depressed."
+    },
+    {
+      "ce": "MACHINE_GLYPH",
+      "line": 404,
+      "web": "MACHINE_GLYPH",
+      "text": "A strange glyph, engraved into the floor, flickers with magical light."
+    },
+    {
+      "ce": "MACHINE_GLYPH_INACTIVE",
+      "line": 405,
+      "web": "MACHINE_GLYPH_INACTIVE",
+      "text": "A strange glyph, engraved into the floor, radiates magical light."
+    },
+    {
+      "ce": "DEEP_WATER",
+      "line": 413,
+      "web": "WATER_DEEP",
+      "text": "the current tugs you in all directions."
+    },
+    {
+      "ce": "SHALLOW_WATER",
+      "line": 414,
+      "web": "WATER_SHALLOW",
+      "text": "the water is cold and reaches your knees."
+    },
+    {
+      "ce": "MUD",
+      "line": 415,
+      "web": "MUD",
+      "text": "you are knee-deep in thick, foul-smelling mud."
+    },
+    {
+      "ce": "CHASM",
+      "line": 416,
+      "web": "CHASM",
+      "text": "you plunge downward into the chasm!"
+    },
+    {
+      "ce": "CHASM_EDGE",
+      "line": 417,
+      "web": "CHASM_EDGE",
+      "text": "chilly winds blow upward from the stygian depths."
+    },
+    {
+      "ce": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "line": 419,
+      "web": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "text": "cracks are appearing in the ground beneath your feet!"
+    },
+    {
+      "ce": "LAVA",
+      "line": 420,
+      "web": "LAVA",
+      "text": "searing heat rises from the lava."
+    },
+    {
+      "ce": "LAVA_RETRACTABLE",
+      "line": 421,
+      "web": "LAVA_RETRACTABLE",
+      "text": "searing heat rises from the lava."
+    },
+    {
+      "ce": "LAVA_RETRACTING",
+      "line": 422,
+      "web": "LAVA_RETRACTING",
+      "text": "searing heat rises from the lava."
+    },
+    {
+      "ce": "SUNLIGHT_POOL",
+      "line": 423,
+      "web": "SUNLIGHT_POOL",
+      "text": "sunlight streams through cracks in the ceiling."
+    },
+    {
+      "ce": "DARKNESS_PATCH",
+      "line": 424,
+      "web": "DARKNESS_PATCH",
+      "text": "this area happens to be cloaked in shadows -- perhaps a safe place to hide."
+    },
+    {
+      "ce": "ACTIVE_BRIMSTONE",
+      "line": 425,
+      "web": "ACTIVE_BRIMSTONE",
+      "text": "the jagged brimstone hisses and spits ominously as it crunches under your feet."
+    },
+    {
+      "ce": "INERT_BRIMSTONE",
+      "line": 426,
+      "web": "INERT_BRIMSTONE",
+      "text": "the jagged brimstone hisses and spits ominously as it crunches under your feet."
+    },
+    {
+      "ce": "OBSIDIAN",
+      "line": 427,
+      "web": "OBSIDIAN",
+      "text": "the ground has fused into obsidian."
+    },
+    {
+      "ce": "BRIDGE",
+      "line": 428,
+      "web": "BRIDGE",
+      "text": "the rickety rope bridge creaks underfoot."
+    },
+    {
+      "ce": "BRIDGE_FALLING",
+      "line": 429,
+      "web": "BRIDGE_FALLING",
+      "text": "the bridge is plunging into the chasm before your eyes!"
+    },
+    {
+      "ce": "BRIDGE_EDGE",
+      "line": 430,
+      "web": "BRIDGE_EDGE",
+      "text": "the rickety rope bridge is staked to the edge of the chasm."
+    },
+    {
+      "ce": "STONE_BRIDGE",
+      "line": 431,
+      "web": "STONE_BRIDGE",
+      "text": "the narrow stone bridge winds precariously across the chasm."
+    },
+    {
+      "ce": "MACHINE_FLOOD_WATER_DORMANT",
+      "line": 432,
+      "web": "MACHINE_FLOOD_WATER_DORMANT",
+      "text": "the water is cold and reaches your knees."
+    },
+    {
+      "ce": "MACHINE_FLOOD_WATER_SPREADING",
+      "line": 433,
+      "web": "MACHINE_FLOOD_WATER_SPREADING",
+      "text": "the water is cold and reaches your knees."
+    },
+    {
+      "ce": "MACHINE_MUD_DORMANT",
+      "line": 434,
+      "web": "MACHINE_MUD_DORMANT",
+      "text": "you are knee-deep in thick, foul-smelling mud."
+    },
+    {
+      "ce": "ICE_DEEP",
+      "line": 435,
+      "web": null,
+      "text": "a sheet of ice extends into the water, ripples frozen into its glossy surface."
+    },
+    {
+      "ce": "ICE_DEEP_MELT",
+      "line": 436,
+      "web": null,
+      "text": "cracks extend across the surface of the ice as it melts before your eyes."
+    },
+    {
+      "ce": "ICE_SHALLOW",
+      "line": 437,
+      "web": null,
+      "text": "a sheet of ice extends into the water, ripples frozen into its glossy surface."
+    },
+    {
+      "ce": "ICE_SHALLOW_MELT",
+      "line": 438,
+      "web": null,
+      "text": "cracks extend across the surface of the ice as it melts before your eyes."
+    },
+    {
+      "ce": "HOLE",
+      "line": 442,
+      "web": "HOLE",
+      "text": "you plunge downward into the hole!"
+    },
+    {
+      "ce": "HOLE_GLOW",
+      "line": 443,
+      "web": null,
+      "text": "you plunge downward into the hole!"
+    },
+    {
+      "ce": "HOLE_EDGE",
+      "line": 444,
+      "web": "HOLE_EDGE",
+      "text": "chilly gusts of air blow upward through the translucent floor."
+    },
+    {
+      "ce": "FLOOD_WATER_DEEP",
+      "line": 445,
+      "web": "FLOOD_WATER_DEEP",
+      "text": "roiling water floods the room."
+    },
+    {
+      "ce": "FLOOD_WATER_SHALLOW",
+      "line": 446,
+      "web": "FLOOD_WATER_SHALLOW",
+      "text": "knee-deep water drains slowly into holes in the floor."
+    },
+    {
+      "ce": "GRASS",
+      "line": 447,
+      "web": "GRASS",
+      "text": "grass-like fungus crunches underfoot."
+    },
+    {
+      "ce": "DEAD_GRASS",
+      "line": 448,
+      "web": "DEAD_GRASS",
+      "text": "dead fungus covers the ground."
+    },
+    {
+      "ce": "GRAY_FUNGUS",
+      "line": 449,
+      "web": "GRAY_FUNGUS",
+      "text": "groping tendrils of pale fungus rise from the muck."
+    },
+    {
+      "ce": "LUMINESCENT_FUNGUS",
+      "line": 450,
+      "web": "LUMINESCENT_FUNGUS",
+      "text": "luminescent fungus casts a pale, eerie glow."
+    },
+    {
+      "ce": "LICHEN",
+      "line": 451,
+      "web": "LICHEN",
+      "text": "venomous barbs cover the quivering tendrils of this fast-growing lichen."
+    },
+    {
+      "ce": "HAY",
+      "line": 452,
+      "web": null,
+      "text": "a pile of hay, matted with filth, has been arranged here as a makeshift bed."
+    },
+    {
+      "ce": "RED_BLOOD",
+      "line": 453,
+      "web": "BLOOD",
+      "text": "the floor is splattered with blood."
+    },
+    {
+      "ce": "GREEN_BLOOD",
+      "line": 454,
+      "web": null,
+      "text": "the floor is splattered with green blood."
+    },
+    {
+      "ce": "PURPLE_BLOOD",
+      "line": 455,
+      "web": null,
+      "text": "the floor is splattered with purple blood."
+    },
+    {
+      "ce": "ACID_SPLATTER",
+      "line": 456,
+      "web": null,
+      "text": "the floor is splattered with acid."
+    },
+    {
+      "ce": "VOMIT",
+      "line": 457,
+      "web": "VOMIT",
+      "text": "the floor is caked with vomit."
+    },
+    {
+      "ce": "URINE",
+      "line": 458,
+      "web": null,
+      "text": "a puddle of urine covers the ground."
+    },
+    {
+      "ce": "UNICORN_POOP",
+      "line": 459,
+      "web": null,
+      "text": "a pile of lavender-scented unicorn poop sparkles with rainbow light."
+    },
+    {
+      "ce": "WORM_BLOOD",
+      "line": 460,
+      "web": null,
+      "text": "worm viscera cover the ground."
+    },
+    {
+      "ce": "ASH",
+      "line": 461,
+      "web": "ASH",
+      "text": "charcoal and ash crunch underfoot."
+    },
+    {
+      "ce": "BURNED_CARPET",
+      "line": 462,
+      "web": null,
+      "text": "the carpet has been scorched by an ancient fire."
+    },
+    {
+      "ce": "PUDDLE",
+      "line": 463,
+      "web": "PUDDLE",
+      "text": "a puddle of water covers the ground."
+    },
+    {
+      "ce": "BONES",
+      "line": 464,
+      "web": "BONES",
+      "text": "unidentifiable bones, yellowed with age, litter the ground."
+    },
+    {
+      "ce": "RUBBLE",
+      "line": 465,
+      "web": "RUBBLE",
+      "text": "rocky rubble covers the ground."
+    },
+    {
+      "ce": "JUNK",
+      "line": 466,
+      "web": null,
+      "text": "primitive tools, carvings and trinkets are strewn about the area."
+    },
+    {
+      "ce": "BROKEN_GLASS",
+      "line": 467,
+      "web": "BROKEN_GLASS",
+      "text": "jagged chunks of glass from the broken dewar litter the ground."
+    },
+    {
+      "ce": "ECTOPLASM",
+      "line": 468,
+      "web": "ECTOPLASM",
+      "text": "a thick, glowing substance has congealed on the ground."
+    },
+    {
+      "ce": "EMBERS",
+      "line": 469,
+      "web": "EMBERS",
+      "text": "sputtering embers cover the ground."
+    },
+    {
+      "ce": "SPIDERWEB",
+      "line": 470,
+      "web": "WEB",
+      "text": "thick, sticky spiderwebs fill the area."
+    },
+    {
+      "ce": "NETTING",
+      "line": 471,
+      "web": "NETTING",
+      "text": "a dense tangle of netting fills the area."
+    },
+    {
+      "ce": "FOLIAGE",
+      "line": 472,
+      "web": "FOLIAGE",
+      "text": "dense foliage fills the area, thriving on what sunlight trickles in."
+    },
+    {
+      "ce": "DEAD_FOLIAGE",
+      "line": 473,
+      "web": "DEAD_FOLIAGE",
+      "text": "the decaying husk of a fungal growth fills the area."
+    },
+    {
+      "ce": "TRAMPLED_FOLIAGE",
+      "line": 474,
+      "web": "TRAMPLED_FOLIAGE",
+      "text": "dense foliage fills the area, thriving on what sunlight trickles in."
+    },
+    {
+      "ce": "FUNGUS_FOREST",
+      "line": 475,
+      "web": "FUNGUS_FOREST",
+      "text": "luminescent fungal growth fills the area, groping upward from the rich soil."
+    },
+    {
+      "ce": "TRAMPLED_FUNGUS_FOREST",
+      "line": 476,
+      "web": "TRAMPLED_FUNGUS_FOREST",
+      "text": "luminescent fungal growth fills the area, groping upward from the rich soil."
+    },
+    {
+      "ce": "FORCEFIELD",
+      "line": 477,
+      "web": "FORCEFIELD",
+      "text": "The translucent green crystal is melting away in front of your eyes."
+    },
+    {
+      "ce": "FORCEFIELD_MELT",
+      "line": 478,
+      "web": "FORCEFIELD_MELT",
+      "text": "The translucent green crystal is melting away in front of your eyes."
+    },
+    {
+      "ce": "SACRED_GLYPH",
+      "line": 479,
+      "web": "SACRED_GLYPH",
+      "text": "a sacred glyph adorns the floor, glowing with a powerful warding enchantment."
+    },
+    {
+      "ce": "MANACLE_TL",
+      "line": 480,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the ceiling."
+    },
+    {
+      "ce": "MANACLE_BR",
+      "line": 481,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the floor."
+    },
+    {
+      "ce": "MANACLE_TR",
+      "line": 482,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the ceiling."
+    },
+    {
+      "ce": "MANACLE_BL",
+      "line": 483,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the floor."
+    },
+    {
+      "ce": "MANACLE_T",
+      "line": 484,
+      "web": "MANACLE_T",
+      "text": "a thick iron manacle is anchored to the wall."
+    },
+    {
+      "ce": "MANACLE_B",
+      "line": 485,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the wall."
+    },
+    {
+      "ce": "MANACLE_L",
+      "line": 486,
+      "web": "MANACLE_L",
+      "text": "a thick iron manacle is anchored to the wall."
+    },
+    {
+      "ce": "MANACLE_R",
+      "line": 487,
+      "web": null,
+      "text": "a thick iron manacle is anchored to the wall."
+    },
+    {
+      "ce": "PORTAL_LIGHT",
+      "line": 488,
+      "web": "PORTAL_LIGHT",
+      "text": "blinding light streams out of the archway."
+    },
+    {
+      "ce": "GUARDIAN_GLOW",
+      "line": 489,
+      "web": null,
+      "text": "a red glow fills the area."
+    },
+    {
+      "ce": "PLAIN_FIRE",
+      "line": 492,
+      "web": "PLAIN_FIRE",
+      "text": "flames billow upward."
+    },
+    {
+      "ce": "BRIMSTONE_FIRE",
+      "line": 493,
+      "web": "BRIMSTONE_FIRE",
+      "text": "sulfurous flames leap from the unstable bed of brimstone."
+    },
+    {
+      "ce": "FLAMEDANCER_FIRE",
+      "line": 494,
+      "web": null,
+      "text": "billowing infernal flames eat at the floor."
+    },
+    {
+      "ce": "GAS_FIRE",
+      "line": 495,
+      "web": "GAS_FIRE",
+      "text": "burning gas fills the air with flame."
+    },
+    {
+      "ce": "GAS_EXPLOSION",
+      "line": 496,
+      "web": "GAS_EXPLOSION",
+      "text": "the force of the explosion slams into you."
+    },
+    {
+      "ce": "DART_EXPLOSION",
+      "line": 497,
+      "web": null,
+      "text": "flames burst out of the incendiary dart."
+    },
+    {
+      "ce": "ITEM_FIRE",
+      "line": 498,
+      "web": "ITEM_FIRE",
+      "text": "crackling flames rise from the blackened item."
+    },
+    {
+      "ce": "CREATURE_FIRE",
+      "line": 499,
+      "web": null,
+      "text": "greasy flames rise from the corpse."
+    },
+    {
+      "ce": "POISON_GAS",
+      "line": 502,
+      "web": "POISON_GAS",
+      "text": "you can feel the purple gas eating at your flesh."
+    },
+    {
+      "ce": "CONFUSION_GAS",
+      "line": 503,
+      "web": "CONFUSION_GAS",
+      "text": "the rainbow-colored gas tickles your brain."
+    },
+    {
+      "ce": "ROT_GAS",
+      "line": 504,
+      "web": "ROT_GAS",
+      "text": "the stench of rotting flesh is overpowering."
+    },
+    {
+      "ce": "STENCH_SMOKE_GAS",
+      "line": 505,
+      "web": "STENCH_SMOKE_GAS",
+      "text": "you retch violently at the smell of the greasy smoke."
+    },
+    {
+      "ce": "PARALYSIS_GAS",
+      "line": 506,
+      "web": "PARALYSIS_GAS",
+      "text": "the pale gas causes your muscles to stiffen."
+    },
+    {
+      "ce": "METHANE_GAS",
+      "line": 507,
+      "web": "METHANE_GAS",
+      "text": "the smell of explosive swamp gas fills the air."
+    },
+    {
+      "ce": "STEAM",
+      "line": 508,
+      "web": "STEAM",
+      "text": "scalding steam fills the air!"
+    },
+    {
+      "ce": "DARKNESS_CLOUD",
+      "line": 509,
+      "web": "DARKNESS_CLOUD",
+      "text": "everything is obscured by an aura of supernatural darkness."
+    },
+    {
+      "ce": "HEALING_CLOUD",
+      "line": 510,
+      "web": null,
+      "text": "bloodwort spores, renowned for their healing properties, fill the air."
+    },
+    {
+      "ce": "BLOODFLOWER_STALK",
+      "line": 513,
+      "web": "BLOODFLOWER_STALK",
+      "text": "this spindly plant grows seed pods famous for their healing properties."
+    },
+    {
+      "ce": "BLOODFLOWER_POD",
+      "line": 514,
+      "web": null,
+      "text": "the bloodwort seed pod bursts, releasing a cloud of healing spores."
+    },
+    {
+      "ce": "HAVEN_BEDROLL",
+      "line": 517,
+      "web": "HAVEN_BEDROLL",
+      "text": "a bedroll lies in the corner, disintegrating with age."
+    },
+    {
+      "ce": "DEEP_WATER_ALGAE_1",
+      "line": 521,
+      "web": "DEEP_WATER_ALGAE_1",
+      "text": "blooming algae fills the waters with a swirling luminescence."
+    },
+    {
+      "ce": "DEEP_WATER_ALGAE_2",
+      "line": 522,
+      "web": "DEEP_WATER_ALGAE_2",
+      "text": "blooming algae fills the waters with a swirling luminescence."
+    },
+    {
+      "ce": "ANCIENT_SPIRIT_VINES",
+      "line": 525,
+      "web": "ANCIENT_SPIRIT_VINES",
+      "text": "thorned vines make a rustling noise as they quiver restlessly."
+    },
+    {
+      "ce": "ANCIENT_SPIRIT_GRASS",
+      "line": 526,
+      "web": "ANCIENT_SPIRIT_GRASS",
+      "text": "tufts of lush grass have improbably pushed upward through the stone ground."
+    },
+    {
+      "ce": "COMMUTATION_ALTAR",
+      "line": 532,
+      "web": "COMMUTATION_ALTAR",
+      "text": "crude diagrams on this altar and its twin invite you to place items upon them."
+    },
+    {
+      "ce": "COMMUTATION_ALTAR_INERT",
+      "line": 533,
+      "web": "COMMUTATION_ALTAR_INERT",
+      "text": "scorch marks cover the surface of the altar, but it is cold to the touch."
+    },
+    {
+      "ce": "PIPE_GLOWING",
+      "line": 534,
+      "web": "PIPE_GLOWING",
+      "text": "glass pipes are set into the floor and emit a soft glow of shifting color."
+    },
+    {
+      "ce": "PIPE_INERT",
+      "line": 535,
+      "web": "PIPE_INERT",
+      "text": "the inside of the glass pipes are charred."
+    },
+    {
+      "ce": "RESURRECTION_ALTAR",
+      "line": 538,
+      "web": "RESURRECTION_ALTAR",
+      "text": "the souls of the dead surround you. A deceased ally might be called back."
+    },
+    {
+      "ce": "RESURRECTION_ALTAR_INERT",
+      "line": 539,
+      "web": "RESURRECTION_ALTAR_INERT",
+      "text": "scorch marks cover the surface of the altar, but it is cold to the touch."
+    },
+    {
+      "ce": "SACRIFICE_ALTAR_DORMANT",
+      "line": 543,
+      "web": "SACRIFICE_ALTAR_DORMANT",
+      "text": "demonological symbols decorate this altar."
+    },
+    {
+      "ce": "SACRIFICE_ALTAR",
+      "line": 544,
+      "web": "SACRIFICE_ALTAR",
+      "text": "demonological symbols decorate this altar."
+    },
+    {
+      "ce": "SACRIFICE_LAVA",
+      "line": 545,
+      "web": "SACRIFICE_LAVA",
+      "text": "the smell of burnt flesh lingers over this pit of lava."
+    },
+    {
+      "ce": "SACRIFICE_CAGE_DORMANT",
+      "line": 546,
+      "web": "SACRIFICE_CAGE_DORMANT",
+      "text": "the cage won't budge. Perhaps there is a way to raise it nearby..."
+    },
+    {
+      "ce": "DEMONIC_STATUE",
+      "line": 547,
+      "web": "DEMONIC_STATUE",
+      "text": "An obsidian statue of a leering demon looms over the room."
+    },
+    {
+      "ce": "STATUE_INERT_DOORWAY",
+      "line": 550,
+      "web": "STATUE_INERT_DOORWAY",
+      "text": "Once magnificent, the statue has crumbled beyond recognition."
+    },
+    {
+      "ce": "STATUE_DORMANT_DOORWAY",
+      "line": 551,
+      "web": "STATUE_DORMANT_DOORWAY",
+      "text": "The cold marble statue has weathered the years with grace."
+    },
+    {
+      "ce": "CHASM_WITH_HIDDEN_BRIDGE",
+      "line": 554,
+      "web": "CHASM_WITH_HIDDEN_BRIDGE",
+      "text": "you plunge downward into the chasm!"
+    },
+    {
+      "ce": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "line": 555,
+      "web": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "text": "the narrow stone bridge is extending across the chasm."
+    },
+    {
+      "ce": "MACHINE_CHASM_EDGE",
+      "line": 556,
+      "web": "MACHINE_CHASM_EDGE",
+      "text": "chilly winds blow upward from the stygian depths."
+    },
+    {
+      "ce": "RAT_TRAP_WALL_DORMANT",
+      "line": 559,
+      "web": "RAT_TRAP_WALL_DORMANT",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "RAT_TRAP_WALL_CRACKING",
+      "line": 560,
+      "web": "RAT_TRAP_WALL_CRACKING",
+      "text": "Cracks are running ominously across the base of this rough stone wall."
+    },
+    {
+      "ce": "ELECTRIC_CRYSTAL_OFF",
+      "line": 563,
+      "web": "ELECTRIC_CRYSTAL_OFF",
+      "text": "A slight electric shock startles you when you touch the inert crystal globe."
+    },
+    {
+      "ce": "ELECTRIC_CRYSTAL_ON",
+      "line": 564,
+      "web": "ELECTRIC_CRYSTAL_ON",
+      "text": "Crackling light streams out of the crystal globe."
+    },
+    {
+      "ce": "TURRET_LEVER",
+      "line": 565,
+      "web": "TURRET_LEVER",
+      "text": "The lever moves."
+    },
+    {
+      "ce": "WORM_TUNNEL_MARKER_ACTIVE",
+      "line": 569,
+      "web": "WORM_TUNNEL_MARKER_ACTIVE",
+      "text": "The granite is split open with splinters of rock jutting out at odd angles."
+    },
+    {
+      "ce": "WORM_TUNNEL_OUTER_WALL",
+      "line": 570,
+      "web": "WORM_TUNNEL_OUTER_WALL",
+      "text": "The rough stone wall is firm and unyielding."
+    },
+    {
+      "ce": "BRAZIER",
+      "line": 573,
+      "web": "BRAZIER",
+      "text": "The ancient brazier smolders with a deep crimson flame."
+    },
+    {
+      "ce": "MUD_FLOOR",
+      "line": 576,
+      "web": "MUD_FLOOR",
+      "text": "Rotting animal matter has been ground into the mud floor; the stench is awful."
+    },
+    {
+      "ce": "MUD_WALL",
+      "line": 577,
+      "web": "MUD_WALL",
+      "text": "A malodorous layer of clay and fecal matter coats the wall."
+    },
+    {
+      "ce": "MUD_DOORWAY",
+      "line": 578,
+      "web": "MUD_DOORWAY",
+      "text": "you push through the animal skins that hang across the threshold."
+    }
+  ],
+  "terrainEnglishNames": [
+    {
+      "ce": "ANCIENT_SPIRIT_VINES",
+      "web": "ANCIENT_SPIRIT_VINES",
+      "text": "thorned vines"
+    },
+    {
+      "ce": "ANCIENT_SPIRIT_GRASS",
+      "web": "ANCIENT_SPIRIT_GRASS",
+      "text": "a tuft of grass"
+    }
+  ],
+  "itemDescriptions": [
+    {
+      "ce": "DAGGER",
+      "group": "weapons",
+      "id": 0,
+      "ceLine": 1583,
+      "web": "dagger",
+      "candidate": "dagger",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "A simple iron dagger with a well-worn wooden handle. Daggers will deal quintuple damage upon a successful sneak attack instead of triple damage.",
+      "webDescription": "一把普通的铁质匕首，配有磨损的木柄。匕首在成功的偷袭中造成五倍伤害而非三倍伤害。"
+    },
+    {
+      "ce": "SWORD",
+      "group": "weapons",
+      "id": 1,
+      "ceLine": 1584,
+      "web": "sword",
+      "candidate": "sword",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The razor-sharp length of steel blade shines reassuringly.",
+      "webDescription": "锋利的钢刀刃在黑暗中闪烁着令人安心的光芒。"
+    },
+    {
+      "ce": "BROADSWORD",
+      "group": "weapons",
+      "id": 2,
+      "ceLine": 1585,
+      "web": "broadsword",
+      "candidate": "broadsword",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This towering blade inflicts heavy damage by investing its heft into every cut.",
+      "webDescription": "这把高耸的刀刃通过将重量投入每一次切割来造成巨大伤害。"
+    },
+    {
+      "ce": "WHIP",
+      "group": "weapons",
+      "id": 3,
+      "ceLine": 1587,
+      "web": "whip",
+      "candidate": "whip",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The lash from this coil of braided leather can tear bark from trees, and it will reach opponents up to five spaces away.",
+      "webDescription": "这条编织皮革鞭子的抽打可以剥树皮，它能攻击最远五格之外的敌人。"
+    },
+    {
+      "ce": "RAPIER",
+      "group": "weapons",
+      "id": 4,
+      "ceLine": 1588,
+      "web": "rapier",
+      "candidate": "rapier",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This blade is thin and flexible, designed for deft and rapid maneuvers. It inflicts less damage than comparable weapons, but permits you to attack twice as quickly. If there is one space between you and an enemy and you step directly toward it, you will perform a devastating lunge attack, which deals triple damage and never misses.",
+      "webDescription": "这把刀刃纤细而柔韧，专为敏捷快速的战斗而设计。它造成的伤害较低，但攻击速度是其他武器的两倍。如果你与敌人之间有一格距离并直接向其移动，你将发动毁灭性的突刺攻击，造成三倍伤害且永不落空。"
+    },
+    {
+      "ce": "FLAIL",
+      "group": "weapons",
+      "id": 5,
+      "ceLine": 1589,
+      "web": "flail",
+      "candidate": "flail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This spiked iron ball can be whirled at the end of its chain in synchronicity with your movement, allowing you a free attack whenever moving between two spaces that are adjacent to an enemy.",
+      "webDescription": "这个带刺的铁球可以在移动中甩动铁链，使你在两个与敌人相邻的格子间移动时获得一次免费攻击。"
+    },
+    {
+      "ce": "MACE",
+      "group": "weapons",
+      "id": 6,
+      "ceLine": 1591,
+      "web": "mace",
+      "candidate": "mace",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The iron flanges at the head of this weapon inflict substantial damage with every weighty blow. Because of its heft, it takes an extra turn to recover when it hits, and will push your opponent backward if there is room.",
+      "webDescription": "武器头部的铁制凸缘每次沉重一击都会造成可观的伤害。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
+    },
+    {
+      "ce": "HAMMER",
+      "group": "weapons",
+      "id": 7,
+      "ceLine": 1592,
+      "web": "war_hammer",
+      "candidate": "war_hammer",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Few creatures can withstand the crushing blow of this towering mass of lead and steel, but only the strongest of adventurers can effectively wield it. Because of its heft, it takes an extra turn to recover when it hits, and will push your opponent backward if there is room.",
+      "webDescription": "很少有生物能承受这团铅和钢的碾压，但只有最强壮的冒险者才能有效地挥舞它。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
+    },
+    {
+      "ce": "SPEAR",
+      "group": "weapons",
+      "id": 8,
+      "ceLine": 1594,
+      "web": "spear",
+      "candidate": "spear",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "A slender wooden rod tipped with sharpened iron. The reach of the spear permits you to simultaneously attack an adjacent enemy and the enemy directly behind it.",
+      "webDescription": "一根尖头铁制的细长木杆。矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
+    },
+    {
+      "ce": "PIKE",
+      "group": "weapons",
+      "id": 9,
+      "ceLine": 1595,
+      "web": "war_pike",
+      "candidate": "war_pike",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "A long steel pole ending in a razor-sharp point. The reach of the pike permits you to simultaneously attack an adjacent enemy and the enemy directly behind it.",
+      "webDescription": "一根长钢杆，末端是锋利的尖刃。战矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
+    },
+    {
+      "ce": "AXE",
+      "group": "weapons",
+      "id": 10,
+      "ceLine": 1597,
+      "web": "axe",
+      "candidate": "axe",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The blunt iron edge on this axe glints in the darkness. The arc of its swing permits you to attack all adjacent enemies simultaneously.",
+      "webDescription": "这把斧头上钝的铁刃在黑暗中闪烁。其挥砍的弧度使你能同时攻击所有相邻的敌人。"
+    },
+    {
+      "ce": "WAR_AXE",
+      "group": "weapons",
+      "id": 11,
+      "ceLine": 1598,
+      "web": "war_axe",
+      "candidate": "war_axe",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The enormous steel head of this war axe puts considerable heft behind each stroke. The arc of its swing permits you to attack all adjacent enemies simultaneously.",
+      "webDescription": "这把战斧巨大的钢制斧头在每次挥击中都带有相当大的力量。它的弧形挥击使你可以同时攻击所有相邻的敌人。"
+    },
+    {
+      "ce": "DART",
+      "group": "weapons",
+      "id": 12,
+      "ceLine": 1600,
+      "web": "dart",
+      "candidate": "dart",
+      "exists": true,
+      "excluded": false,
+      "frequency": "0",
+      "ceDescription": "These simple metal spikes are weighted to fly true and sting their prey with a flick of the wrist.",
+      "webDescription": "这些简单的金属飞镖经配重后能稳定飞行，手腕轻弹便能刺伤猎物。"
+    },
+    {
+      "ce": "INCENDIARY_DART",
+      "group": "weapons",
+      "id": 13,
+      "ceLine": 1601,
+      "web": "incendiary_dart",
+      "candidate": "incendiary_dart",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The barbed spike on each of these darts is designed to stick to its target while the compounds strapped to its length explode into flame.",
+      "webDescription": "每支这种飞镖的倒刺都设计得能钉住目标，同时捆在其镖身上的化合物会爆出火焰。"
+    },
+    {
+      "ce": "JAVELIN",
+      "group": "weapons",
+      "id": 14,
+      "ceLine": 1602,
+      "web": "javelin",
+      "candidate": "javelin",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This length of metal is weighted to keep the spike at its tip foremost as it sails through the air.",
+      "webDescription": "这段金属经过配重，使其在空中飞行时尖端始终保持朝前。"
+    },
+    {
+      "ce": "LEATHER_ARMOR",
+      "group": "armors",
+      "id": 0,
+      "ceLine": 1606,
+      "web": "leather_armor",
+      "candidate": "leather_armor",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This lightweight armor offers basic protection.",
+      "webDescription": "这件轻便的护甲提供基本保护。"
+    },
+    {
+      "ce": "SCALE_MAIL",
+      "group": "armors",
+      "id": 1,
+      "ceLine": 1607,
+      "web": "scale_mail",
+      "candidate": "scale_mail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Bronze scales cover the surface of treated leather, offering greater protection than plain leather with minimal additional weight.",
+      "webDescription": "青铜鳞片覆盖在处理过的皮革表面，以最小的额外重量提供比纯皮革更大的保护。"
+    },
+    {
+      "ce": "CHAIN_MAIL",
+      "group": "armors",
+      "id": 2,
+      "ceLine": 1608,
+      "web": "chain_mail",
+      "candidate": "chain_mail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Interlocking metal links make for a tough but flexible suit of armor.",
+      "webDescription": "互锁的金属环组成了一套坚韧但灵活的护甲。"
+    },
+    {
+      "ce": "BANDED_MAIL",
+      "group": "armors",
+      "id": 3,
+      "ceLine": 1609,
+      "web": "banded_mail",
+      "candidate": "banded_mail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Overlapping strips of metal horizontally encircle a chain mail base, offering an additional layer of protection at the cost of greater weight.",
+      "webDescription": "重叠的金属条水平环绕锁甲基底，以更大重量为代价提供额外的保护层。"
+    },
+    {
+      "ce": "SPLINT_MAIL",
+      "group": "armors",
+      "id": 4,
+      "ceLine": 1610,
+      "web": "splint_mail",
+      "candidate": "splint_mail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Thick plates of metal are embedded into a chain mail base, providing the wearer with substantial protection.",
+      "webDescription": "厚重的金属板嵌入锁甲基底，为穿戴者提供大量保护。"
+    },
+    {
+      "ce": "PLATE_MAIL",
+      "group": "armors",
+      "id": 5,
+      "ceLine": 1611,
+      "web": "plate_mail",
+      "candidate": "plate_mail",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Enormous plates of metal are joined together into a suit that provides unmatched protection to any adventurer strong enough to bear its staggering weight.",
+      "webDescription": "巨大的金属板连接成一套护甲，为任何足够强壮承受其惊人重量的冒险者提供无与伦比的保护。"
+    },
+    {
+      "ce": "RATION",
+      "group": "food",
+      "id": 0,
+      "ceLine": 1578,
+      "web": "ration_of_food",
+      "candidate": "ration_of_food",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "A ration of food. Was it left by former adventurers? Is it a curious byproduct of the subterranean ecosystem?",
+      "webDescription": "一份干粮，可补充大量饱食度，防止因饥饿而失去生命值。"
+    },
+    {
+      "ce": "FRUIT",
+      "group": "food",
+      "id": 1,
+      "ceLine": 1579,
+      "web": "mango",
+      "candidate": "mango",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "An odd fruit to be found so deep beneath the surface of the earth, but only slightly less filling than a ration of food.",
+      "webDescription": "一颗来自地下的芒果，食用后补充饱食度。"
+    },
+    {
+      "ce": "KEY_DOOR",
+      "group": "keys",
+      "id": 0,
+      "ceLine": 1572,
+      "web": "iron_key",
+      "candidate": "iron_key",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "The notches on this ancient iron key are well worn; its leather lanyard is battered by age. What door might it open?",
+      "webDescription": "一把铁钥匙，可以开启地下城中的锁门，通往新的区域。"
+    },
+    {
+      "ce": "KEY_CAGE",
+      "group": "keys",
+      "id": 1,
+      "ceLine": 1573,
+      "web": "cage_key",
+      "candidate": "cage_key",
+      "exists": true,
+      "excluded": true,
+      "frequency": "1",
+      "ceDescription": "The rust accreted on this iron key has been stained with flecks of blood; it must have been used recently. What cage might it open?",
+      "webDescription": "这把铁钥匙上的锈迹沾着点点血污，最近显然被使用过。它能打开哪只笼子呢？"
+    },
+    {
+      "ce": "KEY_PORTAL",
+      "group": "keys",
+      "id": 2,
+      "ceLine": 1574,
+      "web": "crystal_orb",
+      "candidate": "crystal_orb",
+      "exists": true,
+      "excluded": true,
+      "frequency": "1",
+      "ceDescription": "A faceted orb, seemingly cut from a single crystal, sparkling and perpetually warm to the touch. What manner of device might such an object activate?",
+      "webDescription": "一颗多面球体，仿佛由整块水晶切割而成，通体闪烁着奇异的光泽，触手温热。它会启动什么机关呢？"
+    },
+    {
+      "ce": "POTION_LIFE",
+      "group": "potions",
+      "id": 0,
+      "ceLine": 666,
+      "web": "potion_of_life",
+      "candidate": "potion_of_life",
+      "exists": true,
+      "excluded": false,
+      "frequency": "0",
+      "ceDescription": "A swirling elixir that will instantly heal you, cure you of ailments, and permanently increase your maximum health.",
+      "webDescription": "永久增加10点生命上限，恢复生命并解除中毒、虚弱、黑暗等病症。"
+    },
+    {
+      "ce": "POTION_STRENGTH",
+      "group": "potions",
+      "id": 1,
+      "ceLine": 667,
+      "web": "potion_of_strength",
+      "candidate": "potion_of_strength",
+      "exists": true,
+      "excluded": false,
+      "frequency": "0",
+      "ceDescription": "This powerful medicine will course through your muscles, permanently increasing your strength by one point.",
+      "webDescription": "永久增加1点力量，使你能装备更强力的武器和护甲。"
+    },
+    {
+      "ce": "POTION_TELEPATHY",
+      "group": "potions",
+      "id": 2,
+      "ceLine": 668,
+      "web": "potion_of_telepathy",
+      "candidate": "potion_of_telepathy",
+      "exists": true,
+      "excluded": false,
+      "frequency": "20",
+      "ceDescription": "This mysterious liquid will attune your mind to the psychic signature of distant creatures. Its effects will not reveal inanimate objects, such as totems, turrets and traps.",
+      "webDescription": "临时获得心灵感应，可感知当前层所有怪物的位置，即使隔墙也能察觉。"
+    },
+    {
+      "ce": "POTION_LEVITATION",
+      "group": "potions",
+      "id": 3,
+      "ceLine": 669,
+      "web": "potion_of_levitation",
+      "candidate": "potion_of_levitation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This curious liquid will cause you to hover in the air, able to drift effortlessly over lava, water, chasms and traps. Flames, gases and spiderwebs fill the air, and cannot be bypassed while airborne. Creatures that dwell in water or mud will be unable to attack you while you levitate.",
+      "webDescription": "饮用后短暂获得悬浮状态。"
+    },
+    {
+      "ce": "POTION_DETECT_MAGIC",
+      "group": "potions",
+      "id": 4,
+      "ceLine": 670,
+      "web": "potion_of_detect_magic",
+      "candidate": "potion_of_detect_magic",
+      "exists": true,
+      "excluded": false,
+      "frequency": "20",
+      "ceDescription": "This mysterious brew will sensitize your mind to the radiance of magic. Items imbued with helpful enchantments will be marked with a full sigil; items corrupted by curses or designed to bring misfortune upon the bearer will be marked with a hollow sigil. The Amulet of Yendor will be revealed by its unique aura.",
+      "webDescription": "饮用后探测当前层和背包中的魔法物品。"
+    },
+    {
+      "ce": "POTION_HASTE_SELF",
+      "group": "potions",
+      "id": 5,
+      "ceLine": 671,
+      "web": "potion_of_haste",
+      "candidate": "potion_of_haste",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Quaffing the contents of this flask will enable you to move at blinding speed for several minutes.",
+      "webDescription": "短暂大幅提升移动和攻击速度，让你行动如风。"
+    },
+    {
+      "ce": "POTION_FIRE_IMMUNITY",
+      "group": "potions",
+      "id": 6,
+      "ceLine": 672,
+      "web": "potion_of_fire_immunity",
+      "candidate": "potion_of_fire_immunity",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This potion will render you impervious to heat and permit you to wander through fire and lava and ignore otherwise deadly bolts of flame. It will not guard against the concussive impact of an explosion, however.",
+      "webDescription": "临时获得火焰免疫，免疫所有火焰伤害。若已着火则立即扑灭。"
+    },
+    {
+      "ce": "POTION_INVISIBILITY",
+      "group": "potions",
+      "id": 7,
+      "ceLine": 673,
+      "web": "potion_of_invisibility",
+      "candidate": "potion_of_invisibility",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "Drinking this potion will render you temporarily invisible. Enemies more than two spaces away will be unable to track you.",
+      "webDescription": "短暂变为隐形，令大多数敌人无法看见你，适合潜行或逃脱。"
+    },
+    {
+      "ce": "POTION_POISON",
+      "group": "potions",
+      "id": 8,
+      "ceLine": 674,
+      "web": "potion_of_poison",
+      "candidate": "potion_of_poison",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "Uncorking or shattering this pressurized glass will cause its contents to explode into a deadly cloud of caustic purple gas. You might choose to fling this potion at distant enemies instead of uncorking it by hand.",
+      "webDescription": "散发毒气，使你和附近怪物中毒，持续受到毒素伤害直至解毒或时间流逝。"
+    },
+    {
+      "ce": "POTION_PARALYSIS",
+      "group": "potions",
+      "id": 9,
+      "ceLine": 675,
+      "web": "potion_of_paralysis",
+      "candidate": "potion_of_paralysis",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Upon exposure to open air, the liquid in this flask will vaporize into a numbing pink haze. Anyone who inhales the cloud will be paralyzed instantly, unable to move for some time after the cloud dissipates. This item can be thrown at distant enemies to catch them within the effect of the gas.",
+      "webDescription": "释放麻痹气雾，使你和附近怪物短暂完全瘫痪，无法行动。"
+    },
+    {
+      "ce": "POTION_HALLUCINATION",
+      "group": "potions",
+      "id": 10,
+      "ceLine": 676,
+      "web": "potion_of_hallucination",
+      "candidate": "potion_of_hallucination",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This flask contains a vicious and long-lasting hallucinogen. Under its dazzling effect, you will wander through a rainbow wonderland, unable to discern the form of any creatures or items you see.",
+      "webDescription": "导致严重幻觉，看到的怪物和地形将以随机外观显示，难以判断真实情况。"
+    },
+    {
+      "ce": "POTION_CONFUSION",
+      "group": "potions",
+      "id": 11,
+      "ceLine": 677,
+      "web": "potion_of_confusion",
+      "candidate": "potion_of_confusion",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This unstable chemical will quickly vaporize into a glittering cloud upon contact with open air, causing any creature that inhales it to lose control of the direction of its movements until the effect wears off (although its ability to aim projectile attacks will not be affected). Its vertiginous intoxication can cause creatures and adventurers to careen into one another or into chasms or lava pits, so extreme care should be taken when under its effect. Its contents can be weaponized by throwing the flask at distant enemies.",
+      "webDescription": "饮用或投掷都会释放混乱气体，使范围内的生物陷入混乱。"
+    },
+    {
+      "ce": "POTION_INCINERATION",
+      "group": "potions",
+      "id": 12,
+      "ceLine": 678,
+      "web": "potion_of_incineration",
+      "candidate": "potion_of_incineration",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This flask contains an unstable compound which will burst violently into flame upon exposure to open air. You might throw the flask at distant enemies -- or into a deep lake, to cleanse the cavern with scalding steam.",
+      "webDescription": "引发剧烈的火焰爆炸，对周围区域造成大量火焰伤害并点燃地面。"
+    },
+    {
+      "ce": "POTION_DARKNESS",
+      "group": "potions",
+      "id": 13,
+      "ceLine": 679,
+      "web": "potion_of_darkness",
+      "candidate": "potion_of_darkness",
+      "exists": true,
+      "excluded": false,
+      "frequency": "7",
+      "ceDescription": "Drinking this potion will plunge you into darkness. At first, you will be completely blind to anything not illuminated by an independent light source, but over time your vision will regain its former strength. Throwing the potion will create a cloud of supernatural darkness, and enemies will have difficulty seeing or following you if you take refuge under its cover.",
+      "webDescription": "饮用后使你的矿灯变暗；投掷后释放吸收周围光线的黑暗气云。"
+    },
+    {
+      "ce": "POTION_DESCENT",
+      "group": "potions",
+      "id": 14,
+      "ceLine": 680,
+      "web": "potion_of_descent",
+      "candidate": "potion_of_descent",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "When this flask is uncorked by hand or shattered by being thrown, the fog that seeps out will temporarily cause the ground in the vicinity to vanish.",
+      "webDescription": "饮用后脚下出现洞口；未悬浮时会坠向下一层。"
+    },
+    {
+      "ce": "POTION_LICHEN",
+      "group": "potions",
+      "id": 15,
+      "ceLine": 681,
+      "web": "potion_of_creeping_death",
+      "candidate": "potion_of_creeping_death",
+      "exists": true,
+      "excluded": false,
+      "frequency": "7",
+      "ceDescription": "When the cork is popped or the flask is thrown, tiny spores will spill across the ground and begin to grow a deadly lichen. Anything that touches the lichen will be poisoned by its clinging tendrils, and the lichen will slowly grow to fill the area. Fire will purge the infestation.",
+      "webDescription": "打开或投掷后释放致命孢子，长出缓慢蔓延的有毒地衣；接触会中毒，火焰可以烧毁地衣。"
+    },
+    {
+      "ce": "SCROLL_ENCHANTING",
+      "group": "scrolls",
+      "id": 0,
+      "ceLine": 685,
+      "web": "scroll_of_enchantment",
+      "candidate": "scroll_of_enchantment",
+      "exists": true,
+      "excluded": false,
+      "frequency": "0",
+      "ceDescription": "This ancient enchanting sorcery will imbue a single item with a powerful and permanent magical charge. A staff will increase in power and in number of charges; a weapon will inflict more damage and find its mark more easily; a suit of armor will deflect attacks more often; the magic of a ring will intensify; and a wand will gain expendable charges in the least amount that such a wand can be found with. Weapons and armor will also require less strength to use, and any curses on the item will be lifted.",
+      "webDescription": "选择背包中的法杖、魔杖或当前装备进行附魔。法杖增强并增加一次充能，魔杖增加可用次数；装备获得+1附魔。"
+    },
+    {
+      "ce": "SCROLL_IDENTIFY",
+      "group": "scrolls",
+      "id": 1,
+      "ceLine": 686,
+      "web": "scroll_of_identify",
+      "candidate": "scroll_of_identify",
+      "exists": true,
+      "excluded": false,
+      "frequency": "30",
+      "ceDescription": "This scrying magic will permanently reveal all of the secrets of a single item.",
+      "webDescription": "鉴定一件未知道具，揭示其真实名称、魔法属性以及是否被诅咒。"
+    },
+    {
+      "ce": "SCROLL_TELEPORT",
+      "group": "scrolls",
+      "id": 2,
+      "ceLine": 687,
+      "web": "scroll_of_teleportation",
+      "candidate": "scroll_of_teleportation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This escape spell will instantly relocate you to a random location on the dungeon level. It can be used to escape a dangerous situation with luck. The unlucky reader might find himself in an even more dangerous place.",
+      "webDescription": "将你瞬间传送至当前层的随机位置。危急时可用于脱险，但目标不可预测。"
+    },
+    {
+      "ce": "SCROLL_REMOVE_CURSE",
+      "group": "scrolls",
+      "id": 3,
+      "ceLine": 688,
+      "web": "scroll_of_remove_curse",
+      "candidate": "scroll_of_remove_curse",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This redemption spell will instantly strip from the reader's weapon, armor, rings and carried items any evil enchantments that might prevent the wearer from removing them.",
+      "webDescription": "解除所有已装备道具上的诅咒，使你得以取下原本无法摘除的被诅咒物品。"
+    },
+    {
+      "ce": "SCROLL_RECHARGING",
+      "group": "scrolls",
+      "id": 4,
+      "ceLine": 689,
+      "web": "scroll_of_recharging",
+      "candidate": "scroll_of_recharging",
+      "exists": true,
+      "excluded": false,
+      "frequency": "12",
+      "ceDescription": "The power bound up in this parchment will instantly recharge all of your staffs and charms.",
+      "webDescription": "立即充满背包内所有法杖，并清除所有护符的冷却时间。"
+    },
+    {
+      "ce": "SCROLL_PROTECT_ARMOR",
+      "group": "scrolls",
+      "id": 5,
+      "ceLine": 690,
+      "web": "scroll_of_protect_armor",
+      "candidate": "scroll_of_protect_armor",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This ceremonial shielding magic will permanently proof your armor against degradation by acid.",
+      "webDescription": "对穿戴的护甲施加魔法保护，使其永久免疫腐蚀、削弱和诅咒的影响。"
+    },
+    {
+      "ce": "SCROLL_PROTECT_WEAPON",
+      "group": "scrolls",
+      "id": 6,
+      "ceLine": 691,
+      "web": "scroll_of_protect_weapon",
+      "candidate": "scroll_of_protect_weapon",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This ceremonial shielding magic will permanently proof your weapon against degradation by acid.",
+      "webDescription": "对持有的武器施加魔法保护，使其永久免疫锈蚀、腐蚀和诅咒的影响。"
+    },
+    {
+      "ce": "SCROLL_SANCTUARY",
+      "group": "scrolls",
+      "id": 7,
+      "ceLine": 692,
+      "web": "scroll_of_sanctuary",
+      "candidate": "scroll_of_sanctuary",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This protection rite will imbue the area with powerful warding glyphs, when released over plain ground. Monsters will not willingly set foot on the affected area.",
+      "webDescription": "在你所在位置刻下神圣符文，怪物将避开这些符文标记的区域，形成安全区。"
+    },
+    {
+      "ce": "SCROLL_MAGIC_MAPPING",
+      "group": "scrolls",
+      "id": 8,
+      "ceLine": 693,
+      "web": "scroll_of_magic_mapping",
+      "candidate": "scroll_of_magic_mapping",
+      "exists": true,
+      "excluded": false,
+      "frequency": "12",
+      "ceDescription": "This powerful scouting magic will etch a purple-hued image of crystal clarity into your memory, alerting you to the precise layout of the level and revealing all traps, secret doors and hidden levers.",
+      "webDescription": "揭示当前层的完整地图，包括所有房间、通道和特殊区域，但不显示物品和怪物。"
+    },
+    {
+      "ce": "SCROLL_NEGATION",
+      "group": "scrolls",
+      "id": 9,
+      "ceLine": 694,
+      "web": "scroll_of_negation",
+      "candidate": "scroll_of_negation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "8",
+      "ceDescription": "When this powerful anti-magic is released, all creatures (including yourself) and all items lying on the ground within your field of view will be exposed to its blast and stripped of magic. Creatures animated purely by magic will die. Potions, scrolls, items being held by other creatures and items in your inventory will not be affected.",
+      "webDescription": "发出魔法脉冲，解除周围区域所有生物身上的魔法效果，对己对敌均有效。"
+    },
+    {
+      "ce": "SCROLL_SHATTERING",
+      "group": "scrolls",
+      "id": 10,
+      "ceLine": 695,
+      "web": "scroll_of_shattering",
+      "candidate": "scroll_of_shattering",
+      "exists": true,
+      "excluded": false,
+      "frequency": "8",
+      "ceDescription": "This strange incantation will alter the physical structure of nearby stone, causing it to evaporate into the air over the ensuing minutes.",
+      "webDescription": "震碎周围的石墙，开辟新的通道，也可用于破坏特殊石质结构。"
+    },
+    {
+      "ce": "SCROLL_DISCORD",
+      "group": "scrolls",
+      "id": 11,
+      "ceLine": 696,
+      "web": "scroll_of_discord",
+      "candidate": "scroll_of_discord",
+      "exists": true,
+      "excluded": false,
+      "frequency": "8",
+      "ceDescription": "This scroll will unleash a powerful blast of mind magic. Any creatures within line of sight will turn against their companions and attack indiscriminately for 30 turns.",
+      "webDescription": "使视野内所有怪物相互仇恨，令其混战厮杀，是对付怪物群的强力手段。"
+    },
+    {
+      "ce": "SCROLL_AGGRAVATE_MONSTER",
+      "group": "scrolls",
+      "id": 12,
+      "ceLine": 697,
+      "web": null,
+      "candidate": "scroll_of_aggravate_monsters",
+      "exists": false,
+      "excluded": null,
+      "frequency": "15",
+      "ceDescription": "This scroll will unleash a piercing shriek that will awaken all monsters and alert them to the reader's location.",
+      "webDescription": null
+    },
+    {
+      "ce": "SCROLL_SUMMON_MONSTER",
+      "group": "scrolls",
+      "id": 13,
+      "ceLine": 698,
+      "web": "scroll_of_summon_monsters",
+      "candidate": "scroll_of_summon_monsters",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This summoning incantation will call out to creatures in other planes of existence, drawing them through the fabric of reality to confront the reader.",
+      "webDescription": "在你附近随机召唤出多只怪物，极为危险，误读此卷轴可能致命。"
+    },
+    {
+      "ce": "WAND_TELEPORT",
+      "group": "wands",
+      "id": 0,
+      "ceLine": 702,
+      "web": "wand_of_teleportation",
+      "candidate": "wand_of_teleportation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "This wand will teleport a creature to a random place on the level. Aquatic or mud-bound creatures will be rendered helpless on dry land.",
+      "webDescription": "将指定目标传送至当前层的随机位置，可用于驱散包围的敌人或为盟友解围。"
+    },
+    {
+      "ce": "WAND_SLOW",
+      "group": "wands",
+      "id": 1,
+      "ceLine": 703,
+      "web": "wand_of_slowness",
+      "candidate": "wand_of_slowness",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "This wand will cause a creature to move at half its ordinary speed for 30 turns.",
+      "webDescription": "使目标怪物的移动和攻击速度减半，持续较长时间，给你创造逃脱或反击的机会。"
+    },
+    {
+      "ce": "WAND_POLYMORPH",
+      "group": "wands",
+      "id": 2,
+      "ceLine": 704,
+      "web": "wand_of_polymorphism",
+      "candidate": "wand_of_polymorphism",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "This mischievous magic will transform a creature into another creature at random. Beware: the tamest of creatures might turn into the most fearsome. The horror of the transformation will turn an allied victim against you.",
+      "webDescription": "使命中的生物随机变成另一物种；盟友也会因变形而与你为敌。"
+    },
+    {
+      "ce": "WAND_NEGATION",
+      "group": "wands",
+      "id": 3,
+      "ceLine": 705,
+      "web": "wand_of_negation",
+      "candidate": "wand_of_negation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "This powerful anti-magic will strip a creature of a host of magical traits, including flight, invisibility, acidic corrosiveness, telepathy, magical speed or slowness, hypnosis, magical fear, immunity to physical attack, fire resistance and the ability to blink. Spellcasters will lose their magical abilities and magical totems will be rendered inert. Creatures animated purely by magic will die.",
+      "webDescription": "消除命中生物的可消魔状态、魔法能力与特性；纯粹由魔法驱动的生物会死亡。"
+    },
+    {
+      "ce": "WAND_DOMINATION",
+      "group": "wands",
+      "id": 4,
+      "ceLine": 706,
+      "web": "wand_of_domination",
+      "candidate": "wand_of_domination",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This wand can forever bind an enemy to the caster's will, turning it into a steadfast ally. However, the magic only works effectively against enemies that are near death.",
+      "webDescription": "尝试将敌人永久变为盟友，目标伤势越重，成功机会越大。"
+    },
+    {
+      "ce": "WAND_BECKONING",
+      "group": "wands",
+      "id": 5,
+      "ceLine": 707,
+      "web": "wand_of_beckoning",
+      "candidate": "wand_of_beckoning",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "The force of this wand will draw the targeted creature into direct proximity.",
+      "webDescription": "强制将目标怪物拉至你正前方相邻位置，可用于打断怪物的逃跑或将远距离目标拉近。"
+    },
+    {
+      "ce": "WAND_PLENTY",
+      "group": "wands",
+      "id": 6,
+      "ceLine": 708,
+      "web": "wand_of_plenty",
+      "candidate": "wand_of_plenty",
+      "exists": true,
+      "excluded": false,
+      "frequency": "2",
+      "ceDescription": "The creature at the other end of this mischievous bit of cloning magic, friend or foe, will be beside itself -- literally!",
+      "webDescription": "复制命中的生物；原体与复制体各保留原当前生命值的一半（向上取整），携带物不会复制。"
+    },
+    {
+      "ce": "WAND_INVISIBILITY",
+      "group": "wands",
+      "id": 7,
+      "ceLine": 709,
+      "web": "wand_of_invisibility",
+      "candidate": "wand_of_invisibility",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "This wand will render a creature temporarily invisible to the naked eye. Only with telepathy or in the silhouette of a thick gas will an observer discern the creature's hazy outline.",
+      "webDescription": "使目标（可以是自身或怪物）短暂隐形，隐形状态下难以被敌人察觉。"
+    },
+    {
+      "ce": "WAND_EMPOWERMENT",
+      "group": "wands",
+      "id": 8,
+      "ceLine": 710,
+      "web": "wand_of_empowerment",
+      "candidate": "wand_of_empowerment",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This sacred magic will permanently improve the mind and body of any monster it hits. A wise adventurer will use it on allies, making them stronger in combat and able to learn a new talent from a fallen foe. If the bolt is reflected back at you, it will have no effect.",
+      "webDescription": "这种神圣魔法会永久增强命中怪物的身心。明智的冒险者会用它强化盟友，使其更善于战斗，并能从倒下的敌人身上学习一项新能力。可以对同一只怪物重复使用；若射线反射回你身上，则不会产生效果。"
+    },
+    {
+      "ce": "STAFF_LIGHTNING",
+      "group": "staffs",
+      "id": 0,
+      "ceLine": 1642,
+      "web": "staff_of_lightning",
+      "candidate": "staff_of_lightning",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This staff conjures forth deadly arcs of electricity to damage to any number of creatures in a straight line.",
+      "webDescription": "释放连锁闪电，在直线上对所有目标造成高额伤害，穿透能力随附魔等级提升。"
+    },
+    {
+      "ce": "STAFF_FIRE",
+      "group": "staffs",
+      "id": 1,
+      "ceLine": 1643,
+      "web": "staff_of_fire",
+      "candidate": "staff_of_fire",
+      "exists": true,
+      "excluded": false,
+      "frequency": "15",
+      "ceDescription": "This staff unleashes bursts of magical fire. It will ignite flammable terrain and burn any creature that it hits. Creatures with an immunity to fire will be unaffected by the bolt.",
+      "webDescription": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。"
+    },
+    {
+      "ce": "STAFF_POISON",
+      "group": "staffs",
+      "id": 2,
+      "ceLine": 1644,
+      "web": "staff_of_poison",
+      "candidate": "staff_of_poison",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "The vile blast of this twisted staff will imbue its target with a deadly venom. Each turn, a creature that is poisoned will suffer one point of damage per dose of poison it has received, and poisoned creatures will not regenerate lost health until the poison clears.",
+      "webDescription": "向目标注入剧毒，使其持续受到毒素伤害，附魔等级越高毒素越强、持续越久。"
+    },
+    {
+      "ce": "STAFF_TUNNELING",
+      "group": "staffs",
+      "id": 3,
+      "ceLine": 1645,
+      "web": "staff_of_tunneling",
+      "candidate": "staff_of_tunneling",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "Bursts of magic from this staff will pass harmlessly through creatures but will reduce most obstructions to rubble.",
+      "webDescription": "射线可穿过生物，将沿途可挖掘的障碍化为碎石；附魔能增加可挖掘的层数。"
+    },
+    {
+      "ce": "STAFF_BLINKING",
+      "group": "staffs",
+      "id": 4,
+      "ceLine": 1646,
+      "web": "staff_of_blinking",
+      "candidate": "staff_of_blinking",
+      "exists": true,
+      "excluded": false,
+      "frequency": "11",
+      "ceDescription": "This staff will allow you to teleport in the chosen direction. Creatures and inanimate obstructions will block the teleportation.",
+      "webDescription": "沿选定方向瞬移，生物和障碍会截断行程；附魔能增加距离。这根法杖的自然回电速度为普通法杖的一半。"
+    },
+    {
+      "ce": "STAFF_ENTRANCEMENT",
+      "group": "staffs",
+      "id": 5,
+      "ceLine": 1647,
+      "web": "staff_of_entrancement",
+      "candidate": "staff_of_entrancement",
+      "exists": true,
+      "excluded": false,
+      "frequency": "6",
+      "ceDescription": "This staff will send creatures into a temporary trance, causing them to mindlessly mirror your movements. You can use the effect to cause one creature to attack another or to step into hazardous terrain, but the spell will be broken if you attack the creature under the effect.",
+      "webDescription": "使命中的敌人陷入催眠，反向跟随你的移动；可驱使其攻击其他生物或走入险地，攻击它会解除催眠。"
+    },
+    {
+      "ce": "STAFF_OBSTRUCTION",
+      "group": "staffs",
+      "id": 6,
+      "ceLine": 1648,
+      "web": "staff_of_obstruction",
+      "candidate": "staff_of_obstruction",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This staff will conjure a mass of impenetrable green crystal, preventing anything from moving through the affected area and temporarily entombing anything that is already there. The crystal will dissolve into the air as time passes. Higher level staffs will create larger obstructions.",
+      "webDescription": "在射线落点生成阻路的绿色水晶，水晶会逐渐消融；附魔能扩大阻障范围。这根法杖的自然回电速度为普通法杖的一半。"
+    },
+    {
+      "ce": "STAFF_DISCORD",
+      "group": "staffs",
+      "id": 7,
+      "ceLine": 1649,
+      "web": "staff_of_discord",
+      "candidate": "staff_of_discord",
+      "exists": true,
+      "excluded": false,
+      "frequency": "10",
+      "ceDescription": "This staff will alter the perception of a creature and cause it to lash out indiscriminately. Strangers and allies alike will turn on the victim.",
+      "webDescription": "使命中的生物陷入纷争，无差别地攻击其他生物；附魔能延长持续时间。"
+    },
+    {
+      "ce": "STAFF_CONJURATION",
+      "group": "staffs",
+      "id": 8,
+      "ceLine": 1650,
+      "web": "staff_of_conjuration",
+      "candidate": "staff_of_conjuration",
+      "exists": true,
+      "excluded": false,
+      "frequency": "8",
+      "ceDescription": "A flick of this staff will summon a number of phantom blades to fight on your behalf.",
+      "webDescription": "在附近召唤出多个幽灵刀刃协助战斗，附魔等级越高召唤数量越多，伤害越强。"
+    },
+    {
+      "ce": "STAFF_HEALING",
+      "group": "staffs",
+      "id": 9,
+      "ceLine": 1651,
+      "web": "staff_of_healing",
+      "candidate": "staff_of_healing",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "This staff will heal any creature, friend or foe. Unfortunately, you cannot use this or any staff on yourself except by reflecting the bolt.",
+      "webDescription": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。"
+    },
+    {
+      "ce": "STAFF_HASTE",
+      "group": "staffs",
+      "id": 10,
+      "ceLine": 1652,
+      "web": "staff_of_haste",
+      "candidate": "staff_of_haste",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "This staff will temporarily double the speed of any creature, friend or foe. Unfortunately, you cannot use this or any staff on yourself except by reflecting the bolt.",
+      "webDescription": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。"
+    },
+    {
+      "ce": "STAFF_PROTECTION",
+      "group": "staffs",
+      "id": 11,
+      "ceLine": 1653,
+      "web": "staff_of_protection",
+      "candidate": "staff_of_protection",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "This staff will bathe a creature in a protective light that will absorb all damage until it is depleted. Unfortunately, you cannot use this or any staff on yourself except by reflecting the bolt.",
+      "webDescription": "为命中的生物施加吸收伤害的护盾，护盾会随时间衰减；附魔能提高吸收量。只能通过射线反射保护自己。"
+    },
+    {
+      "ce": "RING_CLAIRVOYANCE",
+      "group": "rings",
+      "id": 0,
+      "ceLine": 1657,
+      "web": "ring_of_clairvoyance",
+      "candidate": "ring_of_clairvoyance",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of eldritch scrying will permit you to see through nearby walls and doors, within a radius determined by the level of the ring. A cursed ring of clairvoyance will blind you to your immediate surroundings.",
+      "webDescription": "佩戴后可透视附近墙壁和门；负附魔会使近处视野变暗。"
+    },
+    {
+      "ce": "RING_STEALTH",
+      "group": "rings",
+      "id": 1,
+      "ceLine": 1658,
+      "web": "ring_of_stealth",
+      "candidate": "ring_of_stealth",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of silent passage will reduce your stealth range, making enemies less likely to notice you and more likely to lose your trail. Staying motionless and lurking in the shadows will make you even harder to spot. Cursed rings of stealth will increase your stealth range, making you easier to spot and to track.",
+      "webDescription": "佩戴后缩短敌人察觉你的距离；负附魔会显著扩大察觉距离。"
+    },
+    {
+      "ce": "RING_REGENERATION",
+      "group": "rings",
+      "id": 2,
+      "ceLine": 1659,
+      "web": "ring_of_regeneration",
+      "candidate": "ring_of_regeneration",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of sacred life will allow you to recover lost health at an accelerated rate. Cursed rings will decrease or even halt your natural regeneration.",
+      "webDescription": "佩戴后按附魔等级改变自然生命恢复速度；负附魔会减慢恢复。"
+    },
+    {
+      "ce": "RING_TRANSFERENCE",
+      "group": "rings",
+      "id": 3,
+      "ceLine": 1660,
+      "web": "ring_of_transference",
+      "candidate": "ring_of_transference",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of blood magic will heal you in proportion to the damage you inflict on others. Cursed rings will cause you to lose health when inflicting damage.",
+      "webDescription": "对生物造成直接伤害时按附魔等级吸取生命；负附魔会反噬自己。"
+    },
+    {
+      "ce": "RING_LIGHT",
+      "group": "rings",
+      "id": 4,
+      "ceLine": 1661,
+      "web": "ring_of_light",
+      "candidate": "ring_of_light",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of preternatural vision will allow you to see farther in the dimming light of the deeper dungeon levels. It will not make you more noticeable to enemies.",
+      "webDescription": "使你在地牢深处渐暗的光线中看得更远，不会让敌人更容易察觉你。"
+    },
+    {
+      "ce": "RING_AWARENESS",
+      "group": "rings",
+      "id": 5,
+      "ceLine": 1662,
+      "web": "ring_of_awareness",
+      "candidate": "ring_of_awareness",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of effortless vigilance will enable you to notice traps, secret doors and hidden levers more often and from a greater distance. Cursed rings of awareness will dull your senses, making it harder to notice secrets without actively searching for them.",
+      "webDescription": "佩戴后提高发现陷阱与密门的搜索强度；负附魔会削弱感知。"
+    },
+    {
+      "ce": "RING_WISDOM",
+      "group": "rings",
+      "id": 6,
+      "ceLine": 1663,
+      "web": "ring_of_wisdom",
+      "candidate": "ring_of_wisdom",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of arcane power will cause your staffs to recharge at an accelerated rate. Cursed rings of wisdom will cause your staffs to recharge more slowly.",
+      "webDescription": "加快法杖的充能速度，附魔等级越高充能越快，让你更频繁地使用魔法。"
+    },
+    {
+      "ce": "RING_REAPING",
+      "group": "rings",
+      "id": 7,
+      "ceLine": 1664,
+      "web": "ring_of_reaping",
+      "candidate": "ring_of_reaping",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This ring of blood magic will recharge your staffs and charms every time you hit an enemy. Cursed rings of reaping will drain your staffs and charms with every hit.",
+      "webDescription": "每次近战命中敌人时为法杖和护符充能；诅咒的收割戒指会在命中时消耗充能。"
+    },
+    {
+      "ce": "CHARM_HEALTH",
+      "group": "charms",
+      "id": 0,
+      "ceLine": 714,
+      "web": "charm_of_health",
+      "candidate": "charm_of_health",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "A handful of dried bloodwort and mandrake root has been bound together with leather cord and imbued with a powerful healing magic.",
+      "webDescription": "激活时按附魔等级恢复最大生命值的一定比例，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_PROTECTION",
+      "group": "charms",
+      "id": 1,
+      "ceLine": 715,
+      "web": "charm_of_protection",
+      "candidate": "charm_of_protection",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "Four copper rings have been joined into a tetrahedron. The construct is oddly warm to the touch.",
+      "webDescription": "激活时获得按附魔等级增强的护盾，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_HASTE",
+      "group": "charms",
+      "id": 2,
+      "ceLine": 716,
+      "web": "charm_of_speed",
+      "candidate": "charm_of_speed",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "Various animals have been etched into the surface of this brass bangle. It emits a barely audible hum.",
+      "webDescription": "激活时获得按附魔等级延长的加速状态，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_FIRE_IMMUNITY",
+      "group": "charms",
+      "id": 3,
+      "ceLine": 717,
+      "web": "charm_of_fire_immunity",
+      "candidate": "charm_of_fire_immunity",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "Eldritch flames flicker within this polished crystal bauble.",
+      "webDescription": "激活时获得按附魔等级延长的火焰免疫并熄灭身上的火焰，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_INVISIBILITY",
+      "group": "charms",
+      "id": 4,
+      "ceLine": 718,
+      "web": "charm_of_invisibility",
+      "candidate": "charm_of_invisibility",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "A jade figurine depicts a strange humanoid creature. It has a face on both sides of its head, but all four eyes are closed.",
+      "webDescription": "激活时获得按附魔等级延长的隐形状态，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_TELEPATHY",
+      "group": "charms",
+      "id": 5,
+      "ceLine": 719,
+      "web": "charm_of_telepathy",
+      "candidate": "charm_of_telepathy",
+      "exists": true,
+      "excluded": false,
+      "frequency": "3",
+      "ceDescription": "Seven tiny glass eyes roll freely within this glass sphere. Somehow, they always come to rest facing outward.",
+      "webDescription": "激活时获得按附魔等级延长的心灵感应状态，随后进入冷却。"
+    },
+    {
+      "ce": "CHARM_LEVITATION",
+      "group": "charms",
+      "id": 6,
+      "ceLine": 720,
+      "web": "charm_of_levitation",
+      "candidate": "charm_of_levitation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "Sparkling dust and fragments of feather waft and swirl endlessly inside this small glass sphere.",
+      "webDescription": "激活后浮离地面并挣脱抓取；持续时间随附魔等级增长。"
+    },
+    {
+      "ce": "CHARM_SHATTERING",
+      "group": "charms",
+      "id": 7,
+      "ceLine": 721,
+      "web": "charm_of_shattering",
+      "candidate": "charm_of_shattering",
+      "exists": true,
+      "excluded": false,
+      "frequency": "1",
+      "ceDescription": "This turquoise crystal, fixed to a leather lanyard, hums with an arcane energy that sets your teeth on edge.",
+      "webDescription": "以你为中心瓦解附近未受保护的墙壁；范围随附魔等级增长。"
+    },
+    {
+      "ce": "CHARM_GUARDIAN",
+      "group": "charms",
+      "id": 8,
+      "ceLine": 722,
+      "web": "charm_of_guardian",
+      "candidate": "charm_of_guardian",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "When you touch this tiny granite statue, a rhythmic booming echoes in your mind.",
+      "webDescription": "召唤一个短暂存在的守卫之灵为你作战；寿命随附魔等级增长。"
+    },
+    {
+      "ce": "CHARM_TELEPORTATION",
+      "group": "charms",
+      "id": 9,
+      "ceLine": 724,
+      "web": "charm_of_teleportation",
+      "candidate": "charm_of_teleportation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "4",
+      "ceDescription": "The surface of this nickel sphere has been etched with a perfect grid pattern. Somehow, the squares of the grid are all exactly the same size.",
+      "webDescription": "将你随机传送到本层的另一个位置。"
+    },
+    {
+      "ce": "CHARM_RECHARGING",
+      "group": "charms",
+      "id": 10,
+      "ceLine": 725,
+      "web": "charm_of_recharging",
+      "candidate": "charm_of_recharging",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "A strip of bronze has been wound around a rough wooden sphere. Each time you touch it, you feel a tiny electric shock.",
+      "webDescription": "为背包内所有法杖充满能量，不影响魔杖或护符。"
+    },
+    {
+      "ce": "CHARM_NEGATION",
+      "group": "charms",
+      "id": 11,
+      "ceLine": 726,
+      "web": "charm_of_negation",
+      "candidate": "charm_of_negation",
+      "exists": true,
+      "excluded": false,
+      "frequency": "5",
+      "ceDescription": "A featureless gray disc hangs from a lanyard. When you touch it, your hand and arm go numb.",
+      "webDescription": "消除你和范围内视野中的生物及地面物品的魔法；不影响背包物品。"
+    }
+  ],
+  "monsterDescriptions": [
+    {
+      "ce": "MK_YOU",
+      "id": 0,
+      "web": "@Player",
+      "exists": true,
+      "ceLine": 1027,
+      "textLine": 1168,
+      "ceWords": [
+        "\"A naked adventurer in an unforgiving place, bereft of equipment and confused about the circumstances.\"",
+        "\"studying\"",
+        "\"Studying\"",
+        "{\"hit\", {0}}"
+      ],
+      "description": null
+    },
+    {
+      "ce": "MK_RAT",
+      "id": 1,
+      "web": "rat",
+      "exists": true,
+      "ceLine": 1030,
+      "textLine": 1171,
+      "ceWords": [
+        "\"The rat is a scavenger of the shallows, perpetually in search of decaying animal matter.\"",
+        "\"gnawing at\"",
+        "\"Eating\"",
+        "{\"scratches\", \"bites\", {0}}"
+      ],
+      "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。"
+    },
+    {
+      "ce": "MK_KOBOLD",
+      "id": 2,
+      "web": "kobold",
+      "exists": true,
+      "ceLine": 1031,
+      "textLine": 1174,
+      "ceWords": [
+        "\"The kobold is a lizardlike humanoid of the upper dungeon.\"",
+        "\"poking at\"",
+        "\"Examining\"",
+        "{\"clubs\", \"bashes\", {0}}"
+      ],
+      "description": "狗头人是上层地牢的蜥蜴型类人生物。"
+    },
+    {
+      "ce": "MK_JACKAL",
+      "id": 3,
+      "web": "jackal",
+      "exists": true,
+      "ceLine": 1032,
+      "textLine": 1177,
+      "ceWords": [
+        "\"The jackal prowls the caverns for intruders to rend with $HISHER powerful jaws.\"",
+        "\"tearing at\"",
+        "\"Eating\"",
+        "{\"claws\", \"bites\", \"mauls\", {0}}"
+      ],
+      "description": "豺狼在洞窟中巡逻，寻找入侵者用它强有力的颚部撕裂。"
+    },
+    {
+      "ce": "MK_EEL",
+      "id": 4,
+      "web": "eel",
+      "exists": true,
+      "ceLine": 1033,
+      "textLine": 1180,
+      "ceWords": [
+        "\"The eel slips silently through the subterranean lake, waiting for unsuspecting prey to set foot in $HISHER dark waters.\"",
+        "\"eating\"",
+        "\"Eating\"",
+        "{\"shocks\", \"bites\", {0}}"
+      ],
+      "description": "电鳗悄无声息地穿过地下湖泊，等待毫无戒备的猎物踏入黑暗的水域。"
+    },
+    {
+      "ce": "MK_MONKEY",
+      "id": 5,
+      "web": "monkey",
+      "exists": true,
+      "ceLine": 1035,
+      "textLine": 1183,
+      "ceWords": [
+        "\"Mischievous trickster that $HESHE is, the monkey lives to steal shiny trinkets from passing adventurers.\"",
+        "\"examining\"",
+        "\"Examining\"",
+        "{\"tweaks\", \"bites\", \"punches\", {0}}"
+      ],
+      "description": "调皮捣蛋的猴子以偷取冒险者的闪亮饰品为生。"
+    },
+    {
+      "ce": "MK_BLOAT",
+      "id": 6,
+      "web": "bloat",
+      "exists": true,
+      "ceLine": 1037,
+      "textLine": 1186,
+      "ceWords": [
+        "\"A bladder of deadly gas buoys the bloat through the air, $HISHER thin veinous membrane ready to rupture at the slightest stress.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"bumps\", {0}}",
+        "\"bursts, leaving behind an expanding cloud of caustic gas!\""
+      ],
+      "description": "一个致命气体的囊泡将浮球托浮在空中，它薄薄的血管膜将在最轻微的刺激下破裂。"
+    },
+    {
+      "ce": "MK_PIT_BLOAT",
+      "id": 7,
+      "web": "pit_bloat",
+      "exists": true,
+      "ceLine": 1039,
+      "textLine": 1190,
+      "ceWords": [
+        "\"This rare subspecies of bloat is filled with a peculiar vapor that, if released, will cause the floor to vanish out from underneath $HIMHER.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"bumps\", {0}}",
+        "\"bursts, causing the floor underneath $HIMHER to disappear!\""
+      ],
+      "description": "这种罕见的浮球亚种充满了一种奇特的蒸汽，如果释放出来，会导致它脚下的地板消失。"
+    },
+    {
+      "ce": "MK_GOBLIN",
+      "id": 8,
+      "web": "goblin",
+      "exists": true,
+      "ceLine": 1041,
+      "textLine": 1194,
+      "ceWords": [
+        "\"A filthy little primate, the tribalistic goblin often travels in packs and carries a makeshift stone spear.\"",
+        "\"chanting over\"",
+        "\"Chanting\"",
+        "{\"cuts\", \"stabs\", \"skewers\", {0}}"
+      ],
+      "description": "肮脏的小灵长类动物，部落式的哥布林经常成群结队地旅行，携带临时制作的石矛。"
+    },
+    {
+      "ce": "MK_GOBLIN_CONJURER",
+      "id": 9,
+      "web": "goblin_conjurer",
+      "exists": true,
+      "ceLine": 1043,
+      "textLine": 1197,
+      "ceWords": [
+        "\"This goblin is covered with glowing sigils that pulse with power. $HESHE can call into existence phantom blades to attack $HISHER foes.\"",
+        "\"performing a ritual on\"",
+        "\"Performing ritual\"",
+        "{\"thumps\", \"whacks\", \"wallops\", {0}}",
+        "{0}",
+        "\"gestures ominously!\""
+      ],
+      "description": "这个哥布林身上覆盖着闪烁的符文，脉动着力量。它可以召唤出幻影之刃来攻击敌人。"
+    },
+    {
+      "ce": "MK_GOBLIN_MYSTIC",
+      "id": 10,
+      "web": "goblin_mystic",
+      "exists": true,
+      "ceLine": 1045,
+      "textLine": 1202,
+      "ceWords": [
+        "\"This goblin carries no weapon, and $HISHER eyes sparkle with golden light. $HESHE can invoke a powerful shielding magic to protect $HISHER escorts from harm.\"",
+        "\"performing a ritual on\"",
+        "\"Performing ritual\"",
+        "{\"slaps\", \"punches\", \"kicks\", {0}}"
+      ],
+      "description": "这个哥布林不携带武器，眼睛闪烁着金色的光芒。它可以施展强大的护盾魔法来保护同伴免受伤害。"
+    },
+    {
+      "ce": "MK_GOBLIN_TOTEM",
+      "id": 11,
+      "web": "goblin_totem",
+      "exists": true,
+      "ceLine": 1047,
+      "textLine": 1205,
+      "ceWords": [
+        "\"Goblins have created this makeshift totem and imbued $HIMHER with a shamanistic power.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"hits\", {0}}"
+      ],
+      "description": "哥布林制作了这个临时图腾，并赋予它萨满力量。"
+    },
+    {
+      "ce": "MK_PINK_JELLY",
+      "id": 12,
+      "web": "pink_jelly",
+      "exists": true,
+      "ceLine": 1049,
+      "textLine": 1208,
+      "ceWords": [
+        "\"This mass of caustic pink goo slips across the ground in search of a warm meal.\"",
+        "\"absorbing\"",
+        "\"Feeding\"",
+        "{\"smears\", \"slimes\", \"drenches\"}"
+      ],
+      "description": "这团腐蚀性的粉红色凝胶在地面上滑行，寻找温暖的食物。"
+    },
+    {
+      "ce": "MK_TOAD",
+      "id": 13,
+      "web": "toad",
+      "exists": true,
+      "ceLine": 1051,
+      "textLine": 1211,
+      "ceWords": [
+        "\"The enormous, warty toad secretes a powerful hallucinogenic slime to befuddle the senses of any creatures that come in contact with $HIMHER.\"",
+        "\"eating\"",
+        "\"Eating\"",
+        "{\"slimes\", \"slams\", {0}}"
+      ],
+      "description": "巨大的疣蟾蜍分泌出一种强效的致幻黏液，使与之接触的任何生物感官混乱。"
+    },
+    {
+      "ce": "MK_VAMPIRE_BAT",
+      "id": 14,
+      "web": "vampire_bat",
+      "exists": true,
+      "ceLine": 1053,
+      "textLine": 1214,
+      "ceWords": [
+        "\"Often hunting in packs, leathery wings and keen senses guide the vampire bat unerringly to $HISHER prey.\"",
+        "\"draining\"",
+        "\"Feeding\"",
+        "{\"nips\", \"bites\", {0}}"
+      ],
+      "description": "经常成群猎食，皮翼和敏锐的感官引导吸血蝙蝠准确无误地找到猎物。"
+    },
+    {
+      "ce": "MK_ARROW_TURRET",
+      "id": 15,
+      "web": "arrow_turret",
+      "exists": true,
+      "ceLine": 1055,
+      "textLine": 1217,
+      "ceWords": [
+        "\"A mechanical contraption embedded in the wall, the spring-loaded arrow turret will fire volley after volley of arrows at intruders.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"shoots\", {0}}"
+      ],
+      "description": "嵌入墙壁的机械装置，弹簧驱动的箭塔会向入侵者发射一轮又一轮的箭矢。"
+    },
+    {
+      "ce": "MK_ACID_MOUND",
+      "id": 16,
+      "web": "acid_mound",
+      "exists": true,
+      "ceLine": 1057,
+      "textLine": 1220,
+      "ceWords": [
+        "\"The acid mound squelches softly across the ground, leaving a trail of hissing goo in $HISHER path.\"",
+        "\"liquefying\"",
+        "\"Feeding\"",
+        "{\"slimes\", \"douses\", \"drenches\", {0}}"
+      ],
+      "description": "酸性土堆轻柔地在地面上蠕动，在它的路径上留下嘶嘶作响的粘液痕迹。"
+    },
+    {
+      "ce": "MK_CENTIPEDE",
+      "id": 17,
+      "web": "centipede",
+      "exists": true,
+      "ceLine": 1059,
+      "textLine": 1223,
+      "ceWords": [
+        "\"This monstrous centipede's incisors are imbued with a horrible venom that will slowly kill $HISHER prey.\"",
+        "\"eating\"",
+        "\"Eating\"",
+        "{\"pricks\", \"stings\", {0}}"
+      ],
+      "description": "这只巨大蜈蚣的门齿充满了可怕的毒液，会慢慢杀死它的猎物。"
+    },
+    {
+      "ce": "MK_OGRE",
+      "id": 18,
+      "web": "ogre",
+      "exists": true,
+      "ceLine": 1061,
+      "textLine": 1226,
+      "ceWords": [
+        "\"This lumbering creature carries an enormous club that $HESHE can swing with incredible force.\"",
+        "\"examining\"",
+        "\"Studying\"",
+        "{\"cudgels\", \"clubs\", \"batters\", {0}}"
+      ],
+      "description": "这个笨拙的生物携带着一根巨大的棍棒，可以用令人难以置信的力量挥舞。"
+    },
+    {
+      "ce": "MK_BOG_MONSTER",
+      "id": 19,
+      "web": "bog_monster",
+      "exists": true,
+      "ceLine": 1063,
+      "textLine": 1229,
+      "ceWords": [
+        "\"The horrifying bog monster dwells beneath the surface of mud-filled swamps. When $HISHER prey ventures into the mud, the bog monster will ensnare the unsuspecting victim in $HISHER pale tentacles and squeeze its life away.\"",
+        "\"draining\"",
+        "\"Feeding\"",
+        "{\"squeezes\", \"strangles\", \"crushes\", {0}}"
+      ],
+      "description": "可怕的沼泽怪物栖息在充满泥浆的沼泽表面之下。当猎物踏入泥泞时，它会用苍白的触手缠住毫无防备的受害者，挤压其生命。"
+    },
+    {
+      "ce": "MK_OGRE_TOTEM",
+      "id": 20,
+      "web": "ogre_totem",
+      "exists": true,
+      "ceLine": 1065,
+      "textLine": 1232,
+      "ceWords": [
+        "\"Ancient ogres versed in the eldritch arts have assembled this totem and imbued $HIMHER with occult power.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"hits\", {0}}"
+      ],
+      "description": "精通秘术的远古食人魔组装了这个图腾，并赋予它神秘力量。"
+    },
+    {
+      "ce": "MK_SPIDER",
+      "id": 21,
+      "web": "spider",
+      "exists": true,
+      "ceLine": 1067,
+      "textLine": 1235,
+      "ceWords": [
+        "\"The spider's red eyes pierce the darkness in search of enemies to ensnare with $HISHER projectile webs and dissolve with deadly poison.\"",
+        "\"draining\"",
+        "\"Feeding\"",
+        "{\"bites\", \"stings\", {0}}"
+      ],
+      "description": "蜘蛛的红色眼睛穿透黑暗，寻找敌人用它的蛛网缠住并用致命毒液溶解。"
+    },
+    {
+      "ce": "MK_SPARK_TURRET",
+      "id": 22,
+      "web": "spark_turret",
+      "exists": true,
+      "ceLine": 1069,
+      "textLine": 1238,
+      "ceWords": [
+        "\"This contraption hums with electrical charge that $HISHER embedded crystals and magical sigils can direct at intruders in deadly arcs.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"shocks\", {0}}"
+      ],
+      "description": "这个装置嗡嗡作响，充满电荷，其嵌入的水晶和魔法符文可以将致命的电弧引向入侵者。"
+    },
+    {
+      "ce": "MK_WILL_O_THE_WISP",
+      "id": 23,
+      "web": "wisp",
+      "exists": true,
+      "ceLine": 1071,
+      "textLine": 1241,
+      "ceWords": [
+        "\"An ethereal blue flame dances through the air, flickering and pulsing in time to an otherworldly rhythm.\"",
+        "\"consuming\"",
+        "\"Feeding\"",
+        "{\"scorches\", \"burns\", {0}}"
+      ],
+      "description": "一团飘渺的蓝色火焰在空中翩翩起舞，随着超凡脱俗的节奏闪烁跳动。"
+    },
+    {
+      "ce": "MK_WRAITH",
+      "id": 24,
+      "web": "wraith",
+      "exists": true,
+      "ceLine": 1073,
+      "textLine": 1244,
+      "ceWords": [
+        "\"The wraith's hollow eye sockets stare hungrily at the world from $HISHER emaciated frame, and $HISHER long, bloodstained nails grope ceaselessly at the air for a fresh victim.\"",
+        "\"devouring\"",
+        "\"Feeding\"",
+        "{\"clutches\", \"claws\", \"bites\", {0}}"
+      ],
+      "description": "幽灵空洞的眼窝从它消瘦的身躯上饥饿地凝视着世界，它长长的血迹斑斑的指甲不停地在空中摸索着新的猎物。"
+    },
+    {
+      "ce": "MK_ZOMBIE",
+      "id": 25,
+      "web": "zombie",
+      "exists": true,
+      "ceLine": 1075,
+      "textLine": 1247,
+      "ceWords": [
+        "\"The zombie is the accursed product of a long-forgotten ritual. Perpetually decaying flesh hangs from $HISHER bones in shreds and releases a flammable stench that will induce violent nausea with one whiff.\"",
+        "\"rending\"",
+        "\"Eating\"",
+        "{\"hits\", \"bites\", {0}}"
+      ],
+      "description": "僵尸是一种被诅咒的、早已被遗忘的仪式的产物。腐烂的肉从骨头上成片地垂落，散发出一种令人作呕的易燃恶臭。"
+    },
+    {
+      "ce": "MK_TROLL",
+      "id": 26,
+      "web": "troll",
+      "exists": true,
+      "ceLine": 1076,
+      "textLine": 1250,
+      "ceWords": [
+        "\"An enormous, disfigured creature covered in phlegm and warts, the troll regenerates very quickly and attacks with astonishing strength. Many adventures have ended at $HISHER misshapen hands.\"",
+        "\"eating\"",
+        "\"Eating\"",
+        "{\"cudgels\", \"clubs\", \"bludgeons\", \"pummels\", \"batters\"}"
+      ],
+      "description": "一个巨大的、畸形的生物，覆盖着痰和疣，巨魔再生速度极快，攻击力惊人。很多冒险者的旅程都在它畸形的手中终结。"
+    },
+    {
+      "ce": "MK_OGRE_SHAMAN",
+      "id": 27,
+      "web": "ogre_shaman",
+      "exists": true,
+      "ceLine": 1078,
+      "textLine": 1253,
+      "ceWords": [
+        "\"This ogre is bent with age, but what $HESHE has lost in physical strength, $HESHE has more than gained in occult power.\"",
+        "\"performing a ritual on\"",
+        "\"Performing ritual\"",
+        "{\"cudgels\", \"clubs\", {0}}",
+        "{0}",
+        "\"chants in a harsh, guttural tongue!\""
+      ],
+      "description": "这只食人魔虽然年老体弱，但它在体力上失去的，却在神秘力量上获得了更多。"
+    },
+    {
+      "ce": "MK_NAGA",
+      "id": 28,
+      "web": "naga",
+      "exists": true,
+      "ceLine": 1080,
+      "textLine": 1258,
+      "ceWords": [
+        "\"The serpentine naga live beneath the subterranean waters and emerge to attack unsuspecting adventurers.\"",
+        "\"studying\"",
+        "\"Studying\"",
+        "{\"claws\", \"bites\", \"tail-whips\", {0}}"
+      ],
+      "description": "蛇形的纳迦栖息在地下水域中，浮出水面攻击毫无防备的冒险者。"
+    },
+    {
+      "ce": "MK_SALAMANDER",
+      "id": 29,
+      "web": "salamander",
+      "exists": true,
+      "ceLine": 1082,
+      "textLine": 1261,
+      "ceWords": [
+        "\"A serpent wreathed in flames and carrying a burning lash, salamanders dwell in lakes of fire and emerge when they sense a nearby victim, leaving behind a trail of glowing embers.\"",
+        "\"studying\"",
+        "\"Studying\"",
+        "{\"whips\", \"lashes\", {0}}"
+      ],
+      "description": "一条被火焰环绕的蛇，携带着燃烧的鞭子，火蜥蜴栖息在火焰湖中，当感知到附近的受害者时就会出现，身后留下一串发光的余烬。"
+    },
+    {
+      "ce": "MK_EXPLOSIVE_BLOAT",
+      "id": 30,
+      "web": "explosive_bloat",
+      "exists": true,
+      "ceLine": 1084,
+      "textLine": 1264,
+      "ceWords": [
+        "\"This rare subspecies of bloat is little more than a thin membrane surrounding a bladder of highly explosive gases. The slightest stress will cause $HIMHER to rupture in spectacular and deadly fashion.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"bumps\", {0}}",
+        "\"detonates with terrifying force!\""
+      ],
+      "description": "这种罕见的浮球亚种只不过是一层薄膜包裹着一个充满高爆气体的囊泡。最轻微的刺激都会导致它以壮观而致命的方式破裂。"
+    },
+    {
+      "ce": "MK_DAR_BLADEMASTER",
+      "id": 31,
+      "web": "dar_blademaster",
+      "exists": true,
+      "ceLine": 1086,
+      "textLine": 1268,
+      "ceWords": [
+        "\"An elf of the deep, the dar blademaster leaps toward $HISHER enemies with frightening speed to engage in deadly swordplay.\"",
+        "\"studying\"",
+        "\"Studying\"",
+        "{\"grazes\", \"cuts\", \"slices\", \"slashes\", \"stabs\"}"
+      ],
+      "description": "深渊之中的精灵，暗精灵剑圣以惊人的速度跃向敌人，展开致命的剑术。"
+    },
+    {
+      "ce": "MK_DAR_PRIESTESS",
+      "id": 32,
+      "web": "dar_priestess",
+      "exists": true,
+      "ceLine": 1088,
+      "textLine": 1271,
+      "ceWords": [
+        "\"The dar priestess carries a host of religious relics that jangle as $HESHE walks.\"",
+        "\"praying over\"",
+        "\"Praying\"",
+        "{\"cuts\", \"slices\", {0}}"
+      ],
+      "description": "暗精灵女祭司携带着一堆宗教遗物，行走时发出叮当声。"
+    },
+    {
+      "ce": "MK_DAR_BATTLEMAGE",
+      "id": 33,
+      "web": "dar_battlemage",
+      "exists": true,
+      "ceLine": 1090,
+      "textLine": 1274,
+      "ceWords": [
+        "\"The dar battlemage's eyes glow like embers and $HISHER hands radiate an occult heat.\"",
+        "\"transmuting\"",
+        "\"Transmuting\"",
+        "{\"cuts\", {0}}"
+      ],
+      "description": "暗精灵战斗法师的眼睛像余烬一样发光，双手散发着神秘的热量。"
+    },
+    {
+      "ce": "MK_ACID_JELLY",
+      "id": 34,
+      "web": "acidic_jelly",
+      "exists": true,
+      "ceLine": 1092,
+      "textLine": 1277,
+      "ceWords": [
+        "\"A jelly subsisting on a diet of acid mounds will eventually express the characteristics of $HISHER prey, corroding any unprotected weapons or armor that come in contact with $HIMHER.\"",
+        "\"transmuting\"",
+        "\"Transmuting\"",
+        "{\"burns\", {0}}"
+      ],
+      "description": "以酸性土堆为食的果冻最终会表现出猎物的特征，腐蚀任何与之接触的未受保护的武器或护甲。"
+    },
+    {
+      "ce": "MK_CENTAUR",
+      "id": 35,
+      "web": "centaur",
+      "exists": true,
+      "ceLine": 1094,
+      "textLine": 1280,
+      "ceWords": [
+        "\"Half man and half horse, the centaur is an expert with the bow and arrow -- hunter and steed fused into a single creature.\"",
+        "\"studying\"",
+        "\"Studying\"",
+        "{\"shoots\", {0}}"
+      ],
+      "description": "半人半马的半人马是弓箭专家——猎人和坐骑融为一体的生物。"
+    },
+    {
+      "ce": "MK_UNDERWORM",
+      "id": 36,
+      "web": "underworm",
+      "exists": true,
+      "ceLine": 1096,
+      "textLine": 1283,
+      "ceWords": [
+        "\"A strange and horrifying creature of the earth's deepest places, larger than an ogre but capable of squeezing through tiny openings. When hungry, the underworm will burrow behind the walls of a cavern and lurk dormant and motionless -- often for months -- until $HESHE can feel the telltale vibrations of nearby prey.\"",
+        "\"consuming\"",
+        "\"Consuming\"",
+        "{\"slams\", \"bites\", \"tail-whips\", {0}}"
+      ],
+      "description": "一种来自地球最深处的奇怪而可怕的生物，比食人魔还大，却能挤过微小的缝隙。饥饿时会钻入洞穴壁后休眠——通常数月之久——直到感知到附近猎物的震动。"
+    },
+    {
+      "ce": "MK_SENTINEL",
+      "id": 37,
+      "web": "sentinel",
+      "exists": true,
+      "ceLine": 1098,
+      "textLine": 1286,
+      "ceWords": [
+        "\"An ancient statue of an unrecognizable humanoid figure, the sentinel holds aloft a crystal that gleams with ancient warding magic. Sentinels are always found in groups, and each will attempt to repair any damage done to the others.\"",
+        "\"focusing on\"",
+        "\"Focusing\"",
+        "{\"hits\", {0}}"
+      ],
+      "description": "一座无法辨认的人形古代雕像，哨兵高举着一颗闪烁着古老守护魔法的水晶。哨兵总是成组出现，每个都会试图修复对其他哨兵造成的伤害。"
+    },
+    {
+      "ce": "MK_DART_TURRET",
+      "id": 38,
+      "web": "dart_turret",
+      "exists": true,
+      "ceLine": 1100,
+      "textLine": 1289,
+      "ceWords": [
+        "\"This spring-loaded contraption fires darts that are imbued with a strength-sapping poison.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"pricks\", {0}}"
+      ],
+      "description": "这种弹簧驱动的装置发射浸有削弱力量毒素的飞镖。"
+    },
+    {
+      "ce": "MK_KRAKEN",
+      "id": 39,
+      "web": "kraken",
+      "exists": true,
+      "ceLine": 1102,
+      "textLine": 1292,
+      "ceWords": [
+        "\"This tentacled nightmare will emerge from the subterranean waters to ensnare and devour any creature foolish enough to set foot into $HISHER lake.\"",
+        "\"devouring\"",
+        "\"Feeding\"",
+        "{\"slaps\", \"smites\", \"batters\", {0}}"
+      ],
+      "description": "这个触手噩梦会从地下水域中浮出，缠住并吞噬任何愚蠢到踏入其湖泊的生物。"
+    },
+    {
+      "ce": "MK_LICH",
+      "id": 40,
+      "web": "lich",
+      "exists": true,
+      "ceLine": 1104,
+      "textLine": 1295,
+      "ceWords": [
+        "\"The desiccated form of an ancient sorcerer, animated by dark arts and lust for power, commands the obedience of the infernal planes. $HISHER essence is anchored to reality by a phylactery that is always in $HISHER possession, and the lich cannot die unless $HISHER phylactery is destroyed.\"",
+        "\"enchanting\"",
+        "\"Enchanting\"",
+        "{\"touches\", {0}}",
+        "{0}",
+        "\"rasps a terrifying incantation!\""
+      ],
+      "description": "一位古代术士的干枯形体，被黑暗法术和对权力的贪欲所驱动。它的灵魂通过一个始终随身携带的护命匣锚定在现实中，除非护命匣被摧毁，否则巫妖无法被杀死。"
+    },
+    {
+      "ce": "MK_PHYLACTERY",
+      "id": 41,
+      "web": "phylactery",
+      "exists": true,
+      "ceLine": 1106,
+      "textLine": 1300,
+      "ceWords": [
+        "\"This gem was the fulcrum of a dark rite, performed centuries ago, that bound the soul of an ancient and terrible sorcerer. Hurry and destroy the gem, before the lich can gather its power and regenerate its corporeal form!\"",
+        "\"enchanting\"",
+        "\"Enchanting\"",
+        "{\"touches\", {0}}",
+        "{0}",
+        "\"swirls with dark sorcery as the lich regenerates its form!\""
+      ],
+      "description": "这颗宝石是数个世纪前一个黑暗仪式的核心，它束缚了一位古老而可怕的术士的灵魂。赶快摧毁宝石，趁巫妖还没有聚集力量重生肉体形态！"
+    },
+    {
+      "ce": "MK_PIXIE",
+      "id": 42,
+      "web": "pixie",
+      "exists": true,
+      "ceLine": 1108,
+      "textLine": 1305,
+      "ceWords": [
+        "\"A tiny humanoid sparkles in the gloom, the hum of $HISHER beating wings punctuated by intermittent peals of high-pitched laughter. What $HESHE lacks in physical endurance, $HESHE makes up for with $HISHER wealth of mischievous magical abilities.\"",
+        "\"sprinkling dust on\"",
+        "\"Dusting\"",
+        "{\"pokes\", {0}}"
+      ],
+      "description": "一个微小的人形生物在幽暗中闪烁，翅膀拍打的嗡嗡声被间断的高音笑声所打断。它在体力上的不足，通过丰富的恶作剧魔法能力来弥补。"
+    },
+    {
+      "ce": "MK_PHANTOM",
+      "id": 43,
+      "web": "phantom",
+      "exists": true,
+      "ceLine": 1110,
+      "textLine": 1308,
+      "ceWords": [
+        "\"A silhouette of mournful rage against an empty backdrop, the phantom slips through the dungeon invisibly in clear air, leaving behind glowing droplets of ectoplasm and the cries of $HISHER unsuspecting victims.\"",
+        "\"permeating\"",
+        "\"Permeating\"",
+        "{\"hits\", {0}}"
+      ],
+      "description": "幻影在空旷的背景下展现出哀伤的愤怒轮廓，在清澈的空气中隐形穿过地牢，身后留下发光的灵质液滴和受害者的惨叫。"
+    },
+    {
+      "ce": "MK_FLAME_TURRET",
+      "id": 44,
+      "web": "flame_turret",
+      "exists": true,
+      "ceLine": 1112,
+      "textLine": 1311,
+      "ceWords": [
+        "\"This infernal contraption spits blasts of flame at intruders.\"",
+        "\"incinerating\"",
+        "\"Incinerating\"",
+        "{\"pricks\", {0}}"
+      ],
+      "description": "这个地狱装置向入侵者喷射火焰。"
+    },
+    {
+      "ce": "MK_IMP",
+      "id": 45,
+      "web": "imp",
+      "exists": true,
+      "ceLine": 1114,
+      "textLine": 1314,
+      "ceWords": [
+        "\"This trickster demon moves with astonishing speed and delights in stealing from $HISHER enemies and blinking away.\"",
+        "\"dissecting\"",
+        "\"Dissecting\"",
+        "{\"slices\", \"cuts\", {0}}"
+      ],
+      "description": "这个诡计多端的恶魔以惊人的速度移动，乐于偷取敌人的物品并闪现离开。"
+    },
+    {
+      "ce": "MK_FURY",
+      "id": 46,
+      "web": "fury",
+      "exists": true,
+      "ceLine": 1116,
+      "textLine": 1317,
+      "ceWords": [
+        "\"A creature of inchoate rage made flesh, the fury's moist wings beat loudly in the darkness.\"",
+        "\"flagellating\"",
+        "\"Flagellating\"",
+        "{\"drubs\", \"fustigates\", \"castigates\", {0}}"
+      ],
+      "description": "由无形愤怒凝聚成的生物，复仇女神潮湿的翅膀在黑暗中大声拍打。"
+    },
+    {
+      "ce": "MK_REVENANT",
+      "id": 47,
+      "web": "revenant",
+      "exists": true,
+      "ceLine": 1118,
+      "textLine": 1320,
+      "ceWords": [
+        "\"This unholy specter stalks the deep places of the earth without fear, impervious to conventional attacks.\"",
+        "\"desecrating\"",
+        "\"Desecrating\"",
+        "{\"hits\", {0}}"
+      ],
+      "description": "这个不死的怨灵在地球的深处毫无畏惧地游荡，免疫常规攻击。"
+    },
+    {
+      "ce": "MK_TENTACLE_HORROR",
+      "id": 48,
+      "web": "tentacle_horror",
+      "exists": true,
+      "ceLine": 1120,
+      "textLine": 1323,
+      "ceWords": [
+        "\"This seething, towering nightmare of fleshy tentacles slinks through the bowels of the world. The tentacle horror's incredible strength and regeneration make $HIMHER one of the most fearsome creatures of the dungeon.\"",
+        "\"sucking on\"",
+        "\"Consuming\"",
+        "{\"slaps\", \"batters\", \"crushes\", {0}}"
+      ],
+      "description": "这个翻腾的、高耸的肉质触手噩梦在世界的深处滑行。触手恐魔令人难以置信的力量和再生能力使它成为地牢中最可怕的生物之一。"
+    },
+    {
+      "ce": "MK_GOLEM",
+      "id": 49,
+      "web": "golem",
+      "exists": true,
+      "ceLine": 1121,
+      "textLine": 1326,
+      "ceWords": [
+        "\"A statue animated by an ancient and tireless magic, the golem does not regenerate and attacks with only moderate strength, but $HISHER stone form can withstand incredible damage before collapsing into rubble.\"",
+        "\"cradling\"",
+        "\"Cradling\"",
+        "{\"backhands\", \"punches\", \"kicks\", {0}}"
+      ],
+      "description": "由古老而不知疲倦的魔法驱动的雕像，傀儡不会再生，攻击力只有中等水平，但它的石质形体在崩塌成碎石之前可以承受难以置信的伤害。"
+    },
+    {
+      "ce": "MK_DRAGON",
+      "id": 50,
+      "web": "dragon",
+      "exists": true,
+      "ceLine": 1123,
+      "textLine": 1329,
+      "ceWords": [
+        "\"An ancient serpent of the world's deepest places, the dragon's immense form belies its lightning-quick speed and testifies to $HISHER breathtaking strength. An undying furnace of white-hot flames burns within $HISHER scaly hide, and few could withstand a single moment under $HISHER infernal lash.\"",
+        "\"consuming\"",
+        "\"Consuming\"",
+        "{\"claws\", \"tail-whips\", \"bites\", {0}}"
+      ],
+      "description": "世界最深处的古蛇，龙的庞大身躯掩盖了它闪电般的速度，证明了它令人惊叹的力量。一团不灭的白热火焰在它鳞片覆盖的身躯内燃烧，很少有人能在它的烈焰鞭笞下存活片刻。"
+    },
+    {
+      "ce": "MK_GOBLIN_CHIEFTAN",
+      "id": 51,
+      "web": "goblin_warlord",
+      "exists": true,
+      "ceLine": 1127,
+      "textLine": 1333,
+      "ceWords": [
+        "\"Taller, stronger and smarter than other goblins, the warlord commands the loyalty of $HISHER kind and can summon them into battle.\"",
+        "\"chanting over\"",
+        "\"Chanting\"",
+        "{\"slashes\", \"cuts\", \"stabs\", \"skewers\", {0}}",
+        "{0}",
+        "\"lets loose a deafening war cry!\""
+      ],
+      "description": "比其他哥布林更高大、更强壮、更聪明，战争领主指挥着同族的忠诚，并能召唤他们参战。"
+    },
+    {
+      "ce": "MK_BLACK_JELLY",
+      "id": 52,
+      "web": "black_jelly",
+      "exists": true,
+      "ceLine": 1129,
+      "textLine": 1338,
+      "ceWords": [
+        "\"This blob of jet-black goo is as rare as $HESHE is deadly. Few creatures of the dungeon can withstand $HISHER caustic assault. Beware.\"",
+        "\"absorbing\"",
+        "\"Feeding\"",
+        "{\"smears\", \"slimes\", \"drenches\"}"
+      ],
+      "description": "这团漆黑的凝胶既罕见又致命。地牢中很少有生物能承受它的腐蚀性攻击。小心。"
+    },
+    {
+      "ce": "MK_VAMPIRE",
+      "id": 53,
+      "web": "vampire",
+      "exists": true,
+      "ceLine": 1131,
+      "textLine": 1341,
+      "ceWords": [
+        "\"This vampire lives a solitary life deep underground, consuming any warm-blooded creature unfortunate enough to venture near $HISHER lair.\"",
+        "\"draining\"",
+        "\"Drinking\"",
+        "{\"grazes\", \"bites\", \"buries $HISHER fangs in\", {0}}",
+        "{0}",
+        "\"spreads his cloak and bursts into a cloud of bats!\""
+      ],
+      "description": "这个吸血鬼在地下深处过着孤独的生活，吞噬任何不幸接近其巢穴的温血生物。"
+    },
+    {
+      "ce": "MK_FLAMEDANCER",
+      "id": 54,
+      "web": "flamedancer",
+      "exists": true,
+      "ceLine": 1133,
+      "textLine": 1346,
+      "ceWords": [
+        "\"An elemental creature from another plane of existence, the infernal flamedancer burns with such intensity that $HESHE is painful to behold.\"",
+        "\"immolating\"",
+        "\"Consuming\"",
+        "{\"singes\", \"burns\", \"immolates\", {0}}"
+      ],
+      "description": "来自另一个存在位面的元素生物，地狱火舞者燃烧的强度如此之高，以至于令人痛苦地无法直视。"
+    },
+    {
+      "ce": "MK_SPECTRAL_BLADE",
+      "id": 55,
+      "web": "spectral_blade",
+      "exists": true,
+      "ceLine": 1137,
+      "textLine": 1350,
+      "ceWords": [
+        "\"Eldritch forces have coalesced to form this flickering, ethereal weapon.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"nicks\",  {0}}"
+      ],
+      "description": "超自然的力量凝聚形成了这把闪烁的、飘渺的武器。"
+    },
+    {
+      "ce": "MK_SPECTRAL_IMAGE",
+      "id": 56,
+      "web": "spectral_sword",
+      "exists": true,
+      "ceLine": 1139,
+      "textLine": 1353,
+      "ceWords": [
+        "\"Eldritch energies bound up in your equipment have leapt forth to project this spectral image.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"hits\",  {0}}"
+      ],
+      "description": "束缚在你装备中的超自然能量涌出，投射出这个幽灵影像。"
+    },
+    {
+      "ce": "MK_GUARDIAN",
+      "id": 57,
+      "web": "stone_guardian",
+      "exists": true,
+      "ceLine": 1141,
+      "textLine": 1356,
+      "ceWords": [
+        "\"Guarding the room is a weathered stone statue of a knight carrying a battleaxe, connected to the glowing glyphs on the floor by invisible strands of enchantment.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}"
+      ],
+      "description": "守卫房间的是一座手持战斧的骑士风化石像，通过无形的附魔丝线与地板上发光的符文相连。"
+    },
+    {
+      "ce": "MK_WINGED_GUARDIAN",
+      "id": 58,
+      "web": "winged_guardian",
+      "exists": true,
+      "ceLine": 1143,
+      "textLine": 1359,
+      "ceWords": [
+        "\"A statue of a sword-wielding angel surveys the room, connected to the glowing glyphs on the floor by invisible strands of enchantment.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}"
+      ],
+      "description": "一座挥剑天使的雕像俯瞰着房间，通过无形的附魔丝线与地板上发光的符文相连。"
+    },
+    {
+      "ce": "MK_CHARM_GUARDIAN",
+      "id": 59,
+      "web": "guardian_spirit",
+      "exists": true,
+      "ceLine": 1145,
+      "textLine": 1362,
+      "ceWords": [
+        "\"A spectral outline of a knight carrying a battleaxe casts an ethereal light on $HISHER surroundings.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}"
+      ],
+      "description": "一个手持战斧的骑士的幽灵轮廓在周围投射出飘渺的光芒。"
+    },
+    {
+      "ce": "MK_WARDEN_OF_YENDOR",
+      "id": 60,
+      "web": "Warden_of_Yendor",
+      "exists": true,
+      "ceLine": 1147,
+      "textLine": 1365,
+      "ceWords": [
+        "\"An immortal presence stalks through the dungeon, implacably hunting that which was taken... and the one who took it.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}"
+      ],
+      "description": "一个不朽的存在穿行于地牢中，执着地追猎着被夺走的东西……以及夺走它的人。"
+    },
+    {
+      "ce": "MK_ELDRITCH_TOTEM",
+      "id": 61,
+      "web": "eldritch_totem",
+      "exists": true,
+      "ceLine": 1149,
+      "textLine": 1368,
+      "ceWords": [
+        "\"This totem sits at the center of a summoning circle that radiates a strange energy.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}",
+        "{0}",
+        "\"crackles with energy as you touch the glyph!\""
+      ],
+      "description": "这个图腾坐落在一个散发着奇异能量的召唤法阵的中心。"
+    },
+    {
+      "ce": "MK_MIRRORED_TOTEM",
+      "id": 62,
+      "web": "mirrored_totem",
+      "exists": true,
+      "ceLine": 1151,
+      "textLine": 1373,
+      "ceWords": [
+        "\"A prism of shoulder-high mirrored surfaces gleams in the darkness.\"",
+        "\"gazing at\"",
+        "\"Gazing\"",
+        "{\"strikes\",  {0}}"
+      ],
+      "description": "一个齐肩高的镜面棱柱在黑暗中闪烁。"
+    },
+    {
+      "ce": "MK_UNICORN",
+      "id": 63,
+      "web": "unicorn",
+      "exists": true,
+      "ceLine": 1155,
+      "textLine": 1377,
+      "ceWords": [
+        "\"The unicorn's flowing mane and tail shine with rainbow light, $HISHER horn glows with healing and protective magic, and $HISHER eyes implore you to always chase your dreams. Unicorns are rumored to be attracted to virgins -- is there a hint of accusation in $HISHER gaze?\"",
+        "\"consecrating\"",
+        "\"Consecrating\"",
+        "{\"pokes\", \"stabs\", \"gores\", {0}}"
+      ],
+      "description": "独角兽飘逸的鬃毛和尾巴闪烁着彩虹光芒，它的角散发着治愈和保护魔法的光辉，它的眼睛恳求你永远追逐梦想。"
+    },
+    {
+      "ce": "MK_IFRIT",
+      "id": 64,
+      "web": "ifrit",
+      "exists": true,
+      "ceLine": 1157,
+      "textLine": 1380,
+      "ceWords": [
+        "\"A whirling desert storm given human shape, the ifrit's twin scimitars flicker in the darkness and $HISHER eyes burn with otherworldly zeal.\"",
+        "\"absorbing\"",
+        "\"Absorbing\"",
+        "{\"cuts\", \"slashes\", \"lacerates\", {0}}"
+      ],
+      "description": "一场旋转的沙漠风暴被赋予人形，伊芙利特的双弯刀在黑暗中闪烁，眼中燃烧着超凡的热忱。"
+    },
+    {
+      "ce": "MK_PHOENIX",
+      "id": 65,
+      "web": "phoenix",
+      "exists": true,
+      "ceLine": 1159,
+      "textLine": 1383,
+      "ceWords": [
+        "\"This legendary bird shines with a brilliant light, and $HISHER wings crackle and pop like embers as they beat the air. When $HESHE dies, legend has it that an egg will form and a newborn phoenix will rise from its ashes.\"",
+        "\"cremating\"",
+        "\"Cremating\"",
+        "{\"pecks\", \"scratches\", \"claws\", {0}}"
+      ],
+      "description": "这只传说中的鸟闪耀着灿烂的光芒，翅膀在拍打空气时像余烬一样噼啪作响。传说当它死去时，一枚蛋会形成，一只新生的凤凰将从灰烬中升起。"
+    },
+    {
+      "ce": "MK_PHOENIX_EGG",
+      "id": 66,
+      "web": "phoenix_egg",
+      "exists": true,
+      "ceLine": 1161,
+      "textLine": 1386,
+      "ceWords": [
+        "\"Cradled in a nest of cooling ashes, the translucent membrane of the phoenix egg reveals a yolk that glows brighter by the second.\"",
+        "\"cremating\"",
+        "\"Cremating\"",
+        "{\"touches\", {0}}",
+        "{0}",
+        "\"bursts as a newborn phoenix rises from the ashes!\""
+      ],
+      "description": "安放在冷却灰烬的巢穴中，凤凰蛋的半透明膜显露出一个逐秒变亮的蛋黄。"
+    },
+    {
+      "ce": "MK_ANCIENT_SPIRIT",
+      "id": 67,
+      "web": "mangrove_dryad",
+      "exists": true,
+      "ceLine": 1163,
+      "textLine": 1391,
+      "ceWords": [
+        "\"This mangrove dryad is as old as the earth, and $HISHER gnarled figure houses an ancient power. When angered, $HESHE can call upon the forces of nature to bind $HISHER foes and tear them to shreds.\"",
+        "\"absorbing\"",
+        "\"Absorbing\"",
+        "{\"whips\", \"lashes\", \"thrashes\", \"lacerates\", {0}}"
+      ],
+      "description": "这位红树林树精与大地同龄，她苍老扭曲的身躯蕴含着古老的力量。当被激怒时，她能召唤自然之力束缚敌人并将其撕成碎片。"
+    }
+  ],
+  "missingSummonMessages": [
+    {
+      "ce": "MK_GOBLIN_CONJURER",
+      "web": "goblin_conjurer",
+      "text": "gestures ominously!"
+    },
+    {
+      "ce": "MK_OGRE_SHAMAN",
+      "web": "ogre_shaman",
+      "text": "chants in a harsh, guttural tongue!"
+    },
+    {
+      "ce": "MK_LICH",
+      "web": "lich",
+      "text": "rasps a terrifying incantation!"
+    },
+    {
+      "ce": "MK_PHYLACTERY",
+      "web": "phylactery",
+      "text": "swirls with dark sorcery as the lich regenerates its form!"
+    },
+    {
+      "ce": "MK_GOBLIN_CHIEFTAN",
+      "web": "goblin_warlord",
+      "text": "lets loose a deafening war cry!"
+    },
+    {
+      "ce": "MK_VAMPIRE",
+      "web": "vampire",
+      "text": "spreads his cloak and bursts into a cloud of bats!"
+    },
+    {
+      "ce": "MK_ELDRITCH_TOTEM",
+      "web": "eldritch_totem",
+      "text": "crackles with energy as you touch the glyph!"
+    },
+    {
+      "ce": "MK_PHOENIX_EGG",
+      "web": "phoenix_egg",
+      "text": "bursts as a newborn phoenix rises from the ashes!"
+    }
+  ],
+  "genericAbsorptionStatuses": [
+    {
+      "ce": "MK_RAT",
+      "web": "rat",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_KOBOLD",
+      "web": "kobold",
+      "ceText": "Examining"
+    },
+    {
+      "ce": "MK_JACKAL",
+      "web": "jackal",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_EEL",
+      "web": "eel",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_MONKEY",
+      "web": "monkey",
+      "ceText": "Examining"
+    },
+    {
+      "ce": "MK_BLOAT",
+      "web": "bloat",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_PIT_BLOAT",
+      "web": "pit_bloat",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_GOBLIN",
+      "web": "goblin",
+      "ceText": "Chanting"
+    },
+    {
+      "ce": "MK_GOBLIN_CONJURER",
+      "web": "goblin_conjurer",
+      "ceText": "Performing ritual"
+    },
+    {
+      "ce": "MK_GOBLIN_MYSTIC",
+      "web": "goblin_mystic",
+      "ceText": "Performing ritual"
+    },
+    {
+      "ce": "MK_GOBLIN_TOTEM",
+      "web": "goblin_totem",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_PINK_JELLY",
+      "web": "pink_jelly",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_TOAD",
+      "web": "toad",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_VAMPIRE_BAT",
+      "web": "vampire_bat",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_ARROW_TURRET",
+      "web": "arrow_turret",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_ACID_MOUND",
+      "web": "acid_mound",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_CENTIPEDE",
+      "web": "centipede",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_OGRE",
+      "web": "ogre",
+      "ceText": "Studying"
+    },
+    {
+      "ce": "MK_BOG_MONSTER",
+      "web": "bog_monster",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_OGRE_TOTEM",
+      "web": "ogre_totem",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_SPIDER",
+      "web": "spider",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_SPARK_TURRET",
+      "web": "spark_turret",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_WILL_O_THE_WISP",
+      "web": "wisp",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_WRAITH",
+      "web": "wraith",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_ZOMBIE",
+      "web": "zombie",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_TROLL",
+      "web": "troll",
+      "ceText": "Eating"
+    },
+    {
+      "ce": "MK_OGRE_SHAMAN",
+      "web": "ogre_shaman",
+      "ceText": "Performing ritual"
+    },
+    {
+      "ce": "MK_NAGA",
+      "web": "naga",
+      "ceText": "Studying"
+    },
+    {
+      "ce": "MK_SALAMANDER",
+      "web": "salamander",
+      "ceText": "Studying"
+    },
+    {
+      "ce": "MK_EXPLOSIVE_BLOAT",
+      "web": "explosive_bloat",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_DAR_BLADEMASTER",
+      "web": "dar_blademaster",
+      "ceText": "Studying"
+    },
+    {
+      "ce": "MK_DAR_PRIESTESS",
+      "web": "dar_priestess",
+      "ceText": "Praying"
+    },
+    {
+      "ce": "MK_DAR_BATTLEMAGE",
+      "web": "dar_battlemage",
+      "ceText": "Transmuting"
+    },
+    {
+      "ce": "MK_ACID_JELLY",
+      "web": "acidic_jelly",
+      "ceText": "Transmuting"
+    },
+    {
+      "ce": "MK_CENTAUR",
+      "web": "centaur",
+      "ceText": "Studying"
+    },
+    {
+      "ce": "MK_UNDERWORM",
+      "web": "underworm",
+      "ceText": "Consuming"
+    },
+    {
+      "ce": "MK_SENTINEL",
+      "web": "sentinel",
+      "ceText": "Focusing"
+    },
+    {
+      "ce": "MK_DART_TURRET",
+      "web": "dart_turret",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_KRAKEN",
+      "web": "kraken",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_LICH",
+      "web": "lich",
+      "ceText": "Enchanting"
+    },
+    {
+      "ce": "MK_PHYLACTERY",
+      "web": "phylactery",
+      "ceText": "Enchanting"
+    },
+    {
+      "ce": "MK_PIXIE",
+      "web": "pixie",
+      "ceText": "Dusting"
+    },
+    {
+      "ce": "MK_PHANTOM",
+      "web": "phantom",
+      "ceText": "Permeating"
+    },
+    {
+      "ce": "MK_FLAME_TURRET",
+      "web": "flame_turret",
+      "ceText": "Incinerating"
+    },
+    {
+      "ce": "MK_IMP",
+      "web": "imp",
+      "ceText": "Dissecting"
+    },
+    {
+      "ce": "MK_FURY",
+      "web": "fury",
+      "ceText": "Flagellating"
+    },
+    {
+      "ce": "MK_REVENANT",
+      "web": "revenant",
+      "ceText": "Desecrating"
+    },
+    {
+      "ce": "MK_TENTACLE_HORROR",
+      "web": "tentacle_horror",
+      "ceText": "Consuming"
+    },
+    {
+      "ce": "MK_GOLEM",
+      "web": "golem",
+      "ceText": "Cradling"
+    },
+    {
+      "ce": "MK_DRAGON",
+      "web": "dragon",
+      "ceText": "Consuming"
+    },
+    {
+      "ce": "MK_GOBLIN_CHIEFTAN",
+      "web": "goblin_warlord",
+      "ceText": "Chanting"
+    },
+    {
+      "ce": "MK_BLACK_JELLY",
+      "web": "black_jelly",
+      "ceText": "Feeding"
+    },
+    {
+      "ce": "MK_VAMPIRE",
+      "web": "vampire",
+      "ceText": "Drinking"
+    },
+    {
+      "ce": "MK_FLAMEDANCER",
+      "web": "flamedancer",
+      "ceText": "Consuming"
+    },
+    {
+      "ce": "MK_SPECTRAL_BLADE",
+      "web": "spectral_blade",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_SPECTRAL_IMAGE",
+      "web": "spectral_sword",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_GUARDIAN",
+      "web": "stone_guardian",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_WINGED_GUARDIAN",
+      "web": "winged_guardian",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_CHARM_GUARDIAN",
+      "web": "guardian_spirit",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_WARDEN_OF_YENDOR",
+      "web": "Warden_of_Yendor",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_ELDRITCH_TOTEM",
+      "web": "eldritch_totem",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_MIRRORED_TOTEM",
+      "web": "mirrored_totem",
+      "ceText": "Gazing"
+    },
+    {
+      "ce": "MK_UNICORN",
+      "web": "unicorn",
+      "ceText": "Consecrating"
+    },
+    {
+      "ce": "MK_IFRIT",
+      "web": "ifrit",
+      "ceText": "Absorbing"
+    },
+    {
+      "ce": "MK_PHOENIX",
+      "web": "phoenix",
+      "ceText": "Cremating"
+    },
+    {
+      "ce": "MK_PHOENIX_EGG",
+      "web": "phoenix_egg",
+      "ceText": "Cremating"
+    },
+    {
+      "ce": "MK_ANCIENT_SPIRIT",
+      "web": "mangrove_dryad",
+      "ceText": "Absorbing"
+    }
+  ],
+  "dfMessagesAbsent": [
+    {
+      "df": "DF_GUARDIAN_STEP",
+      "ceLine": 729,
+      "text": "the glyph beneath you glows, and the guardians take a step!",
+      "exists": false
+    },
+    {
+      "df": "DF_MIRROR_TOTEM_STEP",
+      "ceLine": 730,
+      "text": "the mirrored totem flashes, reflecting the red glow of the glyph beneath you.",
+      "exists": false
+    },
+    {
+      "df": "DF_SPREADABLE_WATER",
+      "ceLine": 827,
+      "text": "you hear a heavy click, and the nearby water begins flooding the area!",
+      "exists": true
+    },
+    {
+      "df": "DF_SPREADABLE_COLLAPSE",
+      "ceLine": 834,
+      "text": "you hear a deep rumbling noise as the floor begins to collapse!",
+      "exists": true
+    },
+    {
+      "df": "DF_WALL_OPEN",
+      "ceLine": 882,
+      "text": "the nearby wall cracks and collapses in a cloud of dust!",
+      "exists": false
+    }
+  ],
+  "dfMessagesTranslated": [
+    "DF_MUTATION_EXPLOSION",
+    "DF_MUTATION_LICHEN",
+    "DF_DEWAR_CAUSTIC",
+    "DF_DEWAR_CONFUSION",
+    "DF_DEWAR_PARALYSIS",
+    "DF_DEWAR_METHANE",
+    "DF_ITEM_CAGE_OPEN",
+    "DF_ITEM_CAGE_CLOSE",
+    "DF_ALTAR_RETRACT",
+    "DF_PORTAL_ACTIVATE",
+    "DF_REVEAL_LEVER",
+    "DF_BRIDGE_FIRE",
+    "DF_FLOOD_2",
+    "DF_POISON_GAS_CLOUD",
+    "DF_CONFUSION_GAS_TRAP_CLOUD",
+    "DF_NET",
+    "DF_AGGRAVATE_TRAP",
+    "DF_ALTAR_COMMUTE",
+    "DF_ALTAR_RESURRECT",
+    "DF_SACRIFICE_ALTAR",
+    "DF_SACRIFICE_COMPLETE",
+    "DF_COFFIN_BURSTS",
+    "DF_COFFIN_BURNS",
+    "DF_CAGE_DISAPPEARS",
+    "DF_WALL_CRACK",
+    "DF_WOODEN_BARRICADE_BURN",
+    "DF_BRIDGE_ACTIVATE_ANNOUNCE",
+    "DF_RETRACTING_LAVA",
+    "DF_SHOW_POISON_GAS_VENT",
+    "DF_POISON_GAS_VENT_OPEN",
+    "DF_ACTIVATE_PORTCULLIS",
+    "DF_OPEN_PORTCULLIS",
+    "DF_SHOW_METHANE_VENT",
+    "DF_METHANE_VENT_OPEN",
+    "DF_PILOT_LIGHT",
+    "DF_DISCOVER_PARALYSIS_VENT",
+    "DF_PARALYSIS_VENT_SPEW",
+    "DF_CRACKING_STATUE",
+    "DF_STATUE_SHATTER",
+    "DF_TURRET_EMERGE",
+    "DF_DARKENING_FLOOR",
+    "DF_MUD_ACTIVATE",
+    "DF_ELECTRIC_CRYSTAL_ON",
+    "DF_TURRET_LEVER",
+    "DF_WALL_SHATTER"
+  ]
+}

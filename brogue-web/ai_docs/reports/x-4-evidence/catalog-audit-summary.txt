@@ -1,0 +1,30 @@
+{
+  "tileCatalog": 215,
+  "dungeonFeatureCatalog": 219,
+  "monsterCatalog": 68,
+  "monsterText": 68,
+  "autoGeneratorCatalog_Brogue": 49,
+  "blueprintCatalog_Brogue": 72,
+  "hordeCatalog_Brogue": 175,
+  "keyTable": 3,
+  "foodTable": 2,
+  "weaponTable": 15,
+  "armorTable": 6,
+  "staffTable": 12,
+  "ringTable": 8,
+  "potionTable_Brogue": 16,
+  "scrollTable_Brogue": 14,
+  "wandTable_Brogue": 9,
+  "charmTable_Brogue": 12
+}
+MISSING TERRAIN [('ICE_DEEP', 435), ('ICE_DEEP_MELT', 436), ('ICE_SHALLOW', 437), ('ICE_SHALLOW_MELT', 438), ('HOLE_GLOW', 443), ('HAY', 452), ('GREEN_BLOOD', 454), ('PURPLE_BLOOD', 455), ('ACID_SPLATTER', 456), ('URINE', 458), ('UNICORN_POOP', 459), ('WORM_BLOOD', 460), ('BURNED_CARPET', 462), ('JUNK', 466), ('MANACLE_TL', 480), ('MANACLE_BR', 481), ('MANACLE_TR', 482), ('MANACLE_BL', 483), ('MANACLE_B', 485), ('MANACLE_R', 487), ('GUARDIAN_GLOW', 489), ('FLAMEDANCER_FIRE', 494), ('DART_EXPLOSION', 497), ('CREATURE_FIRE', 499), ('HEALING_CLOUD', 510), ('BLOODFLOWER_POD', 514)]
+DF DIFFERENCES [{'df': 'DF_URINE', 'field': 'tile', 'ce': 'URINE', 'web': 'BLOOD', 'expectedAlias': 'URINE', 'type': 'substitute', 'line': 669}, {'df': 'DF_BLOODFLOWER_PODS_GROW_INITIAL', 'field': 'tile', 'ce': 'BLOODFLOWER_POD', 'web': 'BLOODFLOWER_STALK', 'expectedAlias': 'BLOODFLOWER_POD', 'type': 'substitute', 'line': 699}, {'df': 'DF_BLOODFLOWER_PODS_GROW', 'field': 'tile', 'ce': 'BLOODFLOWER_POD', 'web': 'BLOODFLOWER_STALK', 'expectedAlias': 'BLOODFLOWER_POD', 'type': 'substitute', 'line': 700}, {'df': 'DF_HAY', 'field': 'tile', 'ce': 'HAY', 'web': 'GRASS', 'expectedAlias': 'HAY', 'type': 'substitute', 'line': 908}, {'df': 'DF_JUNK', 'field': 'tile', 'ce': 'JUNK', 'web': 'BONES', 'expectedAlias': 'JUNK', 'type': 'substitute', 'line': 909}, {'df': 'DF_REMNANT_ASH', 'field': 'tile', 'ce': 'BURNED_CARPET', 'web': 'ASH', 'expectedAlias': 'BURNED_CARPET', 'type': 'substitute', 'line': 913}]
+BP MISSING [] BP DIFF [{'bp': 9, 'field': 'featureCount', 'ce': 5, 'web': 6}, {'bp': 10, 'field': 'featureCount', 'ce': 4, 'web': 5}, {'bp': 19, 'field': 'featureCount', 'ce': 3, 'web': 2}, {'bp': 19, 'feature': 1, 'field': 'itemId', 'ce': 'INCENDIARY_DART', 'expected': 'incendiary_dart', 'web': 'potion_of_incineration', 'ceLine': 309}]
+ITEM MISSING [('SCROLL_AGGRAVATE_MONSTER', 'scroll_of_aggravate_monsters')]
+MONSTER MISSING []
+TEXT COUNTS {'terrainFlavorNonempty': 188, 'terrainNameFallback': 89, 'itemDescriptionMissing': 0, 'itemDescriptionEnglish': 0, 'monsterDescriptionMissing': 0, 'monsterDescriptionEnglish': 0, 'dfMessagesEnglish': 0, 'dfMessagesLocalized': 45, 'monsterAbsorbingStatus': 68, 'monsterSummon': 11}
+AUTOGEN_DIFF [{'index': 0, 'field': 'df', 'ce': 'DF_GRANITE_COLUMN', 'web': None, 'carrier': 'dead-index0', 'note': 'CE 循环从 AG=1 起，表首的 granite column 永不执行（三变体同病；DF_GRANITE_COLUMN 全源码无其他触发点）。按 CE 原样保留为死条目——接了它反而违背 CE。'}]
+METERED_DIFF [{'category': 'SCROLL', 'ceKind': 'SCROLL_AGGRAVATE_MONSTER', 'webId': None, 'initialFrequency': 0, 'incrementFrequency': 0, 'decrementFrequency': 0, 'genMultiplier': 0, 'genIncrement': 0, 'levelScaling': 0, 'levelGuarantee': 0, 'itemNumberGuarantee': 0}, {'category': 'POTION', 'ceKind': 'POTION_SPEED', 'webId': 'potion_of_haste', 'initialFrequency': 0, 'incrementFrequency': 0, 'decrementFrequency': 0, 'genMultiplier': 0, 'genIncrement': 0, 'levelScaling': 0, 'levelGuarantee': 0, 'itemNumberGuarantee': 0}]
+HORDE_MACHINE 4
+NAME_ENGLISH [{'ce': 'ANCIENT_SPIRIT_VINES', 'web': 'ANCIENT_SPIRIT_VINES', 'text': 'thorned vines'}, {'ce': 'ANCIENT_SPIRIT_GRASS', 'web': 'ANCIENT_SPIRIT_GRASS', 'text': 'a tuft of grass'}]
+ABSORB_UNTRANSLATED []

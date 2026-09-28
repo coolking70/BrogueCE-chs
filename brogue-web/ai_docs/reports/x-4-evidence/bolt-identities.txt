@@ -1,0 +1,793 @@
+{
+  "types": {
+    "0": "NONE",
+    "1": "TELEPORT",
+    "2": "SLOW",
+    "3": "POLYMORPH",
+    "4": "NEGATION",
+    "5": "DOMINATION",
+    "6": "BECKONING",
+    "7": "PLENTY",
+    "8": "INVISIBILITY",
+    "9": "EMPOWERMENT",
+    "10": "LIGHTNING",
+    "11": "FIRE",
+    "12": "POISON",
+    "13": "TUNNELING",
+    "14": "BLINKING",
+    "15": "ENTRANCEMENT",
+    "16": "OBSTRUCTION",
+    "17": "DISCORD",
+    "18": "CONJURATION",
+    "19": "HEALING",
+    "20": "HASTE",
+    "21": "SLOW_2",
+    "22": "SHIELDING",
+    "23": "SPIDERWEB",
+    "24": "SPARK",
+    "25": "DRAGONFIRE",
+    "26": "DISTANCE_ATTACK",
+    "27": "POISON_DART",
+    "28": "ANCIENT_SPIRIT_VINES",
+    "29": "WHIP",
+    "NONE": 0,
+    "TELEPORT": 1,
+    "SLOW": 2,
+    "POLYMORPH": 3,
+    "NEGATION": 4,
+    "DOMINATION": 5,
+    "BECKONING": 6,
+    "PLENTY": 7,
+    "INVISIBILITY": 8,
+    "EMPOWERMENT": 9,
+    "LIGHTNING": 10,
+    "FIRE": 11,
+    "POISON": 12,
+    "TUNNELING": 13,
+    "BLINKING": 14,
+    "ENTRANCEMENT": 15,
+    "OBSTRUCTION": 16,
+    "DISCORD": 17,
+    "CONJURATION": 18,
+    "HEALING": 19,
+    "HASTE": 20,
+    "SLOW_2": 21,
+    "SHIELDING": 22,
+    "SPIDERWEB": 23,
+    "SPARK": 24,
+    "DRAGONFIRE": 25,
+    "DISTANCE_ATTACK": 26,
+    "POISON_DART": 27,
+    "ANCIENT_SPIRIT_VINES": 28,
+    "WHIP": 29
+  },
+  "catalog": {
+    "0": {
+      "type": 0,
+      "name": "",
+      "description": "",
+      "abilityDescription": "",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": null,
+      "effect": 0,
+      "magnitude": 0,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 0
+    },
+    "1": {
+      "type": 1,
+      "name": "teleportation spell",
+      "description": "casts a teleport spell",
+      "abilityDescription": "can teleport other creatures",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "blue",
+      "effect": 2,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMOBILE"
+      ],
+      "flags": 8
+    },
+    "2": {
+      "type": 2,
+      "name": "slowing spell",
+      "description": "casts a slowing spell",
+      "abilityDescription": "can slow $HISHER enemies",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "green",
+      "effect": 3,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "3": {
+      "type": 3,
+      "name": "polymorph spell",
+      "description": "casts a polymorphism spell",
+      "abilityDescription": "can polymorph other creatures",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "purple",
+      "effect": 4,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "4": {
+      "type": 4,
+      "name": "negation magic",
+      "description": "casts a negation spell",
+      "abilityDescription": "can cast negation",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "pink",
+      "effect": 5,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 8
+    },
+    "5": {
+      "type": 5,
+      "name": "domination spell",
+      "description": "casts a domination spell",
+      "abilityDescription": "can dominate other creatures",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "dominationColor_Brogue",
+      "effect": 6,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "6": {
+      "type": 6,
+      "name": "beckoning spell",
+      "description": "casts a beckoning spell",
+      "abilityDescription": "can cast beckoning",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "beckonColor_Brogue",
+      "effect": 7,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMOBILE"
+      ],
+      "flags": 8
+    },
+    "7": {
+      "type": 7,
+      "name": "spell of plenty",
+      "description": "casts a spell of plenty",
+      "abilityDescription": "can duplicate other creatures",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "rainbow",
+      "effect": 8,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 132
+    },
+    "8": {
+      "type": 8,
+      "name": "invisibility magic",
+      "description": "casts invisibility magic",
+      "abilityDescription": "can turn creatures invisible",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "darkBlue",
+      "effect": 9,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 4
+    },
+    "9": {
+      "type": 9,
+      "name": "empowerment sorcery",
+      "description": "casts empowerment",
+      "abilityDescription": "can cast empowerment",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "empowermentColor_Brogue",
+      "effect": 10,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 132
+    },
+    "10": {
+      "type": 10,
+      "name": "lightning",
+      "description": "casts lightning",
+      "abilityDescription": "can hurl lightning bolts",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "lightningColor_Brogue",
+      "effect": 11,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 521
+    },
+    "11": {
+      "type": 11,
+      "name": "flame",
+      "description": "casts a gout of flame",
+      "abilityDescription": "can hurl gouts of flame",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "fireBoltColor_Brogue",
+      "effect": 11,
+      "magnitude": 4,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "flags": 24
+    },
+    "12": {
+      "type": 12,
+      "name": "poison ray",
+      "description": "casts a poison ray",
+      "abilityDescription": "can cast poisonous bolts",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "poisonColor_Brogue",
+      "effect": 12,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "13": {
+      "type": 13,
+      "name": "tunneling magic",
+      "description": "casts tunneling",
+      "abilityDescription": "can tunnel",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "brown",
+      "effect": 13,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 1
+    },
+    "14": {
+      "type": 14,
+      "name": "blink trajectory",
+      "description": "blinks",
+      "abilityDescription": "can blink",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "white",
+      "effect": 14,
+      "magnitude": 5,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 2
+    },
+    "15": {
+      "type": 15,
+      "name": "entrancement ray",
+      "description": "casts entrancement",
+      "abilityDescription": "can cast entrancement",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "yellow",
+      "effect": 15,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "16": {
+      "type": 16,
+      "name": "obstruction magic",
+      "description": "casts obstruction",
+      "abilityDescription": "can cast obstruction",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "forceFieldColor_Brogue",
+      "effect": 16,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 2
+    },
+    "17": {
+      "type": 17,
+      "name": "spell of discord",
+      "description": "casts a spell of discord",
+      "abilityDescription": "can cast discord",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "discordColor",
+      "effect": 17,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "18": {
+      "type": 18,
+      "name": "conjuration magic",
+      "description": "casts a conjuration bolt",
+      "abilityDescription": "can cast conjuration",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "spectralBladeColor_Brogue",
+      "effect": 18,
+      "magnitude": 10,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "flags": 10
+    },
+    "19": {
+      "type": 19,
+      "name": "healing magic",
+      "description": "casts healing",
+      "abilityDescription": "can heal $HISHER allies",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "darkRed",
+      "effect": 19,
+      "magnitude": 5,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 4
+    },
+    "20": {
+      "type": 20,
+      "name": "haste spell",
+      "description": "casts a haste spell",
+      "abilityDescription": "can haste $HISHER allies",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "orange",
+      "effect": 20,
+      "magnitude": 2,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 4
+    },
+    "21": {
+      "type": 21,
+      "name": "slowing spell",
+      "description": "casts a slowing spell",
+      "abilityDescription": "can slow $HISHER enemies",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "green",
+      "effect": 3,
+      "magnitude": 2,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 8
+    },
+    "22": {
+      "type": 22,
+      "name": "protection magic",
+      "description": "casts protection",
+      "abilityDescription": "can cast protection",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "shieldingColor_Brogue",
+      "effect": 21,
+      "magnitude": 5,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE"
+      ],
+      "flags": 4
+    },
+    "23": {
+      "type": 23,
+      "name": "spiderweb",
+      "description": "launches a sticky web",
+      "abilityDescription": "can launch sticky webs",
+      "theChar": "*",
+      "foreColor": "white",
+      "backColor": null,
+      "effect": 0,
+      "magnitude": 10,
+      "pathDF": "DF_WEB_SMALL",
+      "targetDF": "DF_WEB_LARGE",
+      "forbiddenMonsterFlags": [
+        "MONST_IMMOBILE",
+        "MONST_IMMUNE_TO_WEBS"
+      ],
+      "flags": 200
+    },
+    "24": {
+      "type": 24,
+      "name": "spark",
+      "description": "shoots a spark",
+      "abilityDescription": "can throw sparks of lightning",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "lightningColor_Brogue",
+      "effect": 11,
+      "magnitude": 1,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 521
+    },
+    "25": {
+      "type": 25,
+      "name": "dragonfire",
+      "description": "breathes a gout of white-hot flame",
+      "abilityDescription": "can breathe gouts of white-hot flame",
+      "theChar": null,
+      "foreColor": null,
+      "backColor": "dragonFireColor_Brogue",
+      "effect": 11,
+      "magnitude": 18,
+      "pathDF": "DF_OBSIDIAN",
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "flags": 152
+    },
+    "26": {
+      "type": 26,
+      "name": "arrow",
+      "description": "shoots an arrow",
+      "abilityDescription": "attacks from a distance",
+      "theChar": "G_WEAPON",
+      "foreColor": "gray",
+      "backColor": null,
+      "effect": 1,
+      "magnitude": 1,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "flags": 200
+    },
+    "27": {
+      "type": 27,
+      "name": "poisoned dart",
+      "description": "fires a dart",
+      "abilityDescription": "fires strength-sapping darts",
+      "theChar": "G_WEAPON",
+      "foreColor": "centipedeColor_Brogue",
+      "backColor": null,
+      "effect": 1,
+      "magnitude": 1,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [],
+      "flags": 200
+    },
+    "28": {
+      "type": 28,
+      "name": "growing vines",
+      "description": "releases carnivorous vines into the ground",
+      "abilityDescription": "conjures carnivorous vines",
+      "theChar": "G_GRASS",
+      "foreColor": "tanColor",
+      "backColor": null,
+      "effect": 0,
+      "magnitude": 5,
+      "pathDF": "DF_ANCIENT_SPIRIT_GRASS",
+      "targetDF": "DF_ANCIENT_SPIRIT_VINES",
+      "forbiddenMonsterFlags": [
+        "MONST_INANIMATE",
+        "MONST_IMMUNE_TO_WEBS"
+      ],
+      "flags": 72
+    },
+    "29": {
+      "type": 29,
+      "name": "whip",
+      "description": "whips",
+      "abilityDescription": "wields a whip",
+      "theChar": "*",
+      "foreColor": "tanColor",
+      "backColor": null,
+      "effect": 1,
+      "magnitude": 1,
+      "pathDF": null,
+      "targetDF": null,
+      "forbiddenMonsterFlags": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "flags": 1224
+    }
+  },
+  "items": {
+    "wand_of_teleportation": 1,
+    "wand_of_slowness": 2,
+    "wand_of_polymorphism": 3,
+    "wand_of_negation": 4,
+    "wand_of_domination": 5,
+    "wand_of_beckoning": 6,
+    "wand_of_plenty": 7,
+    "wand_of_invisibility": 8,
+    "wand_of_empowerment": 9,
+    "staff_of_lightning": 10,
+    "staff_of_fire": 11,
+    "staff_of_poison": 12,
+    "staff_of_tunneling": 13,
+    "staff_of_blinking": 14,
+    "staff_of_entrancement": 15,
+    "staff_of_obstruction": 16,
+    "staff_of_discord": 17,
+    "staff_of_conjuration": 18,
+    "staff_of_healing": 19,
+    "staff_of_haste": 20,
+    "staff_of_protection": 22
+  },
+  "monsters": {
+    "SHIELDING": {
+      "ceType": 22,
+      "effect": 12,
+      "targetAllies": true,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 5
+    },
+    "HASTE": {
+      "ceType": 20,
+      "effect": 7,
+      "targetAllies": true,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 2
+    },
+    "SPARK": {
+      "ceType": 24,
+      "effect": 20,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 1
+    },
+    "DISTANCE_ATTACK": {
+      "ceType": 26,
+      "effect": 22,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 1
+    },
+    "HEALING": {
+      "ceType": 19,
+      "effect": 6,
+      "targetAllies": true,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 5
+    },
+    "BLINKING": {
+      "ceType": 14,
+      "effect": 16,
+      "targetAllies": false,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 5
+    },
+    "NEGATION": {
+      "ceType": 4,
+      "effect": 13,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "DISCORD": {
+      "ceType": 17,
+      "effect": 10,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "POISON_DART": {
+      "ceType": 27,
+      "effect": 23,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 1
+    },
+    "FIRE": {
+      "ceType": 11,
+      "effect": 1,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": true,
+      "magnitude": 4
+    },
+    "DRAGONFIRE": {
+      "ceType": 25,
+      "effect": 21,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": true,
+      "magnitude": 18
+    },
+    "BECKONING": {
+      "ceType": 6,
+      "effect": 9,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "SLOW_2": {
+      "ceType": 21,
+      "effect": 5,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 2
+    },
+    "SPIDERWEB": {
+      "ceType": 23,
+      "effect": 0,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "ANCIENT_SPIRIT_VINES": {
+      "ceType": 28,
+      "effect": 0,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 5
+    },
+    "TELEPORT": {
+      "ceType": 1,
+      "effect": 4,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "SLOW": {
+      "ceType": 2,
+      "effect": 5,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "POLYMORPH": {
+      "ceType": 3,
+      "effect": 24,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "DOMINATION": {
+      "ceType": 5,
+      "effect": 14,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "INVISIBILITY": {
+      "ceType": 8,
+      "effect": 19,
+      "targetAllies": true,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "LIGHTNING": {
+      "ceType": 10,
+      "effect": 2,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "POISON": {
+      "ceType": 12,
+      "effect": 3,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "ENTRANCEMENT": {
+      "ceType": 15,
+      "effect": 15,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "CONJURATION": {
+      "ceType": 18,
+      "effect": 11,
+      "targetAllies": false,
+      "targetEnemies": true,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "TUNNELING": {
+      "ceType": 13,
+      "effect": 8,
+      "targetAllies": false,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 10
+    },
+    "OBSTRUCTION": {
+      "ceType": 16,
+      "effect": 17,
+      "targetAllies": false,
+      "targetEnemies": false,
+      "fiery": false,
+      "magnitude": 10
+    }
+  }
+}

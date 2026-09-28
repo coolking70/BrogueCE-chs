@@ -1,0 +1,44 @@
+import {test} from 'vitest';
+import fs from 'node:fs';
+import {Game} from '../src/engine/Core/Game';
+import {Grid,TerrainType as T,DungeonLayer as L,DCOLS,DROWS} from '../src/engine/Map/Grid';
+import {randomMatchingLocation} from '../src/engine/Map/AutoGenerator';
+import {DF,DUNGEON_FEATURE_CATALOG} from '../src/engine/Map/DungeonFeatureCatalog';
+import {catalogFeature,spawnDungeonFeature} from '../src/engine/Map/DungeonFeature';
+import {ItemLoader} from '../src/engine/Items/ItemLoader';
+import {rng} from '../src/engine/Random';
+import {BlueprintEngine} from '../src/engine/Generator/BlueprintEngine';
+import {setMachineObservationHook} from '../src/engine/Generator/MachineObservation';
+import {machineScene} from '../src/test/fixtures/u19a-machine-scenes';
+import hordes from '../src/data/hordes.json';
+import i18next from 'i18next';
+import zh from '../src/locales/zh_CN.json';
+test('X4 isolated causes; real methods, temporary in-memory fixtures',()=>{
+ i18next.init({lng:'zh_CN',resources:{zh_CN:{translation:zh}},initImmediate:false});
+ const evidence:any={};const make=()=>{const grid=new Grid(DCOLS,DROWS);for(let x=0;x<DCOLS;x++)for(let y=0;y<DROWS;y++)grid.setTerrain(x,y,T.FLOOR);return grid;};
+ const legacy=make(),layered=make();for(let x=0;x<DCOLS;x++)for(let y=0;y<DROWS;y++){legacy.setTerrain(x,y,T.WATER_DEEP);layered.setTerrainLayer(x,y,L.LIQUID,T.WATER_DEEP);}
+ rng.seedRandomGenerator(22);const oldloc=randomMatchingLocation(legacy,T.FLOOR,T.WATER_DEEP);rng.seedRandomGenerator(22);const control=randomMatchingLocation(layered,T.FLOOR,T.WATER_DEEP);
+ evidence.algaeFoundation={productionLakeWriter:legacy.getCell(10,10)!.layers.map(t=>T[t]),productionMatch:oldloc,layerPreservingControl:layered.getCell(10,10)!.layers.map(t=>T[t]),controlMatch:control};
+ const grid=make();rng.seedRandomGenerator(22);const pod=spawnDungeonFeature(grid,30,15,catalogFeature(DF.DF_BLOODFLOWER_PODS_GROW_INITIAL),false,{refreshSideEffects:false});
+ evidence.bloodwort={succeeded:pod.succeeded,stalkCells:grid.cells.flat().filter(c=>c.layers.includes(T.BLOODFLOWER_STALK)).length,podEnum:(T as any).BLOODFLOWER_POD,healingEnum:(T as any).HEALING_CLOUD,burstEnum:(DF as any).DF_BLOODFLOWER_POD_BURST};
+ const g:any=new Game();g.startNewGame({seed:222,mode:'test'});g.grid=make();g.monsters=[];g.dormantMonsters=[];g.items=[];g.player.loc={x:10,y:10};g.player.inventory.items=[];g.player.equippedWeapon=null;
+ const dart=ItemLoader.spawnWeapon('incendiary_dart',10,10)!;dart.quantity=1;g.player.inventory.items.push(dart);
+ const end=g.playerTurnEnded;g.playerTurnEnded=()=>{}; // Observe immediate throw impact, before environmental decay; no rules patched.
+ try{g.throwItemAt(dart,15,10);}finally{g.playerTurnEnded=end;}
+ evidence.incendiaryDart={floorItems:g.items.map((i:any)=>({identity:i.identityId,quantity:i.quantity,loc:i.loc})),fireCells:g.grid.cells.flat().filter((c:any)=>c.layers.some((t:any)=>[T.PLAIN_FIRE,T.GAS_FIRE,T.GAS_EXPLOSION,T.ITEM_FIRE].includes(t))).length};
+ g.grid=make();g.monsters=[];g.dormantMonsters=[];g.items=[];g.machineCells=new Set();g.player.loc={x:2,y:2};
+ const h=hordes.find(h=>h.machine===62)!;let calls=0;const original=BlueprintEngine.prototype.buildAMachine;BlueprintEngine.prototype.buildAMachine=function(...a:any[]){calls++;return original.apply(this,a as any);};
+ try{evidence.camp={horde:h.leader,machine:h.machine,spawned:g.spawnHordeAt(h,{x:25,y:15},10,false),monsters:g.monsters.map((m:any)=>m.typeId),buildMachineCalls:calls,machineCells:g.grid.cells.flat().filter((c:any)=>c.machineNumber).length};}finally{BlueprintEngine.prototype.buildAMachine=original;}
+ evidence.forcedBlueprints=[];
+ for(const id of [15,17,46,50,62]){
+  const entry:any={id,attempts:[],success:null};
+  outer:for(const size of [-1,0,1,2])for(let seed=1;seed<=8;seed++){
+   const traces:any[]=[];setMachineObservationHook(t=>traces.push({status:t.status,reason:t.reason,features:t.features,products:t.products}));
+   let scene:any=null,error:any=null;try{scene=machineScene(g,id,seed,size,true);}catch(e){error=String(e);}
+   entry.attempts.push({size,seed,built:!!scene,error,failures:traces.filter(t=>t.status==='rolled_back').map(t=>t.reason)});
+   if(scene){entry.success={seed,size,items:g.items.map((i:any)=>({id:i.identityId??i.consumableId,name:i.name})),monsters:[...g.monsters,...g.dormantMonsters].map((m:any)=>m.typeId),trace:scene.result.observation};break outer;}
+  }
+  evidence.forcedBlueprints.push(entry);
+ }
+ setMachineObservationHook(null);fs.writeFileSync('ai_docs/reports/x-4-evidence/focused-causes.txt',JSON.stringify(evidence,null,2)+'\n');
+},300000);

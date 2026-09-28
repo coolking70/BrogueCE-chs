@@ -1,0 +1,4295 @@
+[
+  {
+    "ce": "OPEN_IRON_DOOR_INERT",
+    "web": "OPEN_IRON_DOOR_INERT",
+    "status": "exact",
+    "ceLine": 332,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "OPEN_IRON_DOOR_INERT",
+      "id": 11,
+      "ceLine": 332,
+      "web": "OPEN_IRON_DOOR_INERT",
+      "status": "exact",
+      "description": "an open iron door",
+      "flavor": "you pass through the doorway.",
+      "webName": "打开的铁门",
+      "ceFields": [
+        "G_OPEN_IRON_DOOR",
+        "&white",
+        "&ironDoorBackColor",
+        "90",
+        "50",
+        "DF_EMBERS",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT)",
+        "\"an open iron door\"",
+        "\"you pass through the doorway.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_OPEN_IRON_DOOR_INERT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 332,
+        "text": "/*OPEN_IRON_DOOR_INERT*/   {G_OPEN_IRON_DOOR,  &white,             &ironDoorBackColor, 90, 50, DF_EMBERS,0,0,                              0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT),                           \"an open iron door\",    \"you pass through the doorway.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 720,
+        "text": "{OPEN_IRON_DOOR_INERT,      DUNGEON,    0,      0,      0,  \"\", GENERIC_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "PILOT_LIGHT",
+    "web": "PILOT_LIGHT",
+    "status": "exact",
+    "ceLine": 343,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "PILOT_LIGHT",
+      "id": 22,
+      "ceLine": 343,
+      "web": "PILOT_LIGHT",
+      "status": "exact",
+      "description": "a fallen torch",
+      "flavor": "The torch lies at the foot of the wall, spouting gouts of flame haphazardly.",
+      "webName": "落下的火把",
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING | T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR)",
+        "\"a fallen torch\"",
+        "\"The torch lies at the foot of the wall, spouting gouts of flame haphazardly.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_PILOT_LIGHT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 343,
+        "text": "/*PILOT_LIGHT*/                {G_FIRE,        &fireForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING | T_IS_FIRE), (TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR),                      \"a fallen torch\",       \"The torch lies at the foot of the wall, spouting gouts of flame haphazardly.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 861,
+        "text": "{PILOT_LIGHT,               DUNGEON,    0,      0,      0,  \"a torch falls from its mount and lies sputtering on the floor.\", FALLEN_TORCH_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "HAUNTED_TORCH_TRANSITIONING",
+    "web": "HAUNTED_TORCH_TRANSITIONING",
+    "status": "exact",
+    "ceLine": 345,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "HAUNTED_TORCH_TRANSITIONING",
+      "id": 24,
+      "ceLine": 345,
+      "web": "HAUNTED_TORCH_TRANSITIONING",
+      "status": "exact",
+      "description": "a wall-mounted torch",
+      "flavor": "The torch is anchored firmly to the wall and sputters quietly in the gloom.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&torchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HAUNTED_TORCH",
+        "2000",
+        "TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a wall-mounted torch\"",
+        "\"The torch is anchored firmly to the wall and sputters quietly in the gloom.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_HAUNTED_TORCH_TRANSITION"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 345,
+        "text": "/*HAUNTED_TORCH_TRANSITIONING*/{G_TORCH,       &torchColor,        &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_HAUNTED_TORCH,        2000,  TORCH_LIGHT,    (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                          \"a wall-mounted torch\", \"The torch is anchored firmly to the wall and sputters quietly in the gloom.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 887,
+        "text": "{HAUNTED_TORCH_TRANSITIONING,DUNGEON,   0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "HAUNTED_TORCH",
+    "web": "HAUNTED_TORCH",
+    "status": "exact",
+    "ceLine": 346,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "HAUNTED_TORCH",
+      "id": 25,
+      "ceLine": 346,
+      "web": "HAUNTED_TORCH",
+      "status": "exact",
+      "description": "a sputtering torch",
+      "flavor": "A dim purple flame sputters and spits atop this wall-mounted torch.",
+      "webName": "地面",
+      "ceFields": [
+        "G_TORCH",
+        "&hauntedTorchColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "HAUNTED_TORCH_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE)",
+        "\"a sputtering torch\"",
+        "\"A dim purple flame sputters and spits atop this wall-mounted torch.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_HAUNTED_TORCH"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 346,
+        "text": "/*HAUNTED_TORCH*/              {G_TORCH,       &hauntedTorchColor, &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  HAUNTED_TORCH_LIGHT, (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                  \"a sputtering torch\",   \"A dim purple flame sputters and spits atop this wall-mounted torch.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 888,
+        "text": "{HAUNTED_TORCH,             DUNGEON,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "WALL_LEVER",
+    "web": "WALL_LEVER",
+    "status": "exact",
+    "ceLine": 348,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "WALL_LEVER",
+      "id": 27,
+      "ceLine": 348,
+      "web": "WALL_LEVER",
+      "status": "exact",
+      "description": "a lever",
+      "flavor": "The lever moves.",
+      "webName": "墙上拉杆",
+      "ceFields": [
+        "G_LEVER",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_PULL_LEVER",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED)",
+        "\"a lever\"",
+        "\"The lever moves.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_REVEAL_LEVER"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 348,
+        "text": "/*WALL_LEVER*/                 {G_LEVER,       &wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_PULL_LEVER,              0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED),\"a lever\", \"The lever moves.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 732,
+        "text": "{WALL_LEVER,                DUNGEON,    0,      0,      0,  \"you notice a lever hidden behind a loose stone in the wall.\", GENERIC_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "WALL_LEVER_PULLED",
+    "web": "WALL_LEVER_PULLED",
+    "status": "exact",
+    "ceLine": 349,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "WALL_LEVER_PULLED",
+      "id": 28,
+      "ceLine": 349,
+      "web": "WALL_LEVER_PULLED",
+      "status": "exact",
+      "description": "an inactive lever",
+      "flavor": "The lever won't budge.",
+      "webName": "已拉下的拉杆",
+      "ceFields": [
+        "G_LEVER_PULLED",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE)",
+        "\"an inactive lever\"",
+        "\"The lever won't budge.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_PULL_LEVER"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 349,
+        "text": "/*WALL_LEVER_PULLED*/          {G_LEVER_PULLED,&wallForeColor,     &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE),                                                       \"an inactive lever\",    \"The lever won't budge.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 733,
+        "text": "{WALL_LEVER_PULLED,         DUNGEON,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "STATUE_CRACKING",
+    "web": "STATUE_CRACKING",
+    "status": "exact",
+    "ceLine": 353,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "STATUE_CRACKING",
+      "id": 32,
+      "ceLine": 353,
+      "web": "STATUE_CRACKING",
+      "status": "exact",
+      "description": "a cracking statue",
+      "flavor": "Deep cracks ramble down the side of the statue even as you watch.",
+      "webName": "开裂的雕像",
+      "ceFields": [
+        "G_CRACKED_STATUE",
+        "&wallBackColor",
+        "&statueBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_STATUE_SHATTER",
+        "3500",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR)",
+        "\"a cracking statue\"",
+        "\"Deep cracks ramble down the side of the statue even as you watch.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_CRACKING_STATUE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 353,
+        "text": "/*STATUE_CRACKING*/        {G_CRACKED_STATUE,  &wallBackColor,     &statueBackColor,   0,  0,  DF_PLAIN_FIRE,0,DF_STATUE_SHATTER,       3500,  NO_LIGHT,       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),\"a cracking statue\",    \"Deep cracks ramble down the side of the statue even as you watch.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 872,
+        "text": "{STATUE_CRACKING,           DUNGEON,    0,      0,      0,  \"cracks begin snaking across the marble surface of the statue!\", 0, 0, 0, 0, DF_RUBBLE},"
+      }
+    ]
+  },
+  {
+    "ce": "DARK_FLOOR_DARKENING",
+    "web": "DARK_FLOOR_DARKENING",
+    "status": "exact",
+    "ceLine": 359,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DARK_FLOOR_DARKENING",
+      "id": 38,
+      "ceLine": 359,
+      "web": "DARK_FLOOR_DARKENING",
+      "status": "exact",
+      "description": "the ground",
+      "flavor": "",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&floorForeColor",
+        "&floorBackColor",
+        "95",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_DARK_FLOOR",
+        "1500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"the ground\"",
+        "\"\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DARKENING_FLOOR"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 359,
+        "text": "/*DARK_FLOOR_DARKENING*/       {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_DARK_FLOOR,           1500,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"the ground\",           \"\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 885,
+        "text": "{DARK_FLOOR_DARKENING,      DUNGEON,    0,      0,      0,  \"the light in the room flickers and you feel a chill in the air.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "DARK_FLOOR",
+    "web": "DARK_FLOOR",
+    "status": "exact",
+    "ceLine": 360,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DARK_FLOOR",
+      "id": 39,
+      "ceLine": 360,
+      "web": "DARK_FLOOR",
+      "status": "exact",
+      "description": "the ground",
+      "flavor": "",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&floorForeColor",
+        "&floorBackColor",
+        "95",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "DARKNESS_CLOUD_LIGHT",
+        "0",
+        "0",
+        "\"the ground\"",
+        "\"\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DARK_FLOOR"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 360,
+        "text": "/*DARK_FLOOR*/                 {G_FLOOR,       &floorForeColor,    &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  DARKNESS_CLOUD_LIGHT, 0, 0,                                                                                         \"the ground\",           \"\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 886,
+        "text": "{DARK_FLOOR,                DUNGEON,    0,      0,      DFF_ACTIVATE_DORMANT_MONSTER,   \"\", 0, 0, 0, 0, DF_ECTOPLASM_DROPLET},"
+      }
+    ]
+  },
+  {
+    "ce": "ALTAR_CAGE_CLOSED",
+    "web": "ALTAR_CAGE_CLOSED",
+    "status": "exact",
+    "ceLine": 365,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ALTAR_CAGE_CLOSED",
+      "id": 44,
+      "ceLine": 365,
+      "web": "ALTAR_CAGE_CLOSED",
+      "status": "exact",
+      "description": "an iron cage",
+      "flavor": "the missing item must be replaced before you can access the remaining items.",
+      "webName": "铁笼祭坛",
+      "ceFields": [
+        "G_CLOSED_CAGE",
+        "&altarBackColor",
+        "&veryDarkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_ITEM_CAGE_OPEN",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an iron cage\"",
+        "\"the missing item must be replaced before you can access the remaining items.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ITEM_CAGE_CLOSE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 365,
+        "text": "/*ALTAR_CAGE_CLOSED*/          {G_CLOSED_CAGE, &altarBackColor,    &veryDarkGray,      17, 0,  0,0,DF_ITEM_CAGE_OPEN,                      0,  CANDLE_LIGHT,   (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),\"an iron cage\",\"the missing item must be replaced before you can access the remaining items.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 722,
+        "text": "{ALTAR_CAGE_CLOSED,         DUNGEON,    0,      0,      (DFF_EVACUATE_CREATURES_FIRST), \"the cages lower to cover the altars.\", GENERIC_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "MONSTER_CAGE_OPEN",
+    "web": "MONSTER_CAGE_OPEN",
+    "status": "exact",
+    "ceLine": 370,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MONSTER_CAGE_OPEN",
+      "id": 49,
+      "ceLine": 370,
+      "web": "MONSTER_CAGE_OPEN",
+      "status": "exact",
+      "description": "an open cage",
+      "flavor": "the interior of the cage is filthy and reeks of decay.",
+      "webName": "地面",
+      "ceFields": [
+        "G_OPEN_CAGE",
+        "&floorBackColor",
+        "&veryDarkGray",
+        "17",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"an open cage\"",
+        "\"the interior of the cage is filthy and reeks of decay.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_MONSTER_CAGE_OPENS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 370,
+        "text": "/*MONSTER_CAGE_OPEN*/          {G_OPEN_CAGE,   &floorBackColor,    &veryDarkGray,      17, 0,  0,0,0,                                      0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"an open cage\",         \"the interior of the cage is filthy and reeks of decay.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 927,
+        "text": "{MONSTER_CAGE_OPEN,         DUNGEON,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "COFFIN_OPEN",
+    "web": "COFFIN_OPEN",
+    "status": "exact",
+    "ceLine": 373,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "COFFIN_OPEN",
+      "id": 52,
+      "ceLine": 373,
+      "web": "COFFIN_OPEN",
+      "status": "exact",
+      "description": "an empty coffin",
+      "flavor": "an open wooden coffin rests in a bed of moss.",
+      "webName": "空棺木",
+      "ceFields": [
+        "G_OPEN_COFFIN",
+        "&black",
+        "&bridgeBackColor",
+        "17",
+        "20",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR)",
+        "\"an empty coffin\"",
+        "\"an open wooden coffin rests in a bed of moss.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_COFFIN_BURSTS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 373,
+        "text": "/*COFFIN_OPEN*/                {G_OPEN_COFFIN, &black,             &bridgeBackColor,   17, 20, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),             \"an empty coffin\",      \"an open wooden coffin rests in a bed of moss.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 807,
+        "text": "{COFFIN_OPEN,               DUNGEON,    0,      0,      DFF_ACTIVATE_DORMANT_MONSTER,   \"the coffin opens and a dark figure rises!\", 0, &darkGray, 3},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_PARALYSIS_VENT",
+    "web": "MACHINE_PARALYSIS_VENT",
+    "status": "exact",
+    "ceLine": 384,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_PARALYSIS_VENT",
+      "id": 60,
+      "ceLine": 384,
+      "web": "MACHINE_PARALYSIS_VENT",
+      "status": "exact",
+      "description": "an inactive gas vent",
+      "flavor": "A dormant gas vent is connected to a reserve of paralytic gas.",
+      "webName": "未启动的气体喷口",
+      "ceFields": [
+        "G_VENT",
+        "&pink",
+        "0",
+        "30",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_PARALYSIS_VENT_SPEW",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an inactive gas vent\"",
+        "\"A dormant gas vent is connected to a reserve of paralytic gas.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DISCOVER_PARALYSIS_VENT",
+      "DF_REVEAL_PARALYSIS_VENT_SILENTLY"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 384,
+        "text": "/*MACHINE_PARALYSIS_VENT*/     {G_VENT,        &pink,              0,                  30, 0,  DF_PLAIN_FIRE,0,DF_PARALYSIS_VENT_SPEW,                         0,  NO_LIGHT,   (0), (TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                     \"an inactive gas vent\", \"A dormant gas vent is connected to a reserve of paralytic gas.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 864,
+        "text": "{MACHINE_PARALYSIS_VENT,    DUNGEON,    0,      0,      0,  \"you notice an inactive gas vent hidden in a crevice of the floor.\", GENERIC_FLASH_LIGHT},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 866,
+        "text": "{MACHINE_PARALYSIS_VENT,    DUNGEON,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_POISON_GAS_VENT_DORMANT",
+    "web": "MACHINE_POISON_GAS_VENT_DORMANT",
+    "status": "exact",
+    "ceLine": 396,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "id": 72,
+      "ceLine": 396,
+      "web": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "status": "exact",
+      "description": "an inactive gas vent",
+      "flavor": "An inactive gas vent is hidden in a crevice in the ground.",
+      "webName": "未启动的气体喷口",
+      "ceFields": [
+        "G_VENT",
+        "&floorForeColor",
+        "0",
+        "30",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_POISON_GAS_VENT_OPEN",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an inactive gas vent\"",
+        "\"An inactive gas vent is hidden in a crevice in the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SHOW_POISON_GAS_VENT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 396,
+        "text": "/*MACHINE_POISON_GAS_VENT_DORMANT*/{G_VENT,    &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_POISON_GAS_VENT_OPEN,                        0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"an inactive gas vent\", \"An inactive gas vent is hidden in a crevice in the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 851,
+        "text": "{MACHINE_POISON_GAS_VENT_DORMANT,DUNGEON,0,     0,      0,  \"you notice an inactive gas vent hidden in a crevice of the floor.\", GENERIC_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_POISON_GAS_VENT",
+    "web": "MACHINE_POISON_GAS_VENT",
+    "status": "exact",
+    "ceLine": 397,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_POISON_GAS_VENT",
+      "id": 73,
+      "ceLine": 397,
+      "web": "MACHINE_POISON_GAS_VENT",
+      "status": "exact",
+      "description": "a gas vent",
+      "flavor": "Clouds of caustic gas are wafting out of a hidden vent in the floor.",
+      "webName": "气体喷口",
+      "ceFields": [
+        "G_VENT",
+        "&floorForeColor",
+        "0",
+        "30",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_VENT_SPEW_POISON_GAS",
+        "10000",
+        "NO_LIGHT",
+        "0",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a gas vent\"",
+        "\"Clouds of caustic gas are wafting out of a hidden vent in the floor.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_POISON_GAS_VENT_OPEN"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 397,
+        "text": "/*MACHINE_POISON_GAS_VENT*/    {G_VENT,        &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_VENT_SPEW_POISON_GAS,                    10000,  NO_LIGHT,   0, (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                                     \"a gas vent\",           \"Clouds of caustic gas are wafting out of a hidden vent in the floor.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 852,
+        "text": "{MACHINE_POISON_GAS_VENT,   DUNGEON,    0,      0,      0,  \"deadly purple gas starts wafting out of hidden vents in the floor!\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_METHANE_VENT_DORMANT",
+    "web": "MACHINE_METHANE_VENT_DORMANT",
+    "status": "exact",
+    "ceLine": 399,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_METHANE_VENT_DORMANT",
+      "id": 75,
+      "ceLine": 399,
+      "web": "MACHINE_METHANE_VENT_DORMANT",
+      "status": "exact",
+      "description": "an inactive gas vent",
+      "flavor": "An inactive gas vent is hidden in a crevice in the ground.",
+      "webName": "未启动的气体喷口",
+      "ceFields": [
+        "G_VENT",
+        "&floorForeColor",
+        "0",
+        "30",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_METHANE_VENT_OPEN",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"an inactive gas vent\"",
+        "\"An inactive gas vent is hidden in a crevice in the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SHOW_METHANE_VENT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 399,
+        "text": "/*MACHINE_METHANE_VENT_DORMANT*/{G_VENT,       &floorForeColor,    0,                  30, 0,  DF_PLAIN_FIRE,0,DF_METHANE_VENT_OPEN,                           0,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT), \"an inactive gas vent\", \"An inactive gas vent is hidden in a crevice in the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 858,
+        "text": "{MACHINE_METHANE_VENT_DORMANT,DUNGEON,0,        0,      0,  \"you notice an inactive gas vent hidden in a crevice of the floor.\", GENERIC_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_METHANE_VENT",
+    "web": "MACHINE_METHANE_VENT",
+    "status": "exact",
+    "ceLine": 400,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_METHANE_VENT",
+      "id": 76,
+      "ceLine": 400,
+      "web": "MACHINE_METHANE_VENT",
+      "status": "exact",
+      "description": "a gas vent",
+      "flavor": "Clouds of explosive gas are wafting out of a hidden vent in the floor.",
+      "webName": "气体喷口",
+      "ceFields": [
+        "G_VENT",
+        "&floorForeColor",
+        "0",
+        "30",
+        "15",
+        "DF_EMBERS",
+        "0",
+        "DF_VENT_SPEW_METHANE",
+        "5000",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a gas vent\"",
+        "\"Clouds of explosive gas are wafting out of a hidden vent in the floor.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_METHANE_VENT_OPEN"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 400,
+        "text": "/*MACHINE_METHANE_VENT*/       {G_VENT,        &floorForeColor,    0,                  30, 15, DF_EMBERS,0,DF_VENT_SPEW_METHANE,                            5000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                      \"a gas vent\",           \"Clouds of explosive gas are wafting out of a hidden vent in the floor.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 859,
+        "text": "{MACHINE_METHANE_VENT,      DUNGEON,    0,      0,      0,  \"explosive methane gas starts wafting out of hidden vents in the floor!\", 0, 0, 0, 0, DF_VENT_SPEW_METHANE},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_PRESSURE_PLATE_USED",
+    "web": "MACHINE_PRESSURE_PLATE_USED",
+    "status": "exact",
+    "ceLine": 403,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_PRESSURE_PLATE_USED",
+      "id": 79,
+      "ceLine": 403,
+      "web": "MACHINE_PRESSURE_PLATE_USED",
+      "status": "exact",
+      "description": "an inactive pressure plate",
+      "flavor": "This pressure plate has already been depressed.",
+      "webName": "已触发的压力板",
+      "ceFields": [
+        "G_TRAP",
+        "&darkGray",
+        "&chasmEdgeBackColor",
+        "15",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "(TM_LIST_IN_SIDEBAR)",
+        "\"an inactive pressure plate\"",
+        "\"This pressure plate has already been depressed.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_MACHINE_PRESSURE_PLATE_USED"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 403,
+        "text": "/*MACHINE_PRESSURE_PLATE_USED*/{G_TRAP,        &darkGray,          &chasmEdgeBackColor,15, 0,  0,0,0,                                                          0,  NO_LIGHT,   0, (TM_LIST_IN_SIDEBAR),                                                            \"an inactive pressure plate\", \"This pressure plate has already been depressed.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 815,
+        "text": "{MACHINE_PRESSURE_PLATE_USED,DUNGEON,   0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_GLYPH_INACTIVE",
+    "web": "MACHINE_GLYPH_INACTIVE",
+    "status": "exact",
+    "ceLine": 405,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_GLYPH_INACTIVE",
+      "id": 81,
+      "ceLine": 405,
+      "web": "MACHINE_GLYPH_INACTIVE",
+      "status": "exact",
+      "description": "a glowing glyph",
+      "flavor": "A strange glyph, engraved into the floor, radiates magical light.",
+      "webName": "地面",
+      "ceFields": [
+        "G_MAGIC_GLYPH",
+        "&glyphColor",
+        "0",
+        "42",
+        "0",
+        "0",
+        "0",
+        "DF_ACTIVE_GLYPH",
+        "10000",
+        "GLYPH_LIGHT_BRIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a glowing glyph\"",
+        "\"A strange glyph, engraved into the floor, radiates magical light.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_INACTIVE_GLYPH"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 405,
+        "text": "/*MACHINE_GLYPH_INACTIVE*/     {G_MAGIC_GLYPH, &glyphColor,        0,                  42, 0,  0,0,DF_ACTIVE_GLYPH,                                        10000,  GLYPH_LIGHT_BRIGHT,(0), (TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                    \"a glowing glyph\",      \"A strange glyph, engraved into the floor, radiates magical light.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 726,
+        "text": "{MACHINE_GLYPH_INACTIVE,    DUNGEON,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_COLLAPSE_EDGE_SPREADING",
+    "web": "MACHINE_COLLAPSE_EDGE_SPREADING",
+    "status": "exact",
+    "ceLine": 419,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "id": 92,
+      "ceLine": 419,
+      "web": "MACHINE_COLLAPSE_EDGE_SPREADING",
+      "status": "exact",
+      "description": "the crumbling ground",
+      "flavor": "cracks are appearing in the ground beneath your feet!",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "45",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_COLLAPSE_SPREADS",
+        "2500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"the crumbling ground\"",
+        "\"cracks are appearing in the ground beneath your feet!\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SPREADABLE_COLLAPSE",
+      "DF_COLLAPSE_SPREADS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 419,
+        "text": "/*MACHINE_COLLAPSE_EDGE_SPREADING*/{G_FLOOR,&white,                &chasmEdgeBackColor,45, 0,  DF_PLAIN_FIRE,0,DF_COLLAPSE_SPREADS,                         2500,  NO_LIGHT,   (0), (TM_VANISHES_UPON_PROMOTION),                                                  \"the crumbling ground\", \"cracks are appearing in the ground beneath your feet!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 834,
+        "text": "{MACHINE_COLLAPSE_EDGE_SPREADING,LIQUID,0,      0,      0,  \"you hear a deep rumbling noise as the floor begins to collapse!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 836,
+        "text": "{MACHINE_COLLAPSE_EDGE_SPREADING,LIQUID,100,    100,    0,  \"\", 0,  0,  0,  FLOOR_FLOODABLE,    DF_COLLAPSE},"
+      }
+    ]
+  },
+  {
+    "ce": "LAVA_RETRACTING",
+    "web": "LAVA_RETRACTING",
+    "status": "exact",
+    "ceLine": 422,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "LAVA_RETRACTING",
+      "id": 95,
+      "ceLine": 422,
+      "web": "LAVA_RETRACTING",
+      "status": "exact",
+      "description": "cooling lava",
+      "flavor": "searing heat rises from the lava.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LIQUID",
+        "&fireForeColor",
+        "&lavaBackColor",
+        "40",
+        "0",
+        "DF_OBSIDIAN",
+        "0",
+        "DF_OBSIDIAN_WITH_STEAM",
+        "-1500",
+        "LAVA_LIGHT",
+        "(T_LAVA_INSTA_DEATH)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_ALLOWS_SUBMERGING)",
+        "\"cooling lava\"",
+        "\"searing heat rises from the lava.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_RETRACTING_LAVA"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 422,
+        "text": "/*LAVA_RETRACTING*/            {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,DF_OBSIDIAN_WITH_STEAM,                       -1500,  LAVA_LIGHT, (T_LAVA_INSTA_DEATH), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_ALLOWS_SUBMERGING), \"cooling lava\", \"searing heat rises from the lava.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 847,
+        "text": "{LAVA_RETRACTING,           LIQUID,     0,      0,      0,  \"hissing fills the air as the lava begins to cool.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "BRIDGE_FALLING",
+    "web": "BRIDGE_FALLING",
+    "status": "exact",
+    "ceLine": 429,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "BRIDGE_FALLING",
+      "id": 102,
+      "ceLine": 429,
+      "web": "BRIDGE_FALLING",
+      "status": "exact",
+      "description": "a plummeting bridge",
+      "flavor": "the bridge is plunging into the chasm before your eyes!",
+      "webName": "正在坠落的桥",
+      "ceFields": [
+        "G_BRIDGE",
+        "&bridgeFrontColor",
+        "&bridgeBackColor",
+        "45",
+        "50",
+        "DF_BRIDGE_FALL",
+        "0",
+        "DF_BRIDGE_FALL",
+        "10000",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a plummeting bridge\"",
+        "\"the bridge is plunging into the chasm before your eyes!\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BRIDGE_FALL_PREP"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 429,
+        "text": "/*BRIDGE_FALLING*/             {G_BRIDGE,  &bridgeFrontColor,      &bridgeBackColor,   45, 50, DF_BRIDGE_FALL,0,DF_BRIDGE_FALL,                            10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"a plummeting bridge\",  \"the bridge is plunging into the chasm before your eyes!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 736,
+        "text": "{BRIDGE_FALLING,            LIQUID,     200,    100,    0, \"\", 0, 0, 0, BRIDGE},"
+      }
+    ]
+  },
+  {
+    "ce": "MACHINE_FLOOD_WATER_SPREADING",
+    "web": "MACHINE_FLOOD_WATER_SPREADING",
+    "status": "exact",
+    "ceLine": 433,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "MACHINE_FLOOD_WATER_SPREADING",
+      "id": 106,
+      "ceLine": 433,
+      "web": "MACHINE_FLOOD_WATER_SPREADING",
+      "status": "exact",
+      "description": "shallow water",
+      "flavor": "the water is cold and reaches your knees.",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "&shallowWaterForeColor",
+        "&shallowWaterBackColor",
+        "60",
+        "0",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_WATER_SPREADS",
+        "2500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"shallow water\"",
+        "\"the water is cold and reaches your knees.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SPREADABLE_WATER",
+      "DF_WATER_SPREADS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 433,
+        "text": "/*MACHINE_FLOOD_WATER_SPREADING*/{0,   &shallowWaterForeColor, &shallowWaterBackColor, 60, 0,  DF_STEAM_ACCUMULATION,0,DF_WATER_SPREADS,                    2500,  NO_LIGHT,   (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"shallow water\", \"the water is cold and reaches your knees.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 827,
+        "text": "{MACHINE_FLOOD_WATER_SPREADING, LIQUID, 0,      0,      0,  \"you hear a heavy click, and the nearby water begins flooding the area!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 829,
+        "text": "{MACHINE_FLOOD_WATER_SPREADING,LIQUID,  100,    100,    0,  \"\", 0,  0,  0,      FLOOR_FLOODABLE,            DF_SHALLOW_WATER},"
+      }
+    ]
+  },
+  {
+    "ce": "ICE_DEEP",
+    "web": null,
+    "status": "missing",
+    "ceLine": 435,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "ICE_DEEP",
+      "id": 108,
+      "ceLine": 435,
+      "web": null,
+      "status": "missing",
+      "description": "ice",
+      "flavor": "a sheet of ice extends into the water, ripples frozen into its glossy surface.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&lightBlue",
+        "35",
+        "100",
+        "DF_DEEP_WATER_THAW",
+        "0",
+        "DF_DEEP_WATER_MELTING",
+        "-100",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"ice\"",
+        "\"a sheet of ice extends into the water, ripples frozen into its glossy surface.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DEEP_WATER_FREEZE",
+      "DF_ALGAE_1_FREEZE",
+      "DF_ALGAE_2_FREEZE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 435,
+        "text": "/*ICE_DEEP*/                   {G_FLOOR,   &white,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_DEEP_WATER_MELTING,                  -100,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"ice\",                  \"a sheet of ice extends into the water, ripples frozen into its glossy surface.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 760,
+        "text": "{ICE_DEEP,                  LIQUID,     150,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      DEEP_WATER,         DF_ALGAE_1_FREEZE},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 761,
+        "text": "{ICE_DEEP,                  LIQUID,     150,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      DEEP_WATER_ALGAE_1, DF_ALGAE_2_FREEZE},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 762,
+        "text": "{ICE_DEEP,                  LIQUID,     150,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      DEEP_WATER_ALGAE_2, DF_SHALLOW_WATER_FREEZE},"
+      }
+    ]
+  },
+  {
+    "ce": "ICE_DEEP_MELT",
+    "web": null,
+    "status": "missing",
+    "ceLine": 436,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "ICE_DEEP_MELT",
+      "id": 109,
+      "ceLine": 436,
+      "web": null,
+      "status": "missing",
+      "description": "melting ice",
+      "flavor": "cracks extend across the surface of the ice as it melts before your eyes.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR",
+        "&black",
+        "&lightBlue",
+        "35",
+        "100",
+        "DF_DEEP_WATER_THAW",
+        "0",
+        "DF_DEEP_WATER_THAW",
+        "10000",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"melting ice\"",
+        "\"cracks extend across the surface of the ice as it melts before your eyes.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DEEP_WATER_MELTING"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 436,
+        "text": "/*ICE_DEEP_MELT*/              {G_FLOOR,   &black,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_DEEP_WATER_THAW,                    10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"melting ice\",          \"cracks extend across the surface of the ice as it melts before your eyes.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 763,
+        "text": "{ICE_DEEP_MELT,             LIQUID,     0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "ICE_SHALLOW",
+    "web": null,
+    "status": "missing",
+    "ceLine": 437,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "ICE_SHALLOW",
+      "id": 110,
+      "ceLine": 437,
+      "web": null,
+      "status": "missing",
+      "description": "ice",
+      "flavor": "a sheet of ice extends into the water, ripples frozen into its glossy surface.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&lightBlue",
+        "35",
+        "100",
+        "DF_SHALLOW_WATER_THAW",
+        "0",
+        "DF_SHALLOW_WATER_MELTING",
+        "-100",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"ice\"",
+        "\"a sheet of ice extends into the water, ripples frozen into its glossy surface.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SHALLOW_WATER_FREEZE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 437,
+        "text": "/*ICE_SHALLOW*/                {G_FLOOR,   &white,                 &lightBlue,         35, 100,DF_SHALLOW_WATER_THAW,0,DF_SHALLOW_WATER_MELTING,            -100,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"ice\",                  \"a sheet of ice extends into the water, ripples frozen into its glossy surface.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 765,
+        "text": "{ICE_SHALLOW,               LIQUID,     100,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      SHALLOW_WATER},"
+      }
+    ]
+  },
+  {
+    "ce": "ICE_SHALLOW_MELT",
+    "web": null,
+    "status": "missing",
+    "ceLine": 438,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "ICE_SHALLOW_MELT",
+      "id": 111,
+      "ceLine": 438,
+      "web": null,
+      "status": "missing",
+      "description": "melting ice",
+      "flavor": "cracks extend across the surface of the ice as it melts before your eyes.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR",
+        "&black",
+        "&lightBlue",
+        "35",
+        "100",
+        "DF_DEEP_WATER_THAW",
+        "0",
+        "DF_SHALLOW_WATER_THAW",
+        "10000",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"melting ice\"",
+        "\"cracks extend across the surface of the ice as it melts before your eyes.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SHALLOW_WATER_MELTING"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 438,
+        "text": "/*ICE_SHALLOW_MELT*/           {G_FLOOR,   &black,                 &lightBlue,         35, 100,DF_DEEP_WATER_THAW,0,DF_SHALLOW_WATER_THAW,                 10000,  NO_LIGHT,   (T_IS_FLAMMABLE), (TM_VANISHES_UPON_PROMOTION),                                     \"melting ice\",          \"cracks extend across the surface of the ice as it melts before your eyes.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 766,
+        "text": "{ICE_SHALLOW_MELT,          LIQUID,     0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "HOLE",
+    "web": "HOLE",
+    "status": "exact",
+    "ceLine": 442,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "HOLE",
+      "id": 112,
+      "ceLine": 442,
+      "web": "HOLE",
+      "status": "exact",
+      "description": "a hole",
+      "flavor": "you plunge downward into the hole!",
+      "webName": "地面",
+      "ceFields": [
+        "G_CHASM",
+        "&chasmForeColor",
+        "&black",
+        "9",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HOLE_DRAIN",
+        "-1000",
+        "NO_LIGHT",
+        "(T_AUTO_DESCENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a hole\"",
+        "\"you plunge downward into the hole!\""
+      ]
+    },
+    "dfWriters": [
+      "DF_HOLE_2"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 442,
+        "text": "/*HOLE*/                       {G_CHASM,   &chasmForeColor,        &black,             9,  0,  DF_PLAIN_FIRE,0,DF_HOLE_DRAIN,          -1000,  NO_LIGHT,       (T_AUTO_DESCENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a hole\",               \"you plunge downward into the hole!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 756,
+        "text": "{HOLE,                      SURFACE,    200,    100,    0},"
+      }
+    ]
+  },
+  {
+    "ce": "HOLE_GLOW",
+    "web": null,
+    "status": "missing",
+    "ceLine": 443,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "HOLE_GLOW",
+      "id": 113,
+      "ceLine": 443,
+      "web": null,
+      "status": "missing",
+      "description": "a hole",
+      "flavor": "you plunge downward into the hole!",
+      "webName": null,
+      "ceFields": [
+        "G_CHASM",
+        "&chasmForeColor",
+        "&black",
+        "9",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_HOLE_DRAIN",
+        "-1000",
+        "DESCENT_LIGHT",
+        "(T_AUTO_DESCENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a hole\"",
+        "\"you plunge downward into the hole!\""
+      ]
+    },
+    "dfWriters": [
+      "DF_STAFF_HOLE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 443,
+        "text": "/*HOLE_GLOW*/                  {G_CHASM,   &chasmForeColor,        &black,             9,  0,  DF_PLAIN_FIRE,0,DF_HOLE_DRAIN,          -1000,  DESCENT_LIGHT,  (T_AUTO_DESCENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a hole\",               \"you plunge downward into the hole!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 787,
+        "text": "{HOLE_GLOW,                 SURFACE,    200,    100,    DFF_SUBSEQ_EVERYWHERE,  \"\", 0,  &darkBlue,3,0,          DF_STAFF_HOLE_EDGE},"
+      }
+    ]
+  },
+  {
+    "ce": "HOLE_EDGE",
+    "web": "HOLE_EDGE",
+    "status": "exact",
+    "ceLine": 444,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "HOLE_EDGE",
+      "id": 114,
+      "ceLine": 444,
+      "web": "HOLE_EDGE",
+      "status": "exact",
+      "description": "translucent ground",
+      "flavor": "chilly gusts of air blow upward through the translucent floor.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "50",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "-500",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"translucent ground\"",
+        "\"chilly gusts of air blow upward through the translucent floor.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_HOLE_DRAIN",
+      "DF_HOLE_POTION",
+      "DF_STAFF_HOLE_EDGE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 444,
+        "text": "/*HOLE_EDGE*/                  {G_FLOOR,   &white,                 &chasmEdgeBackColor,50, 0,  DF_PLAIN_FIRE,0,0,                       -500,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"translucent ground\",   \"chilly gusts of air blow upward through the translucent floor.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 757,
+        "text": "{HOLE_EDGE,                 SURFACE,    0,      0,      0},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 782,
+        "text": "{HOLE_EDGE,                 SURFACE,    300,    100,    0,  \"\", 0,  &darkBlue,3,0,          DF_HOLE_2},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 788,
+        "text": "{HOLE_EDGE,                 SURFACE,    100,    100,    0},"
+      }
+    ]
+  },
+  {
+    "ce": "FLOOD_WATER_DEEP",
+    "web": "FLOOD_WATER_DEEP",
+    "status": "exact",
+    "ceLine": 445,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "FLOOD_WATER_DEEP",
+      "id": 115,
+      "ceLine": 445,
+      "web": "FLOOD_WATER_DEEP",
+      "status": "exact",
+      "description": "sloshing water",
+      "flavor": "roiling water floods the room.",
+      "webName": "地面",
+      "ceFields": [
+        "G_LIQUID",
+        "&deepWaterForeColor",
+        "&deepWaterBackColor",
+        "41",
+        "100",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_FLOOD_DRAIN",
+        "-200",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_IS_DEEP_WATER)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"sloshing water\"",
+        "\"roiling water floods the room.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_FLOOD_2"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 445,
+        "text": "/*FLOOD_WATER_DEEP*/           {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,41, 100,DF_STEAM_ACCUMULATION,0,DF_FLOOD_DRAIN,  -200,  NO_LIGHT,       (T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"sloshing water\", \"roiling water floods the room.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 754,
+        "text": "{FLOOD_WATER_DEEP,          SURFACE,    175,    37,     0,  \"the area is flooded as water rises through imperceptible holes in the ground.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "FLOOD_WATER_SHALLOW",
+    "web": "FLOOD_WATER_SHALLOW",
+    "status": "exact",
+    "ceLine": 446,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "FLOOD_WATER_SHALLOW",
+      "id": 116,
+      "ceLine": 446,
+      "web": "FLOOD_WATER_SHALLOW",
+      "status": "exact",
+      "description": "shallow water",
+      "flavor": "knee-deep water drains slowly into holes in the floor.",
+      "webName": "地面",
+      "ceFields": [
+        "0",
+        "&shallowWaterForeColor",
+        "&shallowWaterBackColor",
+        "50",
+        "0",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_PUDDLE",
+        "-100",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"shallow water\"",
+        "\"knee-deep water drains slowly into holes in the floor.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_FLOOD",
+      "DF_FLOOD_DRAIN"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 446,
+        "text": "/*FLOOD_WATER_SHALLOW*/        {0,     &shallowWaterForeColor, &shallowWaterBackColor, 50, 0,  DF_STEAM_ACCUMULATION,0,DF_PUDDLE,       -100,  NO_LIGHT,       (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"shallow water\",        \"knee-deep water drains slowly into holes in the floor.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 753,
+        "text": "{FLOOD_WATER_SHALLOW,       SURFACE,    225,    37,     0,  \"\", 0,  0,  0,      0,          DF_FLOOD_2},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 755,
+        "text": "{FLOOD_WATER_SHALLOW,       SURFACE,    10,     25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "LICHEN",
+    "web": "LICHEN",
+    "status": "exact",
+    "ceLine": 451,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "LICHEN",
+      "id": 121,
+      "ceLine": 451,
+      "web": "LICHEN",
+      "status": "exact",
+      "description": "deadly lichen",
+      "flavor": "venomous barbs cover the quivering tendrils of this fast-growing lichen.",
+      "webName": "致命地衣",
+      "ceFields": [
+        "G_LICHEN",
+        "&lichenColor",
+        "0",
+        "60",
+        "50",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_LICHEN_GROW",
+        "10000",
+        "NO_LIGHT",
+        "(T_CAUSES_POISON | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"deadly lichen\"",
+        "\"venomous barbs cover the quivering tendrils of this fast-growing lichen.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_MUTATION_LICHEN",
+      "DF_LICHEN_GROW",
+      "DF_LICHEN_PLANTED"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 451,
+        "text": "/*LICHEN*/                     {G_LICHEN,  &lichenColor,           0,                  60, 50, DF_PLAIN_FIRE,0,DF_LICHEN_GROW,         10000,  NO_LIGHT,       (T_CAUSES_POISON | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                \"deadly lichen\",        \"venomous barbs cover the quivering tendrils of this fast-growing lichen.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 660,
+        "text": "{LICHEN,                    SURFACE,    70,     60,     0,  \"Poisonous spores burst from the corpse!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 677,
+        "text": "{LICHEN,                    SURFACE,    2,      100,    (DFF_BLOCKED_BY_OTHER_LAYERS)}, // Lichen won't spread through lava."
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 783,
+        "text": "{LICHEN,                    SURFACE,    70,     60,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "HAY",
+    "web": null,
+    "status": "missing",
+    "ceLine": 452,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "HAY",
+      "id": 122,
+      "ceLine": 452,
+      "web": null,
+      "status": "missing",
+      "description": "filthy hay",
+      "flavor": "a pile of hay, matted with filth, has been arranged here as a makeshift bed.",
+      "webName": null,
+      "ceFields": [
+        "G_GRASS",
+        "&hayColor",
+        "&refuseBackColor",
+        "57",
+        "50",
+        "DF_STENCH_BURN",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"filthy hay\"",
+        "\"a pile of hay, matted with filth, has been arranged here as a makeshift bed.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_HAY"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 452,
+        "text": "/*HAY*/                        {G_GRASS,   &hayColor,              &refuseBackColor,   57, 50, DF_STENCH_BURN,0,0,                         0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"filthy hay\",           \"a pile of hay, matted with filth, has been arranged here as a makeshift bed.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 908,
+        "text": "{HAY,                       SURFACE,    90,     87,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "GREEN_BLOOD",
+    "web": null,
+    "status": "missing",
+    "ceLine": 454,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "GREEN_BLOOD",
+      "id": 124,
+      "ceLine": 454,
+      "web": null,
+      "status": "missing",
+      "description": "a pool of green blood",
+      "flavor": "the floor is splattered with green blood.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&insectBloodColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of green blood\"",
+        "\"the floor is splattered with green blood.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_GREEN_BLOOD"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 454,
+        "text": "/*GREEN_BLOOD*/                {G_FLOOR_ALT,&insectBloodColor,     0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of green blood\", \"the floor is splattered with green blood.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 641,
+        "text": "{GREEN_BLOOD,               SURFACE,    100,    25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "PURPLE_BLOOD",
+    "web": null,
+    "status": "missing",
+    "ceLine": 455,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "PURPLE_BLOOD",
+      "id": 125,
+      "ceLine": 455,
+      "web": null,
+      "status": "missing",
+      "description": "a pool of purple blood",
+      "flavor": "the floor is splattered with purple blood.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&poisonGasColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of purple blood\"",
+        "\"the floor is splattered with purple blood.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_PURPLE_BLOOD"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 455,
+        "text": "/*PURPLE_BLOOD*/               {G_FLOOR_ALT,&poisonGasColor,       0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of purple blood\", \"the floor is splattered with purple blood.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 642,
+        "text": "{PURPLE_BLOOD,              SURFACE,    100,    25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "ACID_SPLATTER",
+    "web": null,
+    "status": "missing",
+    "ceLine": 456,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "ACID_SPLATTER",
+      "id": 126,
+      "ceLine": 456,
+      "web": null,
+      "status": "missing",
+      "description": "a puddle of acid",
+      "flavor": "the floor is splattered with acid.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&acidBackColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"a puddle of acid\"",
+        "\"the floor is splattered with acid.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ACID_BLOOD"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 456,
+        "text": "/*ACID_SPLATTER*/              {G_FLOOR_ALT,&acidBackColor,        0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, 0,                                                                                               \"a puddle of acid\",     \"the floor is splattered with acid.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 644,
+        "text": "{ACID_SPLATTER,             SURFACE,    200,    25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "URINE",
+    "web": null,
+    "status": "missing",
+    "ceLine": 458,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "URINE",
+      "id": 128,
+      "ceLine": 458,
+      "web": null,
+      "status": "missing",
+      "description": "a puddle of urine",
+      "flavor": "a puddle of urine covers the ground.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&urineColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "100",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a puddle of urine\"",
+        "\"a puddle of urine covers the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_URINE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 458,
+        "text": "/*URINE*/                      {G_FLOOR_ALT,&urineColor,           0,                  80, 0,  DF_PLAIN_FIRE,0,0,                        100,  NO_LIGHT,       (0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                               \"a puddle of urine\",    \"a puddle of urine covers the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 669,
+        "text": "{URINE,                     SURFACE,    65,     25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "UNICORN_POOP",
+    "web": null,
+    "status": "missing",
+    "ceLine": 459,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "UNICORN_POOP",
+      "id": 129,
+      "ceLine": 459,
+      "web": null,
+      "status": "missing",
+      "description": "unicorn poop",
+      "flavor": "a pile of lavender-scented unicorn poop sparkles with rainbow light.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&white",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "UNICORN_POOP_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"unicorn poop\"",
+        "\"a pile of lavender-scented unicorn poop sparkles with rainbow light.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_UNICORN_POOP"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 459,
+        "text": "/*UNICORN_POOP*/               {G_FLOOR_ALT,&white,                0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  UNICORN_POOP_LIGHT,(0), (TM_STAND_IN_TILE),                                                                         \"unicorn poop\",         \"a pile of lavender-scented unicorn poop sparkles with rainbow light.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 670,
+        "text": "{UNICORN_POOP,              SURFACE,    65,     40,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "WORM_BLOOD",
+    "web": null,
+    "status": "missing",
+    "ceLine": 460,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "WORM_BLOOD",
+      "id": 130,
+      "ceLine": 460,
+      "web": null,
+      "status": "missing",
+      "description": "a pool of worm entrails",
+      "flavor": "worm viscera cover the ground.",
+      "webName": null,
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&wormColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of worm entrails\"",
+        "\"worm viscera cover the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_WORM_BLOOD"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 460,
+        "text": "/*WORM_BLOOD*/                 {G_FLOOR_ALT,&wormColor,            0,                  80, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pool of worm entrails\", \"worm viscera cover the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 643,
+        "text": "{WORM_BLOOD,                SURFACE,    100,    25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "BURNED_CARPET",
+    "web": null,
+    "status": "missing",
+    "ceLine": 462,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "BURNED_CARPET",
+      "id": 132,
+      "ceLine": 462,
+      "web": null,
+      "status": "missing",
+      "description": "burned carpet",
+      "flavor": "the carpet has been scorched by an ancient fire.",
+      "webName": null,
+      "ceFields": [
+        "G_ASHES",
+        "&ashForeColor",
+        "0",
+        "87",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"burned carpet\"",
+        "\"the carpet has been scorched by an ancient fire.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_REMNANT_ASH"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 462,
+        "text": "/*BURNED_CARPET*/              {G_ASHES,   &ashForeColor,          0,                  87, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"burned carpet\",        \"the carpet has been scorched by an ancient fire.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 913,
+        "text": "{BURNED_CARPET,             SURFACE,    120,    100,    0},"
+      }
+    ]
+  },
+  {
+    "ce": "PUDDLE",
+    "web": "PUDDLE",
+    "status": "exact",
+    "ceLine": 463,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "PUDDLE",
+      "id": 133,
+      "ceLine": 463,
+      "web": "PUDDLE",
+      "status": "exact",
+      "description": "a puddle of water",
+      "flavor": "a puddle of water covers the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&shallowWaterBackColor",
+        "0",
+        "80",
+        "20",
+        "0",
+        "0",
+        "0",
+        "100",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a puddle of water\"",
+        "\"a puddle of water covers the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_PUDDLE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 463,
+        "text": "/*PUDDLE*/                     {G_FLOOR_ALT,&shallowWaterBackColor,0,                  80, 20, 0,0,0,                                    100,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                  \"a puddle of water\",    \"a puddle of water covers the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 671,
+        "text": "{PUDDLE,                    SURFACE,    13,     25,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "JUNK",
+    "web": null,
+    "status": "missing",
+    "ceLine": 466,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "JUNK",
+      "id": 136,
+      "ceLine": 466,
+      "web": null,
+      "status": "missing",
+      "description": "a pile of filthy effects",
+      "flavor": "primitive tools, carvings and trinkets are strewn about the area.",
+      "webName": null,
+      "ceFields": [
+        "G_BONES",
+        "&mudBackColor",
+        "&refuseBackColor",
+        "70",
+        "20",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pile of filthy effects\"",
+        "\"primitive tools, carvings and trinkets are strewn about the area.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_JUNK"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 466,
+        "text": "/*JUNK*/                       {G_BONES,   &mudBackColor,          &refuseBackColor,   70, 20, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"a pile of filthy effects\",\"primitive tools, carvings and trinkets are strewn about the area.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 909,
+        "text": "{JUNK,                      SURFACE,    20,     20,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "BROKEN_GLASS",
+    "web": "BROKEN_GLASS",
+    "status": "exact",
+    "ceLine": 467,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "BROKEN_GLASS",
+      "id": 137,
+      "ceLine": 467,
+      "web": "BROKEN_GLASS",
+      "status": "exact",
+      "description": "shattered glass",
+      "flavor": "jagged chunks of glass from the broken dewar litter the ground.",
+      "webName": "碎玻璃",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&white",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"shattered glass\"",
+        "\"jagged chunks of glass from the broken dewar litter the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DEWAR_GLASS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 467,
+        "text": "/*BROKEN_GLASS*/               {G_FLOOR_ALT,&white,                0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (TM_STAND_IN_TILE),                                                                            \"shattered glass\",      \"jagged chunks of glass from the broken dewar litter the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 708,
+        "text": "{BROKEN_GLASS,              SURFACE,    100,    70,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "ECTOPLASM",
+    "web": "ECTOPLASM",
+    "status": "exact",
+    "ceLine": 468,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ECTOPLASM",
+      "id": 138,
+      "ceLine": 468,
+      "web": "ECTOPLASM",
+      "status": "exact",
+      "description": "ectoplasmic residue",
+      "flavor": "a thick, glowing substance has congealed on the ground.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR_ALT",
+        "&ectoplasmColor",
+        "0",
+        "70",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "ECTOPLASM_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"ectoplasmic residue\"",
+        "\"a thick, glowing substance has congealed on the ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ECTOPLASM_BLOOD",
+      "DF_ECTOPLASM_DROPLET"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 468,
+        "text": "/*ECTOPLASM*/                  {G_FLOOR_ALT,&ectoplasmColor,       0,                  70, 0,  DF_PLAIN_FIRE,0,0,                          0,  ECTOPLASM_LIGHT,(0), (TM_STAND_IN_TILE),                                                                            \"ectoplasmic residue\",  \"a thick, glowing substance has congealed on the ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 647,
+        "text": "{ECTOPLASM,                 SURFACE,    110,    25,     0},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 673,
+        "text": "{ECTOPLASM,                 SURFACE,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "NETTING",
+    "web": "NETTING",
+    "status": "exact",
+    "ceLine": 471,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "NETTING",
+      "id": 141,
+      "ceLine": 471,
+      "web": "NETTING",
+      "status": "exact",
+      "description": "a net",
+      "flavor": "a dense tangle of netting fills the area.",
+      "webName": "罗网",
+      "ceFields": [
+        "G_NET",
+        "&brown",
+        "0",
+        "19",
+        "40",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_ENTANGLES | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a net\"",
+        "\"a dense tangle of netting fills the area.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_NET"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 471,
+        "text": "/*NETTING*/                    {G_NET,     &brown,                 0,                  19, 40, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_ENTANGLES | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),\"a net\",             \"a dense tangle of netting fills the area.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 772,
+        "text": "{NETTING,                   SURFACE,    300,    90,     0,  \"a net falls from the ceiling!\"},"
+      }
+    ]
+  },
+  {
+    "ce": "FORCEFIELD",
+    "web": "FORCEFIELD",
+    "status": "exact",
+    "ceLine": 477,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "FORCEFIELD",
+      "id": 147,
+      "ceLine": 477,
+      "web": "FORCEFIELD",
+      "status": "exact",
+      "description": "a green crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRYSTAL",
+        "&forceFieldColor",
+        "&forceFieldColor",
+        "0",
+        "0",
+        "0",
+        "0",
+        "DF_FORCEFIELD_MELT",
+        "-200",
+        "FORCEFIELD_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE)",
+        "\"a green crystal\"",
+        "\"The translucent green crystal is melting away in front of your eyes.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_FORCEFIELD"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 477,
+        "text": "/*FORCEFIELD*/                 {G_CRYSTAL, &forceFieldColor,       &forceFieldColor,   0,  0,  0,0,DF_FORCEFIELD_MELT,                  -200,  FORCEFIELD_LIGHT, (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE),       \"a green crystal\",      \"The translucent green crystal is melting away in front of your eyes.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 674,
+        "text": "{FORCEFIELD,                SURFACE,    100,    50,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "FORCEFIELD_MELT",
+    "web": "FORCEFIELD_MELT",
+    "status": "exact",
+    "ceLine": 478,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "FORCEFIELD_MELT",
+      "id": 148,
+      "ceLine": 478,
+      "web": "FORCEFIELD_MELT",
+      "status": "exact",
+      "description": "a dissolving crystal",
+      "flavor": "The translucent green crystal is melting away in front of your eyes.",
+      "webName": "地面",
+      "ceFields": [
+        "G_CRYSTAL",
+        "&black",
+        "&forceFieldColor",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-10000",
+        "FORCEFIELD_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE)",
+        "\"a dissolving crystal\"",
+        "\"The translucent green crystal is melting away in front of your eyes.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_FORCEFIELD_MELT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 478,
+        "text": "/*FORCEFIELD_MELT*/            {G_CRYSTAL, &black,                 &forceFieldColor,   0,  0,  0,0,0,                                 -10000,  FORCEFIELD_LIGHT, (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE),     \"a dissolving crystal\",     \"The translucent green crystal is melting away in front of your eyes.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 675,
+        "text": "{FORCEFIELD_MELT,           SURFACE,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_TL",
+    "web": null,
+    "status": "missing",
+    "ceLine": 480,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_TL",
+      "id": 150,
+      "ceLine": 480,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the ceiling.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_TOP_LEFT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the ceiling.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 480,
+        "text": "/*MANACLE_TL*/                 {G_CHAIN_TOP_LEFT,      &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the ceiling.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_BR",
+    "web": null,
+    "status": "missing",
+    "ceLine": 481,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_BR",
+      "id": 151,
+      "ceLine": 481,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the floor.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_BOTTOM_RIGHT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the floor.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 481,
+        "text": "/*MANACLE_BR*/                 {G_CHAIN_BOTTOM_RIGHT,  &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the floor.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_TR",
+    "web": null,
+    "status": "missing",
+    "ceLine": 482,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_TR",
+      "id": 152,
+      "ceLine": 482,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the ceiling.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_TOP_RIGHT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the ceiling.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 482,
+        "text": "/*MANACLE_TR*/                 {G_CHAIN_TOP_RIGHT,     &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the ceiling.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_BL",
+    "web": null,
+    "status": "missing",
+    "ceLine": 483,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_BL",
+      "id": 153,
+      "ceLine": 483,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the floor.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_BOTTOM_LEFT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the floor.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 483,
+        "text": "/*MANACLE_BL*/                 {G_CHAIN_BOTTOM_LEFT,   &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the floor.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_B",
+    "web": null,
+    "status": "missing",
+    "ceLine": 485,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_B",
+      "id": 155,
+      "ceLine": 485,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_BOTTOM",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the wall.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 485,
+        "text": "/*MANACLE_B*/                  {G_CHAIN_BOTTOM,        &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "MANACLE_R",
+    "web": null,
+    "status": "missing",
+    "ceLine": 487,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "MANACLE_R",
+      "id": 157,
+      "ceLine": 487,
+      "web": null,
+      "status": "missing",
+      "description": "an iron manacle",
+      "flavor": "a thick iron manacle is anchored to the wall.",
+      "webName": null,
+      "ceFields": [
+        "G_CHAIN_RIGHT",
+        "&gray",
+        "0",
+        "20",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"an iron manacle\"",
+        "\"a thick iron manacle is anchored to the wall.\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 487,
+        "text": "/*MANACLE_R*/                  {G_CHAIN_RIGHT,         &gray,      0,                  20, 0,  0,0,0,                                      0,  NO_LIGHT,       0, 0,                                                                                               \"an iron manacle\",      \"a thick iron manacle is anchored to the wall.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "PORTAL_LIGHT",
+    "web": "PORTAL_LIGHT",
+    "status": "exact",
+    "ceLine": 488,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "PORTAL_LIGHT",
+      "id": 158,
+      "ceLine": 488,
+      "web": "PORTAL_LIGHT",
+      "status": "exact",
+      "description": "blinding light",
+      "flavor": "blinding light streams out of the archway.",
+      "webName": "耀眼的光芒",
+      "ceFields": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "PORTAL_ACTIVATE_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"blinding light\"",
+        "\"blinding light streams out of the archway.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_PORTAL_ACTIVATE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 488,
+        "text": "/*PORTAL_LIGHT*/               {0,                     0,          0,                  1,  0,  0,0,0,                                  10000,  PORTAL_ACTIVATE_LIGHT,(0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                         \"blinding light\",       \"blinding light streams out of the archway.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 725,
+        "text": "{PORTAL_LIGHT,              SURFACE,    0,      0,      (DFF_EVACUATE_CREATURES_FIRST | DFF_ACTIVATE_DORMANT_MONSTER), \"the archway flashes, and you catch a glimpse of another world!\"},"
+      }
+    ]
+  },
+  {
+    "ce": "GUARDIAN_GLOW",
+    "web": null,
+    "status": "missing",
+    "ceLine": 489,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "GUARDIAN_GLOW",
+      "id": 159,
+      "ceLine": 489,
+      "web": null,
+      "status": "missing",
+      "description": "a red glow",
+      "flavor": "a red glow fills the area.",
+      "webName": null,
+      "ceFields": [
+        "0",
+        "0",
+        "0",
+        "100",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "GLYPH_LIGHT_BRIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a red glow\"",
+        "\"a red glow fills the area.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SILENT_GLYPH_GLOW",
+      "DF_GUARDIAN_STEP",
+      "DF_MIRROR_TOTEM_STEP"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 489,
+        "text": "/*GUARDIAN_GLOW*/              {0,                     0,          0,                  100,0,  0,0,0,                                  10000,  GLYPH_LIGHT_BRIGHT,(0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION),                                            \"a red glow\",           \"a red glow fills the area.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 728,
+        "text": "{GUARDIAN_GLOW,             SURFACE,    0,      0,      0,  \"\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 729,
+        "text": "{GUARDIAN_GLOW,             SURFACE,    0,      0,      0,  \"the glyph beneath you glows, and the guardians take a step!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 730,
+        "text": "{GUARDIAN_GLOW,             SURFACE,    0,      0,      0,  \"the mirrored totem flashes, reflecting the red glow of the glyph beneath you.\"},"
+      }
+    ]
+  },
+  {
+    "ce": "FLAMEDANCER_FIRE",
+    "web": null,
+    "status": "missing",
+    "ceLine": 494,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "FLAMEDANCER_FIRE",
+      "id": 162,
+      "ceLine": 494,
+      "web": null,
+      "status": "missing",
+      "description": "clouds of infernal flame",
+      "flavor": "billowing infernal flames eat at the floor.",
+      "webName": null,
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_OBSIDIAN",
+        "5000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"clouds of infernal flame\"",
+        "\"billowing infernal flames eat at the floor.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_FLAMEDANCER_CORONA"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 494,
+        "text": "/*FLAMEDANCER_FIRE*/           {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,DF_OBSIDIAN,                         5000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"clouds of infernal flame\", \"billowing infernal flames eat at the floor.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 656,
+        "text": "{FLAMEDANCER_FIRE,          SURFACE,    200,    75,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "GAS_FIRE",
+    "web": "GAS_FIRE",
+    "status": "exact",
+    "ceLine": 495,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "GAS_FIRE",
+      "id": 163,
+      "ceLine": 495,
+      "web": "GAS_FIRE",
+      "status": "exact",
+      "description": "a cloud of burning gas",
+      "flavor": "burning gas fills the air with flame.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "8000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a cloud of burning gas\"",
+        "\"burning gas fills the air with flame.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_GAS_FIRE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 495,
+        "text": "/*GAS_FIRE*/                   {G_FIRE,    &fireForeColor,         0,                  10, 0,  0,0,0,                                   8000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"a cloud of burning gas\", \"burning gas fills the air with flame.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 741,
+        "text": "{GAS_FIRE,                  SURFACE,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "GAS_EXPLOSION",
+    "web": "GAS_EXPLOSION",
+    "status": "exact",
+    "ceLine": 496,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "GAS_EXPLOSION",
+      "id": 164,
+      "ceLine": 496,
+      "web": "GAS_EXPLOSION",
+      "status": "exact",
+      "description": "a violent explosion",
+      "flavor": "the force of the explosion slams into you.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FIRE",
+        "&yellow",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "EXPLOSION_LIGHT",
+        "(T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a violent explosion\"",
+        "\"the force of the explosion slams into you.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BLOAT_EXPLOSION",
+      "DF_MUTATION_EXPLOSION",
+      "DF_EXPLOSION_FIRE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 496,
+        "text": "/*GAS_EXPLOSION*/              {G_FIRE,    &yellow,                0,                  10, 0,  0,0,0,                                  10000,  EXPLOSION_LIGHT,(T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT), \"a violent explosion\", \"the force of the explosion slams into you.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 654,
+        "text": "{GAS_EXPLOSION,             SURFACE,    350,    100,    0,  \"\", EXPLOSION_FLARE_LIGHT},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 659,
+        "text": "{GAS_EXPLOSION,             SURFACE,    350,    100,    0,  \"The corpse detonates with terrifying force!\", EXPLOSION_FLARE_LIGHT},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 742,
+        "text": "{GAS_EXPLOSION,             SURFACE,    60,     17,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "DART_EXPLOSION",
+    "web": null,
+    "status": "missing",
+    "ceLine": 497,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "DART_EXPLOSION",
+      "id": 165,
+      "ceLine": 497,
+      "web": null,
+      "status": "missing",
+      "description": "a flash of fire",
+      "flavor": "flames burst out of the incendiary dart.",
+      "webName": null,
+      "ceFields": [
+        "G_FIRE",
+        "&white",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "INCENDIARY_DART_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a flash of fire\"",
+        "\"flames burst out of the incendiary dart.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DART_EXPLOSION"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 497,
+        "text": "/*DART_EXPLOSION*/             {G_FIRE,    &white,                 0,                  10, 0,  0,0,0,                                  10000,  INCENDIARY_DART_LIGHT ,(T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),         \"a flash of fire\",      \"flames burst out of the incendiary dart.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 743,
+        "text": "{DART_EXPLOSION,            SURFACE,    0,      0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "ITEM_FIRE",
+    "web": "ITEM_FIRE",
+    "status": "exact",
+    "ceLine": 498,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ITEM_FIRE",
+      "id": 166,
+      "ceLine": 498,
+      "web": "ITEM_FIRE",
+      "status": "exact",
+      "description": "crackling flames",
+      "flavor": "crackling flames rise from the blackened item.",
+      "webName": "噼啪燃烧的火焰",
+      "ceFields": [
+        "G_FIRE",
+        "&white",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_EMBERS",
+        "3000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"crackling flames\"",
+        "\"crackling flames rise from the blackened item.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ITEM_FIRE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 498,
+        "text": "/*ITEM_FIRE*/                  {G_FIRE,    &white,                 0,                  10, 0,  0,0,DF_EMBERS,                           3000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"crackling flames\",     \"crackling flames rise from the blackened item.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 750,
+        "text": "{ITEM_FIRE,                 SURFACE,    0,      0,      0,  \"\", FALLEN_TORCH_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "CREATURE_FIRE",
+    "web": null,
+    "status": "missing",
+    "ceLine": 499,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "CREATURE_FIRE",
+      "id": 167,
+      "ceLine": 499,
+      "web": null,
+      "status": "missing",
+      "description": "greasy flames",
+      "flavor": "greasy flames rise from the corpse.",
+      "webName": null,
+      "ceFields": [
+        "G_FIRE",
+        "&white",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_EMBERS",
+        "3000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"greasy flames\"",
+        "\"greasy flames rise from the corpse.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_CREATURE_FIRE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 499,
+        "text": "/*CREATURE_FIRE*/              {G_FIRE,    &white,                 0,                  10, 0,  0,0,DF_EMBERS,                           3000,  FIRE_LIGHT,     (T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),                \"greasy flames\",        \"greasy flames rise from the corpse.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 751,
+        "text": "{CREATURE_FIRE,             SURFACE,    0,      0,      0,  \"\", FALLEN_TORCH_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "POISON_GAS",
+    "web": "POISON_GAS",
+    "status": "exact",
+    "ceLine": 502,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "POISON_GAS",
+      "id": 168,
+      "ceLine": 502,
+      "web": "POISON_GAS",
+      "status": "exact",
+      "description": "a cloud of caustic gas",
+      "flavor": "you can feel the purple gas eating at your flesh.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&poisonGasColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_DAMAGE)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES)",
+        "\"a cloud of caustic gas\"",
+        "\"you can feel the purple gas eating at your flesh.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BLOAT_DEATH",
+      "DF_DEWAR_CAUSTIC",
+      "DF_POISON_GAS_CLOUD",
+      "DF_POISON_GAS_CLOUD_POTION",
+      "DF_VENT_SPEW_POISON_GAS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 502,
+        "text": "/*POISON_GAS*/                 {' ',       0,                      &poisonGasColor,    35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_DAMAGE), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES),                         \"a cloud of caustic gas\", \"you can feel the purple gas eating at your flesh.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 653,
+        "text": "{POISON_GAS,                GAS,        2000,   0,      0},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 704,
+        "text": "{POISON_GAS,                GAS,        20000,  0,      0, \"the dewar shatters and pressurized caustic gas explodes outward!\", 0, &poisonGasColor, 4, 0, DF_DEWAR_GLASS},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 770,
+        "text": "{POISON_GAS,                GAS,        1000,   0,      0,  \"a cloud of caustic gas sprays upward from the floor!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 777,
+        "text": "{POISON_GAS,                GAS,        1000,   0,      0,  \"\", 0,  &poisonGasColor,4},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 855,
+        "text": "{POISON_GAS,                GAS,        25,     0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "CONFUSION_GAS",
+    "web": "CONFUSION_GAS",
+    "status": "exact",
+    "ceLine": 503,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "CONFUSION_GAS",
+      "id": 169,
+      "ceLine": 503,
+      "web": "CONFUSION_GAS",
+      "status": "exact",
+      "description": "a cloud of confusion gas",
+      "flavor": "the rainbow-colored gas tickles your brain.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&confusionGasColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "CONFUSION_GAS_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_CONFUSION)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of confusion gas\"",
+        "\"the rainbow-colored gas tickles your brain.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DEWAR_CONFUSION",
+      "DF_CONFUSION_GAS_TRAP_CLOUD",
+      "DF_CONFUSION_GAS_CLOUD_POTION"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 503,
+        "text": "/*CONFUSION_GAS*/              {' ',       0,                      &confusionGasColor, 35, 100,DF_GAS_FIRE,0,0,                            0,  CONFUSION_GAS_LIGHT,(T_IS_FLAMMABLE | T_CAUSES_CONFUSION), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),          \"a cloud of confusion gas\", \"the rainbow-colored gas tickles your brain.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 705,
+        "text": "{CONFUSION_GAS,             GAS,        20000,  0,      0, \"the dewar shatters and pressurized confusion gas explodes outward!\", 0, &confusionGasColor, 4, 0, DF_DEWAR_GLASS},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 771,
+        "text": "{CONFUSION_GAS,             GAS,        300,    0,      0,  \"a sparkling cloud of confusion gas sprays upward from the floor!\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 779,
+        "text": "{CONFUSION_GAS,             GAS,        1000,   0,      0,  \"\", 0,  &confusionGasColor, 4},"
+      }
+    ]
+  },
+  {
+    "ce": "ROT_GAS",
+    "web": "ROT_GAS",
+    "status": "exact",
+    "ceLine": 504,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ROT_GAS",
+      "id": 170,
+      "ceLine": 504,
+      "web": "ROT_GAS",
+      "status": "exact",
+      "description": "a cloud of putrescence",
+      "flavor": "the stench of rotting flesh is overpowering.",
+      "webName": "腐败气云",
+      "ceFields": [
+        "' '",
+        "0",
+        "&vomitColor",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_NAUSEA)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of putrescence\"",
+        "\"the stench of rotting flesh is overpowering.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ROT_GAS_BLOOD",
+      "DF_ROT_GAS_PUFF"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 504,
+        "text": "/*ROT_GAS*/                    {' ',       0,                      &vomitColor,        35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_NAUSEA), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                 \"a cloud of putrescence\", \"the stench of rotting flesh is overpowering.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 649,
+        "text": "{ROT_GAS,                   GAS,        12,     0,      0},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 664,
+        "text": "{ROT_GAS,                   GAS,        15,     0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "STENCH_SMOKE_GAS",
+    "web": "STENCH_SMOKE_GAS",
+    "status": "exact",
+    "ceLine": 505,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "STENCH_SMOKE_GAS",
+      "id": 171,
+      "ceLine": 505,
+      "web": "STENCH_SMOKE_GAS",
+      "status": "exact",
+      "description": "a cloud of putrid smoke",
+      "flavor": "you retch violently at the smell of the greasy smoke.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&vomitColor",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_CAUSES_NAUSEA)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of putrid smoke\"",
+        "\"you retch violently at the smell of the greasy smoke.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_STENCH_BURN",
+      "DF_STENCH_SMOLDER"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 505,
+        "text": "/*STENCH_SMOKE_GAS*/           {' ',       0,                      &vomitColor,        35, 0,  DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_CAUSES_NAUSEA), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                                  \"a cloud of putrid smoke\", \"you retch violently at the smell of the greasy smoke.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 930,
+        "text": "{STENCH_SMOKE_GAS,          GAS,        50,     0,      0, \"\", 0, 0, 0, 0, DF_PLAIN_FIRE},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 931,
+        "text": "{STENCH_SMOKE_GAS,          GAS,        50,     0,      0, \"\", 0, 0, 0, 0, DF_EMBERS},"
+      }
+    ]
+  },
+  {
+    "ce": "PARALYSIS_GAS",
+    "web": "PARALYSIS_GAS",
+    "status": "exact",
+    "ceLine": 506,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "PARALYSIS_GAS",
+      "id": 172,
+      "ceLine": 506,
+      "web": "PARALYSIS_GAS",
+      "status": "exact",
+      "description": "a cloud of paralytic gas",
+      "flavor": "the pale gas causes your muscles to stiffen.",
+      "webName": "地面",
+      "ceFields": [
+        "' '",
+        "0",
+        "&pink",
+        "35",
+        "100",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE | T_CAUSES_PARALYSIS)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of paralytic gas\"",
+        "\"the pale gas causes your muscles to stiffen.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DEWAR_PARALYSIS",
+      "DF_PARALYSIS_GAS_CLOUD_POTION",
+      "DF_PARALYSIS_VENT_SPEW"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 506,
+        "text": "/*PARALYSIS_GAS*/              {' ',       0,                      &pink,              35, 100,DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_IS_FLAMMABLE | T_CAUSES_PARALYSIS), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),              \"a cloud of paralytic gas\", \"the pale gas causes your muscles to stiffen.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 706,
+        "text": "{PARALYSIS_GAS,             GAS,        20000,  0,      0, \"the dewar shatters and pressurized paralytic gas explodes outward!\", 0, &pink, 4, 0, DF_DEWAR_GLASS},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 778,
+        "text": "{PARALYSIS_GAS,             GAS,        1000,   0,      0,  \"\", 0,  &pink,4},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 865,
+        "text": "{PARALYSIS_GAS,             GAS,        350,    0,      0,  \"paralytic gas sprays upward from hidden vents in the floor!\", 0, 0, 0, 0, DF_REVEAL_PARALYSIS_VENT_SILENTLY},"
+      }
+    ]
+  },
+  {
+    "ce": "DARKNESS_CLOUD",
+    "web": "DARKNESS_CLOUD",
+    "status": "exact",
+    "ceLine": 509,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DARKNESS_CLOUD",
+      "id": 175,
+      "ceLine": 509,
+      "web": "DARKNESS_CLOUD",
+      "status": "exact",
+      "description": "a cloud of supernatural darkness",
+      "flavor": "everything is obscured by an aura of supernatural darkness.",
+      "webName": "超自然黑暗云团",
+      "ceFields": [
+        "' '",
+        "0",
+        "0",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "DARKNESS_CLOUD_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a cloud of supernatural darkness\"",
+        "\"everything is obscured by an aura of supernatural darkness.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_DARKNESS_POTION"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 509,
+        "text": "/*DARKNESS_CLOUD*/             {' ',       0,                      0,                  35, 0,  DF_GAS_FIRE,0,0,                            0,  DARKNESS_CLOUD_LIGHT,   (0), (TM_STAND_IN_TILE),                                                                    \"a cloud of supernatural darkness\", \"everything is obscured by an aura of supernatural darkness.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 781,
+        "text": "{DARKNESS_CLOUD,            GAS,        200,    0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "HEALING_CLOUD",
+    "web": null,
+    "status": "missing",
+    "ceLine": 510,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "HEALING_CLOUD",
+      "id": 176,
+      "ceLine": 510,
+      "web": null,
+      "status": "missing",
+      "description": "a cloud of healing spores",
+      "flavor": "bloodwort spores, renowned for their healing properties, fill the air.",
+      "webName": null,
+      "ceFields": [
+        "' '",
+        "0",
+        "&darkRed",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_CAUSES_HEALING)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of healing spores\"",
+        "\"bloodwort spores, renowned for their healing properties, fill the air.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BLOODFLOWER_POD_BURST"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 510,
+        "text": "/*HEALING_CLOUD*/              {' ',       0,                      &darkRed,           35, 0,  DF_GAS_FIRE,0,0,                            0,  NO_LIGHT,       (T_CAUSES_HEALING), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY),                                 \"a cloud of healing spores\", \"bloodwort spores, renowned for their healing properties, fill the air.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 701,
+        "text": "{HEALING_CLOUD,             GAS,        350,    0,      0},"
+      }
+    ]
+  },
+  {
+    "ce": "BLOODFLOWER_POD",
+    "web": null,
+    "status": "missing",
+    "ceLine": 514,
+    "cells": 0,
+    "distinctEntity": false,
+    "tileDefinition": {
+      "ce": "BLOODFLOWER_POD",
+      "id": 178,
+      "ceLine": 514,
+      "web": null,
+      "status": "missing",
+      "description": "a bloodwort pod",
+      "flavor": "the bloodwort seed pod bursts, releasing a cloud of healing spores.",
+      "webName": null,
+      "ceFields": [
+        "G_BLOODWORT_POD",
+        "&bloodflowerPodForeColor",
+        "0",
+        "11",
+        "20",
+        "DF_BLOODFLOWER_POD_BURST",
+        "0",
+        "DF_BLOODFLOWER_POD_BURST",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED)",
+        "\"a bloodwort pod\"",
+        "\"the bloodwort seed pod bursts, releasing a cloud of healing spores.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BLOODFLOWER_PODS_GROW_INITIAL",
+      "DF_BLOODFLOWER_PODS_GROW"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 514,
+        "text": "/*BLOODFLOWER_POD*/    {G_BLOODWORT_POD,   &bloodflowerPodForeColor,0,                 11, 20, DF_BLOODFLOWER_POD_BURST,0,DF_BLOODFLOWER_POD_BURST, 0,NO_LIGHT,(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED), \"a bloodwort pod\", \"the bloodwort seed pod bursts, releasing a cloud of healing spores.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 699,
+        "text": "{BLOODFLOWER_POD,           SURFACE,    60,     60,     DFF_EVACUATE_CREATURES_FIRST},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 700,
+        "text": "{BLOODFLOWER_POD,           SURFACE,    10,     10,     DFF_EVACUATE_CREATURES_FIRST},"
+      }
+    ]
+  },
+  {
+    "ce": "DEEP_WATER_ALGAE_WELL",
+    "web": "DEEP_WATER_ALGAE_WELL",
+    "status": "exact",
+    "ceLine": 520,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DEEP_WATER_ALGAE_WELL",
+      "id": 180,
+      "ceLine": 520,
+      "web": "DEEP_WATER_ALGAE_WELL",
+      "status": "exact",
+      "description": "the ground",
+      "flavor": "",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&floorForeColor",
+        "&floorBackColor",
+        "95",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_ALGAE_1",
+        "100",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"the ground\"",
+        "\"\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BUILD_ALGAE_WELL"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 520,
+        "text": "/*DEEP_WATER_ALGAE_WELL*/      {G_FLOOR,   &floorForeColor,        &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,DF_ALGAE_1,               100,  NO_LIGHT,       0, 0,                                                                                               \"the ground\",           \"\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 712,
+        "text": "{DEEP_WATER_ALGAE_WELL,     DUNGEON,    0,      0,      DFF_SUPERPRIORITY},"
+      }
+    ]
+  },
+  {
+    "ce": "DEEP_WATER_ALGAE_1",
+    "web": "DEEP_WATER_ALGAE_1",
+    "status": "exact",
+    "ceLine": 521,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DEEP_WATER_ALGAE_1",
+      "id": 181,
+      "ceLine": 521,
+      "web": "DEEP_WATER_ALGAE_1",
+      "status": "exact",
+      "description": "luminescent waters",
+      "flavor": "blooming algae fills the waters with a swirling luminescence.",
+      "webName": "发蓝光的深水",
+      "ceFields": [
+        "G_LIQUID",
+        "&deepWaterForeColor",
+        "&deepWaterBackColor",
+        "40",
+        "100",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_ALGAE_1",
+        "500",
+        "LUMINESCENT_ALGAE_BLUE_LIGHT",
+        "(T_IS_FLAMMABLE | T_IS_DEEP_WATER)",
+        "(TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"luminescent waters\"",
+        "\"blooming algae fills the waters with a swirling luminescence.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ALGAE_1"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 521,
+        "text": "/*DEEP_WATER_ALGAE_1*/         {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,40, 100,DF_STEAM_ACCUMULATION,0,DF_ALGAE_1,       500,  LUMINESCENT_ALGAE_BLUE_LIGHT,(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING),  \"luminescent waters\",   \"blooming algae fills the waters with a swirling luminescence.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 713,
+        "text": "{DEEP_WATER_ALGAE_1,        LIQUID,     50,     100,    0,  \"\", 0,  0,   0,     DEEP_WATER, DF_ALGAE_2},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 761,
+        "text": "{ICE_DEEP,                  LIQUID,     150,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      DEEP_WATER_ALGAE_1, DF_ALGAE_2_FREEZE},"
+      }
+    ]
+  },
+  {
+    "ce": "DEEP_WATER_ALGAE_2",
+    "web": "DEEP_WATER_ALGAE_2",
+    "status": "exact",
+    "ceLine": 522,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "DEEP_WATER_ALGAE_2",
+      "id": 182,
+      "ceLine": 522,
+      "web": "DEEP_WATER_ALGAE_2",
+      "status": "exact",
+      "description": "luminescent waters",
+      "flavor": "blooming algae fills the waters with a swirling luminescence.",
+      "webName": "发绿光的深水",
+      "ceFields": [
+        "G_LIQUID",
+        "&deepWaterForeColor",
+        "&deepWaterBackColor",
+        "39",
+        "100",
+        "DF_STEAM_ACCUMULATION",
+        "0",
+        "DF_ALGAE_REVERT",
+        "300",
+        "LUMINESCENT_ALGAE_GREEN_LIGHT",
+        "(T_IS_FLAMMABLE | T_IS_DEEP_WATER)",
+        "(TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING)",
+        "\"luminescent waters\"",
+        "\"blooming algae fills the waters with a swirling luminescence.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ALGAE_2"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 522,
+        "text": "/*DEEP_WATER_ALGAE_2*/         {G_LIQUID,  &deepWaterForeColor,    &deepWaterBackColor,39, 100,DF_STEAM_ACCUMULATION,0,DF_ALGAE_REVERT,  300,  LUMINESCENT_ALGAE_GREEN_LIGHT,(T_IS_FLAMMABLE | T_IS_DEEP_WATER), (TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING), \"luminescent waters\",   \"blooming algae fills the waters with a swirling luminescence.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 714,
+        "text": "{DEEP_WATER_ALGAE_2,        LIQUID,     0,      0,      0},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 762,
+        "text": "{ICE_DEEP,                  LIQUID,     150,    50,     DFF_EVACUATE_CREATURES_FIRST,   \"\", 0,  0,  0,      DEEP_WATER_ALGAE_2, DF_SHALLOW_WATER_FREEZE},"
+      }
+    ]
+  },
+  {
+    "ce": "ANCIENT_SPIRIT_VINES",
+    "web": "ANCIENT_SPIRIT_VINES",
+    "status": "exact",
+    "ceLine": 525,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ANCIENT_SPIRIT_VINES",
+      "id": 183,
+      "ceLine": 525,
+      "web": "ANCIENT_SPIRIT_VINES",
+      "status": "exact",
+      "description": "thorned vines",
+      "flavor": "thorned vines make a rustling noise as they quiver restlessly.",
+      "webName": "thorned vines",
+      "ceFields": [
+        "G_VINE",
+        "&lichenColor",
+        "0",
+        "19",
+        "100",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_ANCIENT_SPIRIT_GRASS",
+        "1000",
+        "NO_LIGHT",
+        "(T_ENTANGLES | T_CAUSES_DAMAGE | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_PLAYER_ENTRY)",
+        "\"thorned vines\"",
+        "\"thorned vines make a rustling noise as they quiver restlessly.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ANCIENT_SPIRIT_VINES"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 525,
+        "text": "/*ANCIENT_SPIRIT_VINES*/       {G_VINE,    &lichenColor,           0,                  19, 100,DF_PLAIN_FIRE,0,DF_ANCIENT_SPIRIT_GRASS, 1000,  NO_LIGHT,       (T_ENTANGLES | T_CAUSES_DAMAGE | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_PLAYER_ENTRY),\"thorned vines\",       \"thorned vines make a rustling noise as they quiver restlessly.\"}, // +tile"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 684,
+        "text": "{ANCIENT_SPIRIT_VINES,      SURFACE,    75,     70,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "ANCIENT_SPIRIT_GRASS",
+    "web": "ANCIENT_SPIRIT_GRASS",
+    "status": "exact",
+    "ceLine": 526,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ANCIENT_SPIRIT_GRASS",
+      "id": 184,
+      "ceLine": 526,
+      "web": "ANCIENT_SPIRIT_GRASS",
+      "status": "exact",
+      "description": "a tuft of grass",
+      "flavor": "tufts of lush grass have improbably pushed upward through the stone ground.",
+      "webName": "a tuft of grass",
+      "ceFields": [
+        "G_GRASS",
+        "&grassColor",
+        "0",
+        "60",
+        "15",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE)",
+        "\"a tuft of grass\"",
+        "\"tufts of lush grass have improbably pushed upward through the stone ground.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ANCIENT_SPIRIT_GRASS"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 526,
+        "text": "/*ANCIENT_SPIRIT_GRASS*/       {G_GRASS,   &grassColor,            0,                  60, 15, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE),                                                               \"a tuft of grass\",      \"tufts of lush grass have improbably pushed upward through the stone ground.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 685,
+        "text": "{ANCIENT_SPIRIT_GRASS,      SURFACE,    50,     47,     0},"
+      }
+    ]
+  },
+  {
+    "ce": "AMULET_SWITCH",
+    "web": "AMULET_SWITCH",
+    "status": "exact",
+    "ceLine": 529,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "AMULET_SWITCH",
+      "id": 185,
+      "ceLine": 529,
+      "web": "AMULET_SWITCH",
+      "status": "exact",
+      "description": "the ground",
+      "flavor": "",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&floorForeColor",
+        "&floorBackColor",
+        "95",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP)",
+        "\"the ground\"",
+        "\"\""
+      ]
+    },
+    "dfWriters": [],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/variants/GlobalsBrogue.c",
+        "line": 291,
+        "text": "{DF_LUMINESCENT_FUNGUS, AMULET_SWITCH, DUNGEON, {1,1}, 1,       AMULET,     -1,         0,              2,              0,          0,          (MF_GENERATE_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 529,
+        "text": "/*AMULET_SWITCH*/              {G_FLOOR,   &floorForeColor,        &floorBackColor,    95, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       0, (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP),                         \"the ground\",           \"\"},"
+      }
+    ]
+  },
+  {
+    "ce": "COMMUTATION_ALTAR_INERT",
+    "web": "COMMUTATION_ALTAR_INERT",
+    "status": "exact",
+    "ceLine": 533,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "COMMUTATION_ALTAR_INERT",
+      "id": 187,
+      "ceLine": 533,
+      "web": "COMMUTATION_ALTAR_INERT",
+      "status": "exact",
+      "description": "a scorched altar",
+      "flavor": "scorch marks cover the surface of the altar, but it is cold to the touch.",
+      "webName": "烧焦的置换祭坛",
+      "ceFields": [
+        "G_ORB_ALTAR",
+        "&black",
+        "&greenAltarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a scorched altar\"",
+        "\"scorch marks cover the surface of the altar, but it is cold to the touch.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ALTAR_COMMUTE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 533,
+        "text": "/*COMMUTATION_ALTAR_INERT*/   {G_ORB_ALTAR,&black,                &greenAltarBackColor,17, 0,  0,0,0,                                      0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                         \"a scorched altar\",     \"scorch marks cover the surface of the altar, but it is cold to the touch.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 793,
+        "text": "{COMMUTATION_ALTAR_INERT,   DUNGEON,    0,      0,      0,  \"the items on the two altars flash with a brilliant light!\", SCROLL_ENCHANTMENT_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "PIPE_INERT",
+    "web": "PIPE_INERT",
+    "status": "exact",
+    "ceLine": 535,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "PIPE_INERT",
+      "id": 189,
+      "ceLine": 535,
+      "web": "PIPE_INERT",
+      "status": "exact",
+      "description": "charred glass pipes",
+      "flavor": "the inside of the glass pipes are charred.",
+      "webName": "烧焦的玻璃管道",
+      "ceFields": [
+        "G_PIPES",
+        "&black",
+        "0",
+        "45",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(0)",
+        "\"charred glass pipes\"",
+        "\"the inside of the glass pipes are charred.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_INERT_PIPE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 535,
+        "text": "/*PIPE_INERT*/                 {G_PIPES,   &black,                 0,                  45, 0,  DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (0), (0),                                                                                           \"charred glass pipes\",  \"the inside of the glass pipes are charred.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 795,
+        "text": "{PIPE_INERT,                SURFACE,    0,      0,      0,  \"\", SCROLL_ENCHANTMENT_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "RESURRECTION_ALTAR_INERT",
+    "web": "RESURRECTION_ALTAR_INERT",
+    "status": "exact",
+    "ceLine": 539,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "RESURRECTION_ALTAR_INERT",
+      "id": 191,
+      "ceLine": 539,
+      "web": "RESURRECTION_ALTAR_INERT",
+      "status": "exact",
+      "description": "a scorched altar",
+      "flavor": "scorch marks cover the surface of the altar, but it is cold to the touch.",
+      "webName": "烧焦的复活祭坛",
+      "ceFields": [
+        "G_ALTAR",
+        "&black",
+        "&goldAltarBackColor",
+        "16",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT)",
+        "\"a scorched altar\"",
+        "\"scorch marks cover the surface of the altar, but it is cold to the touch.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ALTAR_RESURRECT"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 539,
+        "text": "/*RESURRECTION_ALTAR_INERT*/   {G_ALTAR,   &black,                 &goldAltarBackColor,16, 0,  0,0,0,                                      0,  NO_LIGHT,       (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT),                         \"a scorched altar\",     \"scorch marks cover the surface of the altar, but it is cold to the touch.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 798,
+        "text": "{RESURRECTION_ALTAR_INERT,  DUNGEON,    0,      0,      DFF_RESURRECT_ALLY, \"An old friend emerges from a bloom of sacred light!\", EMPOWERMENT_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "SACRIFICE_ALTAR",
+    "web": "SACRIFICE_ALTAR",
+    "status": "exact",
+    "ceLine": 544,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "SACRIFICE_ALTAR",
+      "id": 194,
+      "ceLine": 544,
+      "web": "SACRIFICE_ALTAR",
+      "status": "exact",
+      "description": "a sacrifice altar",
+      "flavor": "demonological symbols decorate this altar.",
+      "webName": "献祭祭坛",
+      "ceFields": [
+        "G_SAC_ALTAR",
+        "&altarForeColor",
+        "&altarBackColor",
+        "17",
+        "0",
+        "0",
+        "0",
+        "DF_SACRIFICE_COMPLETE",
+        "0",
+        "CANDLE_LIGHT",
+        "(T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_SACRIFICE_ENTRY)",
+        "\"a sacrifice altar\"",
+        "\"demonological symbols decorate this altar.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SACRIFICE_ALTAR"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 544,
+        "text": "/*SACRIFICE_ALTAR*/          {G_SAC_ALTAR, &altarForeColor,        &altarBackColor,    17, 0,  0,0,DF_SACRIFICE_COMPLETE,                  0,  CANDLE_LIGHT,   (T_OBSTRUCTS_SURFACE_EFFECTS), (TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_SACRIFICE_ENTRY), \"a sacrifice altar\",    \"demonological symbols decorate this altar.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 802,
+        "text": "{SACRIFICE_ALTAR,           DUNGEON,    0,      0,      0,  \"a demonic presence whispers its demand: \\\"Bring to me the marked sacrifice!\\\"\"},"
+      }
+    ]
+  },
+  {
+    "ce": "SACRIFICE_LAVA",
+    "web": "SACRIFICE_LAVA",
+    "status": "exact",
+    "ceLine": 545,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "SACRIFICE_LAVA",
+      "id": 195,
+      "ceLine": 545,
+      "web": "SACRIFICE_LAVA",
+      "status": "exact",
+      "description": "a sacrificial pit",
+      "flavor": "the smell of burnt flesh lingers over this pit of lava.",
+      "webName": "献祭熔岩坑",
+      "ceFields": [
+        "G_LIQUID",
+        "&fireForeColor",
+        "&lavaBackColor",
+        "40",
+        "0",
+        "DF_OBSIDIAN",
+        "0",
+        "0",
+        "0",
+        "LAVA_LIGHT",
+        "(T_LAVA_INSTA_DEATH)",
+        "(TM_ALLOWS_SUBMERGING | TM_LIST_IN_SIDEBAR)",
+        "\"a sacrificial pit\"",
+        "\"the smell of burnt flesh lingers over this pit of lava.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_SACRIFICE_COMPLETE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 545,
+        "text": "/*SACRIFICE_LAVA*/             {G_LIQUID,  &fireForeColor,         &lavaBackColor,     40, 0,  DF_OBSIDIAN,0,0,                            0,  LAVA_LIGHT,     (T_LAVA_INSTA_DEATH), (TM_ALLOWS_SUBMERGING | TM_LIST_IN_SIDEBAR),                                  \"a sacrificial pit\",      \"the smell of burnt flesh lingers over this pit of lava.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 803,
+        "text": "{SACRIFICE_LAVA,            DUNGEON,    0,      0,      0,  \"demonic cackling echoes through the room as the altar plunges downward!\"},"
+      }
+    ]
+  },
+  {
+    "ce": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+    "web": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+    "status": "exact",
+    "ceLine": 555,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "id": 201,
+      "ceLine": 555,
+      "web": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+      "status": "exact",
+      "description": "a stone bridge",
+      "flavor": "the narrow stone bridge is extending across the chasm.",
+      "webName": "地面",
+      "ceFields": [
+        "G_FLOOR",
+        "&white",
+        "&chasmEdgeBackColor",
+        "40",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_BRIDGE_ACTIVATE",
+        "6000",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a stone bridge\"",
+        "\"the narrow stone bridge is extending across the chasm.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_BRIDGE_ACTIVATE",
+      "DF_BRIDGE_ACTIVATE_ANNOUNCE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 555,
+        "text": "/*CHASM_WITH_HIDDEN_BRIDGE_ACTIVE*/{G_FLOOR,&white,                &chasmEdgeBackColor,40, 0,  DF_PLAIN_FIRE,0,DF_BRIDGE_ACTIVATE,      6000,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"a stone bridge\",       \"the narrow stone bridge is extending across the chasm.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 840,
+        "text": "{CHASM_WITH_HIDDEN_BRIDGE_ACTIVE,LIQUID,100,    100,    0,  \"\", 0, 0,  0,  CHASM_WITH_HIDDEN_BRIDGE,  DF_BRIDGE_APPEARS},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 841,
+        "text": "{CHASM_WITH_HIDDEN_BRIDGE_ACTIVE,LIQUID,100,    100,    0,  \"a stone bridge extends from the floor with a grinding sound.\", 0, 0,  0,  CHASM_WITH_HIDDEN_BRIDGE,  DF_BRIDGE_APPEARS},"
+      }
+    ]
+  },
+  {
+    "ce": "RAT_TRAP_WALL_CRACKING",
+    "web": "RAT_TRAP_WALL_CRACKING",
+    "status": "exact",
+    "ceLine": 560,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "RAT_TRAP_WALL_CRACKING",
+      "id": 204,
+      "ceLine": 560,
+      "web": "RAT_TRAP_WALL_CRACKING",
+      "status": "exact",
+      "description": "a cracking wall",
+      "flavor": "Cracks are running ominously across the base of this rough stone wall.",
+      "webName": "开裂的鼠陷阱墙",
+      "ceFields": [
+        "G_WALL",
+        "&wallForeColor",
+        "&wallBackColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "DF_WALL_SHATTER",
+        "500",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_EVERYTHING)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR)",
+        "\"a cracking wall\"",
+        "\"Cracks are running ominously across the base of this rough stone wall.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_WALL_CRACK"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 560,
+        "text": "/*RAT_TRAP_WALL_CRACKING*/     {G_WALL,    &wallForeColor,         &wallBackColor,     0,  0,  DF_PLAIN_FIRE,0,DF_WALL_SHATTER,          500,  NO_LIGHT,       (T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR),     \"a cracking wall\",      \"Cracks are running ominously across the base of this rough stone wall.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 818,
+        "text": "{RAT_TRAP_WALL_CRACKING,    DUNGEON,    0,      0,      0,  \"a scratching sound emanates from the nearby walls!\", 0, 0, 0, 0, DF_RUBBLE},"
+      }
+    ]
+  },
+  {
+    "ce": "ELECTRIC_CRYSTAL_ON",
+    "web": "ELECTRIC_CRYSTAL_ON",
+    "status": "exact",
+    "ceLine": 564,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "ELECTRIC_CRYSTAL_ON",
+      "id": 206,
+      "ceLine": 564,
+      "web": "ELECTRIC_CRYSTAL_ON",
+      "status": "exact",
+      "description": "a shining crystal globe",
+      "flavor": "Crackling light streams out of the crystal globe.",
+      "webName": "地面",
+      "ceFields": [
+        "G_ELECTRIC_CRYSTAL",
+        "&white",
+        "&wallCrystalColor",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "CRYSTAL_WALL_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS)",
+        "(TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR)",
+        "\"a shining crystal globe\"",
+        "\"Crackling light streams out of the crystal globe.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_ELECTRIC_CRYSTAL_ON"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 564,
+        "text": "/*ELECTRIC_CRYSTAL_ON*/{G_ELECTRIC_CRYSTAL,&white,                 &wallCrystalColor,  0,  0,  DF_PLAIN_FIRE,0,0,                          0,  CRYSTAL_WALL_LIGHT,(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR), \"a shining crystal globe\", \"Crackling light streams out of the crystal globe.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 895,
+        "text": "{ELECTRIC_CRYSTAL_ON,       DUNGEON,    0,      0,      0, \"the crystal absorbs the electricity and begins to glow.\", CHARGE_FLASH_LIGHT},"
+      }
+    ]
+  },
+  {
+    "ce": "WORM_TUNNEL_MARKER_ACTIVE",
+    "web": "WORM_TUNNEL_MARKER_ACTIVE",
+    "status": "exact",
+    "ceLine": 569,
+    "cells": 0,
+    "distinctEntity": true,
+    "tileDefinition": {
+      "ce": "WORM_TUNNEL_MARKER_ACTIVE",
+      "id": 209,
+      "ceLine": 569,
+      "web": "WORM_TUNNEL_MARKER_ACTIVE",
+      "status": "exact",
+      "description": "a rough granite wall",
+      "flavor": "The granite is split open with splinters of rock jutting out at odd angles.",
+      "webName": "开裂的花岗岩墙",
+      "ceFields": [
+        "0",
+        "0",
+        "0",
+        "100",
+        "0",
+        "0",
+        "0",
+        "DF_GRANITE_CRUMBLES",
+        "-2000",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_VANISHES_UPON_PROMOTION)",
+        "\"a rough granite wall\"",
+        "\"The granite is split open with splinters of rock jutting out at odd angles.\""
+      ]
+    },
+    "dfWriters": [
+      "DF_WORM_TUNNEL_MARKER_ACTIVE"
+    ],
+    "sourceReferences": [
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 569,
+        "text": "/*WORM_TUNNEL_MARKER_ACTIVE*/  {0,         0,                      0,                  100,0,  0,0,DF_GRANITE_CRUMBLES,                -2000,  NO_LIGHT,       (0), (TM_VANISHES_UPON_PROMOTION),                                                                  \"a rough granite wall\", \"The granite is split open with splinters of rock jutting out at odd angles.\"},"
+      },
+      {
+        "file": "BrogueCE-master/src/brogue/Globals.c",
+        "line": 880,
+        "text": "{WORM_TUNNEL_MARKER_ACTIVE, LIQUID,     0,      0,      0},"
+      }
+    ]
+  }
+]

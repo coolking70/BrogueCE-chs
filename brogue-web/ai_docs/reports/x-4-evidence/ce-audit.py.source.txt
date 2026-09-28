@@ -1,0 +1,55 @@
+from pathlib import Path
+import re,json
+out=Path('brogue-web/ai_docs/reports/x-4-evidence')
+base=Path('BrogueCE-master/src')
+def clean(s):
+ return re.sub(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|//[^\n]*|/\*[\s\S]*?\*/',lambda m: ('\n'*m[0].count('\n') if m[0].startswith(('//','/*')) else m[0]),s)
+def parts(s):
+ vals=[];st=0;stack=0;q=None;esc=False
+ for i,c in enumerate(s):
+  if q:
+   if esc:esc=False
+   elif c=='\\':esc=True
+   elif c==q:q=None
+  elif c in '\"\'':q=c
+  elif c in '{[(':stack+=1
+  elif c in '}])':stack-=1
+  elif c==',' and stack==0:vals.append(s[st:i].strip());st=i+1
+ if s[st:].strip():vals.append(s[st:].strip())
+ return vals
+texts={n:(base/n).read_text() for n in ['brogue/Rogue.h','brogue/Globals.c','variants/GlobalsBrogue.c']}
+r=clean(texts['brogue/Rogue.h']);enums={}
+for name,body in re.findall(r'enum\s+(\w+)\s*{(.*?)}',r,re.S):
+ values={};v=-1
+ for e in parts(body):
+  sp=e.split('=',1);key=sp[0].strip()
+  if not re.fullmatch(r'\w+',key):continue
+  try:v=eval(sp[1],{'__builtins__':{}},values) if len(sp)>1 else v+1
+  except:continue
+  values[key]=v
+ enums[name]=values
+
+def array(file,name):
+ raw=texts[file];s=clean(raw);m=re.search(r'\b'+name+r'\s*\[[^]]*\]\s*=\s*\{',s)
+ if not m:raise Exception(name)
+ start=m.end();dep=1;q=None;esc=False;rows=[];rowstart=None
+ for i in range(start,len(s)):
+  c=s[i]
+  if q:
+   if esc:esc=False
+   elif c=='\\':esc=True
+   elif c==q:q=None
+  elif c in '\"\'':q=c
+  elif c=='{':
+   if dep==1:rowstart=i
+   dep+=1
+  elif c=='}':
+   dep-=1
+   if dep==1 and rowstart is not None:rows.append({'index':len(rows),'line':s[:rowstart].count('\n')+1,'fields':parts(s[rowstart+1:i])})
+   if dep==0:break
+ return rows
+arrays={}
+for name,file in [('tileCatalog','brogue/Globals.c'),('dungeonFeatureCatalog','brogue/Globals.c'),('monsterCatalog','brogue/Globals.c'),('monsterText','brogue/Globals.c'),('autoGeneratorCatalog_Brogue','variants/GlobalsBrogue.c'),('blueprintCatalog_Brogue','variants/GlobalsBrogue.c'),('hordeCatalog_Brogue','variants/GlobalsBrogue.c')]+[(x+'Table','brogue/Globals.c') for x in ['key','food','weapon','armor','staff','ring']]+[(x+'Table_Brogue','variants/GlobalsBrogue.c') for x in ['potion','scroll','wand','charm']]:
+ arrays[name]=array(file,name)
+json.dump({'enums':enums,'arrays':arrays},(out/'ce-catalogs.txt').open('w'),ensure_ascii=False,indent=2)
+print(json.dumps({k:len(v) for k,v in arrays.items()},indent=2))

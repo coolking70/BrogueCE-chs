@@ -1,0 +1,46 @@
+from pathlib import Path
+import hashlib,json,shutil,subprocess,re,datetime
+root=Path.cwd();D=root/'brogue-web/ai_docs/reports/x-4-evidence';tmp=root/'brogue-web/tmp-x4'
+assert root==Path('/Users/coolking70/.codex/worktrees/c838/brogue')
+sections={
+ 'BrogueCE-master/src/brogue/Globals.c':[(435,520),(640,705),(736,745),(820,840),(903,933),(1075,1156),(1167,1190)],
+ 'BrogueCE-master/src/variants/GlobalsBrogue.c':[(116,165),(239,253),(299,318),(467,490),(550,564),(684,700),(754,764),(773,782)],
+ 'BrogueCE-master/src/brogue/Architect.c':[(1742,1776),(2547,2563),(3813,3838)],
+ 'BrogueCE-master/src/brogue/Items.c':[(1985,2158),(2160,2200),(2230,2278),(2677,2710),(2903,2940),(2940,3162),(3163,3226),(3325,3378),(3383,3480),(7044,7062)],
+ 'BrogueCE-master/src/brogue/Monsters.c':[(850,870),(3332,3349)],
+ 'BrogueCE-master/src/brogue/Time.c':[(63,81),(2679,2694)],
+ 'BrogueCE-master/src/brogue/Combat.c':[(1827,1857)],
+ 'brogue-web/src/engine/UI/DetailGenerator.ts':[(196,212),(330,563)],
+ 'brogue-web/src/engine/UI/ItemKnowledge.ts':[(1,155)],
+ 'brogue-web/src/engine/Map/Grid.ts':[(716,752)],
+ 'brogue-web/src/engine/Map/LakeSystem.ts':[(162,200)],
+ 'brogue-web/src/engine/Map/AutoGenerator.ts':[(540,580)],
+ 'brogue-web/src/engine/Map/DungeonFeatureCatalog.ts':[(1452,1478)],
+ 'brogue-web/src/engine/Map/TerrainCatalog.ts':[(1165,1187)],
+ 'brogue-web/src/engine/Items/ItemLoader.ts':[(156,191),(543,565),(1225,1280),(1350,1375),(1515,1578)],
+ 'brogue-web/src/engine/Generator/BlueprintEngine.ts':[(775,830),(847,951),(1010,1050)],
+ 'brogue-web/src/engine/Core/Game.ts':[(970,1000),(1108,1129),(1557,1640),(1769,1783),(2313,2328),(5825,6001),(6680,6700),(9530,9552),(10204,10357)],
+}
+parts=[]
+for path,ranges in sections.items():
+ lines=(root/path).read_text().splitlines()
+ for lo,hi in ranges:parts.append(f'\n### {path}:{lo}-{hi}\n'+'\n'.join(f'{i}: {lines[i-1]}' for i in range(lo,min(hi,len(lines))+1)))
+(D/'source-excerpts.txt').write_text('\n'.join(parts)+'\n')
+for f in tmp.iterdir():
+ if f.is_file() and f.suffix in ['.py','.ts','.mjs','.md']:shutil.copyfile(f,D/(f.name+'.source.txt'))
+manifest=json.loads((D/'input-manifest.txt').read_text());roots=['BrogueCE-master/src','brogue-web/src','brogue-web/scripts']
+current={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for r in roots for p in (root/r).rglob('*') if p.is_file()}
+different=[p for p in manifest['files'] if current.get(p)!=manifest['files'][p]];added=sorted(set(current)-set(manifest['files']))
+assert not different and not added,(different,added)
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();assert head==manifest['head']
+link=root/'brogue-web/node_modules';expected=Path('/Users/coolking70/Documents/同步空间/brogue/brogue-web/node_modules')
+assert link.is_symlink() and link.resolve()==expected.resolve();link.unlink()
+shutil.rmtree(tmp)
+audit={'time':datetime.datetime.now().isoformat(),'head':head,'sourceFilesChecked':len(current),'changed':different,'added':added,'temporaryDirectoryRemoved':not tmp.exists(),'temporaryDependencySymlinkRemoved':not link.exists(),'sharedDependencyTargetStillExists':expected.exists(),'gitDiffStat':subprocess.check_output(['git','diff','--stat'],text=True),'gitCachedDiffStat':subprocess.check_output(['git','diff','--cached','--stat'],text=True),'gitStatus':subprocess.check_output(['git','status','--short'],text=True),'branch':subprocess.check_output(['git','branch','--show-current'],text=True).strip(),'generationConcurrency':'one Vitest worker; no concurrent generation; no full npm test','commitPushBranchActions':'none'}
+(D/'final-audit.txt').write_text(json.dumps(audit,ensure_ascii=False,indent=2)+'\n')
+report=root/'brogue-web/ai_docs/reports/x-4-survey.report.md'
+for link in re.findall(r'\]\((x-4-evidence/[^)]+)\)',report.read_text()):assert (report.parent/link).is_file(),link
+assert all(f.suffix=='.txt' for f in D.iterdir() if f.is_file())
+evidence={f.name:{'bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()} for f in sorted(D.iterdir()) if f.is_file() and f.name!='evidence-manifest.txt'}
+(D/'evidence-manifest.txt').write_text(json.dumps({'reportSha256':hashlib.sha256(report.read_bytes()).hexdigest(),'files':evidence},ensure_ascii=False,indent=2)+'\n')
+print(json.dumps(audit,ensure_ascii=False,indent=2));print('Evidence files:',len(evidence)+1)

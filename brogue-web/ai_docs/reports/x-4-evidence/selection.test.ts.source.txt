@@ -1,0 +1,17 @@
+import {test} from 'vitest';
+import fs from 'node:fs';
+import {Game} from '../src/engine/Core/Game';
+import {BlueprintEngine} from '../src/engine/Generator/BlueprintEngine';
+import {setMachineObservationHook} from '../src/engine/Generator/MachineObservation';
+test('X4 natural rare-blueprint selection stages',()=>{
+ const p:any=BlueprintEngine.prototype,stats:any={seeds:[1191900,1199819],floors:0,stages:{},rollbacks:{}};
+ const inc=(o:any,k:string)=>o[k]=(o[k]??0)+1;
+ const methods=['findGateRoom','fillAreaInterior','applyBlueprint'];const originals:any={};
+ const build=p.buildMachines;stats.guardianGateAvailability=[];
+ p.buildMachines=function(...args:any[]){if(this.depth>=4&&this.depth<=26){const a=this.getGateAnalysis();let eligible=0,gateSites=0;for(let x=0;x<a.gateSite.length;x++)for(let y=0;y<a.gateSite[x].length;y++){if(!a.gateSite[x][y]||this.grid.getCell(x,y)?.machineNumber)continue;gateSites++;if(a.chokeMap[x][y]>=85&&a.chokeMap[x][y]<=100)eligible++;}stats.guardianGateAvailability.push({depth:this.depth,gateSites,eligible});}return build.apply(this,args);};
+ for(const name of methods){originals[name]=p[name];p[name]=function(...args:any[]){const result=originals[name].apply(this,args);const id=args[0]?.ceBlueprintId;if([46,50].includes(id)){let outcome=name==='findGateRoom'?result.kind:result?'success':'null';inc(stats.stages,`${id}:${name}:${outcome}`);}return result;};}
+ setMachineObservationHook(t=>{if([46,50].includes(t.ceBlueprintId??-1)&&t.status==='rolled_back')inc(stats.rollbacks,`${t.ceBlueprintId}:${t.reason}`);});
+ const started=Date.now();
+ try{const g:any=new Game();for(const seed of stats.seeds)for(let d=1;d<=40;d++){if(d===1)g.startNewGame({seed,mode:'normal'});else{g.depth=d;g.generateDepth(false,false);}stats.floors++;}}
+ finally{for(const name of methods)p[name]=originals[name];p.buildMachines=build;setMachineObservationHook(null);stats.elapsedSeconds=(Date.now()-started)/1000;fs.writeFileSync('ai_docs/reports/x-4-evidence/natural-selection.txt',JSON.stringify(stats,null,2)+'\n');}
+},300000);

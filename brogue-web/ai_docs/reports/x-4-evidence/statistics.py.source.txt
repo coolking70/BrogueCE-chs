@@ -1,0 +1,48 @@
+from pathlib import Path
+import json,re
+D=Path('brogue-web/ai_docs/reports/x-4-evidence');S=Path('brogue-web/src')
+g=json.loads((D/'generation-summary-100.txt').read_text());a=json.loads((D/'catalog-audit.txt').read_text());ce=json.loads((D/'ce-catalogs.txt').read_text());w=json.loads((D/'web-catalogs.txt').read_text());bps=json.loads((S/'data/blueprints.json').read_text());mons=json.loads((S/'data/monsters.json').read_text());local=json.loads((S/'locales/zh_CN.json').read_text())
+inc=lambda d,k,n:d.__setitem__(k,d.get(k,0)+n)
+rows=[]
+for r in w['ag']:
+ obs=g['autogen'].get(str(r['index']),{'count':0,'built':0,'locationMisses':0});expected=0
+ if r['index']:
+  for dep,n in g['depths'].items():
+   dep=int(dep)
+   if r['minDepth']<=dep<=r['maxDepth']:
+    base=min(int((r['minNumberIntercept']+dep*r['minNumberSlope'])/100),r['maxNumber']);p=r['frequency']/100
+    expected+=n*sum(1 if k<=base else p**(k-base) for k in range(1,r['maxNumber']+1))
+ rows.append({'index':r['index'],'ceLine':r['ceLine'],'terrain':r['ceTerrain'],'df':r['ceDf'],'machine':r['ceMachine'],'depth':[r['minDepth'],r['maxDepth']],'frequency':r['frequency'],'expectedRequests':round(expected,3),**obs,'carrier':r['carrier'],'note':r['note']})
+bpRows=[];features=[]
+for b in bps:
+ if not b.get('ceBlueprintId'):continue
+ id=b['ceBlueprintId'];bpRows.append({'id':id,'name':b['id'],'depth':b['depthRange'],'frequency':b['frequency'],'built':g['blueprints'].get(str(id),0),'flags':b['flags']})
+ for i,f in enumerate(b['features']):features.append({'bp':id,'index':i,'terrain':f.get('terrain'),'df':f.get('featureDF'),'itemCategory':f.get('itemCategory'),'itemId':f.get('itemId'),'monsterId':f.get('monsterId'),'hordeFlags':f.get('hordeFlags'),'placements':g['machineFeatures'].get(f'{id}:{i}',0),'flags':f['flags']})
+terrainRows=[{k:r[k] for k in ['ce','web','status','ceLine']}|{'cells':g['terrain'].get(r['web'],0),'distinctEntity':r['status']!='missing'} for r in a['terrain']]
+# SpawnKey does not retain identityId; census kept translated names. Resolve only exact catalog names, never guess.
+keys=json.loads((S/'data/arcana.json').read_text())['keys'];nameIds={local.get('name.'+k['name'],k['name']):k['id'] for k in keys};itemCounts={}
+for k,v in g['items'].items():
+ cat,id=k.split(':',1);id=nameIds.get(id,id);inc(itemCounts,id,v)
+itemRows=[{k:r[k] for k in ['ce','group','candidate','exists','frequency','ceLine']}|{'instances':itemCounts.get(r['candidate'],0)} for r in a['items']]
+for ceName,id in [('GOLD','金币'),('AMULET','amulet_of_yendor'),('GEM','lumenstone')]:itemRows.append({'ce':ceName,'candidate':id,'exists':True,'frequency':'category/forced','instances':sum(v for k,v in g['items'].items() if k.startswith(ceName+':'))})
+hordes=ce['arrays']['hordeCatalog_Brogue'];monRows=[]
+for m in a['monsters']:
+ refs=[]
+ for h in hordes:
+  f=h['fields'];pattern=r'\b'+m['ce']+r'\b'
+  if re.search(pattern,f[0]+' '+(f[2] if len(f)>2 else '')):refs.append({'line':h['line'],'min':f[4],'max':f[5],'frequency':f[6],'flags':f[9] if len(f)>9 else '0','machine':f[8] if len(f)>8 else '0','role':'leader' if f[0]==m['ce'] else 'member'})
+ monRows.append({'ce':m['ce'],'web':m['web'],'instances':g['monsters'].get(m['web'],0),'hordeReferences':refs})
+result={'floors':g['floors'],'seeds':g['seeds'],'depths':g['depths'],'elapsedSeconds':g['elapsedSeconds'],'errors':g['errors'],'autogen':rows,'blueprints':sorted(bpRows,key=lambda r:r['id']),'machineFeatures':features,'terrain':terrainRows,'items':itemRows,'monsters':monRows,'machineProductCounts':g['machineProducts']}
+(D/'generation-tables.txt').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+lines=['自动生成行：CE期望是抽取/请求次数，不是CE实际成功次数。','index\tCE target\tdepth\tfreq\tCE expected requests\tweb requests\tweb built\tlocation misses']
+for r in rows:lines.append('\t'.join(map(str,[r['index'],r['machine'] if r['machine']!='0' else r['df'] if r['df']!='0' else r['terrain'],r['depth'],r['frequency'],r['expectedRequests'],r['count'],r['built'],r['locationMisses']])))
+lines+=['\n所有蓝图：CE frequency=0 仍可能有强制入口。','id\tname\tdepth\tfreq\tweb built']
+for r in result['blueprints']:lines.append('\t'.join(map(str,[r['id'],r['name'],r['depth'],r['frequency'],r['built']])))
+lines+=['\n所有物品种类：floor + carried instances; stack is one instance, gold counts piles.','CE kind\tweb kind\tCE frequency\tweb instances']
+for r in itemRows:lines.append('\t'.join(map(str,[r['ce'],r['candidate'],r['frequency'],r['instances']])))
+lines+=['\n所有怪物：active + dormant, spawn snapshot only.','CE species\tweb species\tinstances\tCE horde references']
+for r in monRows:lines.append('\t'.join(map(str,[r['ce'],r['web'],r['instances'],r['hordeReferences']])))
+lines+=['\n所有地形：four layers, final entry snapshot; CE absent types explicitly zero.','CE terrain\tweb terrain\tstatus\tcells']
+for r in terrainRows:lines.append('\t'.join(map(str,[r['ce'],r['web'],r['status'],r['cells']])))
+(D/'generation-tables-readable.txt').write_text('\n'.join(lines)+'\n')
+print('autogen zero',[r['index'] for r in rows if r['index'] and not r['built']]);print('blueprint zero',[(r['id'],r['frequency']) for r in bpRows if not r['built']]);print('item zero',[(r['ce'],r['frequency']) for r in itemRows if not r['instances']]);print('monster zero',[r['ce'] for r in monRows if not r['instances']]);print('finished floors',g['floors'],'seconds',g['elapsedSeconds'])
