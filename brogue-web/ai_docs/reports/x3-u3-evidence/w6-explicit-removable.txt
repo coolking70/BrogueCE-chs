@@ -1,0 +1,18 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u3-w6-counterfactual
+
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full
+[X3-U3 W6 fixture] {"enchantment":4,"isCursed":false,"identified":true}
+
+ ✓ src/test/w_6_arcana_recharge.test.ts (28 tests) 1785ms
+     ✓ same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge  675ms
+
+ Test Files  1 passed (1)
+      Tests  28 passed (28)
+   Start at  20:47:13
+   Duration  2.67s (transform 487ms, setup 0ms, import 794ms, tests 1.79s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/ai_docs/reports/x3-u3-evidence/w6-explicit-removable.json

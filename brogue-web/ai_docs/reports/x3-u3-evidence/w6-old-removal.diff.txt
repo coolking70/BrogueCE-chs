@@ -1,0 +1,11 @@
+--- current/Player.ts
++++ old-removal/Player.ts
+@@ -110,7 +110,7 @@
+             .some(slot => slot?.id === item.id);
+         // CE Items.c:8640-8651: one removal gate, before any slot/status mutation.
+         // Attempting removal does not identify an unknown cursed item.
+-        if (!equipped || (item.isCursed && !force)) return false;
++        if (!equipped) return false;
+         if (this.equippedWeapon?.id === item.id) this.equippedWeapon = null;
+         if (this.equippedArmor?.id === item.id) {
+             this.equippedArmor = null;

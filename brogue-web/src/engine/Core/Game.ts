@@ -3521,6 +3521,9 @@ export class Game {
     }
 
     public equipItem(item: Item) {
+        const previous = item.category === ItemCategory.WEAPON ? this.player.equippedWeapon
+            : item.category === ItemCategory.ARMOR ? this.player.equippedArmor : null;
+        if (previous && !this.unequipItem(previous, false)) return;
         if (this.player.equip(item, false)) {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
             // B-1a：CE Items.c:8583-8586——clairvoyance/light/stealth 三戒指戴上
@@ -3541,18 +3544,38 @@ export class Game {
         }
     }
 
-    public unequipItem(item: Item) {
-        this.player.unequip(item);
-        logger.log(i18next.t('item.unequip', { name: item.name, defaultValue: `You took off the ${item.name}.` }), '#aaaaaa');
+    /** Internal equip/drop/throw removal shares the gate but spends no extra turn. */
+    public unequipItem(item: Item, endTurn = true, cursedMessage?: string): boolean {
+        const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+            .some(slot => slot?.id === item.id);
+        if (!equipped) return false;
+        if (!this.player.unequip(item)) {
+            // CE itemName(includeDetails=false): no enchantment/runic disclosure.
+            const name = Object.assign(Object.create(item) as Item, {
+                identified: false, runicKnown: false, maxChargesKnown: false, timesUsed: 0,
+            }).displayName;
+            logger.log(cursedMessage ?? i18next.t('item.cannot_unequip_cursed', {
+                name, suffix: item.quantity === 1 ? 's' : '',
+                defaultValue: "you can't; your {{name}} appear{{suffix}} to be cursed."
+            }), '#ff9999');
+            return false;
+        }
         this.syncEquipmentStatuses();
         this.needsRender = true;
-        // CE Items.c:8349 unequipItem 成功路径以 playerTurnEnded() 收尾——完整回合
-        timeSystem.currentTick += this.player.movementSpeed;
-        this.playerTurnEnded();
+        if (endTurn) {
+            logger.log(i18next.t('item.unequip', { name: item.name, defaultValue: `You took off the ${item.name}.` }), '#aaaaaa');
+            // CE unequip() spends one turn; internal unequipItem() does not.
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
+        }
+        return true;
     }
 
     public dropItem(item: Item) {
         if (this.player.inventory.items.includes(item)) {
+            const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+                .some(slot => slot?.id === item.id);
+            if (equipped && !this.unequipItem(item, false)) return;
             // CE dropItem peels one food/potion/scroll, but drops an entire
             // throwing-weapon or GEM stack. The peeled copy needs its own entity ID.
             const peel = item.quantity > 1 && item.category !== ItemCategory.WEAPON && item.category !== ItemCategory.GEM;
@@ -3563,7 +3586,6 @@ export class Game {
                 item.quantity--;
             } else {
                 this.player.inventory.removeItem(item);
-                this.player.unequip(item);
                 this.syncEquipmentStatuses();
             }
             dropped.loc = { x: this.player.loc.x, y: this.player.loc.y };
@@ -5880,15 +5902,27 @@ export class Game {
 
         if (!this.grid.isValidPos(tx, ty) || !this.player.inventory.items.includes(item)) return;
 
-        // CE throwCommand（Items.c:7099-7111）：已装备且是最后一件 → 诅咒装备
-        // 扔不出去（取消，不耗回合）。confirm 弹层是 UI 债，登记。
-        const isEquippedWeapon = this.player.equippedWeapon === item;
-        if (isEquippedWeapon && item.quantity <= 1 && item.isCursed) {
-            logger.log(i18next.t('throw.cursed_equipped', {
-                name: item.displayName,
-                defaultValue: `You cannot unequip your ${item.displayName}; it appears to be cursed.`
-            }), '#ff9999');
-            return;
+        const equipped = [this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+            .some(slot => slot?.id === item.id);
+        // CE Items.c:7101-7111: confirm first, then curse refusal, before any
+        // inventory mutation or RNG. A stack >1 keeps the equipped remainder.
+        if ((equipped || item.timesEnchanted > 0) && item.quantity <= 1) {
+            const name = Object.assign(Object.create(item) as Item, {
+                identified: false, runicKnown: false, maxChargesKnown: false, timesUsed: 0,
+            }).displayName;
+            if (!this.requestConfirm(i18next.t('throw.confirm_valuable', {
+                name, defaultValue: 'Are you sure you want to throw your {{name}}?'
+            }))) return;
+            const cursedMessage = i18next.t('throw.cursed_equipped', {
+                name, defaultValue: 'You cannot unequip your {{name}}; it appears to be cursed.'
+            });
+            if (equipped) {
+                if (!this.unequipItem(item, false, cursedMessage)) return;
+            } else if (item.isCursed) {
+                // CE also refuses an enchanted, unequipped cursed singleton.
+                logger.log(cursedMessage, '#ff9999');
+                return;
+            }
         }
 
         const origin = { ...this.player.loc };
@@ -5897,7 +5931,7 @@ export class Game {
         // CE throwCommand 尾段（Items.c:7152-7162）：先备好"飞行的那一件"，
         // 再更新背包。堆叠 >1：数量 -1，克隆件（quantity=1）起飞；
         // 最后一件：整件移出背包（已装备则先卸下）。
-        const thrown = prepareThrownItem(this.player, item, origin, isEquippedWeapon);
+        const thrown = prepareThrownItem(this.player, item, origin, false);
 
         // —— 弹道（CE throwItem，Items.c:6882-6947）——
         // BOLT_NONE 取线（web 复用 boltPath 的 Bresenham 近似，怪物弹道同款）；

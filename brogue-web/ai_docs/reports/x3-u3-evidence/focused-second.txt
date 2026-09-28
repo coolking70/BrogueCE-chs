@@ -1,0 +1,76 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web
+
+stdout | src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D08 one engine removal gate > equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u3_cursed_equipment.test.ts (65 tests) 29597ms
+     ✓ equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  451ms
+     ✓ equippedWeapon unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  1721ms
+     ✓ equippedWeapon drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  410ms
+     ✓ equippedWeapon drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  406ms
+     ✓ equippedWeapon throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  386ms
+     ✓ equippedWeapon throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  436ms
+     ✓ equippedArmor unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  416ms
+     ✓ equippedArmor unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  430ms
+     ✓ equippedArmor drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  425ms
+     ✓ equippedArmor drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  427ms
+     ✓ equippedArmor throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  463ms
+     ✓ equippedArmor throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  422ms
+     ✓ ringLeft unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  393ms
+     ✓ ringLeft unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  396ms
+     ✓ ringLeft drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  374ms
+     ✓ ringLeft drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  388ms
+     ✓ ringLeft throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  401ms
+     ✓ ringLeft throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  614ms
+     ✓ ringRight unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  593ms
+     ✓ ringRight unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  499ms
+     ✓ ringRight drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  479ms
+     ✓ ringRight drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  386ms
+     ✓ ringRight throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  440ms
+     ✓ ringRight throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  423ms
+     ✓ equippedWeapon cannot be replaced, even by an unidentified item  359ms
+     ✓ equippedArmor cannot be replaced, even by an unidentified item  576ms
+     ✓ a full pair of rings keeps both cursed slots when a third ring is equipped  570ms
+     ✓ equippedWeapon low-level unequip refuses; explicit force removes it without revealing its curse  434ms
+     ✓ equippedArmor low-level unequip refuses; explicit force removes it without revealing its curse  443ms
+     ✓ ringLeft low-level unequip refuses; explicit force removes it without revealing its curse  626ms
+     ✓ ringRight low-level unequip refuses; explicit force removes it without revealing its curse  594ms
+     ✓ equippedWeapon ordinary unequip succeeds and spends exactly one turn  385ms
+     ✓ equippedWeapon ordinary drop succeeds and spends exactly one turn  368ms
+     ✓ equippedWeapon ordinary throw succeeds and spends exactly one turn  577ms
+     ✓ equippedArmor ordinary unequip succeeds and spends exactly one turn  572ms
+     ✓ equippedArmor ordinary drop succeeds and spends exactly one turn  342ms
+     ✓ equippedArmor ordinary throw succeeds and spends exactly one turn  339ms
+     ✓ ringLeft ordinary unequip succeeds and spends exactly one turn  349ms
+     ✓ ringLeft ordinary drop succeeds and spends exactly one turn  331ms
+     ✓ ringLeft ordinary throw succeeds and spends exactly one turn  328ms
+     ✓ ringRight ordinary unequip succeeds and spends exactly one turn  320ms
+     ✓ ringRight ordinary drop succeeds and spends exactly one turn  468ms
+     ✓ ringRight ordinary throw succeeds and spends exactly one turn  473ms
+     ✓ equippedWeapon ordinary replacement spends only one turn  574ms
+     ✓ equippedArmor ordinary replacement spends only one turn  528ms
+     ✓ unknown ring refusal uses its flavor/call name without identifying its kind or enchantment  366ms
+     ✓ unequipped cursed gear may still be dropped and non-enchanted gear thrown  367ms
+     ✓ equippedWeapon No is asked before the curse refusal and preserves gameplay state  353ms
+     ✓ equippedArmor No is asked before the curse refusal and preserves gameplay state  374ms
+     ✓ ringLeft No is asked before the curse refusal and preserves gameplay state  372ms
+     ✓ ringRight No is asked before the curse refusal and preserves gameplay state  364ms
+     ✓ enchanted unequipped singleton answer=false uses timesEnchanted and records the decision  387ms
+     ✓ enchanted unequipped singleton answer=true uses timesEnchanted and records the decision  389ms
+     ✓ enchanted staff kindKnown=false: prompt preserves flavor/call name but omits charges  374ms
+     ✓ enchanted staff kindKnown=true: prompt preserves flavor/call name but omits charges  382ms
+     ✓ natural positive enchantment is not timesEnchanted and does not prompt  380ms
+     ✓ CE refuses a loose cursed singleton with timesEnchanted >0 after Yes as well  412ms
+     ✓ cursed equipped enchanted stack throws one without asking; drop still refuses the remainder  412ms
+     ✓ throwing a ring removes it from the equipment effect consumers  493ms
+     ✓ Chinese messages use the same engine gate and confirmation  616ms
+     ✓ natural starting weapon No then Yes, animation=false: public replay and seek have zero OOS  784ms
+     ✓ natural starting weapon No then Yes, animation=true: public replay and seek have zero OOS  708ms
+     ✓ cursed unequip/drop/replacement/throw replay and seek preserve refusals with zero OOS  726ms
+
+ Test Files  1 passed (1)
+      Tests  65 passed (65)
+   Start at  17:44:30
+   Duration  31.90s (transform 1.28s, setup 0ms, import 2.04s, tests 29.60s, environment 1ms)
+

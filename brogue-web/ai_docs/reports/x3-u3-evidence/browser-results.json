@@ -1,0 +1,3761 @@
+{
+  "results": [
+    {
+      "slot": "equippedWeapon",
+      "op": "卸下",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          21,
+          null,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "长剑",
+              "category": 0
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          21,
+          null,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的长剑似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "unequip|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "长剑",
+              "category": 0
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "equippedWeapon",
+      "op": "丢弃",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          21,
+          null,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "长剑",
+              "category": 0
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          21,
+          null,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的长剑似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "drop|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "长剑",
+              "category": 0
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "equippedArmor",
+      "op": "卸下",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的皮甲似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "unequip|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "equippedArmor",
+      "op": "丢弃",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的皮甲似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "drop|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "ringLeft",
+      "op": "卸下",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          21,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          21,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的缟玛瑙戒指似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "unequip|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "ringLeft",
+      "op": "丢弃",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          21,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          21,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的缟玛瑙戒指似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "drop|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "ringRight",
+      "op": "卸下",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          null,
+          21
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          null,
+          21
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的缟玛瑙戒指似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "unequip|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "slot": "ringRight",
+      "op": "丢弃",
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          null,
+          21
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 3392260207,
+            "b": 3711334578,
+            "c": 2860441461,
+            "d": 4176204028
+          },
+          "draws": 2648
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          null,
+          null,
+          21
+        ],
+        "floor": [],
+        "messages": [
+          "你办不到；你的缟玛瑙戒指似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "drop|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 3392260207,
+                  "b": 3711334578,
+                  "c": 2860441461,
+                  "d": 4176204028
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2648,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "缟玛瑙戒指",
+              "category": 8
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "op": "throw",
+      "cursed": true,
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "denied": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "选择一个目标来投掷皮甲。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 3,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              false
+            ],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "选择一个目标来投掷皮甲。",
+          "你无法卸下皮甲；它似乎受到了诅咒。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 3,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              false
+            ],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 4,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 5,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 6,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 7,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              true
+            ],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 8,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "op": "throw",
+      "cursed": false,
+      "before": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [],
+        "events": [],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "denied": {
+        "turn": 0,
+        "tick": 0,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [
+          {
+            "id": 21,
+            "identified": false,
+            "quantity": 1
+          }
+        ],
+        "slots": [
+          null,
+          21,
+          null,
+          null
+        ],
+        "floor": [],
+        "messages": [
+          "选择一个目标来投掷皮甲。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 3,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              false
+            ],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [
+            {
+              "letter": "a",
+              "name": "皮甲",
+              "category": 1
+            }
+          ],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "accepted": {
+        "turn": 1,
+        "tick": 100,
+        "rng": {
+          "stream": {
+            "a": 87182991,
+            "b": 2392133891,
+            "c": 284233417,
+            "d": 2025061315
+          },
+          "draws": 2646
+        },
+        "inventory": [],
+        "slots": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "floor": [
+          21
+        ],
+        "messages": [
+          "选择一个目标来投掷皮甲。",
+          "你投掷了皮甲。"
+        ],
+        "events": [
+          {
+            "index": 0,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 1,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 2,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 3,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              false
+            ],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 4,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "toggle_inventory",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 5,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "item:command",
+            "data": "throw|a|",
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 6,
+            "tick": 0,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "escape",
+            "data": null,
+            "decisions": [],
+            "turn": 0,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          },
+          {
+            "index": 7,
+            "tick": 100,
+            "depth": 1,
+            "player": {
+              "x": 40,
+              "y": 15
+            },
+            "action": "mouse_travel",
+            "data": {
+              "x": 43,
+              "y": 15
+            },
+            "decisions": [
+              true
+            ],
+            "turn": 1,
+            "rng": {
+              "version": 2,
+              "algorithm": "brogue-web-ranval32-uint64-level-v2",
+              "streams": [
+                {
+                  "a": 87182991,
+                  "b": 2392133891,
+                  "c": 284233417,
+                  "d": 2025061315
+                },
+                {
+                  "a": 3689047003,
+                  "b": 876190738,
+                  "c": 1493007176,
+                  "d": 3986210571
+                }
+              ],
+              "currentRNG": 0,
+              "randomNumbersGenerated": 2646,
+              "cosmeticNumbersGenerated": 157
+            }
+          }
+        ],
+        "text": {
+          "seed": "33003",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 40,
+            "y": 15,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 8,
+          "depth": 1,
+          "knownStairs": {
+            "down": {
+              "x": 1,
+              "y": 4
+            },
+            "up": {
+              "x": 38,
+              "y": 27
+            }
+          },
+          "inventory": [],
+          "isThrowing": false,
+          "referenceScreen": null,
+          "mapLayout": {
+            "offsetX": 0,
+            "offsetY": 248.10126582278482,
+            "scaleX": 0.870253164556962,
+            "scaleY": 0.870253164556962,
+            "tile": 16,
+            "follow": false
+          },
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": [
+            {
+              "name": "皮甲",
+              "x": 43,
+              "y": 15
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "dialogs": [
+    {
+      "message": "你确定要投掷你的皮甲吗？",
+      "answer": false
+    },
+    {
+      "message": "你确定要投掷你的皮甲吗？",
+      "answer": true
+    },
+    {
+      "message": "你确定要投掷你的皮甲吗？",
+      "answer": false
+    },
+    {
+      "message": "你确定要投掷你的皮甲吗？",
+      "answer": true
+    }
+  ],
+  "errors": []
+}

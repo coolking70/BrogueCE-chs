@@ -1,0 +1,67 @@
+
+ RUN  v4.1.11 /private/tmp/x3-u3-w6-counterfactual
+
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full
+[X3-U3 W6 fixture] {"enchantment":4,"isCursed":true,"identified":true}
+
+ ❯ src/test/w_6_arcana_recharge.test.ts (28 tests | 1 failed) 1922ms
+     ✓ E=2 cycle=2500; exact truncated bounds and clump=3 2ms
+     ✓ E=3 cycle=1666; exact truncated bounds and clump=3 0ms
+     ✓ E=8 cycle=625; exact truncated bounds and clump=3 0ms
+     ✓ wisdom -99 gives exactly 0 recharge points per objective block 0ms
+     ✓ wisdom -10 gives exactly 0 recharge points per objective block 0ms
+     ✓ wisdom -2 gives exactly 5 recharge points per objective block 0ms
+     ✓ wisdom -1 gives exactly 7 recharge points per objective block 0ms
+     ✓ wisdom 0 gives exactly 10 recharge points per objective block 0ms
+     ✓ wisdom 1 gives exactly 12 recharge points per objective block 0ms
+     ✓ wisdom 2 gives exactly 16 recharge points per objective block 0ms
+     ✓ wisdom 5 gives exactly 37 recharge points per objective block 0ms
+     ✓ wisdom 27 gives exactly 11925 recharge points per objective block 0ms
+     ✓ wisdom 99 gives exactly 11925 recharge points per objective block 0ms
+     ✓ initial 500-point delay is lazy and fixed; recurring intervals consume real substantive clumped RNG 0ms
+     ✓ full staffs freeze their positive timer and draw nothing; depletion resumes that timer 0ms
+     ✓ high wisdom can restore several charges; continues settling overshoot after reaching capacity 0ms
+     ✓ capacity caps charges independently of E; invalid E never gets rewritten or loops 0ms
+     ✓ CE normalizes an overlong timer at unusually high E without RNG or changing E/capacity 0ms
+     ✓ W-25/26 activate both CE slow-cycle identities 0ms
+     ✓ same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge  755ms
+     × only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full 202ms
+     ✓ all WAND kinds stay depleted (including retired ones); ground staffs do not tick; charm legacy cooldown still ticks once 190ms
+     ✓ actual E3 cast 3->2 then natural recharge 2->3, keeping E/capacity and unknown-state flags 194ms
+     ✓ real read consumes scroll/time, fills every staff, clears every charm cooldown, leaves other resources alone 194ms
+     ✓ charm-only is eligible; empty or wand-only pack still consumes scroll but never adds wand uses 179ms
+     ✓ pack/ground JSON round-trip preserves timer and partial P2 gate; next recharge matches uninterrupted continuation 201ms
+     ✓ signed countdown values round-trip without RNG or spawn 0ms
+     ✓ details no longer promise fixed-turn/wand recharge or disclose hidden E through a numeric period 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full
+AssertionError: expected 468 to be 479 // Object.is equality
+
+- Expected
++ Received
+
+- 479
++ 468
+
+ ❯ src/test/w_6_arcana_recharge.test.ts:147:45
+    145|         game.player.unequip(a);
+    146|         wait(game);
+    147|         expect(item.staffRechargeRemaining).toBe(479); // -2 -> 5
+       |                                             ^
+    148|         a.identified = false;
+    149|         game.player.equip(a);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 27 passed (28)
+   Start at  20:47:06
+   Duration  2.88s (transform 469ms, setup 0ms, import 869ms, tests 1.92s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/ai_docs/reports/x3-u3-evidence/w6-current.json

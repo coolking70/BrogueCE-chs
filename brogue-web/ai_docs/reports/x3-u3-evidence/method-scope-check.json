@@ -1,0 +1,20 @@
+[
+  {
+    "file": "src/engine/Core/Game.ts",
+    "changedMethods": [
+      "dropItem",
+      "equipItem",
+      "throwItemAt",
+      "unequipItem"
+    ],
+    "outsideAllowedMethodsChanged": false
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "changedMethods": [
+      "equip",
+      "unequip"
+    ],
+    "outsideAllowedMethodsChanged": false
+  }
+]

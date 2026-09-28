@@ -1,0 +1,198 @@
+[
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/b2_transcription.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-1.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "B2 production census observes committed CE71 machines and their actual occupants on 34 seed \u00d7 D1\u2013D26",
+        "duration": 1779306.2616249998
+      }
+    ],
+    "exit": 0,
+    "seconds": 282.546,
+    "started": "2026-09-28T20:48:52.293149+08:00",
+    "finished": "2026-09-28T20:53:34.839600+08:00",
+    "passedTests": 21,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/blueprint_center.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-2.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "\u84dd\u56fe\u5b9d\u85cf\u843d\u70b9\uff08machine center\uff09\u53ef\u901a\u884c\u6027 b) \u5168\u5c40\u626b\u63cf\uff0844 seeds \u00d7 D1..D26\uff09\uff1a\u623f\u95f4 center \u53ef\u901a\u884c\u3001\u533a\u57df origin \u5c5e\u4e8e interior\uff08CE8 \u7a7a\u57df\u5355\u72ec\u9a8c\u8bc1\uff09",
+        "duration": 931680.869416
+      }
+    ],
+    "exit": 0,
+    "seconds": 407.649,
+    "started": "2026-09-28T20:53:34.900398+08:00",
+    "finished": "2026-09-28T21:00:22.550346+08:00",
+    "passedTests": 7,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/c_8_connectivity.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-3.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "C-8 \u751f\u6210\u671f DF \u653e\u7f6e\u5426\u51b3\uff1aweb \u79fb\u52a8\u56fe\u53e3\u5f84 T2 \u5e7f\u5ea6\u65ad\u8a00\uff08\u533a\u95f4\u6765\u81ea\u4fee\u590d\u524d\u540e\u5b9e\u6d4b\uff09\uff1a30 seed \u00d7 D1-D25 \u574f\u5c42=0",
+        "duration": 2451160.9897499997
+      }
+    ],
+    "exit": 0,
+    "seconds": 222.029,
+    "started": "2026-09-28T21:00:22.602987+08:00",
+    "finished": "2026-09-28T21:04:04.632320+08:00",
+    "passedTests": 7,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/invented_content_pool.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/invented_content_pool.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-4.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "D2 \u6574\u5c42\u751f\u6210\u626b\u63cf\uff1a20 seed \u00d7 D1-D26 \u9047\u4e0d\u5230\u4efb\u4f55\u81ea\u521b\u9879 520 \u5c42\u751f\u6210\u7684\u5730\u9762/\u673a\u5668/\u796d\u575b/\u91d1\u5e93\u7269\u54c1\u4e2d\u81ea\u521b\u9879\u51fa\u73b0 0 \u6b21",
+        "duration": 1063259.66825
+      }
+    ],
+    "exit": 0,
+    "seconds": 146.221,
+    "started": "2026-09-28T21:04:04.682675+08:00",
+    "finished": "2026-09-28T21:06:30.904695+08:00",
+    "passedTests": 7,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/monster_stats_effect.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/monster_stats_effect.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-5.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "\u602a\u7269\u4e94\u9879\u6570\u503c\u63a5\u7ebf\u6548\u679c\uff1alegacy vs wired\uff0832 seed \u00d7 500 \u56de\u5408\u914d\u5bf9\u805a\u5408\uff09 \u805a\u5408\u5bf9\u6bd4\uff1a\u547d\u4e2d\u7387\u4e0e\u7d2f\u8ba1\u53d7\u4f24\u91cf",
+        "duration": 905905.010333
+      }
+    ],
+    "exit": 0,
+    "seconds": 111.913,
+    "started": "2026-09-28T21:06:30.955058+08:00",
+    "finished": "2026-09-28T21:08:22.868858+08:00",
+    "passedTests": 2,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/v_2b_9e_2_autogen.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/v_2b_9e_2_autogen.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-6.json"
+    ],
+    "originalError": "Test timed out in 600000ms. (full.txt)",
+    "originalLimitMs": 600000,
+    "originalFailures": [
+      {
+        "name": "V-2b-9e-2 production census observes six active forced carriers, CE66 restored, blocking retry, and empty rewards",
+        "duration": 834806.275334
+      }
+    ],
+    "exit": 0,
+    "seconds": 118.726,
+    "started": "2026-09-28T21:08:22.918767+08:00",
+    "finished": "2026-09-28T21:10:21.645135+08:00",
+    "passedTests": 16,
+    "failedTests": 0,
+    "changedInputs": []
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/w_5_arcana_instance.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/timeout-retry-7.json"
+    ],
+    "originalError": "Test timed out in 900000ms. (full.txt)",
+    "originalLimitMs": 900000,
+    "originalFailures": [
+      {
+        "name": "W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) \u00d7 D1\u201326 retain category coverage and obey initial per-kind values",
+        "duration": 1044025.4659999999
+      }
+    ],
+    "exit": 0,
+    "seconds": 292.418,
+    "started": "2026-09-28T21:10:21.702857+08:00",
+    "finished": "2026-09-28T21:15:14.121555+08:00",
+    "passedTests": 18,
+    "failedTests": 0,
+    "changedInputs": []
+  }
+]

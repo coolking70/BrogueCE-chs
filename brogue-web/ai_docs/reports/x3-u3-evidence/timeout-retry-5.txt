@@ -1,0 +1,23 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web
+
+stdout | src/test/monster_stats_effect.test.ts > 怪物五项数值接线效果：legacy vs wired（32 seed × 500 回合配对聚合） > 聚合对比：命中率与累计受伤量
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[monster_stats_effect] legacy: runs=32 turns=16000 died=0 maxDepth=1 attacks=364 hits=363 rate=99.7% damageTaken=357 kills=146
+[monster_stats_effect]   legacy 目标: Monkey(def=0):101攻/100中 Rat(def=0):73攻/73中 Kobold(def=0):114攻/114中 Jackal(def=0):76攻/76中
+[monster_stats_effect] wired : runs=32 turns=16000 died=0 maxDepth=1 attacks=369 hits=347 rate=94.0% damageTaken=298 kills=144
+[monster_stats_effect]   wired 目标: Monkey(def=17):115攻/93中 Rat(def=0):74攻/74中 Kobold(def=0):97攻/97中 Jackal(def=0):83攻/83中
+
+stdout | src/test/monster_stats_effect.test.ts > 定向接敌：真实 troll(defense=70, Globals.c:1076) 进入命中掷骰 > 30 次近战中命中率显著低于 100%（CE 公式约 40%）且非 0
+[monster_stats_effect] troll 接敌: attempts=30 hits=15 rate=50.0%
+
+ ✓ src/test/monster_stats_effect.test.ts (2 tests) 110615ms
+     ✓ 聚合对比：命中率与累计受伤量  110084ms
+     ✓ 30 次近战中命中率显著低于 100%（CE 公式约 40%）且非 0  530ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:06:31
+   Duration  111.51s (transform 500ms, setup 0ms, import 806ms, tests 110.62s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/ai_docs/reports/x3-u3-evidence/timeout-retry-5.json

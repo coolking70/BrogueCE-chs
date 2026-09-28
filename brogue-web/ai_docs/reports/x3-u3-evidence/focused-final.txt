@@ -1,0 +1,24 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web
+
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_6_arcana_recharge.test.ts (28 tests) 1707ms
+     ✓ same 200 objective ticks: four haste actions = two normal = one slow; no per-action recharge  559ms
+stdout | src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D08 one engine removal gate > equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x3_u3_cursed_equipment.test.ts (65 tests) 13235ms
+     ✓ equippedArmor unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  334ms
+     ✓ equippedArmor drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  324ms
+     ✓ equippedArmor drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  330ms
+     ✓ natural starting weapon No then Yes, animation=true: public replay and seek have zero OOS  318ms
+     ✓ cursed unequip/drop/replacement/throw replay and seek preserve refusals with zero OOS  319ms
+
+ Test Files  2 passed (2)
+      Tests  93 passed (93)
+   Start at  21:15:50
+   Duration  16.22s (transform 522ms, setup 0ms, import 1.11s, tests 14.94s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/ai_docs/reports/x3-u3-evidence/focused-final.json

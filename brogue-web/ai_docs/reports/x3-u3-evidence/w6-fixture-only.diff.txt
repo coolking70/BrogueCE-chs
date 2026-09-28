@@ -1,0 +1,10 @@
+--- current/w_6_arcana_recharge.test.ts
++++ explicit-removable/w_6_arcana_recharge.test.ts
+@@ -137,6 +137,7 @@
+ 
+     it('only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full', () => {
+         const a = ring(4), b = ring(-2, false), spare = ring(27);
++        a.isCursed = false; // Wisdom removal fixture must be removable.
+         const item = staff(), game = gameWith(item, a, b, spare);
+         game.player.ringLeft = a; game.player.ringRight = b;
+         wait(game);

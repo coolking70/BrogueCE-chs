@@ -94,6 +94,9 @@ export class Player extends Creature {
     /** Direct installation is also used by starting-kit/test setup (CE force).
      * Game.equipItem passes false for a player's ordinary equip action. */
     public equip(item: Item, force = true): boolean {
+        const previous = item.category === ItemCategory.WEAPON ? this.equippedWeapon
+            : item.category === ItemCategory.ARMOR ? this.equippedArmor : null;
+        if (previous && !this.unequip(previous, force)) return false;
         if (item.category === ItemCategory.WEAPON) {
             this.equippedWeapon = item;
             return true;
@@ -115,7 +118,12 @@ export class Player extends Creature {
         return false;
     }
 
-    public unequip(item: Item) {
+    public unequip(item: Item, force = false): boolean {
+        const equipped = [this.equippedWeapon, this.equippedArmor, this.ringLeft, this.ringRight]
+            .some(slot => slot?.id === item.id);
+        // CE Items.c:8640-8651: one removal gate, before any slot/status mutation.
+        // Attempting removal does not identify an unknown cursed item.
+        if (!equipped || (item.isCursed && !force)) return false;
         if (this.equippedWeapon?.id === item.id) this.equippedWeapon = null;
         if (this.equippedArmor?.id === item.id) {
             this.equippedArmor = null;
@@ -123,6 +131,7 @@ export class Player extends Creature {
         }
         if (this.ringLeft?.id === item.id) this.ringLeft = null;
         if (this.ringRight?.id === item.id) this.ringRight = null;
+        return true;
     }
 
     /** 两枚戴着的戒指（护甲/武器另行），供遍历熟悉度与戒指效果的调用方使用。 */

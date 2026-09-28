@@ -1,0 +1,87 @@
+{
+  "checkedAt": "2026-09-28T21:17:04.711664+08:00",
+  "frozenInputs": 993,
+  "changedInputsAfterFullGate": [
+    "src/test/w_6_arcana_recharge.test.ts"
+  ],
+  "productOrOtherTestInputsChanged": [],
+  "fixtureOnlyCorrection": {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "onlyChange": "a.isCursed = false; // Wisdom removal fixture must be removable.",
+    "exactlyOnePremiseLine": true,
+    "counterfactualResults": [
+      [
+        "current",
+        1
+      ],
+      [
+        "old-removal",
+        0
+      ],
+      [
+        "explicit-removable",
+        0
+      ]
+    ],
+    "finalFileVerified": true,
+    "adjudication": "Submitted with counterfactual evidence under task exception; assertions unchanged."
+  },
+  "expectedDefaultGateFiles": 226,
+  "missingDefaultGateFiles": [],
+  "full": {
+    "success": false,
+    "files": 226,
+    "passedTests": 4214,
+    "failedTests": 8,
+    "pendingTests": 8,
+    "todoTests": 5,
+    "failedFiles": [
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/b2_transcription.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/blueprint_center.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/c_8_connectivity.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/invented_content_pool.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/monster_stats_effect.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/v_2b_9e_2_autogen.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/w_5_arcana_instance.test.ts",
+      "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/w_6_arcana_recharge.test.ts"
+    ]
+  },
+  "drift": {
+    "success": true,
+    "files": 1,
+    "passedTests": 1,
+    "failedTests": 0
+  },
+  "finalFocused": {
+    "success": true,
+    "files": 2,
+    "passedTests": 93,
+    "failedTests": 0
+  },
+  "fullRerunAfterFixtureCorrection": false,
+  "recoveredTimeoutFiles": [
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/b2_transcription.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/blueprint_center.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/c_8_connectivity.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/invented_content_pool.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/monster_stats_effect.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/v_2b_9e_2_autogen.test.ts",
+    "/Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/src/test/w_5_arcana_instance.test.ts"
+  ],
+  "unresolvedFiles": [],
+  "crlfFiles": [],
+  "unignoredPng": [],
+  "stagedFiles": [],
+  "baselineChanged": [],
+  "initialGateExits": {
+    "types": 0,
+    "build": 0,
+    "full": 1,
+    "drift": 0
+  },
+  "finalGateExits": {
+    "types-final": 0,
+    "build-final": 0,
+    "focused-final": 0
+  }
+}

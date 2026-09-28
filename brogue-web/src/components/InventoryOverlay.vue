@@ -6,7 +6,6 @@ import { activeGame } from '../engine/Core/Game';
 import { ItemCategory } from '../engine/Items/Item';
 import type { Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
-import { logger } from '../engine/Systems/Logger';
 import { generateItemDetail } from '../engine/UI/DetailGenerator';
 import { createItemDetailContext } from '../engine/UI/ItemDetailContext';
 
@@ -245,11 +244,6 @@ const performEquip = (item: Item) => {
 };
 
 const performUnequip = (item: Item) => {
-    if (item.isCursed) {
-        logger.log(t('item.cannot_unequip_cursed', { defaultValue: 'You cannot unequip a cursed item!' }), '#ff4444');
-        // Flash visual error logic could be here if we want it modal-centric
-        return;
-    }
     activeGame.executeItemCommand('unequip', toRaw(item));
     closeInventory();
 };

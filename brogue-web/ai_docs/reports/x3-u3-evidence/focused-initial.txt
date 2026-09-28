@@ -1,0 +1,221 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web
+
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 148312ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  980ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  1101ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  857ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  778ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  2885ms
+     ✓ 边界：19 杀不亮、第 20 杀亮；无生命怪不计入  345ms
+     ✓ 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）  357ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  2757ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  3949ms
+     ✓ 戴上即亮种类：clairvoyance/stealth（CE Items.c:8583-8586）；普通戒指不行  387ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  1305ms
+     ✓ enchanting / identify 读的瞬间自亮；其它卷轴效果后亮  422ms
+     ✓ 目标池按 CAN_BE_IDENTIFIED 过滤；命中者附魔/符文一起亮  412ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  96811ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  29847ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  1447ms
+     ✓ callKind 落账 + 显示名进入 called 态；武器仍不可 call（题字未实现）  384ms
+     ✓ Player 有 ringLeft/ringRight；第二枚进右槽不顶掉第一枚；双占拒绝  392ms
+     ✓ Game.uncurseItem / rechargeArcanaItem 已不存在；卷轴等价物仍在位  608ms
+     ✓ 扔武器到弹道上的怪：有命中结算（掉血或被激怒，不再零效果）  613ms
+     ✓ 越界守卫：扔到空地的物品仍落在目标格（原留痕的存活部分）  375ms
+     ✓ negation/sanctuary/shattering 读取后无机制效果  446ms
+     ✓ 喝 detect magic：既亮该种类，也揭示背包内其余种类的极性  835ms
+stdout | src/test/b_2_throwing.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_2_throwing.test.ts (16 tests) 8373ms
+     ✓ T1: 弹道中间的怪被命中/激怒，投掷物到不了目标格  479ms
+     ✓ T4: 墙挡弹道——投掷物停在墙前一格，不穿墙、不落墙格  482ms
+     ✓ T2: 命中骰存在——强制 miss 时零伤害（必中实现翻红）  467ms
+     ✓ T3: 未命中 → 投掷物落地可拾回（堆叠 -1，落地件数量 1）  409ms
+     ✓ T5: 非功能性药水碎裂不亮、无效果（heal_full 满血残留分支翻红）  378ms
+     ✓ T6: 麻痹药水碎裂亮种类 + 麻痹气云；坠门药水碎裂亮种类 + 铺洞  1166ms
+     ✓ T7: 幻觉药水特例——默认不亮；实例被 detect magic 照过则亮  922ms
+     ✓ T8: 堆叠投掷递减 1，不得整包消失/整包落地  1083ms
+     ✓ T9: 射程上限 maxDistance——力 12 射 16 格，超远程目标够不着  342ms
+     ✓ W1: 投掷击杀不消耗任何武器熟悉度（CE hitMonsterWithProjectileWeapon 不调 decrementWeaponAutoIDTimer）  320ms
+     ✓ K1: throw_item 动作打开背包；不移动玩家  310ms
+     ✓ K1b: 瘫痪时 throw_item 被拦（CE 瘫痪不能投掷）  334ms
+     ✓ S1a: 药水投掷碎裂全程零掷骰  881ms
+     ✓ S1b: 麻痹目标（自动命中）恰消耗 2 掷——伤害骰+血迹骰  393ms
+     ✓ S1c: 正常目标（必中）恰消耗 3 掷——命中骰+伤害骰+血迹骰  401ms
+stdout | src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D08 one engine removal gate > equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x3_u3_cursed_equipment.test.ts (63 tests | 4 failed) 31801ms
+     ✓ equippedWeapon unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  305ms
+     ✓ equippedWeapon unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  308ms
+     ✓ equippedWeapon drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  309ms
+     ✓ equippedWeapon drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  305ms
+     ✓ equippedWeapon throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  599ms
+     ✓ equippedWeapon throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  672ms
+     ✓ equippedArmor unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  646ms
+     ✓ equippedArmor unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  476ms
+     ✓ equippedArmor drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  465ms
+     ✓ equippedArmor drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  453ms
+     ✓ equippedArmor throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  584ms
+     ✓ equippedArmor throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  401ms
+     ✓ ringLeft unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  409ms
+     ✓ ringLeft unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  387ms
+     ✓ ringLeft drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  349ms
+     ✓ ringLeft drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  350ms
+     ✓ ringLeft throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  339ms
+     ✓ ringLeft throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  646ms
+     ✓ ringRight unequip, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  653ms
+     ✓ ringRight unequip, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  544ms
+     ✓ ringRight drop, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  382ms
+     ✓ ringRight drop, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  375ms
+     ✓ ringRight throw, known=false: refuses without time, RNG, inventory, slots or knowledge mutation  376ms
+     ✓ ringRight throw, known=true: refuses without time, RNG, inventory, slots or knowledge mutation  495ms
+     ✓ equippedWeapon cannot be replaced, even by an unidentified item  506ms
+     ✓ equippedArmor cannot be replaced, even by an unidentified item  547ms
+     ✓ a full pair of rings keeps both cursed slots when a third ring is equipped  534ms
+     ✓ equippedWeapon low-level unequip refuses; explicit force removes it without revealing its curse  407ms
+     ✓ equippedArmor low-level unequip refuses; explicit force removes it without revealing its curse  408ms
+     ✓ ringLeft low-level unequip refuses; explicit force removes it without revealing its curse  408ms
+     ✓ ringRight low-level unequip refuses; explicit force removes it without revealing its curse  411ms
+     ✓ Player.equip(0, false) cannot bypass removal; force remains available to setup 0ms
+     ✓ Player.equip(1, false) cannot bypass removal; force remains available to setup 0ms
+     ✓ equippedWeapon ordinary unequip succeeds and spends exactly one turn  409ms
+     ✓ equippedWeapon ordinary drop succeeds and spends exactly one turn  511ms
+     ✓ equippedWeapon ordinary throw succeeds and spends exactly one turn  523ms
+     ✓ equippedArmor ordinary unequip succeeds and spends exactly one turn  381ms
+     ✓ equippedArmor ordinary drop succeeds and spends exactly one turn  376ms
+     ✓ equippedArmor ordinary throw succeeds and spends exactly one turn  588ms
+     ✓ ringLeft ordinary unequip succeeds and spends exactly one turn  570ms
+     ✓ ringLeft ordinary drop succeeds and spends exactly one turn  1018ms
+     ✓ ringLeft ordinary throw succeeds and spends exactly one turn  581ms
+     ✓ ringRight ordinary unequip succeeds and spends exactly one turn  607ms
+     ✓ ringRight ordinary drop succeeds and spends exactly one turn  411ms
+     ✓ ringRight ordinary throw succeeds and spends exactly one turn  510ms
+     ✓ equippedWeapon ordinary replacement spends only one turn  679ms
+     ✓ equippedArmor ordinary replacement spends only one turn  481ms
+     ✓ unknown ring refusal uses its flavor/call name without identifying its kind or enchantment  410ms
+     ✓ unequipped cursed gear may still be dropped and non-enchanted gear thrown  433ms
+     × equippedWeapon No is asked before the curse refusal and preserves gameplay state 533ms
+     × equippedArmor No is asked before the curse refusal and preserves gameplay state 564ms
+     × ringLeft No is asked before the curse refusal and preserves gameplay state 354ms
+     × ringRight No is asked before the curse refusal and preserves gameplay state 354ms
+     ✓ enchanted unequipped singleton answer=false uses timesEnchanted and records the decision  549ms
+     ✓ enchanted unequipped singleton answer=true uses timesEnchanted and records the decision  669ms
+     ✓ natural positive enchantment is not timesEnchanted and does not prompt  511ms
+     ✓ CE refuses a loose cursed singleton with timesEnchanted >0 after Yes as well  573ms
+     ✓ cursed equipped enchanted stack throws one without asking; drop still refuses the remainder  587ms
+     ✓ throwing a ring removes it from the equipment effect consumers  957ms
+     ✓ Chinese messages use the same engine gate and confirmation  756ms
+     ✓ natural starting weapon No then Yes, animation=false: public replay and seek have zero OOS  924ms
+     ✓ natural starting weapon No then Yes, animation=true: public replay and seek have zero OOS  1098ms
+     ✓ cursed unequip/drop/replacement/throw replay and seek preserve refusals with zero OOS  831ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 10645ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  10622ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D09 CE valuable-item confirmation > equippedWeapon No is asked before the curse refusal and preserves gameplay state
+AssertionError: expected { Object (messages, nextId) } to deeply equal { messages: [], nextId: +0 }
+
+- Expected
++ Received
+
+  {
+-   "messages": [],
+-   "nextId": 0,
++   "messages": [
++     {
++       "color": "#ffffff",
++       "count": 1,
++       "id": 0,
++       "text": "Select a target to throw the Sword.",
++     },
++   ],
++   "nextId": 1,
+  }
+
+ ❯ src/test/x3_u3_cursed_equipment.test.ts:141:66
+    139|         g.onConfirmRequest = ask; throwCommand(g, item);
+    140|         expect(ask).toHaveBeenCalledExactlyOnceWith(`Are you sure you …
+    141|         expect(state(g)).toEqual(old); expect(logger.getState()).toEqu…
+       |                                                                  ^
+    142|         expect(g.exportRecording().events.slice(-1)[0]?.decisions).toE…
+    143|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D09 CE valuable-item confirmation > equippedArmor No is asked before the curse refusal and preserves gameplay state
+AssertionError: expected { Object (messages, nextId) } to deeply equal { messages: [], nextId: +0 }
+
+- Expected
++ Received
+
+  {
+-   "messages": [],
+-   "nextId": 0,
++   "messages": [
++     {
++       "color": "#ffffff",
++       "count": 1,
++       "id": 0,
++       "text": "Select a target to throw the Leather Armor.",
++     },
++   ],
++   "nextId": 1,
+  }
+
+ ❯ src/test/x3_u3_cursed_equipment.test.ts:141:66
+    139|         g.onConfirmRequest = ask; throwCommand(g, item);
+    140|         expect(ask).toHaveBeenCalledExactlyOnceWith(`Are you sure you …
+    141|         expect(state(g)).toEqual(old); expect(logger.getState()).toEqu…
+       |                                                                  ^
+    142|         expect(g.exportRecording().events.slice(-1)[0]?.decisions).toE…
+    143|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D09 CE valuable-item confirmation > ringLeft No is asked before the curse refusal and preserves gameplay state
+ FAIL  src/test/x3_u3_cursed_equipment.test.ts > X3-U3 D09 CE valuable-item confirmation > ringRight No is asked before the curse refusal and preserves gameplay state
+AssertionError: expected { Object (messages, nextId) } to deeply equal { messages: [], nextId: +0 }
+
+- Expected
++ Received
+
+  {
+-   "messages": [],
+-   "nextId": 0,
++   "messages": [
++     {
++       "color": "#ffffff",
++       "count": 1,
++       "id": 0,
++       "text": "Select a target to throw the Ring.",
++     },
++   ],
++   "nextId": 1,
+  }
+
+ ❯ src/test/x3_u3_cursed_equipment.test.ts:141:66
+    139|         g.onConfirmRequest = ask; throwCommand(g, item);
+    140|         expect(ask).toHaveBeenCalledExactlyOnceWith(`Are you sure you …
+    141|         expect(state(g)).toEqual(old); expect(logger.getState()).toEqu…
+       |                                                                  ^
+    142|         expect(g.exportRecording().events.slice(-1)[0]?.decisions).toE…
+    143|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  4 failed | 125 passed (129)
+   Start at  17:39:44
+   Duration  204.39s (transform 1.08s, setup 0ms, import 4.54s, tests 199.13s, environment 2ms)
+

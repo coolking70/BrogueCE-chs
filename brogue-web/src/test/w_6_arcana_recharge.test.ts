@@ -137,6 +137,7 @@ describe('W-6 real P2 objective-time / inventory integration', () => {
 
     it('only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full', () => {
         const a = ring(4), b = ring(-2, false), spare = ring(27);
+        a.isCursed = false; // Wisdom removal fixture must be removable.
         const item = staff(), game = gameWith(item, a, b, spare);
         game.player.ringLeft = a; game.player.ringRight = b;
         wait(game);

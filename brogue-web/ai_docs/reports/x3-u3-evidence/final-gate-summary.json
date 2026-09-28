@@ -1,0 +1,44 @@
+[
+  {
+    "name": "types-final",
+    "command": [
+      "npx",
+      "vue-tsc",
+      "-b"
+    ],
+    "exit": 0,
+    "seconds": 5.19,
+    "started": "2026-09-28T21:15:37.491489+08:00",
+    "finished": "2026-09-28T21:15:42.681523+08:00"
+  },
+  {
+    "name": "build-final",
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 7.372,
+    "started": "2026-09-28T21:15:42.682173+08:00",
+    "finished": "2026-09-28T21:15:50.054388+08:00"
+  },
+  {
+    "name": "focused-final",
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "src/test/x3_u3_cursed_equipment.test.ts",
+      "src/test/w_6_arcana_recharge.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile.json=ai_docs/reports/x3-u3-evidence/focused-final.json"
+    ],
+    "exit": 0,
+    "seconds": 16.627,
+    "started": "2026-09-28T21:15:50.054945+08:00",
+    "finished": "2026-09-28T21:16:06.682723+08:00"
+  }
+]

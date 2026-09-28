@@ -1,0 +1,32 @@
+[
+  {
+    "variant": "current",
+    "exit": 1,
+    "seconds": 3.298,
+    "passedTests": 27,
+    "failedTests": 1,
+    "diagnostic": [
+      "[X3-U3 W6 fixture] {\"enchantment\":4,\"isCursed\":true,\"identified\":true}"
+    ]
+  },
+  {
+    "variant": "old-removal",
+    "exit": 0,
+    "seconds": 3.108,
+    "passedTests": 28,
+    "failedTests": 0,
+    "diagnostic": [
+      "[X3-U3 W6 fixture] {\"enchantment\":4,\"isCursed\":true,\"identified\":true}"
+    ]
+  },
+  {
+    "variant": "explicit-removable",
+    "exit": 0,
+    "seconds": 3.058,
+    "passedTests": 28,
+    "failedTests": 0,
+    "diagnostic": [
+      "[X3-U3 W6 fixture] {\"enchantment\":4,\"isCursed\":false,\"identified\":true}"
+    ]
+  }
+]

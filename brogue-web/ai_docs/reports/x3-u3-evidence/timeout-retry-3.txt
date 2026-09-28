@@ -1,0 +1,16 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web
+
+stdout | src/test/c_8_connectivity.test.ts > C-8 生成期 DF 放置否决：web 移动图口径 > T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_8_connectivity.test.ts (7 tests) 220378ms
+     ✓ T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通  7294ms
+     ✓ T2 广度断言（区间来自修复前后实测）：30 seed × D1-D25 坏层=0  213080ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  21:00:23
+   Duration  221.56s (transform 544ms, setup 0ms, import 1.08s, tests 220.38s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a0d0/brogue/brogue-web/ai_docs/reports/x3-u3-evidence/timeout-retry-3.json
