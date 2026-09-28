@@ -1,0 +1,30 @@
+[
+  {
+    "name": "tsc",
+    "command": "npx vue-tsc -b",
+    "exit": 2,
+    "seconds": 13.005,
+    "log": "ai_docs/reports/x4-r1-evidence/initial-tsc.log"
+  },
+  {
+    "name": "build",
+    "command": "npm run build",
+    "exit": 2,
+    "seconds": 12.192,
+    "log": "ai_docs/reports/x4-r1-evidence/initial-build.log"
+  },
+  {
+    "name": "test",
+    "command": "npm test -- --maxWorkers=4 --reporter=default --reporter=json --outputFile=ai_docs/reports/x4-r1-evidence/initial-test.json",
+    "exit": 1,
+    "seconds": 2607.181,
+    "log": "ai_docs/reports/x4-r1-evidence/initial-test.log"
+  },
+  {
+    "name": "drift",
+    "command": "npm run test:drift -- --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x4-r1-evidence/initial-drift.json",
+    "exit": 1,
+    "seconds": 35.408,
+    "log": "ai_docs/reports/x4-r1-evidence/initial-drift.log"
+  }
+]

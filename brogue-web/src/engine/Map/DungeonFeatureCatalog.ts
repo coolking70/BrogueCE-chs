@@ -50,6 +50,27 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    // X4-R1: CE world catalog additions.
+    DF_RED_BLOOD = 23,
+    DF_GREEN_BLOOD = 24,
+    DF_PURPLE_BLOOD = 25,
+    DF_WORM_BLOOD = 26,
+    DF_ACID_BLOOD = 27,
+    DF_ASH_BLOOD = 28,
+    DF_EMBER_BLOOD = 29,
+    DF_ECTOPLASM_BLOOD = 30,
+    DF_RUBBLE_BLOOD = 31,
+    DF_FLAMEDANCER_CORONA = 37,
+    DF_SALAMANDER_FLAME = 45,
+    DF_UNICORN_POOP = 47,
+    DF_SILENT_GLYPH_GLOW = 91,
+    DF_GUARDIAN_STEP = 92,
+    DF_MIRROR_TOTEM_STEP = 93,
+    DF_BLOODFLOWER_POD_BURST = 70,
+    DF_DART_EXPLOSION = 103,
+    DF_STENCH_BURN = 217,
+    DF_CREATURE_FIRE = 111,
+
     DF_ROT_GAS_PUFF = 41,
     DF_ROT_GAS_BLOOD = 32,
     DF_BLOOD_EXPLOSION = 36,
@@ -380,6 +401,27 @@ const df = (
  *   显式写成零值（项目约定：省略字段不序列化成 null/undefined）。
  */
 export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeatureEntry>>> = {
+    // X4-R1: CE world catalog additions.
+    [DF.DF_RED_BLOOD]: df(DF.DF_RED_BLOOD, 640, 'RED_BLOOD', TerrainType.BLOOD, DungeonLayer.SURFACE, 100, 25, 0, '', null, null, ''),
+    [DF.DF_GREEN_BLOOD]: df(DF.DF_GREEN_BLOOD, 641, 'GREEN_BLOOD', TerrainType.GREEN_BLOOD, DungeonLayer.SURFACE, 100, 25, 0, '', null, null, ''),
+    [DF.DF_PURPLE_BLOOD]: df(DF.DF_PURPLE_BLOOD, 642, 'PURPLE_BLOOD', TerrainType.PURPLE_BLOOD, DungeonLayer.SURFACE, 100, 25, 0, '', null, null, ''),
+    [DF.DF_WORM_BLOOD]: df(DF.DF_WORM_BLOOD, 643, 'WORM_BLOOD', TerrainType.WORM_BLOOD, DungeonLayer.SURFACE, 100, 25, 0, '', null, null, ''),
+    [DF.DF_ACID_BLOOD]: df(DF.DF_ACID_BLOOD, 644, 'ACID_SPLATTER', TerrainType.ACID_SPLATTER, DungeonLayer.SURFACE, 200, 25, 0, '', null, null, ''),
+    [DF.DF_ASH_BLOOD]: df(DF.DF_ASH_BLOOD, 645, 'ASH', TerrainType.ASH, DungeonLayer.SURFACE, 50, 25, 0, '', null, null, ''),
+    [DF.DF_EMBER_BLOOD]: df(DF.DF_EMBER_BLOOD, 646, 'EMBERS', TerrainType.EMBERS, DungeonLayer.SURFACE, 125, 25, 0, '', null, null, ''),
+    [DF.DF_ECTOPLASM_BLOOD]: df(DF.DF_ECTOPLASM_BLOOD, 647, 'ECTOPLASM', TerrainType.ECTOPLASM, DungeonLayer.SURFACE, 110, 25, 0, '', null, null, ''),
+    [DF.DF_RUBBLE_BLOOD]: df(DF.DF_RUBBLE_BLOOD, 648, 'RUBBLE', TerrainType.RUBBLE, DungeonLayer.SURFACE, 33, 25, 0, '', null, null, ''),
+    [DF.DF_FLAMEDANCER_CORONA]: df(DF.DF_FLAMEDANCER_CORONA, 656, 'FLAMEDANCER_FIRE', TerrainType.FLAMEDANCER_FIRE, DungeonLayer.SURFACE, 200, 75, 0, '', null, null, ''),
+    [DF.DF_SALAMANDER_FLAME]: df(DF.DF_SALAMANDER_FLAME, 668, 'EMBERS', TerrainType.EMBERS, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, ''),
+    [DF.DF_UNICORN_POOP]: df(DF.DF_UNICORN_POOP, 670, 'UNICORN_POOP', TerrainType.UNICORN_POOP, DungeonLayer.SURFACE, 65, 40, 0, '', null, null, ''),
+    [DF.DF_SILENT_GLYPH_GLOW]: df(DF.DF_SILENT_GLYPH_GLOW, 728, 'GUARDIAN_GLOW', TerrainType.GUARDIAN_GLOW, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, ""),
+    [DF.DF_GUARDIAN_STEP]: df(DF.DF_GUARDIAN_STEP, 729, 'GUARDIAN_GLOW', TerrainType.GUARDIAN_GLOW, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, "the glyph beneath you glows, and the guardians take a step!"),
+    [DF.DF_MIRROR_TOTEM_STEP]: df(DF.DF_MIRROR_TOTEM_STEP, 730, 'GUARDIAN_GLOW', TerrainType.GUARDIAN_GLOW, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, "the mirrored totem flashes, reflecting the red glow of the glyph beneath you."),
+    [DF.DF_BLOODFLOWER_POD_BURST]: df(DF.DF_BLOODFLOWER_POD_BURST, 701, 'HEALING_CLOUD', TerrainType.HEALING_CLOUD, DungeonLayer.GAS, 350, 0, 0, '', null, null, ''),
+    [DF.DF_DART_EXPLOSION]: df(DF.DF_DART_EXPLOSION, 743, 'DART_EXPLOSION', TerrainType.DART_EXPLOSION, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, ''),
+    [DF.DF_STENCH_BURN]: df(DF.DF_STENCH_BURN, 930, 'STENCH_SMOKE_GAS', TerrainType.STENCH_SMOKE_GAS, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_PLAIN_FIRE, ""),
+    [DF.DF_CREATURE_FIRE]: { ...df(DF.DF_CREATURE_FIRE, 751, 'CREATURE_FIRE', TerrainType.CREATURE_FIRE, DungeonLayer.SURFACE, 0, 0, 0, '', null, null, ""), lightFlare: 'FALLEN_TORCH_FLASH_LIGHT' },
+
     [DF.DF_ROT_GAS_PUFF]: df(41, 664, 'ROT_GAS', TerrainType.ROT_GAS, DungeonLayer.GAS, 15, 0, 0, '', null, null, ''),
     [DF.DF_MUTATION_EXPLOSION]: { ...df(38, 659, 'GAS_EXPLOSION', TerrainType.GAS_EXPLOSION, DungeonLayer.SURFACE, 350, 100, 0, '', null, null, 'The corpse detonates with terrifying force!'), lightFlare: 'EXPLOSION_FLARE_LIGHT' },
     [DF.DF_BLOOD_EXPLOSION]: df(36, 655, 'RED_BLOOD', TerrainType.BLOOD, DungeonLayer.SURFACE, 150, 30, 0, '', null, null, ''),
@@ -1456,15 +1498,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
     // V-2b-8 flavor-machine DF carriers.
-    [DF.DF_URINE]: { id: DF.DF_URINE, ceLine: 669, ceTile: 'URINE', tile: TerrainType.BLOOD, layer: DungeonLayer.SURFACE, startProbability: 65, probabilityDecrement: 25, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
-    [DF.DF_BLOODFLOWER_PODS_GROW_INITIAL]: { id: DF.DF_BLOODFLOWER_PODS_GROW_INITIAL, ceLine: 699, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_STALK, layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 60, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
-    [DF.DF_BLOODFLOWER_PODS_GROW]: { id: DF.DF_BLOODFLOWER_PODS_GROW, ceLine: 700, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_STALK, layer: DungeonLayer.SURFACE, startProbability: 10, probabilityDecrement: 10, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_URINE]: { id: DF.DF_URINE, ceLine: 669, ceTile: 'URINE', tile: TerrainType.URINE, layer: DungeonLayer.SURFACE, startProbability: 65, probabilityDecrement: 25, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_BLOODFLOWER_PODS_GROW_INITIAL]: { id: DF.DF_BLOODFLOWER_PODS_GROW_INITIAL, ceLine: 699, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_POD, layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 60, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_BLOODFLOWER_PODS_GROW]: { id: DF.DF_BLOODFLOWER_PODS_GROW, ceLine: 700, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_POD, layer: DungeonLayer.SURFACE, startProbability: 10, probabilityDecrement: 10, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_SHALLOW_WATER_POOL]: { id: DF.DF_SHALLOW_WATER_POOL, ceLine: 899, ceTile: 'SHALLOW_WATER', tile: TerrainType.WATER_SHALLOW, layer: DungeonLayer.LIQUID, startProbability: 150, probabilityDecrement: 100, flags: DFF_PERMIT_BLOCKING, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_DEEP_WATER_POOL]: { id: DF.DF_DEEP_WATER_POOL, ceLine: 900, ceTile: 'DEEP_WATER', tile: TerrainType.WATER_DEEP, layer: DungeonLayer.LIQUID, startProbability: 90, probabilityDecrement: 100, flags: DFF_TREAT_AS_BLOCKING | DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_SHALLOW_WATER_POOL, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
-    [DF.DF_HAY]: { id: DF.DF_HAY, ceLine: 908, ceTile: 'HAY', tile: TerrainType.GRASS, layer: DungeonLayer.SURFACE, startProbability: 90, probabilityDecrement: 87, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
-    [DF.DF_JUNK]: { id: DF.DF_JUNK, ceLine: 909, ceTile: 'JUNK', tile: TerrainType.BONES, layer: DungeonLayer.SURFACE, startProbability: 20, probabilityDecrement: 20, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_HAY]: { id: DF.DF_HAY, ceLine: 908, ceTile: 'HAY', tile: TerrainType.HAY, layer: DungeonLayer.SURFACE, startProbability: 90, probabilityDecrement: 87, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_JUNK]: { id: DF.DF_JUNK, ceLine: 909, ceTile: 'JUNK', tile: TerrainType.JUNK, layer: DungeonLayer.SURFACE, startProbability: 20, probabilityDecrement: 20, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_REMNANT]: { id: DF.DF_REMNANT, ceLine: 912, ceTile: 'CARPET', tile: TerrainType.CARPET, layer: DungeonLayer.DUNGEON, startProbability: 110, probabilityDecrement: 20, flags: DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_REMNANT_ASH, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
-    [DF.DF_REMNANT_ASH]: { id: DF.DF_REMNANT_ASH, ceLine: 913, ceTile: 'BURNED_CARPET', tile: TerrainType.ASH, layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_REMNANT_ASH]: { id: DF.DF_REMNANT_ASH, ceLine: 913, ceTile: 'BURNED_CARPET', tile: TerrainType.BURNED_CARPET, layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     // V-2b-9a：八个起点及 subsequentDF 闭包（Globals.c:827-848/891-892/916-921）。
     [DF.DF_SPREADABLE_WATER]: df(158, 827, 'MACHINE_FLOOD_WATER_SPREADING', TerrainType.MACHINE_FLOOD_WATER_SPREADING, DungeonLayer.LIQUID, 0, 0),
     [DF.DF_SHALLOW_WATER]: df(159, 828, 'SHALLOW_WATER', TerrainType.WATER_SHALLOW, DungeonLayer.LIQUID, 0, 0),

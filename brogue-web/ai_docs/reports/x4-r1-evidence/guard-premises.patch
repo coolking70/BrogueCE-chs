@@ -1,0 +1,402 @@
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index 15679bce66..df37f21161 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -227,6 +227,21 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+ 
+     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
+         expect(TERRAIN_HOME_LAYER).toEqual({
++            [C.BLOODFLOWER_POD]: L.SURFACE, // X4-R1 CE :514
++            [C.HEALING_CLOUD]: L.GAS, // X4-R1 CE :510
++            [C.HAY]: L.SURFACE, // X4-R1 CE :452
++            [C.URINE]: L.SURFACE, // X4-R1 CE :458
++            [C.JUNK]: L.SURFACE, // X4-R1 CE :466
++            [C.BURNED_CARPET]: L.SURFACE, // X4-R1 CE :462
++            [C.GREEN_BLOOD]: L.SURFACE, // X4-R1 CE :454
++            [C.PURPLE_BLOOD]: L.SURFACE, // X4-R1 CE :455
++            [C.ACID_SPLATTER]: L.SURFACE, // X4-R1 CE :456
++            [C.WORM_BLOOD]: L.SURFACE, // X4-R1 CE :460
++            [C.UNICORN_POOP]: L.SURFACE, // X4-R1 CE :459
++            [C.GUARDIAN_GLOW]: L.SURFACE, // X4-R1 CE :489
++            [C.FLAMEDANCER_FIRE]: L.SURFACE, // X4-R1 CE :494
++            [C.DART_EXPLOSION]: L.SURFACE, // X4-R1 CE :497
++            [C.CREATURE_FIRE]: L.SURFACE, // X4-R1 CE :499
+             [C.LICHEN]: L.SURFACE, // X2g CE Globals.c:451/783
+             [C.DARKNESS_CLOUD]: L.GAS, // CE :509/781
+             [C.ROT_GAS]: L.GAS, // CE :504/649
+@@ -435,6 +450,21 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.STENCH_SMOKE_GAS]: L.GAS,
+         });
+         expect(DRAW_PRIORITY).toEqual({
++            [C.BLOODFLOWER_POD]: 11, // X4-R1 CE :514
++            [C.HEALING_CLOUD]: 35, // X4-R1 CE :510
++            [C.HAY]: 57, // X4-R1 CE :452
++            [C.URINE]: 80, // X4-R1 CE :458
++            [C.JUNK]: 70, // X4-R1 CE :466
++            [C.BURNED_CARPET]: 87, // X4-R1 CE :462
++            [C.GREEN_BLOOD]: 80, // X4-R1 CE :454
++            [C.PURPLE_BLOOD]: 80, // X4-R1 CE :455
++            [C.ACID_SPLATTER]: 80, // X4-R1 CE :456
++            [C.WORM_BLOOD]: 80, // X4-R1 CE :460
++            [C.UNICORN_POOP]: 80, // X4-R1 CE :459
++            [C.GUARDIAN_GLOW]: 100, // X4-R1 CE :489
++            [C.FLAMEDANCER_FIRE]: 10, // X4-R1 CE :494
++            [C.DART_EXPLOSION]: 10, // X4-R1 CE :497
++            [C.CREATURE_FIRE]: 10, // X4-R1 CE :499
+             [C.LICHEN]: 60,
+             [C.DARKNESS_CLOUD]: 35,
+             [C.ROT_GAS]: 35,
+@@ -608,7 +638,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.GRAY_FUNGUS]: 51,
+             [C.WORM_TUNNEL_MARKER_DORMANT]: 100,
+             // V-2b-8：CE Globals.c 第 4 列原值。
+-            [C.BLOODFLOWER_STALK]: 20,
++            [C.BLOODFLOWER_STALK]: 10, // X4-R1 CE :513; POD must not overwrite STALK.
+             [C.HAVEN_BEDROLL]: 50,
+             // V-2b-9a：CE Globals.c 第 4 列原值。
+             [C.FLOOR_FLOODABLE]: 95,
+diff --git a/brogue-web/src/test/c_4a_terrain_catalog.test.ts b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+index 3ae7fa3960..ca2f88d9b5 100644
+--- a/brogue-web/src/test/c_4a_terrain_catalog.test.ts
++++ b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+@@ -171,12 +171,12 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
+         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
+         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 appends two carriers; all old keys/fields stay pinned above.
+-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['LICHEN', 'DARKNESS_CLOUD', 'ROT_GAS', 'TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA', 'RAT_TRAP_WALL_CRACKING', 'STATUE_CRACKING', 'COFFIN_OPEN', 'WORM_TUNNEL_MARKER_ACTIVE', 'PORTAL_LIGHT', 'FUNGUS_FOREST', 'TRAMPLED_FUNGUS_FOREST', 'SUNLIGHT_POOL', 'DARKNESS_PATCH', 'DEEP_WATER_ALGAE_WELL', 'DEEP_WATER_ALGAE_1', 'DEEP_WATER_ALGAE_2', 'NET_TRAP', 'NET_TRAP_HIDDEN', 'NETTING', 'ALARM_TRAP', 'ALARM_TRAP_HIDDEN', 'GAS_TRAP_CONFUSION', 'GAS_TRAP_CONFUSION_HIDDEN', 'FLOOD_TRAP_HIDDEN', 'STEAM_VENT', 'DEWAR_CAUSTIC_GAS', 'DEWAR_CONFUSION_GAS', 'DEWAR_PARALYSIS_GAS', 'DEWAR_METHANE_GAS', 'BROKEN_GLASS'].includes(n)).length).toBe(135);
++        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['BLOODFLOWER_POD', 'HEALING_CLOUD', 'HAY', 'URINE', 'JUNK', 'BURNED_CARPET', 'GREEN_BLOOD', 'PURPLE_BLOOD', 'ACID_SPLATTER', 'WORM_BLOOD', 'UNICORN_POOP', 'GUARDIAN_GLOW', 'FLAMEDANCER_FIRE', 'DART_EXPLOSION', 'CREATURE_FIRE', 'LICHEN', 'DARKNESS_CLOUD', 'ROT_GAS', 'TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA', 'RAT_TRAP_WALL_CRACKING', 'STATUE_CRACKING', 'COFFIN_OPEN', 'WORM_TUNNEL_MARKER_ACTIVE', 'PORTAL_LIGHT', 'FUNGUS_FOREST', 'TRAMPLED_FUNGUS_FOREST', 'SUNLIGHT_POOL', 'DARKNESS_PATCH', 'DEEP_WATER_ALGAE_WELL', 'DEEP_WATER_ALGAE_1', 'DEEP_WATER_ALGAE_2', 'NET_TRAP', 'NET_TRAP_HIDDEN', 'NETTING', 'ALARM_TRAP', 'ALARM_TRAP_HIDDEN', 'GAS_TRAP_CONFUSION', 'GAS_TRAP_CONFUSION_HIDDEN', 'FLOOD_TRAP_HIDDEN', 'STEAM_VENT', 'DEWAR_CAUSTIC_GAS', 'DEWAR_CONFUSION_GAS', 'DEWAR_PARALYSIS_GAS', 'DEWAR_METHANE_GAS', 'BROKEN_GLASS'].includes(n)).length).toBe(135);
+         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
+         // U17a burnItem successor; historical 135-row projection remains fixed.
+         expect(names).toContain('ITEM_FIRE');
+         // X2g adds three CE carriers; preserve the old projection and all-key field checks.
+-        expect(names.length).toBe(193);
++        expect(names.length).toBe(208); // X4-R1 appends 15 CE identities.
+         expect(names).toEqual(expect.arrayContaining(['LICHEN', 'DARKNESS_CLOUD', 'ROT_GAS']));
+         for (const name of names) {
+             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+@@ -576,6 +576,7 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
+     // AMULET_SWITCH 更是零旗标）**留在等价论域内**——不跳过，由本组逐位
+     // 继续把关（它们若被误加 PASSABILITY 会在此翻红）。
+     const POST_LEGACY_TILES = new Set<TerrainType>([
++        C.BLOODFLOWER_POD, // X4-R1 CE :514 blocks; independently tested with the real Game bump path.
+         C.DEEP_WATER_ALGAE_1, C.DEEP_WATER_ALGAE_2,
+         C.DEWAR_CAUSTIC_GAS, C.DEWAR_CONFUSION_GAS, C.DEWAR_PARALYSIS_GAS, C.DEWAR_METHANE_GAS, // U19f CE literal flags and live consumers
+ 
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index 505170ef54..bdf7054b98 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -580,7 +580,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
+         // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
+         // X2k: exclude the two new CE death rows from this historical projection.
+-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(Number(k)));
++        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 45, 47, 91, 92, 93, 70, 103, 217, 111, 36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(Number(k)));
+         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
+         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
+         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
+@@ -797,6 +797,28 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // X2k: runtime death roots, CE Globals.c:655/659 (Game.triggerDeathFeatures).
+         start.add(DF.DF_BLOOD_EXPLOSION); start.add(DF.DF_MUTATION_EXPLOSION);
+         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
++        // X4-R1 explicitly authorized catalog roots: species blood/periodic/
++        // activation/dart/death consumers are handed to R3/R6, not claimed live.
++        // POD burst and stench burn enter through the real terrain fields above.
++        for (const id of [
++            DF.DF_RED_BLOOD,
++            DF.DF_GREEN_BLOOD,
++            DF.DF_PURPLE_BLOOD,
++            DF.DF_WORM_BLOOD,
++            DF.DF_ACID_BLOOD,
++            DF.DF_ASH_BLOOD,
++            DF.DF_EMBER_BLOOD,
++            DF.DF_ECTOPLASM_BLOOD,
++            DF.DF_RUBBLE_BLOOD,
++            DF.DF_FLAMEDANCER_CORONA,
++            DF.DF_SALAMANDER_FLAME,
++            DF.DF_UNICORN_POOP,
++            DF.DF_SILENT_GLYPH_GLOW,
++            DF.DF_GUARDIAN_STEP,
++            DF.DF_MIRROR_TOTEM_STEP,
++            DF.DF_DART_EXPLOSION,
++            DF.DF_CREATURE_FIRE,
++        ]) start.add(id);
+         const closure = new Set<DF>();
+         const queue = [...start];
+         while (queue.length > 0) {
+@@ -810,7 +832,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
+         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
+         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
+-        expect([...catalogKeys].filter(id => ![36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
++        expect([...catalogKeys].filter(id => ![23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 45, 47, 91, 92, 93, 70, 103, 217, 111, 36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
+             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
+             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
+@@ -1072,8 +1094,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+     // 将来谁把 217 抄进目录，这条会响。
+     it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（218 项枚举已抄 131 条）', () => {
+         expect(DUNGEON_FEATURE_CATALOG[1 as DF]).toBeUndefined();   // DF_GRANITE_COLUMN
+-        expect(DUNGEON_FEATURE_CATALOG[217 as DF]).toBeUndefined(); // DF_STENCH_BURN
+-        expect(() => catalogFeature(217 as DF)).toThrow(/未抄录/);
++        expect(DUNGEON_FEATURE_CATALOG[34 as DF]).toBeUndefined(); // DF_BLOAT_DEATH remains catalog-absent; dedicated behavior exists.
++        expect(() => catalogFeature(34 as DF)).toThrow(/未抄录/);
+         // 219 = NUMBER_DUNGEON_FEATURES（枚举终止符，非 DF），越界查询同样得 undefined。
+         expect(DUNGEON_FEATURE_CATALOG[219 as DF]).toBeUndefined();
+     });
+@@ -1236,6 +1258,11 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
+         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
+         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
++            // X4-R1 CE58 POD (Globals.c:699), pure SURFACE writer:
++            // 424242/D1 (27,11) and D9 (26,21); exact writer trace in report.
++            [C.FLOOR, C.NOTHING, C.NOTHING, C.BLOODFLOWER_POD],
++            [C.NOTHING, C.WATER_SHALLOW, C.NOTHING, C.BLOODFLOWER_POD],
++
+             // U19f cold writer traces: CE58 stalk + lake halo; CE65 catwalk/chasm halo;
+             // CE31 pure LIQUID floodable writes preserve pre-existing grass/dead foliage; CE28 pressure plate.
+             [C.FLOOR, C.CHASM, C.NOTHING, C.NOTHING], // CE65 BP_NO_INTERIOR_FLAG catwalk area retains no machine number
+@@ -1328,7 +1355,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+             [C.FLOOR, C.MUD, C.NOTHING, C.NOTHING],
+             [C.DOOR, C.MUD, C.NOTHING, C.NOTHING],
+             // Goblin warren：MUD_FLOOR 后接 DF_HAY（GlobalsBrogue.c:266/273）；
+-            // HAY 在 web 由 GRASS 承载（DungeonFeatureCatalog），只写 SURFACE。
++            // 旧 GRASS 组合仍可能来自 DF_GRASS；DF_HAY 现落真实 HAY（见上方）。
+             [C.MUD_FLOOR, C.NOTHING, C.NOTHING, C.GRASS],
+             // CE34：FLOOR_FLOODABLE 明确写 DUNGEON（GlobalsBrogue.c:396），
+             // 保留既有草/网；坍塌边缘 DF 写 LIQUID（Globals.c:837）。
+@@ -1358,7 +1385,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+                         );
+                         if (verified9e) {
+                             // CE58/34/Goblin warren 没有 NO_INTERIOR_FLAG，保留机器归属守卫。
+-                            if (cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK
++                            if ([C.BLOODFLOWER_STALK, C.BLOODFLOWER_POD].includes(cell.layers[L.SURFACE] as TerrainType)
+                                 || [C.MUD_FLOOR, C.MUD_WALL, C.FLOOR_FLOODABLE, C.ALTAR_SWITCH, C.MACHINE_PARALYSIS_VENT_HIDDEN, C.GAS_TRAP_PARALYSIS_HIDDEN].includes(cell.layers[L.DUNGEON] as TerrainType)) {
+                                 expect(cell.machineNumber).toBeGreaterThan(0);
+                             }
+diff --git a/brogue-web/src/test/c_7_lighting.test.ts b/brogue-web/src/test/c_7_lighting.test.ts
+index 21b186030b..54e1195ff8 100644
+--- a/brogue-web/src/test/c_7_lighting.test.ts
++++ b/brogue-web/src/test/c_7_lighting.test.ts
+@@ -141,6 +141,21 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
+ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
+     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
+     const EXPECTED_GLOW: Record<TerrainType, number> = {
++        [TerrainType.BLOODFLOWER_POD]: LightKind.NO_LIGHT, // X4-R1 CE :514
++        [TerrainType.HEALING_CLOUD]: LightKind.NO_LIGHT, // X4-R1 CE :510
++        [TerrainType.HAY]: LightKind.NO_LIGHT, // X4-R1 CE :452
++        [TerrainType.URINE]: LightKind.NO_LIGHT, // X4-R1 CE :458
++        [TerrainType.JUNK]: LightKind.NO_LIGHT, // X4-R1 CE :466
++        [TerrainType.BURNED_CARPET]: LightKind.NO_LIGHT, // X4-R1 CE :462
++        [TerrainType.GREEN_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :454
++        [TerrainType.PURPLE_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :455
++        [TerrainType.ACID_SPLATTER]: LightKind.NO_LIGHT, // X4-R1 CE :456
++        [TerrainType.WORM_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :460
++        [TerrainType.UNICORN_POOP]: LightKind.UNICORN_POOP_LIGHT, // X4-R1 CE :459
++        [TerrainType.GUARDIAN_GLOW]: LightKind.GLYPH_LIGHT_BRIGHT, // X4-R1 CE :489
++        [TerrainType.FLAMEDANCER_FIRE]: LightKind.FIRE_LIGHT, // X4-R1 CE :494
++        [TerrainType.DART_EXPLOSION]: LightKind.INCENDIARY_DART_LIGHT, // X4-R1 CE :497
++        [TerrainType.CREATURE_FIRE]: LightKind.FIRE_LIGHT, // X4-R1 CE :499
+         [TerrainType.LICHEN]: LightKind.NO_LIGHT, // X2g CE Globals.c:451
+         [TerrainType.ROT_GAS]: LightKind.NO_LIGHT, // X2g CE Globals.c:504
+         [TerrainType.DARKNESS_CLOUD]: LightKind.DARKNESS_CLOUD_LIGHT, // X2g CE Globals.c:509
+@@ -370,12 +385,17 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         }
+     });
+ 
+-    it('非零恰 51 个（X2g 加入黑暗气云），且都指向有载体的目录条目', () => {
++    it('非零恰 56 个（X4-R1 新增五个发光载体），且都指向有载体的目录条目', () => {
+         const nonzero = Object.entries(TERRAIN_FLAGS)
+             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
+             .map(([k]) => Number(k) as TerrainType)
+             .sort((a, b) => a - b);
+         expect(nonzero).toEqual([
++            TerrainType.UNICORN_POOP, // X4-R1 CE glow carrier
++            TerrainType.GUARDIAN_GLOW, // X4-R1 CE glow carrier
++            TerrainType.FLAMEDANCER_FIRE, // X4-R1 CE glow carrier
++            TerrainType.DART_EXPLOSION, // X4-R1 CE glow carrier
++            TerrainType.CREATURE_FIRE, // X4-R1 CE glow carrier
+             TerrainType.FUNGUS_FOREST,
+             TerrainType.TRAMPLED_FUNGUS_FOREST,
+             TerrainType.SUNLIGHT_POOL,
+@@ -822,6 +842,7 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
+ 
+ describe('C-7 载体边界留痕', () => {
+     const CARRIER_KINDS = new Set([
++        'UNICORN_POOP_LIGHT', // X4-R1 actual UNICORN_POOP terrain + DF47.
+         'SUN_LIGHT', 'DARKNESS_PATCH_LIGHT', 'FUNGUS_FOREST_LIGHT',
+         'LUMINESCENT_ALGAE_BLUE_LIGHT', 'LUMINESCENT_ALGAE_GREEN_LIGHT', // U19f actual tiles and consumers
+ 
+diff --git a/brogue-web/src/test/fixtures/u19e-machine-actions.ts b/brogue-web/src/test/fixtures/u19e-machine-actions.ts
+index b237eb52d5..4e7a036ad3 100644
+--- a/brogue-web/src/test/fixtures/u19e-machine-actions.ts
++++ b/brogue-web/src/test/fixtures/u19e-machine-actions.ts
+@@ -70,6 +70,11 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
+  if(!entry)throw Error('missing entrance');
+  entry={x:entry.x,y:entry.y};
+  g.player.loc={...entry};g.player.hp=g.player.maxHp=10000;g.player.statusDurations={};g.animationEnabled=false;g.onConfirmRequest=()=>true;
++ // X4-R1's CE terrain/growth correction changes the command RNG history.
++ // The natural D8 approach crosses caustic gas: large HP does not protect
++ // against max-HP-scaled gas damage. Supply actual respiration equipment as
++ // an adventuring prerequisite; the marked monster and machine stay intact.
++ if(ce===47&&g.player.equippedArmor)g.player.equippedArmor.runicType='respiration';
+  g.monsters=g.monsters.filter((m:any)=>m.machineHome===number);g.dormantMonsters=g.dormantMonsters.filter((m:any)=>m.machineHome===number);
+  g.purgatory=[];
+  let pair:any[]=[];let allyId:number|undefined;
+@@ -118,16 +123,20 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
+   walk(trigger);state('activated');
+   // Approach without striking the original marked creature, then lead it back
+   // one step at a time. Taking a shortcut to its old coordinates can kill it.
+-  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>3;n++){
++  const approachMarked=()=>{
+    const options=around.map(d=>({x:target.x+d.x,y:target.y+d.y})).map(p=>route(g,g.player.loc,p,true)).filter((r):r is Pos[]=>!!r?.length).sort((a,b)=>a.length-b.length);
+    if(!options.length)throw Error('marked statue unreachable');const p=options[0]![0]!;
+    if(g.grid.getCell(p.x,p.y).layers.includes(T.SECRET_DOOR))act('search');else act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
+-  }
++  };
++  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>3;n++)approachMarked();
+   for(let n=0;n<30&&target.isDormant;n++)act('wait');state('awakened');
+   const lurePath=route(g,g.player.loc,altar,true);if(!lurePath)throw Error('altar unreachable');
+   for(let n=0;n<300&&!same(g.player.loc,altar);n++){
+    const distance=Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y));
+-   if(distance>3){act('wait');continue;}
++   // X4-R1: changed terrain/promotion RNG can break pursuit. Reacquire the
++   // original marked creature by player moves; waiting indefinitely loses
++   // wandering targets and can leave the player sitting in spreading gas.
++   if(distance>3){approachMarked();continue;}
+    const p=route(g,g.player.loc,altar,true)?.[0];if(!p)throw Error('lure path blocked');
+    act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
+   }state('lured');
+diff --git a/brogue-web/src/test/g_2_gas_df_wiring.test.ts b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+index 01df7bbaad..bca46a4170 100644
+--- a/brogue-web/src/test/g_2_gas_df_wiring.test.ts
++++ b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+@@ -414,15 +414,12 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
+     // 其余四气体仍无载体，只登记的半边原样保留。原断言内容存档：
+     // "ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 成员、
+     // 无 GasType 成员、无 DF 条目"。
+-    it('HEALING 尚无载体；X2g 的 ROT/DARKNESS 具有完整 CE 来源', () => {
+-        // "只登记"的形态（本断言即登记）：这四种气体不迁 tile——
+-        // 它们没有 TerrainType/GasType 成员、不在目录里。接成空转链的
+-        // 错误实现（tile 迁了但无生产写入点、或 DF 条目 tile=null 挂着
+-        // 无人触发）在这组结构性断言下无所遁形。
++    it('X4-R1 HEALING 与 X2g ROT/DARKNESS 均有真实 CE 地形和 DF 来源', () => {
++        // X4-R1: the absent-tile premise expired. GasType convenience aliases
++        // remain absent; native GAS-layer identities are the storage contract.
+         const names = (TerrainType as unknown as Record<string, unknown>);
+-        for (const n of ['HEALING_CLOUD']) {
+-            expect(names[n], `${n} 不得有 tile 成员（载体盘点：无 web 载体，只登记）`).toBeUndefined();
+-        }
++        expect(isGasTerrain(C.HEALING_CLOUD)).toBe(true);
++        expect(catalogFeature(DF.DF_BLOODFLOWER_POD_BURST).tile).toBe(C.HEALING_CLOUD);
+         // X2g: absence is now the wrong premise for these native sources.
+         expect(isGasTerrain(C.ROT_GAS)).toBe(true);
+         expect(isGasTerrain(C.DARKNESS_CLOUD)).toBe(true);
+@@ -442,16 +439,14 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
+         expect(isGasTerrain(C.STENCH_SMOKE_GAS)).toBe(true);
+         expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_SMOLDER]!.tile).toBe(C.STENCH_SMOKE_GAS);
+         expect(() => catalogFeature(DF.DF_STENCH_SMOLDER)).not.toThrow();
+-        // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
+-        // U19f 已闭包 DF_DEWAR_*（71-74）；仍未迁入 DF_ROT_GAS_*（32/41）、DF_STENCH_*（217）、
+-        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。
+-        // 旧注将 159 误称为 DF_PARALYSIS_GAS_CLOUD_POTION；按 Rogue.h 枚举数序，
+-        // 159 实为 DF_SHALLOW_WATER，本轮水扩散闭包合法使用该 id。
+-        // V-2b-9a：159=DF_SHALLOW_WATER 是水扩散闭包成员；218=DF_STENCH_SMOLDER
+-        // 由 MUD_FLOOR.fireType 引入。二者已获授权，边界守卫只移除这两项。
+-        for (const id of [70, 217]) {
+-            expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
+-        }
++        // X4-R1 closes the two remaining entries of this historical boundary:
++        // real POD -> healing spores, real HAY -> stench smoke -> ordinary fire.
++        expect(DUNGEON_FEATURE_CATALOG[DF.DF_BLOODFLOWER_POD_BURST]).toMatchObject({
++            tile: C.HEALING_CLOUD, startProbability: 350,
++        });
++        expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_BURN]).toMatchObject({
++            tile: C.STENCH_SMOKE_GAS, startProbability: 50, subsequentDF: DF.DF_PLAIN_FIRE,
++        });
+     });
+ 
+     // 验收方 F-2c 后翻转（原名："DF_EXPLOSION_FIRE 登记为缺 tile（爆炸归
+diff --git a/brogue-web/src/test/p1_42_secret_door_search.test.ts b/brogue-web/src/test/p1_42_secret_door_search.test.ts
+index 439a5a214b..6f1a5e7091 100644
+--- a/brogue-web/src/test/p1_42_secret_door_search.test.ts
++++ b/brogue-web/src/test/p1_42_secret_door_search.test.ts
+@@ -207,6 +207,17 @@ describe('P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489', () => {
+             // Seed42511 has five visible natural trapdoors outside the old r=8
+             // fixture. Preserve all zero-roll and hidden-door assertions below.
+             craftRoom(game, 10);
++            // X4-R1: full search turns now grow natural bloodwort outside FOV.
++            // seed42511 has stalks at (17,3), (69,16), (77,7); three DF spread
++            // rolls, zero search rolls. Isolate this ambient producer only.
++            // Keep all zero-roll, visibility and hidden-door assertions intact.
++            for (let x = 0; x < game.grid.width; x++) for (let y = 0; y < game.grid.height; y++) {
++                const cell = game.grid.getCell(x, y)!;
++                for (let layer = 0; layer < 4; layer++) {
++                    if (cell.layers[layer] === TerrainType.BLOODFLOWER_STALK)
++                        game.grid.setTerrainLayer(x, y, layer, TerrainType.NOTHING);
++                }
++            }
+             placeSecretDoor(game, CX + 5, CY);
+             for (let y = CY - 3; y <= CY + 3; y++) placeWall(game, CX + 2, y); // 隔墙
+             game.fov.computeFOV(CX, CY, 10);
+diff --git a/brogue-web/src/test/r_1_appearance.test.ts b/brogue-web/src/test/r_1_appearance.test.ts
+index 30fdfaa2bd..d746361694 100644
+--- a/brogue-web/src/test/r_1_appearance.test.ts
++++ b/brogue-web/src/test/r_1_appearance.test.ts
+@@ -45,8 +45,9 @@ import { MonsterState, type Monster } from '../entities/Monster';
+ import { Player } from '../entities/Player';
+ import priorTerrainGoldens from './fixtures/u21c-ce-terrain.json';
+ import x2gTerrainGoldens from './fixtures/x2g-ce-terrain.json';
++import x4r1TerrainGoldens from './fixtures/x4-r1-ce-terrain.json';
+ // CE-source additions; retain the historical 190-row fixture byte-for-byte.
+-const ceTerrainGoldens = { ...priorTerrainGoldens, ...x2gTerrainGoldens };
++const ceTerrainGoldens = { ...priorTerrainGoldens, ...x2gTerrainGoldens, ...x4r1TerrainGoldens };
+ 
+ // ════════════════════════ 工具 ════════════════════════
+ 
+@@ -148,7 +149,7 @@ function makeMonster(overrides: Partial<Pick<Monster, 'hp' | 'isAlly' | 'state'
+ // ════════════════════════ terrainAppearance 特征化 ════════════════════════
+ 
+ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
+-    it('穷举表覆盖 TerrainType 全部成员（当前 193 个）、成员值无重复', () => {
++    it('穷举表覆盖 TerrainType 全部成员（当前 208 个）、成员值无重复', () => {
+         // 成员数变化（新增地形）时此断言翻红——按文件头说明更新期望表。
+         // V-2b-2b：+6（CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
+         // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN），47 → 53。
+@@ -172,8 +173,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
+         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 adds two CE terrain carriers; preserve the old-universe count.
+-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.LICHEN, TerrainType.DARKNESS_CLOUD, TerrainType.ROT_GAS, TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.COMMUTATION_ALTAR_INERT, TerrainType.PIPE_GLOWING, TerrainType.RESURRECTION_ALTAR_INERT, TerrainType.SACRIFICE_ALTAR, TerrainType.PIPE_INERT, TerrainType.SACRIFICE_LAVA, TerrainType.RAT_TRAP_WALL_CRACKING, TerrainType.STATUE_CRACKING, TerrainType.COFFIN_OPEN, TerrainType.WORM_TUNNEL_MARKER_ACTIVE, TerrainType.PORTAL_LIGHT, TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_WELL, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.NET_TRAP, TerrainType.NET_TRAP_HIDDEN, TerrainType.NETTING, TerrainType.ALARM_TRAP, TerrainType.ALARM_TRAP_HIDDEN, TerrainType.GAS_TRAP_CONFUSION, TerrainType.GAS_TRAP_CONFUSION_HIDDEN, TerrainType.FLOOD_TRAP_HIDDEN, TerrainType.STEAM_VENT, TerrainType.DEWAR_CAUSTIC_GAS, TerrainType.DEWAR_CONFUSION_GAS, TerrainType.DEWAR_PARALYSIS_GAS, TerrainType.DEWAR_METHANE_GAS, TerrainType.BROKEN_GLASS].includes(t)).length).toBe(135);
+-        expect(ALL_TERRAINS.length).toBe(193);
++        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.BLOODFLOWER_POD, TerrainType.HEALING_CLOUD, TerrainType.HAY, TerrainType.URINE, TerrainType.JUNK, TerrainType.BURNED_CARPET, TerrainType.GREEN_BLOOD, TerrainType.PURPLE_BLOOD, TerrainType.ACID_SPLATTER, TerrainType.WORM_BLOOD, TerrainType.UNICORN_POOP, TerrainType.GUARDIAN_GLOW, TerrainType.FLAMEDANCER_FIRE, TerrainType.DART_EXPLOSION, TerrainType.CREATURE_FIRE, TerrainType.LICHEN, TerrainType.DARKNESS_CLOUD, TerrainType.ROT_GAS, TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.COMMUTATION_ALTAR_INERT, TerrainType.PIPE_GLOWING, TerrainType.RESURRECTION_ALTAR_INERT, TerrainType.SACRIFICE_ALTAR, TerrainType.PIPE_INERT, TerrainType.SACRIFICE_LAVA, TerrainType.RAT_TRAP_WALL_CRACKING, TerrainType.STATUE_CRACKING, TerrainType.COFFIN_OPEN, TerrainType.WORM_TUNNEL_MARKER_ACTIVE, TerrainType.PORTAL_LIGHT, TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_WELL, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.NET_TRAP, TerrainType.NET_TRAP_HIDDEN, TerrainType.NETTING, TerrainType.ALARM_TRAP, TerrainType.ALARM_TRAP_HIDDEN, TerrainType.GAS_TRAP_CONFUSION, TerrainType.GAS_TRAP_CONFUSION_HIDDEN, TerrainType.FLOOD_TRAP_HIDDEN, TerrainType.STEAM_VENT, TerrainType.DEWAR_CAUSTIC_GAS, TerrainType.DEWAR_CONFUSION_GAS, TerrainType.DEWAR_PARALYSIS_GAS, TerrainType.DEWAR_METHANE_GAS, TerrainType.BROKEN_GLASS].includes(t)).length).toBe(135);
++        expect(ALL_TERRAINS.length).toBe(208);
+         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
+     });
+ 
+diff --git a/brogue-web/src/test/u_08_terrain_bolts.test.ts b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+index 91e57ae93f..ba9415486a 100644
+--- a/brogue-web/src/test/u_08_terrain_bolts.test.ts
++++ b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+@@ -48,7 +48,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
+         // Retain the U08 universe: later additions are item fire (110),
+         // foliage regrowth (63), U17c lever pull (96), and U17d immolation/poison spew (137/178).
+         // U17e adds only the necessary open-cage / inert-pipe / sacrifice successors.
+-        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![36,38,32,39,41,54,134,136,84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(139);
++        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![23,24,25,26,27,28,29,30,31,37,45,47,91,92,93,70,103,217,111,36,38,32,39,41,54,134,136,84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(139);
+         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
+         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
+         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);
+diff --git a/brogue-web/src/test/u_17a_df_transaction.test.ts b/brogue-web/src/test/u_17a_df_transaction.test.ts
+index 9ca20a4980..757223698c 100644
+--- a/brogue-web/src/test/u_17a_df_transaction.test.ts
++++ b/brogue-web/src/test/u_17a_df_transaction.test.ts
+@@ -259,7 +259,7 @@ describe('U17a actual Game consumers',()=>{
+     });
+     it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers',()=>{
+         expect([...DF_MISSING_TILES, 155, 187, 87, 88, 148, 191, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19, 85, 140, 141, 143, 145]).toHaveLength(30);
+-        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![36,38,32,39,41,54,134,136,84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(140);
++        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![23,24,25,26,27,28,29,30,31,37,45,47,91,92,93,70,103,217,111,36,38,32,39,41,54,134,136,84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(140);
+         expect(DF.DF_ITEM_FIRE).toBe(110);
+         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
+     });

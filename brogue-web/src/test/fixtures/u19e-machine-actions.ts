@@ -70,6 +70,11 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
  if(!entry)throw Error('missing entrance');
  entry={x:entry.x,y:entry.y};
  g.player.loc={...entry};g.player.hp=g.player.maxHp=10000;g.player.statusDurations={};g.animationEnabled=false;g.onConfirmRequest=()=>true;
+ // X4-R1's CE terrain/growth correction changes the command RNG history.
+ // The natural D8 approach crosses caustic gas: large HP does not protect
+ // against max-HP-scaled gas damage. Supply actual respiration equipment as
+ // an adventuring prerequisite; the marked monster and machine stay intact.
+ if(ce===47&&g.player.equippedArmor)g.player.equippedArmor.runicType='respiration';
  g.monsters=g.monsters.filter((m:any)=>m.machineHome===number);g.dormantMonsters=g.dormantMonsters.filter((m:any)=>m.machineHome===number);
  g.purgatory=[];
  let pair:any[]=[];let allyId:number|undefined;
@@ -118,16 +123,20 @@ export function runAltarActions(game:Game,trace:MachineTrace,explicitEntry?:Pos)
   walk(trigger);state('activated');
   // Approach without striking the original marked creature, then lead it back
   // one step at a time. Taking a shortcut to its old coordinates can kill it.
-  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>3;n++){
+  const approachMarked=()=>{
    const options=around.map(d=>({x:target.x+d.x,y:target.y+d.y})).map(p=>route(g,g.player.loc,p,true)).filter((r):r is Pos[]=>!!r?.length).sort((a,b)=>a.length-b.length);
    if(!options.length)throw Error('marked statue unreachable');const p=options[0]![0]!;
    if(g.grid.getCell(p.x,p.y).layers.includes(T.SECRET_DOOR))act('search');else act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
-  }
+  };
+  for(let n=0;n<300&&Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y))>3;n++)approachMarked();
   for(let n=0;n<30&&target.isDormant;n++)act('wait');state('awakened');
   const lurePath=route(g,g.player.loc,altar,true);if(!lurePath)throw Error('altar unreachable');
   for(let n=0;n<300&&!same(g.player.loc,altar);n++){
    const distance=Math.max(Math.abs(target.x-g.player.x),Math.abs(target.y-g.player.y));
-   if(distance>3){act('wait');continue;}
+   // X4-R1: changed terrain/promotion RNG can break pursuit. Reacquire the
+   // original marked creature by player moves; waiting indefinitely loses
+   // wandering targets and can leave the player sitting in spreading gas.
+   if(distance>3){approachMarked();continue;}
    const p=route(g,g.player.loc,altar,true)?.[0];if(!p)throw Error('lure path blocked');
    act('move',{x:p.x-g.player.x,y:p.y-g.player.y});
   }state('lured');

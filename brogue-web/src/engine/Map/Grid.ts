@@ -68,6 +68,23 @@ export enum DungeonLayer {
  *   PLAIN_FIRE=10（CE Globals.c:492 原值；F-1）。
  */
 export const DRAW_PRIORITY: Record<TerrainType, number> = {
+    // X4-R1: CE world catalog additions.
+    [TerrainType.BLOODFLOWER_POD]: 11,
+    [TerrainType.HEALING_CLOUD]: 35,
+    [TerrainType.HAY]: 57,
+    [TerrainType.URINE]: 80,
+    [TerrainType.JUNK]: 70,
+    [TerrainType.BURNED_CARPET]: 87,
+    [TerrainType.GREEN_BLOOD]: 80,
+    [TerrainType.PURPLE_BLOOD]: 80,
+    [TerrainType.ACID_SPLATTER]: 80,
+    [TerrainType.WORM_BLOOD]: 80,
+    [TerrainType.UNICORN_POOP]: 80,
+    [TerrainType.GUARDIAN_GLOW]: 100,
+    [TerrainType.FLAMEDANCER_FIRE]: 10,
+    [TerrainType.DART_EXPLOSION]: 10,
+    [TerrainType.CREATURE_FIRE]: 10,
+
     [TerrainType.ROT_GAS]: 35,
     [TerrainType.DARKNESS_CLOUD]: 35,
     [TerrainType.LICHEN]: 60,
@@ -246,7 +263,7 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.RUBBLE]: 70,
     [TerrainType.GRAY_FUNGUS]: 51,
     [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 100,
-    [TerrainType.BLOODFLOWER_STALK]: 20,
+    [TerrainType.BLOODFLOWER_STALK]: 10, // CE Globals.c:513; POD(11) must not overwrite its stalk.
     [TerrainType.HAVEN_BEDROLL]: 50,
     [TerrainType.FLOOR_FLOODABLE]: 95,
     [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: 40,
@@ -360,6 +377,23 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
  *   Globals.c:740；F-0 §3.2：十种火 DF 无一例外落 SURFACE——F-1）。
  */
 export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
+    // X4-R1: CE world catalog additions.
+    [TerrainType.BLOODFLOWER_POD]: DungeonLayer.SURFACE,
+    [TerrainType.HEALING_CLOUD]: DungeonLayer.GAS,
+    [TerrainType.HAY]: DungeonLayer.SURFACE,
+    [TerrainType.URINE]: DungeonLayer.SURFACE,
+    [TerrainType.JUNK]: DungeonLayer.SURFACE,
+    [TerrainType.BURNED_CARPET]: DungeonLayer.SURFACE,
+    [TerrainType.GREEN_BLOOD]: DungeonLayer.SURFACE,
+    [TerrainType.PURPLE_BLOOD]: DungeonLayer.SURFACE,
+    [TerrainType.ACID_SPLATTER]: DungeonLayer.SURFACE,
+    [TerrainType.WORM_BLOOD]: DungeonLayer.SURFACE,
+    [TerrainType.UNICORN_POOP]: DungeonLayer.SURFACE,
+    [TerrainType.GUARDIAN_GLOW]: DungeonLayer.SURFACE,
+    [TerrainType.FLAMEDANCER_FIRE]: DungeonLayer.SURFACE,
+    [TerrainType.DART_EXPLOSION]: DungeonLayer.SURFACE,
+    [TerrainType.CREATURE_FIRE]: DungeonLayer.SURFACE,
+
     [TerrainType.ROT_GAS]: DungeonLayer.GAS,
     [TerrainType.DARKNESS_CLOUD]: DungeonLayer.GAS,
     [TerrainType.LICHEN]: DungeonLayer.SURFACE,
@@ -650,9 +684,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * 唯一带 T_OBSTRUCTS_PASSABILITY 的火地形：它是"烧着的堵格体"）。
  * ITEM_FIRE（Globals.c:498，U17a burnItem 的后继）。
  * BRIMSTONE_FIRE（Globals.c:493，U17b 硫磺循环）。
- * CE 其余火地形（
- * FLAMEDANCER_FIRE / DART_EXPLOSION / CREATURE_FIRE）
- * web 尚无——后续轮次落地时随目录条目在此补行。
+ * X4-R1：FLAMEDANCER_FIRE / DART_EXPLOSION / CREATURE_FIRE
+ * （Globals.c:494/497/499）。集合顺序与追加后的 TerrainType 一致。
  */
 export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.PLAIN_FIRE,
@@ -662,6 +695,9 @@ export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.ITEM_FIRE,
     TerrainType.BRIMSTONE_FIRE,
     TerrainType.PILOT_LIGHT, // CE Globals.c:343; fire can occupy the DUNGEON layer.
+    TerrainType.FLAMEDANCER_FIRE,
+    TerrainType.DART_EXPLOSION,
+    TerrainType.CREATURE_FIRE,
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

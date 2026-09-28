@@ -580,7 +580,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
         // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
         // X2k: exclude the two new CE death rows from this historical projection.
-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(Number(k)));
+        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 45, 47, 91, 92, 93, 70, 103, 217, 111, 36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(Number(k)));
         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
@@ -797,6 +797,28 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // X2k: runtime death roots, CE Globals.c:655/659 (Game.triggerDeathFeatures).
         start.add(DF.DF_BLOOD_EXPLOSION); start.add(DF.DF_MUTATION_EXPLOSION);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
+        // X4-R1 explicitly authorized catalog roots: species blood/periodic/
+        // activation/dart/death consumers are handed to R3/R6, not claimed live.
+        // POD burst and stench burn enter through the real terrain fields above.
+        for (const id of [
+            DF.DF_RED_BLOOD,
+            DF.DF_GREEN_BLOOD,
+            DF.DF_PURPLE_BLOOD,
+            DF.DF_WORM_BLOOD,
+            DF.DF_ACID_BLOOD,
+            DF.DF_ASH_BLOOD,
+            DF.DF_EMBER_BLOOD,
+            DF.DF_ECTOPLASM_BLOOD,
+            DF.DF_RUBBLE_BLOOD,
+            DF.DF_FLAMEDANCER_CORONA,
+            DF.DF_SALAMANDER_FLAME,
+            DF.DF_UNICORN_POOP,
+            DF.DF_SILENT_GLYPH_GLOW,
+            DF.DF_GUARDIAN_STEP,
+            DF.DF_MIRROR_TOTEM_STEP,
+            DF.DF_DART_EXPLOSION,
+            DF.DF_CREATURE_FIRE,
+        ]) start.add(id);
         const closure = new Set<DF>();
         const queue = [...start];
         while (queue.length > 0) {
@@ -810,7 +832,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect([...catalogKeys].filter(id => ![36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+        expect([...catalogKeys].filter(id => ![23, 24, 25, 26, 27, 28, 29, 30, 31, 37, 45, 47, 91, 92, 93, 70, 103, 217, 111, 36, 38, 32, 39, 41, 54, 134, 136, 57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146, 192, 5, 9, 11, 12, 18, 20, 21, 22, 42, 64, 65, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 126, 127, 128].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
@@ -1072,8 +1094,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
     // 将来谁把 217 抄进目录，这条会响。
     it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（218 项枚举已抄 131 条）', () => {
         expect(DUNGEON_FEATURE_CATALOG[1 as DF]).toBeUndefined();   // DF_GRANITE_COLUMN
-        expect(DUNGEON_FEATURE_CATALOG[217 as DF]).toBeUndefined(); // DF_STENCH_BURN
-        expect(() => catalogFeature(217 as DF)).toThrow(/未抄录/);
+        expect(DUNGEON_FEATURE_CATALOG[34 as DF]).toBeUndefined(); // DF_BLOAT_DEATH remains catalog-absent; dedicated behavior exists.
+        expect(() => catalogFeature(34 as DF)).toThrow(/未抄录/);
         // 219 = NUMBER_DUNGEON_FEATURES（枚举终止符，非 DF），越界查询同样得 undefined。
         expect(DUNGEON_FEATURE_CATALOG[219 as DF]).toBeUndefined();
     });
@@ -1236,6 +1258,11 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // X4-R1 CE58 POD (Globals.c:699), pure SURFACE writer:
+            // 424242/D1 (27,11) and D9 (26,21); exact writer trace in report.
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.BLOODFLOWER_POD],
+            [C.NOTHING, C.WATER_SHALLOW, C.NOTHING, C.BLOODFLOWER_POD],
+
             // U19f cold writer traces: CE58 stalk + lake halo; CE65 catwalk/chasm halo;
             // CE31 pure LIQUID floodable writes preserve pre-existing grass/dead foliage; CE28 pressure plate.
             [C.FLOOR, C.CHASM, C.NOTHING, C.NOTHING], // CE65 BP_NO_INTERIOR_FLAG catwalk area retains no machine number
@@ -1328,7 +1355,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
             [C.FLOOR, C.MUD, C.NOTHING, C.NOTHING],
             [C.DOOR, C.MUD, C.NOTHING, C.NOTHING],
             // Goblin warren：MUD_FLOOR 后接 DF_HAY（GlobalsBrogue.c:266/273）；
-            // HAY 在 web 由 GRASS 承载（DungeonFeatureCatalog），只写 SURFACE。
+            // 旧 GRASS 组合仍可能来自 DF_GRASS；DF_HAY 现落真实 HAY（见上方）。
             [C.MUD_FLOOR, C.NOTHING, C.NOTHING, C.GRASS],
             // CE34：FLOOR_FLOODABLE 明确写 DUNGEON（GlobalsBrogue.c:396），
             // 保留既有草/网；坍塌边缘 DF 写 LIQUID（Globals.c:837）。
@@ -1358,7 +1385,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         );
                         if (verified9e) {
                             // CE58/34/Goblin warren 没有 NO_INTERIOR_FLAG，保留机器归属守卫。
-                            if (cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK
+                            if ([C.BLOODFLOWER_STALK, C.BLOODFLOWER_POD].includes(cell.layers[L.SURFACE] as TerrainType)
                                 || [C.MUD_FLOOR, C.MUD_WALL, C.FLOOR_FLOODABLE, C.ALTAR_SWITCH, C.MACHINE_PARALYSIS_VENT_HIDDEN, C.GAS_TRAP_PARALYSIS_HIDDEN].includes(cell.layers[L.DUNGEON] as TerrainType)) {
                                 expect(cell.machineNumber).toBeGreaterThan(0);
                             }

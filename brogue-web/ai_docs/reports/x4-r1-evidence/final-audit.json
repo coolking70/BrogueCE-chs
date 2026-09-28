@@ -1,0 +1,201 @@
+{
+  "time": "2026-09-28T23:58:33.021791+08:00",
+  "head": "3ee2764c85956877a96c656eda9aaf51db64818c",
+  "Game.ts": "a3114cee7126b69d420348c22ab2a392360700dff6a16269910119c2b1f2638b",
+  "ceInputsUnchanged": true,
+  "productionHashesRestored": [
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "head": "f517b250bdde4cf69660a81cf6e957be713af15aea30dc53ce04767b2ca28377",
+      "final": "958f7a0fd10f25a333947d88029eeb7a642aa63954a36d8ff15735210f110e7a"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "head": "3011147f91e6d9d0bc50eb335bd83e0bea86975d9c9fa5fc40a8712179df4b53",
+      "final": "63d81c60f3c20b95e8d8d8779db0714161c42acfba9443b927957a9acbef6228"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "head": "f0637d8c04c701ebefc26ed78f43b1e44a8366ed3c3857e0cc14b50e1eee32a9",
+      "final": "e94663237509d6825198fc47c259177d656c7e0d7e97f9ff5e968695479e169c"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "head": "40252dae6abf53980bcec19cf044fd222edaa27c7684111fea8f4aa2d7ee757c",
+      "final": "5ea7e1cb99fcf2f4ad33ef2c25048bef77420b29fa9744f2374e25fcb1c25e2c"
+    },
+    {
+      "file": "src/engine/UI/TerrainAppearanceCatalog.ts",
+      "head": "faa29afa32f692c23fd902589dc50171316d2b83d530455d45bc9565cfa9fcf0",
+      "final": "7174b0d1623add0259a71e6ed2e64da9882af3ac5e199e88d73306005f2d57b7"
+    },
+    {
+      "file": "src/engine/UI/TerrainColorCatalog.ts",
+      "head": "7df4fadb42587d10080320072fdd5fb94bab3b80641f440c0fedfb5b03146151",
+      "final": "d276a65cf183cd2decb86ca19190450888a22b0a2cf18f279da9690970856c7b"
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "head": "a5c804b79583096a4142c3bd31076e24d612778229bf5355cbc5ee1e511a1e03",
+      "final": "a9949e8f78ae41ca8b09923d9c8f5a0013b0f3ba12b134cf2d9749e07b4230ec"
+    },
+    {
+      "file": "src/engine/Map/TerrainHealing.ts",
+      "head": null,
+      "final": "0d512d89f19f9e97fbe8466967a7a4c52b33d1ac507924b1d42a9ec8e5757d39"
+    },
+    {
+      "file": "src/engine/Map/WorldCatalogAudit.ts",
+      "head": null,
+      "final": "5af261d0b96658af905ede2b63a5d07e3e6c259804cf65c7bc7c63804c078f8e"
+    },
+    {
+      "file": "src/engine/UI/WorldCatalogText.ts",
+      "head": null,
+      "final": "d52ae49ba0781bae9a49201ee23ad113e2721f0b581f64ee700f536ee6de36a2"
+    }
+  ],
+  "fixtures": [
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "before": "8de4bb7a4f3fa40f72bd2f5b511699dff771b846131c65d72f4c3e6788ec8580",
+      "after": "6800e38f5687c4237dfab9c054e03bf25987b17781fe69e5596264287ec01a9b",
+      "writes": 1
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "before": "1360215b7bb2ab69528831f9b9b8f989ef9fa334af127b037598fbbed36b4a60",
+      "after": "2998e47f27c6d163450a3b4eede24d525fbeaec6c413324eee5471e32a3899d9",
+      "writes": 1
+    },
+    {
+      "file": "ai_docs/reports/u-r2-trace.json",
+      "before": "d4a298b2230d974688d8c23b9a6f01d7666b87898ffedb1f1dabcc1125f6e838",
+      "after": "d4a298b2230d974688d8c23b9a6f01d7666b87898ffedb1f1dabcc1125f6e838",
+      "writes": 0
+    },
+    {
+      "file": "ai_docs/reports/u-r3-trace.json.gz",
+      "before": "7560d9aa5ebd8eb96dd06dbc411ad354196fb37830b35031b55cf83246f33ffb",
+      "after": "0be7041d6d5e25544ef7dd091126e69bd0ab52421bcb0418bc5cbe4d477b21b6",
+      "writes": 1,
+      "changedLeaves": 120,
+      "originalMethod": "UR3_CAPTURE=1 node node_modules/vitest/vitest.mjs run src/test/u_r3_trace.test.ts --maxWorkers=1",
+      "reason": "Only R1 production rollback passes original trace; complete leaf changes retained in evidence"
+    },
+    {
+      "file": "ai_docs/reports/u-r4-trace.json.gz",
+      "before": "f971517dc24554af1a72a76a89b0a8ec08e63b2b1616d3fe17d28e326098e590",
+      "after": "f971517dc24554af1a72a76a89b0a8ec08e63b2b1616d3fe17d28e326098e590",
+      "writes": 0
+    }
+  ],
+  "gates": [
+    {
+      "name": "tsc",
+      "command": "npx vue-tsc -b",
+      "exit": 0,
+      "seconds": 10.32,
+      "log": "ai_docs/reports/x4-r1-evidence/final-tsc.log"
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "exit": 0,
+      "seconds": 15.114,
+      "log": "ai_docs/reports/x4-r1-evidence/final-build.log"
+    },
+    {
+      "name": "test",
+      "command": "npm test -- --maxWorkers=8 --reporter=default --reporter=json --outputFile=ai_docs/reports/x4-r1-evidence/final-test.json",
+      "exit": 0,
+      "seconds": 1758.895,
+      "log": "ai_docs/reports/x4-r1-evidence/final-test.log"
+    },
+    {
+      "name": "drift",
+      "command": "npm run test:drift -- --maxWorkers=1 --reporter=default --reporter=json --outputFile=ai_docs/reports/x4-r1-evidence/final-drift.json",
+      "exit": 0,
+      "seconds": 36.227,
+      "log": "ai_docs/reports/x4-r1-evidence/final-drift.log"
+    }
+  ],
+  "fullSuite": {
+    "files": 230,
+    "numTotalTests": 4334,
+    "numPassedTests": 4321,
+    "numFailedTests": 0,
+    "numPendingTests": 8,
+    "numTodoTests": 5
+  },
+  "driftPassedTests": 1,
+  "gitDiffCheck": true,
+  "indexEmpty": true,
+  "newPNGs": 0,
+  "LFTextFiles": [
+    "brogue-web/src/engine/Map/DungeonFeatureCatalog.ts",
+    "brogue-web/src/engine/Map/Grid.ts",
+    "brogue-web/src/engine/Map/TerrainCatalog.ts",
+    "brogue-web/src/engine/Map/TerrainType.ts",
+    "brogue-web/src/engine/UI/TerrainAppearanceCatalog.ts",
+    "brogue-web/src/engine/UI/TerrainColorCatalog.ts",
+    "brogue-web/src/locales/zh_CN.json",
+    "brogue-web/src/test/c_4a_0_layer_model.test.ts",
+    "brogue-web/src/test/c_4a_terrain_catalog.test.ts",
+    "brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+    "brogue-web/src/test/c_7_lighting.test.ts",
+    "brogue-web/src/test/fixtures/deep_generation_baseline.json",
+    "brogue-web/src/test/fixtures/generation_baseline.json",
+    "brogue-web/src/test/fixtures/u19e-machine-actions.ts",
+    "brogue-web/src/test/g_2_gas_df_wiring.test.ts",
+    "brogue-web/src/test/p1_42_secret_door_search.test.ts",
+    "brogue-web/src/test/r_1_appearance.test.ts",
+    "brogue-web/src/test/u_08_terrain_bolts.test.ts",
+    "brogue-web/src/test/u_17a_df_transaction.test.ts",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/affected-final.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/baseline-before.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/catalog-ledger.md",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/ce-additions.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/ce47-diagnosis.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/counterfactual-manifest.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/counterfactual-old-tests.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/counterfactual-results.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/counterfactual-source-backups.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/final-drift.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/final-gates.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/final-test.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/generation-field-changes.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/generation-terrain-changes.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/guard-premises.patch",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/initial-drift.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/initial-gates.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/initial-test.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/input-manifest.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/new-terrain-cold-cells.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/premises.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/recapture.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/search-isolated.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/search-probe.json",
+    "brogue-web/ai_docs/reports/x4-r1-evidence/targeted.json",
+    "brogue-web/ai_docs/reports/x4-r1.report.md",
+    "brogue-web/scripts/x4-r1-add-catalog.py",
+    "brogue-web/scripts/x4-r1-ce-catalog.py",
+    "brogue-web/scripts/x4-r1-counterfactual.mjs",
+    "brogue-web/scripts/x4-r1-generation.config.ts",
+    "brogue-web/scripts/x4-r1-generation.ts",
+    "brogue-web/scripts/x4-r1-layers.config.ts",
+    "brogue-web/scripts/x4-r1-layers.ts",
+    "brogue-web/scripts/x4-r1-machine-probe.config.ts",
+    "brogue-web/scripts/x4-r1-machine-probe.ts",
+    "brogue-web/scripts/x4-r1-recapture.mjs",
+    "brogue-web/scripts/x4-r1-search-probe.config.ts",
+    "brogue-web/scripts/x4-r1-search-probe.ts",
+    "brogue-web/scripts/x4-r1-update-premises.py",
+    "brogue-web/scripts/x4-r1-validate.mjs",
+    "brogue-web/src/engine/Map/TerrainHealing.ts",
+    "brogue-web/src/engine/Map/WorldCatalogAudit.ts",
+    "brogue-web/src/engine/UI/WorldCatalogText.ts",
+    "brogue-web/src/test/fixtures/x4-r1-ce-terrain.json",
+    "brogue-web/src/test/x4_r1_world_catalog.test.ts"
+  ]
+}

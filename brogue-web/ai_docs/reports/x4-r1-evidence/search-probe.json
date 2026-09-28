@@ -1,0 +1,200 @@
+[
+  {
+    "seed": 42500,
+    "stalks": [
+      {
+        "x": 37,
+        "y": 26,
+        "layer": 3
+      },
+      {
+        "x": 67,
+        "y": 12,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42501,
+    "stalks": [
+      {
+        "x": 58,
+        "y": 15,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42502,
+    "stalks": [
+      {
+        "x": 36,
+        "y": 6,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42503,
+    "stalks": [
+      {
+        "x": 35,
+        "y": 17,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42504,
+    "stalks": [
+      {
+        "x": 66,
+        "y": 23,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42505,
+    "stalks": [],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42506,
+    "stalks": [
+      {
+        "x": 9,
+        "y": 4,
+        "layer": 3
+      },
+      {
+        "x": 38,
+        "y": 4,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42507,
+    "stalks": [
+      {
+        "x": 61,
+        "y": 26,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42508,
+    "stalks": [
+      {
+        "x": 65,
+        "y": 26,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42509,
+    "stalks": [
+      {
+        "x": 69,
+        "y": 24,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42510,
+    "stalks": [],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42511,
+    "stalks": [
+      {
+        "x": 17,
+        "y": 3,
+        "layer": 3
+      },
+      {
+        "x": 69,
+        "y": 16,
+        "layer": 3
+      },
+      {
+        "x": 77,
+        "y": 7,
+        "layer": 3
+      }
+    ],
+    "calls": [
+      {
+        "percent": 10,
+        "stack": "Error: \n    at Random.<anonymous> (E:/bench/work/x4r1/brogue-web/scripts/x4-r1-search-probe.ts:37:39)\n    at Random.randPercent (file:///E:/bench/work/x4r1/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at spawnMapDF (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:380:36)\n    at executeDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:953:13)\n    at spawnDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:887:24)\n    at promoteTile (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:469:24)\n    at runPromotionUpdate (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:658:31)\n    at updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/TimeCoordinator.ts:308:43)\n    at Game.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8379:16)\n    at Object.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8251:47)",
+        "secrets": []
+      },
+      {
+        "percent": 10,
+        "stack": "Error: \n    at Random.<anonymous> (E:/bench/work/x4r1/brogue-web/scripts/x4-r1-search-probe.ts:37:39)\n    at Random.randPercent (file:///E:/bench/work/x4r1/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at spawnMapDF (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:380:36)\n    at executeDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:953:13)\n    at spawnDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:887:24)\n    at promoteTile (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:469:24)\n    at runPromotionUpdate (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:658:31)\n    at updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/TimeCoordinator.ts:308:43)\n    at Game.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8379:16)\n    at Object.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8251:47)",
+        "secrets": []
+      },
+      {
+        "percent": 10,
+        "stack": "Error: \n    at Random.<anonymous> (E:/bench/work/x4r1/brogue-web/scripts/x4-r1-search-probe.ts:37:39)\n    at Random.randPercent (file:///E:/bench/work/x4r1/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at spawnMapDF (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:380:36)\n    at executeDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:953:13)\n    at spawnDungeonFeature (E:/bench/work/x4r1/brogue-web/src/engine/Map/DungeonFeature.ts:887:24)\n    at promoteTile (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:469:24)\n    at runPromotionUpdate (E:/bench/work/x4r1/brogue-web/src/engine/Map/Promotion.ts:658:31)\n    at updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/TimeCoordinator.ts:308:43)\n    at Game.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8379:16)\n    at Object.updateEnvironment (E:/bench/work/x4r1/brogue-web/src/engine/Core/Game.ts:8251:47)",
+        "secrets": []
+      }
+    ],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42512,
+    "stalks": [
+      {
+        "x": 38,
+        "y": 4,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42513,
+    "stalks": [],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  },
+  {
+    "seed": 42514,
+    "stalks": [
+      {
+        "x": 4,
+        "y": 21,
+        "layer": 3
+      }
+    ],
+    "calls": [],
+    "door": "SECRET_DOOR"
+  }
+]

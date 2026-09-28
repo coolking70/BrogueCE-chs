@@ -207,6 +207,17 @@ describe('P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489', () => {
             // Seed42511 has five visible natural trapdoors outside the old r=8
             // fixture. Preserve all zero-roll and hidden-door assertions below.
             craftRoom(game, 10);
+            // X4-R1: full search turns now grow natural bloodwort outside FOV.
+            // seed42511 has stalks at (17,3), (69,16), (77,7); three DF spread
+            // rolls, zero search rolls. Isolate this ambient producer only.
+            // Keep all zero-roll, visibility and hidden-door assertions intact.
+            for (let x = 0; x < game.grid.width; x++) for (let y = 0; y < game.grid.height; y++) {
+                const cell = game.grid.getCell(x, y)!;
+                for (let layer = 0; layer < 4; layer++) {
+                    if (cell.layers[layer] === TerrainType.BLOODFLOWER_STALK)
+                        game.grid.setTerrainLayer(x, y, layer, TerrainType.NOTHING);
+                }
+            }
             placeSecretDoor(game, CX + 5, CY);
             for (let y = CY - 3; y <= CY + 3; y++) placeWall(game, CX + 2, y); // 隔墙
             game.fov.computeFOV(CX, CY, 10);

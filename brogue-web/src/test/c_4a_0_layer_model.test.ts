@@ -227,6 +227,21 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
 
     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
         expect(TERRAIN_HOME_LAYER).toEqual({
+            [C.BLOODFLOWER_POD]: L.SURFACE, // X4-R1 CE :514
+            [C.HEALING_CLOUD]: L.GAS, // X4-R1 CE :510
+            [C.HAY]: L.SURFACE, // X4-R1 CE :452
+            [C.URINE]: L.SURFACE, // X4-R1 CE :458
+            [C.JUNK]: L.SURFACE, // X4-R1 CE :466
+            [C.BURNED_CARPET]: L.SURFACE, // X4-R1 CE :462
+            [C.GREEN_BLOOD]: L.SURFACE, // X4-R1 CE :454
+            [C.PURPLE_BLOOD]: L.SURFACE, // X4-R1 CE :455
+            [C.ACID_SPLATTER]: L.SURFACE, // X4-R1 CE :456
+            [C.WORM_BLOOD]: L.SURFACE, // X4-R1 CE :460
+            [C.UNICORN_POOP]: L.SURFACE, // X4-R1 CE :459
+            [C.GUARDIAN_GLOW]: L.SURFACE, // X4-R1 CE :489
+            [C.FLAMEDANCER_FIRE]: L.SURFACE, // X4-R1 CE :494
+            [C.DART_EXPLOSION]: L.SURFACE, // X4-R1 CE :497
+            [C.CREATURE_FIRE]: L.SURFACE, // X4-R1 CE :499
             [C.LICHEN]: L.SURFACE, // X2g CE Globals.c:451/783
             [C.DARKNESS_CLOUD]: L.GAS, // CE :509/781
             [C.ROT_GAS]: L.GAS, // CE :504/649
@@ -435,6 +450,21 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
+            [C.BLOODFLOWER_POD]: 11, // X4-R1 CE :514
+            [C.HEALING_CLOUD]: 35, // X4-R1 CE :510
+            [C.HAY]: 57, // X4-R1 CE :452
+            [C.URINE]: 80, // X4-R1 CE :458
+            [C.JUNK]: 70, // X4-R1 CE :466
+            [C.BURNED_CARPET]: 87, // X4-R1 CE :462
+            [C.GREEN_BLOOD]: 80, // X4-R1 CE :454
+            [C.PURPLE_BLOOD]: 80, // X4-R1 CE :455
+            [C.ACID_SPLATTER]: 80, // X4-R1 CE :456
+            [C.WORM_BLOOD]: 80, // X4-R1 CE :460
+            [C.UNICORN_POOP]: 80, // X4-R1 CE :459
+            [C.GUARDIAN_GLOW]: 100, // X4-R1 CE :489
+            [C.FLAMEDANCER_FIRE]: 10, // X4-R1 CE :494
+            [C.DART_EXPLOSION]: 10, // X4-R1 CE :497
+            [C.CREATURE_FIRE]: 10, // X4-R1 CE :499
             [C.LICHEN]: 60,
             [C.DARKNESS_CLOUD]: 35,
             [C.ROT_GAS]: 35,
@@ -608,7 +638,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.GRAY_FUNGUS]: 51,
             [C.WORM_TUNNEL_MARKER_DORMANT]: 100,
             // V-2b-8：CE Globals.c 第 4 列原值。
-            [C.BLOODFLOWER_STALK]: 20,
+            [C.BLOODFLOWER_STALK]: 10, // X4-R1 CE :513; POD must not overwrite STALK.
             [C.HAVEN_BEDROLL]: 50,
             // V-2b-9a：CE Globals.c 第 4 列原值。
             [C.FLOOR_FLOODABLE]: 95,

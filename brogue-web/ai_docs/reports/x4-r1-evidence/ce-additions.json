@@ -1,0 +1,648 @@
+{
+  "tiles": {
+    "BLOODFLOWER_POD": {
+      "ceLine": 514,
+      "appearance": {
+        "char": "*",
+        "color": "#7f0c3f",
+        "bgColor": null
+      },
+      "colors": [
+        "bloodflowerPodForeColor",
+        null
+      ],
+      "fields": [
+        "G_BLOODWORT_POD",
+        "&bloodflowerPodForeColor",
+        "0",
+        "11",
+        "20",
+        "DF_BLOODFLOWER_POD_BURST",
+        "0",
+        "DF_BLOODFLOWER_POD_BURST",
+        "0",
+        "NO_LIGHT",
+        "(T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED)",
+        "\"a bloodwort pod\"",
+        "\"the bloodwort seed pod bursts, releasing a cloud of healing spores.\""
+      ]
+    },
+    "HEALING_CLOUD": {
+      "ceLine": 510,
+      "appearance": {
+        "char": " ",
+        "color": "#000000",
+        "bgColor": 8323072,
+        "transparentFore": true
+      },
+      "colors": [
+        null,
+        "darkRed"
+      ],
+      "fields": [
+        "' '",
+        "0",
+        "&darkRed",
+        "35",
+        "0",
+        "DF_GAS_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_CAUSES_HEALING)",
+        "(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY)",
+        "\"a cloud of healing spores\"",
+        "\"bloodwort spores, renowned for their healing properties, fill the air.\""
+      ]
+    },
+    "HAY": {
+      "ceLine": 452,
+      "appearance": {
+        "char": "\"",
+        "color": "#b28c0c",
+        "bgColor": 986119
+      },
+      "colors": [
+        "hayColor",
+        "refuseBackColor"
+      ],
+      "fields": [
+        "G_GRASS",
+        "&hayColor",
+        "&refuseBackColor",
+        "57",
+        "50",
+        "DF_STENCH_BURN",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(T_IS_FLAMMABLE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"filthy hay\"",
+        "\"a pile of hay, matted with filth, has been arranged here as a makeshift bed.\""
+      ]
+    },
+    "URINE": {
+      "ceLine": 458,
+      "appearance": {
+        "char": "·",
+        "color": "#b2b266",
+        "bgColor": null
+      },
+      "colors": [
+        "urineColor",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&urineColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "100",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a puddle of urine\"",
+        "\"a puddle of urine covers the ground.\""
+      ]
+    },
+    "JUNK": {
+      "ceLine": 466,
+      "appearance": {
+        "char": ",",
+        "color": "#3a2b11",
+        "bgColor": 986119
+      },
+      "colors": [
+        "mudBackColor",
+        "refuseBackColor"
+      ],
+      "fields": [
+        "G_BONES",
+        "&mudBackColor",
+        "&refuseBackColor",
+        "70",
+        "20",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pile of filthy effects\"",
+        "\"primitive tools, carvings and trinkets are strewn about the area.\""
+      ]
+    },
+    "BURNED_CARPET": {
+      "ceLine": 462,
+      "appearance": {
+        "char": "\\'",
+        "color": "#333333",
+        "bgColor": null
+      },
+      "colors": [
+        "ashForeColor",
+        null
+      ],
+      "fields": [
+        "G_ASHES",
+        "&ashForeColor",
+        "0",
+        "87",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"burned carpet\"",
+        "\"the carpet has been scorched by an ancient fire.\""
+      ]
+    },
+    "GREEN_BLOOD": {
+      "ceLine": 454,
+      "appearance": {
+        "char": "·",
+        "color": "#199933",
+        "bgColor": null
+      },
+      "colors": [
+        "insectBloodColor",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&insectBloodColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of green blood\"",
+        "\"the floor is splattered with green blood.\""
+      ]
+    },
+    "PURPLE_BLOOD": {
+      "ceLine": 455,
+      "appearance": {
+        "char": "·",
+        "color": "#bf3fd8",
+        "bgColor": null
+      },
+      "colors": [
+        "poisonGasColor",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&poisonGasColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of purple blood\"",
+        "\"the floor is splattered with purple blood.\""
+      ]
+    },
+    "ACID_SPLATTER": {
+      "ceLine": 456,
+      "appearance": {
+        "char": "·",
+        "color": "#26cc3f",
+        "bgColor": null
+      },
+      "colors": [
+        "acidBackColor",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&acidBackColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "0",
+        "0",
+        "\"a puddle of acid\"",
+        "\"the floor is splattered with acid.\""
+      ]
+    },
+    "WORM_BLOOD": {
+      "ceLine": 460,
+      "appearance": {
+        "char": "·",
+        "color": "#cc9966",
+        "bgColor": null
+      },
+      "colors": [
+        "wormColor",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&wormColor",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "NO_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"a pool of worm entrails\"",
+        "\"worm viscera cover the ground.\""
+      ]
+    },
+    "UNICORN_POOP": {
+      "ceLine": 459,
+      "appearance": {
+        "char": "·",
+        "color": "#ffffff",
+        "bgColor": null
+      },
+      "colors": [
+        "white",
+        null
+      ],
+      "fields": [
+        "G_FLOOR_ALT",
+        "&white",
+        "0",
+        "80",
+        "0",
+        "DF_PLAIN_FIRE",
+        "0",
+        "0",
+        "0",
+        "UNICORN_POOP_LIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE)",
+        "\"unicorn poop\"",
+        "\"a pile of lavender-scented unicorn poop sparkles with rainbow light.\""
+      ]
+    },
+    "GUARDIAN_GLOW": {
+      "ceLine": 489,
+      "appearance": {
+        "char": "",
+        "color": "#000000",
+        "bgColor": null,
+        "transparentFore": true
+      },
+      "colors": [
+        null,
+        null
+      ],
+      "fields": [
+        "0",
+        "0",
+        "0",
+        "100",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "GLYPH_LIGHT_BRIGHT",
+        "(0)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION)",
+        "\"a red glow\"",
+        "\"a red glow fills the area.\""
+      ]
+    },
+    "FLAMEDANCER_FIRE": {
+      "ceLine": 494,
+      "appearance": {
+        "char": "⋏",
+        "color": "#b23300",
+        "bgColor": null
+      },
+      "colors": [
+        "fireForeColor",
+        null
+      ],
+      "fields": [
+        "G_FIRE",
+        "&fireForeColor",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_OBSIDIAN",
+        "5000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"clouds of infernal flame\"",
+        "\"billowing infernal flames eat at the floor.\""
+      ]
+    },
+    "DART_EXPLOSION": {
+      "ceLine": 497,
+      "appearance": {
+        "char": "⋏",
+        "color": "#ffffff",
+        "bgColor": null
+      },
+      "colors": [
+        "white",
+        null
+      ],
+      "fields": [
+        "G_FIRE",
+        "&white",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "0",
+        "10000",
+        "INCENDIARY_DART_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"a flash of fire\"",
+        "\"flames burst out of the incendiary dart.\""
+      ]
+    },
+    "CREATURE_FIRE": {
+      "ceLine": 499,
+      "appearance": {
+        "char": "⋏",
+        "color": "#ffffff",
+        "bgColor": null
+      },
+      "colors": [
+        "white",
+        null
+      ],
+      "fields": [
+        "G_FIRE",
+        "&white",
+        "0",
+        "10",
+        "0",
+        "0",
+        "0",
+        "DF_EMBERS",
+        "3000",
+        "FIRE_LIGHT",
+        "(T_IS_FIRE)",
+        "(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT)",
+        "\"greasy flames\"",
+        "\"greasy flames rise from the corpse.\""
+      ]
+    }
+  },
+  "dfs": {
+    "DF_RED_BLOOD": {
+      "index": 23,
+      "line": 640,
+      "fields": [
+        "RED_BLOOD",
+        "SURFACE",
+        "100",
+        "25",
+        "0"
+      ]
+    },
+    "DF_GREEN_BLOOD": {
+      "index": 24,
+      "line": 641,
+      "fields": [
+        "GREEN_BLOOD",
+        "SURFACE",
+        "100",
+        "25",
+        "0"
+      ]
+    },
+    "DF_PURPLE_BLOOD": {
+      "index": 25,
+      "line": 642,
+      "fields": [
+        "PURPLE_BLOOD",
+        "SURFACE",
+        "100",
+        "25",
+        "0"
+      ]
+    },
+    "DF_WORM_BLOOD": {
+      "index": 26,
+      "line": 643,
+      "fields": [
+        "WORM_BLOOD",
+        "SURFACE",
+        "100",
+        "25",
+        "0"
+      ]
+    },
+    "DF_ACID_BLOOD": {
+      "index": 27,
+      "line": 644,
+      "fields": [
+        "ACID_SPLATTER",
+        "SURFACE",
+        "200",
+        "25",
+        "0"
+      ]
+    },
+    "DF_ASH_BLOOD": {
+      "index": 28,
+      "line": 645,
+      "fields": [
+        "ASH",
+        "SURFACE",
+        "50",
+        "25",
+        "0"
+      ]
+    },
+    "DF_EMBER_BLOOD": {
+      "index": 29,
+      "line": 646,
+      "fields": [
+        "EMBERS",
+        "SURFACE",
+        "125",
+        "25",
+        "0"
+      ]
+    },
+    "DF_ECTOPLASM_BLOOD": {
+      "index": 30,
+      "line": 647,
+      "fields": [
+        "ECTOPLASM",
+        "SURFACE",
+        "110",
+        "25",
+        "0"
+      ]
+    },
+    "DF_RUBBLE_BLOOD": {
+      "index": 31,
+      "line": 648,
+      "fields": [
+        "RUBBLE",
+        "SURFACE",
+        "33",
+        "25",
+        "0"
+      ]
+    },
+    "DF_FLAMEDANCER_CORONA": {
+      "index": 37,
+      "line": 656,
+      "fields": [
+        "FLAMEDANCER_FIRE",
+        "SURFACE",
+        "200",
+        "75",
+        "0"
+      ]
+    },
+    "DF_SALAMANDER_FLAME": {
+      "index": 45,
+      "line": 668,
+      "fields": [
+        "EMBERS",
+        "SURFACE",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "DF_UNICORN_POOP": {
+      "index": 47,
+      "line": 670,
+      "fields": [
+        "UNICORN_POOP",
+        "SURFACE",
+        "65",
+        "40",
+        "0"
+      ]
+    },
+    "DF_SILENT_GLYPH_GLOW": {
+      "index": 91,
+      "line": 728,
+      "fields": [
+        "GUARDIAN_GLOW",
+        "SURFACE",
+        "0",
+        "0",
+        "0",
+        "\"\""
+      ]
+    },
+    "DF_GUARDIAN_STEP": {
+      "index": 92,
+      "line": 729,
+      "fields": [
+        "GUARDIAN_GLOW",
+        "SURFACE",
+        "0",
+        "0",
+        "0",
+        "\"the glyph beneath you glows, and the guardians take a step!\""
+      ]
+    },
+    "DF_MIRROR_TOTEM_STEP": {
+      "index": 93,
+      "line": 730,
+      "fields": [
+        "GUARDIAN_GLOW",
+        "SURFACE",
+        "0",
+        "0",
+        "0",
+        "\"the mirrored totem flashes, reflecting the red glow of the glyph beneath you.\""
+      ]
+    },
+    "DF_BLOODFLOWER_POD_BURST": {
+      "index": 70,
+      "line": 701,
+      "fields": [
+        "HEALING_CLOUD",
+        "GAS",
+        "350",
+        "0",
+        "0"
+      ]
+    },
+    "DF_DART_EXPLOSION": {
+      "index": 103,
+      "line": 743,
+      "fields": [
+        "DART_EXPLOSION",
+        "SURFACE",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "DF_STENCH_BURN": {
+      "index": 217,
+      "line": 930,
+      "fields": [
+        "STENCH_SMOKE_GAS",
+        "GAS",
+        "50",
+        "0",
+        "0",
+        "\"\"",
+        "0",
+        "0",
+        "0",
+        "0",
+        "DF_PLAIN_FIRE"
+      ]
+    },
+    "DF_CREATURE_FIRE": {
+      "index": 111,
+      "line": 751,
+      "fields": [
+        "CREATURE_FIRE",
+        "SURFACE",
+        "0",
+        "0",
+        "0",
+        "\"\"",
+        "FALLEN_TORCH_FLASH_LIGHT"
+      ]
+    }
+  }
+}

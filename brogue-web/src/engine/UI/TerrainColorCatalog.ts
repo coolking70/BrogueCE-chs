@@ -242,6 +242,23 @@ export const CE_DEPTH_COLORS: Readonly<Record<string, readonly [string, string]>
   ]
 };
 export const TERRAIN_COLOR_NAMES: Record<TerrainType, readonly [string | null, string | null]> = {
+    // X4-R1: CE world catalog additions.
+    [TerrainType.BLOODFLOWER_POD]: ["bloodflowerPodForeColor", null],
+    [TerrainType.HEALING_CLOUD]: [null, "darkRed"],
+    [TerrainType.HAY]: ["hayColor", "refuseBackColor"],
+    [TerrainType.URINE]: ["urineColor", null],
+    [TerrainType.JUNK]: ["mudBackColor", "refuseBackColor"],
+    [TerrainType.BURNED_CARPET]: ["ashForeColor", null],
+    [TerrainType.GREEN_BLOOD]: ["insectBloodColor", null],
+    [TerrainType.PURPLE_BLOOD]: ["poisonGasColor", null],
+    [TerrainType.ACID_SPLATTER]: ["acidBackColor", null],
+    [TerrainType.WORM_BLOOD]: ["wormColor", null],
+    [TerrainType.UNICORN_POOP]: ["white", null],
+    [TerrainType.GUARDIAN_GLOW]: [null, null],
+    [TerrainType.FLAMEDANCER_FIRE]: ["fireForeColor", null],
+    [TerrainType.DART_EXPLOSION]: ["white", null],
+    [TerrainType.CREATURE_FIRE]: ["white", null],
+
     [TerrainType.NOTHING]: ["black", "black"],
     [TerrainType.GRANITE]: ["wallBackColor", "graniteBackColor"],
     [TerrainType.FLOOR]: ["floorForeColor", "floorBackColor"],

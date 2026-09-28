@@ -141,6 +141,21 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.BLOODFLOWER_POD]: LightKind.NO_LIGHT, // X4-R1 CE :514
+        [TerrainType.HEALING_CLOUD]: LightKind.NO_LIGHT, // X4-R1 CE :510
+        [TerrainType.HAY]: LightKind.NO_LIGHT, // X4-R1 CE :452
+        [TerrainType.URINE]: LightKind.NO_LIGHT, // X4-R1 CE :458
+        [TerrainType.JUNK]: LightKind.NO_LIGHT, // X4-R1 CE :466
+        [TerrainType.BURNED_CARPET]: LightKind.NO_LIGHT, // X4-R1 CE :462
+        [TerrainType.GREEN_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :454
+        [TerrainType.PURPLE_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :455
+        [TerrainType.ACID_SPLATTER]: LightKind.NO_LIGHT, // X4-R1 CE :456
+        [TerrainType.WORM_BLOOD]: LightKind.NO_LIGHT, // X4-R1 CE :460
+        [TerrainType.UNICORN_POOP]: LightKind.UNICORN_POOP_LIGHT, // X4-R1 CE :459
+        [TerrainType.GUARDIAN_GLOW]: LightKind.GLYPH_LIGHT_BRIGHT, // X4-R1 CE :489
+        [TerrainType.FLAMEDANCER_FIRE]: LightKind.FIRE_LIGHT, // X4-R1 CE :494
+        [TerrainType.DART_EXPLOSION]: LightKind.INCENDIARY_DART_LIGHT, // X4-R1 CE :497
+        [TerrainType.CREATURE_FIRE]: LightKind.FIRE_LIGHT, // X4-R1 CE :499
         [TerrainType.LICHEN]: LightKind.NO_LIGHT, // X2g CE Globals.c:451
         [TerrainType.ROT_GAS]: LightKind.NO_LIGHT, // X2g CE Globals.c:504
         [TerrainType.DARKNESS_CLOUD]: LightKind.DARKNESS_CLOUD_LIGHT, // X2g CE Globals.c:509
@@ -370,12 +385,17 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 51 个（X2g 加入黑暗气云），且都指向有载体的目录条目', () => {
+    it('非零恰 56 个（X4-R1 新增五个发光载体），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
             .sort((a, b) => a - b);
         expect(nonzero).toEqual([
+            TerrainType.UNICORN_POOP, // X4-R1 CE glow carrier
+            TerrainType.GUARDIAN_GLOW, // X4-R1 CE glow carrier
+            TerrainType.FLAMEDANCER_FIRE, // X4-R1 CE glow carrier
+            TerrainType.DART_EXPLOSION, // X4-R1 CE glow carrier
+            TerrainType.CREATURE_FIRE, // X4-R1 CE glow carrier
             TerrainType.FUNGUS_FOREST,
             TerrainType.TRAMPLED_FUNGUS_FOREST,
             TerrainType.SUNLIGHT_POOL,
@@ -822,6 +842,7 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
 
 describe('C-7 载体边界留痕', () => {
     const CARRIER_KINDS = new Set([
+        'UNICORN_POOP_LIGHT', // X4-R1 actual UNICORN_POOP terrain + DF47.
         'SUN_LIGHT', 'DARKNESS_PATCH_LIGHT', 'FUNGUS_FOREST_LIGHT',
         'LUMINESCENT_ALGAE_BLUE_LIGHT', 'LUMINESCENT_ALGAE_GREEN_LIGHT', // U19f actual tiles and consumers
 

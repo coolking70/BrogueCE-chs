@@ -244,4 +244,6 @@ export enum TerrainType {
     LICHEN, // X2g: CE native terrain; append to preserve existing IDs.
     DARKNESS_CLOUD, // X2g: CE native terrain; append to preserve existing IDs.
     ROT_GAS, // X2g: CE native terrain; append to preserve existing IDs.
+    // X4-R1: append only; saved terrain identities remain stable.
+    BLOODFLOWER_POD, HEALING_CLOUD, HAY, URINE, JUNK, BURNED_CARPET, GREEN_BLOOD, PURPLE_BLOOD, ACID_SPLATTER, WORM_BLOOD, UNICORN_POOP, GUARDIAN_GLOW, FLAMEDANCER_FIRE, DART_EXPLOSION, CREATURE_FIRE,
 }

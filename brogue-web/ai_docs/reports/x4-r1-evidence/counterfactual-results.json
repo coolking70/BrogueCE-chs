@@ -1,0 +1,50 @@
+[
+  {
+    "label": "counterfactual-old-tests",
+    "args": [
+      "E:/bench/work/x4r1/brogue-web/src/test/c_4a_0_layer_model.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/c_4a_terrain_catalog.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/c_7_lighting.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/g_2_gas_df_wiring.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/p1_20_item_placement.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/p1_30_i18n_gate.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/p1_42_secret_door_search.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/r_1_appearance.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/u_08_terrain_bolts.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/u_17a_df_transaction.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/u_19e_machine_families.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/u_26a_deep_baseline.test.ts",
+      "E:/bench/work/x4r1/brogue-web/src/test/u_r3_trace.test.ts",
+      "src/test/generation_baseline.test.ts",
+      "--testNamePattern",
+      "C-4a-0 归属层表（错误归属 → 具体后果翻红） 归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）|C-4a B：表完整性（esbuild 只剥类型，运行时钉死） 全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined|C-4a B：表完整性（esbuild 只剥类型，运行时钉死） F-2a 守卫：Grid\\.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集|C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） terrainAllowsMove（查表）≡ 旧排除清单 \\{GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP\\}|C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） Game\\.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）|C-4b E：目录完整性（CE Globals\\.c:603-932 抄录质量） E1 W-14 恰 135 条（原 134 \\+ DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN\\.discoverType 与 WOODEN_BARRICADE\\.fireType 的载体，CE Globals\\.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue\\.h:1469 起）|C-4b E：目录完整性（CE Globals\\.c:603-932 抄录质量） E2 闭包自洽：TerrainCatalog 字符串起点 \\+ subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）|C-4b E：目录完整性（CE Globals\\.c:603-932 抄录质量） E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（218 项枚举已抄 131 条）|C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 \\+ GAS 恒空|C-7 TerrainCatalog\\.glowLight 列（CE tileCatalog 第 10 列） 全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）|C-7 TerrainCatalog\\.glowLight 列（CE tileCatalog 第 10 列） 非零恰 51 个（X2g 加入黑暗气云），且都指向有载体的目录条目|C-7 载体边界留痕 留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）|G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留痕） HEALING 尚无载体；X2g 的 ROT/DARKNESS 具有完整 CE 来源|地面物品落格可通行性（全局扫描，P1-20） 4 seeds × D1\\.\\.D26：普通物品落格可通行，闭笼领养奖励必须完整操作取出|P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN\\.json 每个静态字面量键都存在（缺失即红）|P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN\\.json 每个动态键前缀下至少有一个真实键（防前缀打错字整组落空）|P1-42 A：searchForSecrets 对齐 CE Movement\\.c:2459-2489 A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）|R-1 terrainAppearance 特征化（穷举钉死） 穷举表覆盖 TerrainType 全部成员（当前 193 个）、成员值无重复|R-1 terrainAppearance 特征化（穷举钉死） 可见态：每个成员的 \\{char, color, bgColor\\} 全等钉死|R-1 terrainAppearance 特征化（穷举钉死） 不可见（记忆）态：统一变暗 #333333 / 0x111111，字形不变|U08 CE catalog and runtime qualification new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible|U17a actual Game consumers historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers|U19e natural machines: entrance → player commands → original payoff natural CE47 seed424242/D5|U26a independent D27–40 generation baseline four full-run seeds retain deep terrain, population, gem quantity, origins and positions|UR3 complete generation and revisit trace matches HEAD for four drift seeds through D26 and cached/save return|4 seed.*D1-D26",
+      "--maxWorkers=2",
+      "--reporter=json",
+      "--outputFile=ai_docs/reports/x4-r1-evidence/counterfactual-old-tests.json"
+    ],
+    "exit": 0,
+    "seconds": 121.146,
+    "log": "ai_docs/reports/x4-r1-evidence/counterfactual-old-tests.log"
+  },
+  {
+    "label": "counterfactual-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r1-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 57.42,
+    "log": "ai_docs/reports/x4-r1-evidence/counterfactual-generation.log"
+  },
+  {
+    "label": "final-generation",
+    "args": [
+      "--config",
+      "scripts/x4-r1-generation.config.ts"
+    ],
+    "exit": 0,
+    "seconds": 58.988,
+    "log": "ai_docs/reports/x4-r1-evidence/final-generation.log"
+  }
+]

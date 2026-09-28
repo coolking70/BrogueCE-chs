@@ -5,6 +5,23 @@ import { TerrainType } from '../Map/Grid';
 
 export interface BaseTerrainAppearance { readonly char: string; readonly color: string; readonly bgColor: number | null; readonly transparentFore?: boolean; readonly foreDynamic?: string; readonly backDynamic?: string }
 export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
+    // X4-R1: CE world catalog additions.
+    [TerrainType.BLOODFLOWER_POD]: {"char": "*", "color": "#7f0c3f", "bgColor": null}, // CE :514
+    [TerrainType.HEALING_CLOUD]: {"char": " ", "color": "#000000", "bgColor": 8323072, "transparentFore": true}, // CE :510
+    [TerrainType.HAY]: {"char": "\"", "color": "#b28c0c", "bgColor": 986119}, // CE :452
+    [TerrainType.URINE]: {"char": "·", "color": "#b2b266", "bgColor": null}, // CE :458
+    [TerrainType.JUNK]: {"char": ",", "color": "#3a2b11", "bgColor": 986119}, // CE :466
+    [TerrainType.BURNED_CARPET]: {"char": "\\'", "color": "#333333", "bgColor": null}, // CE :462
+    [TerrainType.GREEN_BLOOD]: {"char": "·", "color": "#199933", "bgColor": null}, // CE :454
+    [TerrainType.PURPLE_BLOOD]: {"char": "·", "color": "#bf3fd8", "bgColor": null}, // CE :455
+    [TerrainType.ACID_SPLATTER]: {"char": "·", "color": "#26cc3f", "bgColor": null}, // CE :456
+    [TerrainType.WORM_BLOOD]: {"char": "·", "color": "#cc9966", "bgColor": null}, // CE :460
+    [TerrainType.UNICORN_POOP]: {"char": "·", "color": "#ffffff", "bgColor": null}, // CE :459
+    [TerrainType.GUARDIAN_GLOW]: {"char": "", "color": "#000000", "bgColor": null, "transparentFore": true}, // CE :489
+    [TerrainType.FLAMEDANCER_FIRE]: {"char": "⋏", "color": "#b23300", "bgColor": null}, // CE :494
+    [TerrainType.DART_EXPLOSION]: {"char": "⋏", "color": "#ffffff", "bgColor": null}, // CE :497
+    [TerrainType.CREATURE_FIRE]: {"char": "⋏", "color": "#ffffff", "bgColor": null}, // CE :499
+
     [TerrainType.DUNGEON_PORTAL]: { char: "Ω", color: '#666699', bgColor: 0x19193f }, // CE Globals.c:336
 
     [TerrainType.LICHEN]: { char: '"', color: '#7f0c3f', bgColor: null },

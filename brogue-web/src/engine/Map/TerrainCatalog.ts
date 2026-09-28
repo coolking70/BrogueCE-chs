@@ -46,7 +46,7 @@ export const T_CAUSES_DAMAGE               = Fl(14); // :1938 每回合伤害
 export const T_CAUSES_NAUSEA               = Fl(15); // :1939 恶心
 export const T_CAUSES_PARALYSIS            = Fl(16); // :1940 麻痹
 export const T_CAUSES_CONFUSION            = Fl(17); // :1941 混乱
-export const T_CAUSES_HEALING              = Fl(18); // :1942 每回合回 20%
+export const T_CAUSES_HEALING              = Fl(18); // :1942; Time.c:645-657 uses (maxHP / 15) * ticks / 100, minimum 1
 export const T_IS_DF_TRAP                  = Fl(19); // :1943 踩上触发 fireType DF
 export const T_CAUSES_EXPLOSIVE_DAMAGE     = Fl(20); // :1944 爆炸伤害
 export const T_SACRED                      = Fl(21); // :1945 敌对怪物回避
@@ -157,6 +157,23 @@ const e = (
  * 运行时钉死——esbuild 只剥类型，缺键要到运行时才暴露（undefined）。
  */
 export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
+    // X4-R1: CE world catalog additions.
+    [TerrainType.BLOODFLOWER_POD]: e((T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_PLAYER_ENTRY | TM_VISUALLY_DISTINCT | TM_INVERT_WHEN_HIGHLIGHTED), 20, 'DF_BLOODFLOWER_POD_BURST', '', 'DF_BLOODFLOWER_POD_BURST', 0, false, LightKind.NO_LIGHT), // CE :514
+    [TerrainType.HEALING_CLOUD]: e((T_CAUSES_HEALING), (TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY), 0, 'DF_GAS_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :510
+    [TerrainType.HAY]: e((T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION), 50, 'DF_STENCH_BURN', '', '', 0, false, LightKind.NO_LIGHT), // CE :452
+    [TerrainType.URINE]: e((0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION), 0, 'DF_PLAIN_FIRE', '', '', 100, false, LightKind.NO_LIGHT), // CE :458
+    [TerrainType.JUNK]: e((0), (TM_STAND_IN_TILE), 20, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :466
+    [TerrainType.BURNED_CARPET]: e((0), (TM_STAND_IN_TILE), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :462
+    [TerrainType.GREEN_BLOOD]: e((0), (TM_STAND_IN_TILE), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :454
+    [TerrainType.PURPLE_BLOOD]: e((0), (TM_STAND_IN_TILE), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :455
+    [TerrainType.ACID_SPLATTER]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :456
+    [TerrainType.WORM_BLOOD]: e((0), (TM_STAND_IN_TILE), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :460
+    [TerrainType.UNICORN_POOP]: e((0), (TM_STAND_IN_TILE), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.UNICORN_POOP_LIGHT), // CE :459
+    [TerrainType.GUARDIAN_GLOW]: e((0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION), 0, '', '', '', 10000, false, LightKind.GLYPH_LIGHT_BRIGHT), // CE :489
+    [TerrainType.FLAMEDANCER_FIRE]: e((T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT), 0, '', '', 'DF_OBSIDIAN', 5000, false, LightKind.FIRE_LIGHT), // CE :494
+    [TerrainType.DART_EXPLOSION]: e((T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT), 0, '', '', '', 10000, false, LightKind.INCENDIARY_DART_LIGHT), // CE :497
+    [TerrainType.CREATURE_FIRE]: e((T_IS_FIRE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT), 0, '', '', 'DF_EMBERS', 3000, false, LightKind.FIRE_LIGHT), // CE :499
+
     // U17b: CE Globals.c:474/425/493/332/429, all probabilities in CE units.
     [TerrainType.TRAMPLED_FOLIAGE]: e(T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
         15, 'DF_PLAIN_FIRE', '', 'DF_FOLIAGE_REGROW', 100),
@@ -1175,7 +1192,7 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     [TerrainType.BLOODFLOWER_STALK]: e(
         T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE,
         TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
-        100, 'DF_PLAIN_FIRE', '', 'DF_BLOODFLOWER_PODS_GROW', 0
+        20, 'DF_PLAIN_FIRE', '', 'DF_BLOODFLOWER_PODS_GROW', 100
     ),
     [TerrainType.HAVEN_BEDROLL]: e(
         T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,

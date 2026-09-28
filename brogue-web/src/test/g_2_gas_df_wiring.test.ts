@@ -414,15 +414,12 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
     // 其余四气体仍无载体，只登记的半边原样保留。原断言内容存档：
     // "ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 成员、
     // 无 GasType 成员、无 DF 条目"。
-    it('HEALING 尚无载体；X2g 的 ROT/DARKNESS 具有完整 CE 来源', () => {
-        // "只登记"的形态（本断言即登记）：这四种气体不迁 tile——
-        // 它们没有 TerrainType/GasType 成员、不在目录里。接成空转链的
-        // 错误实现（tile 迁了但无生产写入点、或 DF 条目 tile=null 挂着
-        // 无人触发）在这组结构性断言下无所遁形。
+    it('X4-R1 HEALING 与 X2g ROT/DARKNESS 均有真实 CE 地形和 DF 来源', () => {
+        // X4-R1: the absent-tile premise expired. GasType convenience aliases
+        // remain absent; native GAS-layer identities are the storage contract.
         const names = (TerrainType as unknown as Record<string, unknown>);
-        for (const n of ['HEALING_CLOUD']) {
-            expect(names[n], `${n} 不得有 tile 成员（载体盘点：无 web 载体，只登记）`).toBeUndefined();
-        }
+        expect(isGasTerrain(C.HEALING_CLOUD)).toBe(true);
+        expect(catalogFeature(DF.DF_BLOODFLOWER_POD_BURST).tile).toBe(C.HEALING_CLOUD);
         // X2g: absence is now the wrong premise for these native sources.
         expect(isGasTerrain(C.ROT_GAS)).toBe(true);
         expect(isGasTerrain(C.DARKNESS_CLOUD)).toBe(true);
@@ -442,16 +439,14 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         expect(isGasTerrain(C.STENCH_SMOKE_GAS)).toBe(true);
         expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_SMOLDER]!.tile).toBe(C.STENCH_SMOKE_GAS);
         expect(() => catalogFeature(DF.DF_STENCH_SMOLDER)).not.toThrow();
-        // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
-        // U19f 已闭包 DF_DEWAR_*（71-74）；仍未迁入 DF_ROT_GAS_*（32/41）、DF_STENCH_*（217）、
-        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。
-        // 旧注将 159 误称为 DF_PARALYSIS_GAS_CLOUD_POTION；按 Rogue.h 枚举数序，
-        // 159 实为 DF_SHALLOW_WATER，本轮水扩散闭包合法使用该 id。
-        // V-2b-9a：159=DF_SHALLOW_WATER 是水扩散闭包成员；218=DF_STENCH_SMOLDER
-        // 由 MUD_FLOOR.fireType 引入。二者已获授权，边界守卫只移除这两项。
-        for (const id of [70, 217]) {
-            expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
-        }
+        // X4-R1 closes the two remaining entries of this historical boundary:
+        // real POD -> healing spores, real HAY -> stench smoke -> ordinary fire.
+        expect(DUNGEON_FEATURE_CATALOG[DF.DF_BLOODFLOWER_POD_BURST]).toMatchObject({
+            tile: C.HEALING_CLOUD, startProbability: 350,
+        });
+        expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_BURN]).toMatchObject({
+            tile: C.STENCH_SMOKE_GAS, startProbability: 50, subsequentDF: DF.DF_PLAIN_FIRE,
+        });
     });
 
     // 验收方 F-2c 后翻转（原名："DF_EXPLOSION_FIRE 登记为缺 tile（爆炸归

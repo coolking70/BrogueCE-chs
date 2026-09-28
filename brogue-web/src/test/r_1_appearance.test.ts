@@ -45,8 +45,9 @@ import { MonsterState, type Monster } from '../entities/Monster';
 import { Player } from '../entities/Player';
 import priorTerrainGoldens from './fixtures/u21c-ce-terrain.json';
 import x2gTerrainGoldens from './fixtures/x2g-ce-terrain.json';
+import x4r1TerrainGoldens from './fixtures/x4-r1-ce-terrain.json';
 // CE-source additions; retain the historical 190-row fixture byte-for-byte.
-const ceTerrainGoldens = { ...priorTerrainGoldens, ...x2gTerrainGoldens };
+const ceTerrainGoldens = { ...priorTerrainGoldens, ...x2gTerrainGoldens, ...x4r1TerrainGoldens };
 
 // ════════════════════════ 工具 ════════════════════════
 
@@ -148,7 +149,7 @@ function makeMonster(overrides: Partial<Pick<Monster, 'hp' | 'isAlly' | 'state' 
 // ════════════════════════ terrainAppearance 特征化 ════════════════════════
 
 describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
-    it('穷举表覆盖 TerrainType 全部成员（当前 193 个）、成员值无重复', () => {
+    it('穷举表覆盖 TerrainType 全部成员（当前 208 个）、成员值无重复', () => {
         // 成员数变化（新增地形）时此断言翻红——按文件头说明更新期望表。
         // V-2b-2b：+6（CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
         // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN），47 → 53。
@@ -172,8 +173,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
         // U08 adds two CE terrain carriers; preserve the old-universe count.
-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.LICHEN, TerrainType.DARKNESS_CLOUD, TerrainType.ROT_GAS, TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.COMMUTATION_ALTAR_INERT, TerrainType.PIPE_GLOWING, TerrainType.RESURRECTION_ALTAR_INERT, TerrainType.SACRIFICE_ALTAR, TerrainType.PIPE_INERT, TerrainType.SACRIFICE_LAVA, TerrainType.RAT_TRAP_WALL_CRACKING, TerrainType.STATUE_CRACKING, TerrainType.COFFIN_OPEN, TerrainType.WORM_TUNNEL_MARKER_ACTIVE, TerrainType.PORTAL_LIGHT, TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_WELL, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.NET_TRAP, TerrainType.NET_TRAP_HIDDEN, TerrainType.NETTING, TerrainType.ALARM_TRAP, TerrainType.ALARM_TRAP_HIDDEN, TerrainType.GAS_TRAP_CONFUSION, TerrainType.GAS_TRAP_CONFUSION_HIDDEN, TerrainType.FLOOD_TRAP_HIDDEN, TerrainType.STEAM_VENT, TerrainType.DEWAR_CAUSTIC_GAS, TerrainType.DEWAR_CONFUSION_GAS, TerrainType.DEWAR_PARALYSIS_GAS, TerrainType.DEWAR_METHANE_GAS, TerrainType.BROKEN_GLASS].includes(t)).length).toBe(135);
-        expect(ALL_TERRAINS.length).toBe(193);
+        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.BLOODFLOWER_POD, TerrainType.HEALING_CLOUD, TerrainType.HAY, TerrainType.URINE, TerrainType.JUNK, TerrainType.BURNED_CARPET, TerrainType.GREEN_BLOOD, TerrainType.PURPLE_BLOOD, TerrainType.ACID_SPLATTER, TerrainType.WORM_BLOOD, TerrainType.UNICORN_POOP, TerrainType.GUARDIAN_GLOW, TerrainType.FLAMEDANCER_FIRE, TerrainType.DART_EXPLOSION, TerrainType.CREATURE_FIRE, TerrainType.LICHEN, TerrainType.DARKNESS_CLOUD, TerrainType.ROT_GAS, TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.COMMUTATION_ALTAR_INERT, TerrainType.PIPE_GLOWING, TerrainType.RESURRECTION_ALTAR_INERT, TerrainType.SACRIFICE_ALTAR, TerrainType.PIPE_INERT, TerrainType.SACRIFICE_LAVA, TerrainType.RAT_TRAP_WALL_CRACKING, TerrainType.STATUE_CRACKING, TerrainType.COFFIN_OPEN, TerrainType.WORM_TUNNEL_MARKER_ACTIVE, TerrainType.PORTAL_LIGHT, TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_WELL, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.NET_TRAP, TerrainType.NET_TRAP_HIDDEN, TerrainType.NETTING, TerrainType.ALARM_TRAP, TerrainType.ALARM_TRAP_HIDDEN, TerrainType.GAS_TRAP_CONFUSION, TerrainType.GAS_TRAP_CONFUSION_HIDDEN, TerrainType.FLOOD_TRAP_HIDDEN, TerrainType.STEAM_VENT, TerrainType.DEWAR_CAUSTIC_GAS, TerrainType.DEWAR_CONFUSION_GAS, TerrainType.DEWAR_PARALYSIS_GAS, TerrainType.DEWAR_METHANE_GAS, TerrainType.BROKEN_GLASS].includes(t)).length).toBe(135);
+        expect(ALL_TERRAINS.length).toBe(208);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 
