@@ -1,0 +1,8 @@
+{
+  "file": "src/components/DetailPanel.vue",
+  "headSHA256": "ec60bec47ce710d7b2fad03e129d1bd5fb045b5c8ec8edb5e36beef71fc1bbad",
+  "finalSHA256": "2655184f2cec789e8b339318520c9779fe84654edcaf6f63dc90c03d66f723e5",
+  "timing": "After engine-only counterfactual and trace recapture; no engine inputs changed.",
+  "reason": "Browser found cached detail overlay persisted after inspectTarget cleared. Poll now synchronizes null as closed, for Tab cycle, new run and replay omniscience toggle.",
+  "validation": "browser-final-2: six scenes, zero console/page errors; actual Tab close/reopen and replay checkbox/seek; final full gates include this change."
+}

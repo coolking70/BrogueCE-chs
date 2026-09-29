@@ -1,0 +1,194 @@
+{
+  "decision": "经生产单变量回滚证明后的最小前提修订，交验收裁决；无删用例、无新增 skip、无扩大容差。",
+  "files": [
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "beforeSHA256": "94bc671d82758fadab1cfe605726b0da8b2e52d1b31517d4fead09eb229fac84",
+      "afterSHA256": "37df6c8f36690ca67b9e0e587036bbb25fe7ac7da593f0b280bc95ba1322f214",
+      "initialFailures": [
+        "U06 CE compiled staffDamage goldens and real contacts 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice",
+        "U06 CE compiled staffDamage goldens and real contacts 'FIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice",
+        "U06 CE compiled staffDamage goldens and real contacts 'DRAGONFIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice",
+        "U06 CE compiled staffDamage goldens and real contacts 'SPARK' ignores player armor and armor runics; no melee on-hit statuses",
+        "U06 CE compiled staffDamage goldens and real contacts 'FIRE' ignores player armor and armor runics; no melee on-hit statuses",
+        "U06 CE compiled staffDamage goldens and real contacts 'DRAGONFIRE' ignores player armor and armor runics; no melee on-hit statuses",
+        "U06 reflected attribution/death and preserved BE_ATTACK BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it"
+      ],
+      "reason": "既有血迹隔离 mock 从已删除的 Game.spawnBlood 转到共享 spawnCreatureBlood；伤害分布/命中/护盾/原精确骰数断言不改。"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "beforeSHA256": "6768405b9639a758ce0d1e6a1b66891dba4938e0436d905b2a7355e87e2481c8",
+      "afterSHA256": "f37f9950c4ede803043cfdd2340e7bd62c4b480ef0aa8b21f747117dbd454f30",
+      "initialFailures": [],
+      "reason": "同一隔离入口迁移；原断言不改，消除已删除属性的类型错误。"
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "beforeSHA256": "cfc5da49d90db95d0c344c48d40c9936ba9dc57dc6558522eb16b39e20a13343",
+      "afterSHA256": "7c0cfc567ca2cc924eb39402bee8bb80ffc5cf6f428587aece5f3abeec928fc8",
+      "initialFailures": [],
+      "reason": "同一隔离入口迁移；原断言不改，消除已删除属性的类型错误。"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "beforeSHA256": "c719fef767c9974da9f6b14b45d461ffc0705ce408b71e047f2a67bc8bffda5d",
+      "afterSHA256": "f214380bad6822af2eb3296bb19d4f99258716f03f35c8b6376f0a5fd5b451cc",
+      "initialFailures": [],
+      "reason": "两处同一隔离入口迁移；毒素/护盾/死亡与 RNG 断言不改。"
+    },
+    {
+      "file": "src/test/w_4_bolt_reflection.test.ts",
+      "beforeSHA256": "c1cf4052b589fec420ba6da6e9f852f3486c601fa7da6f821d88f29c59f2968a",
+      "afterSHA256": "4d7bd19003669fce54e2116e79f506c958cfd1924eaec4d4f785240b2ec31721",
+      "initialFailures": [],
+      "reason": "同一隔离入口迁移；反射/命中/伤害断言不改。"
+    },
+    {
+      "file": "src/test/w_8_staff_damage.test.ts",
+      "beforeSHA256": "645694753d1259b9914b21dcefcbf2ab00334c7f66d68dd76de6f4ef8be8d2d4",
+      "afterSHA256": "90aa83aa7ea496f15ff78b8067a8cf7eb00008b55a5a7a4b961e9fff6c31e0df",
+      "initialFailures": [
+        "W-8 CE E distribution and substantive rolls staff_of_fire E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls staff_of_fire E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls staff_of_fire E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls staff_of_lightning E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls staff_of_lightning E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls staff_of_lightning E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "W-8 CE E distribution and substantive rolls same E and RNG state give identical damage despite different current charges, capacity and legacy constant",
+        "W-8 CE E distribution and substantive rolls piercing rolls independently for every contact, including revisits and the reflected player",
+        "W-8 damage eligibility, burning and splitting staff_of_fire harms revenants regardless of accuracy/armor; never calls physical attack",
+        "W-8 damage eligibility, burning and splitting staff_of_lightning harms revenants regardless of accuracy/armor; never calls physical attack",
+        "W-8 damage eligibility, burning and splitting lightning ignores fire immunity but skips invulnerability, continuing to the next creature",
+        "W-8 damage eligibility, burning and splitting reflected fire checks actual player immunity=false before rolling"
+      ],
+      "reason": "同一隔离入口迁移；保留全部 6000 样本/CE 端点分布/精确骰数/反射接触顺序。"
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "beforeSHA256": "a01b6f2b8e0892d2db5f2620978121c63d28d274492dce991f63a00e42d51ee1",
+      "afterSHA256": "9e8891cb73581a16311a8e4d10a327d043c50d287b95b9ee30822474c9bd5d2f",
+      "initialFailures": [
+        "W-15 absorbable damage and bypass/death owners player explosion consumes shield, preserves immunity/death ordering",
+        "W-15 absorbable damage and bypass/death owners player fall uses reducer without calling takeDamage or introducing another death owner"
+      ],
+      "reason": "隔离入口迁移；玩家爆炸现在走共享受伤/致死钳 0，die 只调用一次；坠落断言改为共享入口恰一次且护盾仍仅减一次。CE Time.c:343–370,1143–1163 / Combat.c:1874–1878。"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "beforeSHA256": "4027065531842672adb58a08dfe2833602168a36c84a234465546ece52760ec0",
+      "afterSHA256": "926f529c70fd689b537b6874a4317f8b18ddd901fa1c684ad5f25fd4b0870725",
+      "initialFailures": [
+        "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）"
+      ],
+      "reason": "源码锚点从 Monster 的僵尸专用血迹迁到 Creature 共享入口，并验证 Monster 透传；目录读取与全生产白名单扫描不改。"
+    },
+    {
+      "file": "src/test/c_5_fall_subsystem.test.ts",
+      "beforeSHA256": "512e224b205ca65abbf288623697ca6ec8b03959a1ccad34c3902962babe54cc",
+      "afterSHA256": "84d41b74326e1891ed3afdfca0bd5c2c4d337c7035443658123f2f5d52aa8383",
+      "initialFailures": [
+        "C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480） 踩上渊格的同一动作里怪物不得获得回合（CE：playerFalls 整段 return，没有怪物推进）；坠落本体在玩家回合末照常发生"
+      ],
+      "reason": "原生成+落点+伤害三骰账另计真实血液 DF 消耗；call-through 观测血液仅一次，生成测量和无怪物行动/无客观块断言不改。"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "beforeSHA256": "896eff1bf099bb89bd9e12042fb090ad63ad925ee66739003578a2fe53bc3b73",
+      "afterSHA256": "e29680d713779603ded5358184248501a2e9c5e79b2e6477d9cce9dd2be2303e",
+      "initialFailures": [
+        "F-1 对抗⑧：镜像不随外部地形写点脱钩——spawnBlood 不碰燃烧格 燃烧格（有效地形=火）不吃血迹；CE：血 DF 的优先级判定弹开火（10<80）。错误实现：把 spawnBlood 改成跨层读 → 血的 terrain setter 会清掉火层，制造脱钩。"
+      ],
+      "reason": "调用已删除的红血 helper 改为真实玩家 takeDamage；保留火层不被血覆盖和跨层镜像的全部断言。"
+    },
+    {
+      "file": "src/test/g_3_gas_effects.test.ts",
+      "beforeSHA256": "3ba8fb3698978f5f78efbf5ee4940dbe59f06350544d17e17cd89eb0849c6672",
+      "afterSHA256": "84d12ac4a95990bcde841b654bbbb34f8ba1f02622c84c70fa61855d3841e554",
+      "initialFailures": [
+        "G-3 对抗⑩：G-1 扩散守恒 + G-2 蒸汽源哨兵 效果结算零 RNG 消耗：站气回合前后实质抽取计数不动（同 seed 可复现旁证）"
+      ],
+      "reason": "气体本身零骰；2 点伤害的红血 DF 四邻首波带来精确 4 骰，补实际血层断言。未增加随机容差。"
+    },
+    {
+      "file": "src/test/b_2_throwing.test.ts",
+      "beforeSHA256": "31ee08693153ff95041d16443e4724f9aae7ef9aecd8121cc19a0f4bd0412239",
+      "afterSHA256": "3242292aff9d225adfb2f973f8a670824c8499697a42eeb78e5d25b99a201321",
+      "initialFailures": [
+        "S1: 交互期 RNG 哨兵（B-2 §四硬门禁） S1b: 麻痹目标（自动命中）恰消耗 2 掷——伤害骰+血迹骰",
+        "S1: 交互期 RNG 哨兵（B-2 §四硬门禁） S1c: 正常目标（必中）恰消耗 3 掷——命中骰+伤害骰+血迹骰"
+      ],
+      "reason": "HP=1 缩放后血液 DF 仅首波四邻骰；自动命中精确 5 骰、普通必中精确 6 骰，替换旧 60% 单骰前提；仍不 mock RNG。"
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "beforeSHA256": "e7077262f26cc94545f607f7a2fa2d52baef439188a48af2e5e62760f77fd998",
+      "afterSHA256": "fd3922083e1a5208656e444408c4fb71aba91378bc5192b6790f0b9f3630f225",
+      "initialFailures": [
+        "U13 short circuits, multipliers, order, and real substantive counts real BE_ATTACK entry consumes full clump with its normal hit roll"
+      ],
+      "reason": "完整骰序改为命中+clump+血液四邻+FloatingText，保留逐次参数数组严格比较。"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "beforeSHA256": "87bdc82466020bfe869912e18fbfaa3eaa48ab03da7749e8a8987cc932a89593",
+      "afterSHA256": "34f54c3c1975fe79432f617aca86a9255691a8e93396ed7fda29e6238e02423a",
+      "initialFailures": [
+        "U15a real inventory read + U01 v2 JSON round trip protected machine and ordinary wall behave identically after reload=false",
+        "U15a real inventory read + U01 v2 JSON round trip protected machine and ordinary wall behave identically after reload=true"
+      ],
+      "reason": "真实读取碎裂卷轴击杀带 turret 标志的 goblin 后表层应为物种红血；其它保护格/笼禁/层/死亡/保存断言不变。"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "beforeSHA256": "bf496cabb87881ff92935c789b341e2611e2ed8f5309145f42b123ed31b77363",
+      "afterSHA256": "da0d4e9a372a2bae5e13c8e24d1fd74648a60d8f3b2a704c52e19cdbb7933db0",
+      "initialFailures": [
+        "U17f player trigger to final terrain and entity consumers 88 matching key activates portal, evacuates occupant, awakens ally and temporary light vanishes"
+      ],
+      "reason": "同一真实 horde 生成凤凰蛋，新增周期骰使它在等待期间孵化；在真实钥匙唤醒断言之后冻结该盟友行动，仅隔离无关孵化，继续要求原实体唯一、门/光/钥匙/疏散正确。"
+    },
+    {
+      "file": "src/test/x3_u7_sidebar.test.ts",
+      "beforeSHA256": "d8a3feb9ea6e83dba0ecda37cb568f9e04bb2598f19779afb4e7cc48ec1b5c38",
+      "afterSHA256": "2ad2b919735a8917e0d3a93ac031e1e78e5a2db018b1e734f2d0bc58b064b73b",
+      "initialFailures": [
+        "X3-U7 CE sidebar ordering and knowledge uses the first flagged terrain layer, not the top drawn layer; covers every listed kind in English and Chinese"
+      ],
+      "reason": "已知地形名锚定 R5 完整中文 CE 目录，替换退役局部英文默认字符串；保留第一 flagged 层、全部种类覆盖和中文检查。"
+    },
+    {
+      "file": "src/test/p4_3_special_monster_flags.test.ts",
+      "beforeSHA256": "c07ab05ece800eaa96d904e08940603a11f527c662c576da54e4c513303c28ab",
+      "afterSHA256": "120e50088c6f3ec965f7bf4adcabc77f5c107fb968240bdc8897814b8ad634bf",
+      "initialFailures": [
+        "P4-3 验收 3：MA_REFLECT_100 反射 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变"
+      ],
+      "reason": "反射伤害仍逐值比较原三伤害骰；call-through 单列实际玩家血液 DF 耗骰，保留反射者零伤与受击者/物品不变。"
+    },
+    {
+      "file": "src/test/ai_1_scent_tracking.test.ts",
+      "beforeSHA256": "740a1690b20b8392ae02742475a9f1fe7316827cdb46ad55faa75e5f52acd039",
+      "afterSHA256": "bad736053ee0f607466471cfd6a8cbeaaa348c249a1d56e48043224261cdfd92",
+      "initialFailures": [
+        "AI-1 B: 两条放弃路径判别式（同一几何、不同感知新旧） B1 路径①气味死路：感知仍在（perceived ≤ awareness，零骰）但局部最大且不可见 → WANDERING 且当回合零位移"
+      ],
+      "reason": "鼠每客观块 DFChance=1 必掷一次，此种子未铺尿迹；感知/死路移动仍零额外骰，精确总数 0→1，其余气味/位置/状态断言不改。"
+    },
+    {
+      "file": "src/test/x4b_flavor_text.test.ts",
+      "beforeSHA256": "6465ed59f7f1c9c370cd1a6d770e386b53c4ced937f8fd05db438bd8ef23b3ea",
+      "afterSHA256": "bf11ba7ced854b71444acd8be3dcad1f8302abfddfbf1d513975e4a80ae3dbff",
+      "initialFailures": [
+        "X4b CE flavorMessage display/archive boundary tramples foliage and opens a door without log entries (animated=false)",
+        "X4b CE flavorMessage display/archive boundary tramples foliage and opens a door without log entries (animated=true)",
+        "X4b CE flavorMessage display/archive boundary DF changes refresh immediately only under the grounded player; describe still logs",
+        "X4b CE flavorMessage display/archive boundary automatic travel clears inspection and finishes with the destination description",
+        "X4b CE flavorMessage display/archive boundary refresh/hover are read-only for saves, both RNG streams and recordings; load/new run rebuild display",
+        "X4b CE flavorMessage display/archive boundary uses gas terrain and reuses location description for levitation without overwriting hover",
+        "X4b CE flavorMessage display/archive boundary replays terrain transitions with interleaved display refresh and hover at zero OOS"
+      ],
+      "reason": "CE disturbed 前提显式设置，通用站立模板改完整 tileFlavor，允许 FLOOR 的合法空风味；保留所有消息档案、读写隔离、hover、自动行走、动画/回放/OOS 断言。"
+    }
+  ]
+}

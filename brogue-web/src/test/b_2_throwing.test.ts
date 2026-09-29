@@ -330,10 +330,10 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
      * 场地手工构造（prepareField/spawnWeapon 在计数起点之前完成所有 setup
      * 掷骰），增量只对"投掷路径本身消耗了几颗骰子"敏感：
      *   S1a 药水碎裂路径：全程 0 掷（无命中骰、无伤害骰、无血迹骰）；
-     *   S1b 麻痹目标自动命中（attackHit 免掷）：恰 2 掷 = 伤害骰 + 血迹骰
-     *       （spawnBlood 的 randPercent(60) 掷在 SUBSTANTIVE 流上）；
-     *   S1c 防御 0 的正常目标（命中率恒 100，结果确定不用 mock）：恰 3 掷 =
-     *       命中骰 + 伤害骰 + 血迹骰。
+     *   S1b 麻痹目标自动命中（attackHit 免掷）：恰 5 掷 = 伤害骰 + 4 个血液 DF 首波邻格骰
+     *       （血迹用伤害前 HP=1 缩放，下一波概率归零）；
+     *   S1c 防御 0 的正常目标（命中率恒 100，结果确定不用 mock）：恰 6 掷 =
+     *       命中骰 + 伤害骰 + 4 个血液 DF 邻格骰。
      * 教训（本轮实测）：不能用 vi.spyOn(...).mockReturnValueOnce 强造命中——
      * mock 替换掉真实实现后那次调用【不计数】，会把口径悄悄弄脏。
      * 反向验证见报告 RV4：往弹道循环注入一次 randPercent 即翻红。
@@ -350,7 +350,7 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
             '药水投掷路径多消耗了掷骰（CE 全程 0 掷）').toBe(0);
     });
 
-    it('S1b: 麻痹目标（自动命中）恰消耗 2 掷——伤害骰+血迹骰', () => {
+    it('S1b: 麻痹目标（自动命中）恰消耗 5 掷——伤害骰+血液 DF 四邻骰', () => {
         const game = createHeadlessGame(42, 'test');
         prepareField(game, 2, 2, 12, 8, 5, 5);
         const dart = ItemLoader.spawnWeapon('dart', -1, -1)!;
@@ -362,13 +362,13 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
 
         const c0 = rng.randomNumbersGenerated;
         game.throwItemAt(dart, 6, 5);
-        // 口径组成：伤害骰 1（auto-hit 免命中骰）+ spawnBlood 的 randPercent(60) 1
-        //（web 命中反馈掷在 SUBSTANTIVE 流上）。mock 不参与计数窗口。
+        // CE 血 DF 首波四邻各一骰；HP=1 缩放后下一波概率归零。
+        // auto-hit 免命中骰；无 mock 参与计数窗口。
         expect(rng.randomNumbersGenerated - c0,
-            '自动命中路径应恰消耗伤害骰+血迹骰共 2 颗（多掷=流位移，少掷=骰丢失）').toBe(2);
+            '自动命中应为 1 伤害骰 + 4 血液 DF 邻格骰').toBe(5);
     });
 
-    it('S1c: 正常目标（必中）恰消耗 3 掷——命中骰+伤害骰+血迹骰', () => {
+    it('S1c: 正常目标（必中）恰消耗 6 掷——命中骰+伤害骰+血液 DF 四邻骰', () => {
         const game = createHeadlessGame(42, 'test');
         prepareField(game, 2, 2, 12, 8, 5, 5);
         const dart = ItemLoader.spawnWeapon('dart', -1, -1)!;
@@ -380,10 +380,10 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
 
         const c0 = rng.randomNumbersGenerated;
         game.throwItemAt(dart, 6, 5);
-        // 口径组成：命中骰 1（randPercent(100) 也消耗）+ 伤害骰 1 + 血迹骰 1。
+        // 命中骰 1（randPercent(100) 也消耗）+ 伤害骰 1 + 血液 DF 邻格骰 4。
         // 不用 mock 强制命中——被 mock 的调用不走真实实现、不计数，会把口径弄脏。
         expect(rng.randomNumbersGenerated - c0,
-            '正常命中路径应恰消耗命中骰+伤害骰+血迹骰共 3 颗').toBe(3);
+            '正常命中应为 1 命中骰 + 1 伤害骰 + 4 血液 DF 邻格骰').toBe(6);
     });
 });
 

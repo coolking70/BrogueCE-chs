@@ -1,3 +1,4 @@
+import { getTerrainDescription } from '../engine/UI/TerrainTextCatalog';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import i18next from 'i18next';
 import { Player } from '../entities/Player';
@@ -106,11 +107,11 @@ describe('X3-U7 CE sidebar ordering and knowledge', () => {
         expect(s.rows().map(r => r.id)).toEqual([feet.id, item.id, '18,11']);
     });
 
-    it('uses the first flagged terrain layer, not the top drawn layer; covers every listed kind in English and Chinese', async () => {
+    it('uses the first flagged terrain layer, not the top drawn layer; covers every listed kind through the CE text catalog', async () => {
         const s = scene(); s.visible(11, 10);
         s.grid.setTerrain(11, 10, TerrainType.STAIRS_DOWN);
         s.grid.setTerrainLayer(11, 10, DungeonLayer.SURFACE, TerrainType.PLAIN_FIRE);
-        expect(s.rows()[0]!.name).toBe('the downward staircase');
+        expect(s.rows()[0]!.name).toBe(getTerrainDescription(TerrainType.STAIRS_DOWN));
         const listed = Object.values(TerrainType).filter((t): t is TerrainType => typeof t === 'number'
             && !!(TERRAIN_FLAGS[t].mechFlags & TM_LIST_IN_SIDEBAR));
         expect(listed.length).toBeGreaterThan(40);

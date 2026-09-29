@@ -1143,7 +1143,8 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                            // fillVestibuleInterior 的 BP_TREAT/
                                            // REQUIRE 复核；无需放宽到第二个文件。
         ]);
-        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp)');
+        expect(readFileSync(join(srcDir, 'entities/Creature.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp, this.bloodInvulnerable())');
+        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('super.takeDamage(damage, true, grid, beforeHpLoss)');
         expect(readFileSync(join(srcDir, 'engine/Combat/CreatureFeatures.ts'), 'utf8')).toContain('catalogFeature(bloodType as DF)');
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的

@@ -199,6 +199,7 @@ describe('U15a real inventory read + U01 v2 JSON round trip', () => {
         expect(g.getMonsterAt(8, 5)).toBeUndefined();
         // Occupied forcefield melts in the nested instant contact before lethal handling.
         expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FLOOR);
-        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
+        // This goblin has the turret flag, but retains its species red blood.
+        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.BLOOD);
     });
 });

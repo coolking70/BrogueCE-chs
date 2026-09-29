@@ -13,10 +13,8 @@ let pollTimer = 0;
 function checkInspectTarget() {
     const game = activeGame;
     const target = game.inspectTarget;
-    if (target) {
-        detail.value = target;
-        visible.value = true;
-    }
+    detail.value = target;
+    visible.value = !!target;
 }
 
 function close() {

@@ -1,3 +1,4 @@
+import { withBloodRng } from './bloodRngObservation';
 /**
  * src/test/c_5_fall_subsystem.test.ts — C-5：坠落子系统（深渊/洞/桥梁解禁）
  *
@@ -91,7 +92,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         rat.state = MonsterState.HUNTING;
 
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
-        // U02b: measure the generation segment; only landing/damage may add 3 calls.
+        // U02b/R6: measure generation and real blood separately; landing/damage add exactly 3 calls.
         let generationCost = 0;
         // U03b / CE startLevel: fall landing now happens inside generateDepth,
         // after catch-up. Measure that subphase separately, preserving the
@@ -110,7 +111,8 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
             generationCost += rng.randomNumbersGenerated - before - landingCost;
         };
         const rngBeforeDive = rng.randomNumbersGenerated;
-        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落
+        const blood = withBloodRng(() => game.handlePlayerAction('move', { x: 1, y: 0 }, 'system')); // (5,5)→(6,5)=渊 → 回合末坠落
+        expect(blood.calls).toBe(1); // fall damage, with the real DF still executing
 
         expect(game.depth, '踩渊后未坠落（回合末时序被改成踩上瞬间或不坠）').toBe(2);
         // CE Time.c:2480（坠落门）整段 return——坠落回合没有推进循环、没有
@@ -159,7 +161,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
             // 11935 = W-5：初始法器抽签移动连续生成流。独立包装实测生成
             // 11932 次 + 落位/伤害 3 次；只回退初始抽签/赋值即恢复 20505。
             // 怪物原位/存活、换层/掉血断言保持；不把成本下降算成优化收益。
-            .toBe(generationCost + 3);
+            .toBe(generationCost + 3 + blood.draws);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);

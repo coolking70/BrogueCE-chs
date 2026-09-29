@@ -1,3 +1,4 @@
+import { withBloodRng } from './bloodRngObservation';
 /**
  * src/test/p4_3_special_monster_flags.test.ts — P4-3：特殊怪物旗标真正生效
  *
@@ -153,12 +154,13 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
         rng.seedRandomGenerator(32); rng.resetCounters(); // 构造已完成；仅测施法耗骰。
         const reference = new Random(32);
         const expectedDamage = 7 + reference.randRange(0, 6) + reference.randRange(0, 6) + reference.randRange(0, 5);
-        const result = game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);
+        const blood = withBloodRng(() => game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc));
+        const result = blood.result; expect(blood.calls).toBe(1);
 
         expect(result.hits.map(h => h.creature)).toEqual([game.player]);
         expect(guardian.hp).toBe(guardianHpBefore);
         expect(game.player.hp).toBe(playerHpBefore - expectedDamage);
-        expect(rng.randomNumbersGenerated).toBe(3);
+        expect(rng.randomNumbersGenerated).toBe(3 + blood.draws);
         expect(staff.enchantment).toBe(8); expect(staff.charges).toBe(1);
     });
 

@@ -1,3 +1,4 @@
+import { enchantedEquipment, armorStealthAdjustment } from '../Items/ItemEffectFormulas';
 import { ItemCategory as C, type Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { CombatSystem } from '../Combat/Combat';
@@ -19,8 +20,9 @@ export function equipmentDetail(item: Item, ctx: ItemDetailContext): DetailSecti
     const ne = netEnchant(k.instanceKnown ? item.enchantment : 0, str, req);
     // Same inputs as ItemUseCoordinator.enchantChosenItem: +1 E and -1 strength
     // requirement (floored at zero). Do not call the mutator: throwing gear rolls RNG.
-    const nextReq = Math.max(0, req - 1);
-    const next = netEnchant(item.enchantment + 1, str, nextReq);
+    const projection = enchantedEquipment(item.enchantment, req);
+    const nextReq = projection.strengthRequired;
+    const next = netEnchant(projection.enchantment, str, nextReq);
     const lines: DetailLine[] = [], sections: DetailSection[] = [];
     const add = (key: string, values: Record<string, number | string> = {}) => lines.push({ text: detailText(key, values) });
     const range = item.damage ? CombatSystem.parseDamageString(item.damage) : undefined;
@@ -51,7 +53,7 @@ export function equipmentDetail(item: Item, ctx: ItemDetailContext): DetailSecti
                 armor: Math.round((item.armor + ne) * 100) / 100, enchant: signed(ne),
                 note: ne !== item.enchantment ? detailText('strength.note') : '',
             });
-            add('armor.next', { armor: Math.trunc(playerDefense(item.armor, item.enchantment + 1, str, nextReq) / 10), strength: nextReq });
+            add('armor.next', { armor: Math.trunc(playerDefense(item.armor, projection.enchantment, str, nextReq) / 10), strength: nextReq });
         }
         if (ctx.armor !== undefined && !ctx.equipped) {
             const current = ctx.armor;
@@ -59,7 +61,7 @@ export function equipmentDetail(item: Item, ctx: ItemDetailContext): DetailSecti
             const currentRating = current ? Math.trunc(playerDefense(current.armor ?? 0, current.enchantment, str, current.strengthRequired) / 10) : 0;
             add('armor.compare', { assumption: !k.instanceKnown || current?.assumed ? detailText('assumed') : '', armor: rating, current: currentRating });
             // CE armorStealthAdjustment / current Game.calculateStealthRange.
-            const stealth = Math.max(0, req - 12) - Math.max(0, (current?.strengthRequired ?? 0) - 12);
+            const stealth = armorStealthAdjustment(req) - armorStealthAdjustment(current?.strengthRequired ?? 0);
             if (stealth) add('armor.stealth', { change: signed(stealth) });
         }
     }
@@ -113,8 +115,9 @@ function runicDetail(item: Item, ctx: ItemDetailContext, ne: number, next: numbe
                 break;
             case 'reprisal': add('runic.reprisal', { percent: armorReprisalPercent(ne), next: armorReprisalPercent(next) }); break;
             case 'reflection': {
-                // Same positive-net gate as BoltReflection.projectileReflects.
-                // Negative-E self-reflection is a CE branch absent in web (R6).
+                // CE Items.c:4960-4992 rejects nonpositive net reflection.
+                // Its old negative-enchant self-deflection prose has no executor.
+                if (ne <= 0) add('runic.reflection_inactive');
                 const chance = ne > 0 ? reflectionChance(ne) : 0, nextChance = next > 0 ? reflectionChance(next) : 0;
                 add('runic.reflection', { chance, back: Math.trunc(chance * chance / 100), next: nextChance, nextBack: Math.trunc(nextChance * nextChance / 100) });
                 break;

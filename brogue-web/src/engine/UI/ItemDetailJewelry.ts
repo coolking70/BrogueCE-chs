@@ -1,3 +1,4 @@
+import { ringStealthAdjustment, ringAwarenessBonus, ringClairvoyanceRadius, ringTransferencePercent } from '../Items/ItemEffectFormulas';
 import type { Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { turnsForFullRegenInThousandths } from '../Items/RingBonuses';
@@ -17,11 +18,11 @@ export function ringDetail(item: Item, ctx: ItemDetailContext): DetailSection[] 
         add('ring.enchant', { enchant: signed(e) });
         switch (item.identityId) {
             case 'ring_of_clairvoyance':
-                add(e > 0 ? 'ring.clairvoyance' : e < 0 ? 'ring.blindness' : 'ring.no_clairvoyance', { radius: Math.abs(e) + 1, next: e > 0 ? e + 2 : -e }); break;
-            case 'ring_of_stealth': add('ring.stealth', { change: signed(e < 0 ? -4 * e : -e), next: signed(e + 1 < 0 ? -4 * (e + 1) : -(e + 1)) }); break;
+                add(e > 0 ? 'ring.clairvoyance' : e < 0 ? 'ring.blindness' : 'ring.no_clairvoyance', { radius: ringClairvoyanceRadius(e), next: ringClairvoyanceRadius(e + 1) }); break;
+            case 'ring_of_stealth': add('ring.stealth', { change: signed(ringStealthAdjustment(e)), next: signed(ringStealthAdjustment(e + 1)) }); break;
             case 'ring_of_regeneration': add('ring.regeneration', { turns: Math.floor(turnsForFullRegenInThousandths(e) / 1000), next: Math.floor(turnsForFullRegenInThousandths(e + 1) / 1000) }); break;
-            case 'ring_of_transference': add(e < 0 ? 'ring.transference_bad' : 'ring.transference', { percent: Math.abs(e) * 5, next: Math.abs(e + 1) * 5 }); break;
-            case 'ring_of_awareness': add('ring.awareness', { change: 20 * e, next: 20 * (e + 1) }); break;
+            case 'ring_of_transference': add(e < 0 ? 'ring.transference_bad' : 'ring.transference', { percent: Math.abs(ringTransferencePercent(e)), next: Math.abs(ringTransferencePercent(e + 1)) }); break;
+            case 'ring_of_awareness': add('ring.awareness', { change: ringAwarenessBonus(e), next: ringAwarenessBonus(e + 1) }); break;
             case 'ring_of_reaping': add(e < 0 ? 'ring.reaping_bad' : 'ring.reaping', { turns: Math.abs(e), next: Math.abs(e + 1) }); break;
             case 'ring_of_wisdom': add('ring.wisdom', { percent: ringWisdomMultiplierPercent(e), next: ringWisdomMultiplierPercent(e + 1) }); break;
             // CE light has no separate numeric paragraph: its intro explains it.

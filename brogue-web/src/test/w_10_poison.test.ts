@@ -1,3 +1,4 @@
+import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { Game } from '../engine/Core/Game';
@@ -180,7 +181,7 @@ describe('W-10 common attacks and one death per creature', () => {
     it('normal melee and geometry wrappers do not apply MA_POISONS twice', () => {
         const g = scene(), a = mob(g, 'centipede', 5, 5); a.abilityFlags.add('MA_POISONS'); a.damageString = '6';
         a.state = MonsterState.HUNTING; vi.spyOn(rng, 'randPercent').mockReturnValue(true);
-        g.spawnBlood = vi.fn(); g.tryTriggerArmorRunic = vi.fn();
+        vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null); g.tryTriggerArmorRunic = vi.fn();
         (a as any).resolveGeometryAttackOn(g, g.player, 'hostile');
         expect([g.player.hp, g.player.poisonAmount, g.player.getStatusDuration('poisoned')]).toEqual([99, 1, 6]);
     });
@@ -201,7 +202,7 @@ describe('W-10 common attacks and one death per creature', () => {
     });
     it('physical bolts share MA_POISONS; poison dart remains weakening without the ability', () => {
         const g = scene(), a = mob(g, 'dart_turret', 8, 5); a.damageString = '6'; vi.spyOn(rng, 'randPercent').mockReturnValue(true);
-        g.spawnBlood = vi.fn(); g.tryTriggerArmorRunic = vi.fn();
+        vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null); g.tryTriggerArmorRunic = vi.fn();
         g.castMonsterBolt(a, g.player, 'POISON_DART'); expect(g.player.poisonAmount).toBe(0);
         a.abilityFlags.add('MA_POISONS'); const hp = g.player.hp;
         g.castMonsterBolt(a, g.player, 'POISON_DART');

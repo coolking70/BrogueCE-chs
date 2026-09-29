@@ -3,6 +3,7 @@
  * Base class for all living things (Player and Monsters)
  */
 
+import { spawnCreatureBlood } from '../engine/Combat/CreatureFeatures';
 import type { Grid } from '../engine/Map/Grid';
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
@@ -307,8 +308,16 @@ export class Creature implements Entity {
         // Implement movement logic
     }
 
-    public takeDamage(amount: number, ignoresProtectionShield = false, _grid?: Grid) {
-        this.hp -= ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
+    /** Species subclasses derive blood from their saved form, never own state. */
+    public get bloodType(): number { return 0; }
+    protected bloodInvulnerable(): boolean { return false; }
+
+    public takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid, beforeHpLoss?: (damage: number) => void) {
+        const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
+        if (grid) spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp, this.bloodInvulnerable());
+        // CE Combat.c:1827-1878: blood precedes transference, including self-hits.
+        beforeHpLoss?.(damage);
+        this.hp -= damage;
         if (this.hp <= 0) {
             this.die();
         }

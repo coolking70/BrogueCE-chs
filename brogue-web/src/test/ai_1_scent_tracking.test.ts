@@ -154,7 +154,9 @@ describe('AI-1 B: 两条放弃路径判别式（同一几何、不同感知新�
         game.scent.turnNumber = 1006;
         const before = rng.randomNumbersGenerated;
         waitOnce(game); // tn=1009；感知 9-1003=6 ≤ 8 → 保持；移动阶段顺味无路
-        expect(rng.randomNumbersGenerated - before).toBe(0);
+        // R6: rat objective DFChance=1 always rolls once (this seed emits no urine).
+        // Perception and the dead-end movement branch still draw zero.
+        expect(rng.randomNumbersGenerated - before).toBe(1);
 
         expect(rat.state).toBe(MonsterState.WANDERING);
         expect(rat.loc.x).toBe(51); // 零位移：①分支 return，本回合不走

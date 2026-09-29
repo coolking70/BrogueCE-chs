@@ -126,6 +126,9 @@ describe('U17f player trigger to final terrain and entity consumers',()=>{
   // The entry consumer consumes a real matching key and wires the portal.
   move(g,1,0);expect(ally.isDormant).toBe(false);expect(ally.isAlly).toBe(true);expect(occupant.loc).not.toEqual({x:15,y:10});expect(g.player.inventory.items).not.toContain(key);
   expect(g.grid.getCell(15,10)!.layers[L.DUNGEON]).toBe(T.PORTAL);
+  // R6 adds legitimate objective DF rolls. This generated ally may be a phoenix
+  // egg: freeze its later turns so hatching cannot obscure portal ownership.
+  ally.ticksUntilTurn=10000;
   // End-of-turn promotion may already have removed the 10000-chance light.
   for(let i=0;i<3;i++)wait(g);expect(g.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.NOTHING);expect(g.monsters.filter(n=>n.id===ally.id)).toHaveLength(1);
  });

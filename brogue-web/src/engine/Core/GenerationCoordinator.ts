@@ -779,7 +779,8 @@ export function populateLevel(ports: GenerationPorts,
         for (let i = 0; i < numItems; i++) {
             const item = ports.spawnPopulateItem(ports.depth, randomDepthOffset);
             if (!item) continue;
-            if (deep) item.originDepth = ports.depth;
+            // CE Items.c:721: every populated item retains its generation depth.
+            item.originDepth = ports.depth;
             const isFood = item.category === ItemCategory.FOOD;
             // CE Items.c:693–696：额外食物不扣宝石配额。
             if (deep && isFood) numItems++;

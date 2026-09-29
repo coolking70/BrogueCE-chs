@@ -1,3 +1,4 @@
+import { getTerrainDescription, type TerrainTextOptions } from './TerrainTextCatalog';
 import i18next from 'i18next';
 import { TerrainType, type Grid, type Cell } from '../Map/Grid';
 import { TERRAIN_FLAGS, TM_ALLOWS_SUBMERGING, TM_LIST_IN_SIDEBAR } from '../Map/TerrainCatalog';
@@ -78,7 +79,7 @@ export type SidebarEntityRow = MonsterRow | OtherRow;
  * location, except for the item at the player's feet. Each vision pass groups
  * monsters, items, then terrain; X3-E01 specifies squared Euclidean distance. */
 export function sidebarEntityRows(player: Player, grid: Grid, monsters: readonly Monster[],
-    items: readonly Item[], focus: Pos | null = null): SidebarEntityRow[] {
+    items: readonly Item[], focus: Pos | null = null, depth?: number): SidebarEntityRow[] {
     const monsterRows = visibleMonsterRows(player, grid, monsters);
     const itemRow = (item: Item): OtherRow => ({ kind: 'item', id: item.id, loc: { ...item.loc },
         direct: directlyVisible(grid.getCell(item.x, item.y)), focused: sameLocation(item.loc, focus),
@@ -93,7 +94,7 @@ export function sidebarEntityRows(player: Player, grid: Grid, monsters: readonly
         const visual = terrainAppearance(terrain, true);
         terrainRows.push({ kind: 'terrain', id: `${x},${y}`, loc: { x, y },
             direct: directlyVisible(cell), focused: sameLocation(cell, focus),
-            char: visual.char, color: visual.color, name: sidebarTerrainName(terrain) });
+            char: visual.char, color: visual.color, name: sidebarTerrainName(terrain, { atDungeonExit: depth === 1 }) });
     }
     const rows: SidebarEntityRow[] = [];
     const added = new Set([`${player.x},${player.y}`]);
@@ -135,61 +136,6 @@ export function sidebarPlayerStats(player: Player, gold: number, stealthRange: n
 }
 
 /** Only TM_LIST_IN_SIDEBAR tiles; names reuse the existing localized terrain vocabulary. */
-export function sidebarTerrainName(terrain: TerrainType): string {
-    switch (terrain) {
-        case TerrainType.MACHINE_PRESSURE_PLATE_USED: return i18next.t('terrain.pressure_plate_used', { defaultValue: 'An inactive pressure plate' });
-        case TerrainType.WALL_LEVER: return i18next.t('terrain.wall_lever', { defaultValue: 'A lever' });
-        case TerrainType.STAIRS_UP: return i18next.t('terrain.stairs_up', { defaultValue: 'the upward staircase' });
-        case TerrainType.STAIRS_DOWN: return i18next.t('terrain.stairs_down', { defaultValue: 'the downward staircase' });
-        case TerrainType.DUNGEON_PORTAL: return i18next.t('terrain.crystal_portal', { defaultValue: 'a crystal portal' });
-        case TerrainType.TRAP: return i18next.t('terrain.trap', { defaultValue: 'a trap' });
-        case TerrainType.PRESSURE_PLATE: return i18next.t('terrain.pressure_plate', { defaultValue: 'a pressure plate' });
-        case TerrainType.LOCKED_DOOR: return i18next.t('terrain.locked_door', { defaultValue: 'a locked door' });
-        case TerrainType.ALTAR: return i18next.t('terrain.altar', { defaultValue: 'an altar' });
-        case TerrainType.PORTCULLIS_CLOSED: return i18next.t('sidebar.terrain.portcullis', { defaultValue: 'a heavy portcullis' });
-        case TerrainType.GAS_TRAP_PARALYSIS: return i18next.t('sidebar.terrain.paralysis_trigger', { defaultValue: 'a paralysis trigger' });
-        case TerrainType.ALTAR_CAGE_OPEN: return i18next.t('sidebar.terrain.candle_altar', { defaultValue: 'a candle-lit altar' });
-        case TerrainType.ALTAR_CAGE_RETRACTABLE: return i18next.t('sidebar.terrain.cage', { defaultValue: 'an iron cage' });
-        case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: 'a commutation altar' });
-        case TerrainType.RESURRECTION_ALTAR: return i18next.t('terrain.resurrection_altar', { defaultValue: 'a resurrection altar' });
-        case TerrainType.ALTAR_SWITCH: return i18next.t('sidebar.terrain.candle_altar', { defaultValue: 'a candle-lit altar' });
-        case TerrainType.MONSTER_CAGE_CLOSED: return i18next.t('sidebar.terrain.locked_cage', { defaultValue: 'a locked iron cage' });
-        case TerrainType.COFFIN_CLOSED: return i18next.t('sidebar.terrain.coffin_closed', { defaultValue: 'a sealed coffin' });
-        case TerrainType.ALTAR_KEYHOLE: return i18next.t('sidebar.terrain.candle_altar', { defaultValue: 'a candle-lit altar' });
-        case TerrainType.ALTAR_SWITCH_RETRACTING: return i18next.t('sidebar.terrain.candle_altar', { defaultValue: 'a candle-lit altar' });
-        case TerrainType.BRAZIER: return i18next.t('sidebar.terrain.brazier', { defaultValue: 'a ceremonial brazier' });
-        case TerrainType.PORTAL: return i18next.t('sidebar.terrain.portal', { defaultValue: 'a stone archway' });
-        case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: 'a dormant sacrificial altar' });
-        case TerrainType.SACRIFICE_CAGE_DORMANT: return i18next.t('sidebar.terrain.cage', { defaultValue: 'an iron cage' });
-        case TerrainType.BLOODFLOWER_STALK: return i18next.t('sidebar.terrain.bloodwort_stalk', { defaultValue: 'a bloodwort stalk' });
-        case TerrainType.FLOOD_TRAP: return i18next.t('sidebar.terrain.flood_trap', { defaultValue: 'a flood trap' });
-        case TerrainType.ELECTRIC_CRYSTAL_OFF: return i18next.t('sidebar.terrain.crystal_off', { defaultValue: 'a darkened crystal globe' });
-        case TerrainType.TURRET_LEVER: return i18next.t('sidebar.terrain.lever', { defaultValue: 'a lever' });
-        case TerrainType.ELECTRIC_CRYSTAL_ON: return i18next.t('sidebar.terrain.crystal_on', { defaultValue: 'a shining crystal globe' });
-        case TerrainType.MACHINE_METHANE_VENT_DORMANT: return i18next.t('terrain.inactive_gas_vent', { defaultValue: 'An inactive gas vent' });
-        case TerrainType.MACHINE_METHANE_VENT: return i18next.t('terrain.gas_vent', { defaultValue: 'A gas vent' });
-        case TerrainType.PILOT_LIGHT: return i18next.t('terrain.fallen_torch', { defaultValue: 'A fallen torch' });
-        case TerrainType.MACHINE_PARALYSIS_VENT: return i18next.t('terrain.inactive_gas_vent', { defaultValue: 'An inactive gas vent' });
-        case TerrainType.MACHINE_POISON_GAS_VENT_DORMANT: return i18next.t('terrain.inactive_gas_vent', { defaultValue: 'An inactive gas vent' });
-        case TerrainType.MACHINE_POISON_GAS_VENT: return i18next.t('terrain.gas_vent', { defaultValue: 'A gas vent' });
-        case TerrainType.GAS_TRAP_POISON: return i18next.t('terrain.poison_gas_trap', { defaultValue: 'A caustic gas trap' });
-        case TerrainType.FLAMETHROWER: return i18next.t('terrain.fire_trap', { defaultValue: 'A fire trap' });
-        case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: 'an iron cage altar' });
-        case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: 'a burnt commutation altar' });
-        case TerrainType.RESURRECTION_ALTAR_INERT: return i18next.t('terrain.resurrection_inert', { defaultValue: 'a burnt resurrection altar' });
-        case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: 'a sacrificial altar' });
-        case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: 'a sacrificial lava pit' });
-        case TerrainType.RAT_TRAP_WALL_CRACKING: return i18next.t('terrain.rat_trap_wall_cracking', { defaultValue: 'a cracking wall' });
-        case TerrainType.STATUE_CRACKING: return i18next.t('terrain.statue_cracking', { defaultValue: 'a cracking statue' });
-        case TerrainType.COFFIN_OPEN: return i18next.t('terrain.coffin_open', { defaultValue: 'an empty coffin' });
-        case TerrainType.NET_TRAP: return i18next.t('terrain.net_trap', { defaultValue: "a net trap" });
-        case TerrainType.ALARM_TRAP: return i18next.t('terrain.alarm_trap', { defaultValue: "an alarm trap" });
-        case TerrainType.GAS_TRAP_CONFUSION: return i18next.t('terrain.gas_trap_confusion', { defaultValue: "a confusion trap" });
-        case TerrainType.STEAM_VENT: return i18next.t('terrain.steam_vent', { defaultValue: "a steam vent" });
-        case TerrainType.DEWAR_CAUSTIC_GAS: return i18next.t('terrain.dewar_caustic_gas', { defaultValue: "a glass dewar of caustic gas" });
-        case TerrainType.DEWAR_CONFUSION_GAS: return i18next.t('terrain.dewar_confusion_gas', { defaultValue: "a glass dewar of confusion gas" });
-        case TerrainType.DEWAR_PARALYSIS_GAS: return i18next.t('terrain.dewar_paralysis_gas', { defaultValue: "a glass dewar of paralytic gas" });
-        case TerrainType.DEWAR_METHANE_GAS: return i18next.t('terrain.dewar_methane_gas', { defaultValue: "a glass dewar of methane gas" });
-        default: return i18next.t('terrain.floor', { defaultValue: 'the floor' });
-    }
+export function sidebarTerrainName(terrain: TerrainType, options: TerrainTextOptions = {}): string {
+    return getTerrainDescription(terrain, options);
 }

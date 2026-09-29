@@ -11,7 +11,7 @@ export const ITEM_FIELDS = [
     'damage', 'clumping', 'armor', 'strengthRequired', 'flags', 'isCursed', 'isProtected',
     'enchantment', 'timesEnchanted', 'runicType', 'runicKnown', 'arcanaInstanceVersion', 'maxCharges',
     'charges', 'identified', 'canBeIdentified', 'maxChargesKnown', 'magicDetected',
-    'timesUsed', 'staffRechargeRemaining', 'rechargeTurns', 'rechargeCounter',
+    'timesUsed', 'knownStaffUses', 'staffRechargeRemaining', 'rechargeTurns', 'rechargeCounter',
     'cooldownTurns', 'cooldownRemaining', 'quiverNumber', 'vorpalEnemy', 'keyLoc',
     'originDepth', 'identityId', 'consumableId', 'description', 'spawnTurnNumber', 'inscription',
 ] as const satisfies readonly (keyof Item)[];

@@ -1,0 +1,27 @@
+{
+  "Item.knownStaffUses": {
+    "kind": "persist",
+    "contract": "新数组，最近三次成功玩家法杖使用回合，新到旧；空杖/取消不记录；允许实际第0回合；绝不从回电倒推。",
+    "codec": "EntitySnapshot.ITEM_FIELDS / copyFields deep copy; all world/level/graph/throw clones use registered contract",
+    "reader": "createItemDetailContext freezes a detached copy; ItemDetailArcana displays ages",
+    "writer": "Game.confirmArcanaTarget -> ItemUseCoordinator.commitArcanaTarget currentTurn before turn completion",
+    "migration": "none"
+  },
+  "Item.originDepth": {
+    "kind": "existing persist",
+    "contract": "GenerationCoordinator.populateLevel assigns all populated ordinary items at birth (CE Items.c:721); existing machine/gem/key sources preserved. Pickup/drop/throw never relabel; Inventory mixed-origin stack=0. Unknown or starting-kit source stays absent, not current-depth guessed.",
+    "codec": "existing EntitySnapshot.ITEM_FIELDS"
+  },
+  "Game.replayOmniscientDetails": {
+    "kind": "session",
+    "contract": "scripts/u03-state-contract.json: explicit replay-only read-only projection; no knowledge/RNG/turn mutation; not world snapshot state"
+  },
+  "bloodType/DFChance/DFType": {
+    "kind": "derived",
+    "contract": "Creature/Player/Monster getters; species/typeId/mutation/deathDFType retain U01/U03 serialization; no new feature timer"
+  },
+  "blood/healing/fire/trail results": {
+    "kind": "existing persist",
+    "contract": "four terrain layers and volume via LevelSnapshot; no independent hidden task state"
+  }
+}

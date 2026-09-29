@@ -1,0 +1,529 @@
+diff --git a/brogue-web/src/test/ai_1_scent_tracking.test.ts b/brogue-web/src/test/ai_1_scent_tracking.test.ts
+index 7b74f815..813e5524 100644
+--- a/brogue-web/src/test/ai_1_scent_tracking.test.ts
++++ b/brogue-web/src/test/ai_1_scent_tracking.test.ts
+@@ -154,7 +154,9 @@ describe('AI-1 B: 两条放弃路径判别式（同一几何、不同感知新
+         game.scent.turnNumber = 1006;
+         const before = rng.randomNumbersGenerated;
+         waitOnce(game); // tn=1009；感知 9-1003=6 ≤ 8 → 保持；移动阶段顺味无路
+-        expect(rng.randomNumbersGenerated - before).toBe(0);
++        // R6: rat objective DFChance=1 always rolls once (this seed emits no urine).
++        // Perception and the dead-end movement branch still draw zero.
++        expect(rng.randomNumbersGenerated - before).toBe(1);
+ 
+         expect(rat.state).toBe(MonsterState.WANDERING);
+         expect(rat.loc.x).toBe(51); // 零位移：①分支 return，本回合不走
+diff --git a/brogue-web/src/test/b_2_throwing.test.ts b/brogue-web/src/test/b_2_throwing.test.ts
+index c84d1daa..05236ad7 100644
+--- a/brogue-web/src/test/b_2_throwing.test.ts
++++ b/brogue-web/src/test/b_2_throwing.test.ts
+@@ -330,10 +330,10 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
+      * 场地手工构造（prepareField/spawnWeapon 在计数起点之前完成所有 setup
+      * 掷骰），增量只对"投掷路径本身消耗了几颗骰子"敏感：
+      *   S1a 药水碎裂路径：全程 0 掷（无命中骰、无伤害骰、无血迹骰）；
+-     *   S1b 麻痹目标自动命中（attackHit 免掷）：恰 2 掷 = 伤害骰 + 血迹骰
+-     *       （spawnBlood 的 randPercent(60) 掷在 SUBSTANTIVE 流上）；
+-     *   S1c 防御 0 的正常目标（命中率恒 100，结果确定不用 mock）：恰 3 掷 =
+-     *       命中骰 + 伤害骰 + 血迹骰。
++     *   S1b 麻痹目标自动命中（attackHit 免掷）：恰 5 掷 = 伤害骰 + 4 个血液 DF 首波邻格骰
++     *       （血迹用伤害前 HP=1 缩放，下一波概率归零）；
++     *   S1c 防御 0 的正常目标（命中率恒 100，结果确定不用 mock）：恰 6 掷 =
++     *       命中骰 + 伤害骰 + 4 个血液 DF 邻格骰。
+      * 教训（本轮实测）：不能用 vi.spyOn(...).mockReturnValueOnce 强造命中——
+      * mock 替换掉真实实现后那次调用【不计数】，会把口径悄悄弄脏。
+      * 反向验证见报告 RV4：往弹道循环注入一次 randPercent 即翻红。
+@@ -350,7 +350,7 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
+             '药水投掷路径多消耗了掷骰（CE 全程 0 掷）').toBe(0);
+     });
+ 
+-    it('S1b: 麻痹目标（自动命中）恰消耗 2 掷——伤害骰+血迹骰', () => {
++    it('S1b: 麻痹目标（自动命中）恰消耗 5 掷——伤害骰+血液 DF 四邻骰', () => {
+         const game = createHeadlessGame(42, 'test');
+         prepareField(game, 2, 2, 12, 8, 5, 5);
+         const dart = ItemLoader.spawnWeapon('dart', -1, -1)!;
+@@ -362,13 +362,13 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
+ 
+         const c0 = rng.randomNumbersGenerated;
+         game.throwItemAt(dart, 6, 5);
+-        // 口径组成：伤害骰 1（auto-hit 免命中骰）+ spawnBlood 的 randPercent(60) 1
+-        //（web 命中反馈掷在 SUBSTANTIVE 流上）。mock 不参与计数窗口。
++        // CE 血 DF 首波四邻各一骰；HP=1 缩放后下一波概率归零。
++        // auto-hit 免命中骰；无 mock 参与计数窗口。
+         expect(rng.randomNumbersGenerated - c0,
+-            '自动命中路径应恰消耗伤害骰+血迹骰共 2 颗（多掷=流位移，少掷=骰丢失）').toBe(2);
++            '自动命中应为 1 伤害骰 + 4 血液 DF 邻格骰').toBe(5);
+     });
+ 
+-    it('S1c: 正常目标（必中）恰消耗 3 掷——命中骰+伤害骰+血迹骰', () => {
++    it('S1c: 正常目标（必中）恰消耗 6 掷——命中骰+伤害骰+血液 DF 四邻骰', () => {
+         const game = createHeadlessGame(42, 'test');
+         prepareField(game, 2, 2, 12, 8, 5, 5);
+         const dart = ItemLoader.spawnWeapon('dart', -1, -1)!;
+@@ -380,10 +380,10 @@ describe('S1: 交互期 RNG 哨兵（B-2 §四硬门禁）', () => {
+ 
+         const c0 = rng.randomNumbersGenerated;
+         game.throwItemAt(dart, 6, 5);
+-        // 口径组成：命中骰 1（randPercent(100) 也消耗）+ 伤害骰 1 + 血迹骰 1。
++        // 命中骰 1（randPercent(100) 也消耗）+ 伤害骰 1 + 血液 DF 邻格骰 4。
+         // 不用 mock 强制命中——被 mock 的调用不走真实实现、不计数，会把口径弄脏。
+         expect(rng.randomNumbersGenerated - c0,
+-            '正常命中路径应恰消耗命中骰+伤害骰+血迹骰共 3 颗').toBe(3);
++            '正常命中应为 1 命中骰 + 1 伤害骰 + 4 血液 DF 邻格骰').toBe(6);
+     });
+ });
+ 
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index 73fc71f8..127f3fb7 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -1143,7 +1143,8 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+                                            // fillVestibuleInterior 的 BP_TREAT/
+                                            // REQUIRE 复核；无需放宽到第二个文件。
+         ]);
+-        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp)');
++        expect(readFileSync(join(srcDir, 'entities/Creature.ts'), 'utf8')).toContain('spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp, this.bloodInvulnerable())');
++        expect(readFileSync(join(srcDir, 'entities/Monster.ts'), 'utf8')).toContain('super.takeDamage(damage, true, grid, beforeHpLoss)');
+         expect(readFileSync(join(srcDir, 'engine/Combat/CreatureFeatures.ts'), 'utf8')).toContain('catalogFeature(bloodType as DF)');
+         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
+         // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的
+diff --git a/brogue-web/src/test/c_5_fall_subsystem.test.ts b/brogue-web/src/test/c_5_fall_subsystem.test.ts
+index 96ad17b9..90cc7c8f 100644
+--- a/brogue-web/src/test/c_5_fall_subsystem.test.ts
++++ b/brogue-web/src/test/c_5_fall_subsystem.test.ts
+@@ -1,3 +1,4 @@
++import { withBloodRng } from './bloodRngObservation';
+ /**
+  * src/test/c_5_fall_subsystem.test.ts — C-5：坠落子系统（深渊/洞/桥梁解禁）
+  *
+@@ -91,7 +92,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
+         rat.state = MonsterState.HUNTING;
+ 
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
+-        // U02b: measure the generation segment; only landing/damage may add 3 calls.
++        // U02b/R6: measure generation and real blood separately; landing/damage add exactly 3 calls.
+         let generationCost = 0;
+         // U03b / CE startLevel: fall landing now happens inside generateDepth,
+         // after catch-up. Measure that subphase separately, preserving the
+@@ -110,7 +111,8 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
+             generationCost += rng.randomNumbersGenerated - before - landingCost;
+         };
+         const rngBeforeDive = rng.randomNumbersGenerated;
+-        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落
++        const blood = withBloodRng(() => game.handlePlayerAction('move', { x: 1, y: 0 }, 'system')); // (5,5)→(6,5)=渊 → 回合末坠落
++        expect(blood.calls).toBe(1); // fall damage, with the real DF still executing
+ 
+         expect(game.depth, '踩渊后未坠落（回合末时序被改成踩上瞬间或不坠）').toBe(2);
+         // CE Time.c:2480（坠落门）整段 return——坠落回合没有推进循环、没有
+@@ -159,7 +161,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
+             // 11935 = W-5：初始法器抽签移动连续生成流。独立包装实测生成
+             // 11932 次 + 落位/伤害 3 次；只回退初始抽签/赋值即恢复 20505。
+             // 怪物原位/存活、换层/掉血断言保持；不把成本下降算成优化收益。
+-            .toBe(generationCost + 3);
++            .toBe(generationCost + 3 + blood.draws);
+         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
+         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
+             .toEqual([4, 4]);
+diff --git a/brogue-web/src/test/f_1_fire_as_terrain.test.ts b/brogue-web/src/test/f_1_fire_as_terrain.test.ts
+index be2121b9..c2abdc21 100644
+--- a/brogue-web/src/test/f_1_fire_as_terrain.test.ts
++++ b/brogue-web/src/test/f_1_fire_as_terrain.test.ts
+@@ -373,14 +373,15 @@ describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS 
+     });
+ });
+ 
+-describe('F-1 对抗⑧：镜像不随外部地形写点脱钩——spawnBlood 不碰燃烧格', () => {
++describe('F-1 对抗⑧：镜像不随外部地形写点脱钩——共享受击血液 DF 不碰燃烧格', () => {
+     it('燃烧格（有效地形=火）不吃血迹；CE：血 DF 的优先级判定弹开火（10<80）。' +
+-        '错误实现：把 spawnBlood 改成跨层读 → 血的 terrain setter 会清掉火层，制造脱钩。', () => {
++        '错误实现：把血液 DF 改成 terrain setter → 清掉火层，制造脱钩。', () => {
+         const game = createHeadlessGame(42);
+         openRoom(game);
+         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
+         game.environment.ignite(8, 6);
+-        (game as unknown as { spawnBlood(x: number, y: number): void }).spawnBlood(8, 6);
++        game.player.loc = { x: 8, y: 6 };
++        game.player.takeDamage(1, true, game.grid); // R6: real shared damage entry, not retired presentation helper.
+         const cell = game.grid.getCell(8, 6)!;
+         expect(cell.isBurning).toBe(true);
+         expect(hasFire(game, 8, 6), '燃烧格上的火不得被血迹覆盖').toBe(true);
+diff --git a/brogue-web/src/test/g_3_gas_effects.test.ts b/brogue-web/src/test/g_3_gas_effects.test.ts
+index d01e3506..cd49500c 100644
+--- a/brogue-web/src/test/g_3_gas_effects.test.ts
++++ b/brogue-web/src/test/g_3_gas_effects.test.ts
+@@ -492,8 +492,9 @@ describe('G-3 对抗⑩：G-1 扩散守恒 + G-2 蒸汽源哨兵', () => {
+         expect(cell.volume, 'DF_STEAM_ACCUMULATION startProbability = 15').toBe(15);
+     });
+ 
+-    it('效果结算零 RNG 消耗：站气回合前后实质抽取计数不动（同 seed 可复现旁证）', () => {
+-        // CE 的气体效果无掷骰；web 若在效果里加了 roll（抗性掷骰/闪避等），
++    it('气体效果零 RNG；实质流只含真实受击血液 DF 的四邻扩散', () => {
++        // CE 气体效果无掷骰；2 点伤害的红血 DF 首波四邻各一次，后续概率归零。
++        // 若效果里另加 roll（抗性掷骰/闪避等），
+         // 后续生成/战斗的流位置会分岔——这是"阈值取消引入随机性"的防复发钉。
+         const game = createHeadlessGame(42);
+         openRoom(game);
+@@ -501,8 +502,9 @@ describe('G-3 对抗⑩：G-1 扩散守恒 + G-2 蒸汽源哨兵', () => {
+         const drawsBefore = rng.randomNumbersGenerated;
+         game.environment.addGas(4, 4, GasType.POISON, 1000);
+         priv(game).applyEnvironmentalEffects();
+-        expect(rng.randomNumbersGenerated, 'applyEnvironmentalEffects 不得消耗任何 RNG 抽取')
+-            .toBe(drawsBefore);
++        expect(rng.randomNumbersGenerated, '唯一消耗应为红血 DF 首波四邻，不得新增气体抗性骰')
++            .toBe(drawsBefore + 4);
++        expect(game.grid.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.BLOOD);
+     });
+ });
+ 
+diff --git a/brogue-web/src/test/p4_3_special_monster_flags.test.ts b/brogue-web/src/test/p4_3_special_monster_flags.test.ts
+index e05dd1d1..1b87a4b5 100644
+--- a/brogue-web/src/test/p4_3_special_monster_flags.test.ts
++++ b/brogue-web/src/test/p4_3_special_monster_flags.test.ts
+@@ -1,3 +1,4 @@
++import { withBloodRng } from './bloodRngObservation';
+ /**
+  * src/test/p4_3_special_monster_flags.test.ts — P4-3：特殊怪物旗标真正生效
+  *
+@@ -153,12 +154,13 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
+         rng.seedRandomGenerator(32); rng.resetCounters(); // 构造已完成；仅测施法耗骰。
+         const reference = new Random(32);
+         const expectedDamage = 7 + reference.randRange(0, 6) + reference.randRange(0, 6) + reference.randRange(0, 5);
+-        const result = game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);
++        const blood = withBloodRng(() => game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc));
++        const result = blood.result; expect(blood.calls).toBe(1);
+ 
+         expect(result.hits.map(h => h.creature)).toEqual([game.player]);
+         expect(guardian.hp).toBe(guardianHpBefore);
+         expect(game.player.hp).toBe(playerHpBefore - expectedDamage);
+-        expect(rng.randomNumbersGenerated).toBe(3);
++        expect(rng.randomNumbersGenerated).toBe(3 + blood.draws);
+         expect(staff.enchantment).toBe(8); expect(staff.charges).toBe(1);
+     });
+ 
+diff --git a/brogue-web/src/test/u_06_monster_damage.test.ts b/brogue-web/src/test/u_06_monster_damage.test.ts
+index 30ae502a..9f7d7b6b 100644
+--- a/brogue-web/src/test/u_06_monster_damage.test.ts
++++ b/brogue-web/src/test/u_06_monster_damage.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import fs from 'node:fs';
+ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+ import { createHeadlessGame } from './harness';
+@@ -32,7 +33,7 @@ function scene() {
+         Object.assign(g.grid.getCell(x, y)!, { isVisible: true, hasDormantMonster: false, machineNumber: 0 });
+     }
+     g.player.loc = { x: 4, y: 8 }; g.player.hp = g.player.maxHp = 100;
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     return g;
+ }
+ function mob(g: Game, x = 8, id = 'rat', y = 5) {
+diff --git a/brogue-web/src/test/u_09_learning_consumers.test.ts b/brogue-web/src/test/u_09_learning_consumers.test.ts
+index 20bc5e03..e0642279 100644
+--- a/brogue-web/src/test/u_09_learning_consumers.test.ts
++++ b/brogue-web/src/test/u_09_learning_consumers.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import fs from 'node:fs';
+ import { afterEach, describe, expect, it, vi } from 'vitest';
+ import { createHeadlessGame } from './harness';
+@@ -30,7 +31,7 @@ function scene() {
+         Object.assign(g.grid.getCell(x,y)!, { isVisible:true, hasDormantMonster:false, machineNumber:0 });
+     }
+     g.player.loc = {x:4,y:9}; g.player.hp = g.player.maxHp = 1000;
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     return g;
+ }
+ function mob(g:Game, x=12, id='rat', y=5) {
+diff --git a/brogue-web/src/test/u_11_corpse_learning.test.ts b/brogue-web/src/test/u_11_corpse_learning.test.ts
+index 73990011..4a7a80b7 100644
+--- a/brogue-web/src/test/u_11_corpse_learning.test.ts
++++ b/brogue-web/src/test/u_11_corpse_learning.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import { afterEach, describe, expect, it, vi } from 'vitest';
+ import i18next from 'i18next';
+ import zh from '../locales/zh_CN.json';
+@@ -26,7 +27,7 @@ function scene() {
+         Object.assign(g.grid.getCell(x,y)!, {isVisible:true,hasMemory:true,hasDormantMonster:false,machineNumber:0});
+     }
+     g.player.loc = {x:4,y:8}; g.player.hp = g.player.maxHp = 1000;
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     return g;
+ }
+ function mob(g: Game, id = 'rat', x = 8, y = 8) {
+diff --git a/brogue-web/src/test/u_13_combat_math.test.ts b/brogue-web/src/test/u_13_combat_math.test.ts
+index 78615fd1..d65c3d50 100644
+--- a/brogue-web/src/test/u_13_combat_math.test.ts
++++ b/brogue-web/src/test/u_13_combat_math.test.ts
+@@ -220,7 +220,7 @@ describe('U13 short circuits, multipliers, order, and real substantive counts',
+         const roll = vi.spyOn(rng, 'randRange').mockImplementation(lo => lo);
+         g.castMonsterBolt(a, g.player, 'DISTANCE_ATTACK');
+         expect(g.player.hp).toBe(9996);
+-        // Existing Game presentation tail: FloatingText ID, then spawnBlood chance.
+-        expect(roll.mock.calls).toEqual([[0, 99], [0, 2], [0, 2], [1, 1000000], [0, 99]]);
++        // R6 / CE: hit + clump, blood DF four-neighbor first wave, then FloatingText ID.
++        expect(roll.mock.calls).toEqual([[0, 99], [0, 2], [0, 2], [0, 99], [0, 99], [0, 99], [0, 99], [1, 1000000]]);
+     });
+ });
+diff --git a/brogue-web/src/test/u_15a_shattering.test.ts b/brogue-web/src/test/u_15a_shattering.test.ts
+index cb2eca32..1584f76a 100644
+--- a/brogue-web/src/test/u_15a_shattering.test.ts
++++ b/brogue-web/src/test/u_15a_shattering.test.ts
+@@ -199,6 +199,7 @@ describe('U15a real inventory read + U01 v2 JSON round trip', () => {
+         expect(g.getMonsterAt(8, 5)).toBeUndefined();
+         // Occupied forcefield melts in the nested instant contact before lethal handling.
+         expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FLOOR);
+-        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
++        // This goblin has the turret flag, but retains its species red blood.
++        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.BLOOD);
+     });
+ });
+diff --git a/brogue-web/src/test/u_17f_carriers.test.ts b/brogue-web/src/test/u_17f_carriers.test.ts
+index 0b3e8cdc..495ef0cd 100644
+--- a/brogue-web/src/test/u_17f_carriers.test.ts
++++ b/brogue-web/src/test/u_17f_carriers.test.ts
+@@ -126,6 +126,9 @@ describe('U17f player trigger to final terrain and entity consumers',()=>{
+   // The entry consumer consumes a real matching key and wires the portal.
+   move(g,1,0);expect(ally.isDormant).toBe(false);expect(ally.isAlly).toBe(true);expect(occupant.loc).not.toEqual({x:15,y:10});expect(g.player.inventory.items).not.toContain(key);
+   expect(g.grid.getCell(15,10)!.layers[L.DUNGEON]).toBe(T.PORTAL);
++  // R6 adds legitimate objective DF rolls. This generated ally may be a phoenix
++  // egg: freeze its later turns so hatching cannot obscure portal ownership.
++  ally.ticksUntilTurn=10000;
+   // End-of-turn promotion may already have removed the 10000-chance light.
+   for(let i=0;i<3;i++)wait(g);expect(g.grid.getCell(15,10)!.layers[L.SURFACE]).toBe(T.NOTHING);expect(g.monsters.filter(n=>n.id===ally.id)).toHaveLength(1);
+  });
+diff --git a/brogue-web/src/test/w_10_poison.test.ts b/brogue-web/src/test/w_10_poison.test.ts
+index 9513b5d6..125135cb 100644
+--- a/brogue-web/src/test/w_10_poison.test.ts
++++ b/brogue-web/src/test/w_10_poison.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import { beforeEach, describe, expect, it, vi } from 'vitest';
+ import { readFileSync } from 'node:fs';
+ import { Game } from '../engine/Core/Game';
+@@ -180,7 +181,7 @@ describe('W-10 common attacks and one death per creature', () => {
+     it('normal melee and geometry wrappers do not apply MA_POISONS twice', () => {
+         const g = scene(), a = mob(g, 'centipede', 5, 5); a.abilityFlags.add('MA_POISONS'); a.damageString = '6';
+         a.state = MonsterState.HUNTING; vi.spyOn(rng, 'randPercent').mockReturnValue(true);
+-        g.spawnBlood = vi.fn(); g.tryTriggerArmorRunic = vi.fn();
++        vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null); g.tryTriggerArmorRunic = vi.fn();
+         (a as any).resolveGeometryAttackOn(g, g.player, 'hostile');
+         expect([g.player.hp, g.player.poisonAmount, g.player.getStatusDuration('poisoned')]).toEqual([99, 1, 6]);
+     });
+@@ -201,7 +202,7 @@ describe('W-10 common attacks and one death per creature', () => {
+     });
+     it('physical bolts share MA_POISONS; poison dart remains weakening without the ability', () => {
+         const g = scene(), a = mob(g, 'dart_turret', 8, 5); a.damageString = '6'; vi.spyOn(rng, 'randPercent').mockReturnValue(true);
+-        g.spawnBlood = vi.fn(); g.tryTriggerArmorRunic = vi.fn();
++        vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null); g.tryTriggerArmorRunic = vi.fn();
+         g.castMonsterBolt(a, g.player, 'POISON_DART'); expect(g.player.poisonAmount).toBe(0);
+         a.abilityFlags.add('MA_POISONS'); const hp = g.player.hp;
+         g.castMonsterBolt(a, g.player, 'POISON_DART');
+diff --git a/brogue-web/src/test/w_15_shielding.test.ts b/brogue-web/src/test/w_15_shielding.test.ts
+index f3222daf..4e4a4234 100644
+--- a/brogue-web/src/test/w_15_shielding.test.ts
++++ b/brogue-web/src/test/w_15_shielding.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+ import { Game } from '../engine/Core/Game';
+ import { Grid, TerrainType as T } from '../engine/Map/Grid';
+@@ -26,7 +27,7 @@ function scene() {
+     g.player = new Player(4, 5); g.player.maxHp = g.player.hp = 100;
+     g.monsters = []; g.items = []; g.environment = new EnvironmentManager(g.grid);
+     g.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     (g as any).updateVision = vi.fn();
+     return g;
+ }
+@@ -167,8 +168,8 @@ describe('W-15 absorbable damage and bypass/death owners', () => {
+     it.each(['player','monster'])('%s explosion consumes shield, preserves immunity/death ordering', who => {
+         const g=scene(), c=who==='player'?g.player:mob(g); c.applyShield(130); c.hp=30;
+         g.grid.setTerrain(c.x,c.y,T.GAS_EXPLOSION); const death=vi.spyOn(c as any,'die');
+-        (g as any).resolveExplosionDamage(c); expect(c.hp).toBe(who==='player'?-7:0); expect(shield(c)).toEqual([0,0]);
+-        (g as any).resolveExplosionDamage(c); expect(death).toHaveBeenCalledTimes(who==='player'?0:1);
++        (g as any).resolveExplosionDamage(c); expect(c.hp).toBe(0); expect(shield(c)).toEqual([0,0]);
++        (g as any).resolveExplosionDamage(c); expect(death).toHaveBeenCalledTimes(1);
+     });
+     it('dampening and invulnerable explosion retain shield and consume their existing RNG', () => {
+         const g=scene(); armor(g,'dampening'); const m=mob(g); m.behaviorFlags.add('MONST_INVULNERABLE');
+@@ -215,11 +216,11 @@ describe('W-15 absorbable damage and bypass/death owners', () => {
+     it('ordinary negation clears both fields', () => {
+         const g=scene(), m=mob(g); for(const c of [g.player,m]) { c.applyShield(130); (g as any).negateCreatureMagic(c); expect(shield(c)).toEqual([0,0]); }
+     });
+-    it('player fall uses reducer without calling takeDamage or introducing another death owner', () => {
++    it('player fall uses the shared damage entry, reducing shielding exactly once', () => {
+         const g=live(); g.player.applyShield(130); const hit=vi.spyOn(g.player,'takeDamage');
+         vi.spyOn(g as any,'generateDepth').mockImplementation(()=>{}); vi.spyOn(g as any,'placePlayerOnFallLanding').mockImplementation(()=>{});
+         vi.spyOn(rng,'randClumpedRange').mockReturnValue(9); (g as any).playerFalls();
+-        expect(g.player.hp).toBe(100); expect(shield(g.player)).toEqual([40,130]); expect(hit).not.toHaveBeenCalled();
++        expect(g.player.hp).toBe(100); expect(shield(g.player)).toEqual([40,130]); expect(hit).toHaveBeenCalledExactlyOnceWith(9, false, g.grid);
+     });
+     it('falling monster keeps unspent shield while pending; activation monster still dies directly', () => {
+         const g=live(), m=mob(g); m.applyShield(130); m.falling=true;
+diff --git a/brogue-web/src/test/w_4_bolt_reflection.test.ts b/brogue-web/src/test/w_4_bolt_reflection.test.ts
+index 7ee132db..7437fa28 100644
+--- a/brogue-web/src/test/w_4_bolt_reflection.test.ts
++++ b/brogue-web/src/test/w_4_bolt_reflection.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import { beforeEach, describe, expect, it, vi } from 'vitest';
+ import { Game } from '../engine/Core/Game';
+ import { Grid, TerrainType as T, DungeonLayer as L } from '../engine/Map/Grid';
+@@ -25,7 +26,7 @@ function scene() {
+     }
+     g.player = new Player(4, 5); g.player.hp = g.player.maxHp = 100;
+     g.monsters = []; g.items = []; g.environment = new EnvironmentManager(g.grid);
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     (g as unknown as { updateVision(): void }).updateVision = vi.fn();
+     return g;
+ }
+diff --git a/brogue-web/src/test/w_8_staff_damage.test.ts b/brogue-web/src/test/w_8_staff_damage.test.ts
+index 7748ccda..0c4025ea 100644
+--- a/brogue-web/src/test/w_8_staff_damage.test.ts
++++ b/brogue-web/src/test/w_8_staff_damage.test.ts
+@@ -1,3 +1,4 @@
++import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
+ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
+ import fs from 'node:fs';
+ import { Game } from '../engine/Core/Game';
+@@ -21,7 +22,7 @@ function scene() {
+     }
+     g.player = new Player(4, 5); g.player.hp = g.player.maxHp = 100;
+     g.monsters = []; g.items = []; g.environment = new EnvironmentManager(g.grid);
+-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
++    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
+     (g as unknown as { updateVision(): void }).updateVision = vi.fn();
+     return g;
+ }
+diff --git a/brogue-web/src/test/x3_u7_sidebar.test.ts b/brogue-web/src/test/x3_u7_sidebar.test.ts
+index fdbcda30..efd580b2 100644
+--- a/brogue-web/src/test/x3_u7_sidebar.test.ts
++++ b/brogue-web/src/test/x3_u7_sidebar.test.ts
+@@ -1,3 +1,4 @@
++import { getTerrainDescription } from '../engine/UI/TerrainTextCatalog';
+ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+ import i18next from 'i18next';
+ import { Player } from '../entities/Player';
+@@ -106,11 +107,11 @@ describe('X3-U7 CE sidebar ordering and knowledge', () => {
+         expect(s.rows().map(r => r.id)).toEqual([feet.id, item.id, '18,11']);
+     });
+ 
+-    it('uses the first flagged terrain layer, not the top drawn layer; covers every listed kind in English and Chinese', async () => {
++    it('uses the first flagged terrain layer, not the top drawn layer; covers every listed kind through the CE text catalog', async () => {
+         const s = scene(); s.visible(11, 10);
+         s.grid.setTerrain(11, 10, TerrainType.STAIRS_DOWN);
+         s.grid.setTerrainLayer(11, 10, DungeonLayer.SURFACE, TerrainType.PLAIN_FIRE);
+-        expect(s.rows()[0]!.name).toBe('the downward staircase');
++        expect(s.rows()[0]!.name).toBe(getTerrainDescription(TerrainType.STAIRS_DOWN));
+         const listed = Object.values(TerrainType).filter((t): t is TerrainType => typeof t === 'number'
+             && !!(TERRAIN_FLAGS[t].mechFlags & TM_LIST_IN_SIDEBAR));
+         expect(listed.length).toBeGreaterThan(40);
+diff --git a/brogue-web/src/test/x4b_flavor_text.test.ts b/brogue-web/src/test/x4b_flavor_text.test.ts
+index 8d30d568..60a874f6 100644
+--- a/brogue-web/src/test/x4b_flavor_text.test.ts
++++ b/brogue-web/src/test/x4b_flavor_text.test.ts
+@@ -1,6 +1,6 @@
+ import { afterEach, describe, expect, it, vi } from 'vitest';
+ import { readFileSync } from 'node:fs';
+-import i18next from 'i18next';
++import { tileFlavor } from '../engine/UI/TerrainTextCatalog';
+ import { createHeadlessGame } from './harness';
+ import { type Game } from '../engine/Core/Game';
+ import { TerrainType as T, DungeonLayer as L } from '../engine/Map/Grid';
+@@ -22,6 +22,7 @@ function scene(game = createHeadlessGame(44002, 'test')) {
+     }
+     game.player.loc = { x: 10, y: 10 };
+     (game as any).updateVision();
++    game.disturbed = true; // CE standing flavor is displayed when player control is active.
+     game.updateFlavorText();
+     return game;
+ }
+@@ -33,8 +34,7 @@ function snapshot(game: Game) {
+     const { savedAt: _, ...state } = game.toSnapshot();
+     return structuredClone(state);
+ }
+-const terrainName = (game: Game, terrain: T): string => (game as any).getTerrainName(terrain);
+-const standing = (terrain: string) => i18next.t('df.flavor', { terrain, defaultValue: 'You are standing on {{terrain}}.' });
++
+ 
+ describe('X4b CE flavorMessage display/archive boundary', () => {
+     it.each([false, true])('tramples foliage and opens a door without log entries (animated=%s)', animated => {
+@@ -46,13 +46,13 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+             g.executeCommand('move', { x: 1, y: 0 }); settle(g);
+             expect(g.player.loc).toEqual({ x, y: 10 });
+             expect(g.grid.getCell(x, 10)!.terrain).toBe(terrain);
+-            expect(g.flavorText).toBe(standing(terrainName(g, terrain)));
++            expect(g.flavorText).toBe(tileFlavor([terrain]));
+         }
+         expect(log).not.toHaveBeenCalled();
+         g.executeCommand('move', { x: 1, y: 0 }); settle(g);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
++        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
+         g.flavorText = 'stale'; g.executeCommand('wait'); settle(g);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
++        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
+         expect(log).not.toHaveBeenCalled();
+     });
+ 
+@@ -60,7 +60,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         const g = scene(), log = vi.spyOn(logger, 'log');
+         const feature = { ...catalogFeature(DF.DF_OPEN_DOOR), description: '', subsequentDF: 0 };
+         spawnDungeonFeature(g.grid, 10, 10, feature, false);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.OPEN_DOOR)));
++        expect(g.flavorText).toBe(tileFlavor([T.OPEN_DOOR]));
+         expect(log).not.toHaveBeenCalled();
+         g.flavorText = 'sentinel';
+         spawnDungeonFeature(g.grid, 11, 10, feature, false);
+@@ -80,7 +80,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         expect(g.hoveredText).toBe('');
+         g.stepAutoPath();
+         expect(g.player.loc).toEqual({ x: 11, y: 10 }); expect(g.autoPath).toEqual([]);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.GRASS)));
++        expect(g.flavorText).toBe(tileFlavor([T.GRASS]));
+         g.flavorText = 'stale';
+         g.autoPath = [{ x: 12, y: 10 }];
+         g.grid.setTerrain(12, 10, T.WALL);
+@@ -88,7 +88,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         c.rememberedLayers = [...c.layers]; c.rememberedTerrain = T.WALL;
+         g.stepAutoPath();
+         expect(g.autoPath).toEqual([]);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.GRASS)));
++        expect(g.flavorText).toBe(tileFlavor([T.GRASS]));
+     });
+ 
+     it('retains combat, pickup and item discovery messages in the archive', () => {
+@@ -125,16 +125,17 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         expect(JSON.stringify(saved)).not.toContain('flavorText');
+         g.flavorText = 'stale'; g.updateHover(12, 10);
+         expect(g.loadSnapshot(saved)).toBe(true);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
++        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
+         expect(g.hoveredText).toBe(''); expect(snapshot(g)).toEqual(before);
+         g.flavorText = 'stale'; g.startNewGame({ seed: 44002, mode: 'test' });
+-        expect(g.flavorText).not.toBe('stale'); expect(g.flavorText).not.toBe('');
++        expect(g.flavorText).not.toBe('stale');
++        expect(g.flavorText).toBe(tileFlavor(g.grid.getCell(g.player.x, g.player.y)!.layers));
+     });
+ 
+     it('uses gas terrain and reuses location description for levitation without overwriting hover', () => {
+         const g = scene();
+         g.grid.setTerrainLayer(10, 10, L.GAS, T.POISON_GAS);
+-        g.updateFlavorText(); expect(g.flavorText).toBe(standing(terrainName(g, T.POISON_GAS)));
++        g.updateFlavorText(); expect(g.flavorText).toBe(tileFlavor([T.POISON_GAS]));
+         g.player.setStatusDuration('levitating', 10);
+         g.updateHover(10, 10); const location = g.hoveredText;
+         g.updateHover(9, 10); const hover = g.hoveredText;
+@@ -161,7 +162,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
+         expect(g.replayCursor).toBe(recording.events.length);
+         expect(g.player.loc).toEqual(expected.player.loc);
+         expect(rng.getState()).toEqual(random);
+-        expect(g.flavorText).toBe(standing(terrainName(g, T.OPEN_DOOR)));
++        expect(g.flavorText).toBe(tileFlavor([T.OPEN_DOOR]));
+     });
+ 
+     it('desktop and compact HUD put inspection before flavor, on the existing secondary line', () => {

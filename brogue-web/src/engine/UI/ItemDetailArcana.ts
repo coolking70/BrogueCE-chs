@@ -1,3 +1,4 @@
+import { staffHealingPercent, staffHasteDuration, staffDiscordDuration } from '../Items/ItemEffectFormulas';
 import { ItemCategory as C, type Item } from '../Items/Item';
 import { WAND_INITIAL_RANGES } from '../Items/ArcanaInstance';
 import { staffChargeDuration, ringWisdomRechargeIncrement } from '../Items/ArcanaRecharge';
@@ -39,7 +40,7 @@ export function arcanaDetail(item: Item, ctx: ItemDetailContext): DetailSection[
             } else if (increment === 0) add('staff.recharge_stopped');
         }
         if (ctx.currentTurn !== undefined && ctx.knownStaffUses) {
-            const ages = ctx.knownStaffUses.filter(turn => turn > 0 && turn <= ctx.currentTurn!).slice(0, 3).map(turn => ctx.currentTurn! - turn);
+            const ages = ctx.knownStaffUses.filter(turn => turn >= 0 && turn <= ctx.currentTurn!).slice(0, 3).map(turn => ctx.currentTurn! - turn);
             if (ages.length) add('staff.history', { ages: ages.join('、') });
         }
         if (k.kindKnown && ['staff_of_blinking', 'staff_of_obstruction'].includes(item.identityId ?? '')) add('staff.slow');
@@ -58,12 +59,9 @@ export function arcanaDetail(item: Item, ctx: ItemDetailContext): DetailSection[
                 case 'staff_of_blinking': add('staff.blinking', { distance: staffBlinkDistance(e), next: staffBlinkDistance(next) }); break;
                 case 'staff_of_entrancement': add('staff.entrancement', { turns: staffEntrancementDuration(e), next: staffEntrancementDuration(next) }); break;
                 case 'staff_of_healing':
-                    // The current rules have these three linear conversions inline
-                    // in Game.applyBasicBoltEffect (:4581/4589/4617). Preserve
-                    // those exact expressions; R6 must extract shared pure helpers.
-                    add('staff.healing', { percent: Math.min(100, 10 * e), next: Math.min(100, 10 * next) }); break;
-                case 'staff_of_haste': add('staff.haste', { turns: 2 + 4 * e, next: 2 + 4 * next }); break;
-                case 'staff_of_discord': add('staff.discord', { turns: 4 * e, next: 4 * next }); break;
+                    add('staff.healing', { percent: staffHealingPercent(e), next: staffHealingPercent(next) }); break;
+                case 'staff_of_haste': add('staff.haste', { turns: staffHasteDuration(e), next: staffHasteDuration(next) }); break;
+                case 'staff_of_discord': add('staff.discord', { turns: staffDiscordDuration(e), next: staffDiscordDuration(next) }); break;
                 // CE deliberately adds no magnitude paragraph for obstruction;
                 // its kind description and slow recharge explain the effect.
                 case 'staff_of_obstruction': break;

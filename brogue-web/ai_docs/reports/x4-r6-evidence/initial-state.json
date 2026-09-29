@@ -1,0 +1,33 @@
+{
+  "head": "06f90063f4ab05ae573d1d27178fa6df766011a6",
+  "production": [
+    "src/components/ReplayControls.vue",
+    "src/components/Sidebar.vue",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Items/Item.ts",
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/engine/UI/ItemDetailArcana.ts",
+    "src/engine/UI/ItemDetailContext.ts",
+    "src/engine/UI/ItemDetailEquipment.ts",
+    "src/engine/UI/ItemDetailJewelry.ts",
+    "src/engine/UI/MonsterSidebar.ts",
+    "src/entities/Creature.ts",
+    "src/entities/Monster.ts",
+    "src/entities/Player.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "added": [
+    "src/engine/Items/ItemEffectFormulas.ts"
+  ],
+  "fixtures": {
+    "src/test/fixtures/generation_baseline.json": "28932bc57e5ec7df795f0c5a683cece7661abfefe187d28c40956c022762482a",
+    "src/test/fixtures/deep_generation_baseline.json": "82a2fc05dce0d86992c53b8b5c8557e0bfece9a565d0c652e4f4e39f33d5432d",
+    "ai_docs/reports/u-r2-trace.json": "0ab953ab936f0b38623b4fefd7eee06469443ce3ff9bafd402c2bd46567d4f9d",
+    "ai_docs/reports/u-r3-trace.json.gz": "4a38ca0d6dd0b0320dc4ae023fa0164de539fe8ab78649f4395de0b2b2a5a381",
+    "ai_docs/reports/u-r4-trace.json.gz": "b2a02432ea13343be60275ec1e38fcf47e56487fb8dfcfdd885bc7142fe249e0"
+  }
+}

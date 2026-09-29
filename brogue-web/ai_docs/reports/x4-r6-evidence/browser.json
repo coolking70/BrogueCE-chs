@@ -1,0 +1,332 @@
+{
+  "results": [
+    {
+      "scene": "natural bloodwort keyboard bump/entry and JSON save-load",
+      "natural": {
+        "seed": 424242,
+        "pod": {
+          "x": 27,
+          "y": 11
+        },
+        "near": {
+          "x": 28,
+          "y": 11
+        },
+        "hp": 10,
+        "layers": [
+          2,
+          0,
+          0,
+          193
+        ]
+      },
+      "burst": {
+        "loc": {
+          "x": 28,
+          "y": 11
+        },
+        "layers": [
+          2,
+          0,
+          194,
+          0
+        ],
+        "hp": 10
+      },
+      "healing": {
+        "loc": {
+          "x": 27,
+          "y": 11
+        },
+        "hp": 12,
+        "messages": [
+          "已开始 普通 游戏（种子 424242）。",
+          "你感觉好多了。"
+        ]
+      },
+      "save": {
+        "hp": 12,
+        "rngSame": true,
+        "layers": [
+          2,
+          0,
+          194,
+          0
+        ]
+      }
+    },
+    {
+      "scene": "real incendiary throw: ground",
+      "hit": false,
+      "impact": {
+        "layers": [
+          2,
+          0,
+          0,
+          206
+        ],
+        "quantity": 2
+      },
+      "dartExplosion": 206,
+      "remaining": 2,
+      "drops": 0,
+      "messages": [
+        "选择一个目标来投掷燃烧弹飞镖。"
+      ]
+    },
+    {
+      "scene": "real incendiary throw: monster",
+      "hit": true,
+      "impact": {
+        "layers": [
+          2,
+          0,
+          0,
+          206
+        ],
+        "quantity": 2,
+        "monsterHp": 100,
+        "burning": 7
+      },
+      "dartExplosion": 206,
+      "remaining": 2,
+      "drops": 0,
+      "burning": 6,
+      "messages": [
+        "选择一个目标来投掷燃烧弹飞镖。",
+        "哥布林着火了"
+      ]
+    },
+    {
+      "scene": "actual hover/standing text",
+      "rows": [
+        {
+          "tile": "PLAIN_FIRE",
+          "expected": "翻腾的火焰",
+          "actual": "翻腾的火焰"
+        },
+        {
+          "tile": "POISON_GAS",
+          "expected": "一团腐蚀性瓦斯云",
+          "actual": "一团腐蚀性瓦斯云"
+        },
+        {
+          "tile": "HOLE",
+          "expected": "一个洞",
+          "actual": "一个洞"
+        },
+        {
+          "tile": "FORCEFIELD",
+          "expected": "一个绿色水晶",
+          "actual": "一个绿色水晶"
+        },
+        {
+          "tile": "ANCIENT_SPIRIT_VINES",
+          "expected": "带刺的藤蔓",
+          "actual": "带刺的藤蔓"
+        },
+        {
+          "tile": "ANCIENT_SPIRIT_GRASS",
+          "expected": "一丛草",
+          "actual": "一丛草"
+        }
+      ],
+      "flavor": "你能感觉到紫色瓦斯在侵蚀你的肉体。",
+      "expectedFlavor": "你能感觉到紫色瓦斯在侵蚀你的肉体。"
+    },
+    {
+      "scene": "keyboard/location/inventory detail",
+      "keyboard": {
+        "char": "\\",
+        "color": 16777113,
+        "name": "加速法杖 [3/3]",
+        "sections": [
+          {
+            "lines": [
+              {
+                "text": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+                "color": "#aaaacc"
+              }
+            ]
+          },
+          {
+            "header": "法器属性",
+            "lines": [
+              {
+                "text": "充能: 3/3"
+              },
+              {
+                "text": "随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"
+              },
+              {
+                "text": "按当前可知戒指加成，约 166 回合恢复一次充能；再附魔后约 125 回合。"
+              },
+              {
+                "text": "最近使用分别在 0 回合前。"
+              },
+              {
+                "text": "使目标行动速度加倍，持续 14 回合；再附魔后 18 回合。"
+              }
+            ]
+          }
+        ]
+      },
+      "inventory": {
+        "detail": {
+          "char": "\\",
+          "color": 16777113,
+          "name": "加速法杖 [3/3]",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "法器属性",
+              "lines": [
+                {
+                  "text": "充能: 3/3"
+                },
+                {
+                  "text": "随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"
+                },
+                {
+                  "text": "按当前可知戒指加成，约 166 回合恢复一次充能；再附魔后约 125 回合。"
+                },
+                {
+                  "text": "最近使用分别在 0 回合前。"
+                },
+                {
+                  "text": "使目标行动速度加倍，持续 14 回合；再附魔后 18 回合。"
+                }
+              ]
+            }
+          ]
+        },
+        "location": {
+          "char": "\\",
+          "color": 16777113,
+          "name": "加速法杖 [3/3]",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "法器属性",
+              "lines": [
+                {
+                  "text": "充能: 3/3"
+                },
+                {
+                  "text": "随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"
+                },
+                {
+                  "text": "按当前可知戒指加成，约 166 回合恢复一次充能；再附魔后约 125 回合。"
+                },
+                {
+                  "text": "最近使用分别在 0 回合前。"
+                },
+                {
+                  "text": "使目标行动速度加倍，持续 14 回合；再附魔后 18 回合。"
+                }
+              ]
+            }
+          ]
+        },
+        "expected": {
+          "char": "\\",
+          "color": 16777113,
+          "name": "加速法杖 [3/3]",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "法器属性",
+              "lines": [
+                {
+                  "text": "充能: 3/3"
+                },
+                {
+                  "text": "随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响。"
+                },
+                {
+                  "text": "按当前可知戒指加成，约 166 回合恢复一次充能；再附魔后约 125 回合。"
+                },
+                {
+                  "text": "最近使用分别在 0 回合前。"
+                },
+                {
+                  "text": "使目标行动速度加倍，持续 14 回合；再附魔后 18 回合。"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scene": "explicit read-only replay omniscience and seek",
+      "immediate": {
+        "knowledge": [
+          "charm_of_health",
+          "charm_of_protection",
+          "charm_of_speed",
+          "charm_of_fire_immunity",
+          "charm_of_invisibility",
+          "charm_of_telepathy",
+          "charm_of_levitation",
+          "charm_of_shattering",
+          "charm_of_guardian",
+          "charm_of_teleportation",
+          "charm_of_recharging",
+          "charm_of_negation",
+          "amulet_of_yendor"
+        ],
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 1427878264,
+              "b": 2563337973,
+              "c": 1478174267,
+              "d": 97529701
+            },
+            {
+              "a": 1594156700,
+              "b": 1755628726,
+              "c": 1754695110,
+              "d": 1808666509
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 88462,
+          "cosmeticNumbersGenerated": 164
+        },
+        "turn": 0
+      },
+      "enabled": true,
+      "retained": true,
+      "error": null,
+      "cursor": 2,
+      "total": 2
+    }
+  ],
+  "errors": [],
+  "screenshots": "output/x4-r6/browser"
+}

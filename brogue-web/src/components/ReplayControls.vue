@@ -10,6 +10,12 @@ onMounted(() => { timer = setInterval(() => { pulse.value++; }, 100); });
 onUnmounted(() => { if (timer) clearInterval(timer); });
 
 const isReplayActive = computed(() => { pulse.value; return !!activeGame.replayRecording; });
+const omniscientDetails = computed(() => { pulse.value; return activeGame.replayOmniscientDetails; });
+const toggleDetails = () => {
+    activeGame.replayOmniscientDetails = !activeGame.replayOmniscientDetails;
+    activeGame.inspectTarget = null;
+};
+
 const isPlaying = computed(() => { pulse.value; return activeGame.replayStatus === 'playing'; });
 
 const currentCursor = computed(() => { pulse.value; return activeGame.replayCursor; });
@@ -56,6 +62,9 @@ const onSeek = (e: Event) => {
             {{ currentCursor }} / {{ totalEvents }}
         </div>
     </div>
+    <label><input type="checkbox" :checked="omniscientDetails" @change="toggleDetails" />
+      {{ t('replay.controls.omniscient_details', { defaultValue: 'Omniscient item details' }) }}
+    </label>
     <input type="range" min="0" :max="totalEvents" :value="currentCursor" @input="onSeek" class="slider" />
   </div>
 </template>

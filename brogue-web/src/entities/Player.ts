@@ -1,3 +1,4 @@
+import { PLAYER_BLOOD_TYPE } from '../engine/Combat/CreatureFeatures';
 /**
  * src/entities/Player.ts
  * Player specific logic
@@ -57,15 +58,17 @@ export class Player extends Creature {
 
     public snapshotHungerTransition(): HungerState | null { return this.hungerTransition; }
 
-    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+    public override get bloodType(): number { return PLAYER_BLOOD_TYPE; }
+
+    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid, beforeHpLoss?: (damage: number) => void): void {
         if (amount > 0) logger.disturb();
-        super.takeDamage(amount, ignoresProtectionShield, grid);
+        super.takeDamage(amount, ignoresProtectionShield, grid, beforeHpLoss);
     }
 
     /** Ordinary melee is the sole damage exception during CE startFighting. */
-    public takeCombatDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+    public takeCombatDamage(amount: number, ignoresProtectionShield = false, grid?: Grid, beforeHpLoss?: (damage: number) => void): void {
         if (!logger.blockCombatText && amount > 0) logger.disturb();
-        super.takeDamage(amount, ignoresProtectionShield, grid);
+        super.takeDamage(amount, ignoresProtectionShield, grid, beforeHpLoss);
     }
     public restoreHungerTransition(value: HungerState | null): void { this.hungerTransition = value; }
 

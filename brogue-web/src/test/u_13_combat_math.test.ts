@@ -220,7 +220,7 @@ describe('U13 short circuits, multipliers, order, and real substantive counts', 
         const roll = vi.spyOn(rng, 'randRange').mockImplementation(lo => lo);
         g.castMonsterBolt(a, g.player, 'DISTANCE_ATTACK');
         expect(g.player.hp).toBe(9996);
-        // Existing Game presentation tail: FloatingText ID, then spawnBlood chance.
-        expect(roll.mock.calls).toEqual([[0, 99], [0, 2], [0, 2], [1, 1000000], [0, 99]]);
+        // R6 / CE: hit + clump, blood DF four-neighbor first wave, then FloatingText ID.
+        expect(roll.mock.calls).toEqual([[0, 99], [0, 2], [0, 2], [0, 99], [0, 99], [0, 99], [0, 99], [1, 1000000]]);
     });
 });

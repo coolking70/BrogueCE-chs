@@ -373,14 +373,15 @@ describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS �
     });
 });
 
-describe('F-1 对抗⑧：镜像不随外部地形写点脱钩——spawnBlood 不碰燃烧格', () => {
+describe('F-1 对抗⑧：镜像不随外部地形写点脱钩——共享受击血液 DF 不碰燃烧格', () => {
     it('燃烧格（有效地形=火）不吃血迹；CE：血 DF 的优先级判定弹开火（10<80）。' +
-        '错误实现：把 spawnBlood 改成跨层读 → 血的 terrain setter 会清掉火层，制造脱钩。', () => {
+        '错误实现：把血液 DF 改成 terrain setter → 清掉火层，制造脱钩。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
         game.environment.ignite(8, 6);
-        (game as unknown as { spawnBlood(x: number, y: number): void }).spawnBlood(8, 6);
+        game.player.loc = { x: 8, y: 6 };
+        game.player.takeDamage(1, true, game.grid); // R6: real shared damage entry, not retired presentation helper.
         const cell = game.grid.getCell(8, 6)!;
         expect(cell.isBurning).toBe(true);
         expect(hasFire(game, 8, 6), '燃烧格上的火不得被血迹覆盖').toBe(true);

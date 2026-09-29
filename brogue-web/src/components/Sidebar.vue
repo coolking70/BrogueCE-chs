@@ -73,7 +73,7 @@ onMounted(() => {
       // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
       playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);
       entityRows.value = sidebarEntityRows(activeGame.player, activeGame.grid, activeGame.monsters,
-        activeGame.items, activeGame.hoveredCell);
+        activeGame.items, activeGame.hoveredCell, activeGame.depth);
       // Read the existing calculation without changing Game's rules/method visibility
       // (X3-U7's edit boundary excludes calculateStealthRange).
       playerStats.value = sidebarPlayerStats(activeGame.player, activeGame.stats.gold,

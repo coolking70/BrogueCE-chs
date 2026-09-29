@@ -1,3 +1,12 @@
+import { staffHealingPercent, staffHasteDuration, staffDiscordDuration, armorStealthAdjustment, ringStealthAdjustment, ringAwarenessBonus, ringClairvoyanceRadius } from '../Items/ItemEffectFormulas';
+import { emitCreatureFeature } from '../Combat/CreatureFeatures';
+import { isIncendiaryDart, resolveIncendiaryDart } from '../Items/IncendiaryDart';
+import { applyAggravationScroll } from '../Items/AggravationScroll';
+import { terrainHealingAmount } from '../Map/TerrainHealing';
+import { worldHealingText, worldFeatureText } from '../UI/WorldCatalogText';
+import { createItemDetailContext } from '../UI/ItemDetailContext';
+import { getTerrainDescription, describeTerrain, tileFlavor, selectTerrainTextLayer } from '../UI/TerrainTextCatalog';
+import { formatMonsterSummonMessage } from '../UI/MonsterTextCatalog';
 import { ownedMonsterList, dyingMonsters, iterateCreatures } from './MonsterLifecycle';
 import { alertMonster, wakeMonster } from '../Combat/MonsterAI';
 import { type MachineEntityRuntime } from '../Generator/BlueprintEngine';
@@ -490,6 +499,8 @@ export class Game {
     public replayEvents: RecordedInputEvent[] = [];
     public replayCursor: number = 0;
     public replayStatus: ReplayStatus = 'idle';
+    /** Explicit read-only item-detail projection; never changes game knowledge. */
+    public replayOmniscientDetails = false;
     private replayFrameAccumulator: number = 0;
     private readonly replayFramesPerStep: number = 6;
     public get replayError(): string | null { return recordingState(this).replayError; }
@@ -1801,8 +1812,10 @@ export class Game {
             }
         }
 
-        if (atLeastOneMinion) {
-            logger.log(i18next.t('monster.summon_minions', {
+        // CE Monsters.c:1046-1053: observable incantation, even if no room
+        // remains for a minion. Identity comes through the perception adapter.
+        if (canSeeMonster(this.player, this.grid, summoner)) {
+            logger.log(formatMonsterSummonMessage(summoner.typeId, this.monsterDisplayName(summoner)) || i18next.t('monster.summon_minions', {
                 name: this.monsterDisplayName(summoner),
                 defaultValue: `${this.monsterDisplayName(summoner)} incants darkly!`
             }), '#c084fc');
@@ -1959,15 +1972,14 @@ export class Game {
             const i = visibleItems.find(item => !this.examinedEntityIds.has(item.id));
             if (i) {
                 this.examinedEntityIds.add(i.id);
-                this.inspectTarget = generateItemDetail(i, this.player.effectiveStrength);
+                this.inspectTarget = generateItemDetail(i, createItemDetailContext(this, i));
                 return;
             }
         }
 
-        // If we reach here, either there's nothing to examine,
-        // or we already just examined the nearest entity.
-        // Fall back to auto-explore behavior.
-        this.handleAutoExplore();
+        // Completing a read-only inspection cycle never spends a turn.
+        this.examinedEntityIds.clear();
+        this.inspectTarget = null;
     }
 
     public handleInspectAt(x: number, y: number) {
@@ -1998,7 +2010,7 @@ export class Game {
 
         const item = this.items.find((i) => i.loc.x === x && i.loc.y === y);
         if (item && cell.isVisible) {
-            this.inspectTarget = generateItemDetail(item, this.player.effectiveStrength);
+            this.inspectTarget = generateItemDetail(item, createItemDetailContext(this, item));
         }
     }
 
@@ -2346,19 +2358,6 @@ export class Game {
         }
     }
 
-    public spawnBlood(x: number, y: number) {
-        const cell = this.grid.getCell(x, y);
-        if (cell && (cell.terrain === TerrainType.FLOOR || cell.terrain === TerrainType.GRASS)) {
-            // High chance to spawn blood on floor/grass
-            if (rng.randPercent(60)) {
-                cell.terrain = TerrainType.BLOOD;
-                cell.char = '%';
-                cell.color = 0xaa2222;
-                this.needsRender = true;
-            }
-        }
-    }
-
     public spawnFloatingText(text: string, x: number, y: number, color: number | string = 0xffffff, life: number = 30) {
         this.floatingTexts.push(new FloatingText(text, x, y, color, life));
         this.needsRender = true;
@@ -2511,8 +2510,7 @@ export class Game {
         // CE Time.c:660-704: positive clairvoyance reveals nearby cells through
         // walls; a cursed ring darkens the same radius even inside ordinary FOV.
         const clairvoyance = ringBonus(this.player.rings(), 'ring_of_clairvoyance');
-        const clairvoyanceRadius = clairvoyance > 0 ? clairvoyance + 1
-            : clairvoyance < 0 ? 1 - clairvoyance : 0;
+        const clairvoyanceRadius = ringClairvoyanceRadius(clairvoyance);
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
                 const cell = this.grid.getCell(x, y);
@@ -2550,15 +2548,7 @@ export class Game {
     }
 
     private travelTerrainName(terrain: TerrainType): string {
-        // CE tileCatalog descriptions for every current INTERRUPT flag carrier.
-        switch (terrain) {
-            case TerrainType.STAIRS_DOWN: return i18next.t('terrain.stairs_down', { defaultValue: 'a downward staircase' });
-            case TerrainType.STAIRS_UP: return i18next.t('terrain.stairs_up', { defaultValue: 'an upward staircase' });
-            case TerrainType.DUNGEON_PORTAL: return i18next.t('terrain.crystal_portal', { defaultValue: 'a crystal portal' });
-            case TerrainType.LOCKED_DOOR: return i18next.t('terrain.locked_door', { defaultValue: 'a locked iron door' });
-            case TerrainType.MONSTER_CAGE_CLOSED: return i18next.t('terrain.monster_cage_closed', { defaultValue: 'a locked iron cage' });
-            default: return this.getTerrainName(terrain);
-        }
+        return this.getTerrainName(terrain);
     }
 
     private queueTravelDiscoveries(cell: Cell, directlyVisible: boolean): void {
@@ -2809,6 +2799,7 @@ export class Game {
 
     public clearReplay() {
         this.replayRecording = null;
+        this.replayOmniscientDetails = false;
         this.replayEvents = [];
         this.replayCursor = 0;
         this.replayStatus = 'idle';
@@ -2907,7 +2898,9 @@ export class Game {
             this.startNewGame({ seed, mode });
             return;
         }
+        const omniscientDetails = this.replayOmniscientDetails;
         this.loadReplay(this.replayRecording);
+        this.replayOmniscientDetails = omniscientDetails;
     }
 
     public replayStep(silent: boolean = false) {
@@ -2987,6 +2980,7 @@ export class Game {
         const total = this.replayEvents.length;
         const clamped = Math.max(0, Math.min(Math.floor(targetIndex), total));
         const animationEnabled = this.animationEnabled;
+        const omniscientDetails = this.replayOmniscientDetails;
         this.animationEnabled = false;
         try {
             this.loadReplay(this.replayRecording);
@@ -2996,6 +2990,7 @@ export class Game {
             }
         } finally {
             this.animationEnabled = animationEnabled;
+            this.replayOmniscientDetails = omniscientDetails;
         }
 
         if (this.replayStatus === 'playing') {
@@ -3047,7 +3042,8 @@ export class Game {
             return; // No search, stairs, inventory, pathing or waiting through the modal.
         }
 
-        if (action === 'confirm_target' || action === 'cycle_target' || action === 'cancel_target') return;
+        if (action === 'cycle_target') { this.handleExamineNearest(); return; }
+        if (action === 'confirm_target' || action === 'cancel_target') return;
 
         if (this.player.hasStatus('paralyzed') && action !== 'toggle_inventory' && action !== 'escape') {
             // Loaded/test states may already be paralyzed. The scheduler drains
@@ -4070,6 +4066,11 @@ export class Game {
 
                 // Execute effect
                 switch (data.effect) {
+                case 'aggravate_monsters':
+                    applyAggravationScroll({ width: this.grid.width, height: this.grid.height,
+                        playerLoc: this.player.loc, aggravate: (radius, pos) => this.aggravateMonsters(radius, pos) });
+                    break;
+
                     case 'reveal_map':
                         // Items.c:7945-7971: reveal secret doors, then map only
                         // dungeon/liquid layers of undiscovered non-granite cells.
@@ -4326,6 +4327,7 @@ export class Game {
         if (!bolt) return null;
         if ((item.charges ?? 0) <= 0 && item.identified === true) return null;
         const result = commitArcanaTarget(item, cursor, {
+            currentTurn: this.absoluteTurnNumber,
             zap: (targetItem, targetCursor) => this.zapBoltFromPlayer(bolt, targetItem, targetCursor),
             logIdentify: targetItem => logger.log(i18next.t('item.identify', { name: targetItem.displayName, defaultValue: 'You identify {{name}}.' }), '#00ffff'),
             logEmpty: targetItem => logger.log(i18next.t('arcana.no_charges', { name: targetItem.displayName, defaultValue: '{{name}} has no charges.' }), '#ff8888'),
@@ -4699,8 +4701,9 @@ export class Game {
             kind: 'staff', enchantment: item.enchantment,
         }).value, rng) : result.magnitude;
         const hpDamage = target.absorbShieldDamage(damage);
-        if (result.caster) CombatSystem.transferMonsterHealth(result.caster, target, hpDamage);
-        target.takeDamage(hpDamage, true, this.grid);
+        target.takeDamage(hpDamage, true, this.grid, () => {
+            if (result.caster) CombatSystem.transferMonsterHealth(result.caster, target, hpDamage);
+        });
         if (this.finishLethalBoltHit(target, result.caster,
             result.bolt.ceType === null ? result.bolt.name : CE_BOLT_CATALOG[result.bolt.ceType].name)) return damage;
         if (target.hp > 0) {
@@ -4765,7 +4768,7 @@ export class Game {
         let accepted = living, autoID = false, healed = 0;
         switch (effect) {
             case BoltEffect.HEALING:
-                healed = target.heal(magnitude * 10, false);
+                healed = target.heal(staffHealingPercent(magnitude), false);
                 accepted = true; // CE healing has no INANIMATE/INVULNERABLE gate.
                 autoID = seen; // Also at full health or when rounding yields zero.
                 break;
@@ -4773,7 +4776,7 @@ export class Game {
             case BoltEffect.HASTE:
                 if (accepted) {
                     target.setStatusDuration('haste', 0); // web alias of CE HASTED
-                    target.setStatusDuration('hasted', effect === BoltEffect.HASTE ? 2 + 4 * magnitude : 0);
+                    target.setStatusDuration('hasted', effect === BoltEffect.HASTE ? staffHasteDuration(magnitude) : 0);
                     target.setStatusDuration('slowed', effect === BoltEffect.SLOW ? 5 * magnitude : 0);
                     target.refreshSpeeds();
                 }
@@ -4801,7 +4804,7 @@ export class Game {
                 break;
             case BoltEffect.DISCORD:
                 if (accepted) {
-                    target.setStatusDuration('discordant', Math.max(target.getStatusDuration('discordant'), 4 * magnitude));
+                    target.setStatusDuration('discordant', Math.max(target.getStatusDuration('discordant'), staffDiscordDuration(magnitude)));
                     autoID = seen;
                 }
                 break;
@@ -5271,15 +5274,14 @@ export class Game {
                 const hpDamage = target.absorbShieldDamage(damage);
                 // CE inflictDamage transfers after shielding and before death,
                 // including when reflection makes caster and victim identical.
-                CombatSystem.transferMonsterHealth(caster, target, hpDamage);
-                target.takeDamage(hpDamage, true, this.grid); // shield already consumed once.
+                target.takeDamage(hpDamage, true, this.grid,
+                    () => CombatSystem.transferMonsterHealth(caster, target, hpDamage)); // shield already consumed once.
                 if (hpDamage > 0 && isPlayer) this.lastDamageSource = caster.name;
                 if (this.finishLethalBoltHit(target, caster, ceBoltName)) return autoID;
                 if (hpDamage > 0) {
                     // CE monsterCastSpell: a reflected monster bolt still kills
                     // in the original caster's name, never in the reflector's.
                     this.spawnFloatingText(`-${hpDamage}`, target.loc.x, target.loc.y, 0xff5555);
-                    if (isPlayer) this.spawnBlood(target.loc.x, target.loc.y);
                 }
                 logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${hpDamage} damage!`, '#ff8866');
                 if (target.hp > 0) {
@@ -5326,9 +5328,6 @@ export class Game {
                 if (result.damage > 0) {
                     if (isPlayer) this.lastDamageSource = caster.name;
                     this.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
-                    if (isPlayer) {
-                        this.spawnBlood(target.loc.x, target.loc.y);
-                    }
                     this.reportAttack(caster, target, result);
                     if (caster.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
                         this.applyMonsterOnHitStatus(target, caster.name, caster.onHitStatus!, caster.onHitDuration);
@@ -6103,7 +6102,7 @@ export class Game {
 
             const monst = this.getMonsterAt(x, y);
             if (monst && monst.hp > 0 && !monst.submerged) {
-                if (thrown.category === ItemCategory.WEAPON) {
+                if (thrown.category === ItemCategory.WEAPON && !isIncendiaryDart(thrown)) {
                     // CE Items.c:6906-6921：命中 → 结算后投掷物消失；
                     // 未命中 → break，投掷物落在怪物所在格的合格邻格。
                     // CE pre-hit aggression preserves permanent flight; Combat
@@ -6130,7 +6129,6 @@ export class Game {
                                 this.applyWeaponRunicEffect(monst, res.damage, res.triggeredRunic);
                             }
                         }
-                        this.spawnBlood(monst.loc.x, monst.loc.y);
                         this.needsRender = true;
                         timeSystem.currentTick += this.player.movementSpeed;
                         this.playerTurnEnded();
@@ -6230,6 +6228,22 @@ export class Game {
             // 未碎裂：落到洞边合格格（走下方通用落地）。
         }
 
+        // CE Items.c:7049-7057: the split unit burns at its actual landing,
+        // including empty ground and the thrower's cell. Never lands as loot.
+        if (resolveIncendiaryDart(thrown, { x, y }, {
+            grid: this.grid,
+            creatureAt: pos => this.player.hp > 0 && this.player.x === pos.x && this.player.y === pos.y
+                ? this.player : this.getMonsterAt(pos.x, pos.y),
+            exposeToFire: creature => {
+                if (creature instanceof Player || creature instanceof Monster) this.exposeCreatureToFire(creature);
+            },
+        })) {
+            this.needsRender = true;
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
+            return;
+        }
+
         // —— 通用落地（CE Items.c:7055-7061）——
         logger.log(i18next.t('throw.generic', {
             name: thrown.displayName,
@@ -6283,7 +6297,7 @@ export class Game {
 
     /** CE Items.c:8712: awareness contributes twenty points per effective E. */
     private awarenessBonus(): number {
-        return 20 * ringBonus(this.player.rings(), 'ring_of_awareness');
+        return ringAwarenessBonus(ringBonus(this.player.rings(), 'ring_of_awareness'));
     }
 
     /**
@@ -6326,7 +6340,7 @@ export class Game {
 
         const armor = this.player.equippedArmor;
         if (armor) {
-            range += Math.max(0, (armor.strengthRequired || 0) - 12);
+            range += armorStealthAdjustment(armor.strengthRequired ?? 0);
         }
 
         if (this.justRested) {
@@ -6336,7 +6350,7 @@ export class Game {
         range += this.player.getStatusDuration('aggravating');
         // CE Time.c:821-823 / updateRingBonuses: a negative stealth bonus is multiplied by four.
         const stealth = ringBonus(this.player.rings(), 'ring_of_stealth');
-        range -= stealth < 0 ? stealth * 4 : stealth;
+        range += ringStealthAdjustment(stealth);
 
         if (range < 2 && !this.justRested) {
             range = 2;
@@ -6933,12 +6947,8 @@ export class Game {
                 logger.log(i18next.t('status.monster.lifespan_off', { name: this.monsterDisplayName(m), defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
             }
         }
-        // CE Time.c:2685–2692: zombie emits 15 volume each objective tick.
-        for (const m of this.monsters) {
-            if (m.hp > 0 && m.typeId === 'zombie' && !m.mutation?.abilityFlags.includes('MA_DF_ON_DEATH') && rng.randPercent(100)) {
-                spawnDungeonFeature(this.grid, m.x, m.y, catalogFeature(DF.DF_ROT_GAS_PUFF), false);
-            }
-        }
+        // CE Time.c:2685–2692: once per objective update, after status decay.
+        for (const m of this.monsters) emitCreatureFeature(this.grid, m, 'objective');
     }
 
     /** CE Time.c:937-948 — one message per hunger-tier crossing, no repeat while it persists. */
@@ -7217,7 +7227,6 @@ export class Game {
             if (res.triggeredRunic) {
                 this.applyWeaponRunicEffect(target, res.damage, res.triggeredRunic);
             }
-            this.spawnBlood(target.loc.x, target.loc.y);
             // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
             this.trySplitMonster(target, this.player);
         } else {
@@ -7803,7 +7812,7 @@ export class Game {
                     damage = Math.floor(damage / 2); // CE :1157 damage /= 2（浅水/沼减半）
                 }
                 logger.log(i18next.t('fall.injured', { defaultValue: 'You are injured by the fall.' }), '#ff6666');
-                this.player.hp -= this.player.absorbShieldDamage(damage);
+                this.player.takeDamage(damage, false, this.grid);
                 this.disturbed = true;
                 if (this.player.hp <= 0) {
                     // CE :1161-1163 killCreature + gameOver("Killed by a fall")
@@ -8980,7 +8989,7 @@ export class Game {
         this.referenceScreen = null; this.pendingArcana = null; this.pendingUseConfirm = null;
         this.isThrowing = false; this.throwItemTarget = null; this.isExamining = false; this.inspectTarget = null;
         this.pendingBoltFrames = []; this.currentBoltFrameIndex = 0; this.boltAnimStartTime = 0;
-        this.hoveredCell = null; this.hoveredText = ''; this.floatingTexts = []; this.lastPromotionUpdate = null;
+        this.hoveredCell = null; this.hoveredText = ''; this.flavorText = ''; this.floatingTexts = []; this.lastPromotionUpdate = null;
         // Rebuild lighting without running update's discovery/auto-travel side
         // effects. Grid memory and visibility are themselves snapshot fields.
         this.updateVision();
@@ -9106,7 +9115,7 @@ export class Game {
         if (!entity.hasStatus('immune_fire')
             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
             if (entity instanceof Monster) entity.takeDamage(damage, true, this.grid);
-            else { entity.hp -= damage; this.disturbed = true; } // CE burning bypasses shields.
+            else { entity.takeDamage(damage, true, this.grid); this.disturbed = true; } // CE burning bypasses shields.
             if (entity === this.player) {
                 this.lastDamageSource = 'fire';
                 if (entity.hp <= 0) {
@@ -9190,7 +9199,7 @@ export class Game {
                 return true;
             }
             this.lastDamageSource = 'violent explosion';
-            entity.hp -= entity.absorbShieldDamage(damage);
+            entity.takeDamage(damage, false, this.grid);
             this.disturbed = true;
             return true;
         }
@@ -9409,7 +9418,7 @@ export class Game {
                     }
                 } else if (!exempt) {
                     if (entity instanceof Monster) entity.takeDamage(Math.max(1, Math.floor(entity.maxHp / 15)), true, this.grid);
-                    else entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
+                    else entity.takeDamage(Math.max(1, Math.floor(entity.maxHp / 15)), true, this.grid); // bypasses shields
                     if (entity === this.player) {
                         const vines = damagingTile === TerrainType.ANCIENT_SPIRIT_VINES;
                         this.lastDamageSource = vines ? 'thorned vines' : damagingTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
@@ -9421,6 +9430,15 @@ export class Game {
             }
 
             if (entity.hp <= 0) return;
+            // CE Time.c:645-657: gradual exposure only, once per 100-tick block.
+            if (!instantTarget) {
+                const healing = terrainHealingAmount(cell, entity.hp, entity.maxHp, 100,
+                    entity instanceof Monster && entity.hasBehavior('MONST_INANIMATE'), isSubmerged(entity));
+                if (healing > 0) {
+                    entity.hp += healing;
+                    if (entity === this.player) logger.log(worldHealingText());
+                }
+            }
 
             // Gas —— G-3 重裁（F-0 §5.3-10/11）：
             // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的
@@ -9502,7 +9520,7 @@ export class Game {
                         // D2 留痕：本分支随 creeping_death 退池后不可达
                         //（GasType.CREEPING_DEATH 无层载体，addGas 拒绝写入），
                         // 按口径保留代码。
-                        entity.hp -= 10;
+                        entity.takeDamage(10, true, this.grid);
                         if (entity === this.player) {
                             this.lastDamageSource = 'creeping death';
                             logger.log(i18next.t('env.player_creeping_death', { defaultValue: 'Spores of creeping death eat away at your flesh!' }), '#ff4444');
@@ -9646,6 +9664,8 @@ export class Game {
     }
 
     private dungeonFeatureDescription(description: string): string {
+        const worldText = worldFeatureText(description);
+        if (worldText !== undefined) return worldText;
         switch (description) {
             case "The corpse detonates with terrifying force!": return i18next.t('df.mutation_explosion', { defaultValue: 'The corpse detonates with terrifying force!' });
             case "Poisonous spores burst from the corpse!": return i18next.t('df.lichen_corpse', { defaultValue: 'Poisonous spores burst from the corpse!' });
@@ -9923,17 +9943,19 @@ export class Game {
     }
 
     public updateFlavorText(): void {
+        // CE Time.c:63-81. Flavor is a presentation field, never message history.
+        if (!this.disturbed || this.isGameOver) return;
         const cell = this.grid.getCell(this.player.x, this.player.y);
         if (!cell) { this.flavorText = ''; return; }
-        // CE Time.c:63-81: standing uses tileFlavor; levitation uses describeLocation.
-        // Reuse web's localized terrain text, including its gas-layer preference.
-        const gas = cell.layers[DungeonLayer.GAS] ?? TerrainType.NOTHING;
-        this.flavorText = this.player.hasStatus('levitating')
-            ? this.describeLocation(this.player.x, this.player.y)
-            : i18next.t('df.flavor', {
-                terrain: this.getTerrainName(gas !== TerrainType.NOTHING ? gas : cell.terrain),
-                defaultValue: 'You are standing on {{terrain}}.',
-            });
+        const terrain = selectTerrainTextLayer(cell.layers);
+        if (this.player.equippedArmor?.runicType === 'respiration'
+            && (TERRAIN_FLAGS[terrain].flags & T_RESPIRATION_IMMUNITIES)) {
+            this.flavorText = i18next.t('terrain.flavor.clean_air', { defaultValue: 'A pocket of cool, clean air swirls around you.' });
+        } else {
+            this.flavorText = this.player.hasStatus('levitating')
+                ? this.describeLocation(this.player.x, this.player.y)
+                : tileFlavor(cell.layers, { atDungeonExit: this.depth === 1 });
+        }
     }
 
     private stopAutoTravel() {
@@ -9944,6 +9966,7 @@ export class Game {
         this.isMouseTraveling = false;
         this.travelTargetItem = undefined;
         this.needsRender = true;
+        this.disturbed = true; // CE Movement.c:1884/1922: control returns to the player.
         this.updateFlavorText(); // CE Movement.c:61,1886,1924: travel ended.
     }
 
@@ -10645,154 +10668,7 @@ export class Game {
     }
 
     private getTerrainName(terrain: TerrainType): string {
-        switch (terrain) {
-            case TerrainType.FUNGUS_FOREST: return i18next.t('terrain.fungus_forest', { defaultValue: "a luminescent fungal forest" });
-            case TerrainType.TRAMPLED_FUNGUS_FOREST: return i18next.t('terrain.trampled_fungus_forest', { defaultValue: "trampled fungal foliage" });
-            case TerrainType.SUNLIGHT_POOL: return i18next.t('terrain.sunlight_pool', { defaultValue: "a patch of sunlight" });
-            case TerrainType.DARKNESS_CLOUD: return i18next.t('terrain.darkness_cloud', { defaultValue: 'a cloud of supernatural darkness' });
-            case TerrainType.ROT_GAS: return i18next.t('terrain.rot_gas', { defaultValue: 'a cloud of putrescence' });
-            case TerrainType.LICHEN: return i18next.t('terrain.lichen', { defaultValue: 'deadly lichen' });
-            case TerrainType.DARKNESS_PATCH: return i18next.t('terrain.darkness_patch', { defaultValue: "a patch of shadows" });
-            case TerrainType.DEEP_WATER_ALGAE_WELL: return i18next.t('terrain.deep_water_algae_well', { defaultValue: "the ground" });
-            case TerrainType.DEEP_WATER_ALGAE_1: return i18next.t('terrain.deep_water_algae_1', { defaultValue: "luminescent waters" });
-            case TerrainType.DEEP_WATER_ALGAE_2: return i18next.t('terrain.deep_water_algae_2', { defaultValue: "luminescent waters" });
-            case TerrainType.NET_TRAP: return i18next.t('terrain.net_trap', { defaultValue: "a net trap" });
-            case TerrainType.NET_TRAP_HIDDEN: return i18next.t('terrain.net_trap_hidden', { defaultValue: "the ground" });
-            case TerrainType.NETTING: return i18next.t('terrain.netting', { defaultValue: "a net" });
-            case TerrainType.ALARM_TRAP: return i18next.t('terrain.alarm_trap', { defaultValue: "an alarm trap" });
-            case TerrainType.ALARM_TRAP_HIDDEN: return i18next.t('terrain.alarm_trap_hidden', { defaultValue: "the ground" });
-            case TerrainType.GAS_TRAP_CONFUSION: return i18next.t('terrain.gas_trap_confusion', { defaultValue: "a confusion trap" });
-            case TerrainType.GAS_TRAP_CONFUSION_HIDDEN: return i18next.t('terrain.gas_trap_confusion_hidden', { defaultValue: "the ground" });
-            case TerrainType.FLOOD_TRAP_HIDDEN: return i18next.t('terrain.flood_trap_hidden', { defaultValue: "the ground" });
-            case TerrainType.STEAM_VENT: return i18next.t('terrain.steam_vent', { defaultValue: "a steam vent" });
-            case TerrainType.DEWAR_CAUSTIC_GAS: return i18next.t('terrain.dewar_caustic_gas', { defaultValue: "a glass dewar of caustic gas" });
-            case TerrainType.DEWAR_CONFUSION_GAS: return i18next.t('terrain.dewar_confusion_gas', { defaultValue: "a glass dewar of confusion gas" });
-            case TerrainType.DEWAR_PARALYSIS_GAS: return i18next.t('terrain.dewar_paralysis_gas', { defaultValue: "a glass dewar of paralytic gas" });
-            case TerrainType.DEWAR_METHANE_GAS: return i18next.t('terrain.dewar_methane_gas', { defaultValue: "a glass dewar of methane gas" });
-            case TerrainType.BROKEN_GLASS: return i18next.t('terrain.broken_glass', { defaultValue: "shattered glass" });
-            case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: 'an iron cage altar' });
-            case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: 'a commutation altar' });
-            case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: 'a burnt commutation altar' });
-            case TerrainType.RESURRECTION_ALTAR: return i18next.t('terrain.resurrection_altar', { defaultValue: 'a resurrection altar' });
-            case TerrainType.RESURRECTION_ALTAR_INERT: return i18next.t('terrain.resurrection_inert', { defaultValue: 'a burnt resurrection altar' });
-            case TerrainType.PIPE_GLOWING: return i18next.t('terrain.pipe_glowing', { defaultValue: 'a glowing glass pipe' });
-            case TerrainType.PIPE_INERT: return i18next.t('terrain.pipe_inert', { defaultValue: 'a burnt glass pipe' });
-            case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: 'a sacrificial altar' });
-            case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: 'a dormant sacrificial altar' });
-            case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: 'a sacrificial lava pit' });
-            case TerrainType.RAT_TRAP_WALL_CRACKING: return i18next.t('terrain.rat_trap_wall_cracking', { defaultValue: 'a cracking wall' });
-            case TerrainType.STATUE_CRACKING: return i18next.t('terrain.statue_cracking', { defaultValue: 'a cracking statue' });
-            case TerrainType.COFFIN_OPEN: return i18next.t('terrain.coffin_open', { defaultValue: 'an empty coffin' });
-            case TerrainType.WORM_TUNNEL_MARKER_ACTIVE: return i18next.t('terrain.worm_tunnel_marker_active', { defaultValue: 'a cracking granite wall' });
-            case TerrainType.PORTAL_LIGHT: return i18next.t('terrain.portal_light', { defaultValue: 'a brilliant light' });
-
-            case TerrainType.GRANITE:
-                return i18next.t('terrain.granite', { defaultValue: 'a granite wall' });
-            case TerrainType.WALL:
-                return i18next.t('terrain.wall', { defaultValue: 'a wall' });
-            case TerrainType.DOOR:
-                return i18next.t('terrain.door', { defaultValue: 'a closed door' });
-            case TerrainType.OPEN_DOOR:
-                return i18next.t('terrain.open_door', { defaultValue: 'an open door' });
-            case TerrainType.WATER_SHALLOW:
-                return i18next.t('terrain.shallow_water', { defaultValue: 'shallow water' });
-            case TerrainType.WATER_DEEP:
-                return i18next.t('terrain.deep_water', { defaultValue: 'deep water' });
-            case TerrainType.CHASM:
-                return i18next.t('terrain.chasm', { defaultValue: 'a chasm' });
-            case TerrainType.LAVA:
-                return i18next.t('terrain.lava', { defaultValue: 'lava' });
-            case TerrainType.GRASS:
-                return i18next.t('terrain.grass', { defaultValue: 'grass' });
-            case TerrainType.FOLIAGE:
-                return i18next.t('terrain.foliage', { defaultValue: 'foliage' });
-            case TerrainType.BOG:
-                return i18next.t('terrain.bog', { defaultValue: 'a bog' });
-            case TerrainType.STAIRS_UP:
-                return i18next.t('terrain.stairs_up', { defaultValue: 'the upward staircase' });
-            case TerrainType.DUNGEON_PORTAL:
-                return i18next.t('terrain.crystal_portal', { defaultValue: 'a crystal portal' });
-            case TerrainType.STAIRS_DOWN:
-                return i18next.t('terrain.stairs_down', { defaultValue: 'the downward staircase' });
-            case TerrainType.MACHINE_METHANE_VENT_DORMANT:
-            case TerrainType.MACHINE_POISON_GAS_VENT_DORMANT:
-            case TerrainType.MACHINE_PARALYSIS_VENT:
-                return i18next.t('terrain.inactive_gas_vent', { defaultValue: 'An inactive gas vent' });
-            case TerrainType.MACHINE_METHANE_VENT:
-            case TerrainType.MACHINE_POISON_GAS_VENT:
-                return i18next.t('terrain.gas_vent', { defaultValue: 'A gas vent' });
-            case TerrainType.PILOT_LIGHT:
-                return i18next.t('terrain.fallen_torch', { defaultValue: 'A fallen torch' });
-            case TerrainType.PILOT_LIGHT_DORMANT:
-                return i18next.t('terrain.wall_torch', { defaultValue: 'A wall-mounted torch' });
-            case TerrainType.GAS_TRAP_POISON:
-                return i18next.t('terrain.poison_gas_trap', { defaultValue: 'A caustic gas trap' });
-            case TerrainType.FLAMETHROWER:
-                return i18next.t('terrain.fire_trap', { defaultValue: 'A fire trap' });
-            case TerrainType.MACHINE_METHANE_VENT_HIDDEN:
-            case TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN:
-            case TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN:
-            case TerrainType.GAS_TRAP_POISON_HIDDEN:
-            case TerrainType.FLAMETHROWER_HIDDEN:
-                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
-            case TerrainType.MACHINE_PRESSURE_PLATE_USED:
-                return i18next.t('terrain.pressure_plate_used', { defaultValue: 'An inactive pressure plate' });
-            case TerrainType.TRAP_DOOR:
-                return i18next.t('terrain.trap_door', { defaultValue: 'A hole' });
-            case TerrainType.WALL_LEVER:
-                return i18next.t('terrain.wall_lever', { defaultValue: 'A lever' });
-            case TerrainType.WALL_LEVER_PULLED:
-                return i18next.t('terrain.wall_lever_pulled', { defaultValue: 'An inactive lever' });
-            case TerrainType.WALL_LEVER_HIDDEN:
-                return i18next.t('terrain.wall', { defaultValue: 'a wall' });
-            case TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING:
-            case TerrainType.TRAP_DOOR_HIDDEN:
-                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
-            case TerrainType.TRAMPLED_FOLIAGE:
-                return i18next.t('terrain.trampled_foliage', { defaultValue: 'Trampled foliage' });
-            case TerrainType.ACTIVE_BRIMSTONE:
-                return i18next.t('terrain.active_brimstone', { defaultValue: 'Hissing brimstone' });
-            case TerrainType.INERT_BRIMSTONE:
-                return i18next.t('terrain.inert_brimstone', { defaultValue: 'Hissing brimstone' });
-            case TerrainType.BRIMSTONE_FIRE:
-                return i18next.t('terrain.brimstone_fire', { defaultValue: 'Sulfurous flames' });
-            case TerrainType.OPEN_IRON_DOOR_INERT:
-                return i18next.t('terrain.open_iron_door_inert', { defaultValue: 'An open iron door' });
-            case TerrainType.BRIDGE_FALLING:
-                return i18next.t('terrain.bridge_falling', { defaultValue: 'A plummeting bridge' });
-            case TerrainType.ITEM_FIRE:
-                return i18next.t('terrain.item_fire', { defaultValue: 'Crackling flames' });
-            case TerrainType.CHARRED_FLOOR:
-                return i18next.t('terrain.charred_floor', { defaultValue: 'the charred floor' });
-            case TerrainType.SIGN:
-                return i18next.t('terrain.sign', { defaultValue: 'a sign' });
-            case TerrainType.RESET_PLATE:
-                return i18next.t('terrain.reset_plate', { defaultValue: 'a reset plate' });
-            case TerrainType.TRAP:
-                return i18next.t('terrain.trap', { defaultValue: 'a trap' });
-            case TerrainType.SECRET_DOOR:
-                return i18next.t('terrain.secret_door', { defaultValue: 'a secret door' });
-            case TerrainType.PRESSURE_PLATE:
-                return i18next.t('terrain.pressure_plate', { defaultValue: 'a pressure plate' });
-            case TerrainType.LOCKED_DOOR:
-                return i18next.t('terrain.locked_door', { defaultValue: 'a locked door' });
-            case TerrainType.ALTAR:
-                return i18next.t('terrain.altar', { defaultValue: 'an altar' });
-            case TerrainType.ANCIENT_SPIRIT_VINES:
-                return 'thorned vines';
-            case TerrainType.ANCIENT_SPIRIT_GRASS:
-                return 'a tuft of grass';
-            case TerrainType.WEB:
-                return i18next.t('terrain.web', { defaultValue: 'a spiderweb' });
-            case TerrainType.BLOOD:
-                return i18next.t('terrain.blood', { defaultValue: 'blood' });
-            case TerrainType.MUD:
-                return i18next.t('terrain.mud', { defaultValue: 'mud' });
-            case TerrainType.FLOOR:
-            case TerrainType.NOTHING:
-            default:
-                return i18next.t('terrain.floor', { defaultValue: 'the floor' });
-        }
+        return getTerrainDescription(terrain, { atDungeonExit: this.depth === 1 });
     }
 
     public updateHover(x: number, y: number) {
@@ -10840,17 +10716,15 @@ export class Game {
         }
 
         const separator = i18next.t('hover.separator', { defaultValue: ', ' });
-        // G-1：hover 的地形名优先取 GAS 层（CE tileText/tileFlavor 走
-        // highestPriorityLayer(x,y,false)——含气层，Movement.c:106/113；
-        // 站进毒气时 CE 悬浮提示显示"a cloud of caustic gas"）。
-        // terrain getter 本身固定 skipGas（Grid.ts G-1 注：玩法读者走旗标
-        // 并集世界），显示侧的气体偏好在这里补。
+        // Only observed layers enter the catalog. Memory owns its own snapshot;
+        // current discovery flags never reveal a hidden change outside vision.
         const knownLayers = cell.isVisible ? cell.layers : cell.rememberedLayers;
-        const gasTile = knownLayers[DungeonLayer.GAS] ?? TerrainType.NOTHING;
-        const tName = this.getTerrainName(
-            gasTile !== TerrainType.NOTHING ? gasTile
-                : cell.isVisible ? cell.terrain : cell.rememberedTerrain
-        );
+        const snapshot = { layers: knownLayers,
+            terrain: cell.isVisible ? cell.terrain : cell.rememberedTerrain,
+            atDungeonExit: this.depth === 1 };
+        const terrain = describeTerrain(cell.isVisible ? { visible: snapshot }
+            : cell.hasMemory || cell.isMagicMapped ? { remembered: snapshot } : {});
+        const tName = terrain?.description ?? i18next.t('hover.unknown', { defaultValue: 'Unknown' });
 
         let baseText = '';
         if (entities.length > 0) {

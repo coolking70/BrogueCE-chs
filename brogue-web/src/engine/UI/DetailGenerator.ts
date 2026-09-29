@@ -1,3 +1,4 @@
+import { getMonsterAbsorbStatus } from './MonsterTextCatalog';
 import type { ItemDetailContext } from './ItemDetailContext';
 import { itemIntro, itemEquipmentState } from './ItemDetailIntro';
 import { equipmentDetail } from './ItemDetailEquipment';
@@ -169,7 +170,7 @@ export function generateMonsterDetail(
     // CE IO.c:4827 checks position equality, not MB_ABSORBING, allegiance or
     // counter > 0. Default null keeps this hidden until a corpse is assigned.
     if (!playerHallucinating && monster.targetCorpseLoc?.x === monster.loc.x && monster.targetCorpseLoc.y === monster.loc.y) {
-        sections.push({ lines: [{ text: '吸收', color: '#ff6666',
+        sections.push({ lines: [{ text: getMonsterAbsorbStatus(monster.typeId), color: '#ff6666',
             progress: { value: monster.corpseAbsorptionCounter, max: 20 } }] });
     }
 

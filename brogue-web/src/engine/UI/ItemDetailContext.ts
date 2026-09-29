@@ -32,9 +32,9 @@ export interface ItemDetailContext {
     readonly omniscient?: boolean;
 }
 
-function knownEquipment(item: Item | null): KnownEquipment | null {
+function knownEquipment(item: Item | null, omniscient = false): KnownEquipment | null {
     if (!item) return null;
-    const known = itemKnowledge(item).instanceKnown;
+    const known = itemKnowledge(item, { omniscient }).instanceKnown;
     return Object.freeze({ damage: item.damage, armor: item.armor,
         strengthRequired: item.strengthRequired ?? 0,
         enchantment: known ? item.enchantment : 0, assumed: !known });
@@ -42,20 +42,22 @@ function knownEquipment(item: Item | null): KnownEquipment | null {
 
 /** UI adapter uses existing public state only; no Game import or mutations. */
 export function createItemDetailContext(
-    world: { readonly player: Player; readonly absoluteTurnNumber: number }, item: Item,
+    world: { readonly player: Player; readonly absoluteTurnNumber: number; readonly replayRecording?: unknown; readonly replayOmniscientDetails?: boolean }, item: Item,
 ): ItemDetailContext {
     const p = world.player;
+    const omniscient = !!world.replayRecording && world.replayOmniscientDetails === true;
     const bonuses: Record<string, number> = {};
     for (const ring of [p.ringLeft, p.ringRight]) {
-        if (!ring?.identityId || !itemKnowledge(ring).kindKnown) continue;
+        if (!ring?.identityId || !itemKnowledge(ring, { omniscient }).kindKnown) continue;
         // CE apparentRingBonus: a known kind uses effectiveRingEnchant, including
         // a worn ring's observable negative effect and the unidentified + cap.
-        bonuses[ring.identityId] = (bonuses[ring.identityId] ?? 0) + effectiveRingEnchant(ring);
+        bonuses[ring.identityId] = (bonuses[ring.identityId] ?? 0) + (omniscient ? ring.enchantment : effectiveRingEnchant(ring));
     }
     return Object.freeze({ strength: p.effectiveStrength, hp: p.hp, maxHp: p.maxHp,
         nutrition: p.nutrition, maxNutrition: p.maxNutrition,
         carried: p.inventory.items.some(i => i.id === item.id),
         equipped: [p.equippedWeapon, p.equippedArmor, p.ringLeft, p.ringRight].some(i => i?.id === item.id),
-        weapon: knownEquipment(p.equippedWeapon), armor: knownEquipment(p.equippedArmor),
-        apparentRingBonuses: Object.freeze(bonuses), currentTurn: world.absoluteTurnNumber });
+        weapon: knownEquipment(p.equippedWeapon, omniscient), armor: knownEquipment(p.equippedArmor, omniscient),
+        apparentRingBonuses: Object.freeze(bonuses), currentTurn: world.absoluteTurnNumber,
+        knownStaffUses: Object.freeze([...item.knownStaffUses]), omniscient });
 }

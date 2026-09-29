@@ -1,3 +1,4 @@
+import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import i18next from 'i18next';
 import zh from '../locales/zh_CN.json';
@@ -26,7 +27,7 @@ function scene() {
         Object.assign(g.grid.getCell(x,y)!, {isVisible:true,hasMemory:true,hasDormantMonster:false,machineNumber:0});
     }
     g.player.loc = {x:4,y:8}; g.player.hp = g.player.maxHp = 1000;
-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
+    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
     return g;
 }
 function mob(g: Game, id = 'rat', x = 8, y = 8) {

@@ -1,3 +1,4 @@
+import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
 import fs from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createHeadlessGame } from './harness';
@@ -32,7 +33,7 @@ function scene() {
         Object.assign(g.grid.getCell(x, y)!, { isVisible: true, hasDormantMonster: false, machineNumber: 0 });
     }
     g.player.loc = { x: 4, y: 8 }; g.player.hp = g.player.maxHp = 100;
-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
+    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
     return g;
 }
 function mob(g: Game, x = 8, id = 'rat', y = 5) {

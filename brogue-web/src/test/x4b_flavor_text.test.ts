@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
-import i18next from 'i18next';
+import { tileFlavor } from '../engine/UI/TerrainTextCatalog';
 import { createHeadlessGame } from './harness';
 import { type Game } from '../engine/Core/Game';
 import { TerrainType as T, DungeonLayer as L } from '../engine/Map/Grid';
@@ -22,6 +22,7 @@ function scene(game = createHeadlessGame(44002, 'test')) {
     }
     game.player.loc = { x: 10, y: 10 };
     (game as any).updateVision();
+    game.disturbed = true; // CE standing flavor is displayed when player control is active.
     game.updateFlavorText();
     return game;
 }
@@ -33,8 +34,7 @@ function snapshot(game: Game) {
     const { savedAt: _, ...state } = game.toSnapshot();
     return structuredClone(state);
 }
-const terrainName = (game: Game, terrain: T): string => (game as any).getTerrainName(terrain);
-const standing = (terrain: string) => i18next.t('df.flavor', { terrain, defaultValue: 'You are standing on {{terrain}}.' });
+
 
 describe('X4b CE flavorMessage display/archive boundary', () => {
     it.each([false, true])('tramples foliage and opens a door without log entries (animated=%s)', animated => {
@@ -46,13 +46,13 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
             g.executeCommand('move', { x: 1, y: 0 }); settle(g);
             expect(g.player.loc).toEqual({ x, y: 10 });
             expect(g.grid.getCell(x, 10)!.terrain).toBe(terrain);
-            expect(g.flavorText).toBe(standing(terrainName(g, terrain)));
+            expect(g.flavorText).toBe(tileFlavor([terrain]));
         }
         expect(log).not.toHaveBeenCalled();
         g.executeCommand('move', { x: 1, y: 0 }); settle(g);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
+        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
         g.flavorText = 'stale'; g.executeCommand('wait'); settle(g);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
+        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
         expect(log).not.toHaveBeenCalled();
     });
 
@@ -60,7 +60,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         const g = scene(), log = vi.spyOn(logger, 'log');
         const feature = { ...catalogFeature(DF.DF_OPEN_DOOR), description: '', subsequentDF: 0 };
         spawnDungeonFeature(g.grid, 10, 10, feature, false);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.OPEN_DOOR)));
+        expect(g.flavorText).toBe(tileFlavor([T.OPEN_DOOR]));
         expect(log).not.toHaveBeenCalled();
         g.flavorText = 'sentinel';
         spawnDungeonFeature(g.grid, 11, 10, feature, false);
@@ -80,7 +80,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         expect(g.hoveredText).toBe('');
         g.stepAutoPath();
         expect(g.player.loc).toEqual({ x: 11, y: 10 }); expect(g.autoPath).toEqual([]);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.GRASS)));
+        expect(g.flavorText).toBe(tileFlavor([T.GRASS]));
         g.flavorText = 'stale';
         g.autoPath = [{ x: 12, y: 10 }];
         g.grid.setTerrain(12, 10, T.WALL);
@@ -88,7 +88,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         c.rememberedLayers = [...c.layers]; c.rememberedTerrain = T.WALL;
         g.stepAutoPath();
         expect(g.autoPath).toEqual([]);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.GRASS)));
+        expect(g.flavorText).toBe(tileFlavor([T.GRASS]));
     });
 
     it('retains combat, pickup and item discovery messages in the archive', () => {
@@ -125,16 +125,17 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         expect(JSON.stringify(saved)).not.toContain('flavorText');
         g.flavorText = 'stale'; g.updateHover(12, 10);
         expect(g.loadSnapshot(saved)).toBe(true);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.FLOOR)));
+        expect(g.flavorText).toBe(tileFlavor([T.FLOOR]));
         expect(g.hoveredText).toBe(''); expect(snapshot(g)).toEqual(before);
         g.flavorText = 'stale'; g.startNewGame({ seed: 44002, mode: 'test' });
-        expect(g.flavorText).not.toBe('stale'); expect(g.flavorText).not.toBe('');
+        expect(g.flavorText).not.toBe('stale');
+        expect(g.flavorText).toBe(tileFlavor(g.grid.getCell(g.player.x, g.player.y)!.layers));
     });
 
     it('uses gas terrain and reuses location description for levitation without overwriting hover', () => {
         const g = scene();
         g.grid.setTerrainLayer(10, 10, L.GAS, T.POISON_GAS);
-        g.updateFlavorText(); expect(g.flavorText).toBe(standing(terrainName(g, T.POISON_GAS)));
+        g.updateFlavorText(); expect(g.flavorText).toBe(tileFlavor([T.POISON_GAS]));
         g.player.setStatusDuration('levitating', 10);
         g.updateHover(10, 10); const location = g.hoveredText;
         g.updateHover(9, 10); const hover = g.hoveredText;
@@ -161,7 +162,7 @@ describe('X4b CE flavorMessage display/archive boundary', () => {
         expect(g.replayCursor).toBe(recording.events.length);
         expect(g.player.loc).toEqual(expected.player.loc);
         expect(rng.getState()).toEqual(random);
-        expect(g.flavorText).toBe(standing(terrainName(g, T.OPEN_DOOR)));
+        expect(g.flavorText).toBe(tileFlavor([T.OPEN_DOOR]));
     });
 
     it('desktop and compact HUD put inspection before flavor, on the existing secondary line', () => {

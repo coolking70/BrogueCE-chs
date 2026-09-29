@@ -1,5 +1,5 @@
 import { notifyMonsterDeath } from '../engine/Core/MonsterLifecycle';
-import { creatureFeatureInfo, spawnCreatureBlood } from '../engine/Combat/CreatureFeatures';
+import { creatureFeatureInfo, emitCreatureFeature } from '../engine/Combat/CreatureFeatures';
 import { updateMonsterState, wanderTowardLastSeen } from '../engine/Combat/MonsterAI';
 /**
  * src/entities/Monster.ts
@@ -309,7 +309,7 @@ export interface MutationData {
 
 export class Monster extends Creature {
     /** Derived from saved typeId/mutation/deathDFType, including info resets. */
-    public get bloodType(): number { return creatureFeatureInfo(this.typeId).bloodType; }
+    public override get bloodType(): number { return creatureFeatureInfo(this.typeId).bloodType; }
     public get DFChance(): number { return creatureFeatureInfo(this.typeId, this.mutation?.id, this.deathDFType).DFChance; }
     public get DFType(): number { return creatureFeatureInfo(this.typeId, this.mutation?.id, this.deathDFType).DFType; }
     public state: MonsterState = MonsterState.ASLEEP;
@@ -392,15 +392,12 @@ export class Monster extends Creature {
         return damage;
     }
 
-    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid): void {
+    protected override bloodInvulnerable(): boolean { return this.isInvulnerable(); }
+
+    public override takeDamage(amount: number, ignoresProtectionShield = false, grid?: Grid, beforeHpLoss?: (damage: number) => void): void {
         this.interruptCorpseAbsorption(amount);
         const damage = ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
-        // Preserve the existing zombie consumer until R6 replaces Game.spawnBlood
-        // atomically at all damage sites. The shared emitter handles every species.
-        if (grid && this.typeId === 'zombie' && damage > 0 && this.hp > 0 && !this.isInvulnerable()) {
-            spawnCreatureBlood(grid, this.loc, this.bloodType, damage, this.hp);
-        }
-        super.takeDamage(damage, true);
+        super.takeDamage(damage, true, grid, beforeHpLoss);
     }
 
     public administrativeDeath?: boolean;
@@ -1347,7 +1344,6 @@ export class Monster extends Creature {
                 game.lastDamageSource = game.monsterDisplayName(this);
                 game.reportAttack(this, game.player, result);
                 game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
-                game.spawnBlood(game.player.loc.x, game.player.loc.y);
                 if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                     game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
                 }
@@ -1381,7 +1377,6 @@ export class Monster extends Creature {
             if (result.damage > 0) {
                 game.reportAttack(this, target, result);
                 game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
-                game.spawnBlood(target.loc.x, target.loc.y);
                 (game as any).trySplitMonster(target, this);
                 if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                     game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
@@ -1483,6 +1478,7 @@ export class Monster extends Creature {
         // CE monstersTurn runs this before its own status/AI gates. Time.c's
         // outer scheduler separately withholds actions from disabled monsters.
         if (this.corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(game, this)) return;
+        emitCreatureFeature(game.grid, this, 'activation');
         surfaceOnDryLand(this, game.grid);
         game.applyEntanglementFromTerrain(this);
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
@@ -1747,7 +1743,6 @@ export class Monster extends Creature {
                         game.lastDamageSource = game.monsterDisplayName(this);
                         game.reportAttack(this, game.player, result);
                         game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
-                        game.spawnBlood(game.player.loc.x, game.player.loc.y);
                     } else {
                         game.reportAttack(this, game.player, result);
                     }
@@ -1827,7 +1822,6 @@ export class Monster extends Creature {
                         } else if (result.damage > 0) {
                             game.reportAttack(this, other, result);
                             game.spawnFloatingText(`-${result.damage}`, other.loc.x, other.loc.y, 0xff5555);
-                            game.spawnBlood(other.loc.x, other.loc.y);
                             if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                                 game.applyMonsterOnHitStatus(other, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
                             }
@@ -1897,7 +1891,6 @@ export class Monster extends Creature {
                     game.lastDamageSource = game.monsterDisplayName(this);
                     game.reportAttack(this, game.player, result);
                     game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
-                    game.spawnBlood(game.player.loc.x, game.player.loc.y);
                     if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                         game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
                     }

@@ -1,3 +1,4 @@
+import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Game } from '../engine/Core/Game';
 import { Grid, TerrainType as T, DungeonLayer as L } from '../engine/Map/Grid';
@@ -25,7 +26,7 @@ function scene() {
     }
     g.player = new Player(4, 5); g.player.hp = g.player.maxHp = 100;
     g.monsters = []; g.items = []; g.environment = new EnvironmentManager(g.grid);
-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
+    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
     (g as unknown as { updateVision(): void }).updateVision = vi.fn();
     return g;
 }

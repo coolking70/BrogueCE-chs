@@ -277,6 +277,13 @@ export function isWholeRunSnapshot(value: unknown): value is GameSnapshot {
         || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
     if (s.pendingFallenItemsByDepth.some(q => !q || !Number.isInteger(q.depth) || q.depth < 1 || q.depth > CE_DEEPEST_LEVEL
         || !Array.isArray(q.items) || q.items.some(item => !Number.isFinite(item.spawnTurnNumber)))) return false;
+    if (!Array.isArray(s.player.inventory)) return false;
+    const items = [...s.items, ...s.player.inventory, ...s.entityGraph.items,
+        ...s.levels.flatMap(l => l.items), ...s.pendingFallenItemsByDepth.flatMap(q => q.items)];
+    // New required persisted knowledge, never synthesized from old recharge state.
+    if (items.some(item => !Array.isArray(item.knownStaffUses) || item.knownStaffUses.length > 3
+        || item.knownStaffUses.some((turn, i, uses) => !Number.isSafeInteger(turn) || turn < 0
+            || (i > 0 && turn > uses[i - 1]!)))) return false;
     const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
         ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
     if (rows.some(m => !Number.isInteger(m.entersLevelIn) || m.entersLevelIn < 0 || m.entersLevelIn > 150

@@ -1,3 +1,4 @@
+import { ringTransferencePercent } from '../Items/ItemEffectFormulas';
 import { stealFromPlayer } from './MonsterTheft';
 /**
  * src/engine/Combat/Combat.ts
@@ -299,9 +300,9 @@ export class CombatSystem {
         const applyTo = defender;
         if (damage > 0) {
             const hpDamage = applyTo.absorbShieldDamage(damage);
-            CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
-            if (applyTo instanceof Player) applyTo.takeCombatDamage(hpDamage, true, opts?.grid);
-            else applyTo.takeDamage(hpDamage, true, opts?.grid); // shield applied exactly once
+            const transfer = () => CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
+            if (applyTo instanceof Player) applyTo.takeCombatDamage(hpDamage, true, opts?.grid, transfer);
+            else applyTo.takeDamage(hpDamage, true, opts?.grid, transfer); // shield applied exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         } else {
             // CE inflictDamage still applies the ring's minimum ±1 on a hit
@@ -365,7 +366,7 @@ export class CombatSystem {
         if (attacker instanceof Player) {
             const bonus = ringBonus(attacker.rings(), 'ring_of_transference');
             if (!bonus) return;
-            const amount = Math.trunc(dealt * bonus / 20);
+            const amount = Math.trunc(dealt * ringTransferencePercent(bonus) / 100);
             const transfer = amount || (bonus > 0 ? 1 : -1);
             if (transfer < 0) attacker.takeDamage(-transfer, true);
             else attacker.hp += transfer;
@@ -461,8 +462,7 @@ export class CombatSystem {
         }
 
         const hpDamage = defender.absorbShieldDamage(damage);
-        CombatSystem.transferMonsterHealth(thrower, defender, hpDamage);
-        defender.takeDamage(hpDamage, true, grid);
+        defender.takeDamage(hpDamage, true, grid, () => CombatSystem.transferMonsterHealth(thrower, defender, hpDamage));
         const killed = defender.hp <= 0;
         // CE thrown hit calls moralAttack after the separate pre-hit aggro gate.
         // A permanent thief keeps its mode, but a surviving hit still shortens fear.

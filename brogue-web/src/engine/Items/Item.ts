@@ -121,6 +121,8 @@ export class Item implements Entity {
     public magicDetected: boolean = false;
     /** 魔杖已放电次数（CE enchant2，Items.c:7435；未识别时显示"已使用 N 次"） */
     public timesUsed?: number;
+    /** CE lastUsed: newest first, successful player staff uses only. U01/U03 persisted. */
+    public knownStaffUses: number[] = [];
     /** W-6: CE enchant2 countdown in recharge points; absent means initial 500.
      * Independent of E, capacity and legacy ascending rechargeCounter. */
     public staffRechargeRemaining?: number;
@@ -160,7 +162,8 @@ export class Item implements Entity {
     public keyLoc: Array<{ loc: { x: number; y: number }; machine: number; disposableHere?: boolean }> = [];
 
     /**
-     * V-2b-6：≙ CE item->originDepth（Rogue.h:1422）——钥匙生成时的层号。
+     * CE item->originDepth（Rogue.h:1422）：物品生成来源层，拾取/掉落不重标。
+     * 混合来源堆叠为 0；起始装备/无来源物品为 undefined，不猜当前层。
      * keyMatchesLocation 的第一判据（Items.c:4038）。undefined = 旧存档/测试
      * 裸造的钥匙，按"当层"处理（登记偏差：CE 恒有值）。
      */

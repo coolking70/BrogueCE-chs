@@ -1,3 +1,4 @@
+import * as creatureFeatures from '../engine/Combat/CreatureFeatures';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { Game } from '../engine/Core/Game';
 import { Grid, TerrainType as T } from '../engine/Map/Grid';
@@ -26,7 +27,7 @@ function scene() {
     g.player = new Player(4, 5); g.player.maxHp = g.player.hp = 100;
     g.monsters = []; g.items = []; g.environment = new EnvironmentManager(g.grid);
     g.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
-    g.spawnFloatingText = vi.fn(); g.spawnBlood = vi.fn();
+    g.spawnFloatingText = vi.fn(); vi.spyOn(creatureFeatures, 'spawnCreatureBlood').mockReturnValue(null);
     (g as any).updateVision = vi.fn();
     return g;
 }
@@ -167,8 +168,8 @@ describe('W-15 absorbable damage and bypass/death owners', () => {
     it.each(['player','monster'])('%s explosion consumes shield, preserves immunity/death ordering', who => {
         const g=scene(), c=who==='player'?g.player:mob(g); c.applyShield(130); c.hp=30;
         g.grid.setTerrain(c.x,c.y,T.GAS_EXPLOSION); const death=vi.spyOn(c as any,'die');
-        (g as any).resolveExplosionDamage(c); expect(c.hp).toBe(who==='player'?-7:0); expect(shield(c)).toEqual([0,0]);
-        (g as any).resolveExplosionDamage(c); expect(death).toHaveBeenCalledTimes(who==='player'?0:1);
+        (g as any).resolveExplosionDamage(c); expect(c.hp).toBe(0); expect(shield(c)).toEqual([0,0]);
+        (g as any).resolveExplosionDamage(c); expect(death).toHaveBeenCalledTimes(1);
     });
     it('dampening and invulnerable explosion retain shield and consume their existing RNG', () => {
         const g=scene(); armor(g,'dampening'); const m=mob(g); m.behaviorFlags.add('MONST_INVULNERABLE');
@@ -215,11 +216,11 @@ describe('W-15 absorbable damage and bypass/death owners', () => {
     it('ordinary negation clears both fields', () => {
         const g=scene(), m=mob(g); for(const c of [g.player,m]) { c.applyShield(130); (g as any).negateCreatureMagic(c); expect(shield(c)).toEqual([0,0]); }
     });
-    it('player fall uses reducer without calling takeDamage or introducing another death owner', () => {
+    it('player fall uses the shared damage entry, reducing shielding exactly once', () => {
         const g=live(); g.player.applyShield(130); const hit=vi.spyOn(g.player,'takeDamage');
         vi.spyOn(g as any,'generateDepth').mockImplementation(()=>{}); vi.spyOn(g as any,'placePlayerOnFallLanding').mockImplementation(()=>{});
         vi.spyOn(rng,'randClumpedRange').mockReturnValue(9); (g as any).playerFalls();
-        expect(g.player.hp).toBe(100); expect(shield(g.player)).toEqual([40,130]); expect(hit).not.toHaveBeenCalled();
+        expect(g.player.hp).toBe(100); expect(shield(g.player)).toEqual([40,130]); expect(hit).toHaveBeenCalledExactlyOnceWith(9, false, g.grid);
     });
     it('falling monster keeps unspent shield while pending; activation monster still dies directly', () => {
         const g=live(), m=mob(g); m.applyShield(130); m.falling=true;

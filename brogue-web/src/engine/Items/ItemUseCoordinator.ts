@@ -1,3 +1,4 @@
+import { enchantedEquipment } from './ItemEffectFormulas';
 import { Item, ItemCategory } from './Item';
 import { ItemLoader } from './ItemLoader';
 import { Player } from '../../entities/Player';
@@ -49,8 +50,7 @@ export function enchantChosenItem(player: Player, item: Item, ports: {
     } else if (canEnchantArcana(item)) {
         enchantArcana(item);
     } else {
-        item.strengthRequired = Math.max(0, (item.strengthRequired ?? 0) - 1);
-        item.enchantment++;
+        Object.assign(item, enchantedEquipment(item.enchantment, item.strengthRequired ?? 0));
         if (item.category === ItemCategory.WEAPON && item.quiverNumber) {
             item.quiverNumber = rng.randRange(1, 60000);
         }
@@ -185,6 +185,7 @@ export function boltWorldFor(caster: Creature | null, player: Player, monsters: 
 
 /** Resolve and spend an already approved staff/wand target, preserving effect-before-charge order. */
 export function commitArcanaTarget(item: Item, cursor: Pos, ports: {
+    currentTurn?: number;
     zap: (item: Item, cursor: Pos) => { outcome?: { autoID?: boolean } | null };
     logIdentify: (item: Item) => void;
     logEmpty: (item: Item) => void;
@@ -197,6 +198,9 @@ export function commitArcanaTarget(item: Item, cursor: Pos, ports: {
         if (result.outcome?.autoID && !ItemLoader.identifiedItems.has(id)) {
             ItemLoader.identifyItemKind(item);
             ports.logIdentify(item);
+        }
+        if (item.category === ItemCategory.STAFF && ports.currentTurn !== undefined) {
+            item.knownStaffUses = [ports.currentTurn, ...item.knownStaffUses].slice(0, 3);
         }
         item.charges = charges - 1;
         if (item.category === ItemCategory.WAND) item.timesUsed = (item.timesUsed ?? 0) + 1;

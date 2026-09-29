@@ -492,8 +492,9 @@ describe('G-3 对抗⑩：G-1 扩散守恒 + G-2 蒸汽源哨兵', () => {
         expect(cell.volume, 'DF_STEAM_ACCUMULATION startProbability = 15').toBe(15);
     });
 
-    it('效果结算零 RNG 消耗：站气回合前后实质抽取计数不动（同 seed 可复现旁证）', () => {
-        // CE 的气体效果无掷骰；web 若在效果里加了 roll（抗性掷骰/闪避等），
+    it('气体效果零 RNG；实质流只含真实受击血液 DF 的四邻扩散', () => {
+        // CE 气体效果无掷骰；2 点伤害的红血 DF 首波四邻各一次，后续概率归零。
+        // 若效果里另加 roll（抗性掷骰/闪避等），
         // 后续生成/战斗的流位置会分岔——这是"阈值取消引入随机性"的防复发钉。
         const game = createHeadlessGame(42);
         openRoom(game);
@@ -501,8 +502,9 @@ describe('G-3 对抗⑩：G-1 扩散守恒 + G-2 蒸汽源哨兵', () => {
         const drawsBefore = rng.randomNumbersGenerated;
         game.environment.addGas(4, 4, GasType.POISON, 1000);
         priv(game).applyEnvironmentalEffects();
-        expect(rng.randomNumbersGenerated, 'applyEnvironmentalEffects 不得消耗任何 RNG 抽取')
-            .toBe(drawsBefore);
+        expect(rng.randomNumbersGenerated, '唯一消耗应为红血 DF 首波四邻，不得新增气体抗性骰')
+            .toBe(drawsBefore + 4);
+        expect(game.grid.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.BLOOD);
     });
 });
 
